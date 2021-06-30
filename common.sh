@@ -385,6 +385,9 @@ if [[ ${SSH_ACTIONS} == "true" ]]; then
 else
 	TIME r "SSH远程连接: 关闭"
 fi
+if [[ ${BY_INFORMATION} == "true" ]]; then
+	TIME y "编译信息显示: 开启"
+fi
 if [[ ${SSHYC} == "true" ]]; then
 	TIME y "SSH远程连接临时开关: 开启"
 fi
