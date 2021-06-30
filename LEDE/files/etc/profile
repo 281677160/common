@@ -1,0 +1,52 @@
+#!/bin/sh
+
+export White="\e[0m"
+export Yellow="\e[33;1m"
+export Red="\e[31m;1m"
+export Blue="\e[34;1m"
+export Skyb="\e[36;1m"
+
+clear
+[ -e /tmp/.failsafe ] && export FAILSAFE=1
+[ -f /etc/banner ] && {
+	echo -e "$Blue"
+	cat /etc/banner
+	echo -e "$White"
+}
+[ -n "$FAILSAFE" ] && {
+	echo -e "$Yellow"
+	cat /etc/banner.failsafe
+	echo -e "$White"
+}
+
+fgrep -sq '/ overlay ro,' /proc/mounts && {
+	echo 'Your JFFS2-partition seems full and overlayfs is mounted read-only.'
+	echo 'Please try to remove files from /overlay/upper/... and reboot!'
+}
+
+export PATH="/usr/sbin:/usr/bin:/sbin:/bin"
+export HOME=$(grep -e "^${USER:-root}:" /etc/passwd | cut -d ":" -f 6)
+export HOME=${HOME:-/root}
+export PS1='\u@\h:\w\$ '
+export ENV=/etc/shinit
+
+case "$TERM" in
+	xterm*|rxvt*)
+		export PS1='\[\e]0;\u@\h: \w\a\]'$PS1
+		;;
+esac
+
+[ -n "$FAILSAFE" ] || {
+	for FILE in /etc/profile.d/*.sh; do
+		[ -e "$FILE" ] && . "$FILE"
+	done
+	unset FILE
+}
+
+if ( grep -qs '^root::' /etc/shadow && \
+     [ -z "$FAILSAFE" ] )
+then
+cat << EOF
+
+EOF
+fi
