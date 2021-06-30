@@ -10,7 +10,7 @@ cp -Rf SourceCode package/emortal/autocore/files/x86/rpcd_10_system.js
 chmod 664 feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
 chmod 664 package/emortal/autocore/files/arm/rpcd_10_system.js
 chmod 664 package/emortal/autocore/files/x86/rpcd_10_system.js
-rm -rf {zzz-default-settings,SourceCode}
+rm -rf {zzz-default-settings,SourceCode,Convert.sh}
 
 po_file="$({ find |grep -E "[a-z0-9]+\.zh\-cn.+po"; } 2>"/dev/null")"
 for a in ${po_file}
