@@ -42,6 +42,7 @@ echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
 
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"Immortalwrt-21.02\"" >> /usr/lib/lua/luci/version.lua
 
 sed -i '/log-facility/d' /etc/dnsmasq.conf
 echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
