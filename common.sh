@@ -248,8 +248,6 @@ Diy_chuli() {
 if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
 	cp -Rf "${Home}"/build/common/Custom/DRM-I915 target/linux/x86/DRM-I915
 	for X in $(ls -1 target/linux/x86 | grep "config-"); do echo -e "\n$(cat target/linux/x86/DRM-I915)" >> target/linux/x86/${X}; done
-elif [[ "${TARGET_PROFILE}" == "d-team_newifi-d2" ]]; then
-	cp -Rf "${Home}"/build/common/Custom/mac80211.sh "${Home}"/package/kernel/mac80211/files/lib/wifi/mac80211.sh
 fi
 grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
 grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
