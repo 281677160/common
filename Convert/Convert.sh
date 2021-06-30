@@ -23,8 +23,10 @@ done
 po_file2="$({ find |grep "/zh-cn/" |grep "\.po"; } 2>"/dev/null")"
 for b in ${po_file2}
 do
+	[[ `grep -c "charset=UTF-8" "$b"` -eq '0' ]] && {
 	sed -i '1i msgid ""' "$b"
 	sed -i '2i msgid "Content-Type: text/plain; charset=UTF-8\\n"\n' "$b"
+	}
 	[ -n "$(grep "Language: zh_CN" "$b")" ] && sed -i "s/Language: zh_CN/Language: zh_Hans/g" "$b"
 	po_new_file2="$(echo -e "$b"|sed "s/zh-cn/zh_Hans/g")"
 	mv "$b" "${po_new_file2}" 2>"/dev/null"
