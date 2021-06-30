@@ -63,9 +63,6 @@ Diy_mortal() {
 
 find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon'  | xargs -i rm -rf {}
 
-mv -f ${PATH1}/Convert.sh "${Home}"
-bash ./Convert.sh
-
 sed -i "/exit 0/i\sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release" "${ZZZ}"
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh > /dev/null 2>&1" package/base-files/files/etc/rc.local
 }
@@ -94,6 +91,9 @@ elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
 	cp -Rf "${Home}"/build/common/MORTAL/files "${Home}"
 	cp -Rf "${Home}"/build/common/MORTAL/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/MORTAL/patches/* "${PATH1}/patches"
+	chmod -R 777 ${Home}/build/common/Convert
+	cp -Rf ${Home}/build/common/Convert/* "${Home}"
+	/bin/bash Convert.sh
 fi
 if [ -n "$(ls -A "${PATH1}/diy" 2>/dev/null)" ]; then
 	cp -Rf "${PATH1}"/diy/* "${Home}"
