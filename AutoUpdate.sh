@@ -229,7 +229,7 @@ cd /etc
 clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
 if [[ -z "${Input_Option}" ]];then
-	export Upgrade_Options="-c"
+	export Upgrade_Options="-v"
 	TIME g "执行: 保留配置更新固件[静默模式]"
 else
 	case ${Input_Option} in
@@ -253,7 +253,7 @@ else
 
 		-u)
 			export AutoUpdate_Mode=1
-			export Upgrade_Options="-c"
+			export Upgrade_Options="-v"
 		;;
 		esac
 	;;
