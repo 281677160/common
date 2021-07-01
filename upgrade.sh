@@ -62,7 +62,6 @@ GET_TARGET_INFO() {
 	} || AutoUpdate_Version=OFF
 	In_Firmware_Info="${Home}/package/base-files/files/etc/openwrt_info"
 	Github_Release="${Github}/releases/download/AutoUpdate"
-	Github_Tags="https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate"
 	Github_UP_RELEASE="${Github}/releases/AutoUpdate"
 	Openwrt_Version="${REPO_Name}-${TARGET_PROFILE}-${Compile_Date}"
 	Egrep_Firmware="${LUCI_Name}-${REPO_Name}-${TARGET_PROFILE}"
@@ -79,8 +78,6 @@ Diy_Part2() {
 	GET_TARGET_INFO
 	cat >${In_Firmware_Info} <<-EOF
 	Github=${Github}
-	Author=${Author}
-	CangKu=${CangKu}
 	Luci_Edition=${OpenWrt_name}
 	CURRENT_Version=${Openwrt_Version}
 	DEFAULT_Device=${TARGET_PROFILE}
@@ -88,7 +85,6 @@ Diy_Part2() {
 	LUCI_Name=${LUCI_Name}
 	REPO_Name=${REPO_Name}
 	Github_Release=${Github_Release}
-	Github_Tags=${Github_Tags}
 	Egrep_Firmware=${Egrep_Firmware}
 	Download_Path=/tmp/Downloads
 	EOF
