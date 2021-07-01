@@ -338,7 +338,7 @@ chmod -R +x $Home/build/common
 chmod -R +x $Home/build/${firmware}
 source $Home/build/${firmware}/settings.ini
 REGULAR_UPDATE="${REG_UPDATE}"
-cp -Rf $Home/build/common/compile.sh openwrt/compile.sh
+cp -Rf $Home/build/common/Custom/compile.sh openwrt/compile.sh
 cp -Rf $Home/build/common/*.sh openwrt/build/${firmware}
 echo
 TIME g "正在加载自定义文件和下载插件,请耐心等候~~~"
