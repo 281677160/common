@@ -140,8 +140,6 @@ case $CHOOSE in
 	1)
 		cat >/etc/openwrt_info <<-EOF
 		Github=${Github}
-		Author=${Author}
-		CangKu=${CangKu}
 		Luci_Edition=${Luci_Edition}
 		CURRENT_Version=${CURRENT_Version}
 		DEFAULT_Device=${DEFAULT_Device}
@@ -149,7 +147,6 @@ case $CHOOSE in
 		LUCI_Name=${LUCI_Name}
 		REPO_Name=${REPO_Name}
 		Github_Release=${Github_Release}
-		Github_Tags=${Github_Tags}
 		Egrep_Firmware=${Egrep_Firmware}
 		Download_Path=${Download_Path}
 		EOF
