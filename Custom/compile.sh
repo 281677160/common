@@ -411,7 +411,9 @@ if [[ "${REGULAR_UPDATE}" == "true" ]]; then
 fi
 find . -name 'LICENSE' -o -name 'README' -o -name 'README.md' -o -name '*.git*' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'README.cn.md' | xargs -i rm -rf {}
-[ "${Menuconfig}" == "YES" ] && make menuconfig
+[ "${Menuconfig}" == "YES" ] && {
+make menuconfig
+}
 make defconfig
 cp -rf ${Home}/.config ${Home}/.bf_config
 TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)"
