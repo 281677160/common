@@ -446,7 +446,7 @@ echo
 	fi
 	if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 		echo
-		TIME y "连续两次下载DL都失败，请检查网络或者更换节点后再尝试编译!"
+		TIME r "下载DL失败，请检查网络或者更换节点后再尝试编译!"
 		echo
 		exit 1
 	fi
@@ -458,7 +458,7 @@ echo
 	make -j8 download 2>&1 |tee build.log
 	if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 		echo
-		TIME y "连续两次下载DL都失败，请检查网络或者更换节点后再尝试编译!"
+		TIME r "下载DL失败，请检查网络或者更换节点后再尝试编译!"
 		echo
 		exit 1
 	fi
