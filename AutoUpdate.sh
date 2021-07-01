@@ -38,7 +38,7 @@ Github 地址:		${Github}
 固件作者:		${Author}
 作者仓库:		${CangKu}
 固件名称:		${LUCI_Name}-${CURRENT_Version}${Firmware_SFX}
-固件格式:		${Firmware_GESHI}
+固件格式:		${Firmware_SFX}
 EOF
 [[ "${DEFAULT_Device}" == x86-64 ]] && {
 	echo "GZIP压缩:		${Compressed_Firmware}"
@@ -219,13 +219,12 @@ x86-64)
 	esac
 	export CURRENT_Des="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
 	export CURRENT_Device="${CURRENT_Des} (x86-64)"
-  	export Firmware_SFX="${BOOT_Type}.${Firmware_Type}"
-  	export Firmware_GESHI=".${Firmware_Type}"
+  	export Firmware_SFX=".${Firmware_Type}"
 ;;
 *)
 	export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
 	export Firmware_SFX=".${Firmware_Type}"
-  	export Firmware_GESHI=".${Firmware_Type}"
+	export BOOT_Type="-Sysupg"
 	[[ -z ${Firmware_SFX} ]] && export Firmware_SFX=".bin"
 esac
 CURRENT_Ver="${CURRENT_Version}${BOOT_Type}"
@@ -384,7 +383,7 @@ wget -q --timeout 5 ${Github_Tags} -O ${Download_Path}/Github_Tags
 	exit 1
 }
 TIME g "正在比对云端固件和本地安装固件版本..."
-export CLOUD_Firmware="$(egrep -o "${Egrep_Firmware}-[0-9]+${Firmware_SFX}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+export CLOUD_Firmware="$(egrep -o "${Egrep_Firmware}-[0-9]+${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Path}/Github_Tags | awk 'END {print}')"
 export CLOUD_Version="$(echo ${CLOUD_Firmware} | egrep -o "${REPO_Name}-${DEFAULT_Device}-[0-9]+${BOOT_Type}")"
 [[ -z "${CLOUD_Version}" ]] && {
 	TIME r "比对固件版本失败!"
@@ -433,7 +432,7 @@ TIME g "列出详细信息..."
 sleep 1
 echo -e "\n固件作者：${Author}"
 echo "设备名称：${CURRENT_Device}"
-echo "固件格式：${Firmware_GESHI}"
+echo "固件格式：${Firmware_SFX}"
 [[ "${DEFAULT_Device}" == x86-64 ]] && {
 	echo "引导模式：${EFI_Mode}"
 }
@@ -455,6 +454,13 @@ if [[ $? -ne 0 ]];then
 else
 	TIME y "下载云端固件成功!"
 fi
+MD5_DB=$(md5sum ${Firmware} | cut -d ' ' -f1)
+CURRENT_MD5="${MD5_DB:0:6}"
+CLOUD_MD5=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
+[[ ${CURRENT_MD5} != ${CLOUD_MD5} ]] && {
+	TIME r "本地固件 MD5 与云端对比不通过,固件可能下载时损坏,请检查网络后重试!"
+	exit 1
+}
 TIME g "准备就绪,开始刷写固件..."
 [[ "${Input_Other}" == "-t" ]] && {
 	TIME z "测试模式运行完毕!"
