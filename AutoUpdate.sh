@@ -54,6 +54,10 @@ exit 0
 	TIME r "未检测到更新插件所需文件,无法运行更新程序!"
 	exit 1
 }
+Author="${Apidz%/*}"
+CangKu="${Apidz##*/}"
+Apidz="${Github##*com/}"
+Github_Tags=https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate
 GengGai_Install() {
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q --timeout 5 ${Github_Tags} -O ${Download_Path}/Github_Tags
