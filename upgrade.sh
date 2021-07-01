@@ -121,7 +121,7 @@ Diy_Part3() {
 		[[ -f ${Up_Firmware} ]] && {
 			MD5=$(md5sum ${Up_Firmware} | cut -d ' ' -f1)
 			SHA5BIT="${MD5:0:6}"
-			cp ${Up_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-${SHA5BIT}.${Firmware_sfx}
+			cp ${Up_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-Sysupg-${SHA5BIT}.${Firmware_sfx}
 		} || {
 			echo "Firmware is not detected !"
 		}
