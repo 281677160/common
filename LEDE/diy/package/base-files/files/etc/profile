@@ -8,21 +8,24 @@ Sysinfo() {
 	local Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
 	local Tmp_Available="$(df -h | grep "/tmp" | awk '{print $4}' | awk 'NR==1')"
 	local TEMP=$(sensors 2>/dev/null | grep 'Core 0' | awk '{print $3}')
+	local KERNELL="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
 	cat <<EOF
             $(echo -e "设备名称:		${Yellow}$(uname -n) / ${TARGET_PROFILE}${White}")
-            $(echo -e "固件版本:		${Skyb}${CURRENT_Version}${White}")
-            内核版本:		$(uname -rs)$([ -n "${TEMP}" ] && echo -e "\n            核心温度:		${TEMP}")
+            $(echo -e "固件版本:		${Blue}${CURRENT_Version}${White}")
+            内核版本:		${KERNELL} / ${Luci_Edition}$([ -n "${TEMP}" ] && echo -e "\n            核心温度:		${TEMP}")
             后台地址: 		${IP_Address}
             可用空间:		${Overlay_Available} / ${Tmp_Available}
             运行时间: 		${Startup}$([ -n "${CoreMark}" ] && echo -e "\n            性能得分:		${CoreMark}")
 EOF
+echo
+echo
 }
 
 export White="\e[0m"
 export Yellow="\e[33m"
 export Red="\e[31m"
-export Blue="\e[34m"
-export Skyb="\e[36m"
+export Skyb="\e[34;1m"
+export Blue="\e[36m"
 
 clear
 
@@ -58,7 +61,7 @@ if ( grep -qs '^root::' /etc/shadow && \
      [ -z "$FAILSAFE" ] )
 then
 cat << EOF
-==================================================
+
 EOF
 fi
 
