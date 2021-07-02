@@ -165,7 +165,7 @@ export Author="${Apidz%/*}"
 export CangKu="${Apidz##*/}"
 export Github_Tags=https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate
 export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
-rm -rf "${Download_Path}" && TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
+rm -rf "${Download_Path}" && export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path}
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 TIME() {
@@ -374,9 +374,6 @@ if [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]];then
 fi
 [[ -z ${CURRENT_Version} ]] && TIME r "本地固件版本获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
 [[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
-[[ -z ${Github_Release} ]] && TIME r "固件下载地址获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
-[[ -z ${Github_Tags} ]] && TIME r "解析 API 地址获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
-[[ -z ${Firmware_Type} ]] && TIME r "固件后缀获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
 TIME g "正在获取固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget-ssl -q --no-check-certificate -T 5 --no-dns-cache -x ${Github_Tags} -O ${Download_Path}/Github_Tags
@@ -395,9 +392,11 @@ export Firmware_Name="$(echo ${CLOUD_Firmware} | egrep -o "${Egrep_Firmware}-[0-
 export Firmware="${CLOUD_Firmware}"
 let X=$(grep -n "${Firmware}" ${Download_Path}/Github_Tags | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${Download_Path}/Github_Tags | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
-echo -e "\nCLOUD_Version=${CLOUD_Version}" > /tmp/Version_Tags
-echo -e "\nCURRENT_Version=${CURRENT_Ver}" >> /tmp/Version_Tags
-[[ "${Input_Other}" == "-w" ]] && exit 0
+[[ "${Input_Other}" == "-w" ]] && {
+	echo -e "\nCLOUD_Version=${CLOUD_Version}" > /tmp/Version_Tags
+	echo -e "\nCURRENT_Version=${CURRENT_Ver}" >> /tmp/Version_Tags
+	exit 0
+}
 echo -e "\n本地版本：${CURRENT_Ver}"
 echo "云端版本：${CLOUD_Version}"	
 [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]] && {
