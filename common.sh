@@ -435,7 +435,7 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 		TIME b "固件名称: ${Up_Firmware}"
 		TIME b "固件后缀: ${Firmware_sfx}"
 	fi
-	fi [[ ! ${Error_Output} == "1" ]]; then
+	if [[ ! ${Error_Output} == "1" ]]; then
 		TIME b "固件版本: ${Openwrt_Version}"
 		TIME b "云端路径: ${Github_UP_RELEASE}"
 		TIME g "《编译成功，会自动把固件发布到指定地址，然后才会生成云端路径》"
