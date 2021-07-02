@@ -241,8 +241,6 @@ else
 
 		-w)
 			Input_Other="-w"
-			TIME h "执行: 更新固件(不保留配置)"
-
 		;;
 
 		-n | -N)
@@ -457,8 +455,7 @@ if [[ $? -ne 0 ]];then
 else
 	TIME y "下载云端固件成功!"
 fi
-MD5_DB=$(md5sum ${Firmware} | cut -d ' ' -f1)
-CURRENT_MD5="${MD5_DB:0:6}"
+MD5_DB=$(md5sum ${Firmware} | cut -d ' ' -f1) && CURRENT_MD5="${MD5_DB:0:6}"
 CLOUD_MD5=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
 [[ ${CURRENT_MD5} != ${CLOUD_MD5} ]] && {
 	TIME r "本地固件 MD5 与云端对比不通过,固件可能下载时损坏,请检查网络后重试!"
