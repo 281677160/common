@@ -54,10 +54,6 @@ exit 0
 	TIME r "未检测到更新插件所需文件,无法运行更新程序!"
 	exit 1
 }
-Author="${Apidz%/*}"
-CangKu="${Apidz##*/}"
-Apidz="${Github##*com/}"
-Github_Tags=https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate
 GengGai_Install() {
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q --timeout 5 ${Github_Tags} -O ${Download_Path}/Github_Tags
@@ -166,6 +162,10 @@ done
 }
 export Input_Option=$1
 export Input_Other=$2
+export Author="${Apidz%/*}"
+export CangKu="${Apidz##*/}"
+export Apidz="${Github##*com/}"
+export Github_Tags=https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate
 export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
 rm -rf "${Download_Path}" && TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path}
