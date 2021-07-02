@@ -10,3 +10,4 @@
 /etc/sysctl.conf
 /etc/rc.local
 /etc/docker/daemon.json
+/etc/docker/key.json
