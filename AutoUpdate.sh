@@ -58,7 +58,7 @@ GengGai_Install() {
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q --timeout 5 ${Github_Tags} -O ${Download_Path}/Github_Tags
 [[ ! $? == 0 ]] && {
-	TIME r "获取固件版本信息失败,请检测网络是否翻墙或更换节点再尝试!"
+	TIME r "获取固件版本信息失败,请检测网络是否翻墙或更换节点再尝试,或者您的Github地址为无效地址!"
 	exit 1
 }
 source /etc/openwrt_info
