@@ -340,17 +340,21 @@ exit 1
 ################################################################################################################
 Diy_xinxi_Base() {
 GET_TARGET_INFO
-[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
-[[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]] && {
+if [[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]]; then
+	source $GITHUB_WORKSPACE/amlogic_openwrt
+fi
+if [[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]]; then
 	curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open
 	Make_d="$(grep "./make -d -b" open)" && Make="${Make_d##*-k }"
 	TARGET_kernel="${Make}"
 	TARGET_model="${amlogic_model}"
-} || {
+else
 	TARGET_kernel="${amlogic_kernel}"
 	TARGET_model="${amlogic_model}"
-}
-[[ -z ${KERNEL_PATCHVER} ]] && KERNEL_PATCHVER="获取失败"
+fi
+if [[ -z ${KERNEL_PATCHVER} ]]; then
+	KERNEL_PATCHVER="获取失败"
+fi
 echo
 TIME b "编译源码: ${CODE}"
 TIME b "源码链接: ${REPO_URL}"
@@ -358,21 +362,21 @@ TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${ZUOZHE}"
 TIME b "Luci版本: ${OpenWrt_name}"
 TIME b "默认内核: ${KERNEL_PATCHVER}"
-[[ "${Modelfile}" == "openwrt_amlogic" ]] && {
+if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 	TIME b "编译机型: ${TARGET_model}"
 	TIME b "打包内核: ${TARGET_kernel}"
-} || {
+else
 	TIME b "编译机型: ${TARGET_PROFILE}"
-}
+fi
 TIME b "固件作者: ${Author}"
 TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${CangKu}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
 TIME b "编译时间: ${Compile_Date}"
-[[ "${Modelfile}" == "openwrt_amlogic" ]] && {
+if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 	TIME g "友情提示：您当前使用【${Modelfile}】文件夹编译【${TARGET_model}】固件"
-} || {
+else
 	TIME g "友情提示：您当前使用【${Modelfile}】文件夹编译【${TARGET_PROFILE}】固件"
-}
+fi
 echo
 echo
 if [[ ${UPLOAD_FIRMWARE} == "true" ]]; then
@@ -436,14 +440,14 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 		TIME b "固件名称: ${Up_Firmware}"
 		TIME b "固件后缀: ${Firmware_sfx}"
 	fi
-	[[ ! ${Error_Output} == "1" ]] && {
+	fi [[ ! ${Error_Output} == "1" ]]; then
 		TIME b "固件版本: ${Openwrt_Version}"
 		TIME b "云端路径: ${Github_UP_RELEASE}"
 		TIME g "《编译成功，会自动把固件发布到指定地址，然后才会生成云端路径》"
 		TIME g "《普通的那个发布固件跟云端的发布路径是两码事，如果你不需要普通发布的可以不用打开发布功能》"
 		TIME g "《请把“REPO_TOKEN”密匙设置好,没设置好密匙不能发布就生成不了云端地址》"
 		echo
-	}
+	fi
 else
 	echo
 fi
