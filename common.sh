@@ -350,7 +350,7 @@ GET_TARGET_INFO
 	TARGET_kernel="${amlogic_kernel}"
 	TARGET_model="${amlogic_model}"
 }
-
+[[ -z ${KERNEL_PATCHVER} ]] && KERNEL_PATCHVER="获取失败"
 echo
 TIME b "编译源码: ${CODE}"
 TIME b "源码链接: ${REPO_URL}"
