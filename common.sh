@@ -29,7 +29,7 @@ Diy_lede() {
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' | xargs -i rm -rf {}
 find . -name 'luci-app-ipsec-vpnd' -o -name 'k3screenctrl' | xargs -i rm -rf {}
 
-sed -i 's/iptables -t nat/# iptables -t nat/g' "${ZZZ}"
+sed -i '/to-ports 53/d' $ZZZ
 
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
