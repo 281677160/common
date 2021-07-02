@@ -367,11 +367,11 @@ if [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]];then
 		TIME y "网络检测成功,您的梯子翻墙成功！"
 	fi
 fi
-[[ -z ${CURRENT_Version} ]] && TIME r "本地固件版本获取失败,请检查/etc/openwrt_info文件的值!" && EXIT 1
-[[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/etc/openwrt_info文件的值!" && EXIT 1
-[[ -z ${Github_Release} ]] && TIME r "固件下载地址获取失败,请检查/etc/openwrt_info文件的值!" && EXIT 1
-[[ -z ${Github_Tags} ]] && TIME r "解析 API 地址获取失败,请检查/etc/openwrt_info文件的值!" && EXIT 1
-[[ -z ${Firmware_Type} ]] && TIME r "固件后缀获取失败,请检查/etc/openwrt_info文件的值!" && EXIT 1
+[[ -z ${CURRENT_Version} ]] && TIME r "本地固件版本获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
+[[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
+[[ -z ${Github_Release} ]] && TIME r "固件下载地址获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
+[[ -z ${Github_Tags} ]] && TIME r "解析 API 地址获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
+[[ -z ${Firmware_Type} ]] && TIME r "固件后缀获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
 TIME g "正在获取固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q --timeout 5 ${Github_Tags} -O ${Download_Path}/Github_Tags
