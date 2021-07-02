@@ -349,15 +349,12 @@ else
 	TARGET_kernel="${amlogic_kernel}"
 	TARGET_model="${amlogic_model}"
 fi
-PATCHVER=$(egrep -o "KERNEL_PATCHVER:=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
-KERNEL_PATCHVER="${PATCHVER##*:=}"
 echo
 TIME b "编译源码: ${CODE}"
 TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${ZUOZHE}"
 TIME b "Luci版本: ${OpenWrt_name}"
-TIME b "默认内核: ${KERNEL_PATCHVER}"
 if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 	TIME b "编译机型: ${TARGET_model}"
 	TIME b "打包内核: ${TARGET_kernel}"
