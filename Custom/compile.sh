@@ -159,7 +159,7 @@ fi
 	echo
 	TIME l " 3. Immortalwrt_5.4内核,LUCI 21.02版本"
 	echo
-	TIME l " 4. N1和晶晨系列CPU专用"
+	TIME l " 4. N1和晶晨系列CPU盒子专用"
 	echo
 	TIME l " 5. 退出编译程序"
 	echo
@@ -171,22 +171,22 @@ fi
 	case $CHOOSE in
 		1)
 			firmware="Lede_source"
-			TIME y "您选择了：$firmware源码"
+			TIME y "您选择了：Lede_5.10内核,LUCI 18.06版本"
 		break
 		;;
 		2)
 			firmware="Lienol_source"
-			TIME y "您选择了：$firmware源码"
+			TIME y "您选择了：Lienol_4.14内核,LUCI 19.07版本"
 		break
 		;;
 		3)
 			firmware="Mortal_source"
-			TIME y "您选择了：$firmware源码"
+			TIME y "您选择了：Immortalwrt_5.4内核,LUCI 21.02版本"
 		break
 		;;
 		4)
 			firmware="openwrt_amlogic"
-			TIME y "您选择了：N1和晶晨系列CPU专用"
+			TIME y "您选择了：N1和晶晨系列CPU盒子专用"
 		break
 		;;
 		5)
