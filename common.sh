@@ -29,7 +29,7 @@ Diy_lede() {
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' | xargs -i rm -rf {}
 find . -name 'luci-app-ipsec-vpnd' -o -name 'k3screenctrl' | xargs -i rm -rf {}
 
-sed -i '/to-ports 53/d' $ZZZ
+sed -i 's/iptables -t nat/# iptables -t nat/g' "${ZZZ}"
 
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
@@ -289,9 +289,6 @@ CPUNAME="$(awk 'NR==1' CPU)" && CPUCORES="$(awk 'NR==2' CPU)"
 rm -rf CPU
 find . -name 'LICENSE' -o -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
-TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)
-PATCHVER=$(egrep -o "KERNEL_PATCHVER:=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
-KERNEL_PATCHVER="${PATCHVER##*:=}"
 }
 
 
@@ -299,7 +296,6 @@ KERNEL_PATCHVER="${PATCHVER##*:=}"
 # 公告
 ################################################################################################################
 GONGGAO() {
-
 [[ -z "$1" ]] && {
 	echo -ne " "
 } || {
@@ -353,6 +349,8 @@ else
 	TARGET_kernel="${amlogic_kernel}"
 	TARGET_model="${amlogic_model}"
 fi
+PATCHVER=$(egrep -o "KERNEL_PATCHVER:=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
+KERNEL_PATCHVER="${PATCHVER##*:=}"
 echo
 TIME b "编译源码: ${CODE}"
 TIME b "源码链接: ${REPO_URL}"
@@ -431,6 +429,9 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 		TIME b "传统固件: ${Legacy_Firmware}"
 		TIME b "UEFI固件: ${UEFI_Firmware}"
 		TIME b "固件后缀: ${Firmware_sfx}"
+	elif [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
+		TIME y "暂不支持定时更新插件"
+		Error_Output="1"
 	else
 		TIME b "固件名称: ${Up_Firmware}"
 		TIME b "固件后缀: ${Firmware_sfx}"
@@ -443,6 +444,8 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 		TIME g "《请把“REPO_TOKEN”密匙设置好,没设置好密匙不能发布就生成不了云端地址》"
 		echo
 	fi
+else
+	echo
 fi
 echo
 TIME z " 系统空间      类型   总数  已用  可用 使用率"
