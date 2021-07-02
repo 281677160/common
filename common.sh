@@ -429,21 +429,16 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 		TIME b "传统固件: ${Legacy_Firmware}"
 		TIME b "UEFI固件: ${UEFI_Firmware}"
 		TIME b "固件后缀: ${Firmware_sfx}"
-	elif [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
-		TIME y "暂不支持定时更新插件"
-		Error_Output="1"
 	else
 		TIME b "固件名称: ${Up_Firmware}"
 		TIME b "固件后缀: ${Firmware_sfx}"
 	fi
-	if [[ ! ${Error_Output} == "1" ]]; then
-		TIME b "固件版本: ${Openwrt_Version}"
-		TIME b "云端路径: ${Github_UP_RELEASE}"
-		TIME g "《编译成功，会自动把固件发布到指定地址，然后才会生成云端路径》"
-		TIME g "《普通的那个发布固件跟云端的发布路径是两码事，如果你不需要普通发布的可以不用打开发布功能》"
-		TIME g "《请把“REPO_TOKEN”密匙设置好,没设置好密匙不能发布就生成不了云端地址》"
-		echo
-	fi
+	TIME b "固件版本: ${Openwrt_Version}"
+	TIME b "云端路径: ${Github_UP_RELEASE}"
+	TIME g "《编译成功，会自动把固件发布到指定地址，然后才会生成云端路径》"
+	TIME g "《普通的那个发布固件跟云端的发布路径是两码事，如果你不需要普通发布的可以不用打开发布功能》"
+	TIME g "《请把“REPO_TOKEN”密匙设置好,没设置好密匙不能发布就生成不了云端地址》"
+	echo
 else
 	echo
 fi
