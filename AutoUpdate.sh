@@ -365,7 +365,6 @@ if [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]];then
 	export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 	if [ ! "$Google_Check" == 301 ];then
 		TIME z "网络检测失败,因Github现在也筑墙了,请先使用梯子翻墙再来尝试!"
-		echo "网络检测失败,因Github现在也筑墙了,请先使用梯子翻墙再来尝试!" > /tmp/Version_Tags
 		sleep 2
 		exit 1
 	else
