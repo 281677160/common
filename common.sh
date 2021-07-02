@@ -29,7 +29,7 @@ Diy_lede() {
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' | xargs -i rm -rf {}
 find . -name 'luci-app-ipsec-vpnd' -o -name 'k3screenctrl' | xargs -i rm -rf {}
 
-sed -i 's/iptables -t nat/# iptables -t nat/g' "${ZZZ}"
+sed -i '/to-ports 53/d' $ZZZ
 
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
@@ -337,17 +337,18 @@ exit 1
 ################################################################################################################
 Diy_xinxi_Base() {
 GET_TARGET_INFO
-if [[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]]; then
-	source $GITHUB_WORKSPACE/amlogic_openwrt
-fi
-if [[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]]; then
+[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
+[[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]] && {
 	curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open
 	Make_d="$(grep "./make -d -b" open)" && Make="${Make_d##*-k }"
 	TARGET_kernel="${Make}"
 	TARGET_model="${amlogic_model}"
-else
+} || {
 	TARGET_kernel="${amlogic_kernel}"
 	TARGET_model="${amlogic_model}"
+}
+if [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
+	REGULAR_UPDATE="false"
 fi
 echo
 TIME b "编译源码: ${CODE}"
@@ -355,21 +356,22 @@ TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${ZUOZHE}"
 TIME b "Luci版本: ${OpenWrt_name}"
-if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
+TIME b "默认内核: ${KERNEL_PATCHVER}"
+[[ "${Modelfile}" == "openwrt_amlogic" ]] && {
 	TIME b "编译机型: ${TARGET_model}"
 	TIME b "打包内核: ${TARGET_kernel}"
-else
+} || {
 	TIME b "编译机型: ${TARGET_PROFILE}"
-fi
+}
 TIME b "固件作者: ${Author}"
 TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${CangKu}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
 TIME b "编译时间: ${Compile_Date}"
-if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
+[[ "${Modelfile}" == "openwrt_amlogic" ]] && {
 	TIME g "友情提示：您当前使用【${Modelfile}】文件夹编译【${TARGET_model}】固件"
-else
+} || {
 	TIME g "友情提示：您当前使用【${Modelfile}】文件夹编译【${TARGET_PROFILE}】固件"
-fi
+}
 echo
 echo
 if [[ ${UPLOAD_FIRMWARE} == "true" ]]; then
