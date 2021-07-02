@@ -350,15 +350,12 @@ GET_TARGET_INFO
 if [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
 	REGULAR_UPDATE="false"
 fi
-PATCHVER=$(egrep -o "KERNEL_PATCHVER:=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
-KERNEL_PATCHVER="${PATCHVER##*:=}"
 echo
 TIME b "编译源码: ${CODE}"
 TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${ZUOZHE}"
 TIME b "Luci版本: ${OpenWrt_name}"
-TIME b "默认内核: ${KERNEL_PATCHVER}"
 [[ "${Modelfile}" == "openwrt_amlogic" ]] && {
 	TIME b "编译机型: ${TARGET_model}"
 	TIME b "打包内核: ${TARGET_kernel}"
