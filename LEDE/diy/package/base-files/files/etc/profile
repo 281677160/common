@@ -1,6 +1,5 @@
 Sysinfo() {
-	source /etc/AutoBuild/Default_Variable > /dev/null 2>&1
-	source /etc/AutoBuild/Custom_Variable > /dev/null 2>&1
+	source /etc/openwrt_info > /dev/null 2>&1
 	[ -z "${CURRENT_Version}" ] && CURRENT_Version=未知
 	[ -z "${TARGET_PROFILE}" ] && local TARGET_PROFILE=$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')
 	local IP_Address=$(ifconfig -a | grep inet | grep -v 127.0.0.1 | grep -v inet6 | awk '{print $2}' | tr -d "addr:" | awk 'NR==1')
@@ -66,7 +65,6 @@ fi
 Sysinfo
 alias reload='/etc/profile'
 alias autoupdate='bash /bin/AutoUpdate.sh'
-alias tools='bash /bin/AutoBuild_Tools.sh'
 alias coremarkd='bash /etc/coremark.sh'
 alias shutdown='sync && poweroff'
 alias ls='ls --color=auto'
