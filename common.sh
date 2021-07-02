@@ -64,7 +64,7 @@ sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh > /dev/null 2
 Diy_mortal() {
 
 find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon'  | xargs -i rm -rf {}
-find . -name 'luci-app-netdata' -o -name 'netdata' | xargs -i rm -rf {}
+find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-openwrt' | xargs -i rm -rf {}
 
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh > /dev/null 2>&1" package/base-files/files/etc/rc.local
 }
