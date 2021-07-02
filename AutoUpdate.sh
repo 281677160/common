@@ -7,7 +7,6 @@ Version=V5.9
 
 Shell_Helper() {
 cat <<EOF
-
 更新参数:
 		bash /bin/AutoUpdate.sh				[保留配置更新]
 		bash /bin/AutoUpdate.sh	-n			[不保留配置更新]
@@ -25,7 +24,6 @@ exit 1
 }
 List_Info() {
 cat <<EOF
-
 /overlay 可用:		${Overlay_Available}
 /tmp 可用:		${TMP_Available}M
 固件下载位置:		${Download_Path}
@@ -229,16 +227,22 @@ cd /etc
 clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
 if [[ -z "${Input_Option}" ]];then
-	export Upgrade_Options="-P"
+	export Upgrade_Options="-q"
 	TIME g "执行: 保留配置更新固件[静默模式]"
 else
 	case ${Input_Option} in
-	-t | -n | -f | -u | -N | -s)
+	-t | -n | -f | -u | -N | -s | -w)
 		case ${Input_Option} in
 		-t)
 			Input_Other="-t"
 			TIME h "执行: 测试模式"
 			TIME g "测试模式(只运行,不安装,查看更新固件操作流程是否正确)"
+		;;
+
+		-w)
+			Input_Other="-w"
+			TIME h "执行: 更新固件(不保留配置)"
+
 		;;
 
 		-n | -N)
@@ -253,7 +257,7 @@ else
 
 		-u)
 			export AutoUpdate_Mode=1
-			export Upgrade_Options="-P"
+			export Upgrade_Options="-q"
 		;;
 		esac
 	;;
@@ -361,6 +365,7 @@ if [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]];then
 	export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 	if [ ! "$Google_Check" == 301 ];then
 		TIME z "网络检测失败,因Github现在也筑墙了,请先使用梯子翻墙再来尝试!"
+		echo "网络检测失败,因Github现在也筑墙了,请先使用梯子翻墙再来尝试!" > /tmp/Version_Tags
 		sleep 2
 		exit 1
 	else
@@ -374,7 +379,7 @@ fi
 [[ -z ${Firmware_Type} ]] && TIME r "固件后缀获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
 TIME g "正在获取固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-wget -q --timeout 5 ${Github_Tags} -O ${Download_Path}/Github_Tags
+wget-ssl -q --no-check-certificate -T 5 --no-dns-cache -x ${Github_Tags} -O ${Download_Path}/Github_Tags
 [[ ! $? == 0 ]] && {
 	TIME r "获取固件版本信息失败,请检测网络是否翻墙或更换节点再尝试,或者您的Github地址为无效地址!"
 	exit 1
@@ -390,6 +395,9 @@ export Firmware_Name="$(echo ${CLOUD_Firmware} | egrep -o "${Egrep_Firmware}-[0-
 export Firmware="${CLOUD_Firmware}"
 let X=$(grep -n "${Firmware}" ${Download_Path}/Github_Tags | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${Download_Path}/Github_Tags | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
+echo -e "\nCLOUD_Version=${CLOUD_Version}" > /tmp/Version_Tags
+echo -e "\nCURRENT_Version=${CURRENT_Ver}" >> /tmp/Version_Tags
+[[ "${Input_Other}" == "-w" ]] && exit 0
 echo -e "\n本地版本：${CURRENT_Ver}"
 echo "云端版本：${CLOUD_Version}"	
 [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]] && {
