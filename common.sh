@@ -52,9 +52,9 @@ if [[ "${Modelfile}" == "Lede_source" ]]; then
 	lscpu htop iperf3 curl lm-sensors python3 luci-app-amlogic
 	"
 	sed -i '/FEATURES+=/ { s/cpiogz //; s/ext4 //; s/ramdisk //; s/squashfs //; }' \
-    	target/linux/armvirt/Makefile
+    		target/linux/armvirt/Makefile
 	for x in $packages; do
-    	sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" target/linux/armvirt/Makefile
+    		sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" target/linux/armvirt/Makefile
 	done
 
 	# luci-app-cpufreq修改一些代码适配amlogic
