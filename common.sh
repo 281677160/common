@@ -299,6 +299,7 @@ KERNEL_PATCHVER="${PATCHVER##*:=}"
 # 公告
 ################################################################################################################
 GONGGAO() {
+
 [[ -z "$1" ]] && {
 	echo -ne " "
 } || {
@@ -351,9 +352,6 @@ if [[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]]; then
 else
 	TARGET_kernel="${amlogic_kernel}"
 	TARGET_model="${amlogic_model}"
-fi
-if [[ -z ${KERNEL_PATCHVER} ]]; then
-	KERNEL_PATCHVER="获取失败"
 fi
 echo
 TIME b "编译源码: ${CODE}"
@@ -433,9 +431,6 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 		TIME b "传统固件: ${Legacy_Firmware}"
 		TIME b "UEFI固件: ${UEFI_Firmware}"
 		TIME b "固件后缀: ${Firmware_sfx}"
-	elif [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
-		TIME y "暂不支持定时更新插件"
-		Error_Output="1"
 	else
 		TIME b "固件名称: ${Up_Firmware}"
 		TIME b "固件后缀: ${Firmware_sfx}"
@@ -448,8 +443,6 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 		TIME g "《请把“REPO_TOKEN”密匙设置好,没设置好密匙不能发布就生成不了云端地址》"
 		echo
 	fi
-else
-	echo
 fi
 echo
 TIME z " 系统空间      类型   总数  已用  可用 使用率"
