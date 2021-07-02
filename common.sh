@@ -289,6 +289,9 @@ CPUNAME="$(awk 'NR==1' CPU)" && CPUCORES="$(awk 'NR==2' CPU)"
 rm -rf CPU
 find . -name 'LICENSE' -o -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
+TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)
+PATCHVER=$(egrep -o "KERNEL_PATCHVER:=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
+KERNEL_PATCHVER="${PATCHVER##*:=}"
 }
 
 
