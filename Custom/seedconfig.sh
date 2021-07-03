@@ -179,7 +179,7 @@ clear
 echo
 echo
 echo
-TIME y "${CONFIG}的.config配置文件提取工作完成！"
+TIME y "[ ${CONFIG} ]的.config配置文件提取工作完成！"
 echo
 TIME g "请用WinSCP工具连接你的ubuntu，在根目录有一份config.txt文件。"
 echo
