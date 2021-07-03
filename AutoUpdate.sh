@@ -487,6 +487,7 @@ if [[ "${Compressed_Firmware}" == "YES" ]];then
 	TIME g "检测到固件为 [.img.gz] 压缩格式,开始解压固件..."
 	Install_Pkg gzip
 	gzip -dk ${Firmware} > /dev/null 2>&1
+	export Firmware="${Firmware_Name}${BOOT_Type}.img"
 	[[ $? == 0 ]] && {
 		TIME y "固件解压成功!"
 	} || {
