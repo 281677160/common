@@ -395,7 +395,7 @@ fi
 [[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
 TIME g "正在获取固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-wget-ssl -q --no-check-certificate -T 5 --no-dns-cache -x ${Github_Tags} -O ${Download_Path}/Github_Tags
+wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
 [[ ! $? == 0 ]] && {
 	TIME r "获取固件版本信息失败,请检测网络是否翻墙或更换节点再尝试,或者您的Github地址为无效地址!"
 	exit 1
@@ -480,7 +480,7 @@ fi
 MD5_DB=$(md5sum ${Firmware} | cut -d ' ' -f1) && CURRENT_MD5="${MD5_DB:0:6}"
 CLOUD_MD5=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
 [[ ${CURRENT_MD5} != ${CLOUD_MD5} ]] && {
-	TIME r "本地固件 MD5 与云端对比不通过,固件可能下载时损坏,请检查网络后重试!"
+	TIME r "MD5对比失败,固件可能在下载时损坏,请检查网络后重试!"
 	exit 1
 }
 if [[ "${Compressed_Firmware}" == "YES" ]];then
