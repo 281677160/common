@@ -1,7 +1,19 @@
 Sysinfo() {
-	source /etc/openwrt_info > /dev/null 2>&1
-	[ -z "${CURRENT_Version}" ] && CURRENT_Version=未知
-	[ -z "${TARGET_PROFILE}" ] && local TARGET_PROFILE=$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')
+	cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c > CPU
+	cat /proc/cpuinfo | grep "cpu cores" | uniq >> CPU
+	sed -i 's|[[:space:]]||g; s|^.||' CPU && sed -i 's|CPU||g; s|pucores:||' CPU
+	[ -e /etc/openwrt_info ] && source /etc/openwrt_info > /dev/null 2>&1
+	source /etc/openwrt_release > /dev/null 2>&1
+	[ -z "${CURRENT_Version}" ] && CURRENT_Version=${DISTRIB_ARCH}
+	[ -z "${DEFAULT_Device}" ] && local DEFAULT_Device=$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')
+	local Firmwaree="固件版本"
+	[ ! -e /etc/openwrt_info ] && { 
+	Firmwaree="CPU 架构"
+	Luci_Edition=${DISTRIB_REVISION}
+	}
+	local CPU_TEMP=$(cpuinfo | grep -v '.sh')
+	local CPUNAME="$(awk 'NR==1' CPU)"
+	local CPUCORES="$(awk 'NR==2' CPU)"
 	local IP_Address=$(ifconfig -a | grep inet | grep -v 127.0.0.1 | grep -v inet6 | awk '{print $2}' | tr -d "addr:" | awk 'NR==1')
 	local CoreMark=$([ -f /etc/bench.log ] && egrep -o "[0-9]+" /etc/bench.log | awk 'NR==1')
 	local Startup=$(awk '{a=$1/86400;b=($1%86400)/3600;c=($1%3600)/60;d=($1%60)} {printf("%d 天 %d 小时 %d 分钟 %d 秒\n",a,b,c,d)}' /proc/uptime)
@@ -10,8 +22,10 @@ Sysinfo() {
 	local TEMP=$(sensors 2>/dev/null | grep 'Core 0' | awk '{print $3}')
 	local KERNELL="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
 	cat <<EOF
-            $(echo -e "设备名称:		${Yellow}$(uname -n) / ${TARGET_PROFILE}${White}")
-            $(echo -e "固件版本:		${Blue}${CURRENT_Version}${White}")
+            $(echo -e "CPU 型号:		${Green}${CPUNAME} / 核心:${CPUCORES}${White}")
+            $(echo -e "CPU 频率:		${Purple}${CPU_TEMP}${White}")
+            $(echo -e "${Firmwaree}:		${Blue}${CURRENT_Version}${White}")
+            $(echo -e "设备名称:		${Yellow}$(uname -n) / ${DEFAULT_Device}${White}")
             内核版本:		${KERNELL} / ${Luci_Edition}$([ -n "${TEMP}" ] && echo -e "\n            核心温度:		${TEMP}")
             后台地址: 		${IP_Address}
             可用空间:		${Overlay_Available} / ${Tmp_Available}
@@ -24,8 +38,10 @@ echo
 export White="\e[0m"
 export Yellow="\e[33m"
 export Red="\e[31m"
-export Skyb="\e[34;1m"
-export Blue="\e[36m"
+export Skyb="\033[1;36m"
+export Blue="\033[0;36m"
+export Green="\033[0;92m"
+export Purple="\033[0;95m"
 
 clear
 
