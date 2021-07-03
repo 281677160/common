@@ -412,7 +412,7 @@ export CLOUD_Version="$(echo ${CLOUD_Firmware} | egrep -o "${REPO_Name}-${DEFAUL
 	echo -e "\nCURRENT_Version=${CURRENT_Ver}" >> /tmp/Version_Tags
 	exit 0
 }
-export Firmware_Name="$(echo ${CLOUD_Firmware} | egrep -o "${Egrep_Firmware}-[0-9]+")"
+export Firmware_Name="$(echo ${CLOUD_Firmware} | egrep -o "${Egrep_Firmware}-[0-9]+${BOOT_Type}-[a-zA-Z0-9]+")"
 export Firmware="${CLOUD_Firmware}"
 let X=$(grep -n "${Firmware}" ${Download_Path}/Github_Tags | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${Download_Path}/Github_Tags | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
@@ -487,7 +487,7 @@ if [[ "${Compressed_Firmware}" == "YES" ]];then
 	TIME g "检测到固件为 [.img.gz] 压缩格式,开始解压固件..."
 	Install_Pkg gzip
 	gzip -dk ${Firmware} > /dev/null 2>&1
-	export Firmware="${Firmware_Name}${BOOT_Type}.img"
+	export Firmware="${Firmware_Name}.img"
 	[[ $? == 0 ]] && {
 		TIME y "固件解压成功!"
 	} || {
