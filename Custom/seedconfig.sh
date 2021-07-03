@@ -79,7 +79,9 @@ case $CHOOSE in
 		REPO_BRANCH="master"
 		CONFIG="Lede_5.10内核,LUCI 18.06版本"
 		echo
-		TIME y "${CONFIG}"
+		TIME y "您选择了：${CONFIG}"
+		echo
+		TIME y "请耐心等待程序运行至窗口弹出进行机型和插件配置"
 	break
 	;;
 	2)
@@ -87,7 +89,9 @@ case $CHOOSE in
 		REPO_BRANCH="19.07"
 		CONFIG="Lienol_4.14内核,LUCI 19.07版本"
 		echo
-		TIME y "${CONFIG}"
+		TIME y "您选择了：${CONFIG}"
+		echo
+		TIME y "请耐心等待程序运行至窗口弹出进行机型和插件配置"
 	break
 	;;
 	3)
@@ -95,7 +99,9 @@ case $CHOOSE in
 		REPO_BRANCH="openwrt-21.02"
 		CONFIG="Immortalwrt_5.4内核,LUCI 21.02版本"
 		echo
-		TIME y "${CONFIG}"
+		TIME y "您选择了：${CONFIG}"
+		echo
+		TIME y "请耐心等待程序运行至窗口弹出进行机型和插件配置"
 	break
 	;;
 	4)
@@ -104,7 +110,9 @@ case $CHOOSE in
 		firmware="openwrt_amlogic"
 		CONFIG="N1和晶晨系列CPU盒子专用源码"
 		echo
-		TIME y "${CONFIG}"
+		TIME y "您选择了：${CONFIG}"
+		echo
+		TIME y "请耐心等待程序运行至窗口弹出进行机型和插件配置"
 	break
 	;;
 	5)
