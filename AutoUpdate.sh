@@ -184,25 +184,32 @@ rm -rf "${Download_Path}" && export TMP_Available="$(df -m | grep "/tmp" | awk '
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path}
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 TIME() {
-	[ ! -f /tmp/AutoUpdate.log ] && touch ${Download_Path}/AutoUpdate.log
-	[[ -z "$1" ]] && {
-		echo -ne "\n\e[36m[$(date "+%H:%M:%S")]\e[0m "
+	White="\033[0;37m"
+	Yellow="\033[0;33m"
+	Red="\033[1;91m"
+	Blue="\033[0;94m"
+	BLUEB="\033[1;94m"
+	BCyan="\033[1;36m"
+	Grey="\033[1;34m"
+	Green="\033[0;92m"
+	Purple="\033[1;95m"
+	local Color
+	[[ -z $1 ]] && {
+		echo -ne "\n${Grey}[$(date "+%H:%M:%S")]${White} "
 	} || {
 	case $1 in
-		r) export Color="\e[31;1m";;
-		g) export Color="\e[32m";;
-		b) export Color="\e[34m";;
-		B) export Color="\e[34;1m";;
-		y) export Color="\e[33m";;
-		z) export Color="\e[35;1m";;
-		h) export Color="\e[36;1m";;
+		r) Color="${Red}";;
+		g) Color="${Green}";;
+		b) Color="${Blue}";;
+		B) Color="${BLUEB}";;
+		y) Color="${Yellow}";;
+		h) Color="${BCyan}";;
+		z) Color="${Purple}";;
 	esac
 		[[ $# -lt 2 ]] && {
-			echo -e "\n\e[36m[$(date "+%H:%M:%S")]\e[0m ${1}"
-			echo "[$(date "+%H:%M:%S")] ${1}" >> ${Download_Path}/AutoUpdate.log
+			echo -e "\n${Grey}[$(date "+%H:%M:%S")]${White} $1"
 		} || {
-			echo -e "\n\e[36m[$(date "+%H:%M:%S")]\e[0m ${Color}${2}\e[0m"
-			echo "[$(date "+%H:%M:%S")] ${2}" >> ${Download_Path}/AutoUpdate.log
+			echo -e "\n${Grey}[$(date "+%H:%M:%S")]${White} ${Color}$2${White}"
 		}
 	}
 }
