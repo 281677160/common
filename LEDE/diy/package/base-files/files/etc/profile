@@ -4,12 +4,12 @@ Sysinfo() {
 	sed -i 's|[[:space:]]||g; s|^.||' CPU && sed -i 's|CPU||g; s|pucores:||' CPU
 	[ -e /etc/openwrt_info ] && source /etc/openwrt_info > /dev/null 2>&1
 	source /etc/openwrt_release > /dev/null 2>&1
-	[ -z "${CURRENT_Version}" ] && CURRENT_Version=${DISTRIB_ARCH}
-	[ -z "${DEFAULT_Device}" ] && local DEFAULT_Device=$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')
+	[ -z "${CURRENT_Version}" ] && local CURRENT_Version=${DISTRIB_ARCH}
+	[ -z "${DEFAULT_Device}" ] && local DEFAULT_Device=${DISTRIB_TARGET}
 	local Firmwaree="固件版本"
 	[ ! -e /etc/openwrt_info ] && { 
-	Firmwaree="CPU 架构"
-	Luci_Edition=${DISTRIB_REVISION}
+	 local Firmwaree="CPU 架构"
+	 local Luci_Edition=${DISTRIB_REVISION}
 	}
 	local CPU_TEMP=$(cpuinfo | grep -v '.sh')
 	local CPUNAME="$(awk 'NR==1' CPU)"
