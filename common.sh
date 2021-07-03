@@ -354,7 +354,7 @@ if [[ -z ${PATCHVER} ]]; then
 else
 	KERNEL_PATCHVER="${PATCHVER##*:=}"
 fi
-[[ -z ${KERNEL_PATCHVER} ]] && KERNEL_PATCHVER="获取失败"
+[[ -z ${PATCHVER} ]] && KERNEL_PATCHVER="获取失败"
 if [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
 	REGULAR_UPDATE="false"
 fi
