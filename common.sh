@@ -289,6 +289,15 @@ CPUNAME="$(awk 'NR==1' CPU)" && CPUCORES="$(awk 'NR==2' CPU)"
 rm -rf CPU
 find . -name 'LICENSE' -o -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
+
+PATCHVER=$(egrep -o "KERNEL_PATCHVER:=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
+if [[ -z ${PATCHVER} ]]; then
+	PATCHVER=$(egrep -o "KERNEL_PATCHVER=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
+	KERNEL_PATCHVER="${PATCHVER##*=}"
+else
+	KERNEL_PATCHVER="${PATCHVER##*:=}"
+fi
+[[ -z ${PATCHVER} ]] && KERNEL_PATCHVER=5.4
 }
 
 
@@ -347,14 +356,6 @@ GET_TARGET_INFO
 	TARGET_kernel="${amlogic_kernel}"
 	TARGET_model="${amlogic_model}"
 }
-PATCHVER=$(egrep -o "KERNEL_PATCHVER:=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
-if [[ -z ${PATCHVER} ]]; then
-	PATCHVER=$(egrep -o "KERNEL_PATCHVER=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
-	KERNEL_PATCHVER="${PATCHVER##*=}"
-else
-	KERNEL_PATCHVER="${PATCHVER##*:=}"
-fi
-[[ -z ${PATCHVER} ]] && KERNEL_PATCHVER="获取失败"
 if [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
 	REGULAR_UPDATE="false"
 fi
