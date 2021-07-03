@@ -347,6 +347,14 @@ GET_TARGET_INFO
 	TARGET_kernel="${amlogic_kernel}"
 	TARGET_model="${amlogic_model}"
 }
+PATCHVER=$(egrep -o "KERNEL_PATCHVER:=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
+if [[ -z ${PATCHVER} ]]; then
+	PATCHVER=$(egrep -o "KERNEL_PATCHVER=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
+	KERNEL_PATCHVER="${PATCHVER##*=}"
+else
+	KERNEL_PATCHVER="${PATCHVER##*:=}"
+fi
+[[ -z ${KERNEL_PATCHVER} ]] && KERNEL_PATCHVER="获取失败"
 if [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
 	REGULAR_UPDATE="false"
 fi
@@ -354,7 +362,8 @@ echo
 TIME b "编译源码: ${CODE}"
 TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
-TIME b "源码作者: ${ZUOZHE}"
+TIME b "源码作者: ${KERNEL_PATCHVER}"
+TIME b "源码内核: ${ZUOZHE}"
 TIME b "Luci版本: ${OpenWrt_name}"
 [[ "${Modelfile}" == "openwrt_amlogic" ]] && {
 	TIME b "编译机型: ${TARGET_model}"
