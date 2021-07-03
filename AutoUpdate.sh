@@ -424,7 +424,6 @@ echo "云端版本：${CLOUD_Version}"
 	echo
 	exit 1
 }
-[[ "${Input_Other}" == "-t" ]] && "${Choose}" == Y
 if [[ ! "${Force_Update}" == 1 ]];then
   	if [[ "${CURRENT_Version}" -gt "${CLOUD_Version}" ]];then
 		TIME r "检测到有可更新的固件版本,立即更新固件!"
