@@ -141,6 +141,7 @@ if [[ ${amlogic_kernel} == "5.12.12_5.4.127" ]]; then
 	curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open
 	Make_d="$(grep "./make -d -b" open)" && Make="${Make_d##*-k }"
 	amlogic_kernel="${Make}"
+	[[ -n "${Make_d}" ]] && amlogic_kernel="5.12.14_5.4.129"
 else
 	amlogic_kernel="${amlogic_kernel}"
 fi
