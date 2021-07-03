@@ -291,13 +291,14 @@ find . -name 'LICENSE' -o -name 'README' -o -name 'README.md' | xargs -i rm -rf 
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
 
 PATCHVER=$(egrep -o "KERNEL_PATCHVER:=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
+KERNEL_PATCHVER=${PATCHVER##*:=}
 if [[ -z ${PATCHVER} ]]; then
 	PATCHVER=$(egrep -o "KERNEL_PATCHVER=[0-9].+" target/linux/${TARGET_BOARD}/Makefile)
 	KERNEL_PATCHVER=${PATCHVER##*=}
-else
-	KERNEL_PATCHVER=${PATCHVER##*:=}
 fi
-[[ -z ${PATCHVER} ]] && KERNEL_PATCHVER=5.4
+if [[ -z ${KERNEL_PATCHVER} ]]; then
+	KERNEL_PATCHVER=ununun
+fi
 }
 
 
