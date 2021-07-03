@@ -53,19 +53,19 @@ exit 0
 	exit 1
 }
 Install_Pkg() {
-	export PKG_NAME=$1
-	if [[ ! "$(cat ${Download_Path}/Installed_PKG_List)" =~ "${PKG_NAME}" ]];then
-    		TIME g "未安装[ ${PKG_NAME} ],执行安装[ ${PKG_NAME} ],请耐心等待..."
-		opkg update > /dev/null 2>&1
-		opkg install ${PKG_NAME} > /dev/null 2>&1
-		if [[ $? -ne 0 ]];then
-			TIME r "[ ${PKG_NAME} ]安装失败,请尝试手动安装!"
-			exit 1
-		else
-			TIME y "[ ${PKG_NAME} ]安装成功!"
-			TIME g "开始解压固件,请耐心等待..."
-		fi
+export PKG_NAME=$1
+if [[ ! "$(cat ${Download_Path}/Installed_PKG_List)" =~ "${PKG_NAME}" ]];then
+    	TIME g "未安装[ ${PKG_NAME} ],执行安装[ ${PKG_NAME} ],请耐心等待..."
+	opkg update > /dev/null 2>&1
+	opkg install ${PKG_NAME} > /dev/null 2>&1
+	if [[ $? -ne 0 ]];then
+		TIME r "[ ${PKG_NAME} ]安装失败,请尝试手动安装!"
+		exit 1
+	else
+		TIME y "[ ${PKG_NAME} ]安装成功!"
+		TIME g "开始解压固件,请耐心等待..."
 	fi
+fi
 }
 GengGai_Install() {
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
@@ -424,6 +424,7 @@ echo "云端版本：${CLOUD_Version}"
 	echo
 	exit 1
 }
+[[ "${Input_Other}" == "-t" ]] && "${Choose}" == Y
 if [[ ! "${Force_Update}" == 1 ]];then
   	if [[ "${CURRENT_Version}" -gt "${CLOUD_Version}" ]];then
 		TIME r "检测到有可更新的固件版本,立即更新固件!"
@@ -495,6 +496,7 @@ if [[ "${Compressed_Firmware}" == "YES" ]];then
 		exit 1
 	}
 fi
+chmod 777 ${Firmware}
 TIME g "准备就绪,开始刷写固件..."
 [[ "${Input_Other}" == "-t" ]] && {
 	TIME z "测试模式运行完毕!"
@@ -503,8 +505,6 @@ TIME g "准备就绪,开始刷写固件..."
 	echo
 	exit 0
 }
-
-chmod 777 ${Firmware}
 sysupgrade ${Upgrade_Options} ${Firmware}
 [[ $? -ne 0 ]] && {
 	TIME r "固件刷写失败,请尝试手动更新固件!"
