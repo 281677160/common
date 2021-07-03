@@ -95,7 +95,7 @@ Diy_Part3() {
 	AutoBuild_Firmware="${LUCI_Name}-${Openwrt_Version}"
 	Firmware_Path="${Home}/upgrade"
 	Mkdir ${Home}/bin/Firmware
-	if [[ `ls ${Home}/upgrade | grep -c "sysupgrade.bin"` -eq '1' ]]; then
+	if [[ `ls ${Home}/upgrade | grep -c "sysupgrade.bin"` -ge '1' ]]; then
 		mv ${Home}/upgrade/*sysupgrade.bin ${Home}/bin/Firmware/${Up_Firmware}
 		mv ${Home}/bin/Firmware/${Up_Firmware} ${Home}/upgrade/${Up_Firmware}
 	fi
