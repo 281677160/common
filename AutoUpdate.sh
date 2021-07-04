@@ -67,112 +67,6 @@ if [[ ! "$(cat ${Download_Path}/Installed_PKG_List)" =~ "${PKG_NAME}" ]];then
 	fi
 fi
 }
-GengGai_Install() {
-[ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-wget -q --timeout 5 ${Github_Tags} -O ${Download_Path}/Github_Tags
-[[ ! $? == 0 ]] && {
-	TIME r "获取固件版本信息失败,请检测网络是否翻墙或更换节点再尝试,或者您的Github地址为无效地址!"
-	exit 1
-}
-source /etc/openwrt_info
-Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
-case ${DEFAULT_Device} in
-x86-64)
-	[ -f /etc/openwrt_boot ] && {
-		export BOOT_Type="-$(cat /etc/openwrt_boot)"
-	} || {
-		[ -d /sys/firmware/efi ] && {
-			export BOOT_Type="-UEFI"
-		} || export BOOT_Type="-Legacy"
-	}
-	[[ "${Firmware_Type}" == img.gz ]] && {
-		export Firmware_SFX="${BOOT_Type}.img.gz"
-	} || {
-		export Firmware_SFX="${BOOT_Type}.img"
-	}
-;;
-*)
-	export Firmware_SFX=".${Firmware_Type}"
-esac
-TIME h "执行：转换成其他源码固件"
-echo
-if [[ "${REPO_Name}" == "lede" ]]; then
-	lienol_Device="19.07-lienol-${DEFAULT_Device}.*${Firmware_SFX}"
-	if [[ `cat ${Download_Path}/Github_Tags | grep -c "${lienol_Device}"` -ge '1' ]]; then
-		TIME z "请注意：选择更改其他源码固件后立即执行不保留配置安装固件"
-		TIME y "您当前固件为：${REPO_Name} ${Luci_Edition} ${Kernel} 内核版!"
-	else
-		TIME r "没有检测到有其他作者相同机型的固件版本或者固件格式不相同!"
-		echo
-		exit 1
-	fi
-fi
-if [[ "${REPO_Name}" == "lienol" ]]; then
-	lede_Device="18.06-lede-${DEFAULT_Device}.*${Firmware_SFX}"
-	if [[ `cat ${Download_Path}/Github_Tags | grep -c "${lede_Device}"` -ge '1' ]]; then
-		TIME z "请注意：选择更改其他源码固件后立即执行不保留配置安装固件"
-		TIME y "您当前固件为：${REPO_Name} ${Luci_Edition} ${Kernel} 内核版!"
-	else
-		TIME r "没有检测到有其他作者相同机型的固件版本或者固件格式不相同!"
-		echo
-		exit 1
-	fi
-fi
-echo
-echo
-if [[ "${REPO_Name}" == "lede" ]]; then
-	TIME B " 1. 转换成 Lienol 19.07 其他内核版本?"
-	Luci_Edition="19.07"
-	CURRENT_Version="lienol-${DEFAULT_Device}-202106010101"
-	Egrep_Firmware="19.07-lienol-${DEFAULT_Device}"
-	LUCI_Name="19.07"
-	REPO_Name="lienol"
-
-else
-	TIME B " 1. 转换成 Lede 18.06 其他内核版本?"
-	Luci_Edition="18.06"
-	CURRENT_Version="lede-${DEFAULT_Device}-202106010101"
-	Egrep_Firmware="18.06-lede-${DEFAULT_Device}"
-	LUCI_Name="18.06"
-	REPO_Name="lede"
-
-fi
-echo
-TIME B " 2. 退出固件转换程序?"
-echo
-echo
-while :; do
-TIME g "请选序列号[ 1、2 ]输入，然后回车确认您的选择！"
-echo
-read -p "输入您的选择： " CHOOSE
-case $CHOOSE in
-	1)
-		cat >/etc/openwrt_info <<-EOF
-		Github=${Github}
-		Luci_Edition=${Luci_Edition}
-		CURRENT_Version=${CURRENT_Version}
-		DEFAULT_Device=${DEFAULT_Device}
-		Firmware_Type=${Firmware_Type}
-		LUCI_Name=${LUCI_Name}
-		REPO_Name=${REPO_Name}
-		Github_Release=${Github_Release}
-		Egrep_Firmware=${Egrep_Firmware}
-		Download_Path=${Download_Path}
-		EOF
-		TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
-		sleep 5
-		bash /bin/AutoUpdate.sh	-s
-	break
-	;;
-	2)
-		TIME r "您退出了固件转换程序"
-		echo
-		sleep 2
-		exit 0
-	;;
-esac
-done
-}
 export Input_Option=$1
 export Input_Other=$2
 export Apidz="${Github##*com/}"
@@ -317,7 +211,7 @@ else
 		Shell_Helper
 	;;
 	-g)
-		GengGai_Install	
+		bash /bin/webluci.sh
 	;;
 	-b)
 		TIME h "执行：引导格式更改操作"
