@@ -49,13 +49,14 @@ XTbit=`getconf LONG_BIT`
 	sleep 2s
 	sudo apt-get update -y
 	sudo apt-get full-upgrade -y
-	sudo apt-get install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 lib32stdc++6 subversion flex uglifyjs gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync
+	sudo apt-get install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 lib32stdc++6 subversion flex uglifyjs gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler libpcap0.8-dev g++-multilib antlr3 gperf wget curl swig rsync
 	[[ $? -ne 0 ]] && {
 		clear
 		echo
 		TIME r "环境部署失败，请检测网络或更换节点再尝试!"
 		exit 1
 	} || {
+	sudo apt-get autoremove --purge
 	sudo apt-get clean
 	sudo timedatectl set-timezone Asia/Shanghai
 	echo "compile" > .compile
