@@ -142,14 +142,14 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 		1)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="19.07"
-			CURRENT_Version="lienol-${DEFAULT_Device}-202106010101"
+			Luci_Edition=19.07
+			CURRENT_Version=lienol-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="19.07"
-			REPO_Name="lienol"
+			LUCI_Name=19.07
+			REPO_Name=lienol
 			Github_Release=${Github_Release}
-			Egrep_Firmware="19.07-lienol-${DEFAULT_Device}"
+			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
@@ -186,14 +186,14 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 		1)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="21.02"
-			CURRENT_Version="mortal-${DEFAULT_Device}-202106010101"
+			Luci_Edition=21.02
+			CURRENT_Version=mortal-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="21.02"
-			REPO_Name="mortal"
+			LUCI_Name=21.02
+			REPO_Name=mortal
 			Github_Release=${Github_Release}
-			Egrep_Firmware="21.02-mortal-${DEFAULT_Device}"
+			Egrep_Firmware=21.02-mortal-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
@@ -232,14 +232,14 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 		1)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="19.07"
-			CURRENT_Version="lienol-${DEFAULT_Device}-202106010101"
+			Luci_Edition=19.07
+			CURRENT_Version=lienol-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="19.07"
-			REPO_Name="lienol"
+			LUCI_Name=19.07
+			REPO_Name=lienol
 			Github_Release=${Github_Release}
-			Egrep_Firmware="19.07-lienol-${DEFAULT_Device}"
+			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
@@ -252,14 +252,14 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 		2)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="21.02"
-			CURRENT_Version="mortal-${DEFAULT_Device}-202106010101"
+			Luci_Edition=21.02
+			CURRENT_Version=mortal-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="21.02"
-			REPO_Name="mortal"
+			LUCI_Name=21.02
+			REPO_Name=mortal
 			Github_Release=${Github_Release}
-			Egrep_Firmware="21.02-mortal-${DEFAULT_Device}"
+			Egrep_Firmware=21.02-mortal-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
@@ -300,14 +300,14 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 		1)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="18.06"
-			CURRENT_Version="lede-${DEFAULT_Device}-202106010101"
+			Luci_Edition=18.06
+			CURRENT_Version=lede-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="18.06"
-			REPO_Name="lede"
+			LUCI_Name=18.06
+			REPO_Name=lede
 			Github_Release=${Github_Release}
-			Egrep_Firmware="18.06-lede-${DEFAULT_Device}"
+			Egrep_Firmware=18.06-lede-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
@@ -344,14 +344,14 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 		1)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="21.02"
-			CURRENT_Version="mortal-${DEFAULT_Device}-202106010101"
+			Luci_Edition=21.02
+			CURRENT_Version=mortal-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="21.02"
-			REPO_Name="mortal"
+			LUCI_Name=21.02
+			REPO_Name=mortal
 			Github_Release=${Github_Release}
-			Egrep_Firmware="21.02-mortal-${DEFAULT_Device}"
+			Egrep_Firmware=21.02-mortal-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
@@ -390,14 +390,14 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 		1)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="18.06"
-			CURRENT_Version="lede-${DEFAULT_Device}-202106010101"
+			Luci_Edition=18.06
+			CURRENT_Version=lede-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="18.06"
-			REPO_Name="lede"
+			LUCI_Name=18.06
+			REPO_Name=lede
 			Github_Release=${Github_Release}
-			Egrep_Firmware="18.06-lede-${DEFAULT_Device}"
+			Egrep_Firmware=18.06-lede-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
@@ -410,14 +410,14 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 		2)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="21.02"
-			CURRENT_Version="mortal-${DEFAULT_Device}-202106010101"
+			Luci_Edition=21.02
+			CURRENT_Version=mortal-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="21.02"
-			REPO_Name="mortal"
+			LUCI_Name=21.02
+			REPO_Name=mortal
 			Github_Release=${Github_Release}
-			Egrep_Firmware="21.02-mortal-${DEFAULT_Device}"
+			Egrep_Firmware=21.02-mortal-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
@@ -458,14 +458,14 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 		1)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="18.06"
-			CURRENT_Version="lede-${DEFAULT_Device}-202106010101"
+			Luci_Edition=18.06
+			CURRENT_Version=lede-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="18.06"
-			REPO_Name="lede"
+			LUCI_Name=18.06
+			REPO_Name=lede
 			Github_Release=${Github_Release}
-			Egrep_Firmware="18.06-lede-${DEFAULT_Device}"
+			Egrep_Firmware=18.06-lede-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
@@ -502,14 +502,14 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 		1)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="19.07"
-			CURRENT_Version="lienol-${DEFAULT_Device}-202106010101"
+			Luci_Edition=19.07
+			CURRENT_Version=lienol-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="19.07"
-			REPO_Name="lienol"
+			LUCI_Name=19.07
+			REPO_Name=lienol
 			Github_Release=${Github_Release}
-			Egrep_Firmware="19.07-lienol-${DEFAULT_Device}"
+			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
@@ -548,14 +548,14 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 		1)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="18.06"
-			CURRENT_Version="lede-${DEFAULT_Device}-202106010101"
+			Luci_Edition=18.06
+			CURRENT_Version=lede-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="18.06"
-			REPO_Name="lede"
+			LUCI_Name=18.06
+			REPO_Name=lede
 			Github_Release=${Github_Release}
-			Egrep_Firmware="18.06-lede-${DEFAULT_Device}"
+			Egrep_Firmware=18.06-lede-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
@@ -568,14 +568,14 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 		2)
 			cat >/etc/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition="19.07"
-			CURRENT_Version="lienol-${DEFAULT_Device}-202106010101"
+			Luci_Edition=19.07
+			CURRENT_Version=lienol-${DEFAULT_Device}-202106010101
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name="19.07"
-			REPO_Name="lienol"
+			LUCI_Name=19.07
+			REPO_Name=lienol
 			Github_Release=${Github_Release}
-			Egrep_Firmware="19.07-lienol-${DEFAULT_Device}"
+			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			EOF
 			echo
