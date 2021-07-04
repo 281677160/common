@@ -28,6 +28,9 @@ export Author="${Apidz%/*}"
 export CangKu="${Apidz##*/}"
 export Github_Tags=https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
+[ -f package/base-files/files/bin/AutoUpdate.sh ] && {
+	AutoUpdate_Version=$(egrep -o "V[0-9].+" package/base-files/files/bin/AutoUpdate.sh | awk 'END{print}')
+} || AutoUpdate_Version=OFF
 wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
 [[ ! $? == 0 ]] && {
 	TIME r "获取固件版本信息失败,请检测网络是否翻墙或更换节点再尝试,或者您的Github地址为无效地址!"
