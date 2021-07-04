@@ -28,8 +28,8 @@ export Author="${Apidz%/*}"
 export CangKu="${Apidz##*/}"
 export Github_Tags=https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-[ -f package/base-files/files/bin/AutoUpdate.sh ] && {
-	AutoUpdate_Version=$(egrep -o "V[0-9].+" package/base-files/files/bin/AutoUpdate.sh | awk 'END{print}')
+[ -f /bin/AutoUpdate.sh ] && {
+	AutoUpdate_Version=$(egrep -o "V[0-9].+" /bin/AutoUpdate.sh | awk 'END{print}')
 } || AutoUpdate_Version=OFF
 wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
 [[ ! $? == 0 ]] && {
@@ -64,7 +64,7 @@ x86-64)
 	export BOOT_Type="-Sysupg"
 	export GESHI_Type="Sysupg"
 esac
-clear && echo "Openwrt-AutoUpdate Script ${Version}"
+clear && echo "Openwrt-AutoUpdate Script ${AutoUpdate_Version}"
 echo
 echo
 TIME h "执行：转换成其他源码固件"
