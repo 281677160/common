@@ -3,7 +3,7 @@
 # AutoBuild Module by Hyy2001
 # AutoUpdate for Openwrt
 
-Version=V5.9
+Version=V6.0
 
 Shell_Helper() {
 cat <<EOF
@@ -211,7 +211,7 @@ else
 		Shell_Helper
 	;;
 	-g)
-		bash /bin/webluci.sh
+		bash /bin/replace.sh
 	;;
 	-b)
 		TIME h "执行：引导格式更改操作"
