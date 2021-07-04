@@ -61,7 +61,9 @@ x86-64)
 	export BOOT_Type="-Sysupg"
 	export GESHI_Type="Sysupg"
 esac
-clear
+clear && echo "Openwrt-AutoUpdate Script ${Version}"
+echo
+echo
 TIME h "执行：转换成其他源码固件"
 echo
 echo
