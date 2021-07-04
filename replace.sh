@@ -204,9 +204,10 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 		break
 		;;
 		2)
+			echo
 			TIME r "您退出了固件转换程序"
 			echo
-			sleep 2
+			sleep 1
 			exit 0
 		break
     		;;
@@ -270,9 +271,10 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 		break
 		;;
 		3)
+			echo
 			TIME r "您退出了固件转换程序"
 			echo
-			sleep 2
+			sleep 1
 			exit 0
 		break
     		;;
@@ -318,9 +320,10 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 		break
 		;;
 		2)
+			echo
 			TIME r "您退出了固件转换程序"
 			echo
-			sleep 2
+			sleep 1
 			exit 0
 		break
     		;;
@@ -362,9 +365,10 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 		break
 		;;
 		2)
+			echo
 			TIME r "您退出了固件转换程序"
 			echo
-			sleep 2
+			sleep 1
 			exit 0
 		break
     		;;
@@ -428,9 +432,10 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 		break
 		;;
 		3)
+			echo
 			TIME r "您退出了固件转换程序"
 			echo
-			sleep 2
+			sleep 1
 			exit 0
 		break
     		;;
@@ -476,9 +481,10 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 		break
 		;;
 		2)
+			echo
 			TIME r "您退出了固件转换程序"
 			echo
-			sleep 2
+			sleep 1
 			exit 0
 		break
     		;;
@@ -520,9 +526,10 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 		break
 		;;
 		2)
+			echo
 			TIME r "您退出了固件转换程序"
 			echo
-			sleep 2
+			sleep 1
 			exit 0
 		break
     		;;
@@ -586,9 +593,10 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 		break
 		;;
 		3)
+			echo
 			TIME r "您退出了固件转换程序"
 			echo
-			sleep 2
+			sleep 1
 			exit 0
 		break
     		;;
