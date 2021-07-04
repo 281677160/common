@@ -212,6 +212,8 @@ else
 	;;
 	-g)
 		bash /bin/replace.sh
+		sleep 2
+		exit 0
 	;;
 	-b)
 		TIME h "执行：引导格式更改操作"
