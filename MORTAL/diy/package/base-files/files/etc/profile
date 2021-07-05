@@ -1,73 +1,49 @@
-Sysinfo() {
-	[ -e /etc/openwrt_info ] && source /etc/openwrt_info > /dev/null 2>&1
-	[ -e /etc/openwrt_release ] && source /etc/openwrt_release > /dev/null 2>&1
-	[ -z "${CURRENT_Version}" ] && local CURRENT_Version=${DISTRIB_ARCH}
-	[ -z "${DEFAULT_Device}" ] && {
-		[[ `grep -c "x86" /etc/openwrt_release` -ge '1' ]] && {
-			local DEFAULT_Device=${DISTRIB_ARCH}
-		} || {
-			local DEFAULT_Device=$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')
-		}
-	}
-	local Firmwaree="固件版本"
-	[ ! -e /etc/openwrt_info ] && { 
-            local Firmwaree="CPU 架构"
-            local Luci_Edition=${DISTRIB_REVISION}
-	}
-	local Cpu_model=$(cat /proc/cpuinfo | grep name | cut -f2 -d: | sed 's/^[ \t]*//g')
-	local Cpu_cores=$(cat /proc/cpuinfo | grep cores | cut -f2 -d: | sed 's/^[ \t]*//g')
-	local Cpu_MHz=$(cpuinfo | grep -v '.sh')
-	local IP_Address=$(ifconfig -a | grep inet | grep -v 127.0.0.1 | grep -v inet6 | awk '{print $2}' | tr -d "addr:" | awk 'NR==1')
-	local CoreMark=$([ -f /etc/bench.log ] && egrep -o "[0-9]+" /etc/bench.log | awk 'NR==1')
-	local Startup=$(awk '{a=$1/86400;b=($1%86400)/3600;c=($1%3600)/60;d=($1%60)} {printf("%d 天 %d 小时 %d 分钟 %d 秒\n",a,b,c,d)}' /proc/uptime)
-	local Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
-	local Tmp_Available="$(df -h | grep "/tmp" | awk '{print $4}' | awk 'NR==1')"
-	local TEMP=$(sensors 2>/dev/null | grep 'Core 0' | awk '{print $3}')
-	local KERNELL="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
-	cat <<EOF
-            $(echo -e "CPU 型号:		${Green}${Cpu_model} / 核心：${Cpu_cores}${White}")
-            $(echo -e "CPU 频率:		${Purple}${Cpu_MHz}${White}")
-            $(echo -e "${Firmwaree}:		${Blue}${CURRENT_Version}${White}")
-            $(echo -e "设备名称:		${Skyb}$(uname -n) / ${DEFAULT_Device}${White}")
-            内核版本:		${KERNELL} / ${Luci_Edition}$([ -n "${TEMP}" ] && echo -e "\n            核心温度:		${TEMP}")
-            后台地址: 		${IP_Address}
-            可用空间:		${Overlay_Available} / ${Tmp_Available}
-            运行时间: 		${Startup}$([ -n "${CoreMark}" ] && echo -e "\n            性能得分:		${CoreMark}")
-EOF
-echo
-echo
-}
+#!/bin/sh
 
 export White="\e[0m"
-export Yellow="\033[0;93m"
-export Red="\e[31m"
-export Skyb="\033[0;33m"
+export Yellow="\e[33;1m"
+export Red="\e[31m;1m"
 export Blue="\033[1;34m"
-export Green="\033[0;92m"
-export Purple="\033[1;95m"
+export Skyb="\e[36;1m"
 
 clear
-
 [ -e /tmp/.failsafe ] && export FAILSAFE=1
-[ -f /etc/banner ] && echo -e "${Blue}$(cat /etc/banner)${White}"
-[ -n "$FAILSAFE" ] && cat /etc/banner.failsafe
+[ -f /etc/banner ] && {
+	echo -e "$Blue"
+	cat /etc/banner
+	echo -e "$White"
+}
+[ -n "$FAILSAFE" ] && {
+	echo -e "$Yellow"
+	cat /etc/banner.failsafe
+	echo -e "$White"
+}
 
 fgrep -sq '/ overlay ro,' /proc/mounts && {
-	echo -e "${Red}Your JFFS2-partition seems full and overlayfs is mounted read-only."
-	echo -e "Please try to remove files from /overlay/upper/... and reboot!${}"
+	echo 'Your JFFS2-partition seems full and overlayfs is mounted read-only.'
+	echo 'Please try to remove files from /overlay/upper/... and reboot!'
 }
 
 export PATH="/usr/sbin:/usr/bin:/sbin:/bin"
 export HOME=$(grep -e "^${USER:-root}:" /etc/passwd | cut -d ":" -f 6)
 export HOME=${HOME:-/root}
 export PS1='\u@\h:\w\$ '
-export ENV=/etc/shinit
 
 case "$TERM" in
 	xterm*|rxvt*)
 		export PS1='\[\e]0;\u@\h: \w\a\]'$PS1
 		;;
 esac
+
+[ -x /bin/more ] || alias more=less
+[ -x /usr/bin/vim ] && alias vi=vim || alias vim=vi
+
+alias ll='ls -alF --color=auto'
+
+[ -z "$KSH_VERSION" -o \! -s /etc/mkshrc ] || . /etc/mkshrc
+
+[ -x /usr/bin/arp -o -x /sbin/arp ] || arp() { cat /proc/net/arp; }
+[ -x /usr/bin/ldd ] || ldd() { LD_TRACE_LOADED_OBJECTS=1 $*; }
 
 [ -n "$FAILSAFE" ] || {
 	for FILE in /etc/profile.d/*.sh; do
@@ -80,19 +56,14 @@ if ( grep -qs '^root::' /etc/shadow && \
      [ -z "$FAILSAFE" ] )
 then
 cat << EOF
-
 EOF
 fi
 
-Sysinfo
-alias reload='/etc/profile'
-alias autoupdate='bash /bin/AutoUpdate.sh'
-alias coremarkd='bash /etc/coremark.sh'
-alias shutdown='sync && poweroff'
-alias ls='ls --color=auto'
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-alias cls='clear'
-alias dh='df -h'
-alias ramfree='sync && echo 3 > /proc/sys/vm/drop_caches'
+service() {
+	[ -f "/etc/init.d/$1" ] || {
+		echo "service "'"'"$1"'"'" not found, the following services are available:"
+		ls "/etc/init.d"
+		return 1
+	}
+	/etc/init.d/$@
+}
