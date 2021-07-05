@@ -52,21 +52,6 @@ exit 0
 	TIME r "未检测到更新插件所需文件,无法运行更新程序!"
 	exit 1
 }
-Install_Pkg() {
-export PKG_NAME=$1
-if [[ ! "$(cat ${Download_Path}/Installed_PKG_List)" =~ "${PKG_NAME}" ]];then
-    	TIME g "未安装[ ${PKG_NAME} ],执行安装[ ${PKG_NAME} ],请耐心等待..."
-	opkg update > /dev/null 2>&1
-	opkg install ${PKG_NAME} > /dev/null 2>&1
-	if [[ $? -ne 0 ]];then
-		TIME r "[ ${PKG_NAME} ]安装失败,请尝试手动安装!"
-		exit 1
-	else
-		TIME y "[ ${PKG_NAME} ]安装成功!"
-		TIME g "开始解压固件,请耐心等待..."
-	fi
-fi
-}
 export Input_Option=$1
 export Input_Other=$2
 export Apidz="${Github##*com/}"
@@ -379,18 +364,6 @@ CLOUD_MD5=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "
 	TIME r "MD5对比失败,固件可能在下载时损坏,请检查网络后重试!"
 	exit 1
 }
-if [[ "${Compressed_Firmware}" == "YES" ]];then
-	TIME g "检测到固件为 [.img.gz] 压缩格式,开始解压固件..."
-	Install_Pkg gzip
-	gzip -dk ${Firmware} > /dev/null 2>&1
-	export Firmware="${Firmware_Name}.img"
-	[[ $? == 0 ]] && {
-		TIME y "固件解压成功!"
-	} || {
-		TIME r "解压失败,请检查系统可用空间!"
-		exit 1
-	}
-fi
 chmod 777 ${Firmware}
 TIME g "准备就绪,开始刷写固件..."
 [[ "${Input_Other}" == "-t" ]] && {
