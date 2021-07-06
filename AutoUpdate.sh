@@ -62,6 +62,7 @@ export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'N
 rm -rf "${Download_Path}" && export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path}
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
+opkg remove gzip > /dev/null 2>&1
 AutoUpdate_Log_Path=/tmp
 GET_PID() {
 	local Result
