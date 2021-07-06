@@ -89,7 +89,10 @@ TIME() {
 		r) Color="${Red}";;
 		g) Color="${Green}";;
 		b) Color="${Blue}";;
+		B) Color="${BLUEB}";;
 		y) Color="${Yellow}";;
+		h) Color="${BCyan}";;
+		z) Color="${Purple}";;
 		x) Color="${Grey}";;
 	esac
 		[[ $# -lt 2 ]] && {
@@ -144,7 +147,7 @@ clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
 if [[ -z "${Input_Option}" ]];then
 	export Upgrade_Options="-q"
-	TIME g "执行: 保留配置更新固件[静默模式]"
+	TIME h "执行: 保留配置更新固件[静默模式]"
 else
 	case ${Input_Option} in
 	-t | -n | -f | -u | -N | -s | -w)
