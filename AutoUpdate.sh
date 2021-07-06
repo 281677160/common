@@ -112,25 +112,17 @@ LOGGER() {
 }
 case ${DEFAULT_Device} in
 x86-64)
-	[[ -z "${Firmware_Type}" ]] && export Firmware_Type=img
+	[[ -z "${Firmware_Type}" ]] && export Firmware_SFX=".img.gz"
 	[[ "${Firmware_Type}" == img.gz ]] && {
 		export Compressed_Firmware="YES"
 	} || export Compressed_Firmware="NO"
-	[ -f /etc/openwrt_boot ] && {
-		export BOOT_Type="-$(cat /etc/openwrt_boot)"
-	} || {
-		[ -d /sys/firmware/efi ] && {
-			export BOOT_Type="-UEFI"
-		} || export BOOT_Type="-Legacy"
-	}
-	case ${BOOT_Type} in
-	-Legacy)
-		export EFI_Mode="Legacy"
-	;;
-	-UEFI)
+	[ -d /sys/firmware/efi ] && {
+		export BOOT_Type="-UEFI"
 		export EFI_Mode="UEFI"
-	;;
-	esac
+	} || {
+		export BOOT_Type="-Legacy"
+		export EFI_Mode="Legacy"
+	}
 	export CURRENT_Des="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
 	export CURRENT_Device="${CURRENT_Des} (x86-64)"
   	export Firmware_SFX=".${Firmware_Type}"
@@ -139,7 +131,7 @@ x86-64)
 	export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
 	export Firmware_SFX=".${Firmware_Type}"
 	export BOOT_Type="-Sysupg"
-	[[ -z ${Firmware_SFX} ]] && export Firmware_SFX=".bin"
+	[[ -z "${Firmware_Type}" ]] && export Firmware_SFX=".bin"
 esac
 CURRENT_Ver="${CURRENT_Version}${BOOT_Type}"
 cd /etc
@@ -215,7 +207,7 @@ else
 	;;
 	-g)
 		bash /bin/replace.sh
-		sleep 2
+		sleep 1
 		exit 0
 	;;
 	*)
