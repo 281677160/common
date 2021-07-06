@@ -62,6 +62,15 @@ export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'N
 rm -rf "${Download_Path}" && export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path}
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
+AutoUpdate_Log_Path=/tmp
+GET_PID() {
+	local Result
+	while [[ $1 ]];do
+		Result=$(busybox ps | grep "$1" | grep -v "grep" | awk '{print $1}' | awk 'NR==1')
+		[[ -n ${Result} ]] && echo ${Result}
+	shift
+	done
+}
 TIME() {
 	White="\033[0;37m"
 	Yellow="\033[0;33m"
@@ -80,17 +89,23 @@ TIME() {
 		r) Color="${Red}";;
 		g) Color="${Green}";;
 		b) Color="${Blue}";;
-		B) Color="${BLUEB}";;
 		y) Color="${Yellow}";;
-		h) Color="${BCyan}";;
-		z) Color="${Purple}";;
+		x) Color="${Grey}";;
 	esac
 		[[ $# -lt 2 ]] && {
 			echo -e "\n${Grey}[$(date "+%H:%M:%S")]${White} $1"
+			LOGGER $1
 		} || {
 			echo -e "\n${Grey}[$(date "+%H:%M:%S")]${White} ${Color}$2${White}"
+			LOGGER $2
 		}
 	}
+}
+
+LOGGER() {
+	[[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
+	[[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
+	echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate.sh)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
 }
 case ${DEFAULT_Device} in
 x86-64)
