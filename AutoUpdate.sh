@@ -14,7 +14,6 @@ cat <<EOF
 			
 其    他:
 		bash /bin/AutoUpdate.sh	-c			[更换检查更新以及固件下载的Github地址]
-		bash /bin/AutoUpdate.sh	-b		        [x86设备 更改引导格式设置]
 		bash /bin/AutoUpdate.sh	-t			[执行测试模式(只运行,不安装,查看更新固件操作流程)]
 		bash /bin/AutoUpdate.sh	-l			[列出所有更新固件相关信息]
 		bash /bin/AutoUpdate.sh	-h			[列出命令使用帮助信息]
@@ -219,60 +218,6 @@ else
 		sleep 2
 		exit 0
 	;;
-	-b)
-		TIME h "执行：引导格式更改操作"
-		echo
-		TIME r "警告：更改引导格式有更新固件时不能安装固件的风险,请慎重！"
-		TIME h "爱快虚拟机的请勿使用,因爱快虚拟机只支持Legacy引导格式!"
-		TIME z "请注意：选择更改引导模式后会立即执行不保留配置升级固件!"
-		[ -f /etc/openwrt_boot ] && {
-			export x86_64_Boot="$(cat /etc/openwrt_boot)"
-		} || {
-			[ -d /sys/firmware/efi ] && {
-				export x86_64_Boot="UEFI"
-				TIME y "您现在的引导模式为：${x86_64_Boot}"
-			} || export x86_64_Boot="Legacy"
-			TIME y "您现在的引导模式为：${x86_64_Boot}"
-		}
-		echo
-		echo
-		[[ "${x86_64_Boot}" == "UEFI" ]] && {
-			TIME B " 1. 强制改为[Legacy引导格式]?"
-			EFI_Mode="Legacy"
-		} || {
-			TIME B " 1. 强制改为[UEFI引导格式]?"
-			EFI_Mode="UEFI"
-		}
-		TIME B " 2. 退出引导更改程序?"
-		echo
-		echo
-		while :; do
-		TIME g "请选择序列号[ 1、2 ]输入,然后回车确认您的选择！"
-		echo
-		read -p "请输入您的选择： " YDGS
-		case $YDGS in
-			1)
-				source /etc/openwrt_info
-				echo "${EFI_Mode}" > /etc/openwrt_boot
-				sed -i '/openwrt_boot/d' /etc/sysupgrade.conf
-				echo -e "\n/etc/openwrt_boot" >> /etc/sysupgrade.conf
-				TIME y "固件引导方式已指定为: ${EFI_Mode}!"
-				sed -i '/CURRENT_Version/d' /etc/openwrt_info > /dev/null 2>&1
-				echo -e "\nCURRENT_Version=${REPO_Name}-${DEFAULT_Device}-202106010101" >> /etc/openwrt_info
-				TIME y "3秒后开始更新固件，请稍后...!"
-				echo
-				sleep 3
-				bash /bin/AutoUpdate.sh -s
-			break
-			;;
-			2)
-				TIME r "您选择了退出更改程序"
-				echo
-				exit 0
-			;;
-		esac
-		done	
-	;;
 	*)
 		echo -e "\nERROR INPUT: [$*]"
 		Shell_Helper
@@ -331,7 +276,7 @@ if [[ ! "${Force_Update}" == 1 ]];then
 		[[ "${AutoUpdate_Mode}" == 1 ]] && exit 0
 		TIME && read -p "当前版本和云端最新版本一致，是否还要重新安装固件?[Y/n]:" Choose
 		[[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
-			TIME b "正在开始重新安装固件..."
+			TIME z "正在开始重新安装固件..."
 		} || {
 			TIME r "已取消重新安装固件,即将退出程序..."
 			sleep 2
@@ -342,7 +287,7 @@ if [[ ! "${Force_Update}" == 1 ]];then
 		[[ "${AutoUpdate_Mode}" == 1 ]] && exit 0
 		TIME && read -p "当前版本高于云端最新版,是否强制覆盖固件?[Y/n]:" Choose
 		[[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
-			TIME  "正在开始使用云端版本覆盖现有固件..."
+			TIME z "正在开始使用云端版本覆盖现有固件..."
 		} || {
 			TIME r "已取消覆盖固件,退出程序..."
 			sleep 2
