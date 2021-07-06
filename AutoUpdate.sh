@@ -227,7 +227,6 @@ else
 		TIME z "请注意：选择更改引导模式后会立即执行不保留配置升级固件!"
 		[ -f /etc/openwrt_boot ] && {
 			export x86_64_Boot="$(cat /etc/openwrt_boot)"
-			TIME y "您现在的引导模式为：${x86_64_Boot}"
 		} || {
 			[ -d /sys/firmware/efi ] && {
 				export x86_64_Boot="UEFI"
