@@ -6,46 +6,43 @@
 Version=V6.0
 
 Shell_Helper() {
-cat <<EOF
-更新参数:
-		bash /bin/AutoUpdate.sh				[保留配置更新]
-		bash /bin/AutoUpdate.sh	-n			[不保留配置更新]
-		bash /bin/AutoUpdate.sh	-g			[更改其他作者固件，不保留配置更新]
-			
-其    他:
-		bash /bin/AutoUpdate.sh	-c			[更换检查更新以及固件下载的Github地址]
-		bash /bin/AutoUpdate.sh	-t			[执行测试模式(只运行,不安装,查看更新固件操作流程)]
-		bash /bin/AutoUpdate.sh	-l			[列出所有更新固件相关信息]
-		bash /bin/AutoUpdate.sh	-h			[列出命令使用帮助信息]
-	
-EOF
-exit 1
-}
-List_Info() {
-cat <<EOF
-/overlay 可用:		${Overlay_Available}
-/tmp 可用:		${TMP_Available}M
-固件下载位置:		${Download_Path}
-当前设备:		${CURRENT_Device}
-默认设备:		${DEFAULT_Device}
-当前固件版本:		${CURRENT_Version}
-Github 地址:		${Github}
-解析 API 地址:		${Github_Tags}
-固件下载地址:		${Github_Release}
-固件作者:		${Author}
-作者仓库:		${CangKu}
-固件名称:		${LUCI_Name}-${CURRENT_Version}${Firmware_SFX}
-固件格式:		${Firmware_SFX}
-EOF
-[[ "${DEFAULT_Device}" == x86-64 ]] && {
-	echo "GZIP压缩:		${Compressed_Firmware}"
-	echo "引导模式:		${EFI_Mode}"
-	echo
-} || {
-	echo
-}
+echo
+echo
+echo -e "${Yellow}命令用途：
+
+bash /bin/AutoUpdate.sh				[保留配置更新]
+bash /bin/AutoUpdate.sh	-n			[不保留配置更新]
+bash /bin/AutoUpdate.sh	-g			[更改其他作者固件，不保留配置更新]
+bash /bin/AutoUpdate.sh	-c			[更换Github地址]
+bash /bin/AutoUpdate.sh	-t			[执行测试模式(只运行,不安装,查看更新固件操作流程)]
+bash /bin/AutoUpdate.sh	-h			[列出帮助信息]
+${White}"
+echo
+
+echo -e "${Purple}	
+===============================================================================================
+${White}"
+echo
+echo
+echo -e "${Green}详细参数：
+
+/overlay 可用:					${Overlay_Available}
+/tmp 可用:					${TMP_Available}M
+固件下载位置:					${Download_Path}
+当前设备:					${CURRENT_Device}
+默认设备:					${DEFAULT_Device}
+当前固件版本:					${CURRENT_Version}
+Github 地址:					${Github}
+解析 API 地址:					${Github_Tags}
+固件下载地址:					${Github_Release}
+固件作者:					${Author}
+作者仓库:					${CangKu}
+固件名称:					${LUCI_Name}-${CURRENT_Version}${Firmware_SFX}
+固件格式:					${EFI_Mode}${Firmware_SFX}
+${White}"
 exit 0
 }
+
 [ -f /etc/openwrt_info ] && chmod +x /etc/openwrt_info
 [ -f /etc/openwrt_info ] && source /etc/openwrt_info || {
 	TIME r "未检测到更新插件所需文件,无法运行更新程序!"
