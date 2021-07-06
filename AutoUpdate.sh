@@ -391,6 +391,7 @@ TIME g "准备就绪,开始刷写固件..."
 	echo
 	exit 0
 }
+rm -rf ${AutoUpdate_Log_Path}/AutoUpdate.log
 sysupgrade ${Upgrade_Options} ${Firmware}
 [[ $? -ne 0 ]] && {
 	TIME r "固件刷写失败,请尝试手动更新固件!"
