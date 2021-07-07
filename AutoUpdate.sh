@@ -41,7 +41,7 @@ Github 地址:					${Github}
 固件下载地址:					${Github_Release}
 固件作者:					${Author}
 作者仓库:					${CangKu}
-固件名称:					${LUCI_Name}-${CURRENT_Version}${Firmware_SFX}
+固件名称:					${CLOUD_Name}
 固件格式:					${EFI_Mode}${Firmware_SFX}
 ${White}"
 exit 0
