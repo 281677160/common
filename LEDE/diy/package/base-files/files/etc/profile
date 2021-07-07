@@ -1,4 +1,3 @@
-#!/bin/sh
 
 export White="\e[0m"
 export Yellow="\e[33;1m"
