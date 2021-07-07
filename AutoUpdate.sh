@@ -32,8 +32,8 @@ echo -e "${Green}详细参数：
 /overlay 可用:					${Overlay_Available}
 /tmp 可用:					${TMP_Available}M
 固件下载位置:					${Download_Path}
-当前设备:					${CURRENT_Device}
-默认设备:					${DEFAULT_Device}
+当前设备名称:					${CURRENT_Device}
+固件上的名称:					${DEFAULT_Device}
 当前固件版本:					${CURRENT_Version}
 Github 地址:					${Github}
 解析 API 地址:					${Github_Tags}
