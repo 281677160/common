@@ -46,11 +46,11 @@ Github 地址:					${Github}
 ${White}"
 exit 0
 }
-if [[ -f /bin/AutoUpdate.sh ]] && [[ -f /etc/openwrt_info ]]; then
+if [[ -f /bin/AutoUpdate.sh ]]; then
 	chmod +x /etc/openwrt_info
-	source /etc/openwrt_info
+	bash /bin/AutoUpdate.sh	-w
 else
-	TIME r "未检测到定时更新插件所需程序"
+	echo "未检测到定时更新插件所需程序" > /tmp/cloud_version
 	exit 1
 fi
 export Input_Option=$1
