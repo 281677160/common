@@ -223,8 +223,6 @@ if [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]];then
 	export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 	if [ ! "$Google_Check" == 301 ];then
 		TIME z "警告：梯子翻墙失败,或许有可能会获取不了云端固件版本信息!"
-		sleep 2
-		exit 1
 	else
 		TIME y "网络检测成功,您的梯子翻墙成功！"
 	fi
