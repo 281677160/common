@@ -46,7 +46,7 @@ Github 地址:					${Github}
 ${White}"
 exit 0
 }
-if [[ -f /bin/AutoUpdate.sh ]]; then
+if [[ -f /etc/openwrt_info ]]; then
 	chmod +x /etc/openwrt_info
 	bash /bin/AutoUpdate.sh	-w
 else
