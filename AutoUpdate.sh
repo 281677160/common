@@ -231,7 +231,7 @@ TIME g "正在获取云端固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
 [[ ! $? == 0 ]] && {
-	TIME r "获取云端固件版本信息失败,请检测网络是否翻墙或更换节点再尝试,或者您的Github地址为无效地址!"
+	TIME r "获取固件版本信息失败,请检测网络或您的网络需要翻墙,或者您更改的Github地址为无效地址!"
 	exit 1
 }
 TIME g "正在比对云端固件和本地安装固件版本..."
