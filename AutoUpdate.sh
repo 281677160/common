@@ -46,13 +46,23 @@ Github 地址:					${Github}
 ${White}"
 exit 0
 }
-if [[ -f /etc/openwrt_info ]]; then
+White="\033[0;37m"
+Yellow="\033[0;33m"
+Red="\033[1;91m"
+Blue="\033[0;94m"
+BLUEB="\033[1;94m"
+BCyan="\033[1;36m"
+Grey="\033[1;34m"
+Green="\033[0;92m"
+Purple="\033[1;95m"
+[ -f /etc/openwrt_info ] && {
 	chmod +x /etc/openwrt_info
-	bash /bin/AutoUpdate.sh	-w
-else
-	echo "未检测到定时更新插件所需程序" > /tmp/cloud_version
+	source /etc/openwrt_info 
+} || {
+	echo -e "\n${Red}未检测到更新插件所需文件,无法运行更新程序!${White}"
+	echo
 	exit 1
-fi
+}
 export Input_Option=$1
 export Input_Other=$2
 export Apidz="${Github##*com/}"
@@ -73,15 +83,6 @@ GET_PID() {
 	shift
 	done
 }
-White="\033[0;37m"
-Yellow="\033[0;33m"
-Red="\033[1;91m"
-Blue="\033[0;94m"
-BLUEB="\033[1;94m"
-BCyan="\033[1;36m"
-Grey="\033[1;34m"
-Green="\033[0;92m"
-Purple="\033[1;95m"
 TIME() {
 	local Color
 	[[ -z $1 ]] && {
