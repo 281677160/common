@@ -28,6 +28,7 @@ TIME() {
 Diy_lede() {
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' | xargs -i rm -rf {}
 find . -name 'luci-app-ipsec-vpnd' -o -name 'k3screenctrl' | xargs -i rm -rf {}
+sed -i "/exit/i\sed -i '/Powered by/d' /usr/lib/lua/luci/view/themes/*/footer.htm" $ZZZ
 
 sed -i '/to-ports 53/d' $ZZZ
 
@@ -70,6 +71,7 @@ fi
 ################################################################################################################
 Diy_lienol() {
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' | xargs -i rm -rf {}
+sed -i "/exit/i\sed -i '/Powered by/d' /usr/lib/lua/luci/view/themes/*/footer.htm" $ZZZ
 rm -rf feeds/packages/libs/libcap
 
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
