@@ -60,7 +60,7 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 		ZHUANG2="2"
 	fi
 	if [[ -z "${ZHUANG1}" ]] && [[ -z "${ZHUANG2}" ]]; then
-		TIME r "没有检测到有其他作者相同机型的固件版本或者固件格式不相同!"
+		TIME r "没有检测到有其他作者相同机型的固件版本,或者固件格式不相同!"
 		echo
 		exit 1
 	fi
