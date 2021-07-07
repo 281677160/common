@@ -18,59 +18,20 @@ TIME() {
 	 }
       }
 }
-[ -f /etc/openwrt_info ] && chmod +x /etc/openwrt_info
-[ -f /etc/openwrt_info ] && source /etc/openwrt_info || {
-	TIME r "未检测到更换固件所需文件,无法运行固件更换程序!"
-	exit 1
-}
-export Apidz="${Github##*com/}"
-export Author="${Apidz%/*}"
-export CangKu="${Apidz##*/}"
-export Github_Tags=https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-[ -f /bin/AutoUpdate.sh ] && {
-	AutoUpdate_Version=$(egrep -o "V[0-9].+" /bin/AutoUpdate.sh | awk 'END{print}')
-} || AutoUpdate_Version=OFF
 wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
 [[ ! $? == 0 ]] && {
 	TIME r "获取固件版本信息失败,请检测网络是否翻墙或更换节点再尝试,或者您的Github地址为无效地址!"
 	exit 1
 }
 Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
-case ${DEFAULT_Device} in
-x86-64)
-	[ -f /etc/openwrt_boot ] && {
-		export BOOT_Type="-$(cat /etc/openwrt_boot)"
-	} || {
-		[ -d /sys/firmware/efi ] && {
-			export BOOT_Type="-UEFI"
-		} || export BOOT_Type="-Legacy"
-	}
-	[ -f /etc/openwrt_boot ] && {
-		export GESHI_Type="$(cat /etc/openwrt_boot)"
-	} || {
-		[ -d /sys/firmware/efi ] && {
-			export GESHI_Type="UEFI"
-		} || export GESHI_Type="Legacy"
-	}
-	[[ "${Firmware_Type}" == img.gz ]] && {
-		export Firmware_SFX=".img.gz"
-	} || {
-		export Firmware_SFX=".img"
-	}
-;;
-*)
-	export Firmware_SFX=".${Firmware_Type}"
-	export BOOT_Type="-Sysupg"
-	export GESHI_Type="Sysupg"
-esac
-clear && echo "Openwrt-AutoUpdate Script ${AutoUpdate_Version}"
+clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
 echo
 TIME h "执行：转换成其他源码固件"
 echo
 echo
-TIME y "您当前固件为：${GESHI_Type}${Firmware_SFX}格式的 ${REPO_Name} ${Luci_Edition} ${Kernel} 内核版!"
+TIME y "您当前固件为：${EFI_Mode}${Firmware_SFX}格式的 ${REPO_Name} ${Luci_Edition} ${Kernel} 内核版!"
 echo
 if [[ "${REPO_Name}" == "lede" ]]; then
 	if [[ `cat ${Download_Path}/Github_Tags | grep -c "19.07-lienol-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
