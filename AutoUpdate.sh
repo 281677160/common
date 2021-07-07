@@ -115,9 +115,6 @@ LOGGER() {
 case ${DEFAULT_Device} in
 x86-64)
 	[[ -z "${Firmware_Type}" ]] && export Firmware_SFX=".img.gz"
-	[[ "${Firmware_Type}" == img.gz ]] && {
-		export Compressed_Firmware="YES"
-	} || export Compressed_Firmware="NO"
 	[ -d /sys/firmware/efi ] && {
 		export BOOT_Type="-UEFI"
 		export EFI_Mode="UEFI"
