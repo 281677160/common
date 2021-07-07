@@ -42,7 +42,7 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 		ZHUANG2="2"
 	fi
 	if [[ -z "${ZHUANG1}" ]] && [[ -z "${ZHUANG2}" ]]; then
-		TIME r "没有检测到有其他作者相同机型的固件版本或者固件格式不相同!"
+		TIME r "没有检测到有其他作者相同机型的固件版本,或者固件格式不相同!"
 		echo
 		exit 1
 	fi
@@ -78,7 +78,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 		ZHUANG2="2"
 	fi
 	if [[ -z "${ZHUANG1}" ]] && [[ -z "${ZHUANG2}" ]]; then
-		TIME r "没有检测到有其他作者相同机型的固件版本或者固件格式不相同!"
+		TIME r "没有检测到有其他作者相同机型的固件版本,或者固件格式不相同!"
 		echo
 		exit 1
 	fi
@@ -89,7 +89,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 	fi
 fi
 echo
-TIME z "请注意：选择更改其他源码固件后立即执行不保留配置安装固件"
+TIME z "请注意：选择更换其他源码固件后,立即执行不保留配置安装固件!"
 echo
 echo
 echo
