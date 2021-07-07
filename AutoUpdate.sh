@@ -6,13 +6,8 @@
 Version=V6.0
 
 Shell_Helper() {
-echo -e "${BCyan}读取信息中......${White}"
 echo
 echo
-[ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
-[[ -n ${Download_Path}/Github_Tags ]] && export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-[[ -z ${CLOUD_Name} ]] && export CLOUD_Name="${LUCI_Name}-${CURRENT_Version}${Firmware_SFX}"
 
 echo -e "${Yellow}命令用途：
 
@@ -28,6 +23,10 @@ echo -e "${Purple}
 ===============================================================================================
 ${White}"
 echo
+[ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
+wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
+[[ -n ${Download_Path}/Github_Tags ]] && export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+[[ -z ${CLOUD_Name} ]] && export CLOUD_Name="${LUCI_Name}-${CURRENT_Version}${Firmware_SFX}"
 echo -e "${Green}详细参数：
 
 /overlay 可用:					${Overlay_Available}
