@@ -6,7 +6,14 @@
 Version=V6.0
 
 Shell_Helper() {
+echo -e "${BCyan}读取信息中......${White}"
 echo
+echo
+[ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
+wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
+[[ -n ${Download_Path}/Github_Tags ]] && export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+[[ -z ${CLOUD_Name} ]] && export CLOUD_Name="${LUCI_Name}-${CURRENT_Version}${Firmware_SFX}"
+
 echo -e "${Yellow}命令用途：
 
 bash /bin/AutoUpdate.sh				[保留配置更新]
@@ -215,7 +222,7 @@ TIME b "检测网络环境中,请稍后..."
 if [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]];then
 	export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 	if [ ! "$Google_Check" == 301 ];then
-		TIME z "网络检测失败,因Github现在也筑墙了,请先使用梯子翻墙再来尝试!"
+		TIME z "警告：梯子翻墙失败,或许有可能会获取不了云端固件版本信息!"
 		sleep 2
 		exit 1
 	else
@@ -224,11 +231,11 @@ if [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]];then
 fi
 [[ -z ${CURRENT_Version} ]] && TIME r "本地固件版本获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
 [[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
-TIME g "正在获取固件版本信息..."
+TIME g "正在获取云端固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
 [[ ! $? == 0 ]] && {
-	TIME r "获取固件版本信息失败,请检测网络是否翻墙或更换节点再尝试,或者您的Github地址为无效地址!"
+	TIME r "获取云端固件版本信息失败,请检测网络是否翻墙或更换节点再尝试,或者您的Github地址为无效地址!"
 	exit 1
 }
 TIME g "正在比对云端固件和本地安装固件版本..."
