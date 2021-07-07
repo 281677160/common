@@ -114,7 +114,6 @@ LOGGER() {
 }
 case ${DEFAULT_Device} in
 x86-64)
-	[[ -z "${Firmware_Type}" ]] && export Firmware_SFX=".img.gz"
 	[ -d /sys/firmware/efi ] && {
 		export BOOT_Type="-UEFI"
 		export EFI_Mode="UEFI"
@@ -122,9 +121,9 @@ x86-64)
 		export BOOT_Type="-Legacy"
 		export EFI_Mode="Legacy"
 	}
-	export CURRENT_Des="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
-	export CURRENT_Device="${CURRENT_Des} (x86-64)"
+	export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
   	export Firmware_SFX=".${Firmware_Type}"
+	[[ -z "${Firmware_Type}" ]] && export Firmware_SFX=".img.gz"
 ;;
 *)
 	export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
@@ -199,13 +198,10 @@ else
 				exit 1
 			}
 	;;
-	-l | -list)
-		List_Info
-	;;
-	-h | -help)
+	-h | -H)
 		Shell_Helper
 	;;
-	-g)
+	-g | -G)
 		bash /bin/replace.sh
 		sleep 1
 		exit 0
