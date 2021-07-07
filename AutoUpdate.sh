@@ -46,12 +46,13 @@ Github 地址:					${Github}
 ${White}"
 exit 0
 }
-
-[ -f /etc/openwrt_info ] && chmod +x /etc/openwrt_info
-[ -f /etc/openwrt_info ] && source /etc/openwrt_info || {
-	TIME r "未检测到更新插件所需文件,无法运行更新程序!"
+if [[ -f /bin/AutoUpdate.sh ]] && [[ -f /etc/openwrt_info ]]; then
+	chmod +x /etc/openwrt_info
+	source /etc/openwrt_info
+else
+	TIME r "未检测到定时更新插件所需程序"
 	exit 1
-}
+fi
 export Input_Option=$1
 export Input_Other=$2
 export Apidz="${Github##*com/}"
