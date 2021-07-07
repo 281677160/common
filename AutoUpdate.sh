@@ -132,7 +132,9 @@ x86-64)
 	[[ -z "${Firmware_Type}" ]] && export Firmware_SFX=".bin"
 esac
 CURRENT_Ver="${CURRENT_Version}${BOOT_Type}"
+[[ ${DEFAULT_Device} == x86-64 ]] && {
 echo "CURRENT_Version=${CURRENT_Ver}" > /etc/openwrt_version
+} || echo "CURRENT_Version=${CURRENT_Version}" > /etc/openwrt_version
 cd /etc
 clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
