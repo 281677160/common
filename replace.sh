@@ -22,7 +22,7 @@ source /etc/openwrt_info
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
 [[ ! $? == 0 ]] && {
-	TIME r "获取固件版本信息失败,请检测网络或您的网络需要翻墙,或者您的更改的Github地址为无效地址!"
+	TIME r "获取固件版本信息失败,请检测网络或您的网络需要翻墙,或者您更改的Github地址为无效地址!"
 	exit 1
 }
 Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
