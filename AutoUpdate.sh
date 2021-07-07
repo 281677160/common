@@ -7,7 +7,6 @@ Version=V6.0
 
 Shell_Helper() {
 echo
-echo
 echo -e "${Yellow}命令用途：
 
 bash /bin/AutoUpdate.sh				[保留配置更新]
@@ -17,12 +16,10 @@ bash /bin/AutoUpdate.sh	-c			[更换Github地址]
 bash /bin/AutoUpdate.sh	-t			[执行测试模式(只运行,不安装,查看更新固件操作流程)]
 bash /bin/AutoUpdate.sh	-h			[列出帮助信息]
 ${White}"
-echo
 
 echo -e "${Purple}	
 ===============================================================================================
 ${White}"
-echo
 echo
 echo -e "${Green}详细参数：
 
@@ -68,16 +65,16 @@ GET_PID() {
 	shift
 	done
 }
+White="\033[0;37m"
+Yellow="\033[0;33m"
+Red="\033[1;91m"
+Blue="\033[0;94m"
+BLUEB="\033[1;94m"
+BCyan="\033[1;36m"
+Grey="\033[1;34m"
+Green="\033[0;92m"
+Purple="\033[1;95m"
 TIME() {
-	White="\033[0;37m"
-	Yellow="\033[0;33m"
-	Red="\033[1;91m"
-	Blue="\033[0;94m"
-	BLUEB="\033[1;94m"
-	BCyan="\033[1;36m"
-	Grey="\033[1;34m"
-	Green="\033[0;92m"
-	Purple="\033[1;95m"
 	local Color
 	[[ -z $1 ]] && {
 		echo -ne "\n${Grey}[$(date "+%H:%M:%S")]${White} "
