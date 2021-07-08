@@ -317,7 +317,7 @@ CLOUD_MD5=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "
 	exit 1
 }
 chmod 777 ${Firmware}
-TIME g "准备就绪,开始刷写固件..."
+TIME g "准备更新固件,更新期间请不要断开电源或重启设备 ..."
 [[ "${Input_Other}" == "-t" ]] && {
 	TIME z "测试模式运行完毕!"
 	rm -rf "${Download_Path}"
@@ -325,6 +325,8 @@ TIME g "准备就绪,开始刷写固件..."
 	echo
 	exit 0
 }
+sleep 3
+TIME g "正在更新固件,请耐心等待 ..."
 REPO_Name=mortal
 rm -rf ${AutoUpdate_Log_Path}/AutoUpdate.log
 sysupgrade ${Upgrade_Options} ${Firmware}
