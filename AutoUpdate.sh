@@ -322,7 +322,6 @@ TIME g "准备更新固件,更新期间请不要断开电源或重启设备 ..."
 [[ "${Input_Other}" == "-t" ]] && {
 	TIME z "测试模式运行完毕!"
 	rm -rf "${Download_Path}"
-	opkg remove gzip > /dev/null 2>&1
 	echo
 	exit 0
 }
