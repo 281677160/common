@@ -38,6 +38,7 @@ echo -e "${Green}详细参数：
 Github 地址:					${Github}
 解析 API 地址:					${Github_Tags}
 固件下载地址:					${Github_Release}
+更新运行日志:					${AutoUpdate_Log_Path}/AutoUpdate.log
 固件作者:					${Author}
 作者仓库:					${CangKu}
 固件名称:					${CLOUD_Name}
@@ -327,8 +328,6 @@ TIME g "准备更新固件,更新期间请不要断开电源或重启设备 ..."
 }
 sleep 3
 TIME g "正在更新固件,请耐心等待 ..."
-REPO_Name=mortal
-rm -rf ${AutoUpdate_Log_Path}/AutoUpdate.log
 sysupgrade ${Upgrade_Options} ${Firmware}
 [[ $? -ne 0 ]] && {
 	[[ "${REPO_Name}" == "mortal" ]] && {
