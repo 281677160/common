@@ -151,21 +151,17 @@ else
 			TIME h "执行: 测试模式"
 			TIME g "测试模式(只运行,不安装,查看更新固件操作流程是否正确)"
 		;;
-
 		-w)
 			Input_Other="-w"
 		;;
-
 		-n | -N)
 			export Upgrade_Options="-n"
 			TIME h "执行: 更新固件(不保留配置)"
 		;;
-
 		-s)
 			export Upgrade_Options="-F -n"
 			TIME h "执行: 强制更新固件(不保留配置)"
 		;;
-
 		-u)
 			export AutoUpdate_Mode=1
 			export Upgrade_Options="-q"
