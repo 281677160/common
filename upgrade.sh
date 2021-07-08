@@ -88,6 +88,7 @@ Diy_Part2() {
 	Github_Release=${Github_Release}
 	Egrep_Firmware=${Egrep_Firmware}
 	Download_Path=/tmp/Downloads
+	Version=${AutoUpdate_Version}
 	EOF
 	echo "CURRENT_Version=${Openwrt_Version}" > ${Ve_Firmware_Info}
 }
