@@ -117,9 +117,11 @@ x86-64)
 	[ -d /sys/firmware/efi ] && {
 		export BOOT_Type="-UEFI"
 		export EFI_Mode="UEFI"
+		export GSModel="-UEFI"
 	} || {
 		export BOOT_Type="-Legacy"
 		export EFI_Mode="Legacy"
+		export GSModel="-Legacy"
 	}
 	export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
   	export Firmware_SFX=".${Firmware_Type}"
@@ -129,10 +131,12 @@ x86-64)
 	export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
 	export Firmware_SFX=".${Firmware_Type}"
 	export BOOT_Type="-Sysupg"
+	export GSModel=""
 	[[ -z "${Firmware_Type}" ]] && export Firmware_SFX=".bin"
 esac
 CURRENT_Ver="${CURRENT_Version}${BOOT_Type}"
-[[ ${DEFAULT_Device} == x86-64 ]] && echo "CURRENT_Version=${CURRENT_Ver}" > /etc/openwrt_version
+echo "CURRENT_Version=${CURRENT_Ver}" > /etc/openwrt_version
+echo -e "\nCURRENT_Model=${EFI_Mode}${Firmware_SFX}" >> /etc/openwrt_version
 cd /etc
 clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
@@ -239,15 +243,9 @@ export CLOUD_Version="$(echo ${CLOUD_Firmware} | egrep -o "${REPO_Name}-${DEFAUL
 	exit 1
 }
 [[ "${Input_Other}" == "-w" ]] && {
-	[[ ${DEFAULT_Device} == x86-64 ]] && {
-		echo -e "\nCLOUD_Version=${CLOUD_Version}" > /tmp/Version_Tags
-		echo -e "\nCURRENT_Version=${CURRENT_Ver}" >> /tmp/Version_Tags
-		exit 0
-	} || {
-		echo -e "\nCLOUD_Version=${CLOUD_sion}" > /tmp/Version_Tags
-		echo -e "\nCURRENT_Version=${CURRENT_Version}" >> /tmp/Version_Tags
-		exit 0
-	}
+	echo -e "\nCLOUD_Version=${CLOUD_Version}" > /tmp/Version_Tags
+	echo -e "\nCURRENT_Version=${CURRENT_Ver}" >> /tmp/Version_Tags
+	exit 0
 }
 export Firmware_Name="$(echo ${CLOUD_Firmware} | egrep -o "${Egrep_Firmware}-[0-9]+${BOOT_Type}-[a-zA-Z0-9]+")"
 export Firmware="${CLOUD_Firmware}"
