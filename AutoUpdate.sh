@@ -135,7 +135,7 @@ x86-64)
 	[[ -z "${Firmware_Type}" ]] && export Firmware_SFX=".bin"
 esac
 CURRENT_Ver="${CURRENT_Version}${BOOT_Type}"
-echo "CURRENT_Version=${CURRENT_Ver}" > /etc/openwrt_version
+echo "CURRENT_Version=${CURRENT_Version}" > /etc/openwrt_version
 echo -e "\nCURRENT_Model=${EFI_Mode}${Firmware_SFX}" >> /etc/openwrt_version
 cd /etc
 clear && echo "Openwrt-AutoUpdate Script ${Version}"
@@ -243,8 +243,8 @@ export CLOUD_Version="$(echo ${CLOUD_Firmware} | egrep -o "${REPO_Name}-${DEFAUL
 	exit 1
 }
 [[ "${Input_Other}" == "-w" ]] && {
-	echo -e "\nCLOUD_Version=${CLOUD_Version}" > /tmp/Version_Tags
-	echo -e "\nCURRENT_Version=${CURRENT_Ver}" >> /tmp/Version_Tags
+	echo -e "\nCLOUD_Version=${CLOUD_sion}" > /tmp/Version_Tags
+	echo -e "\nCURRENT_Version=${CURRENT_Version}" >> /tmp/Version_Tags
 	exit 0
 }
 export Firmware_Name="$(echo ${CLOUD_Firmware} | egrep -o "${Egrep_Firmware}-[0-9]+${BOOT_Type}-[a-zA-Z0-9]+")"
