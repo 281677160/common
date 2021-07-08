@@ -117,11 +117,9 @@ x86-64)
 	[ -d /sys/firmware/efi ] && {
 		export BOOT_Type="-UEFI"
 		export EFI_Mode="UEFI"
-		export GSModel="-UEFI"
 	} || {
 		export BOOT_Type="-Legacy"
 		export EFI_Mode="Legacy"
-		export GSModel="-Legacy"
 	}
 	export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
   	export Firmware_SFX=".${Firmware_Type}"
@@ -131,7 +129,7 @@ x86-64)
 	export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
 	export Firmware_SFX=".${Firmware_Type}"
 	export BOOT_Type="-Sysupg"
-	export GSModel=""
+	export EFI_Mode=""
 	[[ -z "${Firmware_Type}" ]] && export Firmware_SFX=".bin"
 esac
 CURRENT_Ver="${CURRENT_Version}${BOOT_Type}"
