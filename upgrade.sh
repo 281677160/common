@@ -88,6 +88,7 @@ Diy_Part2() {
 	Egrep_Firmware=${Egrep_Firmware}
 	Download_Path=/tmp/Downloads
 	Version=${AutoUpdate_Version}
+	Download_Tags=/tmp/Downloads/Github_Tags
 	EOF
 }
 
