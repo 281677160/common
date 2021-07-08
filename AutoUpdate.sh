@@ -24,8 +24,8 @@ echo -e "${Purple}
 ${White}"
 echo
 rm -rf ${Download_Path}/Github_Tags
-wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
-[[ -n ${Download_Path}/Github_Tags ]] && export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Tags}
+[[ -n ${Download_Tags} ]] && export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Tags} | awk 'END {print}')"
 [[ -z ${CLOUD_Name} ]] && export CLOUD_Name="${LUCI_Name}-${CURRENT_Version}${Firmware_SFX}"
 echo -e "${Green}详细参数：
 
@@ -226,13 +226,13 @@ fi
 [[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
 TIME g "正在获取云端固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
+wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Tags}
 [[ ! $? == 0 ]] && {
 	TIME r "获取固件版本信息失败,请检测网络或您的网络需要翻墙,或者您更改的Github地址为无效地址!"
 	exit 1
 }
 TIME g "正在比对云端固件和本地安装固件版本..."
-export CLOUD_Firmware="$(egrep -o "${Egrep_Firmware}-[0-9]+${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+export CLOUD_Firmware="$(egrep -o "${Egrep_Firmware}-[0-9]+${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Tags} | awk 'END {print}')"
 export CLOUD_sion="$(echo ${CLOUD_Firmware} | egrep -o "${REPO_Name}-${DEFAULT_Device}-[0-9]+")"
 export CLOUD_Version="$(echo ${CLOUD_Firmware} | egrep -o "${REPO_Name}-${DEFAULT_Device}-[0-9]+${BOOT_Type}")"
 [[ -z "${CLOUD_Version}" ]] && {
@@ -246,8 +246,8 @@ export CLOUD_Version="$(echo ${CLOUD_Firmware} | egrep -o "${REPO_Name}-${DEFAUL
 }
 export Firmware_Name="$(echo ${CLOUD_Firmware} | egrep -o "${Egrep_Firmware}-[0-9]+${BOOT_Type}-[a-zA-Z0-9]+")"
 export Firmware="${CLOUD_Firmware}"
-let X=$(grep -n "${Firmware}" ${Download_Path}/Github_Tags | tail -1 | cut -d : -f 1)-4
-let CLOUD_Firmware_Size=$(sed -n "${X}p" ${Download_Path}/Github_Tags | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
+let X=$(grep -n "${Firmware}" ${Download_Tags} | tail -1 | cut -d : -f 1)-4
+let CLOUD_Firmware_Size=$(sed -n "${X}p" ${Download_Tags} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
 echo -e "\n本地版本：${CURRENT_Ver}"
 echo "云端版本：${CLOUD_Version}"	
 [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]] && {
