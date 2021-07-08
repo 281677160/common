@@ -69,6 +69,7 @@ export Apidz="${Github##*com/}"
 export Author="${Apidz%/*}"
 export CangKu="${Apidz##*/}"
 export Github_Tags=https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate
+export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
 export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
 rm -rf "${Download_Path}" && export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path}
@@ -136,6 +137,7 @@ esac
 CURRENT_Ver="${CURRENT_Version}${BOOT_Type}"
 echo "CURRENT_Version=${CURRENT_Version}" > /etc/openwrt_ver
 echo -e "\nCURRENT_Model=${EFI_Mode}${Firmware_SFX}" >> /etc/openwrt_ver
+echo -e "\nNEI_Luci=${Kernel} - ${Luci_Edition}" >> /etc/openwrt_ver
 cd /etc
 clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
