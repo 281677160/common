@@ -32,7 +32,9 @@ echo
 TIME h "执行：转换成其他源码固件"
 echo
 echo
-TIME y "您当前固件为：${EFI_Mode}${Firmware_SFX}格式的 ${REPO_Name} ${Luci_Edition} ${Kernel} 内核版!"
+TIME y "您当前机型为：${DEFAULT_Device}"
+TIME y "当前源码内核：${REPO_Name}  /  ${Luci_Edition} / ${Kernel}"
+TIME y "当前固件格式：${EFI_Mode}${Firmware_SFX}"
 echo
 if [[ "${REPO_Name}" == "lede" ]]; then
 	if [[ `cat ${Download_Path}/Github_Tags | grep -c "19.07-lienol-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
@@ -89,7 +91,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 	fi
 fi
 echo
-TIME z "请注意：选择更换其他源码固件后,立即执行不保留配置安装固件!"
+TIME z "请注意：选择更换其他源码固件后,立即执行不保留配置安装新固件!"
 echo
 echo
 echo
