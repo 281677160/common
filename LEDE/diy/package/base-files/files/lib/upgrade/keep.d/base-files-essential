@@ -10,6 +10,5 @@
 /etc/sysctl.conf
 /etc/rc.local
 /etc/rc.local
-/etc/config/network
 /etc/docker/daemon.json
 /etc/docker/key.json
