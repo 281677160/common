@@ -292,6 +292,13 @@ CPUNAME="$(awk 'NR==1' CPU)" && CPUCORES="$(awk 'NR==2' CPU)"
 rm -rf CPU
 find . -name 'LICENSE' -o -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
+if [[ `grep -c "KERNEL_PATCHVER:=" target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
+	PATCHVER=$(grep KERNEL_PATCHVER:= target/linux/${TARGET_BOARD}/Makefile | cut -c18-100)
+elif [[ `grep -c "KERNEL_PATCHVER=" target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
+	PATCHVER=$(grep KERNEL_PATCHVER= target/linux/${TARGET_BOARD}/Makefile | cut -c17-100)
+else
+	PATCHVER=unknown
+fi
 }
 
 
@@ -378,7 +385,7 @@ TIME b "编译源码: ${CODE}"
 TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${ZUOZHE}"
-TIME b "内核版本: ${OpenWrt_name}"
+TIME b "内核版本: ${PATCHVER} - ${OpenWrt_name}"
 [[ "${Modelfile}" == "openwrt_amlogic" ]] && {
 	TIME b "编译机型: ${TARGET_model}"
 	TIME b "打包内核: ${TARGET_kernel}"
