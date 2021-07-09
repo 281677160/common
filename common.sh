@@ -299,9 +299,8 @@ elif [[ `grep -c "KERNEL_PATCHVER=" target/linux/${TARGET_BOARD}/Makefile` -eq '
 else
 	PATCHVER=unknown
 fi
-KERNEL_PATCHVER=$(egrep -o "${PATCHVER}.[0-9]+" include/kernel-version.mk)
-echo "${KERNEL_PATCHVER}" > KERNEL_PATCHVER
-PATCHVER=$(cat KERNEL_PATCHVER)
+echo "$(egrep -o "${PATCHVER}.[0-9]+" include/kernel-version.mk)" > KERNEL_PATCHVER
+[ -s KERNEL_PATCHVER ] && PATCHVER=$(cat KERNEL_PATCHVER)
 [[ -z ${PATCHVER} ]] && PATCHVER=unknown
 }
 
