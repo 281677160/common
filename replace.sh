@@ -20,7 +20,7 @@ TIME() {
 }
 source /etc/openwrt_info
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Path}/Github_Tags
+wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Tags}
 [[ ! $? == 0 ]] && {
 	TIME r "获取固件版本信息失败,请检测网络或您的网络需要翻墙,或者您更改的Github地址为无效地址!"
 	exit 1
@@ -37,10 +37,10 @@ TIME y "当前源码内核：${REPO_Name}  /  ${Luci_Edition} / ${Kernel}"
 TIME y "当前固件格式：${EFI_Mode}${Firmware_SFX}"
 echo
 if [[ "${REPO_Name}" == "lede" ]]; then
-	if [[ `cat ${Download_Path}/Github_Tags | grep -c "19.07-lienol-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
+	if [[ `cat ${Download_Tags} | grep -c "19.07-lienol-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
 		ZHUANG1="1"
 	fi
-	if [[ `cat ${Download_Path}/Github_Tags | grep -c "21.02-mortal-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
+	if [[ `cat ${Download_Tags} | grep -c "21.02-mortal-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
 		ZHUANG2="2"
 	fi
 	if [[ -z "${ZHUANG1}" ]] && [[ -z "${ZHUANG2}" ]]; then
@@ -55,10 +55,10 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 	fi
 fi
 if [[ "${REPO_Name}" == "lienol" ]]; then
-	if [[ `cat ${Download_Path}/Github_Tags | grep -c "18.06-lede-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
+	if [[ `cat ${Download_Tags} | grep -c "18.06-lede-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
 		ZHUANG1="1"
 	fi
-	if [[ `cat ${Download_Path}/Github_Tags | grep -c "21.02-mortal-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
+	if [[ `cat ${Download_Tags} | grep -c "21.02-mortal-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
 		ZHUANG2="2"
 	fi
 	if [[ -z "${ZHUANG1}" ]] && [[ -z "${ZHUANG2}" ]]; then
@@ -73,10 +73,10 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 	fi
 fi
 if [[ "${REPO_Name}" == "mortal" ]]; then
-	if [[ `cat ${Download_Path}/Github_Tags | grep -c "18.06-lede-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
+	if [[ `cat ${Download_Tags} | grep -c "18.06-lede-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
 		ZHUANG1="1"
 	fi
-	if [[ `cat ${Download_Path}/Github_Tags | grep -c "19.07-lienol-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
+	if [[ `cat ${Download_Tags} | grep -c "19.07-lienol-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
 		ZHUANG2="2"
 	fi
 	if [[ -z "${ZHUANG1}" ]] && [[ -z "${ZHUANG2}" ]]; then
@@ -120,6 +120,8 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -164,6 +166,8 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=21.02-mortal-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -211,6 +215,8 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -231,6 +237,8 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=21.02-mortal-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -280,6 +288,8 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=18.06-lede-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -325,6 +335,8 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=21.02-mortal-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -372,6 +384,8 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=18.06-lede-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -392,6 +406,8 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=21.02-mortal-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -441,6 +457,8 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=18.06-lede-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -486,6 +504,8 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -533,6 +553,8 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=18.06-lede-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -553,6 +575,8 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 			Github_Release=${Github_Release}
 			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
+			Version=${Version}
+			Download_Tags=${Download_Tags}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
