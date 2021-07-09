@@ -140,9 +140,9 @@ svn co https://github.com/ophub/amlogic-s9xxx-openwrt/trunk/amlogic-s9xxx $GITHU
 curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/make >$GITHUB_WORKSPACE/make
 source $GITHUB_WORKSPACE/amlogic_openwrt
 if [[ ${amlogic_kernel} == "5.12.12_5.4.127" ]]; then
-	curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open
-	Make_d="$(grep "./make -d -b" open)" && Make="${Make_d##*-k }"
-	amlogic_kernel="${Make}"
+	curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open.yml
+	Make_kernel="$(cat open.yml | grep ./make | cut -d "k" -f3 | sed s/[[:space:]]//g)"
+	amlogic_kernel="${Make_kernel}"
 else
 	amlogic_kernel="${amlogic_kernel}"
 fi
