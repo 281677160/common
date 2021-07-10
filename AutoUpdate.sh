@@ -142,6 +142,7 @@ clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
 if [[ -z "${Input_Option}" ]];then
 	export Upgrade_Options="-q"
+	export Update_Mode=1
 	TIME h "执行: 保留配置更新固件[静默模式]"
 else
 	case ${Input_Option} in
@@ -322,14 +323,23 @@ TIME g "准备更新固件,更新期间请不要断开电源或重启设备 ..."
 	echo
 	exit 0
 }
-sleep 3
 TIME g "正在更新固件,请耐心等待 ..."
-sysupgrade ${Upgrade_Options} ${Firmware}
-[[ $? -ne 0 ]] && {
-	[[ "${REPO_Name}" == "mortal" ]] && {
-		exit 0
+if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
+	cp -Rf /etc/config/network /mnt/network
+	sysupgrade -b /mnt/back.tar.gz
+	[[ $? == 0 ]] && {
+		sysupgrade -f /mnt/back.tar.gz ${Firmware}
 	} || {
+		sysupgrade ${Upgrade_Options} ${Firmware}
+	}
+	[[ ! $? == 0 ]] && {
+		TIME r "固件刷写失败,请尝试手动更新固件!"
+		exit 1
+	}
+fi
+sleep 3
+sysupgrade ${Upgrade_Options} ${Firmware}
+[[ ! $? == 0 ]] && {
 	TIME r "固件刷写失败,请尝试手动更新固件!"
 	exit 1
-	} 
 }
