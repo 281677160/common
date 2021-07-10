@@ -109,7 +109,7 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 	read -p " 请输入您的选择： " CHOOSE
 	case $CHOOSE in
 		1)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=19.07
 			CURRENT_Version=lienol-${DEFAULT_Device}-202107010100
@@ -155,7 +155,7 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 	read -p " 请输入您的选择： " CHOOSE
 	case $CHOOSE in
 		1)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=21.02
 			CURRENT_Version=mortal-${DEFAULT_Device}-202107010100
@@ -204,7 +204,7 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 	read -p " 请输入您的选择： " CHOOSE
 	case $CHOOSE in
 		1)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=19.07
 			CURRENT_Version=lienol-${DEFAULT_Device}-202107010100
@@ -226,7 +226,7 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 		break
 		;;
 		2)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=21.02
 			CURRENT_Version=mortal-${DEFAULT_Device}-202107010100
@@ -277,7 +277,7 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 	read -p " 请输入您的选择： " CHOOSE
 	case $CHOOSE in
 		1)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=18.06
 			CURRENT_Version=lede-${DEFAULT_Device}-202107010100
@@ -324,7 +324,7 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 	read -p " 请输入您的选择： " CHOOSE
 	case $CHOOSE in
 		1)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=21.02
 			CURRENT_Version=mortal-${DEFAULT_Device}-202107010100
@@ -373,7 +373,7 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 	read -p " 请输入您的选择： " CHOOSE
 	case $CHOOSE in
 		1)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=18.06
 			CURRENT_Version=lede-${DEFAULT_Device}-202107010100
@@ -395,7 +395,7 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 		break
 		;;
 		2)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=21.02
 			CURRENT_Version=mortal-${DEFAULT_Device}-202107010100
@@ -446,7 +446,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 	read -p " 请输入您的选择： " CHOOSE
 	case $CHOOSE in
 		1)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=18.06
 			CURRENT_Version=lede-${DEFAULT_Device}-202107010100
@@ -493,7 +493,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 	read -p " 请输入您的选择： " CHOOSE
 	case $CHOOSE in
 		1)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=19.07
 			CURRENT_Version=lienol-${DEFAULT_Device}-202107010100
@@ -542,7 +542,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 	read -p " 请输入您的选择： " CHOOSE
 	case $CHOOSE in
 		1)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=18.06
 			CURRENT_Version=lede-${DEFAULT_Device}-202107010100
@@ -564,7 +564,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 		break
 		;;
 		2)
-			cat >/etc/openwrt_info <<-EOF
+			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
 			Luci_Edition=19.07
 			CURRENT_Version=lienol-${DEFAULT_Device}-202107010100
