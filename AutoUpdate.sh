@@ -141,7 +141,7 @@ cd /etc
 clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
 if [[ -z "${Input_Option}" ]];then
-	export Upgrade_Options="-q"
+	export Upgrade_Options="sysupgrade -q"
 	export Update_Mode=1
 	TIME h "执行: 保留配置更新固件[静默模式]"
 else
@@ -157,16 +157,16 @@ else
 			Input_Other="-w"
 		;;
 		-n | -N)
-			export Upgrade_Options="-n"
+			export Upgrade_Options="sysupgrade -n"
 			TIME h "执行: 更新固件(不保留配置)"
 		;;
 		-s)
-			export Upgrade_Options="-F -n"
+			export Upgrade_Options="sysupgrade -F -n"
 			TIME h "执行: 强制更新固件(不保留配置)"
 		;;
 		-u)
 			export AutoUpdate_Mode=1
-			export Upgrade_Options="-q"
+			export Upgrade_Options="sysupgrade -q"
 		;;
 		esac
 	;;
@@ -328,17 +328,13 @@ if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
 	cp -Rf /etc/config/network /mnt/network
 	sysupgrade -b /mnt/back.tar.gz
 	[[ $? == 0 ]] && {
-		sysupgrade -f /mnt/back.tar.gz ${Firmware}
+		export Upgrade_Options="sysupgrade -f /mnt/back.tar.gz"
 	} || {
-		sysupgrade ${Upgrade_Options} ${Firmware}
-	}
-	[[ ! $? == 0 ]] && {
-		TIME r "固件刷写失败,请尝试手动更新固件!"
-		exit 1
+		export Upgrade_Options="sysupgrade -q"
 	}
 fi
 sleep 3
-sysupgrade ${Upgrade_Options} ${Firmware}
+${Upgrade_Options} ${Firmware}
 [[ ! $? == 0 ]] && {
 	TIME r "固件刷写失败,请尝试手动更新固件!"
 	exit 1
