@@ -335,7 +335,12 @@ if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
 fi
 sleep 3
 ${Upgrade_Options} ${Firmware}
-[[ ! $? == 0 ]] && {
+
+if [[ ! $? == 0 ]]; then
+	[[ "${REPO_Name}" == "mortal" ]] && {
+		exit 0
+	} || {
 	TIME r "固件刷写失败,请尝试手动更新固件!"
 	exit 1
-}
+	} 
+fi
