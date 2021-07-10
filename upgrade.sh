@@ -60,7 +60,7 @@ GET_TARGET_INFO() {
 	[ ${REGULAR_UPDATE} == "true" ] && {
 		AutoUpdate_Version=$(egrep -o "V[0-9].+" ${Home}/package/base-files/files/bin/AutoUpdate.sh | awk 'END{print}')
 	} || AutoUpdate_Version=OFF
-	In_Firmware_Info="${Home}/package/base-files/files/etc/openwrt_info"
+	In_Firmware_Info="${Home}/package/base-files/files/bin/openwrt_info"
 	Github_Release="${Github}/releases/download/AutoUpdate"
 	Github_UP_RELEASE="${Github}/releases/AutoUpdate"
 	Openwrt_Version="${REPO_Name}-${TARGET_PROFILE}-${Compile_Date}"
