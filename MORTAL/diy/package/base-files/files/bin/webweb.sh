@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 sed -i '/coremark.sh/d' /etc/crontabs/root 2>/dev/null
 
