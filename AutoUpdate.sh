@@ -134,9 +134,9 @@ x86-64)
 	[[ -z "${Firmware_Type}" ]] && export Firmware_SFX=".bin"
 esac
 CURRENT_Ver="${CURRENT_Version}${BOOT_Type}"
-echo "CURRENT_Version=${CURRENT_Version}" > /bin/openwrt_ver
-echo -e "\nCURRENT_Model=${EFI_Mode}${Firmware_SFX}" >> /bin/openwrt_ver
-echo -e "\nNEI_Luci=${Kernel} - ${Luci_Edition}" >> /bin/openwrt_ver
+echo "CURRENT_Version=${CURRENT_Version}" > /etc/openwrt_ver
+echo -e "\nCURRENT_Model=${EFI_Mode}${Firmware_SFX}" >> /etc/openwrt_ver
+echo -e "\nNEI_Luci=${Kernel} - ${Luci_Edition}" >> /etc/openwrt_ver
 cd /etc
 clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
