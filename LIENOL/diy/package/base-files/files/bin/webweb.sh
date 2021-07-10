@@ -18,4 +18,4 @@ sed -i 's/%>)<\/a> \//%>)<\/a> \/-->/g' /usr/lib/lua/luci/view/themes/*/footer.h
 
 rm -rf /bin/networkip
 rm -rf /bin/webweb.sh
-exti 0
+exit 0
