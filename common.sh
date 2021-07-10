@@ -4,6 +4,7 @@
 # matrix.target=${Modelfile}
 
 TIME() {
+Compte=$(date +%Y年%m月%d号%H时%M分)
 [[ -z "$1" ]] && {
 	echo -ne " "
 } || {
@@ -20,7 +21,6 @@ TIME() {
 	 }
       }
 }
-
 
 ################################################################################################################
 # LEDE源码通用diy.sh文件
@@ -382,7 +382,7 @@ TIME b "Luci版本: ${OpenWrt_name}"
 TIME b "固件作者: ${Author}"
 TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${CangKu}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
-TIME b "编译时间: ${Compile_Date}"
+TIME b "编译时间: ${Compte}"
 [[ "${Modelfile}" == "openwrt_amlogic" ]] && {
 	TIME g "友情提示：您当前使用【${Modelfile}】文件夹编译【${TARGET_model}】固件"
 } || {
