@@ -134,9 +134,9 @@ x86-64)
 	[[ -z "${Firmware_Type}" ]] && export Firmware_SFX=".bin"
 esac
 CURRENT_Ver="${CURRENT_Version}${BOOT_Type}"
-echo "CURRENT_Version=${CURRENT_Version}" > /etc/openwrt_ver
-echo -e "\nCURRENT_Model=${EFI_Mode}${Firmware_SFX}" >> /etc/openwrt_ver
-echo -e "\nNEI_Luci=${Kernel} - ${Luci_Edition}" >> /etc/openwrt_ver
+echo "CURRENT_Version=${CURRENT_Version}" > /bin/openwrt_ver
+echo -e "\nCURRENT_Model=${EFI_Mode}${Firmware_SFX}" >> /bin/openwrt_ver
+echo -e "\nNEI_Luci=${Kernel} - ${Luci_Edition}" >> /bin/openwrt_ver
 cd /etc
 clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
@@ -170,7 +170,7 @@ else
 		esac
 	;;
 	-c)
-			source /etc/openwrt_info
+			source /bin/openwrt_info
 			TIME h "执行：更换[Github地址]操作"
 			TIME y "地址格式：https://github.com/帐号/仓库"
 			TIME z  "正确地址示例：https://github.com/281677160/AutoBuild-OpenWrt"
@@ -188,7 +188,7 @@ else
 			}
 			Input_Other="${Input_Other:-"$Github"}"
 			[[ "${Github}" != "${Input_Other}" ]] && {
-				sed -i "s?${Github}?${Input_Other}?g" /etc/openwrt_info
+				sed -i "s?${Github}?${Input_Other}?g" /bin/openwrt_info
 				unset Input_Other
 				exit 0
 			} || {
@@ -221,8 +221,8 @@ if [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]];then
 		TIME y "网络检测成功,您的梯子翻墙成功！"
 	fi
 fi
-[[ -z ${CURRENT_Version} ]] && TIME r "本地固件版本获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
-[[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/etc/openwrt_info文件的值!" && exit 1
+[[ -z ${CURRENT_Version} ]] && TIME r "本地固件版本获取失败,请检查/bin/openwrt_info文件的值!" && exit 1
+[[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/bin/openwrt_info文件的值!" && exit 1
 TIME g "正在获取云端固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Tags}
