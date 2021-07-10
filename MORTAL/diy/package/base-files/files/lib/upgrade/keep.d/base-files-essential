@@ -12,3 +12,4 @@
 /mnt/network
 /etc/docker/daemon.json
 /etc/docker/key.json
+/etc/AdGuardHome.yaml
