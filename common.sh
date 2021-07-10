@@ -34,7 +34,7 @@ sed -i '/to-ports 53/d' $ZZZ
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 
-sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh > /dev/null 2>&1" package/base-files/files/etc/rc.local
+sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 
 
 if [[ "${Modelfile}" == "Lede_source" ]]; then
@@ -76,7 +76,7 @@ git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/x86/Makefile
-sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh > /dev/null 2>&1" package/base-files/files/etc/rc.local
+sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 }
 
 
@@ -88,7 +88,7 @@ Diy_mortal() {
 find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-light'  | xargs -i rm -rf {}
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-openwrt' | xargs -i rm -rf {}
 
-sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh > /dev/null 2>&1" package/base-files/files/etc/rc.local
+sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 }
 
 
@@ -128,8 +128,6 @@ fi
 if [ -n "$(ls -A "${PATH1}/patches" 2>/dev/null)" ]; then
 	find "${PATH1}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
-sed -i "/exit 0/i\sed -i 's/<a href/<\!--<a href/g' /usr/lib/lua/luci/view/themes/*/footer.htm" $ZZZ
-sed -i "/exit 0/i\sed -i 's/%>)<\\\/a> \\\//%>)<\\\/a> \\\/-->/g' /usr/lib/lua/luci/view/themes/*/footer.htm" $ZZZ
 }
 
 ################################################################################################################
