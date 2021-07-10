@@ -18,7 +18,7 @@ TIME() {
 	 }
       }
 }
-source /etc/openwrt_info
+source /bin/openwrt_info
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Tags}
 [[ ! $? == 0 ]] && {
