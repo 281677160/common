@@ -54,9 +54,9 @@ BCyan="\033[1;36m"
 Grey="\033[1;34m"
 Green="\033[0;92m"
 Purple="\033[1;95m"
-[ -f /etc/openwrt_info ] && {
-	chmod +x /etc/openwrt_info
-	source /etc/openwrt_info 
+[ -f /bin/openwrt_info ] && {
+	chmod +x /bin/openwrt_info
+	source /bin/openwrt_info 
 } || {
 	echo -e "\n${Red}未检测到更新插件所需文件,无法运行更新程序!${White}"
 	echo
