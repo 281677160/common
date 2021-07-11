@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sed -i '/coremark.sh/d' /etc/crontabs/root 2>/dev/null
+sed -i '/coremark.sh/d' /etc/crontabs/root
 
 sed -i 's/<a href/<!--<a href/g' /usr/lib/lua/luci/view/themes/*/footer.htm
 sed -i 's/%>)<\/a> \//%>)<\/a> \/-->/g' /usr/lib/lua/luci/view/themes/*/footer.htm
