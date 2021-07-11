@@ -309,10 +309,17 @@ if [[ $? -ne 0 ]];then
 else
 	TIME y "下载云端固件成功!"
 fi
-MD5_DB=$(md5sum ${Firmware} | cut -d ' ' -f1) && CURRENT_MD5="${MD5_DB:0:6}"
-CLOUD_MD5=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
+CLOUD_MD5=$(md5sum ${Firmware} | cut -c1-3)
+CLOUD_256=$(sha256sum ${Firmware} | cut -c1-3)
+MD5_256=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
+CURRENT_MD5="$(echo "${MD5_256}" | cut -c1-3)"
+CURRENT_256="$(echo "${MD5_256}" | cut -c 4-)"
 [[ ${CURRENT_MD5} != ${CLOUD_MD5} ]] && {
 	TIME r "MD5对比失败,固件可能在下载时损坏,请检查网络后重试!"
+	exit 1
+}
+[[ ${CURRENT_256} != ${CLOUD_256} ]] && {
+	TIME r "SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!"
 	exit 1
 }
 chmod 777 ${Firmware}
