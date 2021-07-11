@@ -128,8 +128,7 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 		;;
 	esac
 fi
-Ubuntu_lv="$(df -h | grep "/dev/*/" | awk '{print $4}' | awk 'NR==1')"
-Ubuntu_kj="${Ubuntu_lv%?}"
+Ubuntu_kj="$(df -h | grep "/dev/*/" | awk '{print $4}' | awk 'NR==1' | sed 's/.$//g')"
 if [[ "${Ubuntu_kj}" -lt "20" ]];then
 	echo
 	TIME z "您当前系统可用空间为${Ubuntu_kj}G"
