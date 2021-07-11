@@ -34,7 +34,7 @@ sed -i '/to-ports 53/d' $ZZZ
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 
-sed -i "/exit 0/i\chmod +x /bin/webweb.sh && source /bin/webweb.sh" $ZZZ
+sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 
 
 if [[ "${Modelfile}" == "Lede_source" ]]; then
@@ -76,7 +76,7 @@ git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/x86/Makefile
-sed -i "/exit 0/i\chmod +x /bin/webweb.sh && source /bin/webweb.sh" $ZZZ
+sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 }
 
 
