@@ -309,7 +309,7 @@ fi
 if [[ "${REPO_BRANCH}" == "master" ]]; then
 	sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
 	sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
-	if [[ `CONFIG_PACKAGE_luci-app-qbittorrent_static=y" ${Home}/.config` -eq '0' ]]; then
+	if [[ `CONFIG_PACKAGE_luci-app-qbittorrent_static=y" ${Home}/.config` -eq '1' ]]; then
 		sed -i 's/CONFIG_PACKAGE_luci-app-qbittorrent_static=y/# CONFIG_PACKAGE_luci-app-qbittorrent_static is not set/g' ${Home}/.config
 	fi
 fi
