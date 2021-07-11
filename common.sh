@@ -244,8 +244,6 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-i18n-qbittorrent-zh-cn=y" ${Home}/.config` -
 	sed -i 's/CONFIG_PACKAGE_luci-app-qbittorrent_dynamic=y/# CONFIG_PACKAGE_luci-app-qbittorrent_dynamic is not set/g' ${Home}/.config
 	sed -i 's/CONFIG_PACKAGE_qBittorrent-static=y/# CONFIG_PACKAGE_qBittorrent-static is not set/g' ${Home}/.config
 	sed -i 's/CONFIG_PACKAGE_qbittorrent=y/# CONFIG_PACKAGE_qbittorrent is not set/g' ${Home}/.config
-	sed -i '/CONFIG_PACKAGE_luci-app-qbittorrent_static=y/d' ${Home}/.config
-	sed -i '/CONFIG_PACKAGE_luci-app-qbittorrent_dynamic=y/d' ${Home}/.config
 fi
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${Home}/.config` -eq '1' ]]; then
 	if [[ `grep -c "CONFIG_TARGET_ROOTFS_PARTSIZE" ${Home}/.config` -eq '0' ]]; then
@@ -311,6 +309,9 @@ fi
 if [[ "${REPO_BRANCH}" == "master" ]]; then
 	sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
 	sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
+	if [[ `CONFIG_PACKAGE_luci-app-qbittorrent_static=y" ${Home}/.config` -eq '0' ]]; then
+		sed -i 's/CONFIG_PACKAGE_luci-app-qbittorrent_static=y/# CONFIG_PACKAGE_luci-app-qbittorrent_static is not set/g' ${Home}/.config
+	fi
 fi
 }
 
