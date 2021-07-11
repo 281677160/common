@@ -52,6 +52,6 @@ echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 rm -rf /tmp/luci-modulecache/
 rm -f /tmp/luci-indexcache
 
-chmod +x /bin/webweb.sh && source /bin/webweb.sh
+chmod +x /etc/webweb.sh && source /etc/webweb.sh
 
 exit 0
