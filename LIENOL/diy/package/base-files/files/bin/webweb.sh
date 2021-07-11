@@ -18,6 +18,8 @@ if [[ `grep -c "x86" /etc/openwrt_release` -eq '0' ]]; then
   sed -i "s/x86_64/${DISTRIB_TARGET}/g" /etc/banner
 fi
 
+cp -Rf /etc/config/network /mnt/network
+
 rm -rf /bin/networkip
 rm -rf /bin/webweb.sh
 exit 0
