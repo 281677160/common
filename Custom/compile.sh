@@ -87,7 +87,7 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 		TIME r "没检测到openwrt文件夹有执行文件，自动转换成首次编译命令编译固件，请稍后..."
 		rm -rf {openwrt,openwrtl,dl,.bf_config,compile.sh}
 		rm -rf {.Lede_core,.Lienol_core,.amlogic_core}
-		bash <(curl -fsSL git.io/JckP8)
+		bash <(curl -fsSL git.io/JcGDV)
 	fi
 	echo
 	if [[ `grep -c "CONFIG_TARGET_x86_64=y" openwrt/.bf_config` -eq '1' ]]; then
@@ -119,7 +119,7 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 			TIME r "您选择更改源码，正在清理旧文件中，请稍后..."
 			rm -rf {openwrt,openwrtl,dl,.bf_config,compile.sh}
 			rm -rf {.Lede_core,.Lienol_core,.amlogic_core}
-			bash <(curl -fsSL git.io/JckP8)
+			bash <(curl -fsSL git.io/JcGDV)
 		;;
 		*)
 			YUAN_MA="false"
