@@ -340,7 +340,6 @@ if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
 		export Upgrade_Options="sysupgrade -q"
 	}
 fi
-sleep 3
 ${Upgrade_Options} ${Firmware}
 
 if [[ ! $? == 0 ]]; then
