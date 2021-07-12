@@ -283,10 +283,10 @@ if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
 	for X in $(ls -1 target/linux/x86 | grep "config-"); do echo -e "\n$(cat target/linux/x86/DRM-I915)" >> target/linux/x86/${X}; done
 fi
 grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
-if [[ "${qbitt}" == "1" ]]; then
-	sed -i '/CONFIG_PACKAGE_luci-app-qbittorrent_static=y/d' Plug-in
-fi
 grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
+if [[ "${qbitt}" == "1" ]]; then
+	sed -i '/qbittorrent/d' Plug-in
+fi
 sed -i '/INCLUDE/d' Plug-in > /dev/null 2>&1
 sed -i 's/CONFIG_PACKAGE_/、/g' Plug-in
 sed -i 's/=y/\"/g' Plug-in
