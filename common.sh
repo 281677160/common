@@ -313,9 +313,6 @@ fi
 if [[ "${REPO_BRANCH}" == "master" ]]; then
 	sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
 	sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
-	if [[ `CONFIG_PACKAGE_luci-app-qbittorrent_static=y" ${Home}/.config` -eq '1' ]]; then
-		sed -i 's/CONFIG_PACKAGE_luci-app-qbittorrent_static=y/# CONFIG_PACKAGE_luci-app-qbittorrent_static is not set/g' ${Home}/.config
-	fi
 fi
 }
 
@@ -369,8 +366,8 @@ GET_TARGET_INFO
 [[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
 [[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]] && {
 	curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open
-	Make_d="$(grep "./make -d -b" open)" && Make="${Make_d##*-k }"
-	TARGET_kernel="${Make}"
+	Make_ker="$(cat open.yml | grep ./make | cut -d "k" -f3 | sed s/[[:space:]]//g)"
+	TARGET_kernel="${Make_ker}"
 	TARGET_model="${amlogic_model}"
 } || {
 	TARGET_kernel="${amlogic_kernel}"
