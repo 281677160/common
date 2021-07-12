@@ -340,13 +340,8 @@ if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
 		export Upgrade_Options="sysupgrade -q"
 	}
 fi
+
 ${Upgrade_Options} ${Firmware}
 
-if [[ ! $? == 0 ]]; then
-	[[ "${REPO_Name}" == "mortal" ]] && {
-		exit 0
-	} || {
-	TIME r "固件刷写失败,请尝试手动更新固件!"
-	exit 1
-	} 
-fi
+exit 0
+
