@@ -244,7 +244,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-i18n-qbittorrent-zh-cn=y" ${Home}/.config` -
 	sed -i 's/CONFIG_PACKAGE_luci-app-qbittorrent_dynamic=y/# CONFIG_PACKAGE_luci-app-qbittorrent_dynamic is not set/g' ${Home}/.config
 	sed -i 's/CONFIG_PACKAGE_qBittorrent-static=y/# CONFIG_PACKAGE_qBittorrent-static is not set/g' ${Home}/.config
 	sed -i 's/CONFIG_PACKAGE_qbittorrent=y/# CONFIG_PACKAGE_qbittorrent is not set/g' ${Home}/.config
-	qbitt="1"
+	QBITT="false"
 fi
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${Home}/.config` -eq '1' ]]; then
 	if [[ `grep -c "CONFIG_TARGET_ROOTFS_PARTSIZE" ${Home}/.config` -eq '0' ]]; then
@@ -284,7 +284,9 @@ if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
 fi
 grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
 grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
-sed -i '/qbittorrent/d' Plug-in
+if [[ "${QBITT}" == "false" ]]; then
+	sed -i '/qbittorrent/d' Plug-in
+fi
 sed -i '/INCLUDE/d' Plug-in > /dev/null 2>&1
 sed -i 's/CONFIG_PACKAGE_/、/g' Plug-in
 sed -i 's/=y/\"/g' Plug-in
