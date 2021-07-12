@@ -330,6 +330,7 @@ TIME g "准备更新固件,更新期间请不要断开电源或重启设备 ..."
 	echo
 	exit 0
 }
+sleep 2
 TIME g "正在更新固件,请耐心等待 ..."
 if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
 	cp -Rf /etc/config/network /mnt/network
