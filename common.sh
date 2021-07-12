@@ -354,7 +354,7 @@ GONGGAO g "第一次用我仓库的，请不要拉取任何插件，先SSH进入
 GONGGAO g "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
 GONGGAO r "《如果编译脚本在这里就出现错误的话，意思就是不得不更新脚本了，怎么更新我会在这里写明》"
 GONGGAO y "7月11号修复定时更新不保存改过的IP、DNS、DHCP的问题，修复不保存adguardhome配置文件问题"
-GONGGAO y "7月11号暂时移除luci-app-ddnsto插件,没搞明白这个放源码里面会出现个别情况编译不成功的问题"
+GONGGAO g "7月12号把luci-app-ddnsto插件,重新加入插件包"
 GONGGAO g "7月12号修复LEDE源码不选择qbittorrent都会显示带有这个插件的问题"
 GONGGAO g "LEDE源码默认是带两套qbittorrent插件的，一套完整版，一套精简版"
 GONGGAO g "精简版不管你选择没选择qbittorrentd都会默认编译进固件的，就是在页面不显示而已"
