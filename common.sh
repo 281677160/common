@@ -284,9 +284,7 @@ if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
 fi
 grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
 grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
-if [[ "${qbitt}" == "1" ]]; then
-	sed -i '/qbittorrent/d' Plug-in
-fi
+sed -i '/qbittorrent/d' Plug-in
 sed -i '/INCLUDE/d' Plug-in > /dev/null 2>&1
 sed -i 's/CONFIG_PACKAGE_/、/g' Plug-in
 sed -i 's/=y/\"/g' Plug-in
