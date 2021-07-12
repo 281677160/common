@@ -345,6 +345,10 @@ GONGGAO r "《如果编译脚本在这里就出现错误的话，意思就是不
 GONGGAO y "7月11号修复定时更新不保存改过的IP、DNS、DHCP的问题，修复不保存adguardhome配置文件问题"
 GONGGAO y "7月11号暂时移除luci-app-ddnsto插件,没搞明白这个放源码里面会出现个别情况编译不成功的问题"
 GONGGAO g "7月12号修复LEDE源码不选择qbittorrent都会显示带有这个插件的问题"
+GONGGAO g "LEDE源码默认是带两套qbittorrent插件的，一套完整版，一套精简版"
+GONGGAO g "精简版不管你选择没选择qbittorrentd都会默认编译进固件的，就是在页面不显示而已"
+GONGGAO g "我写了个判断，如果不选择qbittorrentd就把相关的默认选项都去除了"
+GONGGAO g "重新改了一下定时更新插件的MD5对比方式,有用定时更新插件的更新仓库后重新编译的固件自己手动安装一次,以后才会对比MD5成功,要不然一直对比失败的"
 echo
 echo
 }
