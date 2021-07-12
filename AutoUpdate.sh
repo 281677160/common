@@ -273,7 +273,7 @@ if [[ ! "${Force_Update}" == 1 ]];then
 	fi
   	if [[ "${CURRENT_Version}" -lt "${CLOUD_Version}" ]];then
 		[[ "${AutoUpdate_Mode}" == 1 ]] && exit 0
-		TIME && read -p "当前版本高于云端最新版,是否强制覆盖固件?[Y/n]:" Choose
+		TIME && read -p "云端最高版本,低于您现在的版本,是否强制覆盖现有固件?[Y/n]:" Choose
 		[[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
 			TIME z "正在开始使用云端版本覆盖现有固件..."
 		} || {
