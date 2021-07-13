@@ -70,7 +70,6 @@ fi
 ################################################################################################################
 Diy_lienol() {
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' | xargs -i rm -rf {}
-find . -name 'luci-app-adguardhome' -o -name 'adguardhome' | xargs -i rm -rf {}
 rm -rf feeds/packages/libs/libcap
 
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
