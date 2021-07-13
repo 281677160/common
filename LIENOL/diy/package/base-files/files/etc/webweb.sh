@@ -20,8 +20,6 @@ if [[ `grep -c "x86" /etc/openwrt_release` -eq '0' ]]; then
   sed -i "s/x86_64/${DISTRIB_TARGET}/g" /etc/banner
 fi
 
-chmod +x /etc/adgup && bash /etc/adgup
-
 rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
 exit 0
