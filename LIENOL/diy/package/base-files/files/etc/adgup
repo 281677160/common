@@ -7,7 +7,7 @@ if [[ $? == 0 ]];then
 		sleep 91
 		rm -rf /etc/adgup
 		exit 0
+	else
+		exit 0
 	fi
-else
-	exit 0
 fi
