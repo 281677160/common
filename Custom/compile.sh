@@ -128,6 +128,7 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 		;;
 	esac
 fi
+Ubuntu_mz="$(cat /etc/group | grep adm | cut -f2 -d,)"
 Ubuntu_kj="$(df -h | grep "/dev/*/" | awk '{print $4}' | awk 'NR==1' | sed 's/.$//g')"
 if [[ "${Ubuntu_kj}" -lt "20" ]];then
 	echo
@@ -422,6 +423,7 @@ TIME g "正在加载源和安装源,请耐心等候~~~"
 echo
 sed -i "/uci commit fstab/a\uci commit network" $ZZZ
 sed -i "/uci commit network/i\uci set network.lan.ipaddr='$ip'" $ZZZ
+sed -i "s/OpenWrt /${Ubuntu_mz} Compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ
 echo
 sed -i 's/"管理权"/"改密码"/g' `grep "管理权" -rl ./feeds/luci/modules/luci-base`
