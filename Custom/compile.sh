@@ -516,24 +516,24 @@ clear
 echo
 echo
 echo
-TIME y "您的CPU型号为[ ${CPUNAME} ]"
+TIME l "您的CPU型号为[ ${CPUNAME} ]"
 echo
 echo
-TIME y "在Ubuntu使用核心数为[ ${CPUCORES} ],线程数为[ $(nproc) ]"
+TIME l "在Ubuntu使用核心数为[ ${CPUCORES} ],线程数为[ $(nproc) ]"
 echo
 echo
 if [[ "$(nproc)" == "1" ]]; then
-	TIME y "正在使用[$(nproc)线程]编译固件,预计要[3.5]小时左右,请耐心等待..."
+	TIME l "正在使用[$(nproc)线程]编译固件,预计要[3.5]小时左右,请耐心等待..."
 elif [[ "$(nproc)" =~ (2|3) ]]; then
-	TIME y "正在使用[$(nproc)线程]编译固件,预计要[3]小时左右,请耐心等待..."
+	TIME l "正在使用[$(nproc)线程]编译固件,预计要[3]小时左右,请耐心等待..."
 elif [[ "$(nproc)" =~ (4|5) ]]; then
-	TIME y "正在使用[$(nproc)线程]编译固件,预计要[2.5]小时左右,请耐心等待..."
+	TIME l "正在使用[$(nproc)线程]编译固件,预计要[2.5]小时左右,请耐心等待..."
 elif [[ "$(nproc)" =~ (6|7) ]]; then
-	TIME y "正在使用[$(nproc)线程]编译固件,预计要[2]小时左右,请耐心等待..."
+	TIME l "正在使用[$(nproc)线程]编译固件,预计要[2]小时左右,请耐心等待..."
 elif [[ "$(nproc)" =~ (8|9) ]]; then
-	TIME y "正在使用[$(nproc)线程]编译固件,预计要[1.5]小时左右,请耐心等待..."
+	TIME l "正在使用[$(nproc)线程]编译固件,预计要[1.5]小时左右,请耐心等待..."
 else
-	TIME y "正在使用[$(nproc)线程]编译固件,预计要[1]小时左右,请耐心等待..."
+	TIME l "正在使用[$(nproc)线程]编译固件,预计要[1]小时左右,请耐心等待..."
 fi
 sleep 15s
 make -j$(nproc) V=s 2>&1 |tee build.log
