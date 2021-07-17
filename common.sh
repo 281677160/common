@@ -26,7 +26,7 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 # LEDE源码通用diy.sh文件
 ################################################################################################################
 Diy_lede() {
-find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' | xargs -i rm -rf {}
+find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
 find . -name 'luci-app-ipsec-vpnd' -o -name 'k3screenctrl' -o -name 'luci-app-fileassistant' | xargs -i rm -rf {}
 find . -name 'luci-theme-netgear' | xargs -i rm -rf {}
 
