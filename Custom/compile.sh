@@ -582,7 +582,7 @@ if [ "$?" == "0" ]; then
 	rm -rf $Home/Openwrt.info
 	rm -rf ${Home}/upgrade
 	cd ${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-	rename -v "s/^openwrt/${date1}-${CODE}/" *
+	rename -v "s/^openwrt/${date1}-${CODE}/" * > /dev/null 2>&1
 	cd ${Home}
 	sleep 5
 	exit 0
