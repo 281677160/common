@@ -86,7 +86,7 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 		echo
 		TIME r "没检测到openwrt文件夹有执行文件，自动转换成首次编译命令编译固件，请稍后..."
 		rm -rf {openwrt,openwrtl,dl,.bf_config,compile.sh}
-		rm -rf {.Lede_core,.Lienol_core,.amlogic_core}
+		rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core}
 		bash <(curl -fsSL git.io/JcGDV)
 	fi
 	echo
@@ -118,7 +118,7 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 			echo
 			TIME r "您选择更改源码，正在清理旧文件中，请稍后..."
 			rm -rf {openwrt,openwrtl,dl,.bf_config,compile.sh}
-			rm -rf {.Lede_core,.Lienol_core,.amlogic_core}
+			rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core}
 			bash <(curl -fsSL git.io/JcGDV)
 		;;
 		*)
@@ -356,7 +356,7 @@ Home="$PWD/openwrt"
 PATH1="$PWD/openwrt/build/${firmware}"
 [[ -e ${Core} ]] && cp -Rf {.bf_config,compile.sh,${Core},dl} $Home
 rm -rf {.bf_config,compile.sh,dl}
-rm -rf {.Lede_core,.Lienol_core,.amlogic_core}
+rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core}
 echo "Compile_Date=$(date +%Y%m%d%H%M)" > $Home/Openwrt.info
 [ -f $Home/Openwrt.info ] && . $Home/Openwrt.info
 svn co https://github.com/281677160/AutoBuild-OpenWrt/trunk/build $Home/build > /dev/null 2>&1
