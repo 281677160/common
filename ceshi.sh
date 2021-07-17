@@ -431,7 +431,6 @@ echo
 TIME g "正在加载源和安装源,请耐心等候~~~"
 echo
 sed -i "/uci commit fstab/a\uci commit network" $ZZZ
-sed -i "/uci commit network/i\uci set network.lan.ipaddr='$ip'" $ZZZ
 sed -i "s/OpenWrt /${Ubuntu_mz} Compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ
 echo
@@ -501,8 +500,8 @@ elif [[ "$(nproc)" =~ (8|9) ]]; then
 else
 	TIME y "正在使用[$(nproc)线程]编译固件,预计要[1]小时左右,请耐心等待..."
 fi
-sleep 15s
-make -j$(nproc) V=s 2>&1 |tee build.log
+
+sed -i "/uci commit network/i\uci set network.lan.ipaddr='$ip'" $ZZZ
 
 if [ "$?" == "0" ]; then
 	[[ `grep -c "please re-run with -j1 to see" build.log` -ge '1' ]] && {
