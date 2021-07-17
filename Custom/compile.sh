@@ -50,7 +50,7 @@ XTbit=`getconf LONG_BIT`
 	sudo apt-get update -y
 	sudo apt-get full-upgrade -y
 	sudo apt-get install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 lib32stdc++6 subversion flex uglifyjs gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler libpcap0.8-dev g++-multilib antlr3 gperf wget curl rename swig rsync
-	[[ $? -ne 0 ]] && {
+	[[ ! $? == 0 ]] && {
 		clear
 		echo
 		TIME r "环境部署失败，请检测网络或更换节点再尝试!"
@@ -118,7 +118,8 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 			echo
 			echo
 			TIME r "您选择更改源码，正在清理旧文件中，请稍后..."
-			rm -rf {openwrt,openwrtl,dl,.bf_config,compile.sh}
+			rm -rf openwrt
+			rm -rf {openwrtl,dl,.bf_config,compile.sh}
 			rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core}
 			bash <(curl -fsSL git.io/JcGDV)
 		;;
@@ -582,6 +583,7 @@ if [ "$?" == "0" ]; then
 	cd ${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 	rename -v "s/^openwrt/${date1}-${CODE}/" *
 	cd ${Home}
+	exit 0
 else
 	echo
 	echo
@@ -591,6 +593,8 @@ else
 	echo
 	TIME y "在电脑上查看build.log文件日志详情！"
 	echo
+	exit 1
 fi
 cd ${Dan}
+rm -rf compile.sh
 exit 0
