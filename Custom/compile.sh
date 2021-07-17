@@ -535,6 +535,10 @@ sleep 15s
 make -j$(nproc) V=s 2>&1 |tee build.log
 
 if [ "$?" == "0" ]; then
+	if [[ `grep -c "please re-run with -j1 to see" build.log` -ge '1' ]]; then
+		TIME r "编译失败~~!"
+		exit 1
+	fi
 	End="$(date "+%Y/%m/%d-%H.%M")"
 	rm -rf $Home/build.log
 	clear
@@ -585,7 +589,6 @@ else
 fi
 cd ../
 rm -rf compile.sh
-sleep 2s
 echo
 echo
 exit 0
