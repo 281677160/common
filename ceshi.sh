@@ -395,12 +395,6 @@ elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
           cp -Rf build/common/LIENOL/diy/* ./
 	  cp -Rf build/common/LIENOL/patches/* "${PATH1}/patches"
 fi
-source build/${firmware}/common.sh && Diy_all
-[[ $? -ne 0 ]] && {
-	TIME r "插件包下载失败，请检测网络或更换节点再尝试!"
-	echo
-	exit 1
-}
 if [[ $firmware == "openwrt_amlogic" ]]; then
 	packages=" \
 	brcmfmac-firmware-43430-sdio brcmfmac-firmware-43455-sdio kmod-brcmfmac wpad \
