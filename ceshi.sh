@@ -541,8 +541,9 @@ if [ "$?" == "0" ]; then
 	rm -rf $Home/Openwrt.info
 	rm -rf ${Home}/upgrade
 	cd ${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-	rename -v "s/^openwrt/${date1}-${CODE}/" *
+	rename -v "s/^openwrt/${date1}-${CODE}/" * > /dev/null 2>&1
 	cd ${Home}
+	sleep 5
 	exit 0
 else
 	echo
@@ -553,8 +554,10 @@ else
 	echo
 	TIME y "在电脑上查看build.log文件日志详情！"
 	echo
+	sleep 5
 	exit 1
 fi
 cd ${Dan}
 rm -rf compile.sh
+sleep 5
 exit 0
