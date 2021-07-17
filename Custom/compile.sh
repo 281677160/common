@@ -352,6 +352,7 @@ elif [[ $firmware == "openwrt_amlogic" ]]; then
 	echo -e "\nipdz=$ip" > openwrt/.amlogic_core
 	echo -e "\nGit=$Github" >> openwrt/.amlogic_core
 fi
+Dan="$PWD"
 Home="$PWD/openwrt"
 PATH1="$PWD/openwrt/build/${firmware}"
 [[ -e ${Core} ]] && cp -Rf {.bf_config,compile.sh,${Core},dl} $Home
@@ -570,12 +571,15 @@ if [ "$?" == "0" ]; then
 		TIME g "加入‘定时升级固件插件’的固件已经放入[bin/Firmware]文件夹中"
 		echo
 	fi
-	rm -rf $Home/Openwrt.info
-	rm -rf ${Home}/upgrade
 	if [[ $firmware == "openwrt_amlogic" ]]; then
 		cp -Rf ${Home}/bin/targets/*/*/*.tar.gz ${Home}/openwrt-armvirt/ && sync
 		TIME l "请输入一键打包命令进行打包固件，打包成功后，固件存放在[openwrt/out]文件夹中"
 	fi
+	rm -rf $Home/Openwrt.info
+	rm -rf ${Home}/upgrade
+	cd ${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+	rename -v "s/^openwrt/${date1}-${CODE}/" *
+	cd ${Home}
 else
 	echo
 	echo
@@ -586,8 +590,5 @@ else
 	TIME y "在电脑上查看build.log文件日志详情！"
 	echo
 fi
-cd ../
-rm -rf compile.sh
-echo
-echo
+cd ${Dan}
 exit 0
