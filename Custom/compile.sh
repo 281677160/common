@@ -49,7 +49,7 @@ XTbit=`getconf LONG_BIT`
 	sleep 2s
 	sudo apt-get update -y
 	sudo apt-get full-upgrade -y
-	sudo apt-get install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 lib32stdc++6 subversion flex uglifyjs gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler libpcap0.8-dev g++-multilib antlr3 gperf wget curl swig rsync
+	sudo apt-get install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 lib32stdc++6 subversion flex uglifyjs gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler libpcap0.8-dev g++-multilib antlr3 gperf wget curl rename swig rsync
 	[[ $? -ne 0 ]] && {
 		clear
 		echo
@@ -172,21 +172,25 @@ fi
 	case $CHOOSE in
 		1)
 			firmware="Lede_source"
+			CODE="lede"
 			TIME y "您选择了：Lede_5.10内核,LUCI 18.06版本"
 		break
 		;;
 		2)
 			firmware="Lienol_source"
+			CODE="lienol"
 			TIME y "您选择了：Lienol_4.14内核,LUCI 19.07版本"
 		break
 		;;
 		3)
 			firmware="Mortal_source"
+			CODE="mortal"
 			TIME y "您选择了：Immortalwrt_5.4内核,LUCI 21.02版本"
 		break
 		;;
 		4)
 			firmware="openwrt_amlogic"
+			CODE="lede"
 			TIME y "您选择了：N1和晶晨系列CPU盒子专用"
 		break
 		;;
@@ -253,7 +257,8 @@ echo
 	echo -e "\nipdz=$ip" > ${Core}
 	echo -e "\nGit=$Github" >> ${Core}
 }
-Begin="$(TZ=UTC-8 date "+%Y/%m/%d-%H.%M")"
+Begin="$(date "+%Y/%m/%d-%H.%M")"
+date1="$(date +'%m.%d')"
 echo
 TIME g "正在下载源码中,请耐心等候~~~"
 echo
@@ -530,7 +535,7 @@ sleep 15s
 make -j$(nproc) V=s 2>&1 |tee build.log
 
 if [ "$?" == "0" ]; then
-	End="$(TZ=UTC-8 date "+%Y/%m/%d-%H.%M")"
+	End="$(date "+%Y/%m/%d-%H.%M")"
 	rm -rf $Home/build.log
 	clear
 	echo
@@ -563,6 +568,7 @@ if [ "$?" == "0" ]; then
 	fi
 	rm -rf $Home/Openwrt.info
 	rm -rf ${Home}/upgrade
+	rename -v "s/^openwrt/${date1}-${CODE}/" *
 	if [[ $firmware == "openwrt_amlogic" ]]; then
 		cp -Rf ${Home}/bin/targets/*/*/*.tar.gz ${Home}/openwrt-armvirt/ && sync
 		TIME l "请输入一键打包命令进行打包固件，打包成功后，固件存放在[openwrt/out]文件夹中"
