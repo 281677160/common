@@ -325,7 +325,6 @@ fi
 	TARGET_model="${amlogic_model}"
 }
 
-CONFIG_ARCH="x86_64"
 if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${Home}/.config` -eq '1' ]]; then
 	Arch="amd64"
 elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${Home}/.config` -eq '1' ]]; then
