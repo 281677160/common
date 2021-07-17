@@ -572,7 +572,6 @@ if [ "$?" == "0" ]; then
 	fi
 	rm -rf $Home/Openwrt.info
 	rm -rf ${Home}/upgrade
-	rename -v "s/^openwrt/${date1}-${CODE}/" *
 	if [[ $firmware == "openwrt_amlogic" ]]; then
 		cp -Rf ${Home}/bin/targets/*/*/*.tar.gz ${Home}/openwrt-armvirt/ && sync
 		TIME l "请输入一键打包命令进行打包固件，打包成功后，固件存放在[openwrt/out]文件夹中"
