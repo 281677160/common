@@ -350,6 +350,7 @@ if [[ ! "${REPO_BRANCH}" == "master" ]]; then
 	tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${Home}
 	mkdir -p files/usr/bin
 	mv -f AdGuardHome/AdGuardHome files/usr/bin
+	chmod 777 files/usr/bin/AdGuardHome
 	rm -rf {AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
 fi
 }
