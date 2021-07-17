@@ -46,6 +46,7 @@ XTbit=`getconf LONG_BIT`
 	TIME z "|              编译环境部署                 |"
 	TIME g "|                                           |"
 	TIME r "|*******************************************|"
+	echo
 	sleep 2s
 	sudo apt-get update -y
 	sudo apt-get full-upgrade -y
