@@ -538,6 +538,7 @@ make -j$(nproc) V=s 2>&1 |tee build.log
 if [ "$?" == "0" ]; then
 	[[ `grep -c "please re-run with -j1 to see" build.log` -ge '1' ]] && {
 		TIME r "编译失败~~!"
+		TIME y "请不要使用桌面版ubuntu编译，或者检测网络或者更换节点再尝试"
 		exit 1
 	}
 	End="$(date "+%Y/%m/%d-%H.%M")"
