@@ -544,6 +544,7 @@ if [ "$?" == "0" ]; then
 		TIME y "请不要使用桌面版ubuntu编译，或者检测网络或者更换节点再尝试"
 		exit 1
 	}
+	byend="1"
 	End="$(date "+%Y/%m/%d-%H.%M")"
 	rm -rf $Home/build.log
 	clear
@@ -595,10 +596,11 @@ else
 	echo
 	TIME y "在电脑上查看build.log文件日志详情！"
 	echo
+	byend="1"
 	sleep 5
 	exit 1
 fi
-cd ${Dan}
-rm -rf compile.sh
-sleep 10
-exit 0
+if [[ "${byend}" == "1" ]]; then
+	sleep 5
+	exit 0
+fi
