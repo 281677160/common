@@ -87,7 +87,7 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 		echo
 		echo
 		TIME r "没检测到openwrt文件夹有执行文件，自动转换成首次编译命令编译固件，请稍后..."
-		rm -rf {openwrt,openwrtl,dl,.bf_config,compile.sh}
+		rm -rf {openwrt,openwrtl,dl,.bf_config,compile.sh,.compile}
 		rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core}
 		bash <(curl -fsSL git.io/JcGDV)
 	fi
