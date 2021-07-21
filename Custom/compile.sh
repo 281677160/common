@@ -63,7 +63,7 @@ XTbit=`getconf LONG_BIT`
 	echo "compile" > .compile
 	}
 }
-rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core,.bf_config}
+rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core,dl,.bf_config,compile.sh}
 if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 	if [[ -n "$(ls -A "openwrt/.Lede_core" 2>/dev/null)" ]]; then
 		firmware="Lede_source"
