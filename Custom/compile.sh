@@ -122,7 +122,6 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 			rm -rf openwrt
 			rm -rf {openwrtl,dl,.bf_config,compile.sh}
 			rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core}
-			bash <(curl -fsSL git.io/JcGDV)
 		;;
 		*)
 			YUAN_MA="false"
