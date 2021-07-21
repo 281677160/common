@@ -120,12 +120,13 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 			echo
 			TIME r "您选择更改源码，正在清理旧文件中，请稍后..."
 			rm -rf openwrt
-			rm -rf {openwrtl,dl,.bf_config,compile.sh}
+			rm -rf openwrtl
+			rm -rf {dl,.bf_config,compile.sh}
 			rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core}
 		;;
 		*)
 			YUAN_MA="false"
-			TIME y "您已关闭更换源码编译固件，保存配置中，请稍后..."
+			TIME y "您已关闭更换源码，保存配置中，请稍后..."
 			cp -Rf openwrt/{.bf_config,compile.sh,${Core},dl} ./
 		;;
 	esac
