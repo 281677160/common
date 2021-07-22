@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sleep 2
+sleep 3
 
 sed -i '/coremark.sh/d' /etc/crontabs/root
 
