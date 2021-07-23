@@ -15,7 +15,7 @@ sed -i 's/%>)<\/a> \//%>)<\/a> \/-->/g' /usr/lib/lua/luci/view/themes/*/footer.h
 
 cp -Rf /etc/config/network /mnt/network
 
-if [[ `grep -c "x86" /etc/openwrt_release` -eq '0' ]]; then
+if [[ `grep -c "x86_64" /etc/openwrt_release` -eq '0' ]]; then
   source /etc/openwrt_release
   sed -i "s/x86_64/${DISTRIB_TARGET}/g" /etc/banner
 fi
