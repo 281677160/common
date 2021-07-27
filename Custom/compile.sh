@@ -436,6 +436,7 @@ uci set network.lan.ipaddr='192.168.2.2'
 uci commit network
 uci set system.@system[0].hostname='OpenWrt-123'
 EOF
+sed -i "s/OpenWrt /${Ubuntu_mz} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ
 echo
 sed -i 's/"管理权"/"改密码"/g' `grep "管理权" -rl ./feeds/luci/modules/luci-base`
