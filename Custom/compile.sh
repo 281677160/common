@@ -359,6 +359,7 @@ fi
 Dan="$PWD"
 Home="$PWD/openwrt"
 PATH1="$PWD/openwrt/build/${firmware}"
+NETIP="package/base-files/files/etc/networkip"
 [[ -e ${Core} ]] && cp -Rf {.bf_config,compile.sh,${Core},dl} $Home
 rm -rf {.bf_config,compile.sh,dl}
 rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core}
@@ -431,9 +432,11 @@ fi
 echo
 TIME g "正在加载源和安装源,请耐心等候~~~"
 echo
-sed -i "/uci commit fstab/a\uci commit network" $ZZZ
-sed -i "/uci commit network/i\uci set network.lan.ipaddr='$ip'" $ZZZ
-sed -i "s/OpenWrt /${Ubuntu_mz} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ
+cat >$NETIP <<-EOF
+uci set network.lan.ipaddr='192.168.2.2'
+uci commit network
+uci set system.@system[0].hostname='OpenWrt-123'
+EOF
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ
 echo
 sed -i 's/"管理权"/"改密码"/g' `grep "管理权" -rl ./feeds/luci/modules/luci-base`
