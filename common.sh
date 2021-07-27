@@ -134,8 +134,9 @@ fi
 # s905x3_s905x2_s905x_s905d_s922x_s912 一键打包脚本
 ################################################################################################################
 Diy_amlogic() {
-svn co https://github.com/ophub/amlogic-s9xxx-openwrt/trunk/amlogic-s9xxx $GITHUB_WORKSPACE/amlogic-s9xxx > /dev/null 2>&1
-curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/make >$GITHUB_WORKSPACE/make
+git clone https://github.com/ophub/amlogic-s9xxx-openwrt
+mv amlogic-s9xxx-openwrt/{amlogic-s9xxx,make} $GITHUB_WORKSPACE
+rm -rf amlogic-s9xxx-openwrt
 source $GITHUB_WORKSPACE/amlogic_openwrt
 if [[ ${amlogic_kernel} == "5.12.12_5.4.127" ]]; then
 	curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open.yml
