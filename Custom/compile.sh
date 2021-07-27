@@ -432,9 +432,8 @@ echo
 TIME g "正在加载源和安装源,请耐心等候~~~"
 echo
 cat >$NETIP <<-EOF
-uci set network.lan.ipaddr='192.168.2.2'
+uci set network.lan.ipaddr='$ip'
 uci commit network
-uci set system.@system[0].hostname='OpenWrt-123'
 EOF
 sed -i "s/OpenWrt /${Ubuntu_mz} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ
