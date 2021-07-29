@@ -300,19 +300,20 @@ cat /proc/cpuinfo | grep "cpu cores" | uniq >> CPU
 sed -i 's|[[:space:]]||g; s|^.||' CPU && sed -i 's|CPU||g; s|pucores:||' CPU
 CPUNAME="$(awk 'NR==1' CPU)" && CPUCORES="$(awk 'NR==2' CPU)"
 rm -rf CPU
-find . -name 'LICENSE' -o -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
+find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
-
-[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
-[[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]] && {
-	curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open.yml
-	Make_ker="$(cat open.yml | grep ./make | cut -d "k" -f3 | sed s/[[:space:]]//g)"
-	TARGET_kernel="${Make_ker}"
-	TARGET_model="${amlogic_model}"
-} || {
-	TARGET_kernel="${amlogic_kernel}"
-	TARGET_model="${amlogic_model}"
-}
+if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
+	[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
+	[[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]] && {
+		curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open.yml
+		Make_ker="$(cat open.yml | grep ./make | cut -d "k" -f3 | sed s/[[:space:]]//g)"
+		TARGET_kernel="${Make_ker}"
+		TARGET_model="${amlogic_model}"
+	} || {
+		TARGET_kernel="${amlogic_kernel}"
+		TARGET_model="${amlogic_model}"
+	}
+fi
 
 if [[ "${REPO_BRANCH}" == "master" ]]; then
 	sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
@@ -325,8 +326,6 @@ elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${Home}/.config` -eq '1' ]]; then
 	Arch="i386"
 elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${Home}/.config` -eq '1' ]]; then
 	Arch="arm64"
-elif [[ `grep -c "CONFIG_ARCH=\"mipsel\"" ${Home}/.config` -eq '1' ]]; then
-	Arch="mipsle_softfloat"
 elif [[ `grep -c "CONFIG_ARCH=\"armeb\"" ${Home}/.config` -eq '1' ]]; then
 	Arch="armeb"
 fi
