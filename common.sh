@@ -285,9 +285,6 @@ if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
 	for X in $(ls -1 target/linux/x86 | grep "config-"); do echo -e "\n$(cat target/linux/x86/DRM-I915)" >> target/linux/x86/${X}; done
 fi
 
-find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
-find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
-
 if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 	[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
 	[[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]] && {
