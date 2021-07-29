@@ -315,8 +315,6 @@ elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${Home}/.config` -eq '1' ]]; then
 	Arch="i386"
 elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${Home}/.config` -eq '1' ]]; then
 	Arch="arm64"
-elif [[ `grep -c "CONFIG_ARCH=\"armeb\"" ${Home}/.config` -eq '1' ]]; then
-	Arch="armeb"
 fi
 if [[ `grep -c "CONFIG_ARCH=\"arm\"" ${Home}/.config` -eq '1' ]]; then
 	if [[ `grep -c "CONFIG_arm_v7=y" ${Home}/.config` -eq '1' ]]; then
