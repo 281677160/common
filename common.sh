@@ -304,31 +304,7 @@ if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 	}
 fi
 
-if [[ "${REPO_BRANCH}" == "master" ]]; then
-	sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
-	sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
-fi
 
-if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${Home}/.config` -eq '1' ]]; then
-	Arch="amd64"
-elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${Home}/.config` -eq '1' ]]; then
-	Arch="i386"
-elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${Home}/.config` -eq '1' ]]; then
-	Arch="arm64"
-fi
-if [[ `grep -c "CONFIG_ARCH=\"arm\"" ${Home}/.config` -eq '1' ]]; then
-	if [[ `grep -c "CONFIG_arm_v7=y" ${Home}/.config` -eq '1' ]]; then
-		Arch="armv7"
-	fi	
-fi
-downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
-latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
-wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
-tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${Home}
-mkdir -p files/usr/bin
-mv -f AdGuardHome/AdGuardHome files/usr/bin
-chmod 777 files/usr/bin/AdGuardHome
-rm -rf {AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
 }
 
 
