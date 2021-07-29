@@ -301,7 +301,63 @@ if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 	}
 fi
 
+if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${Home}/.config` -eq '1' ]]; then
+	Arch="amd64"
+elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${Home}/.config` -eq '1' ]]; then
+	Arch="i386"
+elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${Home}/.config` -eq '1' ]]; then
+	Arch="arm64"
+elif [[ `grep -c "CONFIG_ARCH=\"mipsel\"" ${Home}/.config` -eq '1' ]]; then
+	Arch="mipsle_softfloat"
+elif [[ `grep -c "CONFIG_ARCH=\"armeb\"" ${Home}/.config` -eq '1' ]]; then
+	Arch="armeb"
+fi
+if [[ `grep -c "CONFIG_ARCH=\"arm\"" ${Home}/.config` -eq '1' ]]; then
+	if [[ `grep -c "CONFIG_arm_v7=y" ${Home}/.config` -eq '1' ]]; then
+		Arch="armv7"
+	fi	
+fi
+if [[ ! "${Arch}" =~ (amd64|i386|mipsle_softfloat|armeb|armv7) ]]; then
+	downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
+	latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
+	wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
+	tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${Home}
+	mkdir -p files/usr/bin
+	mv -f AdGuardHome/AdGuardHome files/usr/bin
+	chmod 777 files/usr/bin/AdGuardHome
+	rm -rf {AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
+fi
 
+[[ "${BY_INFORMATION}" == "true" ]] && {
+	grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
+	grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
+	if [[ `grep -c "CONFIG_PACKAGE_luci-i18n-qbittorrent-zh-cn=y" ${Home}/.config` -eq '0' ]]; then
+		sed -i '/qbittorrent/d' Plug-in
+	fi
+	sed -i '/INCLUDE/d' Plug-in > /dev/null 2>&1
+	sed -i 's/CONFIG_PACKAGE_/、/g' Plug-in
+	sed -i 's/=y/\"/g' Plug-in
+	awk '$0=NR$0' Plug-in > Plug-2
+	awk '{print "	" $0}' Plug-2 > Plug-in
+	sed -i "s/^/TIME g \"/g" Plug-in
+	cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c > CPU
+	cat /proc/cpuinfo | grep "cpu cores" | uniq >> CPU
+	sed -i 's|[[:space:]]||g; s|^.||' CPU && sed -i 's|CPU||g; s|pucores:||' CPU
+	CPUNAME="$(awk 'NR==1' CPU)" && CPUCORES="$(awk 'NR==2' CPU)"
+	rm -rf CPU
+	if [[ `grep -c "KERNEL_PATCHVER:=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
+		PATCHVER=$(grep KERNEL_PATCHVER:= ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -c18-100)
+	elif [[ `grep -c "KERNEL_PATCHVER=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
+		PATCHVER=$(grep KERNEL_PATCHVER= ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -c17-100)
+	else
+		PATCHVER=unknown
+	fi
+	if [[ "${PATCHVER}" != "unknown" ]]; then
+		PATCHVER=$(egrep -o "${PATCHVER}.[0-9]+" ${Home}/include/kernel-version.mk)
+	fi
+}
+find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
+find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
 }
 
 
@@ -361,35 +417,9 @@ exit 1
 ################################################################################################################
 Diy_xinxi_Base() {
 GET_TARGET_INFO
-
-grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
-grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
-sed -i '/INCLUDE/d' Plug-in > /dev/null 2>&1
-sed -i 's/CONFIG_PACKAGE_/、/g' Plug-in
-sed -i 's/=y/\"/g' Plug-in
-awk '$0=NR$0' Plug-in > Plug-2
-awk '{print "	" $0}' Plug-2 > Plug-in
-sed -i "s/^/TIME g \"/g" Plug-in
-cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c > CPU
-cat /proc/cpuinfo | grep "cpu cores" | uniq >> CPU
-sed -i 's|[[:space:]]||g; s|^.||' CPU && sed -i 's|CPU||g; s|pucores:||' CPU
-CPUNAME="$(awk 'NR==1' CPU)" && CPUCORES="$(awk 'NR==2' CPU)"
-rm -rf CPU
-
-if [[ `grep -c "KERNEL_PATCHVER:=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
-	PATCHVER=$(grep KERNEL_PATCHVER:= ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -c18-100)
-elif [[ `grep -c "KERNEL_PATCHVER=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
-	PATCHVER=$(grep KERNEL_PATCHVER= ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -c17-100)
-else
-	PATCHVER=unknown
-fi
-if [[ "${PATCHVER}" != "unknown" ]]; then
-	PATCHVER=$(egrep -o "${PATCHVER}.[0-9]+" ${Home}/include/kernel-version.mk)
-fi
 if [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
 	REGULAR_UPDATE="false"
 fi
-
 echo
 TIME b "编译源码: ${CODE}"
 TIME b "源码链接: ${REPO_URL}"
