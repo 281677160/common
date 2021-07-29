@@ -321,7 +321,7 @@ if [[ "${Arch}" =~ (amd64|i386|mipsle_softfloat|armeb|armv7) ]]; then
 	rm -rf {AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
 fi
 
-[[ "${BY_INFORMATION}" == "true" ]] && {
+if [[ "${BY_INFORMATION}" == "true" ]]; then
 	grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
 	grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
 	if [[ `grep -c "CONFIG_PACKAGE_luci-i18n-qbittorrent-zh-cn=y" ${Home}/.config` -eq '0' ]]; then
@@ -348,7 +348,7 @@ fi
 	if [[ "${PATCHVER}" != "unknown" ]]; then
 		PATCHVER=$(egrep -o "${PATCHVER}.[0-9]+" ${Home}/include/kernel-version.mk)
 	fi
-}
+fi
 find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
 }
