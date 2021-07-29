@@ -284,24 +284,13 @@ if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
 	cp -Rf "${Home}"/build/common/Custom/DRM-I915 target/linux/x86/DRM-I915
 	for X in $(ls -1 target/linux/x86 | grep "config-"); do echo -e "\n$(cat target/linux/x86/DRM-I915)" >> target/linux/x86/${X}; done
 fi
-grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
-grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
 if [[ `grep -c "CONFIG_PACKAGE_luci-i18n-qbittorrent-zh-cn=y" ${Home}/.config` -eq '0' ]]; then
 	sed -i '/qbittorrent/d' Plug-in
 fi
-sed -i '/INCLUDE/d' Plug-in > /dev/null 2>&1
-sed -i 's/CONFIG_PACKAGE_/、/g' Plug-in
-sed -i 's/=y/\"/g' Plug-in
-awk '$0=NR$0' Plug-in > Plug-2
-awk '{print "	" $0}' Plug-2 > Plug-in
-sed -i "s/^/TIME g \"/g" Plug-in
-cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c > CPU
-cat /proc/cpuinfo | grep "cpu cores" | uniq >> CPU
-sed -i 's|[[:space:]]||g; s|^.||' CPU && sed -i 's|CPU||g; s|pucores:||' CPU
-CPUNAME="$(awk 'NR==1' CPU)" && CPUCORES="$(awk 'NR==2' CPU)"
-rm -rf CPU
+
 find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
+
 if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 	[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
 	[[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]] && {
@@ -401,14 +390,41 @@ exit 1
 ################################################################################################################
 Diy_xinxi_Base() {
 GET_TARGET_INFO
+
+grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
+grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
+sed -i '/INCLUDE/d' Plug-in > /dev/null 2>&1
+sed -i 's/CONFIG_PACKAGE_/、/g' Plug-in
+sed -i 's/=y/\"/g' Plug-in
+awk '$0=NR$0' Plug-in > Plug-2
+awk '{print "	" $0}' Plug-2 > Plug-in
+sed -i "s/^/TIME g \"/g" Plug-in
+cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c > CPU
+cat /proc/cpuinfo | grep "cpu cores" | uniq >> CPU
+sed -i 's|[[:space:]]||g; s|^.||' CPU && sed -i 's|CPU||g; s|pucores:||' CPU
+CPUNAME="$(awk 'NR==1' CPU)" && CPUCORES="$(awk 'NR==2' CPU)"
+rm -rf CPU
+
+if [[ `grep -c "KERNEL_PATCHVER:=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
+	PATCHVER=$(grep KERNEL_PATCHVER:= ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -c18-100)
+elif [[ `grep -c "KERNEL_PATCHVER=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
+	PATCHVER=$(grep KERNEL_PATCHVER= ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -c17-100)
+else
+	PATCHVER=unknown
+fi
+if [[ "${PATCHVER}" != "unknown" ]]; then
+	PATCHVER=$(egrep -o "${PATCHVER}.[0-9]+" ${Home}/include/kernel-version.mk)
+fi
 if [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
 	REGULAR_UPDATE="false"
 fi
+
 echo
 TIME b "编译源码: ${CODE}"
 TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${ZUOZHE}"
+TIME b "默认内核: ${PATCHVER}"
 TIME b "Luci版本: ${OpenWrt_name}"
 [[ "${Modelfile}" == "openwrt_amlogic" ]] && {
 	TIME b "编译机型: ${TARGET_model}"
