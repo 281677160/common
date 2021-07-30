@@ -324,9 +324,6 @@ fi
 if [[ "${BY_INFORMATION}" == "true" ]]; then
 	grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
 	grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
-	if [[ `grep -c "CONFIG_PACKAGE_luci-i18n-qbittorrent-zh-cn=y" ${Home}/.config` -eq '0' ]]; then
-		sed -i '/qbittorrent/d' Plug-in
-	fi
 	sed -i '/INCLUDE/d' Plug-in > /dev/null 2>&1
 	sed -i 's/CONFIG_PACKAGE_/、/g' Plug-in
 	sed -i 's/=y/\"/g' Plug-in
