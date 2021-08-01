@@ -24,6 +24,8 @@ if [[ -e /usr/share/AdGuardHome ]] && [[ -e /etc/init.d/AdGuardHome ]]; then
  chmod -R +x /usr/share/AdGuardHome /etc/init.d/AdGuardHome
 fi
 
+chmod -R +x /etc/init.d
+
 rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
 exit 0
