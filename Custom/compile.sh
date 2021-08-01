@@ -471,10 +471,6 @@ fi
 if [ "${REGULAR_UPDATE}" == "true" ]; then
           source build/$firmware/upgrade.sh && Diy_Part2
 fi
-if [[ "${REPO_BRANCH}" == "master" ]]; then
-	sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
-	sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
-fi
 echo
 TIME g "正在下载DL文件,请耐心等待..."
 echo
