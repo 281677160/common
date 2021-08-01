@@ -1,11 +1,7 @@
 #!/bin/bash
 
-sleep 3
-
 sed -i 's/<a href/<!--<a href/g' /usr/lib/lua/luci/view/themes/*/footer.htm
 sed -i 's/%>)<\/a> \//%>)<\/a> \/-->/g' /usr/lib/lua/luci/view/themes/*/footer.htm
-
-sed -i '/coremark/d' /etc/crontabs/root
 
 [[ ! -f /mnt/network ]] && chmod +x /etc/networkip && source /etc/networkip
 
@@ -19,6 +15,10 @@ fi
 if [[ -e /usr/share/AdGuardHome ]] && [[ -e /etc/init.d/AdGuardHome ]]; then
  chmod -R +x /usr/share/AdGuardHome /etc/init.d/AdGuardHome
 fi
+
+sed -i '/coremark/d' /etc/crontabs/root
+
+chmod -R +x /etc/init.d
 
 rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
