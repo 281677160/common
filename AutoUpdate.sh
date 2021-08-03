@@ -334,13 +334,13 @@ sleep 2
 TIME g "正在更新固件,请耐心等待 ..."
 if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
 	cp -Rf /etc/config/network /mnt/network
-	mv -f /etc/config/luci /mnt/luci
+	mv -f /etc/config/luci /etc/config/luci-
 	sysupgrade -b /mnt/back.tar.gz
 	[[ $? == 0 ]] && {
-		mv -f /mnt/luci /etc/config/luci
+		mv -f /etc/config/luci- /etc/config/luci
 		export Upgrade_Options="sysupgrade -f /mnt/back.tar.gz"
 	} || {
-		mv -f /mnt/luci /etc/config/luci
+		mv -f /etc/config/luci- /etc/config/luci
 		export Upgrade_Options="sysupgrade -q"
 	}
 fi
