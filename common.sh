@@ -518,15 +518,6 @@ TIME z " 系统空间      类型   总数  已用  可用 使用率"
 cd ../ && df -hT $PWD && cd openwrt
 echo
 echo
-TIME z "  本服务器的CPU型号为[ ${CPUNAME} ]"
-echo
-TIME z "  在此系统上使用核心数为[ ${CPUCORES} ],线程数为[ $(nproc) ]"
-echo
-TIME z "  经过几次测试,随机分配到E5系列CPU编译是最慢的,8171M的CPU快很多，8272CL的又比8171M快一丢丢！"
-echo
-TIME z "  如果你编译的插件较多，而你又分配到E5系列CPU的话，你可以考虑关闭了重新再来的！"
-echo
-TIME z "  下面将使用[ $(nproc)线程 ]编译固件"
 if [ -n "$(ls -A "${Home}/EXT4" 2>/dev/null)" ]; then
 	echo
 	echo
