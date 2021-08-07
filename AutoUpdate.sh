@@ -25,7 +25,7 @@ ${White}"
 echo
 rm -rf ${Download_Tags}
 [[ "${GOOGLECHECK}" == "1" ]] && {
-	wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} ${Github_Tagstwo}/${CURRENT_Device} -O ${Download_Path}/Github_Tags
+	wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} ${Github_Tagstwo} -O ${Download_Path}/Github_Tags
 } || {
 	wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Tags}
 }
@@ -73,7 +73,7 @@ export Apidz="${Github##*com/}"
 export Author="${Apidz%/*}"
 export CangKu="${Apidz##*/}"
 export Github_Tags="https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate"
-export Github_Tagstwo="https://ghproxy.com/${Github}/releases/download/AutoUpdate"
+export Github_Tagstwo="https://ghproxy.com/${Github}/releases/download/AutoUpdate/${DEFAULT_Device}"
 export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
 export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
 rm -rf "${Download_Path}" && export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
@@ -234,7 +234,7 @@ fi
 TIME g "正在获取云端固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 [[ "${GOOGLECHECK}" == "1" ]] && {
-	wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} ${Github_Tagstwo}/${CURRENT_Device} -O ${Download_Path}/Github_Tags
+	wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} ${Github_Tagstwo} -O ${Download_Path}/Github_Tags
 } || {
 	wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Tags}
 }
