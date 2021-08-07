@@ -381,33 +381,19 @@ GONGGAO() {
 }
 
 Diy_gonggao() {
-GONGGAO z "《Lede_source文件，Luci版本为18.06，内核版本为5.10》"
+GONGGAO y "《Lede_source文件，Luci版本为18.06，内核版本为5.10》"
 GONGGAO y "《Lienol_source文件，Luci版本为19.07，内核版本为4.14》"
-GONGGAO g "《Mortal_source文件，Luci版本为21.02，内核版本为5.4》"
-GONGGAO z "《openwrt_amlogic文件，编译N1和晶晨系列盒子专用，Luci版本为18.06，内核版本为5.4》"
+GONGGAO y "《Mortal_source文件，Luci版本为21.02，内核版本为5.4》"
+GONGGAO y "《openwrt_amlogic文件，编译N1和晶晨系列盒子专用，Luci版本为18.06，内核版本为5.4》"
 GONGGAO g "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
 GONGGAO g "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
 GONGGAO r "《如果编译脚本在这里就出现错误的话，意思就是不得不更新脚本了，怎么更新我会在这里写明》"
-GONGGAO y "7月11号修复定时更新不保存改过的IP、DNS、DHCP的问题，修复不保存adguardhome配置文件问题"
-GONGGAO g "7月12号把luci-app-ddnsto插件,重新加入插件包"
-GONGGAO g "7月12号修复LEDE源码不选择qbittorrent都会显示带有这个插件的问题"
-GONGGAO g "LEDE源码默认是带两套qbittorrent插件的，一套完整版，一套精简版"
-GONGGAO g "精简版不管你选择没选择qbittorrentd都会默认编译进固件的，就是在页面不显示而已"
-GONGGAO g "我写了个判断，如果不选择qbittorrentd就把相关的默认选项都去除了"
-GONGGAO g "重新改了一下定时更新插件的MD5对比方式,有用定时更新插件的更新仓库后重新编译的固件自己手动安装一次,以后才会对比MD5成功,要不然一直对比失败的"
 echo
 echo
 }
 
 Diy_tongzhi() {
-GONGGAO r "7月12号修复LEDE源码不选择qbittorrent都会显示带有这个插件的问题"
-GONGGAO r "LEDE源码默认是带两套qbittorrent插件的，一套完整版，一套精简版"
-GONGGAO r "精简版不管你选择没选择qbittorrentd都会默认编译进固件的，就是在页面不显示而已"
-GONGGAO r "我写了个判断，如果不选择qbittorrentd就把相关的默认选项都去除了"
-GONGGAO y "重新改了一下定时更新插件的MD5对比方式,有用定时更新插件的更新仓库后重新编译的固件自己手动安装一次,以后才会对比MD5成功,要不然一直对比失败的"
-GONGGAO y "手动安装的意思就是编译好固件后，下载出来，然后在openwrt后台自己更新一次不保存配置的更新"
-GONGGAO y "最近更新的比较频繁，希望大家理解，谢谢！"
-GONGGAO g "这一次更新，你们只要复制我仓库的build-openwrt.yml内容覆盖到你仓库的build-openwrt.yml上就可以了，麻烦大家了！"
+GONGGAO r "8月8号，请重新拉取仓库，麻烦各位了，也感谢各位的支持"
 echo
 echo
 exit 1
