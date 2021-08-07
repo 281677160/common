@@ -122,6 +122,7 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=lienol-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -168,6 +169,7 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=mortal-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -217,6 +219,7 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=lienol-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -239,6 +242,7 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=mortal-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -290,6 +294,7 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=lede-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -337,6 +342,7 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=mortal-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -386,6 +392,7 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=lede-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -408,6 +415,7 @@ if [[ "${REPO_Name}" == "lienol" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=mortal-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -459,6 +467,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=lede-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -506,6 +515,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=lienol-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -555,6 +565,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=lede-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
@@ -577,6 +588,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
+			Ghproxy_Tags=lienol-${TARGET_PROFILE}
 			EOF
 			echo
 			TIME y "转换固件成功，开始安装新源码的固件,请稍后...！"
