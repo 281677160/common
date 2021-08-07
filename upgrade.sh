@@ -133,6 +133,7 @@ Diy_Part3() {
 	;;
 	esac
 	cd ${Home}
+	ls ${Home}/bin/Firmware > ${Home}/bin/Firmware/${TARGET_PROFILE}
 }
 
 Mkdir() {
