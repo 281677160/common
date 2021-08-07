@@ -381,8 +381,8 @@ GONGGAO() {
 }
 
 Diy_gonggao() {
-GONGGAO y "《Lede_source文件，Luci版本为18.06，内核版本为5.10》"
-GONGGAO y "《Lienol_source文件，Luci版本为19.07，内核版本为4.14》"
+GONGGAO y "《Lede_source文件，Luci版本为18.06，内核版本为5.4》"
+GONGGAO y "《Lienol_source文件，Luci版本为17.01，内核版本为4.14》"
 GONGGAO y "《Mortal_source文件，Luci版本为21.02，内核版本为5.4》"
 GONGGAO y "《openwrt_amlogic文件，编译N1和晶晨系列盒子专用，Luci版本为18.06，内核版本为5.4》"
 GONGGAO g "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
