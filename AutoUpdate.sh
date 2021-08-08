@@ -26,7 +26,7 @@ echo
 rm -rf ${Download_Tags}
 wget -q --no-cookie --no-check-certificate ${Github_Tags} -O ${Download_Tags} > /dev/null 2>&1
 if [[ $? -ne 0 ]];then
-	wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} ${Github_Tagstwo} -O ${Download_Path}/Github_Tags > /dev/null 2>&1
+	wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} https://ghproxy.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags > /dev/null 2>&1
 fi
 [[ -n ${Download_Tags} ]] && export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Tags} | awk 'END {print}')"
 [[ -z ${CLOUD_Name} ]] && export CLOUD_Name="${LUCI_Name}-${CURRENT_Version}${Firmware_SFX}"
@@ -224,9 +224,9 @@ TIME g "正在获取云端固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Tags}
 if [[ $? -ne 0 ]];then
-	wget -q --no-cookie --no-check-certificate -P ${Download_Path} https://pd.zwc365.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags
+	wget -q --no-cookie --no-check-certificate -P ${Download_Path} https://ghproxy.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags
 	if [[ $? -ne 0 ]];then
-		wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} https://ghproxy.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags
+		wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} https://pd.zwc365.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags
 	fi
 	if [[ $? -ne 0 ]];then
 		TIME r "获取固件版本信息失败,请检测网络或您的网络需要翻墙,或者您更改的Github地址为无效地址!"
@@ -303,9 +303,9 @@ echo "下载保存：${Download_Path}"
 sleep 1
 cd ${Download_Path}
 TIME g "正在下载云端固件,请耐心等待..."
-wget -q --no-cookie --no-check-certificate -T 15 -t 4 "https://pd.zwc365.com/${Github_Release}/${Firmware}" -O ${Firmware}
+wget -q --no-cookie --no-check-certificate -T 15 -t 4 "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
 if [[ $? -ne 0 ]];then
-	wget -q --no-cookie --no-check-certificate -T 15 -t 4 "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
+	wget -q --no-cookie --no-check-certificate -T 15 -t 4 "https://pd.zwc365.com/${Github_Release}/${Firmware}" -O ${Firmware}
 	if [[ $? -ne 0 ]];then
 		TIME r "下载云端固件失败,请尝试手动安装!"
 		echo
