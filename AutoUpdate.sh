@@ -24,7 +24,7 @@ echo -e "${Purple}
 ${White}"
 echo
 rm -rf ${Download_Tags}
-wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Tags}
+wget -q --no-cookie --no-check-certificate ${Github_Tags} -O ${Download_Tags}
 if [[ $? -ne 0 ]];then
 	wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} ${Github_Tagstwo} -O ${Download_Path}/Github_Tags
 fi
