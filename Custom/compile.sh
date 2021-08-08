@@ -158,7 +158,7 @@ fi
 	echo
 	echo
 	echo
-	TIME l " 1. Lede_5.10内核,LUCI 18.06版本"
+	TIME l " 1. Lede_5.4内核,LUCI 18.06版本"
 	echo
 	TIME l " 2. Lienol_4.14内核,LUCI 19.07版本"
 	echo
@@ -177,7 +177,7 @@ fi
 		1)
 			firmware="Lede_source"
 			CODE="lede"
-			TIME y "您选择了：Lede_5.10内核,LUCI 18.06版本"
+			TIME y "您选择了：Lede_5.4内核,LUCI 18.06版本"
 		break
 		;;
 		2)
