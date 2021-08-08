@@ -24,9 +24,9 @@ echo -e "${Purple}
 ${White}"
 echo
 rm -rf ${Download_Tags}
-wget -q --no-cookie --no-check-certificate ${Github_Tags} -O ${Download_Tags}
+wget -q --no-cookie --no-check-certificate ${Github_Tags} -O ${Download_Tags} > /dev/null 2>&1
 if [[ $? -ne 0 ]];then
-	wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} ${Github_Tagstwo} -O ${Download_Path}/Github_Tags
+	wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} ${Github_Tagstwo} -O ${Download_Path}/Github_Tags > /dev/null 2>&1
 fi
 [[ -n ${Download_Tags} ]] && export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Tags} | awk 'END {print}')"
 [[ -z ${CLOUD_Name} ]] && export CLOUD_Name="${LUCI_Name}-${CURRENT_Version}${Firmware_SFX}"
