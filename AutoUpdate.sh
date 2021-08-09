@@ -295,6 +295,7 @@ echo "固件格式：${Firmware_SFX}"
 }
 echo "固件名称：${Firmware}"
 echo "下载保存：${Download_Path}"
+echo "固件体积：${CLOUD_Firmware_Size}M"
 sleep 1
 cd ${Download_Path}
 TIME g "正在下载云端固件,请耐心等待..."
