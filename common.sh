@@ -316,7 +316,7 @@ if [[ `grep -c "CONFIG_ARCH=\"arm\"" ${Home}/.config` -eq '1' ]]; then
 		Arch="armv7"
 	fi	
 fi
-if [[ "${Arch}" =~ (amd64|i386|mipsle_softfloat|armeb|armv7) ]]; then
+if [[ "${Arch}" =~ (amd64|i386|armeb|armv7) ]]; then
 	downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
 	latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
 	wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
