@@ -134,8 +134,6 @@ Diy_Part3() {
 		}
 	;;
 	esac
-	cd ${Home}/bin/Firmware
-	du -sh * > ${Ghproxy_Tags}
 	cd ${Home}
 }
 
