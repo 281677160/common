@@ -497,6 +497,7 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 	TIME g "《普通的那个发布固件跟云端的发布路径是两码事，如果你不需要普通发布的可以不用打开发布功能》"
 	TIME g "《请把“REPO_TOKEN”密匙设置好,没设置好密匙运行到 “把定时更新固件发布到云端” 步骤就会出错,生成不了云端地址》"
 	TIME g "《设置密匙教程： https://github.com/danshui-git/shuoming/blob/master/jm.md 》"
+	TIME y "2021年8月9号修复定时更新需要依赖翻墙才能完成，现在最新版，不需要翻墙也可以使用了"
 	echo
 else
 	echo
