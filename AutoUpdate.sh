@@ -72,7 +72,7 @@ export Apidz="${Github##*com/}"
 export Author="${Apidz%/*}"
 export CangKu="${Apidz##*/}"
 export Github_Tags="https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate"
-export Github_Tagstwo="${Github}/releases/download/AutoUpdate/${Ghproxy_Tags}"
+export Github_Tagstwo="${Github}/releases/download/AutoUpdate/Github_Tags"
 export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
 export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
 rm -rf "${Download_Path}" && export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
@@ -204,7 +204,7 @@ else
 				exit 1
 			}
 	;;
-	-h | -H)
+	-h | -H | -l | -L)
 		Shell_Helper
 	;;
 	-g | -G)
@@ -222,7 +222,7 @@ fi
 [[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/bin/openwrt_info文件的值!" && exit 1
 TIME g "正在获取云端固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-wget -q --no-cookie --no-check-certificate -T 15 -t 4 ${Github_Tags} -O ${Download_Tags}
+wget -q --no-cookie --no-check-certificate ${Github_Tags} -O ${Download_Tags}
 if [[ $? -ne 0 ]];then
 	wget -q --no-cookie --no-check-certificate -P ${Download_Path} https://ghproxy.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags
 	if [[ $? -ne 0 ]];then
@@ -249,12 +249,8 @@ export CLOUD_Version="$(echo ${CLOUD_Firmware} | egrep -o "${REPO_Name}-${DEFAUL
 }
 export Firmware_Name="$(echo ${CLOUD_Firmware} | egrep -o "${Egrep_Firmware}-[0-9]+${BOOT_Type}-[a-zA-Z0-9]+")"
 export Firmware="${CLOUD_Firmware}"
-if [[ `grep -c "api.github.com" ${Download_Tags}` -eq '0' ]]; then
-	let CLOUD_Firmware_Size=$(grep "${Firmware}" ${Download_Tags} | cut -d M -f 1)
-else
-	let X=$(grep -n "${Firmware}" ${Download_Tags} | tail -1 | cut -d : -f 1)-4
-	let CLOUD_Firmware_Size=$(sed -n "${X}p" ${Download_Tags} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
-fi
+let X=$(grep -n "${Firmware}" ${Download_Tags} | tail -1 | cut -d : -f 1)-4
+let CLOUD_Firmware_Size=$(sed -n "${X}p" ${Download_Tags} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
 echo -e "\n本地版本：${CURRENT_Ver}"
 echo "云端版本：${CLOUD_Version}"	
 [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]] && {
@@ -316,11 +312,11 @@ if [[ $? -ne 0 ]];then
 else
 	TIME y "下载云端固件成功!"
 fi
-CLOUD_MD5=$(md5sum ${Firmware} | cut -c1-3)
-CLOUD_256=$(sha256sum ${Firmware} | cut -c1-3)
-MD5_256=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
-CURRENT_MD5="$(echo "${MD5_256}" | cut -c1-3)"
-CURRENT_256="$(echo "${MD5_256}" | cut -c 4-)"
+export CLOUD_MD5=$(md5sum ${Firmware} | cut -c1-3)
+export CLOUD_256=$(sha256sum ${Firmware} | cut -c1-3)
+export MD5_256=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
+export CURRENT_MD5="$(echo "${MD5_256}" | cut -c1-3)"
+export CURRENT_256="$(echo "${MD5_256}" | cut -c 4-)"
 [[ ${CURRENT_MD5} != ${CLOUD_MD5} ]] && {
 	TIME r "MD5对比失败,固件可能在下载时损坏,请检查网络后重试!"
 	exit 1
@@ -342,7 +338,7 @@ TIME g "正在更新固件,请耐心等待 ..."
 if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
 	cp -Rf /etc/config/network /mnt/network
 	mv -f /etc/config/luci /etc/config/luci-
-	sysupgrade -b /mnt/back.tar.gz
+	export sysupgrade -b /mnt/back.tar.gz
 	[[ $? == 0 ]] && {
 		mv -f /etc/config/luci- /etc/config/luci
 		export Upgrade_Options="sysupgrade -f /mnt/back.tar.gz"
