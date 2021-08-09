@@ -3,7 +3,7 @@
 # AutoBuild Module by Hyy2001
 # AutoUpdate for Openwrt
 
-Version=V6.3
+Version=V6.5
 
 Shell_Helper() {
 echo
