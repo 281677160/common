@@ -601,6 +601,7 @@ if [ "$?" == "0" ]; then
 	cd ${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 	rename -v "s/^openwrt/${date1}-${CODE}/" * > /dev/null 2>&1
 	cd ${Home}
+	
 	if [[ "${UPCOWTRANSFER}" == "true" ]]; then
 		WETCOMFIRMWARE="${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 		./transfer cow --block 2621440 -s -p 64 --no-progress ${WETCOMFIRMWARE} 2>&1 | tee cowtransfer.log > /dev/null 2>&1
