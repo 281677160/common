@@ -604,6 +604,7 @@ if [ "$?" == "0" ]; then
 	cd ${Danhome}
 	if [[ "${UPCOWTRANSFER}" == "true" ]]; then
 		WETCOMFIRMWARE="${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
+		mv ${WETCOMFIRMWARE}/packages ${Home}/bin/targets/${TARGET_BOARD}/packages
 		./transfer cow --block 2621440 -s -p 64 --no-progress ${WETCOMFIRMWARE} 2>&1 | tee cowtransfer.log > /dev/null 2>&1
 		cow="$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
 		echo -e "\n奶牛快传：${cow}"
