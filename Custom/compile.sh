@@ -232,15 +232,15 @@ case $MENU in
 esac
 echo
 echo
-TIME g "是否把固件上传到【奶牛快传】和【WETRANSFER】?"
+TIME g "是否把固件上传到<奶牛快传>和<WETRANSFER>?"
 read -p " [输入[ Y/y ]回车确认，直接回车跳过选择]： " MENU
 case $MENU in
 	[Yy])
 		UPCOWTRANSFER="true"
-		TIME y "您执行了上传固件到【奶牛快传】和【WETRANSFER】!"
+		TIME y "您执行了上传固件到<奶牛快传>和<WETRANSFER>!"
 	;;
 	*)
-		TIME r "您已关闭上传固件到【奶牛快传】和【WETRANSFER】！"
+		TIME r "您已关闭上传固件到<奶牛快传>和<WETRANSFER>！"
 	;;
 esac
 echo
