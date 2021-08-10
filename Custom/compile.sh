@@ -232,15 +232,15 @@ case $MENU in
 esac
 echo
 echo
-TIME g "是否把固件上传到<奶牛快传>和<WETRANSFER>?可能要花费1小时时间来上传完两个网盘!"
+TIME g "是否把固件上传到<奶牛快传>?"
 read -p " [输入[ Y/y ]回车确认，直接回车跳过选择]： " MENU
 case $MENU in
 	[Yy])
 		UPCOWTRANSFER="true"
-		TIME y "您执行了上传固件到<奶牛快传>和<WETRANSFER>!"
+		TIME y "您执行了上传固件到<奶牛快传>!"
 	;;
 	*)
-		TIME r "您已关闭上传固件到<奶牛快传>和<WETRANSFER>！"
+		TIME r "您已关闭上传固件到<奶牛快传>！"
 	;;
 esac
 echo
@@ -599,19 +599,17 @@ if [ "$?" == "0" ]; then
 		TIME l "请输入一键打包命令进行打包固件，打包成功后，固件存放在[openwrt/out]文件夹中"
 	fi
 	echo
-	echo
 	cd ${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 	rename -v "s/^openwrt/${date1}-${CODE}/" * > /dev/null 2>&1
 	cd ${Danhome}
 	if [[ "${UPCOWTRANSFER}" == "true" ]]; then
+		TIME g "正在上传固件至奶牛快传中，请稍后..."
+		echo
 		WETCOMFIRMWARE="${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 		mv ${WETCOMFIRMWARE}/packages ${Home}/bin/targets/${TARGET_BOARD}/packages
 		./transfer cow --block 2621440 -s -p 64 --no-progress ${WETCOMFIRMWARE} 2>&1 | tee cowtransfer.log > /dev/null 2>&1
 		cow="$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
 		echo -e "\n奶牛快传：${cow}"
-		./transfer wet -s -p 16 --no-progress ${WETCOMFIRMWARE} 2>&1 | tee wetransfer.log > /dev/null 2>&1
-		wet="$(cat wetransfer.log | grep https | cut -f3 -d" ")"
-		echo -e "\nWETRANSFER：${wet}"
 		echo
 	fi
 	rm -rf $Home/Openwrt.info
