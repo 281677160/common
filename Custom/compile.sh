@@ -372,6 +372,7 @@ fi
 if [[ "${UPCOWTRANSFER}" == "true" ]]; then
 	curl -fsSL git.io/file-transfer | sh
 fi
+Danhome="$PWD"
 Home="$PWD/openwrt"
 PATH1="$PWD/openwrt/build/${firmware}"
 NETIP="package/base-files/files/etc/networkip"
@@ -600,8 +601,7 @@ if [ "$?" == "0" ]; then
 	echo
 	cd ${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 	rename -v "s/^openwrt/${date1}-${CODE}/" * > /dev/null 2>&1
-	cd ${Home}
-	
+	cd ${Danhome}
 	if [[ "${UPCOWTRANSFER}" == "true" ]]; then
 		WETCOMFIRMWARE="${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 		./transfer cow --block 2621440 -s -p 64 --no-progress ${WETCOMFIRMWARE} 2>&1 | tee cowtransfer.log > /dev/null 2>&1
