@@ -42,26 +42,11 @@ if [[ ! "${Modelfile}" == "openwrt_amlogic" ]]; then
 	echo -e "\nCONFIG_TARGET_IMAGES_GZIP=y" >> "${PATH1}/${CONFIG_FILE}"
 fi
 if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
-	# 修复NTFS格式优盘不自动挂载
-	packages=" \
-	brcmfmac-firmware-43430-sdio brcmfmac-firmware-43455-sdio kmod-brcmfmac wpad \
-	kmod-fs-ext4 kmod-fs-vfat kmod-fs-exfat dosfstools e2fsprogs ntfs-3g \
-	kmod-usb2 kmod-usb3 kmod-usb-storage kmod-usb-storage-extras kmod-usb-storage-uas \
-	kmod-usb-net kmod-usb-net-asix-ax88179 kmod-usb-net-rtl8150 kmod-usb-net-rtl8152 \
-	blkid lsblk parted fdisk cfdisk losetup resize2fs tune2fs pv unzip \
-	lscpu htop iperf3 curl lm-sensors python3 luci-app-amlogic
-	"
-	sed -i '/FEATURES+=/ { s/cpiogz //; s/ext4 //; s/ramdisk //; s/squashfs //; }' \
-    		target/linux/armvirt/Makefile
-	for x in $packages; do
-    		sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" target/linux/armvirt/Makefile
-	done
-
+	sed -i '/FEATURES+=/ { s/cpiogz //; s/ext4 //; s/ramdisk //; s/squashfs //; }' target/linux/armvirt/Makefile
 	# luci-app-cpufreq修改一些代码适配amlogic
 	sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' package/lean/luci-app-cpufreq/Makefile
 	# 为 armvirt 添加 autocore 支持
 	sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' package/lean/autocore/Makefile
-	mkdir -p files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > files/etc/hotplug.d/block/10-mount
 fi
 }
 
@@ -290,6 +275,11 @@ Diy_chuli() {
 if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
 	cp -Rf "${Home}"/build/common/Custom/DRM-I915 target/linux/x86/DRM-I915
 	for X in $(ls -1 target/linux/x86 | grep "config-"); do echo -e "\n$(cat target/linux/x86/DRM-I915)" >> target/linux/x86/${X}; done
+	if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${Home}/.config` -eq '0' ]]; then
+		curl -fsSL  https://raw.githubusercontent.com/281677160/common/main/Custom/lede-ntfs-3g > ${Home}/lede-ntfs-3g
+		for X in $(ls -1 ${Home} | grep "${Home}/.config"); do echo -e "\n$(cat ${Home}/lede-ntfs-3g)" >> .config; done
+		mkdir -p files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > files/etc/hotplug.d/block/10-mount
+	fi
 fi
 
 if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
@@ -303,6 +293,11 @@ if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 		TARGET_kernel="${amlogic_kernel}"
 		TARGET_model="${amlogic_model}"
 	}
+	if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${Home}/.config` -eq '0' ]]; then
+		curl -fsSL  https://raw.githubusercontent.com/281677160/common/main/Custom/lede-ntfs-3g > ${Home}/lede-ntfs-3g
+		for X in $(ls -1 ${Home} | grep "${Home}/.config"); do echo -e "\n$(cat ${Home}/lede-ntfs-3g)" >> .config; done
+		mkdir -p files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > files/etc/hotplug.d/block/10-mount
+	fi
 fi
 
 if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${Home}/.config` -eq '1' ]]; then
