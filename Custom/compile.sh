@@ -614,7 +614,7 @@ if [ "$?" == "0" ]; then
 	fi
 	rm -rf $Home/Openwrt.info
 	rm -rf ${Home}/upgrade
-	rm -rf {cowtransfer.log,wetransfer.log}
+	rm -rf {transfer,cowtransfer.log,wetransfer.log}
 	sleep 5
 	exit 0
 else
