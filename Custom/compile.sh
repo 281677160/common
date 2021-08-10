@@ -232,7 +232,7 @@ case $MENU in
 esac
 echo
 echo
-TIME g "是否把固件上传到<奶牛快传>和<WETRANSFER>?"
+TIME g "是否把固件上传到<奶牛快传>和<WETRANSFER>?可能要花费1小时时间来上传完两个网盘!"
 read -p " [输入[ Y/y ]回车确认，直接回车跳过选择]： " MENU
 case $MENU in
 	[Yy])
