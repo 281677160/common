@@ -35,7 +35,7 @@ git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
-
+curl -fsSL https://raw.githubusercontent.com/immortalwrt/immortalwrt/openwrt-18.06-k5.4/package/libs/libpcap/Makefile > package/libs/libpcap/Makefile
 
 if [[ ! "${Modelfile}" == "openwrt_amlogic" ]]; then
 	sed -i '/IMAGES_GZIP/d' "${PATH1}/${CONFIG_FILE}" > /dev/null 2>&1
