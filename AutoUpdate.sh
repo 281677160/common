@@ -248,6 +248,7 @@ export CLOUD_Version="$(echo ${CLOUD_Firmware} | egrep -o "${REPO_Name}-${DEFAUL
 }
 export Firmware_Name="$(echo ${CLOUD_Firmware} | egrep -o "${Egrep_Firmware}-[0-9]+${BOOT_Type}-[a-zA-Z0-9]+")"
 export Firmware="${CLOUD_Firmware}"
+export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Tags} | awk 'END {print}')"
 let X=$(grep -n "${Firmware}" ${Download_Tags} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${Download_Tags} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
 echo -e "\n本地版本：${CURRENT_Ver}"
@@ -286,16 +287,22 @@ if [[ ! "${Force_Update}" == 1 ]];then
 	fi
 fi
 TIME g "列出详细信息..."
-sleep 1
-echo -e "\n固件作者：${Author}"
-echo "设备名称：${CURRENT_Device}"
-echo "固件格式：${Firmware_SFX}"
+echo -e "\n ${Green}本地固件信息${White}"
+echo " 设备名称：${CURRENT_Device}"
+echo " 固件名称：${CLOUD_Name}"
+echo " 固件作者：${Author}"
+echo " 固件格式：${Firmware_SFX}"
 [[ "${DEFAULT_Device}" == x86-64 ]] && {
-	echo "引导模式：${EFI_Mode}"
+	echo " 引导模式：${EFI_Mode}"
 }
-echo "固件名称：${Firmware}"
-echo "下载保存：${Download_Path}"
-echo "固件体积：${CLOUD_Firmware_Size}M"
+echo -e "\n ${Green}云端固件信息${White}"
+echo " 固件名称：${Firmware}"
+echo " 固件格式：${Firmware_SFX}"
+[[ "${DEFAULT_Device}" == x86-64 ]] && {
+	echo " 引导模式：${EFI_Mode}"
+}
+echo " 固件体积：${CLOUD_Firmware_Size}M"
+echo " 下载保存：${Download_Path}"
 sleep 1
 cd ${Download_Path}
 TIME g "正在下载云端固件,请耐心等待..."
