@@ -23,13 +23,12 @@ echo -e "${Purple}
 ===============================================================================================
 ${White}"
 echo
-rm -rf ${Download_Tags}
-wget -q --no-cookie --no-check-certificate ${Github_Tags} -O ${Download_Tags} > /dev/null 2>&1
-if [[ $? -ne 0 ]];then
+[[ -f /etc/CLOUD_Name ]] && {
+	export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" /etc/CLOUD_Name | awk 'END {print}')" > /dev/null 2>&1
+} || {
 	wget -q --no-cookie --no-check-certificate -T 15 -t 4 -P ${Download_Path} https://ghproxy.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags > /dev/null 2>&1
-fi
-[[ -n ${Download_Tags} ]] && export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Tags} | awk 'END {print}')"
-[[ -z ${CLOUD_Name} ]] && export CLOUD_Name="${LUCI_Name}-${CURRENT_Version}${Firmware_SFX}"
+	export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Tags} | awk 'END {print}')" > /dev/null 2>&1
+}
 echo -e "${Green}详细参数：
 
 /overlay 可用:					${Overlay_Available}
@@ -233,6 +232,8 @@ if [[ $? -ne 0 ]];then
 		exit 1
 	fi
 fi
+export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Tags} | awk 'END {print}')"
+[[ ! -f /etc/CLOUD_Name ]] && echo "${CLOUD_Name}" > /etc/CLOUD_Name
 TIME g "正在比对云端固件和本地安装固件版本..."
 export CLOUD_Firmware="$(egrep -o "${Egrep_Firmware}-[0-9]+${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Tags} | awk 'END {print}')"
 export CLOUD_sion="$(echo ${CLOUD_Firmware} | egrep -o "${REPO_Name}-${DEFAULT_Device}-[0-9]+")"
