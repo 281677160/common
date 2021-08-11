@@ -287,22 +287,16 @@ if [[ ! "${Force_Update}" == 1 ]];then
 	fi
 fi
 TIME g "列出详细信息..."
-echo -e "\n ${Green}本地固件信息${White}"
-echo " 设备名称：${CURRENT_Device}"
-echo " 固件名称：${CLOUD_Name}"
-echo " 固件作者：${Author}"
-echo " 固件格式：${Firmware_SFX}"
+sleep 1
+echo -e "\n固件作者：${Author}"
+echo "设备名称：${CURRENT_Device}"
+echo "固件格式：${Firmware_SFX}"
 [[ "${DEFAULT_Device}" == x86-64 ]] && {
-	echo " 引导模式：${EFI_Mode}"
+	echo "引导模式：${EFI_Mode}"
 }
-echo -e "\n ${Green}云端固件信息${White}"
-echo " 固件名称：${Firmware}"
-echo " 固件格式：${Firmware_SFX}"
-[[ "${DEFAULT_Device}" == x86-64 ]] && {
-	echo " 引导模式：${EFI_Mode}"
-}
-echo " 固件体积：${CLOUD_Firmware_Size}M"
-echo " 下载保存：${Download_Path}"
+echo "固件名称：${Firmware}"
+echo "下载保存：${Download_Path}"
+echo "固件体积：${CLOUD_Firmware_Size}M"
 sleep 1
 cd ${Download_Path}
 TIME g "正在下载云端固件,请耐心等待..."
