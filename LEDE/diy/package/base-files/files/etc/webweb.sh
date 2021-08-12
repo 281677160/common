@@ -19,7 +19,7 @@ fi
 chmod -R +x /etc/init.d /usr/share
 
 sleep 60
-sed -i '/coremark/d' /etc/crontabs/root
+sed -i '/coremark.sh/d' /etc/crontabs/root
 
 rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
