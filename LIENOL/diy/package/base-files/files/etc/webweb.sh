@@ -6,8 +6,6 @@ echo "DISTRIB_REVISION='19.07'" >> /etc/openwrt_release
 sed -i 's/<%=pcdata(ver.distversion)%>/<%=pcdata(ver.distversion)%><!--/g' /usr/lib/lua/luci/view/admin_status/index.htm
 sed -i 's/(<%=pcdata(ver.luciversion)%>)/(<%=pcdata(ver.luciversion)%>)-->/g' /usr/lib/lua/luci/view/admin_status/index.htm
 
-sed -i '/coremark.sh/d' /etc/crontabs/root
-
 sed -i 's/<a href="https:\/\/github/<!--<a href="https:\/\/github/g' /usr/lib/lua/luci/view/themes/*/footer.htm
 sed -i 's/luciversion %>)<\/a> \//luciversion %>)<\/a> \/-->/g' /usr/lib/lua/luci/view/themes/*/footer.htm
 
@@ -25,6 +23,9 @@ if [[ -e /usr/share/AdGuardHome ]] && [[ -e /etc/init.d/AdGuardHome ]]; then
 fi
 
 chmod -R +x /etc/init.d
+
+sleep 60
+sed -i '/coremark/d' /etc/crontabs/root
 
 rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
