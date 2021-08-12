@@ -533,7 +533,7 @@ if [ -n "$(ls -A "${Home}/Plug-in" 2>/dev/null)" ]; then
 	echo
 	TIME r "	      已选插件列表"
 	chmod -R +x ${Home}/Plug-in
-	source ${Home}/Plug-in
+	cat ${Home}/Plug-in
 	rm -rf {Plug-in,Plug-2}
 	echo
 fi
