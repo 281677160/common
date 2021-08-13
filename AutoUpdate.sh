@@ -77,8 +77,8 @@ export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'N
 rm -rf "${Download_Path}" && export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path}
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
-PKG_List="${Download_Path}/Installed_PKG_List"
-AutoUpdate_Log_Path="/tmp"
+export PKG_List="${Download_Path}/Installed_PKG_List"
+export AutoUpdate_Log_Path="/tmp"
 GET_PID() {
 	local Result
 	while [[ $1 ]];do
@@ -153,12 +153,12 @@ else
 	-t | -n | -f | -u | -N | -s | -w)
 		case ${Input_Option} in
 		-t)
-			Input_Other="-t"
+			export Input_Other="-t"
 			TIME h "执行: 测试模式"
 			TIME z "测试模式(只运行,不安装,查看更新固件操作流程是否正确)"
 		;;
 		-w)
-			Input_Other="-w"
+			export Input_Other="-w"
 		;;
 		-n | -N)
 			export Upgrade_Options="sysupgrade -n"
