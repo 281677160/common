@@ -77,7 +77,8 @@ export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'N
 rm -rf "${Download_Path}" && export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path}
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
-AutoUpdate_Log_Path=/tmp
+PKG_List="${Download_Path}/Installed_PKG_List"
+AutoUpdate_Log_Path="/tmp"
 GET_PID() {
 	local Result
 	while [[ $1 ]];do
@@ -337,7 +338,7 @@ TIME g "准备更新固件,更新期间请不要断开电源或重启设备 ..."
 }
 sleep 2
 TIME g "正在更新固件,请耐心等待 ..."
-[[ `grep -c "gzip" ${Download_Path}/Installed_PKG_List` -ge '1' ]] && opkg remove gzip > /dev/null 2>&1
+[[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
 if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
 	cp -Rf /etc/config/network /mnt/network
 	mv -f /etc/config/luci /etc/config/luci-
