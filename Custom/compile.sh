@@ -128,7 +128,7 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 		*)
 			YUAN_MA="false"
 			TIME y "您已关闭更换源码，保存配置中，请稍后..."
-			cp -Rf openwrt/{.bf_config,compile.sh,${Core},dl} ./
+			cp -Rf openwrt/{.bf_config,compile.sh,${Core},dl} ./ > /dev/null 2>&1
 		;;
 	esac
 fi
