@@ -487,7 +487,7 @@ if [ -n "$(ls -A "${Home}/Chajianlibiao" 2>/dev/null)" ]; then
 	source ${Home}/CHONGTU
 	rm -rf {CHONGTU,Chajianlibiao}
 	echo
-	TIME g "如需重新编译请按 Ctrl+c 继续使用命令重新编译，否则20秒后继续编译!"
+	TIME g "如需重新编译请按 Ctrl+c 结束此次编译，继续使用命令重新编译，否则20秒后继续编译!"
 	sleep 20s
 fi
 cp -rf ${Home}/.config ${Home}/.bf_config
