@@ -475,17 +475,20 @@ find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'README.cn.md' | 
 [ "${Menuconfig}" == "YES" ] && {
 make menuconfig
 }
+TIME g "正在生成配置文件，请稍后..."
 source build/${firmware}/common.sh && Diy_chajian
 make defconfig
 if [ -n "$(ls -A "${Home}/Chajianlibiao" 2>/dev/null)" ]; then
-	echo
 	clear
+	echo
+	echo
+	echo
 	chmod -R +x ${Home}/CHONGTU
 	source ${Home}/CHONGTU
 	rm -rf {CHONGTU,Chajianlibiao}
 fi
-sleep 20s
 cp -rf ${Home}/.config ${Home}/.bf_config
+sleep 20s
 TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)"
 TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)"
 if [[ `grep -c "CONFIG_TARGET_x86_64=y" .config` -eq '1' ]]; then
