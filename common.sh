@@ -225,7 +225,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-kodexplorer=y" ${Home}/.config` -eq '1' 
 	fi
 	
 fi
-if [[ `grep -c "CONFIG_DEFAULT_luci-app-ssr-plus=y" ${Home}/.config` -eq '1' ]]; then
+if [[ `grep -c "CONFIG_PACKAGE_luci-app-ssr-plus=y" ${Home}/.config` -eq '1' ]]; then
 	if [[ `grep -c "CONFIG_PACKAGE_luci-app-easymesh=y" ${Home}/.config` -eq '1' ]]; then
 		sed -i 's/CONFIG_PACKAGE_luci-app-easymesh=y/# CONFIG_PACKAGE_luci-app-easymesh is not set/g' ${Home}/.config
 		sed -i 's/CONFIG_PACKAGE_wpad-openssl=y/CONFIG_PACKAGE_wpad-openssl=m/g' ${Home}/.config
