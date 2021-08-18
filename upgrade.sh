@@ -68,10 +68,7 @@ GET_TARGET_INFO() {
 }
 
 Diy_Part1() {
-	sed -i '/luci-app-autoupdate/d' .config > /dev/null 2>&1
-	echo -e "\nCONFIG_PACKAGE_luci-app-autoupdate=y" >> .config
-	sed -i '/luci-app-ttyd/d' .config > /dev/null 2>&1
-	echo -e "\nCONFIG_PACKAGE_luci-app-ttyd=y" >> .config
+sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd/g' target/linux/*/Makefile
 }
 
 Diy_Part2() {
