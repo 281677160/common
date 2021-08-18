@@ -95,8 +95,9 @@ Diy_Part3() {
 	Firmware_Path="${Home}/upgrade"
 	Mkdir ${Home}/bin/Firmware
 	if [[ `ls ${Home}/upgrade | grep -c "sysupgrade.bin"` -ge '1' ]]; then
-		mv ${Home}/upgrade/*sysupgrade.bin ${Home}/bin/Firmware/${Up_Firmware}
-		mv ${Home}/bin/Firmware/${Up_Firmware} ${Home}/upgrade/${Up_Firmware}
+		Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+		mv ${Home}/upgrade/*sysupgrade.bin ${Home}/bin/Firmware/${Up_BinFirmware}
+		mv ${Home}/bin/Firmware/${Up_BinFirmware} ${Home}/upgrade/${Up_BinFirmware}
 	fi
 	cd ${Firmware_Path}
 	case "${TARGET_PROFILE}" in
