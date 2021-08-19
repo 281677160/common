@@ -600,6 +600,7 @@ if [ "$?" == "0" ]; then
 		cow="$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
 		echo
 		TIME y "奶牛快传：${cow}"
+		echo "${cow}" > openwrt/bin/奶牛快传链接
 		echo
 	fi
 	rm -rf $Home/Openwrt.info
