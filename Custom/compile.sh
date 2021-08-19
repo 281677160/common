@@ -345,8 +345,6 @@ elif [[ $firmware == "openwrt_amlogic" ]]; then
 		
 	}
 	[[ $? -eq 0 ]] && {
-		cp -Rf compile.sh openwrt/compile.sh
-	} || {
 		TIME r "源码下载失败，请检测网络或更换节点再尝试!"
 		rm -rf openwrtl
 		echo
