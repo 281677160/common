@@ -426,7 +426,6 @@ EOF
 sed -i "s/OpenWrt /${Ubuntu_mz} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ
 echo
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile
 sed -i 's/"网络存储"/"NAS"/g' `grep "网络存储" -rl ./feeds/luci/applications`
 sed -i 's/"带宽监控"/"监控"/g' `grep "带宽监控" -rl ./feeds/luci/applications`
 sed -i 's/"Argon 主题设置"/"Argon设置"/g' `grep "Argon 主题设置" -rl ./feeds/luci/applications`
@@ -441,12 +440,17 @@ sed -i 's/"Argon 主题设置"/"Argon设置"/g' `grep "Argon 主题设置" -rl .
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
 	  source build/$firmware/upgrade.sh && Diy_Part1
 fi
+if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${Home}/.config` -eq '0' ]]; then
+	echo -e "\nCONFIG_PACKAGE_luci-theme-argon=y" >> ${Home}/.config
+fi
 find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
 [ "${Menuconfig}" == "YES" ] && {
 make menuconfig
 }
+echo
 TIME g "正在生成配置文件，请稍后..."
+echo
 source build/${firmware}/common.sh && Diy_chajian
 make defconfig
 if [ -n "$(ls -A "${Home}/Chajianlibiao" 2>/dev/null)" ]; then
