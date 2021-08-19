@@ -177,24 +177,28 @@ fi
 		1)
 			firmware="Lede_source"
 			CODE="lede"
+			Modelfile="Lede_source"
 			TIME y "您选择了：Lede_5.4内核,LUCI 18.06版本"
 		break
 		;;
 		2)
 			firmware="Lienol_source"
 			CODE="lienol"
+			Modelfile="Lienol_source"
 			TIME y "您选择了：Lienol_4.14内核,LUCI 19.07版本"
 		break
 		;;
 		3)
 			firmware="Mortal_source"
 			CODE="mortal"
+			Modelfile="Mortal_source"
 			TIME y "您选择了：Immortalwrt_5.4内核,LUCI 21.02版本"
 		break
 		;;
 		4)
 			firmware="openwrt_amlogic"
 			CODE="lede"
+			Modelfile="openwrt_amlogic"
 			TIME y "您选择了：N1和晶晨系列CPU盒子专用"
 		break
 		;;
@@ -403,15 +407,11 @@ echo
 cd $Home
 ./scripts/feeds update -a > /dev/null 2>&1
 if [[ "${REPO_BRANCH}" == "master" ]]; then
-          source build/${firmware}/common.sh && Diy_lede
-          cp -Rf build/common/LEDE/files ./
-          cp -Rf build/common/LEDE/diy/* ./
-	  cp -Rf build/common/LEDE/patches/* "${PATH1}/patches"
+	source "${PATH1}/common.sh" && Diy_lede
 elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
-          source build/${firmware}/common.sh && Diy_lienol
-          cp -Rf build/common/LIENOL/files ./
-          cp -Rf build/common/LIENOL/diy/* ./
-	  cp -Rf build/common/LIENOL/patches/* "${PATH1}/patches"
+	source "${PATH1}/common.sh" && Diy_lienol
+elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+	source "${PATH1}/common.sh" && Diy_mortal
 fi
 source build/${firmware}/common.sh && Diy_all
 [[ $? -ne 0 ]] && {
@@ -419,32 +419,6 @@ source build/${firmware}/common.sh && Diy_all
 	echo
 	exit 1
 }
-if [[ $firmware == "openwrt_amlogic" ]]; then
-	packages=" \
-	brcmfmac-firmware-43430-sdio brcmfmac-firmware-43455-sdio kmod-brcmfmac wpad \
-	kmod-fs-ext4 kmod-fs-vfat kmod-fs-exfat dosfstools e2fsprogs ntfs-3g \
-	kmod-usb2 kmod-usb3 kmod-usb-storage kmod-usb-storage-extras kmod-usb-storage-uas \
-	kmod-usb-net kmod-usb-net-asix-ax88179 kmod-usb-net-rtl8150 kmod-usb-net-rtl8152 \
-	blkid lsblk parted fdisk cfdisk losetup resize2fs tune2fs pv unzip \
-	lscpu htop iperf3 curl lm-sensors python3 luci-app-amlogic
-	"
-	sed -i '/FEATURES+=/ { s/cpiogz //; s/ext4 //; s/ramdisk //; s/squashfs //; }' \
-    	target/linux/armvirt/Makefile
-	for x in $packages; do
-    	sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" target/linux/armvirt/Makefile
-	done
-	sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' package/lean/luci-app-cpufreq/Makefile
-	sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' package/lean/autocore/Makefile
-fi
-if [ -n "$(ls -A "build/$firmware/diy" 2>/dev/null)" ]; then
-          cp -Rf build/$firmware/diy/* ./
-fi
-if [ -n "$(ls -A "build/$firmware/files" 2>/dev/null)" ]; then
-          cp -Rf build/$firmware/files ./ && chmod -R +x files
-fi
-if [ -n "$(ls -A "build/$firmware/patches" 2>/dev/null)" ]; then
-          find "build/$firmware/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward"
-fi
 echo
 TIME g "正在加载源和安装源,请耐心等候~~~"
 echo
@@ -455,8 +429,7 @@ EOF
 sed -i "s/OpenWrt /${Ubuntu_mz} compiled in $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" $ZZZ
 sed -i '/CYXluq4wUazHjmCDBCqXF/d' $ZZZ
 echo
-sed -i 's/"网络存储"/"NAS"/g' `grep "网络存储" -rl ./`
-sed -i 's/"管理权"/"改密码"/g' `grep "管理权" -rl ./feeds/luci/modules/luci-base`
+sed -i 's/"网络存储"/"NAS"/g' `grep "网络存储" -rl ./feeds/luci/applications`
 sed -i 's/"带宽监控"/"监控"/g' `grep "带宽监控" -rl ./feeds/luci/applications`
 sed -i 's/"Argon 主题设置"/"Argon设置"/g' `grep "Argon 主题设置" -rl ./feeds/luci/applications`
 ./scripts/feeds update -a
@@ -470,8 +443,8 @@ sed -i 's/"Argon 主题设置"/"Argon设置"/g' `grep "Argon 主题设置" -rl .
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
 	  source build/$firmware/upgrade.sh && Diy_Part1
 fi
-find . -name 'LICENSE' -o -name 'README' -o -name 'README.md' -o -name '*.git*' | xargs -i rm -rf {}
-find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'README.cn.md' | xargs -i rm -rf {}
+find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
+find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
 [ "${Menuconfig}" == "YES" ] && {
 make menuconfig
 }
