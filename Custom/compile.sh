@@ -342,7 +342,6 @@ elif [[ $firmware == "openwrt_amlogic" ]]; then
 		rm -rf openwrtl && git clone https://github.com/coolsnowwolf/lede openwrtl
 	} || {
 		git clone https://github.com/coolsnowwolf/lede openwrt
-		
 	}
 	[[ $? -ne 0 ]] && {
 		TIME r "源码下载失败，请检测网络或更换节点再尝试!"
