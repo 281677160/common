@@ -354,7 +354,7 @@ elif [[ $firmware == "openwrt_amlogic" ]]; then
 	echo
 	rm -rf amlogic-s9xxx && svn co https://github.com/ophub/amlogic-s9xxx-openwrt/trunk/amlogic-s9xxx amlogic-s9xxx
 	[[ $? -ne 0 ]] && {
-		rm -rf {amlogic-s9xxx,openwrtlede}
+		rm -rf {amlogic-s9xxx,openwrtl}
 		TIME r "内核下载失败，请检测网络或更换节点再尝试!"
 		echo
 		exit 1
