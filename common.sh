@@ -325,19 +325,6 @@ if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${Home}/.config` -eq '1' ]]; then
 	mkdir -p files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > files/etc/hotplug.d/block/10-mount
 fi
 
-if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
-	[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
-	[[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]] && {
-		curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open.yml
-		Make_ker="$(cat open.yml | grep ./make | cut -d "k" -f3 | sed s/[[:space:]]//g)"
-		TARGET_kernel="${Make_ker}"
-		TARGET_model="${amlogic_model}"
-	} || {
-		TARGET_kernel="${amlogic_kernel}"
-		TARGET_model="${amlogic_model}"
-	}
-fi
-
 if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${Home}/.config` -eq '1' ]]; then
 	Arch="amd64"
 elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${Home}/.config` -eq '1' ]]; then
@@ -389,6 +376,19 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 	fi
 	if [[ ! "${PATCHVER}" == "unknown" ]]; then
 		PATCHVER=$(egrep -o "${PATCHVER}.[0-9]+" ${Home}/include/kernel-version.mk)
+	fi
+	
+	if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
+		[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
+		[[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]] && {
+			curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open.yml
+			Make_ker="$(cat open.yml | grep ./make | cut -d "k" -f3 | sed s/[[:space:]]//g)"
+			TARGET_kernel="${Make_ker}"
+			TARGET_model="${amlogic_model}"
+		} || {
+			TARGET_kernel="${amlogic_kernel}"
+			TARGET_model="${amlogic_model}"
+		}
 	fi
 fi
 find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
