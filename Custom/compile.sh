@@ -373,7 +373,7 @@ fi
 if [[ "${UPCOWTRANSFER}" == "true" ]]; then
 	curl -fsSL git.io/file-transfer | sh
 fi
-Danhome="$PWD"
+GITHUB_WORKSPACE="$PWD"
 Home="$PWD/openwrt"
 PATH1="$PWD/openwrt/build/${firmware}"
 NETIP="package/base-files/files/etc/networkip"
@@ -480,6 +480,9 @@ if [ "${REGULAR_UPDATE}" == "true" ]; then
           source build/$firmware/upgrade.sh && Diy_Part2
 fi
 echo
+# 为编译做最后处理
+BY_INFORMATION="false"
+source build/${firmware}/common.sh && Diy_chuli
 COMFIRMWARE="openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 TIME g "正在下载DL文件,请耐心等待..."
 echo
@@ -591,7 +594,7 @@ if [ "$?" == "0" ]; then
 	echo
 	cd ${Home}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 	rename -v "s/^openwrt/${date1}-${CODE}/" * > /dev/null 2>&1
-	cd ${Danhome}
+	cd ${GITHUB_WORKSPACE}
 	if [[ "${UPCOWTRANSFER}" == "true" ]]; then
 		TIME g "正在上传固件至奶牛快传中，请稍后..."
 		echo
