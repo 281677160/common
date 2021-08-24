@@ -274,9 +274,11 @@ echo
 	CangKu="${Apidz##*/}"
 }
 echo
-[[ -f ${Core} ]] && {
-	echo -e "\nipdz=$ip" > ${Core}
-	echo -e "\nGit=$Github" >> ${Core}
+[[ -e ${Core} ]] && {
+	cat >${Core} <<-EOF
+	ipdz=$ip
+	Git=$Github
+	EOF
 }
 Begin="$(date "+%Y/%m/%d-%H.%M")"
 date1="$(date +'%m.%d')"
