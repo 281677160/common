@@ -49,7 +49,7 @@ GET_TARGET_INFO() {
 			UEFI_Firmware="immortalwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" == "phicomm-k3" ]]; then
-			Up_Firmware="immortalwrt-bcm53xx-phicomm-k3-squashfs.trx"
+			Up_Firmware="immortalwrt-bcm53xx-generic-phicomm_k3-squashfs.trx"
 			Firmware_sfx="trx"
 		else
 			Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
