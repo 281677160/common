@@ -488,38 +488,25 @@ source build/${firmware}/common.sh && Diy_chuli
 COMFIRMWARE="openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 TIME g "正在下载DL文件,请耐心等待..."
 echo
-[[ -d $Home/dl ]] && {
-	make -j8 download 2>&1 |tee build.log
-	find dl -size -1024c -exec ls -l {} \;
-	find dl -size -1024c -exec rm -f {} \;
-	if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
-		TIME y "下载DL有错误，正在重新下载..."
-		rm -rf build.log
+make -j8 download 2>&1 |tee build.log
+find dl -size -1024c -exec ls -l {} \;
+find dl -size -1024c -exec rm -f {} \;
+if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
+echo
+TIME r "下载DL失败，请检查网络或者更换节点后再尝试编译!"
+read -p " [输入[ Y/y ]回车,退出继续尝试下载，直接按回车继续尝试下载DL]： " XZDL
+case $XZDL in
+	[Yy])
+		exit 1
 		echo
+	;;
+	*)
 		make -j8 download 2>&1 |tee build.log
 		find dl -size -1024c -exec ls -l {} \;
 		find dl -size -1024c -exec rm -f {} \;
-	
-	fi
-	if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
-		echo
-		TIME r "下载DL失败，请检查网络或者更换节点后再尝试编译!"
-		echo
-		exit 1
-	fi
-	
-} || {
-	make download -j8 V=s
-	find dl -size -1024c -exec ls -l {} \;
-	find dl -size -1024c -exec rm -f {} \;
-	make -j8 download 2>&1 |tee build.log
-	if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
-		echo
-		TIME r "下载DL失败，请检查网络或者更换节点后再尝试编译!"
-		echo
-		exit 1
-	fi
-}
+	;;
+esac
+fi
 cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c > CPU
 cat /proc/cpuinfo | grep "cpu cores" | uniq >> CPU
 sed -i 's|[[:space:]]||g; s|^.||' CPU && sed -i 's|CPU||g; s|pucores:||' CPU
