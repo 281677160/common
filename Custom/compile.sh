@@ -501,6 +501,7 @@ if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 			echo
 		;;
 		*)
+			rm -rf build.log
 			make -j8 download 2>&1 |tee build.log
 			find dl -size -1024c -exec ls -l {} \;
 			find dl -size -1024c -exec rm -f {} \;
@@ -516,7 +517,8 @@ if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 			exit 1
 			echo
 		;;
-		*)
+		*)	
+			rm -rf build.log
 			make -j8 download 2>&1 |tee build.log
 			find dl -size -1024c -exec ls -l {} \;
 			find dl -size -1024c -exec rm -f {} \;
@@ -525,6 +527,7 @@ if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 fi
 if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 	echo
+	rm -rf build.log
 	TIME r "下载DL失败，请检查网络或者更换节点后再尝试编译!"
 	exit 1
 	echo
