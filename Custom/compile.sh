@@ -532,6 +532,7 @@ if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 	exit 1
 	echo
 fi
+rm -rf build.log
 cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c > CPU
 cat /proc/cpuinfo | grep "cpu cores" | uniq >> CPU
 sed -i 's|[[:space:]]||g; s|^.||' CPU && sed -i 's|CPU||g; s|pucores:||' CPU
