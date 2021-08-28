@@ -493,8 +493,8 @@ find dl -size -1024c -exec ls -l {} \;
 find dl -size -1024c -exec rm -f {} \;
 if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 	echo
-	TIME r "下载DL失败，请检查网络或者更换节点后再尝试编译!"
-	read -p " [输入[ Y/y ]回车,退出继续尝试下载，直接按回车继续尝试下载DL]： " XZDL
+	TIME r "下载DL失败，更换节点后再尝试下载？"
+	read -p " [输入[ Y/y ]回车,退出下载，直接按回车继续尝试下载DL]： " XZDL
 	case $XZDL in
 		[Yy])
 			exit 1
@@ -510,8 +510,8 @@ if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 fi
 if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 	echo
-	TIME r "下载DL失败，请检查网络或者更换节点后再尝试编译!"
-	read -p " [输入[ Y/y ]回车,退出继续尝试下载，直接按回车继续尝试下载DL]： " XZDLE
+	TIME r "下载DL失败，继续更换节点后再尝试下载？"
+	read -p " [输入[ Y/y ]回车,退出下载，直接按回车继续尝试下载DL]： " XZDLE
 	case $XZDLE in
 		[Yy])
 			exit 1
