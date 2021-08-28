@@ -325,27 +325,30 @@ if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${Home}/.config` -eq '1' ]]; then
 	mkdir -p files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > files/etc/hotplug.d/block/10-mount
 fi
 
-if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${Home}/.config` -eq '1' ]]; then
-	Arch="amd64"
-elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${Home}/.config` -eq '1' ]]; then
-	Arch="i386"
-elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${Home}/.config` -eq '1' ]]; then
-	Arch="arm64"
-fi
-if [[ `grep -c "CONFIG_ARCH=\"arm\"" ${Home}/.config` -eq '1' ]]; then
-	if [[ `grep -c "CONFIG_arm_v7=y" ${Home}/.config` -eq '1' ]]; then
-		Arch="armv7"
-	fi	
-fi
-if [[ "${Arch}" =~ (amd64|i386|armeb|armv7) ]]; then
-	downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
-	latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
-	wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
-	tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${Home}
-	mkdir -p files/usr/bin
-	mv -f AdGuardHome/AdGuardHome files/usr/bin
-	chmod 777 files/usr/bin/AdGuardHome
-	rm -rf {AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
+
+if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${Home}/.config` -eq '1' ]]; then
+	if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${Home}/.config` -eq '1' ]]; then
+		Arch="amd64"
+	elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${Home}/.config` -eq '1' ]]; then
+		Arch="i386"
+	elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${Home}/.config` -eq '1' ]]; then
+		Arch="arm64"
+	fi
+	if [[ `grep -c "CONFIG_ARCH=\"arm\"" ${Home}/.config` -eq '1' ]]; then
+		if [[ `grep -c "CONFIG_arm_v7=y" ${Home}/.config` -eq '1' ]]; then
+			Arch="armv7"
+		fi	
+	fi
+	if [[ "${Arch}" =~ (amd64|i386|armeb|armv7) ]]; then
+		downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
+		latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
+		wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
+		tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${Home}
+		mkdir -p files/usr/bin
+		mv -f AdGuardHome/AdGuardHome files/usr/bin
+		chmod 777 files/usr/bin/AdGuardHome
+		rm -rf {AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
+	fi
 fi
 
 if [[ "${BY_INFORMATION}" == "true" ]]; then
