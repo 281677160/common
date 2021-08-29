@@ -136,15 +136,6 @@ fi
 if [ -n "$(ls -A "feeds/luci/applications/luci-app-rebootschedule" 2>/dev/null)" ]; then
 	chmod -R 775 feeds/luci/applications/luci-app-rebootschedule
 fi
-if [[ ! -d dl ]]; then
-	wget --no-cookie --no-check-certificate https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
-	[[ $? == 0 ]] && {
-		unzip dl.zip
-		rm -rf dl.zip
-	} || {
-		rm -rf dl.zip
-	}
-fi
 }
 
 ################################################################################################################
@@ -405,6 +396,11 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 			TARGET_model="${amlogic_model}"
 		}
 	fi
+fi
+if [[ ! -d dl ]]; then
+	wget -q --no-cookie --no-check-certificate https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
+	unzip dl.zip
+	rm -rf dl.zip
 fi
 find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
