@@ -493,13 +493,14 @@ COMFIRMWARE="openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 TIME g "正在下载DL文件,请耐心等待..."
 echo
 if [[ ! -d dl ]]; then
-	wget -q --no-cookie --no-check-certificate https://github.com/281677160/autobuild/releases/download/${CJB_DL}/dl.zip
+	wget --no-cookie --no-check-certificate https://github.com/281677160/autobuild/releases/download/${CJB_DL}/dl.zip
 	[[ $? == 0 ]] && {
 		TIME r "下载DL完成，解压中..."
 		unzip dl.zip
 		rm -rf dl.zip
 	}
 fi
+echo
 TIME g "检查DL文件是否下载完整,请耐心等待..."
 make -j8 download 2>&1 |tee build.log
 find dl -size -1024c -exec ls -l {} \;
