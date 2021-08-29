@@ -445,7 +445,6 @@ exit 1
 # 编译信息
 ################################################################################################################
 Diy_xinxi() {
-GET_TARGET_INFO
 if [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
 	REGULAR_UPDATE="false"
 fi
