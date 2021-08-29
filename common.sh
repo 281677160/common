@@ -102,17 +102,14 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 	cp -Rf "${PATH1}"/{AutoUpdate.sh,replace.sh} package/base-files/files/bin
 fi
 if [[ "${REPO_BRANCH}" == "master" ]]; then
-	CJB_DL="Lede_dl.zip"
 	cp -Rf "${Home}"/build/common/LEDE/files "${Home}"
 	cp -Rf "${Home}"/build/common/LEDE/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/LEDE/patches/* "${PATH1}/patches"
 elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
-	CJB_DL="Lienol_dl.zip"
 	cp -Rf "${Home}"/build/common/LIENOL/files "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/patches/* "${PATH1}/patches"
 elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-	CJB_DL="Mortal_dl.zip"
 	cp -Rf "${Home}"/build/common/MORTAL/files "${Home}"
 	cp -Rf "${Home}"/build/common/MORTAL/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/MORTAL/patches/* "${PATH1}/patches"
@@ -396,11 +393,6 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 			TARGET_model="${amlogic_model}"
 		}
 	fi
-fi
-if [[ ! -d dl ]]; then
-	wget -q --no-cookie --no-check-certificate https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
-	unzip dl.zip
-	rm -rf dl.zip
 fi
 find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
