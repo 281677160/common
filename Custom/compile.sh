@@ -177,7 +177,7 @@ fi
 		1)
 			firmware="Lede_source"
 			CODE="lede"
-			CJB_DL="Lede_DL"
+			CJB_DL="Lede_dl.zip"
 			Modelfile="Lede_source"
 			TIME y "您选择了：Lede_5.4内核,LUCI 18.06版本"
 		break
@@ -185,7 +185,7 @@ fi
 		2)
 			firmware="Lienol_source"
 			CODE="lienol"
-			CJB_DL="Lienol_DL"
+			CJB_DL="Lienol_dl.zip"
 			Modelfile="Lienol_source"
 			TIME y "您选择了：Lienol_4.14内核,LUCI 19.07版本"
 		break
@@ -193,7 +193,7 @@ fi
 		3)
 			firmware="Mortal_source"
 			CODE="mortal"
-			CJB_DL="Mortal_DL"
+			CJB_DL="Mortal_dl.zip"
 			Modelfile="Mortal_source"
 			TIME y "您选择了：Immortalwrt_5.4内核,LUCI 21.02版本"
 		break
@@ -201,7 +201,7 @@ fi
 		4)
 			firmware="openwrt_amlogic"
 			CODE="lede"
-			CJB_DL="Lede_DL"
+			CJB_DL="Lede_dl.zip"
 			Modelfile="openwrt_amlogic"
 			TIME y "您选择了：N1和晶晨系列CPU盒子专用"
 		break
@@ -493,7 +493,7 @@ COMFIRMWARE="openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 TIME g "正在下载DL文件,请耐心等待..."
 echo
 if [[ ! -d dl ]]; then
-	wget --no-cookie --no-check-certificate https://github.com/281677160/autobuild/releases/download/${CJB_DL}/dl.zip
+	wget --no-cookie --no-check-certificate https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
 	[[ $? == 0 ]] && {
 		TIME r "下载DL完成，解压中..."
 		unzip dl.zip
