@@ -140,7 +140,3 @@ Mkdir() {
 	fi
 	unset _DIR
 }
-
-Diy_xinxi() {
-	Diy_xinxi_Base
-}
