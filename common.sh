@@ -102,14 +102,17 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 	cp -Rf "${PATH1}"/{AutoUpdate.sh,replace.sh} package/base-files/files/bin
 fi
 if [[ "${REPO_BRANCH}" == "master" ]]; then
+	CJB_DL="Lede_dl.zip"
 	cp -Rf "${Home}"/build/common/LEDE/files "${Home}"
 	cp -Rf "${Home}"/build/common/LEDE/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/LEDE/patches/* "${PATH1}/patches"
 elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+	CJB_DL="Lienol_dl.zip"
 	cp -Rf "${Home}"/build/common/LIENOL/files "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/patches/* "${PATH1}/patches"
 elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+	CJB_DL="Mortal_dl.zip"
 	cp -Rf "${Home}"/build/common/MORTAL/files "${Home}"
 	cp -Rf "${Home}"/build/common/MORTAL/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/MORTAL/patches/* "${PATH1}/patches"
@@ -132,6 +135,15 @@ if [[ "${REPO_BRANCH}" == "master" ]]; then
 fi
 if [ -n "$(ls -A "feeds/luci/applications/luci-app-rebootschedule" 2>/dev/null)" ]; then
 	chmod -R 775 feeds/luci/applications/luci-app-rebootschedule
+fi
+if [[ ! -d dl ]]; then
+	wget --no-cookie --no-check-certificate https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
+	[[ $? == 0 ]] && {
+		unzip dl.zip
+		rm -rf dl.zip
+	} || {
+		rm -rf dl.zip
+	}
 fi
 }
 
