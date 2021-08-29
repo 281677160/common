@@ -498,6 +498,8 @@ if [[ ! -d dl ]]; then
 		TIME r "下载DL完成，解压中..."
 		unzip dl.zip
 		rm -rf dl.zip
+	} || {
+		rm -rf dl.zip
 	}
 fi
 echo
