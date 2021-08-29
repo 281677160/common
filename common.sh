@@ -27,7 +27,7 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 ################################################################################################################
 Diy_lede() {
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
-find . -name 'luci-app-ipsec-vpnd' -o -name 'k3screenctrl' -o -name 'luci-app-fileassistant' | xargs -i rm -rf {}
+find . -name 'luci-app-ipsec-vpnd' -o -name 'k3screenctrl' -o -name 'luci-app-fileassistant' -o -name 'luci-app-wol' | xargs -i rm -rf {}
 
 sed -i '/to-ports 53/d' $ZZZ
 
@@ -69,7 +69,7 @@ fi
 ################################################################################################################
 Diy_lienol() {
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'luci-app-fileassistant' | xargs -i rm -rf {}
-find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' | xargs -i rm -rf {}
+find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci-app-wol' | xargs -i rm -rf {}
 rm -rf feeds/packages/libs/libcap
 
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
@@ -325,27 +325,30 @@ if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${Home}/.config` -eq '1' ]]; then
 	mkdir -p files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > files/etc/hotplug.d/block/10-mount
 fi
 
-if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${Home}/.config` -eq '1' ]]; then
-	Arch="amd64"
-elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${Home}/.config` -eq '1' ]]; then
-	Arch="i386"
-elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${Home}/.config` -eq '1' ]]; then
-	Arch="arm64"
-fi
-if [[ `grep -c "CONFIG_ARCH=\"arm\"" ${Home}/.config` -eq '1' ]]; then
-	if [[ `grep -c "CONFIG_arm_v7=y" ${Home}/.config` -eq '1' ]]; then
-		Arch="armv7"
-	fi	
-fi
-if [[ "${Arch}" =~ (amd64|i386|armeb|armv7) ]]; then
-	downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
-	latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
-	wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
-	tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${Home}
-	mkdir -p files/usr/bin
-	mv -f AdGuardHome/AdGuardHome files/usr/bin
-	chmod 777 files/usr/bin/AdGuardHome
-	rm -rf {AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
+
+if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${Home}/.config` -eq '1' ]]; then
+	if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${Home}/.config` -eq '1' ]]; then
+		Arch="amd64"
+	elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${Home}/.config` -eq '1' ]]; then
+		Arch="i386"
+	elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${Home}/.config` -eq '1' ]]; then
+		Arch="arm64"
+	fi
+	if [[ `grep -c "CONFIG_ARCH=\"arm\"" ${Home}/.config` -eq '1' ]]; then
+		if [[ `grep -c "CONFIG_arm_v7=y" ${Home}/.config` -eq '1' ]]; then
+			Arch="armv7"
+		fi	
+	fi
+	if [[ "${Arch}" =~ (amd64|i386|armeb|armv7) ]]; then
+		downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
+		latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
+		wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
+		tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${Home} > /dev/null 2>&1
+		mkdir -p files/usr/bin
+		mv -f AdGuardHome/AdGuardHome files/usr/bin
+		chmod 777 files/usr/bin/AdGuardHome
+		rm -rf {AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
+	fi
 fi
 
 if [[ "${BY_INFORMATION}" == "true" ]]; then
@@ -362,11 +365,7 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 	awk '$0=NR$0' Plug-in > Plug-2
 	awk '{print "	" $0}' Plug-2 > Plug-in
 	sed -i "s/^/TIME g \"/g" Plug-in
-	cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c > CPU
-	cat /proc/cpuinfo | grep "cpu cores" | uniq >> CPU
-	sed -i 's|[[:space:]]||g; s|^.||' CPU && sed -i 's|CPU||g; s|pucores:||' CPU
-	CPUNAME="$(awk 'NR==1' CPU)" && CPUCORES="$(awk 'NR==2' CPU)"
-	rm -rf CPU
+
 	if [[ `grep -c "KERNEL_PATCHVER:=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
 		PATCHVER=$(grep KERNEL_PATCHVER:= ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -c18-100)
 	elif [[ `grep -c "KERNEL_PATCHVER=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
@@ -444,7 +443,8 @@ exit 1
 ################################################################################################################
 # 编译信息
 ################################################################################################################
-Diy_xinxi() {
+Diy_xinxi_Base() {
+GET_TARGET_INFO
 if [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
 	REGULAR_UPDATE="false"
 fi
