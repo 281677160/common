@@ -230,10 +230,12 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-kodexplorer=y" ${Home}/.config` -eq '1' 
 	fi
 	
 fi
-if [[ `grep -c "CONFIG_PACKAGE_libustream-openssl=y" ${Home}/.config` -ge '1' ]]; then
-	if [[ `grep -c "CONFIG_PACKAGE_libustream-mbedtls=y" ${Home}/.config` -eq '1' ]]; then
+if [[ `grep -c "CONFIG_PACKAGE_luci-app-ssr-plus=y" ${Home}/.config` -ge '1' ]]; then
+	if [[ `grep -c "CONFIG_PACKAGE_luci-app-cshark=y" ${Home}/.config` -eq '1' ]]; then
+		sed -i 's/CONFIG_PACKAGE_luci-app-cshark=y/# CONFIG_PACKAGE_luci-app-cshark is not set/g' ${Home}/.config
+		sed -i 's/CONFIG_PACKAGE_cshark=y/# CONFIG_PACKAGE_cshark is not set/g' ${Home}/.config
 		sed -i 's/CONFIG_PACKAGE_libustream-mbedtls=y/# CONFIG_PACKAGE_libustream-mbedtls is not set/g' ${Home}/.config
-		echo "TIME r \"您同时选择libustream-openssl和libustream-mbedtls，插件有依赖冲突，只能二选一，已删除libustream-mbedtls\"" >>CHONGTU
+		echo "TIME r \"您同时选择luci-app-ssr-plus和luci-app-cshark，插件有依赖冲突，只能二选一，已删除luci-app-cshark\"" >>CHONGTU
 		echo "TIME z \"\"" >>CHONGTU
 		echo "TIME b \"插件冲突信息\"" > ${Home}/Chajianlibiao
 	fi
