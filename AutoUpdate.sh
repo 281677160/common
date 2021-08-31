@@ -222,7 +222,7 @@ fi
 [[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/bin/openwrt_info文件的值!" && exit 1
 TIME g "正在获取云端固件版本信息..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-wget -q --no-cookie --no-check-certificate ${Github_Tags} -O ${Download_Tags} > /dev/null 2>&1
+wget -q ${Github_Tags} -O ${Download_Tags} > /dev/null 2>&1
 if [[ $? -ne 0 ]];then
 	wget -q -P ${Download_Path} https://pd.zwc365.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags > /dev/null 2>&1
 	if [[ $? -ne 0 ]];then
