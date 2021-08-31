@@ -494,7 +494,7 @@ COMFIRMWARE="openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 TIME g "正在下载DL文件,请耐心等待..."
 echo
 if [[ ! -d dl ]]; then
-	wget --no-cookie --no-check-certificate https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
+	wget https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
 	[[ $? == 0 ]] && {
 		TIME r "下载DL完成，解压中..."
 		unzip dl.zip
