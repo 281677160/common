@@ -496,7 +496,6 @@ echo
 if [[ ! -d dl ]]; then
 	wget https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
 	[[ $? == 0 ]] && {
-		TIME r "下载DL完成，解压中..."
 		unzip dl.zip
 		rm -rf dl.zip
 	} || {
