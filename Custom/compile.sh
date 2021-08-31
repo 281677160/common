@@ -495,12 +495,8 @@ TIME g "正在下载DL文件,请耐心等待..."
 echo
 if [[ ! -d dl ]]; then
 	wget https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
-	[[ $? == 0 ]] && {
-		unzip dl.zip
-		rm -rf dl.zip
-	} || {
-		rm -rf dl.zip
-	}
+	unzip dl.zip
+	rm -rf dl.zip
 fi
 echo
 TIME g "检查DL文件是否下载完整,请耐心等待..."
