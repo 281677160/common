@@ -220,7 +220,7 @@ fi
 }
 echo
 echo
-[[ ! ${YUAN_MA} == "false" ]] && ipdz="192.168.1.1"
+[[ -z ${ipdz} ]] && ipdz="192.168.1.1"
 TIME g "设置openwrt的后台IP地址[ 回车默认 $ipdz ]"
 read -p " 请输入后台IP地址：" ip
 ip=${ip:-"$ipdz"}
@@ -267,7 +267,7 @@ echo
 	esac
 }
 [[ "${REG_UPDATE}" == "true" ]] && {
-	[[ ! ${YUAN_MA} == "false" ]] && Git="https://github.com/281677160/build-actions"
+	[[ -z ${Git} ]] && Git="https://github.com/281677160/build-actions"
 	TIME g "设置Github地址,定时更新固件需要把固件传至对应地址的Releases"
 	TIME z "回车默认为：$Git"
 	read -p " 请输入Github地址：" Github
