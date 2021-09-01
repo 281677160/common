@@ -491,15 +491,7 @@ echo
 BY_INFORMATION="false"
 source build/${firmware}/common.sh && Diy_chuli
 COMFIRMWARE="openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
-echo
-if [[ ! -d dl ]]; then
-	TIME g "正在下载DL文件,请耐心等待..."
-	wget https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
-	unzip dl.zip
-	rm -rf dl.zip
-fi
-echo
-TIME g "检查DL文件是否下载完整,请耐心等待..."
+TIME g "正在下载DL文件,请耐心等待..."
 make -j8 download 2>&1 |tee build.log
 find dl -size -1024c -exec ls -l {} \;
 find dl -size -1024c -exec rm -f {} \;
@@ -507,8 +499,8 @@ if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 	clear
 	echo
 	echo
-	TIME r "下载DL失败，更换节点后再尝试下载？"
-	read -p " [输入[ Y/y ]回车,退出下载，直接按回车继续尝试下载DL]： " XZDL
+	TIME g "下载DL失败，更换节点后再尝试下载？"
+	read -p " [输入[ Y/y ]回车,退出下载，更换节点后按回车继续尝试下载DL]： " XZDL
 	case $XZDL in
 		[Yy])
 			exit 1
@@ -526,8 +518,8 @@ if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 	clear
 	echo
 	echo
-	TIME r "下载DL失败，继续更换节点后再尝试下载？"
-	read -p " [输入[ Y/y ]回车,退出下载，直接按回车继续尝试下载DL]： " XZDLE
+	TIME g "下载DL失败，继续更换节点后再尝试下载？"
+	read -p " [输入[ Y/y ]回车,退出下载，更换节点后按回车继续尝试下载DL]： " XZDLE
 	case $XZDLE in
 		[Yy])
 			exit 1
@@ -535,6 +527,9 @@ if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 		;;
 		*)	
 			rm -rf build.log
+			wget https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
+			unzip dl.zip
+			rm -rf dl.zip
 			make -j8 download 2>&1 |tee build.log
 			find dl -size -1024c -exec ls -l {} \;
 			find dl -size -1024c -exec rm -f {} \;
