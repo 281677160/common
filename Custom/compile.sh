@@ -492,6 +492,9 @@ BY_INFORMATION="false"
 source build/${firmware}/common.sh && Diy_chuli
 COMFIRMWARE="openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 TIME g "正在下载DL文件,请耐心等待..."
+wget https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
+unzip dl.zip
+rm -rf dl.zip
 make -j8 download 2>&1 |tee build.log
 find dl -size -1024c -exec ls -l {} \;
 find dl -size -1024c -exec rm -f {} \;
@@ -527,9 +530,6 @@ if [[ `grep -c "make with -j1 V=s or V=sc" build.log` -ge '1' ]]; then
 		;;
 		*)	
 			rm -rf build.log
-			wget https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
-			unzip dl.zip
-			rm -rf dl.zip
 			make -j8 download 2>&1 |tee build.log
 			find dl -size -1024c -exec ls -l {} \;
 			find dl -size -1024c -exec rm -f {} \;
