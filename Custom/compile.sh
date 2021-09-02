@@ -67,18 +67,30 @@ rm -rf ${firmware}
 if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 	if [[ -n "$(ls -A "openwrt/.Lede_core" 2>/dev/null)" ]]; then
 		firmware="Lede_source"
+		CODE="lede"
+		CJB_DL="Lede_dl.zip"
+		Modelfile="Lede_source"
 		Core=".Lede_core"
 		source openwrt/.Lede_core
 	elif [[ -n "$(ls -A "openwrt/.Lienol_core" 2>/dev/null)" ]]; then
 		firmware="Lienol_source"
+		CODE="lienol"
+		CJB_DL="Lienol_dl.zip"
+		Modelfile="Lienol_source"
 		Core=".Lienol_core"
 		source openwrt/.Lienol_core
 	elif [[ -n "$(ls -A "openwrt/.Mortal_core" 2>/dev/null)" ]]; then
 		firmware="Mortal_source"
+		CODE="mortal"
+		CJB_DL="Mortal_dl.zip"
+		Modelfile="Mortal_source"
 		Core=".Mortal_core"
 		source openwrt/.Mortal_core
 	elif [[ -n "$(ls -A "openwrt/.amlogic_core" 2>/dev/null)" ]]; then
 		firmware="openwrt_amlogic"
+		CODE="lede"
+		CJB_DL="Lede_dl.zip"
+		Modelfile="openwrt_amlogic"
 		Core=".amlogic_core"
 		source openwrt/.amlogic_core
 	else
@@ -291,68 +303,42 @@ echo
 TIME g "正在下载源码中,请耐心等候~~~"
 echo
 if [[ $firmware == "Lede_source" ]]; then
-	[[ -d openwrt ]] && {
-		rm -rf openwrtl && git clone https://github.com/coolsnowwolf/lede openwrtl
-	} || {
-		git clone https://github.com/coolsnowwolf/lede openwrt
-	}
+	rm -rf openwrt && git clone https://github.com/coolsnowwolf/lede openwrt
 	[[ $? -ne 0 ]] && {
 		TIME r "源码下载失败，请检测网络或更换节点再尝试!"
-		rm -rf openwrtl
 		echo
 	 	exit 1
-	} || {
-	[[ -d openwrtl ]] && rm -rf openwrt && mv openwrtl openwrt
 	}
 	ZZZ="package/lean/default-settings/files/zzz-default-settings"
 	OpenWrt_name="18.06"
 	echo -e "\nipdz=$ip" > openwrt/.Lede_core
 	echo -e "\nGit=$Github" >> openwrt/.Lede_core
 elif [[ $firmware == "Lienol_source" ]]; then
-	[[ -d openwrt ]] && {
-		rm -rf openwrtl && git clone -b 19.07 --single-branch https://github.com/Lienol/openwrt openwrtl
-	} || {
-		git clone -b 19.07 --single-branch https://github.com/Lienol/openwrt openwrt
-	}
+	rm -rf openwrt && git clone -b 19.07 --single-branch https://github.com/Lienol/openwrt openwrt
 	[[ $? -ne 0 ]] && {
 		TIME r "源码下载失败，请检测网络或更换节点再尝试!"
-		rm -rf openwrtl
 		echo
 	 	exit 1
-	} || {
-	[[ -d openwrtl ]] && rm -rf openwrt && mv openwrtl openwrt
 	}
 	ZZZ="package/default-settings/files/zzz-default-settings"
 	OpenWrt_name="19.07"
 	echo -e "\nipdz=$ip" > openwrt/.Lienol_core
 	echo -e "\nGit=$Github" >> openwrt/.Lienol_core
 elif [[ $firmware == "Mortal_source" ]]; then
-	[[ -d openwrt ]] && {
-		rm -rf openwrtl && git clone -b openwrt-21.02 --single-branch https://github.com/immortalwrt/immortalwrt openwrtl
-	} || {
-		git clone -b openwrt-21.02 --single-branch https://github.com/immortalwrt/immortalwrt openwrt
-	}
+	rm -rf openwrt && git clone -b openwrt-21.02 --single-branch https://github.com/immortalwrt/immortalwrt openwrt
 	[[ $? -ne 0 ]] && {
 		TIME r "源码下载失败，请检测网络或更换节点再尝试!"
-		rm -rf openwrtl
 		echo
 	 	exit 1
-	} || {
-	[[ -d openwrtl ]] && rm -rf openwrt && mv openwrtl openwrt
 	}
 	ZZZ="package/emortal/default-settings/files/zzz-default-settings"
 	OpenWrt_name="21.02"
 	echo -e "\nipdz=$ip" > openwrt/.Mortal_core
 	echo -e "\nGit=$Github" >> openwrt/.Mortal_core
 elif [[ $firmware == "openwrt_amlogic" ]]; then
-	[[ -d openwrt ]] && {
-		rm -rf openwrtl && git clone https://github.com/coolsnowwolf/lede openwrtl
-	} || {
-		git clone https://github.com/coolsnowwolf/lede openwrt
-	}
+	rm -rf openwrt && git clone https://github.com/coolsnowwolf/lede openwrt
 	[[ $? -ne 0 ]] && {
 		TIME r "源码下载失败，请检测网络或更换节点再尝试!"
-		rm -rf openwrtl
 		echo
 	 	exit 1
 	}
@@ -361,12 +347,11 @@ elif [[ $firmware == "openwrt_amlogic" ]]; then
 	echo
 	rm -rf amlogic-s9xxx && svn co https://github.com/ophub/amlogic-s9xxx-openwrt/trunk/amlogic-s9xxx amlogic-s9xxx
 	[[ $? -ne 0 ]] && {
-		rm -rf {amlogic-s9xxx,openwrtl}
+		rm -rf amlogic-s9xxx
 		TIME r "内核下载失败，请检测网络或更换节点再尝试!"
 		echo
 		exit 1
 	} || {
-	[[ -d openwrtl ]] && rm -rf openwrt && mv openwrtl openwrt
 	mv amlogic-s9xxx openwrt/amlogic-s9xxx
 	curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/make > openwrt/make
 	mkdir -p openwrt/openwrt-armvirt
