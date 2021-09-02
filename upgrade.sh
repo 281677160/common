@@ -93,10 +93,10 @@ Diy_Part3() {
 	GET_TARGET_INFO
 	AutoBuild_Firmware="${LUCI_Name}-${Openwrt_Version}"
 	Firmware_Path="${Home}/upgrade"
-	if [[ `ls ${Home}/upgrade | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
+	if [[ `ls ${Firmware_Path} | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
 		MIR3G="openwrt-ramips-mt7621-xiaomi_mi-router-3g-squashfs-sysupgrade.bin"
 		Xiaomi_3G="openwrt-ramips-mt7621-xiaomi_mir3g-squashfs-sysupgrade.bin"
-		mv ${Home}/upgrade/${MIR3G} ${Home}/upgrade/${Xiaomi_3G}
+		mv ${Firmware_Path}/${MIR3G} ${Firmware_Path}/${Xiaomi_3G}
 	fi
 	Mkdir ${Home}/bin/Firmware
 	if [[ `ls ${Home}/upgrade | grep -c "sysupgrade.bin"` -ge '1' ]]; then
