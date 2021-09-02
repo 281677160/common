@@ -474,7 +474,7 @@ BY_INFORMATION="false"
 source build/${firmware}/common.sh && Diy_chuli
 COMFIRMWARE="openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 TIME g "正在下载DL文件,请耐心等待..."
-wget -t 0 -c https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
+wget -c https://pd.zwc365.com/https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O dl.zip
 unzip dl.zip
 rm -rf dl.zip
 make -j8 download 2>&1 |tee build.log
