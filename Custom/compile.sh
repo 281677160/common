@@ -63,7 +63,7 @@ XTbit=`getconf LONG_BIT`
 	echo "compile" > .compile
 	}
 }
-rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core,dl,.bf_config,compile.sh}
+rm -rf ${firmware}
 if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 	if [[ -n "$(ls -A "openwrt/.Lede_core" 2>/dev/null)" ]]; then
 		firmware="Lede_source"
@@ -128,7 +128,8 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 		*)
 			YUAN_MA="false"
 			TIME y "您已关闭更换源码，保存配置中，请稍后..."
-			cp -Rf openwrt/{.bf_config,compile.sh,${Core},dl} ./ > /dev/null 2>&1
+			mkdir -p ${firmware}
+			cp -Rf openwrt/{.bf_config,compile.sh,${Core}} ${firmware} > /dev/null 2>&1
 		;;
 	esac
 fi
@@ -383,9 +384,8 @@ GITHUB_WORKSPACE="$PWD"
 Home="$PWD/openwrt"
 PATH1="$PWD/openwrt/build/${firmware}"
 NETIP="package/base-files/files/etc/networkip"
-[[ -e ${Core} ]] && cp -Rf {.bf_config,compile.sh,${Core},dl} $Home
-rm -rf {.bf_config,compile.sh,dl}
-rm -rf {.Lede_core,.Lienol_core,.amlogic_core,.Mortal_core}
+[[ -f ${firmware} ]] && cp -Rf ${firmware}/* $Home
+rm -rf ${firmware}
 echo "Compile_Date=$(date +%Y%m%d%H%M)" > $Home/Openwrt.info
 [ -f $Home/Openwrt.info ] && . $Home/Openwrt.info
 svn co https://github.com/281677160/build-actions/trunk/build $Home/build > /dev/null 2>&1
