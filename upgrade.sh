@@ -99,10 +99,10 @@ Diy_Part3() {
 		mv ${Firmware_Path}/${MIR3G} ${Firmware_Path}/${Xiaomi_3G}
 	fi
 	Mkdir ${Home}/bin/Firmware
-	if [[ `ls ${Home}/upgrade | grep -c "sysupgrade.bin"` -ge '1' ]]; then
+	if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
 		Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-		mv ${Home}/upgrade/*sysupgrade.bin ${Home}/bin/Firmware/${Up_BinFirmware}
-		mv ${Home}/bin/Firmware/${Up_BinFirmware} ${Home}/upgrade/${Up_BinFirmware}
+		mv ${Firmware_Path}/*sysupgrade.bin ${Home}/bin/Firmware/${Up_BinFirmware}
+		mv ${Home}/bin/Firmware/${Up_BinFirmware} ${Firmware_Path}/${Up_BinFirmware}
 	fi
 	cd ${Firmware_Path}
 	case "${TARGET_PROFILE}" in
