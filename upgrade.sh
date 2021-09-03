@@ -20,7 +20,8 @@ GET_TARGET_INFO() {
 			Up_Firmware="openwrt-bcm53xx-generic-phicomm_k3-squashfs.trx"
 			Firmware_sfx="trx"
 		elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
-			Up_Firmware="openwrt-ramips-mt7621-xiaomi_mir3g-squashfs-sysupgrade.bin"
+			TARGET_PROFILE="xiaomi_mir3g"
+			Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			Firmware_sfx="bin"
 		else
 			Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
@@ -96,11 +97,6 @@ Diy_Part3() {
 	GET_TARGET_INFO
 	AutoBuild_Firmware="${LUCI_Name}-${Openwrt_Version}"
 	Firmware_Path="${Home}/upgrade"
-	if [[ `ls ${Firmware_Path} | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
-		MIR3G="openwrt-ramips-mt7621-xiaomi_mi-router-3g-squashfs-sysupgrade.bin"
-		Xiaomi_3G="openwrt-ramips-mt7621-xiaomi_mir3g-squashfs-sysupgrade.bin"
-		mv ${Firmware_Path}/${MIR3G} ${Firmware_Path}/${Xiaomi_3G}
-	fi
 	Mkdir ${Home}/bin/Firmware
 	if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
 		Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
@@ -108,6 +104,9 @@ Diy_Part3() {
 		mv ${Home}/bin/Firmware/${Up_BinFirmware} ${Firmware_Path}/${Up_BinFirmware}
 	fi
 	cd ${Firmware_Path}
+	if [[ `ls | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
+		rename -v "s/xiaomi_mi-router-3g/xiaomi_mir3g/" *
+	fi
 	case "${TARGET_PROFILE}" in
 	x86-64)
 		[[ -f ${Legacy_Firmware} ]] && {
