@@ -367,7 +367,6 @@ Home="$PWD/openwrt"
 PATH1="$PWD/openwrt/build/${firmware}"
 NETIP="package/base-files/files/etc/networkip"
 [[ -e "${firmware}" ]] && cp -Rf "${firmware}"/* "${Home}"
-rm -rf ${firmware}
 echo "Compile_Date=$(date +%Y%m%d%H%M)" > $Home/Openwrt.info
 [ -f $Home/Openwrt.info ] && . $Home/Openwrt.info
 svn co https://github.com/281677160/build-actions/trunk/build $Home/build > /dev/null 2>&1
@@ -469,6 +468,7 @@ if [ "${REGULAR_UPDATE}" == "true" ]; then
           source build/$firmware/upgrade.sh && Diy_Part2
 fi
 echo
+rm -rf ../${firmware}
 # 为编译做最后处理
 BY_INFORMATION="false"
 source build/${firmware}/common.sh && Diy_chuli
