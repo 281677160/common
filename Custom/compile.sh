@@ -64,7 +64,7 @@ XTbit=`getconf LONG_BIT`
 	}
 }
 rm -rf ${firmware}
-if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
+if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 	if [[ -n "$(ls -A "openwrt/.Lede_core" 2>/dev/null)" ]]; then
 		firmware="Lede_source"
 		CODE="lede"
@@ -138,7 +138,7 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 			YUAN_MA="false"
 			TIME y "您已关闭更换源码，保存配置中，请稍后..."
 			mkdir -p ${firmware}
-			cp -Rf openwrt/{.bf_config,compile.sh,${Core}} ${firmware} > /dev/null 2>&1
+			cp -Rf openwrt/{config_bf,${Core},compile.sh} ${firmware} > /dev/null 2>&1
 		;;
 	esac
 fi
