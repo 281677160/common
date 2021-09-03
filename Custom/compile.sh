@@ -288,8 +288,8 @@ echo
 	CangKu="${Apidz##*/}"
 }
 echo
-[[ -e ${Core} ]] && {
-	cat >${Core} <<-EOF
+[[ -e ${firmware}/${Core} ]] && {
+	cat >${firmware}/${Core} <<-EOF
 	ipdz=$ip
 	Git=$Github
 	EOF
