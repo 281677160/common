@@ -104,10 +104,10 @@ if [[ -n "$(ls -A "openwrt/.bf_config" 2>/dev/null)" ]]; then
 		bash <(curl -fsSL git.io/JcGDV)
 	fi
 	echo
-	if [[ `grep -c "CONFIG_TARGET_x86_64=y" openwrt/.bf_config` -eq '1' ]]; then
+	if [[ `grep -c "CONFIG_TARGET_x86_64=y" openwrt/config_bf` -eq '1' ]]; then
           	TARGET_PROFILE="x86-64"
-	elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" openwrt/.bf_config` -eq '1' ]]; then
-          	TARGET_PROFILE="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" openwrt/.bf_config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+	elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" openwrt/config_bf` -eq '1' ]]; then
+          	TARGET_PROFILE="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" openwrt/config_bf | sed -r 's/.*DEVICE_(.*)=y/\1/')"
 	else
           	TARGET_PROFILE="armvirt"
 	fi
@@ -421,10 +421,10 @@ sed -i 's/"Argon 主题设置"/"Argon设置"/g' `grep "Argon 主题设置" -rl .
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 ./scripts/feeds install -a
-[[ ! -e ${Home}/.bf_config ]] && {
-	cp -rf ${Home}/build/${firmware}/.config ${Home}/.config
+[[ -e ${Home}/config_bf ]] && {
+	cp -rf ${Home}/config_bf ${Home}/.config
 } || {
-	cp -rf ${Home}/.bf_config ${Home}/.config
+	cp -rf ${Home}/build/${firmware}/.config ${Home}/.config
 }
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
 	  source build/$firmware/upgrade.sh && Diy_Part1
@@ -442,6 +442,7 @@ TIME g "正在生成配置文件，请稍后..."
 echo
 source build/${firmware}/common.sh && Diy_chajian
 make defconfig
+./scripts/diffconfig.sh > ${Home}/config_bf
 if [ -n "$(ls -A "${Home}/Chajianlibiao" 2>/dev/null)" ]; then
 	clear
 	echo
@@ -455,7 +456,6 @@ if [ -n "$(ls -A "${Home}/Chajianlibiao" 2>/dev/null)" ]; then
 	make defconfig > /dev/null 2>&1
 	sleep 30s
 fi
-cp -rf ${Home}/.config ${Home}/.bf_config
 TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)"
 TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)"
 if [[ `grep -c "CONFIG_TARGET_x86_64=y" .config` -eq '1' ]]; then
@@ -473,8 +473,6 @@ echo
 BY_INFORMATION="false"
 source build/${firmware}/common.sh && Diy_chuli
 COMFIRMWARE="openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
-make defconfig > /dev/null 2>&1
-./scripts/diffconfig.sh > ${Home}/.bf_config
 TIME g "正在下载DL文件,请耐心等待..."
 wget -p ${Home} https://github.com/281677160/DL/releases/download/DL/${CJB_DL} -O ${Home}/dl.zip
 unzip dl.zip
