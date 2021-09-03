@@ -366,7 +366,7 @@ GITHUB_WORKSPACE="$PWD"
 Home="$PWD/openwrt"
 PATH1="$PWD/openwrt/build/${firmware}"
 NETIP="package/base-files/files/etc/networkip"
-[[ -f ${firmware} ]] && cp -Rf ${firmware}/* $Home
+[[ -e "${firmware}" ]] && cp -Rf "${firmware}"/* "${Home}"
 rm -rf ${firmware}
 echo "Compile_Date=$(date +%Y%m%d%H%M)" > $Home/Openwrt.info
 [ -f $Home/Openwrt.info ] && . $Home/Openwrt.info
