@@ -191,6 +191,7 @@ fi
 		1)
 			firmware="Lede_source"
 			CODE="lede"
+			Core=".Lede_core"
 			CJB_DL="Lede_dl.zip"
 			Modelfile="Lede_source"
 			TIME y "您选择了：Lede_5.4内核,LUCI 18.06版本"
@@ -199,6 +200,7 @@ fi
 		2)
 			firmware="Lienol_source"
 			CODE="lienol"
+			Core=".Lienol_core"
 			CJB_DL="Lienol_dl.zip"
 			Modelfile="Lienol_source"
 			TIME y "您选择了：Lienol_4.14内核,LUCI 19.07版本"
@@ -207,6 +209,7 @@ fi
 		3)
 			firmware="Mortal_source"
 			CODE="mortal"
+			Core=".Mortal_core"
 			CJB_DL="Mortal_dl.zip"
 			Modelfile="Mortal_source"
 			TIME y "您选择了：Immortalwrt_5.4内核,LUCI 21.02版本"
@@ -215,6 +218,7 @@ fi
 		4)
 			firmware="openwrt_amlogic"
 			CODE="lede"
+			Core=".amlogic_core"
 			CJB_DL="Lede_dl.zip"
 			Modelfile="openwrt_amlogic"
 			TIME y "您选择了：N1和晶晨系列CPU盒子专用"
