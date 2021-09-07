@@ -475,7 +475,7 @@ if [ "${REGULAR_UPDATE}" == "true" ]; then
           source build/$firmware/upgrade.sh && Diy_Part2
 fi
 echo
-rm -rf ../${firmware}
+rm -rf ../{Lede_source,Lienol_source,Mortal_source,openwrt_amlogic}
 # 为编译做最后处理
 BY_INFORMATION="false"
 source build/${firmware}/common.sh && Diy_chuli
