@@ -200,7 +200,7 @@ fi
 			Core=".Lienol_core"
 			CJB_DL="Lienol_dl.zip"
 			Modelfile="Lienol_source"
-			source Lienol_core/.Lienol_core > /dev/null 2>&1
+			source Lienol_source/.Lienol_core > /dev/null 2>&1
 			TIME y "您选择了：Lienol_4.14内核,LUCI 19.07版本"
 		break
 		;;
@@ -220,7 +220,7 @@ fi
 			Core=".amlogic_core"
 			CJB_DL="Lede_dl.zip"
 			Modelfile="openwrt_amlogic"
-			source amlogic_core/.amlogic_core > /dev/null 2>&1
+			source openwrt_amlogic/.amlogic_core > /dev/null 2>&1
 			TIME y "您选择了：N1和晶晨系列CPU盒子专用"
 		break
 		;;
