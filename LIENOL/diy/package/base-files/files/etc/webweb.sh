@@ -24,8 +24,6 @@ fi
 
 chmod -R +x /etc/init.d /usr/share
 
-sed -i '/coremark/d' /etc/crontabs/root
-
 rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
 exit 0
