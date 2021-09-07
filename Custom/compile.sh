@@ -210,7 +210,7 @@ fi
 			Core=".Mortal_core"
 			CJB_DL="Mortal_dl.zip"
 			Modelfile="Mortal_source"
-			source Mortal_core/.Mortal_core
+			source Mortal_source/.Mortal_core
 			TIME y "您选择了：Immortalwrt_5.4内核,LUCI 21.02版本"
 		break
 		;;
