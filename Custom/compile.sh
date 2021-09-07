@@ -72,7 +72,6 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 		Modelfile="Lede_source"
 		Core=".Lede_core"
 		source openwrt/.Lede_core
-		source Lede_source/.Lede_core
 	elif [[ -n "$(ls -A "openwrt/.Lienol_core" 2>/dev/null)" ]]; then
 		firmware="Lienol_source"
 		CODE="lienol"
@@ -80,7 +79,6 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 		Modelfile="Lienol_source"
 		Core=".Lienol_core"
 		source openwrt/.Lienol_core
-		source Lienol_core/.Lienol_core
 	elif [[ -n "$(ls -A "openwrt/.Mortal_core" 2>/dev/null)" ]]; then
 		firmware="Mortal_source"
 		CODE="mortal"
@@ -88,7 +86,6 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 		Modelfile="Mortal_source"
 		Core=".Mortal_core"
 		source openwrt/.Mortal_core
-		source Mortal_core/.Mortal_core
 	elif [[ -n "$(ls -A "openwrt/.amlogic_core" 2>/dev/null)" ]]; then
 		firmware="openwrt_amlogic"
 		CODE="lede"
@@ -96,7 +93,6 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 		Modelfile="openwrt_amlogic"
 		Core=".amlogic_core"
 		source openwrt/.amlogic_core
-		source amlogic_core/.amlogic_core
 	else
 		clear
 		echo
@@ -194,6 +190,7 @@ fi
 			Core=".Lede_core"
 			CJB_DL="Lede_dl.zip"
 			Modelfile="Lede_source"
+			source Lede_source/.Lede_core
 			TIME y "您选择了：Lede_5.4内核,LUCI 18.06版本"
 		break
 		;;
@@ -203,6 +200,7 @@ fi
 			Core=".Lienol_core"
 			CJB_DL="Lienol_dl.zip"
 			Modelfile="Lienol_source"
+			source Lienol_core/.Lienol_core
 			TIME y "您选择了：Lienol_4.14内核,LUCI 19.07版本"
 		break
 		;;
@@ -212,6 +210,7 @@ fi
 			Core=".Mortal_core"
 			CJB_DL="Mortal_dl.zip"
 			Modelfile="Mortal_source"
+			source Mortal_core/.Mortal_core
 			TIME y "您选择了：Immortalwrt_5.4内核,LUCI 21.02版本"
 		break
 		;;
@@ -221,6 +220,7 @@ fi
 			Core=".amlogic_core"
 			CJB_DL="Lede_dl.zip"
 			Modelfile="openwrt_amlogic"
+			source amlogic_core/.amlogic_core
 			TIME y "您选择了：N1和晶晨系列CPU盒子专用"
 		break
 		;;
