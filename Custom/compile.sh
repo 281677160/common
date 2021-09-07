@@ -72,6 +72,7 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 		Modelfile="Lede_source"
 		Core=".Lede_core"
 		source openwrt/.Lede_core
+		source Lede_source/.Lede_core
 	elif [[ -n "$(ls -A "openwrt/.Lienol_core" 2>/dev/null)" ]]; then
 		firmware="Lienol_source"
 		CODE="lienol"
@@ -79,6 +80,7 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 		Modelfile="Lienol_source"
 		Core=".Lienol_core"
 		source openwrt/.Lienol_core
+		source Lienol_core/.Lienol_core
 	elif [[ -n "$(ls -A "openwrt/.Mortal_core" 2>/dev/null)" ]]; then
 		firmware="Mortal_source"
 		CODE="mortal"
@@ -86,6 +88,7 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 		Modelfile="Mortal_source"
 		Core=".Mortal_core"
 		source openwrt/.Mortal_core
+		source Mortal_core/.Mortal_core
 	elif [[ -n "$(ls -A "openwrt/.amlogic_core" 2>/dev/null)" ]]; then
 		firmware="openwrt_amlogic"
 		CODE="lede"
@@ -93,6 +96,7 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 		Modelfile="openwrt_amlogic"
 		Core=".amlogic_core"
 		source openwrt/.amlogic_core
+		source amlogic_core/.amlogic_core
 	else
 		clear
 		echo
@@ -288,12 +292,11 @@ echo
 	CangKu="${Apidz##*/}"
 }
 echo
-[[ -e ${firmware}/${Core} ]] && {
-	cat >${firmware}/${Core} <<-EOF
-	ipdz=$ip
-	Git=$Github
-	EOF
-}
+mkdir -p ${firmware}
+cat >${firmware}/${Core} <<-EOF
+ipdz=$ip
+Git=$Github
+EOF
 Begin="$(date "+%Y/%m/%d-%H.%M")"
 date1="$(date +'%m.%d')"
 echo
