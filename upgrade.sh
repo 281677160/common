@@ -117,10 +117,10 @@ Diy_Part3() {
 	fi
 	cd ${Firmware_Path}
 	if [[ `ls | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
-		rename -v "s/xiaomi_mi-router-3g/xiaomi_mir3g/" *
+		rename -v "s/xiaomi_mi-router-3g/xiaomi_mir3g/" * > /dev/null 2>&1
 	fi
 	if [[ `ls | grep -c "xiaomi_mi-router-3g-v2"` -ge '1' ]]; then
-		rename -v "s/xiaomi_mi-router-3g-v2/xiaomi_mir3gv2/" *
+		rename -v "s/xiaomi_mi-router-3g-v2/xiaomi_mir3gv2/" * > /dev/null 2>&1
 	fi
 	case "${TARGET_PROFILE}" in
 	x86-64)
