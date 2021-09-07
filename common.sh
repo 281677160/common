@@ -326,6 +326,17 @@ fi
 # 为编译做最后处理
 ################################################################################################################
 Diy_chuli() {
+sed -i '$ s/exit 0$//' ${Home}/package/base-files/files/etc/rc.local
+echo '
+if [[ `grep -c "coremark" /etc/crontabs/root` -eq '1' ]]; then
+  sed -i '/coremark/d' /etc/crontabs/root
+fi
+
+/etc/init.d/network restart
+
+exit 0
+' >> ${Home}/package/base-files/files/etc/rc.local
+
 if [[ "${TARGET_BOARD}" == "x86" ]]; then
 	cp -Rf "${Home}"/build/common/Custom/DRM-I915 target/linux/x86/DRM-I915
 	for X in $(ls -1 target/linux/x86 | grep "config-"); do echo -e "\n$(cat target/linux/x86/DRM-I915)" >> target/linux/x86/${X}; done
