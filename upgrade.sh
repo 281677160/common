@@ -61,7 +61,7 @@ GET_TARGET_INFO() {
 			Firmware_sfx="trx"
 		elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
 			TARGET_PROFILE="xiaomi_mir3g"
-			Up_Firmware="immortalwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+			Up_Firmware="immortalwrt-ramips-mt7621-xiaomi_mir3g-squashfs-sysupgrade.bin"
 			Firmware_sfx="bin"
 		elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g-v2" ]]; then
 			TARGET_PROFILE="xiaomi_mir3gv2"
