@@ -300,22 +300,41 @@ echo "固件格式：${Firmware_SFX}"
 echo "固件名称：${Firmware}"
 echo "下载保存：${Download_Path}"
 echo "固件体积：${CLOUD_Firmware_Size}M"
-sleep 1
 cd ${Download_Path}
-TIME g "正在下载云端固件,请耐心等待..."
-wget -q -T 15 -t 4 "https://pd.zwc365.com/${Github_Release}/${Firmware}" -O ${Firmware}
-if [[ $? -ne 0 ]];then
-	wget -q -T 15 -t 4 "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
-	if [[ $? -ne 0 ]];then
-		TIME r "下载云端固件失败,请尝试手动安装!"
-		echo
-		exit 1
+[[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]] && {
+	export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
+	if [ ! "$Google_Check" == 301 ];then
+		TIME g "正在下载云端固件,请耐心等待..."
+		wget -q "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
+		if [[ $? -ne 0 ]];then
+			wget -q "https://pd.zwc365.com/${Github_Release}/${Firmware}" -O ${Firmware}
+			if [[ $? -ne 0 ]];then
+				TIME r "下载云端固件失败,请尝试手动安装!"
+				echo
+				exit 1
+			else
+				TIME y "下载云端固件成功!"
+			fi
+		else
+			TIME y "下载云端固件成功!"
+		fi
 	else
-		TIME y "下载云端固件成功!"
+		TIME g "正在下载云端固件,请耐心等待..."
+		wget -q "${Github_Release}/${Firmware}" -O ${Firmware}
+		if [[ $? -ne 0 ]];then
+			wget -q "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
+			if [[ $? -ne 0 ]];then
+				TIME r "下载云端固件失败,请尝试手动安装!"
+				echo
+				exit 1
+			else
+				TIME y "下载云端固件成功!"
+			fi
+		else
+			TIME y "下载云端固件成功!"
+		fi
 	fi
-else
-	TIME y "下载云端固件成功!"
-fi
+}
 export CLOUD_MD5=$(md5sum ${Firmware} | cut -c1-3)
 export CLOUD_256=$(sha256sum ${Firmware} | cut -c1-3)
 export MD5_256=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
