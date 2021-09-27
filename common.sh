@@ -32,9 +32,8 @@ find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
 
 sed -i '/to-ports 53/d' $ZZZ
 
-# git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
+git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
-svn co https://github.com/immortalwrt/luci/branches/openwrt-18.06-k5.4/applications/luci-app-ssr-plus package/luci-app-ssr-plus
 
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 
@@ -75,9 +74,8 @@ find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci
 find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'pdnsd-alt' | xargs -i rm -rf {}
 rm -rf feeds/packages/libs/libcap
 
-# git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
+git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
-svn co https://github.com/immortalwrt/luci/branches/openwrt-18.06-k5.4/applications/luci-app-ssr-plus package/luci-app-ssr-plus
 
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/x86/Makefile
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
