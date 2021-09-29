@@ -344,6 +344,7 @@ if [[ `grep -c "coremark" /etc/crontabs/root` -eq '1' ]]; then
 fi
 
 /etc/init.d/network restart
+/etc/init.d/uhttpd restart
 
 exit 0
 ' >> ${Home}/package/base-files/files/etc/rc.local
