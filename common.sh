@@ -337,6 +337,7 @@ fi
 # 为编译做最后处理
 ################################################################################################################
 Diy_chuli() {
+
 sed -i '$ s/exit 0$//' ${Home}/package/base-files/files/etc/rc.local
 echo '
 if [[ `grep -c "coremark" /etc/crontabs/root` -eq '1' ]]; then
@@ -430,6 +431,7 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 fi
 find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
+make defconfig > /dev/null 2>&1
 }
 
 
