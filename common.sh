@@ -77,9 +77,7 @@ find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'pdnsd-alt' | xarg
 rm -rf feeds/packages/libs/libcap
 
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
-git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
-rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,xray-core,xray-plugin,brook,hysteria,trojan-go}
-svn co https://github.com/immortalwrt/packages/branches/openwrt-18.06/net/{v2ray-core,v2ray-plugin,xray-core,xray-plugin,brook,hysteria,trojan-go} package/luci-app-passwall
+git clone -b 6f53187a5db8f80d14adc6ce3fcee4867251bba7 https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/x86/Makefile
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
