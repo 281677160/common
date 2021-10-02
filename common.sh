@@ -431,6 +431,7 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 fi
 find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
+make defconfig > /dev/null 2>&1
 }
 
 
