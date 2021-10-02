@@ -196,6 +196,7 @@ rm -rf {build,README.md}
 ################################################################################################################
 Diy_chajian() {
 echo
+make defconfig > /dev/null 2>&1
 echo "TIME b \"					插件冲突信息\"" > ${Home}/CHONGTU
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-docker=y" ${Home}/.config` -eq '1' ]]; then
@@ -431,7 +432,6 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 fi
 find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
 find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
-make defconfig > /dev/null 2>&1
 }
 
 
