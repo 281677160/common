@@ -33,9 +33,7 @@ find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
 sed -i '/to-ports 53/d' $ZZZ
 
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
-git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
-rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,xray-core,xray-plugin,brook,hysteria,trojan-go}
-svn co https://github.com/immortalwrt/packages/branches/openwrt-18.06/net/{v2ray-core,v2ray-plugin,xray-core,xray-plugin,brook,hysteria,trojan-go} package/luci-app-passwall
+git clone https://github.com/281677160/openwrt-passwall package/luci-app-passwall
 
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 
