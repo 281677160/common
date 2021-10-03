@@ -156,7 +156,7 @@ else
 	amlogic_kernel="${amlogic_kernel}"
 fi
 if [[ -z "${Make_kernel}" ]];then
-	amlogic_kernel="5.12.12_5.4.127"
+	amlogic_kernel="5.10.70_5.4.150"
 fi
 minsize="$(egrep -o "ROOT_MB=+.*?[0-9]" $GITHUB_WORKSPACE/make)"
 rootfssize="ROOT_MB=${rootfs_size}"
