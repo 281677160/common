@@ -75,7 +75,8 @@ find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci
 find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'pdnsd-alt' | xargs -i rm -rf {}
 rm -rf feeds/packages/libs/libcap
 
-svn co https://github.com/281677160/openwrt-passwall/trunk/{luci-app-passwall,hysteria,ssocks} package/luci-app-passwall
+git clone https://github.com/281677160/openwrt-passwall package/luci-app-passwall
+rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,xray-core,xray-plugin}
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/x86/Makefile
