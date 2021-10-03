@@ -331,7 +331,7 @@ if [ -n "$(ls -A "${Home}/Chajianlibiao" 2>/dev/null)" ]; then
 else
 	rm -rf CHONGTU
 fi
-make oldconfig
+make defconfig > /dev/null 2>&1
 }
 
 
