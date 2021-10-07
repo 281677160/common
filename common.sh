@@ -145,28 +145,32 @@ fi
 # s905x3_s905x2_s905x_s905d_s922x_s912 一键打包脚本
 ################################################################################################################
 Diy_amlogic() {
-git clone https://github.com/ophub/amlogic-s9xxx-openwrt
-mv amlogic-s9xxx-openwrt/{amlogic-s9xxx,make} $GITHUB_WORKSPACE
-rm -rf amlogic-s9xxx-openwrt
-source $GITHUB_WORKSPACE/amlogic_openwrt
-if [[ ${amlogic_kernel} == "5.12.12_5.4.127" ]]; then
-	curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open.yml
-	Make_kernel="$(cat open.yml | grep ./make | cut -d "k" -f3 | sed s/[[:space:]]//g)"
-	amlogic_kernel="${Make_kernel}"
+if [[ -n "$(ls -A "$GITHUB_WORKSPACE/amlogic_openwrt" 2>/dev/null)" ]]; then
+	git clone https://github.com/ophub/amlogic-s9xxx-openwrt
+	mv amlogic-s9xxx-openwrt/{amlogic-s9xxx,make} $GITHUB_WORKSPACE
+	rm -rf amlogic-s9xxx-openwrt
+	source $GITHUB_WORKSPACE/amlogic_openwrt
+	if [[ ${amlogic_kernel} == "5.10.70_5.4.150" ]]; then
+		curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open.yml
+		Make_kernel="$(cat open.yml | grep ./make | cut -d "k" -f3 | sed s/[[:space:]]//g)"
+		amlogic_kernel="${Make_kernel}"
+	else
+		amlogic_kernel="${amlogic_kernel}"
+	fi
+	if [[ -z "${Make_kernel}" ]];then
+		amlogic_kernel="5.10.70_5.4.150"
+	fi
+	minsize="$(egrep -o "ROOT_MB=+.*?[0-9]" $GITHUB_WORKSPACE/make)"
+	rootfssize="ROOT_MB=${rootfs_size}"
+	sed -i "s/"${minsize}"/"${rootfssize}"/g" $GITHUB_WORKSPACE/make
+	mkdir -p $GITHUB_WORKSPACE/openwrt-armvirt
+	cp -Rf ${Home}/bin/targets/*/*/*.tar.gz $GITHUB_WORKSPACE/openwrt-armvirt/ && sync
+	sudo chmod +x make
+	sudo ./make -d -b "${amlogic_model}" -k "${amlogic_kernel}"
+	cp -Rf $GITHUB_WORKSPACE/out/* ${Home}/bin/targets/*/*
 else
-	amlogic_kernel="${amlogic_kernel}"
+	TIME r "错误提示：缺少打包所需的组合文件，您或者把diy-part.sh组合代码删除了"
 fi
-if [[ -z "${Make_kernel}" ]];then
-	amlogic_kernel="5.10.70_5.4.150"
-fi
-minsize="$(egrep -o "ROOT_MB=+.*?[0-9]" $GITHUB_WORKSPACE/make)"
-rootfssize="ROOT_MB=${rootfs_size}"
-sed -i "s/"${minsize}"/"${rootfssize}"/g" $GITHUB_WORKSPACE/make
-mkdir -p $GITHUB_WORKSPACE/openwrt-armvirt
-cp -Rf ${Home}/bin/targets/*/*/*.tar.gz $GITHUB_WORKSPACE/openwrt-armvirt/ && sync
-sudo chmod +x make
-sudo ./make -d -b "${amlogic_model}" -k "${amlogic_kernel}"
-cp -Rf $GITHUB_WORKSPACE/out/* ${Home}/bin/targets/*/*
 }
 
 ################################################################################################################
