@@ -169,7 +169,7 @@ if [[ -n "$(ls -A "$GITHUB_WORKSPACE/amlogic_openwrt" 2>/dev/null)" ]]; then
 	sudo ./make -d -b "${amlogic_model}" -k "${amlogic_kernel}"
 	cp -Rf $GITHUB_WORKSPACE/out/* ${Home}/bin/targets/*/*
 else
-	TIME r "错误提示：缺少打包所需的组合文件，您或者把diy-part.sh组合代码删除了"
+	TIME r "缺少打包所需的组合文件，您或者把diy-part.sh组合代码删除了"
 fi
 }
 
