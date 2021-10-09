@@ -111,6 +111,7 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 	else
           	TARGET_PROFILE="armvirt"
 	fi
+	[[ -e "${firmware}" ]] && source "${firmware}"/${Core}
 	[[ ${firmware} == "openwrt_amlogic" ]] && {
 		clear
 		echo
