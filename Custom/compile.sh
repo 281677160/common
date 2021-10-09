@@ -57,10 +57,8 @@ XTbit=`getconf LONG_BIT`
 		TIME r "环境部署失败，请检测网络或更换节点再尝试!"
 		exit 1
 	} || {
-	sudo apt-get autoremove --purge
-	sudo apt-get clean
-	sudo timedatectl set-timezone Asia/Shanghai
-	echo "compile" > .compile
+		sudo timedatectl set-timezone Asia/Shanghai
+		echo "compile" > .compile
 	}
 }
 rm -rf ${firmware}
@@ -111,7 +109,6 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 	else
           	TARGET_PROFILE="armvirt"
 	fi
-	[[ -e "${firmware}" ]] && source "${firmware}"/${Core}
 	[[ ${firmware} == "openwrt_amlogic" ]] && {
 		clear
 		echo
