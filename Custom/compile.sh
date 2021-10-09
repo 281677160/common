@@ -373,7 +373,7 @@ GITHUB_WORKSPACE="$PWD"
 Home="$PWD/openwrt"
 PATH1="$PWD/openwrt/build/${firmware}"
 NETIP="package/base-files/files/etc/networkip"
-[[ -e "${firmware}" ]] && cp -Rf "${firmware}"/* "${Home}"
+[[ -f "${firmware}" ]] && cp -Rf "${firmware}"/* "${Home}"
 echo "Compile_Date=$(date +%Y%m%d%H%M)" > $Home/Openwrt.info
 [ -f $Home/Openwrt.info ] && . $Home/Openwrt.info
 svn co https://github.com/281677160/build-actions/trunk/build $Home/build > /dev/null 2>&1
@@ -425,7 +425,7 @@ sed -i 's/"网络存储"/"NAS"/g' `grep "网络存储" -rl ./package`
 sed -i 's/"带宽监控"/"监控"/g' `grep "带宽监控" -rl ./feeds/luci/applications`
 sed -i 's/"Argon 主题设置"/"Argon设置"/g' `grep "Argon 主题设置" -rl ./feeds/luci/applications`
 ./scripts/feeds update -a
-./scripts/feeds install -a
+./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 [[ -e ${Home}/config_bf ]] && {
 	cp -rf ${Home}/config_bf ${Home}/.config
