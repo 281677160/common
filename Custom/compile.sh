@@ -566,7 +566,7 @@ if [ "$?" == "0" ]; then
 	if [[ `ls ${COMFIRMWARE} | grep -c "openwrt"` -ge '1' ]] || [[ `ls ${COMFIRMWARE} | grep -c "immortalwrt"` -ge '1' ]]; then
 		echo
 		echo
-		TIME r "编译失败~~!"
+		TIME r "编译失败，没发现固件存在~~!"
 		echo
 		TIME y "请不要使用桌面版ubuntu编译，或者您的翻墙网络有问题，油管或者是飞快，但是不能用于编译"
 		sleep 5
