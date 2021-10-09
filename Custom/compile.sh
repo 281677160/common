@@ -563,11 +563,15 @@ sleep 15s
 make -j$(nproc) V=s 2>&1 |tee build.log
 
 if [ "$?" == "0" ]; then
-	[[ `grep -c "please re-run with -j1 to see" build.log` -ge '1' ]] && {
+	if [[ `ls ${COMFIRMWARE} | grep -c "openwrt"` -ge '1' ]] || [[ `ls ${COMFIRMWARE} | grep -c "immortalwrt"` -ge '1' ]]; then
+		echo
+		echo
 		TIME r "编译失败~~!"
-		TIME y "请不要使用桌面版ubuntu编译，或者检测网络或者更换节点再尝试"
+		echo
+		TIME y "请不要使用桌面版ubuntu编译，或者您的翻墙网络有问题，油管或者是飞快，但是不能用于编译"
+		sleep 5
 		exit 1
-	}
+	fi
 	byend="1"
 	End="$(date "+%Y/%m/%d-%H.%M")"
 	rm -rf $Home/build.log
