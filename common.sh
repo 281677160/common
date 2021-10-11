@@ -263,8 +263,8 @@ if [[ `grep -c "CONFIG_PACKAGE_wpad-openssl=y" ${Home}/.config` -eq '1' ]]; then
 	if [[ `grep -c "CONFIG_PACKAGE_wpad=y" ${Home}/.config` -eq '1' ]]; then
 		sed -i 's/CONFIG_PACKAGE_wpad=y/# CONFIG_PACKAGE_wpad is not set/g' ${Home}/.config
 	fi
-	
 
+fi
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-samba4=y" ${Home}/.config` -eq '1' ]]; then
 	if [[ `grep -c "CONFIG_PACKAGE_luci-app-samba=y" ${Home}/.config` -eq '1' ]]; then
 		sed -i 's/CONFIG_PACKAGE_autosamba=y/# CONFIG_PACKAGE_autosamba is not set/g' ${Home}/.config
@@ -350,10 +350,8 @@ echo '
 if [[ `grep -c "coremark" /etc/crontabs/root` -eq '1' ]]; then
   sed -i '/coremark/d' /etc/crontabs/root
 fi
-
 /etc/init.d/network restart
 /etc/init.d/uhttpd restart
-
 exit 0
 ' >> ${Home}/package/base-files/files/etc/rc.local
 
