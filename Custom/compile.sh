@@ -101,6 +101,11 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 		rm -rf ${firmware}
 		bash <(curl -fsSL git.io/JcGDV)
 	fi
+	if [[ ! -e openwrt/${Core} ]]; then
+		if [[ -f ${firmware}/${Core} ]]; then
+			source ${firmware}/${Core}
+		fi
+	fi
 	echo
 	if [[ `grep -c "CONFIG_TARGET_x86_64=y" openwrt/config_bf` -eq '1' ]]; then
           	TARGET_PROFILE="x86-64"
