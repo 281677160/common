@@ -102,7 +102,7 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 		bash <(curl -fsSL git.io/JcGDV)
 	fi
 	if [[ ! -e openwrt/${Core} ]]; then
-		if [[ -f ${firmware}/${Core} ]]; then
+		if [[ -e ${firmware}/${Core} ]]; then
 			source ${firmware}/${Core}
 		fi
 	fi
