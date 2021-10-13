@@ -607,10 +607,10 @@ if [ -n "$(ls -A "${Home}/Chajianlibiao" 2>/dev/null)" ]; then
 	chmod -R +x ${Home}/CHONGTU
 	source ${Home}/CHONGTU
 	rm -rf {CHONGTU,Chajianlibiao}
+	echo
+	echo
 fi
 if [ -n "$(ls -A "${Home}/Plug-in" 2>/dev/null)" ]; then
-	echo
-	echo
 	TIME r "	      已选插件列表"
 	chmod -R +x ${Home}/Plug-in
 	source ${Home}/Plug-in
