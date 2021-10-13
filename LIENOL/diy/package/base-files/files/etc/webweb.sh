@@ -26,6 +26,8 @@ fi
 
 chmod -R +x /etc/init.d /usr/share
 
+/etc/init.d/uhttpd restart
+
 rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
 exit 0
