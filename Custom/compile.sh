@@ -145,6 +145,15 @@ if [[ -n "$(ls -A "openwrt/config_bf" 2>/dev/null)" ]]; then
 		;;
 	esac
 fi
+Ubunkj="$(df -h | grep "/dev/*/" | awk '{print $4}' | awk 'NR==1')"
+FINAL=`echo ${Ubunkj: -1}`
+if [[ "${FINAL}" =~ (M|K) ]]; then
+	echo
+	TIME r "敬告：可用空间小于[ 1G ]退出编译,建议可用空间大于20G,是否继续?"
+	sleep 2
+	exit 1
+	echo
+fi
 Ubuntu_mz="$(cat /etc/group | grep adm | cut -f2 -d,)"
 Ubuntu_kj="$(df -h | grep "/dev/*/" | awk '{print $4}' | awk 'NR==1' | sed 's/.$//g')"
 if [[ "${Ubuntu_kj}" -lt "20" ]];then
