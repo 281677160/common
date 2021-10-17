@@ -434,8 +434,6 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 		}
 	fi
 fi
-find . -name 'README' -o -name 'README.md' | xargs -i rm -rf {}
-find . -name 'CONTRIBUTED.md' -o -name 'README_EN.md' -o -name 'DEVICE_NAME' | xargs -i rm -rf {}
 }
 
 
