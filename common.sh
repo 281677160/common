@@ -412,6 +412,7 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 		fi
 	fi
 	sed -i '/INCLUDE/d' Plug-in > /dev/null 2>&1
+	sed -i '/=m/d' Plug-in > /dev/null 2>&1
 	sed -i 's/CONFIG_PACKAGE_/、/g' Plug-in
 	sed -i 's/=y/\"/g' Plug-in
 	awk '$0=NR$0' Plug-in > Plug-2
