@@ -479,10 +479,10 @@ echo
 }
 
 Diy_tongzhi() {
-GONGGAO g "9月30号更新通知"
+GONGGAO g "10月22号更新通知"
 GONGGAO g "请大家重新FORK仓库，给大家带来麻烦，非常抱歉"
-GONGGAO r "修复了一个小BUG，还有修改了一下说明文件，请大家编译之前认真看说明"
-GONGGAO r "增加了缓存加速"
+GONGGAO r "修改了全新在线获取.config配置文件，更人性化，更方便"
+GONGGAO r "修改了一键同步上游仓库，更人性化，更方便"
 echo
 echo
 exit 1
