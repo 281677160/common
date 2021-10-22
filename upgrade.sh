@@ -53,8 +53,8 @@ GET_TARGET_INFO() {
 		REPO_Name="Tianling"
 		ZUOZHE="ctcgfw"
 		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			Legacy_Firmware="immortalwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
-			UEFI_Firmware="immortalwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
+			Legacy_Firmware="immortalwrt-x86-64-combined-squashfs.${Firmware_sfxo}"
+			UEFI_Firmware="immortalwrt-x86-64-combined-squashfs-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" == "phicomm-k3" ]]; then
 			Up_Firmware="immortalwrt-bcm53xx-phicomm-k3-squashfs.trx"
