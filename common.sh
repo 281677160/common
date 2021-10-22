@@ -84,6 +84,17 @@ sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 
 
 ################################################################################################################
+# 天灵源码18.06 diy.sh文件
+################################################################################################################
+Diy_mortal() {
+
+find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-light' | xargs -i rm -rf {}
+find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-openwrt' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
+find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
+}
+
+
+################################################################################################################
 # 天灵源码21.02 diy.sh文件
 ################################################################################################################
 Diy_mortal() {
