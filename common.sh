@@ -124,6 +124,10 @@ elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
 	cp -Rf "${Home}"/build/common/LIENOL/files "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/patches/* "${PATH1}/patches"
+elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
+	cp -Rf "${Home}"/build/common/TIANLING/files "${Home}"
+	cp -Rf "${Home}"/build/common/TIANLING/diy/* "${Home}"
+	cp -Rf "${Home}"/build/common/TIANLING/patches/* "${PATH1}/patches"
 elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
 	cp -Rf "${Home}"/build/common/MORTAL/files "${Home}"
 	cp -Rf "${Home}"/build/common/MORTAL/diy/* "${Home}"
