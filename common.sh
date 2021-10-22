@@ -494,7 +494,7 @@ echo
 }
 
 Diy_tongzhi() {
-GONGGAO g "10月22号更新通知"
+GONGGAO g "2021年10月22号更新通知"
 GONGGAO g "请大家重新FORK仓库，给大家带来麻烦，非常抱歉"
 GONGGAO r "修改了全新在线获取.config配置文件，更人性化，更方便"
 GONGGAO r "修改了一键同步上游仓库，更人性化，更方便"
@@ -563,16 +563,8 @@ if [[ ${SERVERCHAN_SCKEY} == "true" ]]; then
 else
 	TIME r "微信/电报通知: 关闭"
 fi
-if [[ ${SSH_ACTIONS} == "true" ]]; then
-	TIME y "SSH远程连接: 开启"
-else
-	TIME r "SSH远程连接: 关闭"
-fi
 if [[ ${BY_INFORMATION} == "true" ]]; then
 	TIME y "编译信息显示: 开启"
-fi
-if [[ ${SSHYC} == "true" ]]; then
-	TIME y "SSH远程连接临时开关: 开启"
 fi
 if [[ ${REGULAR_UPDATE} == "true" ]]; then
 	TIME y "把定时自动更新插件编译进固件: 开启"
