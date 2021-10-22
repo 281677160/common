@@ -48,6 +48,30 @@ GET_TARGET_INFO() {
 			Firmware_sfx="bin"
 		fi
 	;;
+	"openwrt-18.06")
+		LUCI_Name="tl-18.06"
+		REPO_Name="Tianling"
+		ZUOZHE="ctcgfw"
+		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
+			Legacy_Firmware="immortalwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
+			UEFI_Firmware="immortalwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
+			Firmware_sfx="${Firmware_sfxo}"
+		elif [[ "${TARGET_PROFILE}" == "phicomm_k3" ]]; then
+			Up_Firmware="immortalwrt-bcm53xx-generic-phicomm_k3-squashfs.trx"
+			Firmware_sfx="trx"
+		elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
+			TARGET_PROFILE="xiaomi_mir3g"
+			Up_Firmware="openwrt-ramips-mt7621-xiaomi_mir3g-squashfs-sysupgrade.bin"
+			Firmware_sfx="bin"
+		elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g-v2" ]]; then
+			TARGET_PROFILE="xiaomi_mir3gv2"
+			Up_Firmware="openwrt-ramips-mt7621-xiaomi_mir3gv2-squashfs-sysupgrade.bin"
+			Firmware_sfx="bin"
+		else
+			Up_Firmware="immortalwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+			Firmware_sfx="bin"
+		fi
+	;;
 	"openwrt-21.02")
 		LUCI_Name="21.02"
 		REPO_Name="mortal"
