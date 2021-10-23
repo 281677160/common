@@ -47,9 +47,9 @@ echo "luciname    = \"Immortalwrt-21.02\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/log-facility/d' /etc/dnsmasq.conf
 echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 
+chmod +x /etc/webweb.sh && source /etc/webweb.sh
+
 rm -rf /tmp/luci-modulecache/
 rm -f /tmp/luci-indexcache
-
-chmod +x /etc/webweb.sh && source /etc/webweb.sh
 
 exit 0
