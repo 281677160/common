@@ -128,6 +128,10 @@ elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
 	cp -Rf "${Home}"/build/common/TIANLING/files "${Home}"
 	cp -Rf "${Home}"/build/common/TIANLING/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/TIANLING/patches/* "${PATH1}/patches"
+	rm -rf package/emortal/default-settings
+	svn co https://github.com/Lienol/openwrt/trunk/package/default-settings package/emortal/default-settings
+	chmod 775 ${Home}/build/common/Convert/1806zzz-default-settings
+	cp -Rf ${Home}/build/common/Convert/1806zzz-default-settings package/emortal/default-settings/files/zzz-default-settings
 elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
 	cp -Rf "${Home}"/build/common/MORTAL/files "${Home}"
 	cp -Rf "${Home}"/build/common/MORTAL/diy/* "${Home}"
