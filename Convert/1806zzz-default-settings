@@ -38,6 +38,8 @@ sed -i 's/cbi.submit\"] = true/cbi.submit\"] = \"1\"/g' /usr/lib/lua/luci/dispat
 
 echo 'hsts=0' > /root/.wgetrc
 
+chmod +x /etc/webweb.sh && source /etc/webweb.sh
+
 rm -rf /tmp/luci-modulecache/
 rm -f /tmp/luci-indexcache
 
