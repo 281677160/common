@@ -2,6 +2,7 @@
 
 sed -i 's/<a href="https:\/\/github/<!--<a href="https:\/\/github/g' /usr/lib/lua/luci/view/themes/*/footer.htm
 sed -i 's/luciversion %>)<\/a> \//luciversion %>)<\/a> \/-->/g' /usr/lib/lua/luci/view/themes/*/footer.htm
+sed -i 's/distversion %><\/a> \//distversion %><\/a> \/-->/g' /usr/lib/lua/luci/view/themes/*/footer.htm
 
 [[ ! -f /mnt/network ]] && chmod +x /etc/networkip && source /etc/networkip
 
