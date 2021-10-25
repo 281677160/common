@@ -21,6 +21,11 @@ fi
 
 chmod -R +x /etc/init.d /usr/share
 
+if [[ -e /etc/init.d/ddnsto ]]; then
+ chmod +x /etc/init.d/ddnsto
+ /etc/init.d/ddnsto enable
+fi
+
 rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
 exit 0
