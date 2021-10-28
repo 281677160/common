@@ -524,7 +524,7 @@ echo
 }
 
 Diy_tongzhi() {
-GONGGAO g "请大家重新FORK仓库，更新只最新版仓库"
+GONGGAO g "请大家重新FORK仓库，更新到最新版仓库，新版仓库更改很多，请看说明操作"
 GONGGAO r "https://github.com/281677160/build-actions"
 echo
 echo
