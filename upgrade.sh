@@ -4,13 +4,7 @@
 # AutoBuild Functions
 
 GET_TARGET_INFO() {
-	if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-		if [[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]]; then
-			Firmware_sfxo=img.gz
-		else
-			Firmware_sfxo=img
-		fi
-	elif [[ "${TARGET_PROFILE}" == "x86-32" ]]; then
+	if [[ "${TARGET_BOARD}" == "x86" ]]; then
 		if [[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]]; then
 			Firmware_sfxo=img.gz
 		else
