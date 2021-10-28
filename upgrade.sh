@@ -97,9 +97,11 @@ GET_TARGET_INFO() {
 		fi
 	;;
 	esac
-	[ ${REGULAR_UPDATE} == "true" ] && {
+	if [[ ${REGULAR_UPDATE} == "true" ]]; then
 		AutoUpdate_Version=$(egrep -o "V[0-9].+" ${Home}/package/base-files/files/bin/AutoUpdate.sh | awk 'END{print}')
-	} || AutoUpdate_Version=OFF
+	else
+		 AutoUpdate_Version=OFF
+	fi
 	In_Firmware_Info="${Home}/package/base-files/files/bin/openwrt_info"
 	Github_Release="${Github}/releases/download/AutoUpdate"
 	Github_UP_RELEASE="${Github}/releases/AutoUpdate"
