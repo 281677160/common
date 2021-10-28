@@ -4,12 +4,19 @@
 # AutoBuild Functions
 
 GET_TARGET_INFO() {
-	[[ ${TARGET_PROFILE} == x86-64 ]] && {
-		[[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]] && Firmware_sfxo=img.gz || Firmware_sfxo=img 
-	}
-	[[ ${TARGET_PROFILE} == x86-32 ]] && {
-		[[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]] && Firmware_sfxo=img.gz || Firmware_sfxo=img 
-	}
+	if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
+		if [[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]]; then
+			Firmware_sfxo=img.gz
+		else
+			Firmware_sfxo=img
+		fi
+	elif [[ "${TARGET_PROFILE}" == "x86-32" ]]; then
+		if [[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]]; then
+			Firmware_sfxo=img.gz
+		else
+			Firmware_sfxo=img
+		fi
+	fi
 	case "${REPO_BRANCH}" in
 	"master")
 		LUCI_Name="18.06"
@@ -20,8 +27,8 @@ GET_TARGET_INFO() {
 			UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" == "x86-32" ]]; then
-			Legacy_Firmware="openwrt-x86-32-generic-squashfs-combined.${Firmware_sfxo}"
-			UEFI_Firmware="openwrt-x86-32-generic-squashfs-combined-efi.${Firmware_sfxo}"
+			Legacy_Firmware="openwrt-x86-32-squashfs-combined.${Firmware_sfxo}"
+			UEFI_Firmware="openwrt-x86-32-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" == "phicomm_k3" ]]; then
 			Up_Firmware="openwrt-bcm53xx-generic-phicomm_k3-squashfs.trx"
