@@ -4,25 +4,17 @@
 # AutoBuild Functions
 
 GET_TARGET_INFO() {
-	if [[ "${TARGET_BOARD}" == "x86" ]]; then
-		if [[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` == '1' ]]; then
-			Firmware_sfxo=img.gz
-		else
-			Firmware_sfxo=img
-		fi
-	fi
+	[[ ${TARGET_PROFILE} == x86-64 ]] && {
+		[[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]] && Firmware_sfxo=img.gz || Firmware_sfxo=img 
+	}
 	case "${REPO_BRANCH}" in
 	"master")
 		LUCI_Name="18.06"
 		REPO_Name="lede"
 		ZUOZHE="Lean's"
-		if [[ "${TARGET_SUBTARGET}" == "64" ]]; then
+		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
 			Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
 			UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
-			Firmware_sfx="${Firmware_sfxo}"
-		elif [[ "${TARGET_SUBTARGET}" == "generic" ]]; then
-			Legacy_Firmware="openwrt-x86-squashfs-combined.${Firmware_sfxo}"
-			UEFI_Firmware="openwrt-x86-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" == "phicomm_k3" ]]; then
 			Up_Firmware="openwrt-bcm53xx-generic-phicomm_k3-squashfs.trx"
@@ -40,7 +32,7 @@ GET_TARGET_INFO() {
 			Firmware_sfx="bin"
 		fi
 	;;
-	"19.07") 
+	"19.07")
 		LUCI_Name="19.07"
 		REPO_Name="lienol"
 		ZUOZHE="Lienol's"
