@@ -21,8 +21,8 @@ GET_TARGET_INFO() {
 			UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_SUBTARGET}" == "generic" ]]; then
-			Legacy_Firmware="openwrt-x86-32-squashfs-combined.${Firmware_sfxo}"
-			UEFI_Firmware="openwrt-x86-32-squashfs-combined-efi.${Firmware_sfxo}"
+			Legacy_Firmware="openwrt-x86-squashfs-combined.${Firmware_sfxo}"
+			UEFI_Firmware="openwrt-x86-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" == "phicomm_k3" ]]; then
 			Up_Firmware="openwrt-bcm53xx-generic-phicomm_k3-squashfs.trx"
