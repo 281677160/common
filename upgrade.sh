@@ -16,11 +16,11 @@ GET_TARGET_INFO() {
 		LUCI_Name="18.06"
 		REPO_Name="lede"
 		ZUOZHE="Lean's"
-		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
+		if [[ "${TARGET_SUBTARGET}" == "64" ]]; then
 			Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
 			UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
-		elif [[ "${TARGET_PROFILE}" == "x86-32" ]]; then
+		elif [[ "${TARGET_SUBTARGET}" == "generic" ]]; then
 			Legacy_Firmware="openwrt-x86-32-squashfs-combined.${Firmware_sfxo}"
 			UEFI_Firmware="openwrt-x86-32-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
