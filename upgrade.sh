@@ -5,7 +5,7 @@
 
 GET_TARGET_INFO() {
 	if [[ "${TARGET_BOARD}" == "x86" ]]; then
-		if [[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]]; then
+		if [[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` == '1' ]]; then
 			Firmware_sfxo=img.gz
 		else
 			Firmware_sfxo=img
