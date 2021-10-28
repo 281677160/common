@@ -475,6 +475,13 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 			TARGET_model="${amlogic_model}"
 		}
 	fi
+	if [[ `grep -c "KERNEL_PATCHVER:=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
+		PATCHVER="$(grep 'KERNEL_PATCHVER:=' ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -d "=" -f2)"
+	elif [[ `grep -c "KERNEL_PATCHVER=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
+		PATCHVER="$(grep 'KERNEL_PATCHVER:=' ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -d "=" -f2)"
+	else
+		PATCHVER="unknown"
+	fi
 fi
 rm -rf ${Home}/files/{README,README.md}
 }
@@ -535,6 +542,7 @@ TIME b "编译源码: ${CODE}"
 TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${ZUOZHE}"
+TIME b "内核版本: ${PATCHVER}"
 TIME b "Luci版本: ${OpenWrt_name}"
 [[ "${Modelfile}" == "openwrt_amlogic" ]] && {
 	TIME b "编译机型: ${TARGET_model}"
