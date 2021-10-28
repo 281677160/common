@@ -25,6 +25,11 @@ if [[ -e /usr/share/AdGuardHome ]] && [[ -e /etc/init.d/AdGuardHome ]]; then
  chmod -R +x /usr/share/AdGuardHome /etc/init.d/AdGuardHome
 fi
 
+if [[ ! -e /usr/bin/AdGuardHome ]]; then
+rm -fr /etc/config/AdGuardHome.yaml
+rm -fr /etc/AdGuardHome.yaml
+fi
+
 chmod -R +x /etc/init.d /usr/share
 
 /etc/init.d/uhttpd restart
