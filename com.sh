@@ -4,6 +4,7 @@
 # AutoBuild Functions
 
 GET_TARGET_INFO() {
+echo "1TIME"
 	if [[ "${TARGET_BOARD}" == "x86" ]]; then
 		if [[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` == '1' ]]; then
 			Firmware_sfxo=img.gz
@@ -11,8 +12,10 @@ GET_TARGET_INFO() {
 			Firmware_sfxo=img
 		fi
 	fi
+echo "2IME"
 	case "${REPO_BRANCH}" in
 	"master")
+		echo "3TIME"
 		LUCI_Name="18.06"
 		REPO_Name="lede"
 		ZUOZHE="Lean's"
@@ -21,6 +24,7 @@ GET_TARGET_INFO() {
 			UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_SUBTARGET}" == "generic" ]]; then
+			echo "4TIME"
 			Legacy_Firmware="openwrt-x86-squashfs-combined.${Firmware_sfxo}"
 			UEFI_Firmware="openwrt-x86-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
@@ -108,4 +112,5 @@ GET_TARGET_INFO() {
 	Openwrt_Version="${REPO_Name}-${TARGET_PROFILE}-${Compile_Date}"
 	Egrep_Firmware="${LUCI_Name}-${REPO_Name}-${TARGET_PROFILE}"
 }
+echo "5TIME"
 exit 0
