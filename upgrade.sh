@@ -4,7 +4,7 @@
 # AutoBuild Functions
 
 GET_TARGET_INFO() {
-	[[ ${TARGET_PROFILE} == x86-64 ]] && {
+	[[ ${TARGET_PROFILE} == x86-64 ]] || [[ ${TARGET_PROFILE} == x86-32 ]] && {
 		[[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]] && Firmware_sfxo=img.gz || Firmware_sfxo=img 
 	}
 	case "${REPO_BRANCH}" in
@@ -13,6 +13,10 @@ GET_TARGET_INFO() {
 		REPO_Name="lede"
 		ZUOZHE="Lean's"
 		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
+			Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
+			UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
+			Firmware_sfx="${Firmware_sfxo}"
+		elif [[ "${TARGET_PROFILE}" == "x86-32" ]]; then
 			Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
 			UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
