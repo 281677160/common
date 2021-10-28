@@ -491,6 +491,8 @@ rm -rf ../{Lede_source,Lienol_source,Mortal_source,openwrt_amlogic}
 # 为编译做最后处理
 BY_INFORMATION="false"
 source build/${firmware}/common.sh && Diy_chuli
+source "${PATH1}/upgrade.sh" && GET_TARGET_INFO
+source "${PATH1}/common.sh" && Diy_xinxi
 COMFIRMWARE="openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 TIME g "正在下载DL文件,请耐心等待..."
 make defconfig
