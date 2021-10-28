@@ -3,7 +3,6 @@
 # AutoBuild Module by Hyy2001
 # AutoBuild Functions
 
-GET_TARGET_INFO() {
 echo "1TIME"
 	if [[ "${TARGET_BOARD}" == "x86" ]]; then
 		if [[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` == '1' ]]; then
@@ -111,6 +110,5 @@ echo "2IME"
 	Github_UP_RELEASE="${Github}/releases/AutoUpdate"
 	Openwrt_Version="${REPO_Name}-${TARGET_PROFILE}-${Compile_Date}"
 	Egrep_Firmware="${LUCI_Name}-${REPO_Name}-${TARGET_PROFILE}"
-}
 echo "5TIME"
 exit 0
