@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # https://github.com/Hyy2001X/AutoBuild-Actions
 # AutoBuild Module by Hyy2001
 # AutoBuild Functions
