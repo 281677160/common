@@ -498,12 +498,14 @@ rm -rf ${Home}/files/{README,README.md}
 # 整理不要的固件或者文件
 ################################################################################################################
 Diy_Arrange() {
+cd bin/targets/x86/64
 find . -name "${CLEAR1}" | xargs -i rm -rf {}
 find . -name "${CLEAR2}" | xargs -i rm -rf {}
 find . -name "${CLEAR3}" | xargs -i rm -rf {}
 find . -name "${CLEAR4}" | xargs -i rm -rf {}
 find . -name "${CLEAR5}" | xargs -i rm -rf {}
 find . -name "${CLEAR6}" | xargs -i rm -rf {}
+cd ../../../../
 }
 
 ################################################################################################################
