@@ -46,12 +46,9 @@ fi
 if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 	# 修复NTFS格式优盘不自动挂载
 	packages=" \
-	brcmfmac-firmware-43430-sdio brcmfmac-firmware-43455-sdio kmod-brcmfmac wpad \
-	kmod-fs-ext4 kmod-fs-vfat kmod-fs-exfat dosfstools e2fsprogs ntfs-3g \
-	kmod-usb2 kmod-usb3 kmod-usb-storage kmod-usb-storage-extras kmod-usb-storage-uas \
-	kmod-usb-net \
-	blkid lsblk parted fdisk cfdisk losetup resize2fs tune2fs pv unzip \
-	lscpu htop iperf3 curl lm-sensors python3 luci-app-amlogic
+	block-mount fdisk usbutils badblocks ntfs-3g kmod-scsi-core kmod-usb-core \
+	kmod-usb-ohci kmod-usb-uhci kmod-usb-storage kmod-usb-storage-extras kmod-usb2 kmod-usb3 \
+	kmod-fs-ext4 kmod-fs-vfat kmod-fuse luci-app-amlogic unzip curl \
 	"
 	sed -i '/FEATURES+=/ { s/cpiogz //; s/ext4 //; s/ramdisk //; s/squashfs //; }' \
     		target/linux/armvirt/Makefile
