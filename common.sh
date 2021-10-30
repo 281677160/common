@@ -498,21 +498,21 @@ rm -rf ${Home}/files/{README,README.md}
 # 整理不要的固件或者文件
 ################################################################################################################
 Diy_Arrange() {
-find ${Home}/bin/targets -name "*${CLEAR1}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR2}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR3}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR4}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR5}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR6}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR7}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR8}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR9}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR10}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR11}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR12}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR13}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR14}*" | xargs -i rm -rf {}
-find ${Home}/bin/targets -name "*${CLEAR15}*" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR1}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR2}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR3}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR4}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR5}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR6}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR7}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR8}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR9}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR10}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR11}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR12}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR13}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR14}" | xargs -i rm -rf {}
+find ${Home}/bin/targets -name "${CLEAR15}" | xargs -i rm -rf {}
 }
 
 ################################################################################################################
