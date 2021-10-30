@@ -514,16 +514,8 @@ GONGGAO() {
 }
 
 Diy_gonggao() {
-GONGGAO y "《Lede_source文件，Luci版本为18.06，内核版本为5.4》"
-GONGGAO y "《Lienol_source文件，Luci版本为17.01，内核版本为4.14》"
-GONGGAO y "《Mortal_source文件，Luci版本为21.02，内核版本为5.4》"
-GONGGAO y "《openwrt_amlogic文件，编译N1和晶晨系列盒子专用，Luci版本为18.06，内核版本为5.4》"
 GONGGAO g "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
 GONGGAO g "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
-GONGGAO r "《如果编译脚本在这里就出现错误的话，意思就是不得不更新脚本了，怎么更新我会在这里写明》"
-GONGGAO y "把上传.config配置文件修改了一下，现在编译错误都会上传一个配置文件的，免得你辛辛苦苦弄的又要重新再弄"
-GONGGAO y "不过这样上传的.config也是双面的，如果你是因为.config编译错误，你不能直接套进去又继续编译，要看编译错误是什么，再进SSH把配置弄好"
-GONGGAO g "修复定时更新需要依赖翻墙才能完成，现在最新V6.5版，不需要翻墙也可以使用了"
 echo
 echo
 }
