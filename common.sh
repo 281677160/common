@@ -497,7 +497,7 @@ rm -rf ${Home}/files/{README,README.md}
 ################################################################################################################
 # 整理不要的固件或者文件
 ################################################################################################################
-ARRANGE() {
+Diy_Arrange() {
 find ${Home}/bin/targets -name "*${CLEAR1}*" | xargs -i rm -rf {}
 find ${Home}/bin/targets -name "*${CLEAR2}*" | xargs -i rm -rf {}
 find ${Home}/bin/targets -name "*${CLEAR3}*" | xargs -i rm -rf {}
