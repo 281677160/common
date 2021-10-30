@@ -494,6 +494,26 @@ fi
 rm -rf ${Home}/files/{README,README.md}
 }
 
+################################################################################################################
+# 整理不要的固件或者文件
+################################################################################################################
+ARRANGE() {
+find -name "*${CLEAR1}*" | xargs -i rm -rf {}
+find -name "*${CLEAR2}*" | xargs -i rm -rf {}
+find -name "*${CLEAR3}*" | xargs -i rm -rf {}
+find -name "*${CLEAR4}*" | xargs -i rm -rf {}
+find -name "*${CLEAR5}*" | xargs -i rm -rf {}
+find -name "*${CLEAR6}*" | xargs -i rm -rf {}
+find -name "*${CLEAR7}*" | xargs -i rm -rf {}
+find -name "*${CLEAR8}*" | xargs -i rm -rf {}
+find -name "*${CLEAR9}*" | xargs -i rm -rf {}
+find -name "*${CLEAR10}*" | xargs -i rm -rf {}
+find -name "*${CLEAR11}*" | xargs -i rm -rf {}
+find -name "*${CLEAR12}*" | xargs -i rm -rf {}
+find -name "*${CLEAR13}*" | xargs -i rm -rf {}
+find -name "*${CLEAR14}*" | xargs -i rm -rf {}
+find -name "*${CLEAR15}*" | xargs -i rm -rf {}
+}
 
 ################################################################################################################
 # 公告
