@@ -228,7 +228,7 @@ rm -rf {build,README.md}
 ################################################################################################################
 Diy_chajian() {
 TIME y "检测插件冲突"
-make defconfig > /dev/null 2>&1
+make defconfig
 echo "TIME b \"					插件冲突信息\"" > ${Home}/CHONGTU
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-docker=y" ${Home}/.config` -eq '1' ]]; then
