@@ -17,7 +17,7 @@ GET_TARGET_INFO() {
 			UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" == "phicomm_k3" ]]; then
-			Up_Firmware="openwrt-bcm53xx-generic-phicomm_k3-squashfs.trx"
+			Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
 			Firmware_sfx="trx"
 		elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
 			TARGET_PROFILE="xiaomi_mir3g"
@@ -41,7 +41,7 @@ GET_TARGET_INFO() {
 			UEFI_Firmware="openwrt-x86-64-combined-squashfs-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" == "phicomm-k3" ]]; then
-			Up_Firmware="openwrt-bcm53xx-phicomm-k3-squashfs.trx"
+			Up_Firmware="openwrt-bcm53xx-${TARGET_PROFILE}-squashfs.trx"
 			Firmware_sfx="trx"
 		else
 			Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
@@ -57,7 +57,7 @@ GET_TARGET_INFO() {
 			UEFI_Firmware="immortalwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" == "phicomm-k3" ]]; then
-			Up_Firmware="immortalwrt-bcm53xx-phicomm-k3-squashfs.trx"
+			Up_Firmware="immortalwrt-bcm53xx-${TARGET_PROFILE}-squashfs.trx"
 			Firmware_sfx="trx"
 		else
 			Up_Firmware="immortalwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
@@ -73,7 +73,7 @@ GET_TARGET_INFO() {
 			UEFI_Firmware="immortalwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" == "phicomm_k3" ]]; then
-			Up_Firmware="immortalwrt-bcm53xx-generic-phicomm_k3-squashfs.trx"
+			Up_Firmware="immortalwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
 			Firmware_sfx="trx"
 		elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
 			TARGET_PROFILE="xiaomi_mir3g"
