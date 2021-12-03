@@ -2,6 +2,7 @@
 
 rm -rf package/emortal/default-settings
 svn co https://github.com/Lienol/openwrt/trunk/package/default-settings package/emortal/default-settings
+rm -rf package/emortal/default-settings/.svn
 chmod 775 zzz-default-settings
 cp -Rf zzz-default-settings package/emortal/default-settings/files/zzz-default-settings
 cp -Rf SourceCode feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
