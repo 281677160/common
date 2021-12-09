@@ -198,6 +198,7 @@ cd $GITHUB_WORKSPACE/amlogic
 sudo chmod +x make
 sudo ./make -d -b "${amlogic_model}" -k "${amlogic_kernel}"
 mv -f $GITHUB_WORKSPACE/amlogic/out/* ${Home}/bin/targets/armvirt/64/
+cd $GITHUB_WORKSPACE
 }
 
 ################################################################################################################
