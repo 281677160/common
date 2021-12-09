@@ -186,7 +186,7 @@ Make_kernel="$(cat $GITHUB_WORKSPACE/amlogic/op_kernel |grep ./make |cut -d "k" 
 [[ -z ${amlogic_model} ]] && amlogic_model="s905x3_s905x2_s905x_s905d_s922x_s912"
 [[ -z ${amlogic_kernel} ]] && amlogic_kernel="5.10.70_5.4.150"
 [[ -z ${rootfs_size} ]] && rootfs_size="960"
-if [[ ${amlogic_kernel} == "5.10.70_5.4.150" ]] && [[ -z ${Make_kernel} ]]; then
+if [[ ${amlogic_kernel} == "5.10.70_5.4.150" ]] && [[ -n ${Make_kernel} ]]; then
 	amlogic_kernel="${Make_kernel}"
 else
 	amlogic_kernel="${amlogic_kernel}"
