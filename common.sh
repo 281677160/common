@@ -195,7 +195,7 @@ minsize="$(egrep -o "ROOT_MB=[0-9]+" $GITHUB_WORKSPACE/amlogic/make)"
 rootfssize="ROOT_MB=${rootfs_size}"
 sed -i "s/${minsize}/${rootfssize}/g" $GITHUB_WORKSPACE/amlogic/make
 rm -rf ${Home}/bin/targets/armvirt/64/*
-cd amlogic
+cd $GITHUB_WORKSPACE/amlogic
 sudo chmod +x make
 sudo ./make -d -b "${amlogic_model}" -k "${amlogic_kernel}"
 mv -f $GITHUB_WORKSPACE/amlogic/out/* ${Home}/bin/targets/*/*
