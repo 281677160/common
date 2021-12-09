@@ -198,7 +198,7 @@ if [[ -n "$(ls -A "$GITHUB_WORKSPACE/amlogic_openwrt" 2>/dev/null)" ]]; then
 	cp -Rf ${Home}/bin/targets/armvirt/*/*.tar.gz $GITHUB_WORKSPACE/amlogic/openwrt-armvirt/ && sync
 	rm -rf ${Home}/bin/targets/armvirt/64/*
 	cd amlogic
-	sudo chmod +x $GITHUB_WORKSPACE/amlogic/make
+	sudo chmod +x make
 	sudo ./make -d -b "${amlogic_model}" -k "${amlogic_kernel}"
 	mv -f $GITHUB_WORKSPACE/amlogic/out/* ${Home}/bin/targets/*/*
 else
