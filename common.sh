@@ -174,7 +174,7 @@ Diy_amlogic() {
 cd $GITHUB_WORKSPACE
 mkdir -p $GITHUB_WORKSPACE/amlogic/openwrt-armvirt
 cp -Rf ${Home}/bin/targets/armvirt/*/*.tar.gz $GITHUB_WORKSPACE/amlogic/openwrt-armvirt/ && sync
-rm -rf ${Home}
+rm -rf ${Home}/*
 mkdir -p ${Home}/bin/targets/armvirt/64
 rm -rf $GITHUB_WORKSPACE/amlogic-s9xxx && svn co https://github.com/ophub/amlogic-s9xxx-openwrt/trunk/amlogic-s9xxx $GITHUB_WORKSPACE/amlogic-s9xxx > /dev/null 2>&1
 rm -rf $GITHUB_WORKSPACE/amlogic-s9xxx/{.svn,README.cn.md,README.md} > /dev/null 2>&1
