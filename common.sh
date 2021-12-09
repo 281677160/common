@@ -178,7 +178,7 @@ rm -rf ${Home}/*
 mkdir -p ${Home}/bin/targets/armvirt/64
 rm -rf $GITHUB_WORKSPACE/amlogic-s9xxx && svn co https://github.com/ophub/amlogic-s9xxx-openwrt/trunk/amlogic-s9xxx $GITHUB_WORKSPACE/amlogic-s9xxx > /dev/null 2>&1
 rm -rf $GITHUB_WORKSPACE/amlogic-s9xxx/{.svn,README.cn.md,README.md} > /dev/null 2>&1
-mv amlogic-s9xxx $GITHUB_WORKSPACE/amlogic
+mv $GITHUB_WORKSPACE/amlogic-s9xxx $GITHUB_WORKSPACE/amlogic
 curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/make > $GITHUB_WORKSPACE/amlogic/make
 curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > $GITHUB_WORKSPACE/amlogic/op_kernel
 Make_kernel="$(cat $GITHUB_WORKSPACE/amlogic/op_kernel |grep ./make |cut -d "k" -f3 |sed s/[[:space:]]//g)"
@@ -194,7 +194,6 @@ fi
 minsize="$(egrep -o "ROOT_MB=[0-9]+" $GITHUB_WORKSPACE/amlogic/make)"
 rootfssize="ROOT_MB=${rootfs_size}"
 sed -i "s/${minsize}/${rootfssize}/g" $GITHUB_WORKSPACE/amlogic/make
-rm -rf ${Home}/bin/targets/armvirt/64/*
 cd $GITHUB_WORKSPACE/amlogic
 sudo chmod +x make
 sudo ./make -d -b "${amlogic_model}" -k "${amlogic_kernel}"
