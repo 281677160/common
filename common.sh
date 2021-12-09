@@ -197,7 +197,7 @@ sed -i "s/${minsize}/${rootfssize}/g" $GITHUB_WORKSPACE/amlogic/make
 cd $GITHUB_WORKSPACE/amlogic
 sudo chmod +x make
 sudo ./make -d -b "${amlogic_model}" -k "${amlogic_kernel}"
-mv -f $GITHUB_WORKSPACE/amlogic/out/* ${Home}/bin/targets/*/*
+mv -f $GITHUB_WORKSPACE/amlogic/out/* ${Home}/bin/targets/armvirt/64/
 }
 
 ################################################################################################################
