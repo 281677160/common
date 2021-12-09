@@ -182,7 +182,7 @@ mv $GITHUB_WORKSPACE/amlogic-s9xxx $GITHUB_WORKSPACE/amlogic
 curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/make > $GITHUB_WORKSPACE/amlogic/make
 curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > $GITHUB_WORKSPACE/amlogic/op_kernel
 Make_kernel="$(cat $GITHUB_WORKSPACE/amlogic/op_kernel |grep ./make |cut -d "k" -f3 |sed s/[[:space:]]//g)"
-source $GITHUB_WORKSPACE/amlogic_openwrt
+[[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
 [[ -z ${amlogic_model} ]] && amlogic_model="s905x3_s905x2_s905x_s905d_s922x_s912"
 [[ -z ${amlogic_kernel} ]] && amlogic_kernel="5.10.70_5.4.150"
 [[ -z ${rootfs_size} ]] && rootfs_size="960"
