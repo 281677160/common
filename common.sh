@@ -470,7 +470,7 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 	else
 		PATCHVER="unknown"
 	fi
-	PATCHVER=$(egrep -o "${PATCHVE}.[0-9]+" ${Home}/include/kernel-version.mk)
+	[[ -z ${PATCHVE} ]] && PATCHVER=$(egrep -o "${PATCHVE}.[0-9]+" ${Home}/include/kernel-version.mk)
 	
 	if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 		[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
