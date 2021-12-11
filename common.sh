@@ -464,15 +464,13 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 	sed -i "s/^/TIME g \"/g" Plug-in
 
 	if [[ `grep -c "KERNEL_PATCHVER:=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
-		PATCHVER=$(grep KERNEL_PATCHVER:= ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -c18-100)
+		PATCHVE=$(egrep -o 'KERNEL_PATCHVER:=[0-9]+\.[0-9]+' ${Home}/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)
 	elif [[ `grep -c "KERNEL_PATCHVER=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
-		PATCHVER=$(grep KERNEL_PATCHVER= ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -c17-100)
+		PATCHVE=$(egrep -o 'KERNEL_PATCHVER=[0-9]+\.[0-9]+' ${Home}/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)
 	else
 		PATCHVER="unknown"
 	fi
-	if [[ ! "${PATCHVER}" == "unknown" ]]; then
-		PATCHVER=$(egrep -o "${PATCHVER}.[0-9]+" ${Home}/include/kernel-version.mk)
-	fi
+	PATCHVER=$(egrep -o "${PATCHVE}.[0-9]+" ${Home}/include/kernel-version.mk)
 	
 	if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 		[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
@@ -485,13 +483,6 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 			TARGET_kernel="${amlogic_kernel}"
 			TARGET_model="${amlogic_model}"
 		}
-	fi
-	if [[ `grep -c "KERNEL_PATCHVER:=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
-		PATCHVER="$(grep 'KERNEL_PATCHVER:=' ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -d "=" -f2)"
-	elif [[ `grep -c "KERNEL_PATCHVER=" ${Home}/target/linux/${TARGET_BOARD}/Makefile` -eq '1' ]]; then
-		PATCHVER="$(grep 'KERNEL_PATCHVER:=' ${Home}/target/linux/${TARGET_BOARD}/Makefile | cut -d "=" -f2)"
-	else
-		PATCHVER="unknown"
 	fi
 fi
 rm -rf ${Home}/files/{README,README.md}
