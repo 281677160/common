@@ -453,9 +453,7 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 	grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
 	grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
 	if [[ `grep -c "CONFIG_PACKAGE_luci-i18n-qbittorrent-zh-cn=y" ${Home}/.config` -eq '0' ]]; then
-		if [[ `grep -c "luci-app-qbittorrent_static" ${Home}/Plug-in` -eq '1' ]] || [[ `grep -c "luci-app-qbittorrent_dynamic" ${Home}/Plug-in` -eq '1' ]]; then
-			sed -i '/qbittorrent/d' Plug-in
-		fi
+		sed -i '/qbittorrent/d' Plug-in
 	fi
 	sed -i '/INCLUDE/d' Plug-in > /dev/null 2>&1
 	sed -i '/=m/d' Plug-in > /dev/null 2>&1
