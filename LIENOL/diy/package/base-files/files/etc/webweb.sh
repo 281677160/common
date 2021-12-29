@@ -39,6 +39,9 @@ if [[ -e /etc/init.d/ddnsto ]]; then
  /etc/init.d/ddnsto enable
 fi
 
+uci set argon.@global[0].bing_background=0
+uci commit argon
+
 rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
 exit 0
