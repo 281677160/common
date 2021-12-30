@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rm -rf package/emortal/default-settings
-svn co https://github.com/Lienol/openwrt/trunk/package/default-settings package/emortal/default-settings
+svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/default-settings package/emortal/default-settings
 rm -rf package/emortal/default-settings/.svn
 chmod 775 zzz-default-settings
 cp -Rf zzz-default-settings package/emortal/default-settings/files/zzz-default-settings
