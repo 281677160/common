@@ -28,6 +28,8 @@ wifi up
 sed -i '/log-facility/d' /etc/dnsmasq.conf
 echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 
+chmod +x /etc/webweb.sh && source /etc/webweb.sh
+
 rm -rf /tmp/luci-modulecache/
 rm -f /tmp/luci-indexcache
 
