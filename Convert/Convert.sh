@@ -1,10 +1,4 @@
 #!/bin/bash
-
-rm -rf package/emortal/default-settings
-svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/default-settings package/emortal/default-settings
-rm -rf package/emortal/default-settings/.svn
-chmod 775 zzz-default-settings
-cp -Rf zzz-default-settings package/emortal/default-settings/files/zzz-default-settings
 cp -Rf SourceCode feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
 cp -Rf SourceCode package/emortal/autocore/files/arm/rpcd_10_system.js
 cp -Rf SourceCode package/emortal/autocore/files/x86/rpcd_10_system.js
