@@ -6,10 +6,6 @@ echo "DISTRIB_REVISION='Lienol-19.07'" >> /etc/openwrt_release
 sed -i 's/<%=pcdata(ver.distversion)%>/<%=pcdata(ver.distversion)%><!--/g' /usr/lib/lua/luci/view/admin_status/index.htm
 sed -i 's/(<%=pcdata(ver.luciversion)%>)/(<%=pcdata(ver.luciversion)%>)-->/g' /usr/lib/lua/luci/view/admin_status/index.htm
 
-sed -i 's/<a href="https:\/\/github/<!--<a href="https:\/\/github/g' /usr/lib/lua/luci/view/themes/*/footer.htm
-sed -i 's/luciversion %>)<\/a> \//luciversion %>)<\/a> \/-->/g' /usr/lib/lua/luci/view/themes/*/footer.htm
-sed -i 's/distversion %><\/a> \//distversion %><\/a> \/-->/g' /usr/lib/lua/luci/view/themes/*/footer.htm
-
 [[ ! -f /mnt/network ]] && chmod +x /etc/networkip && source /etc/networkip
 
 cp -Rf /etc/config/network /mnt/network
