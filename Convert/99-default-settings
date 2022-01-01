@@ -25,6 +25,17 @@ wifi up
 sed -i '/log-facility/d' /etc/dnsmasq.conf
 echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 
+sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
+echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION='21.02'" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"Immortalwrt-21.02\"" >> /usr/lib/lua/luci/version.lua
+
 rm -rf /tmp/luci-modulecache/
 rm -f /tmp/luci-indexcache
 
