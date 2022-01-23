@@ -462,11 +462,13 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 	else
 		PATCHVER="unknown"
 	fi
-	if [[ -n ${PATCHVE} ]] && [[ -f ${Home}/include/kernel-${PATCHVE} ]]; then
-		PATCHVER=$(egrep -o "${PATCHVE}.[0-9]+" ${Home}/include/kernel-${PATCHVE})
-	elif [[ -n ${PATCHVE} ]] && [[ ! -f ${Home}/include/kernel-${PATCHVE} ]]; then
-		PATCHVER=$(egrep -o "${PATCHVE}.[0-9]+" ${Home}/include/kernel-version.mk)
-	fi	
+	if [[ -n ${PATCHVE} ]]; then
+		if [[ -f ${Home}/include/kernel-${PATCHVE} ]]; then
+			PATCHVER=$(egrep -o "${PATCHVE}.[0-9]+" ${Home}/include/kernel-${PATCHVE})
+		else
+			PATCHVER=$(egrep -o "${PATCHVE}.[0-9]+" ${Home}/include/kernel-version.mk)
+		fi
+	fi
 	if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 		[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
 		[[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]] && {
