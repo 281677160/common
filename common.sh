@@ -608,6 +608,9 @@ else
 	echo
 fi
 echo
+TIME z "Github使用CPU型号"
+echo `cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c`
+echo
 TIME z " 系统空间      类型   总数  已用  可用 使用率"
 cd ../ && df -hT $PWD && cd openwrt
 echo
