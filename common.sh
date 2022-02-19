@@ -442,19 +442,6 @@ if [[ "${BY_INFORMATION}" == "true" ]]; then
 	awk '$0=NR$0' Plug-in > Plug-2
 	awk '{print "	" $0}' Plug-2 > Plug-in
 	sed -i "s/^/TIME g \"/g" Plug-in
-	
-	if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
-		[[ -e $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
-		[[ "${amlogic_kernel}" == "5.12.12_5.4.127" ]] && {
-			curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > open.yml
-			Make_ker="$(cat open.yml | grep ./make | cut -d "k" -f3 | sed s/[[:space:]]//g)"
-			TARGET_kernel="${Make_ker}"
-			TARGET_model="${amlogic_model}"
-		} || {
-			TARGET_kernel="${amlogic_kernel}"
-			TARGET_model="${amlogic_model}"
-		}
-	fi
 fi
 rm -rf ${Home}/files/{README,README.md}
 }
@@ -507,7 +494,6 @@ TIME b "源码作者: ${ZUOZHE}"
 TIME b "Luci版本: ${OpenWrt_name}"
 [[ "${Modelfile}" == "openwrt_amlogic" ]] && {
 	TIME b "编译机型: ${TARGET_model}"
-	TIME b "打包内核: ${TARGET_kernel}"
 } || {
 	TIME b "编译机型: ${TARGET_PROFILE}"
 }
