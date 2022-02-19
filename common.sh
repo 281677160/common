@@ -493,7 +493,7 @@ TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${ZUOZHE}"
 TIME b "Luci版本: ${OpenWrt_name}"
 [[ "${Modelfile}" == "openwrt_amlogic" ]] && {
-	TIME b "编译机型: ${TARGET_model}"
+	TIME b "编译机型: 晶晨系列"
 } || {
 	TIME b "编译机型: ${TARGET_PROFILE}"
 }
@@ -502,7 +502,7 @@ TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${CangKu}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
 TIME b "编译时间: ${Compte}"
 [[ "${Modelfile}" == "openwrt_amlogic" ]] && {
-	TIME g "友情提示：您当前使用【${Modelfile}】文件夹编译【${TARGET_model}】固件"
+	TIME g "友情提示：您当前使用【${Modelfile}】文件夹编译【晶晨系列】固件"
 } || {
 	TIME g "友情提示：您当前使用【${Modelfile}】文件夹编译【${TARGET_PROFILE}】固件"
 }
