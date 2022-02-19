@@ -166,25 +166,14 @@ fi
 ################################################################################################################
 Diy_amlogic() {
 cd $GITHUB_WORKSPACE
+git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
 mkdir -p $GITHUB_WORKSPACE/amlogic/openwrt-armvirt
 cp -Rf ${Home}/bin/targets/armvirt/*/*.tar.gz $GITHUB_WORKSPACE/amlogic/openwrt-armvirt/ && sync
-rm -rf ${Home}/bin
-mkdir -p ${Home}/bin/targets/armvirt/64
-rm -rf $GITHUB_WORKSPACE/amlogic-s9xxx && svn co https://github.com/ophub/amlogic-s9xxx-openwrt/trunk/amlogic-s9xxx $GITHUB_WORKSPACE/amlogic-s9xxx > /dev/null 2>&1
-rm -rf $GITHUB_WORKSPACE/amlogic-s9xxx/{.svn,README.cn.md,README.md} > /dev/null 2>&1
-mv $GITHUB_WORKSPACE/amlogic-s9xxx $GITHUB_WORKSPACE/amlogic
-curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/make > $GITHUB_WORKSPACE/amlogic/make
-curl -fsSL https://raw.githubusercontent.com/ophub/amlogic-s9xxx-openwrt/main/.github/workflows/build-openwrt-lede.yml > $GITHUB_WORKSPACE/amlogic/op_kernel
-Make_kernel="$(cat $GITHUB_WORKSPACE/amlogic/op_kernel |grep ./make |cut -d "k" -f3 |sed s/[[:space:]]//g)"
+rm -rf $GITHUB_WORKSPACE/amlogi/router-config
 [[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
 [[ -z ${amlogic_model} ]] && amlogic_model="s905x3_s905x2_s905x_s905d_s922x_s912"
-[[ -z ${amlogic_kernel} ]] && amlogic_kernel="5.10.70_5.4.150"
+[[ -z ${amlogic_kernel} ]] && amlogic_kernel="5.10.100_5.4.180 -a true"
 [[ -z ${rootfs_size} ]] && rootfs_size="960"
-if [[ ${amlogic_kernel} == "5.10.70_5.4.150" ]] && [[ -n ${Make_kernel} ]]; then
-	amlogic_kernel="${Make_kernel}"
-else
-	amlogic_kernel="${amlogic_kernel}"
-fi
 minsize="$(egrep -o "ROOT_MB=[0-9]+" $GITHUB_WORKSPACE/amlogic/make)"
 rootfssize="ROOT_MB=${rootfs_size}"
 sed -i "s/${minsize}/${rootfssize}/g" $GITHUB_WORKSPACE/amlogic/make
