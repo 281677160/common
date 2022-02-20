@@ -166,19 +166,6 @@ fi
 ################################################################################################################
 Diy_amlogic() {
 cd $GITHUB_WORKSPACE
-git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
-mkdir -p $GITHUB_WORKSPACE/amlogic/openwrt-armvirt
-rm -rf $GITHUB_WORKSPACE/amlogi/router-config
-[[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]] && source $GITHUB_WORKSPACE/amlogic_openwrt
-[[ -z ${amlogic_model} ]] && amlogic_model="s905x3_s905x2_s905x_s905w_s905d_s922x_s912"
-[[ -z ${amlogic_kernel} ]] && amlogic_kernel="5.10.100_5.4.180 -a true"
-[[ -z ${rootfs_size} ]] && rootfs_size="960"
-minsize="$(egrep -o "ROOT_MB=[0-9]+" $GITHUB_WORKSPACE/amlogic/make)"
-rootfssize="ROOT_MB=${rootfs_size}"
-sed -i "s/${minsize}/${rootfssize}/g" $GITHUB_WORKSPACE/amlogic/make
-cd $GITHUB_WORKSPACE/amlogic
-sudo chmod +x make
-cd $GITHUB_WORKSPACE
 }
 
 ################################################################################################################
