@@ -521,9 +521,14 @@ else
 	TIME r "上传BIN文件夹(固件+IPK): 关闭"
 fi
 if [[ ${UPLOAD_COWTRANSFER} == "true" ]]; then
-	TIME y "上传固件至【奶牛快传】和【WETRANSFER】: 开启"
+	TIME y "上传固件至【奶牛快传】: 开启"
 else
-	TIME r "上传固件至【奶牛快传】和【WETRANSFER】: 关闭"
+	TIME r "上传固件至【奶牛快传】: 关闭"
+fi
+if [[ ${UPLOAD_WETRANSFER} == "true" ]]; then
+	TIME y "上传固件至【WETRANSFER】: 开启"
+else
+	TIME r "上传固件至【WETRANSFER】: 关闭"
 fi
 if [[ ${UPLOAD_RELEASE} == "true" ]]; then
 	TIME y "发布固件: 开启"
