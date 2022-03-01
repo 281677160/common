@@ -362,8 +362,8 @@ Diy_chuli() {
 
 sed -i '$ s/exit 0$//' ${Home}/package/base-files/files/etc/rc.local
 echo '
-if [[ `grep -c "coremark" /etc/crontabs/root` -eq '1' ]]; then
-  sed -i '/coremark/d' /etc/crontabs/root
+if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
+  sed -i "/coremark/d" /etc/crontabs/root
 fi
 /etc/init.d/network restart
 /etc/init.d/uhttpd restart
