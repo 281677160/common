@@ -75,6 +75,7 @@ find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci
 find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
 sed -i "s/OpenWrt SNAPSHOT/OpenWrt/g" $ZZZ
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
+rm -rf package/luci-app-passwall/{trojan-go,v2raya,xray-core}
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 git clone -b master https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
 
