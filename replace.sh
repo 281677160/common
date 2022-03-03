@@ -37,7 +37,7 @@ TIME y "固件格式：${EFI_Mode}${Firmware_SFX}"
 TIME y "设备型号：${DEFAULT_Device}"
 echo
 if [[ "${REPO_Name}" == "lede" ]]; then
-	if [[ `cat ${Download_Tags} | grep -c "19.07-lienol-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
+	if [[ `cat ${Download_Tags} | grep -c "20.06-lienol-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
 		ZHUANG1="1"
 	fi
 	if [[ `cat ${Download_Tags} | grep -c "21.02-mortal-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
@@ -111,14 +111,14 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 		1)
 			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition=19.07
+			Luci_Edition=20.06
 			CURRENT_Version=lienol-${DEFAULT_Device}-202107010100
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name=19.07
+			LUCI_Name=20.06
 			REPO_Name=lienol
 			Github_Release=${Github_Release}
-			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
+			Egrep_Firmware=20.06-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
@@ -190,7 +190,7 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 	esac
 	done
 	elif [[ "${ZHUANG3}" == "3" ]]; then
-		TIME B "1. 转换成 Lienol 19.07 其他内核版本?"
+		TIME B "1. 转换成 Lienol 20.06 其他内核版本?"
 		echo
 		TIME B "2. 转换成 mortal 21.02 其他内核版本?"
 		echo
@@ -206,14 +206,14 @@ if [[ "${REPO_Name}" == "lede" ]]; then
 		1)
 			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition=19.07
+			Luci_Edition=20.06
 			CURRENT_Version=lienol-${DEFAULT_Device}-202107010100
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name=19.07
+			LUCI_Name=20.06
 			REPO_Name=lienol
 			Github_Release=${Github_Release}
-			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
+			Egrep_Firmware=20.06-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
@@ -495,14 +495,14 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 		1)
 			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition=19.07
+			Luci_Edition=20.06
 			CURRENT_Version=lienol-${DEFAULT_Device}-202107010100
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name=19.07
+			LUCI_Name=20.06
 			REPO_Name=lienol
 			Github_Release=${Github_Release}
-			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
+			Egrep_Firmware=20.06-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
@@ -530,7 +530,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 	elif [[ "${ZHUANG3}" == "3" ]]; then
 		TIME B "1. 转换成 Lede 18.06 其他内核版本?"
 		echo
-		TIME B "2. 转换成 lienol 19.07 其他内核版本?"
+		TIME B "2. 转换成 lienol 20.06 其他内核版本?"
 		echo
 		TIME B "3. 退出固件转换程序?"
 		echo
@@ -566,14 +566,14 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 		2)
 			cat >/bin/openwrt_info <<-EOF
 			Github=${Github}
-			Luci_Edition=19.07
+			Luci_Edition=20.06
 			CURRENT_Version=lienol-${DEFAULT_Device}-202107010100
 			DEFAULT_Device=${DEFAULT_Device}
 			Firmware_Type=${Firmware_Type}
-			LUCI_Name=19.07
+			LUCI_Name=20.06
 			REPO_Name=lienol
 			Github_Release=${Github_Release}
-			Egrep_Firmware=19.07-lienol-${DEFAULT_Device}
+			Egrep_Firmware=20.06-lienol-${DEFAULT_Device}
 			Download_Path=${Download_Path}
 			Version=${Version}
 			Download_Tags=${Download_Tags}
