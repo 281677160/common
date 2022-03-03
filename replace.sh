@@ -76,7 +76,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 	if [[ `cat ${Download_Tags} | grep -c "18.06-lede-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
 		ZHUANG1="1"
 	fi
-	if [[ `cat ${Download_Tags} | grep -c "19.07-lienol-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
+	if [[ `cat ${Download_Tags} | grep -c "20.06-lienol-${DEFAULT_Device}-.*${BOOT_Type}-.*${Firmware_SFX}"` -ge '1' ]]; then
 		ZHUANG2="2"
 	fi
 	if [[ -z "${ZHUANG1}" ]] && [[ -z "${ZHUANG2}" ]]; then
@@ -97,7 +97,7 @@ echo
 echo
 if [[ "${REPO_Name}" == "lede" ]]; then
 	if [[ "${ZHUANG1}" == "1" ]]; then
-		TIME B "1. 转换成 Lienol 19.07 其他内核版本?"
+		TIME B "1. 转换成 Lienol 20.06 其他内核版本?"
 		echo
 		TIME B "2. 退出固件转换程序?"
 		echo
@@ -481,7 +481,7 @@ if [[ "${REPO_Name}" == "mortal" ]]; then
 	esac
 	done
 	elif [[ "${ZHUANG2}" == "2" ]]; then
-		TIME B "1. 转换成 lienol 19.07 其他内核版本?"
+		TIME B "1. 转换成 lienol 20.06 其他内核版本?"
 		echo
 		TIME B "2. 退出固件转换程序?"
 		echo
