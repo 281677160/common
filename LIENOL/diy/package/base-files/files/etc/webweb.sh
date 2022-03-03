@@ -1,8 +1,5 @@
 #!/bin/bash
 
-sed -i 's/<%=pcdata(ver.distversion)%>/<%=pcdata(ver.distversion)%><!--/g' /usr/lib/lua/luci/view/admin_status/index.htm
-sed -i 's/(<%=pcdata(ver.luciversion)%>)/(<%=pcdata(ver.luciversion)%>)-->/g' /usr/lib/lua/luci/view/admin_status/index.htm
-
 [[ ! -f /mnt/network ]] && chmod +x /etc/networkip && source /etc/networkip
 
 cp -Rf /etc/config/network /mnt/network
