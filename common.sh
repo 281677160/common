@@ -72,11 +72,8 @@ fi
 Diy_lienol() {
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' | xargs -i rm -rf {}
 find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-find . -name 'pdnsd-alt' | xargs -i rm -rf {}
 find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
-rm -rf feeds/packages/libs/libcap
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
-rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,xray-core,xray-plugin}
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/x86/Makefile
@@ -119,10 +116,12 @@ if [[ "${REPO_BRANCH}" == "master" ]]; then
 	cp -Rf "${Home}"/build/common/LEDE/files "${Home}"
 	cp -Rf "${Home}"/build/common/LEDE/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/LEDE/patches/* "${PATH1}/patches"
-elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+elif [[ "${REPO_BRANCH}" == "main" ]]; then
 	cp -Rf "${Home}"/build/common/LIENOL/files "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/patches/* "${PATH1}/patches"
+	curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Convert/LI_Convert.sh > ${Home}/LI_Convert.sh
+	/bin/bash ${Home}/LI_Convert.sh
 elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
 	cp -Rf "${Home}"/build/common/TIANLING/files "${Home}"
 	cp -Rf "${Home}"/build/common/TIANLING/diy/* "${Home}"
