@@ -32,16 +32,16 @@ GET_TARGET_INFO() {
 			Firmware_sfx="bin"
 		fi
 	;;
-	"19.07")
-		LUCI_Name="19.07"
+	"main")
+		LUCI_Name="20.06"
 		REPO_Name="lienol"
 		ZUOZHE="Lienol's"
 		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			Legacy_Firmware="openwrt-x86-64-combined-squashfs.${Firmware_sfxo}"
-			UEFI_Firmware="openwrt-x86-64-combined-squashfs-efi.${Firmware_sfxo}"
+			Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
+			UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			Firmware_sfx="${Firmware_sfxo}"
-		elif [[ "${TARGET_PROFILE}" == "phicomm-k3" ]]; then
-			Up_Firmware="openwrt-bcm53xx-${TARGET_PROFILE}-squashfs.trx"
+		elif [[ "${TARGET_PROFILE}" == "phicomm_k3" ]]; then
+			Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
 			Firmware_sfx="trx"
 		else
 			Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
