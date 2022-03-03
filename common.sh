@@ -78,7 +78,6 @@ sed -i "s/OpenWrt SNAPSHOT/OpenWrt/g" $ZZZ
 git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 rm -rf package/luci-app-passwall/{trojan-go,v2ray-core,xray-core}
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
-git clone -b master https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
 
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/x86/Makefile
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
