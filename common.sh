@@ -121,8 +121,6 @@ elif [[ "${REPO_BRANCH}" == "main" ]]; then
 	cp -Rf "${Home}"/build/common/LIENOL/files "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/diy/* "${Home}"
 	cp -Rf "${Home}"/build/common/LIENOL/patches/* "${PATH1}/patches"
-	curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Convert/LI_Convert.sh > ${Home}/LI_Convert.sh
-	/bin/bash ${Home}/LI_Convert.sh
 elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
 	cp -Rf "${Home}"/build/common/TIANLING/files "${Home}"
 	cp -Rf "${Home}"/build/common/TIANLING/diy/* "${Home}"
