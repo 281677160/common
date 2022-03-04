@@ -70,7 +70,7 @@ fi
 # LIENOL源码通用diy.sh文件
 ################################################################################################################
 Diy_lienol() {
-find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' | xargs -i rm -rf {}
+find . -name 'luci-app-netdata' -o -name 'netdata' | xargs -i rm -rf {}
 find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci-app-wol' | xargs -i rm -rf {}
 find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
 
