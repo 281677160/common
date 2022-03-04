@@ -57,7 +57,7 @@ GET_TARGET_INFO() {
 		fi
 	;;
 	"openwrt-18.06")
-		LUCI_Name="tl-18.06"
+		LUCI_Name="18.06_tl"
 		REPO_Name="Tianling"
 		ZUOZHE="ctcgfw"
 		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
