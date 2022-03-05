@@ -33,7 +33,7 @@ find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'l
 
 
 ## git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
-git clone https://github.com/281677160/passwall package/luci-app-passwall
+git clone https://github.com/281677160/openwrt-passwall package/luci-app-passwall
 chmod -R +x package/luci-app-passwall
 rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,xray-core,xray-plugin}
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
@@ -77,7 +77,7 @@ find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci
 find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
 
 sed -i "s/OpenWrt SNAPSHOT/OpenWrt/g" $ZZZ
-git clone https://github.com/281677160/passwall package/luci-app-passwall
+git clone https://github.com/281677160/openwrt-passwall package/luci-app-passwall
 chmod -R +x package/luci-app-passwall
 rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,xray-core,xray-plugin}
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
