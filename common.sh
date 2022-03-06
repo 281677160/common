@@ -33,6 +33,7 @@ find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'l
 
 ## git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 git clone https://github.com/281677160/openwrt-passwall package/luci-app-passwall
+rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
@@ -76,6 +77,7 @@ sed -i "s/OpenWrt SNAPSHOT/OpenWrt/g" $ZZZ
 
 ## git clone https://github.com/xiaorouji/openwrt-passwall package/luci-app-passwall
 git clone https://github.com/281677160/openwrt-passwall package/luci-app-passwall
+rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
 git clone https://github.com/fw876/helloworld package/luci-app-ssr-plus
 
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/x86/Makefile
