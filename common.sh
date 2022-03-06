@@ -32,8 +32,9 @@ find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
 find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
 
 git clone https://github.com/281677160/openwrt-passwall package/luci-app-passwall
-# rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
-# git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
+rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
+git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
+rm -rf package/luci-app-ssr-plus/{dns2socks,microsocks,ipt2socks,pdnsd-alt}
 
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 
@@ -74,9 +75,10 @@ find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci
 find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
 sed -i "s/OpenWrt SNAPSHOT/OpenWrt/g" $ZZZ
 
-# git clone https://github.com/281677160/openwrt-passwall package/luci-app-passwall
-# rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
+git clone https://github.com/281677160/openwrt-passwall package/luci-app-passwall
+rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
 git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
+rm -rf package/luci-app-ssr-plus/{dns2socks,microsocks,ipt2socks,pdnsd-alt}
 
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/x86/Makefile
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
