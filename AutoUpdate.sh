@@ -168,7 +168,7 @@ else
 			TIME z  "正确地址示例：https://github.com/281677160/AutoBuild-OpenWrt"
 			TIME h  "现在所用地址为：${Github}"
 			echo
-			read -p "请输入新的Github地址：" Input_Other
+			read -p "请输入新的Github地址(直接回车为不修改,退出程序)：" Input_Other
 			Input_Other="${Input_Other:-"$Github"}"
 			Github_uci=$(uci get autoupdate.@login[0].github 2>/dev/null)
 			[[ -n "${Github_uci}" ]] && [[ "${Github_uci}" != "${Input_Other}" ]] && {
