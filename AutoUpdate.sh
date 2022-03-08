@@ -165,7 +165,7 @@ else
 			source /bin/openwrt_info
 			TIME h "执行：更换[Github地址]操作"
 			TIME y "地址格式：https://github.com/帐号/仓库"
-			TIME z  "正确地址示例：https://github.com/281677160/AutoBuild-OpenWrt"
+			TIME z  "正确地址示例：https://github.com/281677160/build-actions"
 			TIME h  "现在所用地址为：${Github}"
 			echo
 			read -p "请输入新的Github地址(直接回车为不修改,退出程序)：" Input_Other
