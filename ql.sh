@@ -35,7 +35,9 @@ function ECHOB() {
 function ECHOYY() {
   echo -e "${Yellow} $1 ${Font}"
 }
-
+function ECHOG() {
+  echo -e "${Green} $1 ${Font}"
+}
 function ip_install() {
   echo
   echo
@@ -84,8 +86,6 @@ function dns_install() {
 }
 
 function wg_install() {
-  echo
-  echo
   export YUMING="请输入您的主路由IP（网关）"
   ECHOYY "${YUMING}[比如:192.168.2.1]"
   while :; do
@@ -108,6 +108,7 @@ function wg_install() {
 
 function zxml_install() {
   echo
+  echo
   ECHOG "您的IP为：${domain}"
   ECHOG "您设置DNS为：${domaindns}"
   [[ -n ${domainwg} ]] && ECHOG "您设置网关为：${domainwg}"
@@ -119,7 +120,6 @@ function zxml_install() {
     exit 0
   ;;
   *)
-    echo
     ECHOB "正在为您执行修改IP命令和重启openwrt"
     uci set network.lan.ipaddr="${domain}"
     uci set network.lan.dns="${domaindns}"
@@ -133,7 +133,9 @@ function zxml_install() {
 function install_ws() {
   ip_install
   dns_install
-  read -p "是否设置网关?主路由直接回车跳过，旁路由按[Y/y]设置： " YN
+  echo
+  echo
+  read -p " 是否设置网关?主路由直接回车跳过，旁路由按[Y/y]设置：" YN
   case ${YN} in
     [Yy]) 
       wg_install
