@@ -134,7 +134,7 @@ echo
 if [[ -z "${Input_Option}" ]];then
 	export Upgrade_Options="sysupgrade -q"
 	export Update_Mode=1
-	TIME h "执行: 保留配置更新固件[静默模式]"
+	TIME h "执行: 更新固件[保留配置]"
 else
 	case ${Input_Option} in
 	-t | -n | -f | -u | -N | -s | -w)
