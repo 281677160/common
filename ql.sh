@@ -131,11 +131,12 @@ function zxml_install() {
 }
 
 function install_ws() {
+  clear
   ip_install
   dns_install
   echo
   echo
-  read -p " 是否设置网关?主路由直接回车跳过，旁路由按[Y/y]设置：" YN
+  read -p " 是否设置网关?主路由无需设置网关,直接回车跳过，旁路由按[Y/y]设置：" YN
   case ${YN} in
     [Yy]) 
       wg_install
@@ -157,7 +158,8 @@ menu() {
   ECHOY " 3. 测试模式,观看运行步骤(不安装固件)"
   ECHOYY " 4. 查看状态信息"
   ECHOY " 5. 更换检测固件的gihub地址"
-  ECHOYY " 6. 退出菜单"
+  ECHOYY " 6. 修改IP/DSN/网关"
+  ECHOY " 7. 退出菜单"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -168,7 +170,7 @@ menu() {
     break
     ;;
     2)
-      bash /bin/AutoUpdate.sh -n
+      bash /bin/AutoUpdate.sh
     break
     ;;
     3)
@@ -184,6 +186,10 @@ menu() {
     break
     ;;
     6)
+      install_ws
+    break
+    ;;
+    7)
       ECHOR "您选择了退出程序"
       exit 0
     break
@@ -194,5 +200,38 @@ menu() {
     esac
     done
 }
-menu "$@"
+
+menuws() {
+  clear
+  echo  
+  ECHOB "  请选择执行命令编码"
+  ECHOY " 1. 修改IP/DSN/网关"
+  ECHOYY " 2. 退出菜单"
+  echo
+  XUANZHEOP="请输入数字"
+  while :; do
+  read -p " ${XUANZHEOP}： " CHOOSE
+  case $CHOOSE in
+    1)
+      install_ws
+    break
+    ;;
+    2)
+      ECHOR "您选择了退出程序"
+      exit 0
+    break
+    ;;
+    *)
+      XUANZHEOP="请输入正确的数字编号!"
+    ;;
+    esac
+    done
+}
+
+if [[ -f /bin/openwrt_info ]] && [[ -f /bin/AutoUpdate.sh ]];then
+  menu "$@"
+else
+  menuws "$@"
+fi
+
 exit 0
