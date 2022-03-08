@@ -242,17 +242,8 @@ export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA
 let X=$(grep -n "${Firmware}" ${Download_Tags} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${Download_Tags} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
 echo -e "\n本地版本：${CURRENT_Ver}"
-echo "云端版本：${CLOUD_Version}"	
-[[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]] && {
-	TIME g "tmp 剩余空间: ${TMP_Available}M"
-	TIME r "tmp空间不足[${CLOUD_Firmware_Size}M],不够下载固件所需,请清理tmp空间或者增加运行内存!"
-	echo
-	exit 1
-}
+echo "云端版本：${CLOUD_Version}"
 if [[ ! "${Force_Update}" == 1 ]];then
-  	if [[ "${CURRENT_Version}" -gt "${CLOUD_Version}" ]];then
-		TIME r "检测到有可更新的固件版本,立即更新固件!"
-	fi
   	if [[ "${CURRENT_Version}" -eq "${CLOUD_Version}" ]];then
 		[[ "${AutoUpdate_Mode}" == 1 ]] && exit 0
 		TIME && read -p "当前版本和云端最新版本一致，是否还要重新安装固件?[Y/n]:" Choose
@@ -263,8 +254,7 @@ if [[ ! "${Force_Update}" == 1 ]];then
 			sleep 2
 			exit 0
 		}
-	fi
-  	if [[ "${CURRENT_Version}" -lt "${CLOUD_Version}" ]];then
+  	elif [[ "${CURRENT_Version}" -lt "${CLOUD_Version}" ]];then
 		[[ "${AutoUpdate_Mode}" == 1 ]] && exit 0
 		TIME && read -p "云端最高版本,低于您现在的版本,是否强制覆盖现有固件?[Y/n]:" Choose
 		[[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
@@ -274,8 +264,16 @@ if [[ ! "${Force_Update}" == 1 ]];then
 			sleep 2
 			exit 0
 		}
+        else
+               TIME r "检测到有可更新的固件版本,立即更新固件!"
 	fi
 fi
+[[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]] && {
+	TIME g "tmp 剩余空间: ${TMP_Available}M"
+	TIME r "tmp空间不足[${CLOUD_Firmware_Size}M],不够下载固件所需,请清理tmp空间或者增加运行内存!"
+	echo
+	exit 1
+}
 TIME g "列出详细信息..."
 sleep 1
 echo -e "\n固件作者：${Author}"
