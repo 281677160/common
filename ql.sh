@@ -40,7 +40,7 @@ function ip_install() {
   echo
   echo
   export YUMING="请输入您的IP"
-  ECHOY "${YUMING}[比如:192.168.2.2]"
+  ECHOYY "${YUMING}[比如:192.168.2.2]"
   while :; do
   domainy=""
   read -p " ${YUMING}：" domain
@@ -63,8 +63,8 @@ function dns_install() {
   echo
   echo
   export YUMING="请输入您的DNS"
-  ECHOY "${YUMING}[比如:114.114.114.114]"
-  ECHOY "多个DNS之间要用空格分开[比如:114.114.114.114 223.5.5.5 8.8.8.8]"
+  ECHOYY "${YUMING}[比如:114.114.114.114]"
+  ECHOYY "多个DNS之间要用空格分开[比如:114.114.114.114 223.5.5.5 8.8.8.8]"
   while :; do
   domaind=""
   read -p " ${YUMING}：" domaindns
@@ -87,7 +87,7 @@ function wg_install() {
   echo
   echo
   export YUMING="请输入您的主路由IP（网关）"
-  ECHOY "${YUMING}[比如:192.168.2.1]"
+  ECHOYY "${YUMING}[比如:192.168.2.1]"
   while :; do
   domainw=""
   read -p " ${YUMING}：" domainwg
