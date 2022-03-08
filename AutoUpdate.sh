@@ -48,7 +48,7 @@ Purple="\033[1;95m"
 	chmod +x /bin/openwrt_info
 	source /bin/openwrt_info 
 } || {
-	echo -e "\n${Red}未检测到更新插件所需文件,无法运行更新程序!${White}"
+	echo -e "\n${Red}未检测到openwrt_info文件,无法运行更新程序!${White}"
 	echo
 	exit 1
 }
