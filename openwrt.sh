@@ -42,13 +42,10 @@ menu() {
   ECHOB "  请选择执行命令编码"
   ECHOY " 1. 检查更新(保留配置)"
   ECHOYY " 2. 检查更新(不保留配置)"
-  echo
-  ECHOYY " 3. 更换其他作者固件(不保留配置)"
-  ECHOY " 4. 测试模式,观看运行步骤(不安装固件)"
-  ECHOYY " 5. 查看状态信息"
-  ECHOY " 6. 更换检测固件的gihub地址"
-  ECHOYY " 7. 重启openwrt"
-  ECHOY " 8. 退出菜单"
+  ECHOY " 3. 测试模式,观看运行步骤(不安装固件)"
+  ECHOYY " 4. 查看状态信息"
+  ECHOY " 5. 更换检测固件的gihub地址"
+  ECHOYY " 6. 退出菜单"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -63,27 +60,18 @@ menu() {
     break
     ;;
     3)
-      bash /bin/AutoUpdate.sh -g
-    break
-    ;;
-    4)
       bash /bin/AutoUpdate.sh -t
     break
     ;;
-    5)
+    4)
       bash /bin/AutoUpdate.sh -h
     break
     ;;
-    6)
+    5)
       bash /bin/AutoUpdate.sh -c
     break
-    ;;    
-    7)
-      ECHOR "正在执行重启openwrt中..."
-      reboot
-    break
     ;;
-    8)
+    6)
       ECHOR "您选择了退出程序"
       exit 0
     break
