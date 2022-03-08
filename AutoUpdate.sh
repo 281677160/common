@@ -335,17 +335,16 @@ export CURRENT_256="$(echo "${MD5_256}" | cut -c 4-)"
 	TIME r "SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!"
 	exit 1
 }
-chmod 777 ${Firmware}
-TIME g "准备更新固件,更新期间请不要断开电源或重启设备 ..."
 [[ "${Input_Other}" == "-t" ]] && {
 	TIME z "测试模式运行完毕!"
 	rm -rf "${Download_Path}"
 	echo
 	exit 0
 }
-sleep 2
-TIME g "正在更新固件,请耐心等待 ..."
+chmod 777 ${Firmware}
 [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
+TIME g "正在更新固件,更新期间请不要断开电源或重启设备 ..."
+sleep 2
 if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
 	source /etc/deletefile
 	cp -Rf /etc/config/network /mnt/network
