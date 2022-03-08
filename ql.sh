@@ -106,7 +106,7 @@ function wg_install() {
   done
 }
 
-function wg_install() {
+function zxml_install() {
   echo
   ECHOG "您的IP为：${domain}"
   ECHOG "您设置DNS为：${domaindns}"
@@ -133,7 +133,16 @@ function wg_install() {
 function install_ws() {
   ip_install
   dns_install
-  wg_install
+  read -p "是否设置网关?主路由直接回车跳过，旁路由按[Y/y]设置： " YN
+  case ${YN} in
+    [Yy]) 
+      wg_install
+    ;;
+    *)
+      ECHOY  "您已跳过网关设置"
+    ;;
+  esac
+  zxml_install
 }
 
 
