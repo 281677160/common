@@ -166,11 +166,11 @@ menu() {
   read -p " ${XUANZHEOP}： " CHOOSE
   case $CHOOSE in
     1)
-      install_ws
+      bash /bin/AutoUpdate.sh
     break
     ;;
     2)
-      bash /bin/AutoUpdate.sh
+      bash /bin/AutoUpdate.sh -n
     break
     ;;
     3)
