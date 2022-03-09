@@ -464,8 +464,8 @@ exit 1
 # 编译信息
 ################################################################################################################
 Diy_xinxi() {
-if [[ "${TARGET_PROFILE}" =~ (friendlyarm_nanopi-r2s|friendlyarm_nanopi-r4s|armvirt) ]]; then
-	REGULAR_UPDATE="false"
+if [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]]; then
+	export REGULAR_UPDATE="false"
 fi
 echo
 TIME b "编译源码: ${CODE}"
