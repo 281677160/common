@@ -139,7 +139,7 @@ function install_ws() {
       dns_install
     ;;
     *)
-      ECHOR  "您已跳过DNS设置"
+      ECHOR "您已跳过DNS设置"
     ;;
   esac
   echo
@@ -150,7 +150,7 @@ function install_ws() {
       wg_install
     ;;
     *)
-      ECHOR  "您已跳过网关设置"
+      ECHOR "您已跳过网关设置"
     ;;
   esac
   echo
@@ -161,7 +161,9 @@ function install_ws() {
 }
 
 function first_boot() {
-  ECHOR  "是否恢复出厂设置?按[Y/y]执行,按[N/n]退出,如果执行的话,请耐心等待openwrt重启完成"
+  echo
+  echo
+  ECHOR "是否恢复出厂设置?按[Y/y]执行,按[N/n]退出,如果执行的话,请耐心等待openwrt重启完成"
   firstboot && reboot
 }
 
