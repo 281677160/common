@@ -67,6 +67,7 @@ function ip_install() {
     uci set network.lan.ipaddr="${domain}"
     uci set network.lan.dns=
     uci set network.lan.gateway=
+    uci set network.lan.broadcast=
     uci commit network
     judge "IP 修改"
     ECHOG "您的IP为：${domain}"
