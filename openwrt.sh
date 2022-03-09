@@ -45,10 +45,8 @@ function print_error() {
 judge() {
   if [[ 0 -eq $? ]]; then
     print_ok "$1 完成,等待重启openwrt"
-    sleep 1
   else
     print_error "$1 失败"
-    exit 1
   fi
 }
 
