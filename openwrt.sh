@@ -162,7 +162,7 @@ function install_ws() {
   echo
   echo
   ECHOG "正在为您冲openwrt中，请稍后..."
-  
+  reboot
 }
 
 
