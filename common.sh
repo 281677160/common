@@ -464,7 +464,7 @@ exit 1
 # 编译信息
 ################################################################################################################
 Diy_xinxi() {
-if [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]]; then
+if [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_TARGET_bcm27xx=y" ${Home}/.config` -eq '1' ]]; then
 	export REGULAR_UPDATE="false"
 fi
 echo
