@@ -38,6 +38,22 @@ function ECHOYY() {
 function ECHOG() {
   echo -e "${Green} $1 ${Font}"
 }
+function print_ok() {
+  echo -e " ${OK} ${Blue} $1 ${Font}"
+}
+function print_error() {
+  echo -e "${ERROR} ${RedBG} $1 ${Font}"
+}
+judge() {
+  if [[ 0 -eq $? ]]; then
+    print_ok "$1 完成"
+    sleep 1
+  else
+    print_error "$1 失败"
+    exit 1
+  fi
+}
+
 function ip_install() {
   echo
   echo
@@ -52,6 +68,10 @@ function ip_install() {
   case $domainy in
   Y)
     export domain="${domain}"
+    uci set network.lan.ipaddr="${domain}"
+    uci commit network
+    judge "IP 修改"
+    ECHOG "您的IP为：${domain}"
   break
   ;;
   *)
@@ -76,6 +96,10 @@ function dns_install() {
   case $domaind in
   Y)
     export domaindns="${domaindns}"
+    uci set network.lan.dns="${domaindns}"
+    uci commit network
+    judge "DNS 修改"
+    ECHOG "您的DNS为：${domaindns}"
   break
   ;;
   *)
@@ -97,6 +121,10 @@ function wg_install() {
   case $domainw in
   Y)
     export domainwg="${domainwg}"
+    uci set network.lan.gateway="${domainwg}"
+    uci commit network
+    judge "DNS 修改"
+    ECHOG "您的DNS为：${domainwg}"
   break
   ;;
   *)
@@ -106,34 +134,20 @@ function wg_install() {
   done
 }
 
-function zxml_install() {
-  echo
-  echo
-  ECHOG "您的IP为：${domain}"
-  ECHOG "您设置DNS为：${domaindns}"
-  [[ -n ${domainwg} ]] && ECHOG "您设置网关为：${domainwg}"
-  echo
-  read -p " [检查是否正确,正确则回车执行修改命令,不正确按Q回车重新输入]： " NNKC
-  case $NNKC in
-  [Qq])
-    install_ws
-    exit 0
-  ;;
-  *)
-    ECHOB "正在为您执行修改IP命令和重启openwrt"
-    uci set network.lan.ipaddr="${domain}"
-    uci set network.lan.dns="${domaindns}"
-    [[ -n ${domainwg} ]] && uci set network.lan.gateway=${domainwg}
-    uci commit network
-    reboot
-  ;;
-  esac
-}
-
 function install_ws() {
   clear
   ip_install
-  dns_install
+  echo
+  echo
+  read -p " 是否设置DNS?主路由一般无需设置DSN,直接回车跳过，旁路由按[Y/y]设置：" YN
+  case ${YN} in
+    [Yy]) 
+      dns_install
+    ;;
+    *)
+      ECHOY  "您已跳过DNS设置"
+    ;;
+  esac
   echo
   echo
   read -p " 是否设置网关?主路由无需设置网关,直接回车跳过，旁路由按[Y/y]设置：" YN
