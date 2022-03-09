@@ -65,6 +65,8 @@ function ip_install() {
   Y)
     export domain="${domain}"
     uci set network.lan.ipaddr="${domain}"
+    uci set network.lan.dns=
+    uci set network.lan.gateway=
     uci commit network
     judge "IP 修改"
     ECHOG "您的IP为：${domain}"
@@ -155,7 +157,7 @@ function install_ws() {
   esac
   echo
   echo
-  ECHOG "正在为您重启openwrt中，请稍后再登录openwrt后台..."
+  ECHOG "正在为您重启openwrt中，预计需要1~2分钟，请稍后..."
   echo
   reboot
 }
