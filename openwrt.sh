@@ -23,9 +23,7 @@ function ECHOY() {
   echo
 }
 function ECHOR() {
-  echo
   echo -e "${Red} $1 ${Font}"
-  echo
 }
 function ECHOB() {
   echo
@@ -143,7 +141,7 @@ function install_ws() {
       dns_install
     ;;
     *)
-      ECHOY  "您已跳过DNS设置"
+      ECHOR  "您已跳过DNS设置"
     ;;
   esac
   echo
@@ -154,7 +152,7 @@ function install_ws() {
       wg_install
     ;;
     *)
-      ECHOY  "您已跳过网关设置"
+      ECHOR  "您已跳过网关设置"
     ;;
   esac
   echo
