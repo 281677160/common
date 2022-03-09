@@ -466,6 +466,10 @@ exit 1
 Diy_xinxi() {
 if [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_TARGET_bcm27xx=y" ${Home}/.config` -eq '1' ]]; then
 	export REGULAR_UPDATE="false"
+	echo '
+	echo "REGULAR_UPDATE=false" >> $GITHUB_ENV
+	' > ${GITHUB_WORKSPACE}/REGULAR_UPDATE
+	source ${GITHUB_WORKSPACE}/REGULAR_UPDATE
 fi
 echo
 TIME b "编译源码: ${CODE}"
