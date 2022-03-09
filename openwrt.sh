@@ -82,8 +82,6 @@ function ip_install() {
 }
 
 function dns_install() {
-  echo
-  echo
   export YUMING="请输入您的DNS"
   ECHOYY "${YUMING}[比如:114.114.114.114]"
   ECHOYY "多个DNS之间要用空格分开[比如:114.114.114.114 223.5.5.5 8.8.8.8]"
@@ -128,7 +126,7 @@ function wg_install() {
   break
   ;;
   *)
-    export YUMING="敬告：请输入正确格式的DNS"
+    export YUMING="敬告：请输入正确格式的网关IP"
   ;;
   esac
   done
@@ -161,7 +159,8 @@ function install_ws() {
   esac
   echo
   echo
-  ECHOG "正在为您冲openwrt中，请稍后..."
+  ECHOG "正在为您重启openwrt中，请稍后再登录openwrt后台..."
+  echo
   reboot
 }
 
