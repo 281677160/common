@@ -46,7 +46,7 @@ function print_error() {
 }
 judge() {
   if [[ 0 -eq $? ]]; then
-    print_ok "$1 完成"
+    print_ok "$1 完成,等待重启openwrt"
     sleep 1
   else
     print_error "$1 失败"
@@ -159,7 +159,10 @@ function install_ws() {
       ECHOY  "您已跳过网关设置"
     ;;
   esac
-  zxml_install
+  echo
+  echo
+  ECHOG "正在为您冲openwrt中，请稍后..."
+  
 }
 
 
