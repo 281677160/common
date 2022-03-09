@@ -36,8 +36,6 @@ rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-cor
 git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
 rm -rf package/luci-app-ssr-plus/{dns2socks,microsocks,ipt2socks,pdnsd-alt}
 
-echo "UPLOAD_CONFIG=false" >> $GITHUB_ENV
-
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 
 if [[ ! "${Modelfile}" == "openwrt_amlogic" ]]; then
@@ -468,10 +466,7 @@ exit 1
 Diy_xinxi() {
 if [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_TARGET_bcm27xx=y" ${Home}/.config` -eq '1' ]]; then
 	export REGULAR_UPDATE="false"
-	echo '
 	echo "REGULAR_UPDATE=false" >> $GITHUB_ENV
-	' > ${GITHUB_WORKSPACE}/REGULAR_UPDATE
-	source ${GITHUB_WORKSPACE}/REGULAR_UPDATE
 fi
 echo
 TIME b "编译源码: ${CODE}"
