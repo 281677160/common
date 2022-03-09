@@ -36,6 +36,8 @@ rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-cor
 git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
 rm -rf package/luci-app-ssr-plus/{dns2socks,microsocks,ipt2socks,pdnsd-alt}
 
+echo "UPLOAD_CONFIG=false" >> ${GITHUB_WORKSPACE}/$GITHUB_ENV
+
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 
 if [[ ! "${Modelfile}" == "openwrt_amlogic" ]]; then
