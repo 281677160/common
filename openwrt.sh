@@ -160,6 +160,10 @@ function install_ws() {
   reboot
 }
 
+function first_boot() {
+  ECHOR  "是否恢复出厂设置?按[Y/y]执行,按[N/n]退出,如果执行的话,请耐心等待openwrt重启完成"
+  firstboot && reboot
+}
 
 menu() {
   clear
@@ -171,7 +175,8 @@ menu() {
   ECHOYY " 4. 查看状态信息"
   ECHOY " 5. 更换检测固件的gihub地址"
   ECHOYY " 6. 修改IP/DSN/网关"
-  ECHOY " 7. 退出菜单"
+  ECHOY " 7. 恢复出厂设置"
+  ECHOYY " 8. 退出菜单"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -202,6 +207,10 @@ menu() {
     break
     ;;
     7)
+      first_boot
+    break
+    ;;
+    8)
       ECHOR "您选择了退出程序"
       exit 0
     break
@@ -218,7 +227,8 @@ menuws() {
   echo  
   ECHOB "  请选择执行命令编码"
   ECHOY " 1. 修改IP/DSN/网关"
-  ECHOYY " 2. 退出菜单"
+  ECHOYY " 2. 恢复出厂设置"
+  ECHOY " 3. 退出菜单"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -229,6 +239,10 @@ menuws() {
     break
     ;;
     2)
+      first_boot
+    break
+    ;;
+    3)
       ECHOR "您选择了退出程序"
       exit 0
     break
