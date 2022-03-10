@@ -329,8 +329,13 @@ fi
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${Home}/.config` -eq '1' ]]; then
 	if [[ `grep -c "CONFIG_PACKAGE_luci-app-argon-config=y" ${Home}/.config` == '0' ]]; then
 		sed -i '/luci-app-argon-config/d' ${Home}/.config
-		echo -e "\nCONFIG_PACKAGE_luci-theme-argon=y" >> ${Home}/.config
+		echo -e "\nCONFIG_PACKAGE_luci-app-argon-config=y" >> ${Home}/.config
 	fi
+fi
+if [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_bcm27xx=y" ${Home}/.config` -eq '1' ]]; then
+	sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${Home}/.config
+	export REGULAR_UPDATE="false"
+	echo "REGULAR_UPDATE=false" >> $GITHUB_ENV
 fi
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${Home}/.config` -eq '1' ]]; then
 	if [[ `grep -c "CONFIG_TARGET_ROOTFS_PARTSIZE" ${Home}/.config` -eq '0' ]]; then
@@ -466,10 +471,6 @@ exit 1
 # 编译信息
 ################################################################################################################
 Diy_xinxi() {
-if [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_bcm27xx=y" ${Home}/.config` -eq '1' ]]; then
-	export REGULAR_UPDATE="false"
-	echo "REGULAR_UPDATE=false" >> $GITHUB_ENV
-fi
 echo
 TIME b "编译源码: ${CODE}"
 TIME b "源码链接: ${REPO_URL}"
