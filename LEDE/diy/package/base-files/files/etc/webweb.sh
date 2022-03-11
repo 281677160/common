@@ -11,21 +11,19 @@ if [[ `grep -c "x86_64" /etc/openwrt_release` -eq '0' ]]; then
   sed -i "s/x86_64/${DISTRIB_TARGET}/g" /etc/banner
 fi
 
-if [[ -e /usr/share/AdGuardHome ]] && [[ -e /etc/init.d/AdGuardHome ]]; then
- chmod -R +x /usr/share/AdGuardHome /etc/init.d/AdGuardHome
+if [[ -d /usr/share/AdGuardHome ]] && [[ -f /etc/init.d/AdGuardHome ]]; then
+ chmod -R 775 /usr/share/AdGuardHome /etc/init.d/AdGuardHome
+else
+  rm -fr /etc/config/AdGuardHome.yaml
+  rm -fr /etc/AdGuardHome.yaml
 fi
 
-if [[ ! -e /usr/bin/AdGuardHome ]]; then
-rm -fr /etc/config/AdGuardHome.yaml
-rm -fr /etc/AdGuardHome.yaml
-fi
+chmod -R 775 /etc/init.d /usr/share
 
-if [[ -e /etc/init.d/ddnsto ]]; then
- chmod +x /etc/init.d/ddnsto
+if [[ -f /etc/init.d/ddnsto ]]; then
+ chmod 775 /etc/init.d/ddnsto
  /etc/init.d/ddnsto enable
 fi
-
-chmod -R +x /etc/init.d /usr/share
 
 uci set argon.@global[0].bing_background=0
 uci commit argon
