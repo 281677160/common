@@ -11,19 +11,17 @@ fi
 
 sed -i '\/luci-/d' /etc/crontabs/root && echo "0 1 * * 1 rm /tmp/luci-*cache > /dev/null 2>&1" >> /etc/crontabs/root
 
-if [[ -e /usr/share/AdGuardHome ]] && [[ -e /etc/init.d/AdGuardHome ]]; then
- chmod -R +x /usr/share/AdGuardHome /etc/init.d/AdGuardHome
+if [[ -d /usr/share/AdGuardHome ]] && [[ -f /etc/init.d/AdGuardHome ]]; then
+ chmod -R 775 /usr/share/AdGuardHome /etc/init.d/AdGuardHome
+else
+  rm -fr /etc/config/AdGuardHome.yaml
+  rm -fr /etc/AdGuardHome.yaml
 fi
 
-if [[ ! -e /usr/bin/AdGuardHome ]]; then
-rm -fr /etc/config/AdGuardHome.yaml
-rm -fr /etc/AdGuardHome.yaml
-fi
+chmod -R 775 /etc/init.d /usr/share
 
-chmod -R +x /etc/init.d /usr/share
-
-if [[ -e /etc/init.d/ddnsto ]]; then
- chmod +x /etc/init.d/ddnsto
+if [[ -f /etc/init.d/ddnsto ]]; then
+ chmod 775 /etc/init.d/ddnsto
  /etc/init.d/ddnsto enable
 fi
 
