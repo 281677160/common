@@ -4,12 +4,12 @@
 
 cp -Rf /etc/config/network /mnt/network
 
+sed -i '/mp\/luci-/d' /etc/crontabs/root && echo "0 1 * * 1 rm /tmp/luci-*cache > /dev/null 2>&1" >> /etc/crontabs/root
+
 if [[ `grep -c "x86_64" /etc/openwrt_release` -eq '0' ]]; then
   source /etc/openwrt_release
   sed -i "s/x86_64/${DISTRIB_TARGET}/g" /etc/banner
 fi
-
-sed -i '\/luci-/d' /etc/crontabs/root && echo "0 1 * * 1 rm /tmp/luci-*cache > /dev/null 2>&1" >> /etc/crontabs/root
 
 if [[ -d /usr/share/AdGuardHome ]] && [[ -f /etc/init.d/AdGuardHome ]]; then
  chmod -R 775 /usr/share/AdGuardHome /etc/init.d/AdGuardHome
