@@ -58,7 +58,6 @@ export Apidz="${Github##*com/}"
 export Author="${Apidz%/*}"
 export CangKu="${Apidz##*/}"
 export Github_Tags="https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate"
-export Github_Tagstwo="${Github}/releases/download/AutoUpdate/Github_Tags"
 export Github_Release="${Github_Release}"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -fr ${Download_Path}/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
@@ -82,9 +81,9 @@ esac
 opapi() {
   wget -q ${Github_Tags} -O ${Download_Tags} > /dev/null 2>&1
   if [[ $? -ne 0 ]];then
-  wget -q -P ${Download_Path} https://pd.zwc365.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags > /dev/null 2>&1
+  wget -q -P ${Download_Path} https://pd.zwc365.com/${Github_Release}//Github_Tags -O ${Download_Path}/Github_Tags > /dev/null 2>&1
     if [[ $? -ne 0 ]];then
-      wget -q -P ${Download_Path} https://ghproxy.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags > /dev/null 2>&1
+      wget -q -P ${Download_Path} https://ghproxy.com/${Github_Release}//Github_Tags -O ${Download_Path}/Github_Tags > /dev/null 2>&1
     fi
     if [[ $? -ne 0 ]];then
       print_error "获取固件版本信息失败,请检测网络,或者您更改的Github地址为无效地址,或者您的仓库是私库,或者发布已被删除!"
