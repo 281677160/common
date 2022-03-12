@@ -151,7 +151,7 @@ menuaz() {
   if [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]]; then
     export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
     if [ ! "$Google_Check" == 301 ];then
-      TIME g "正在下载云端固件,请耐心等待..."
+      ECHOG "正在下载云端固件,请耐心等待..."
       wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
       if [[ $? -ne 0 ]];then
         wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Github_Release}/${Firmware}" -O ${Firmware}
@@ -160,10 +160,10 @@ menuaz() {
 	   echo
 	   exit 1
 	else
-	   TIME y "下载云端固件成功!"
+	   print_ok "下载云端固件成功!"
 	fi
       else
-        TIME y "下载云端固件成功!"
+        print_ok "下载云端固件成功!"
       fi
   else
       TIME g "正在下载云端固件,请耐心等待..."
@@ -175,10 +175,10 @@ menuaz() {
           echo
           exit 1
         else
-          TIME y "下载云端固件成功!"
+          print_ok "下载云端固件成功!"
         fi
       else
-        TIME y "下载云端固件成功!"
+        print_ok "下载云端固件成功!"
       fi
     fi
   fi
