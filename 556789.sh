@@ -33,7 +33,9 @@ function ECHOYY() {
   echo -e "${Yellow} $1 ${Font}"
 }
 function ECHOG() {
+  echo
   echo -e "${Green} $1 ${Font}"
+  echo
 }
 function print_ok() {
   echo
