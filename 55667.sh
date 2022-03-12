@@ -88,15 +88,17 @@ function xianshi() {
 
 menuws() {
   clear
+  echo
+  echo
   xianshi
   echo  
   ECHOB " 请选择执行命令编码"
-  ECHOY " ${gg1}"
-  ECHOYY " ${gg2}"
-  ECHOY " ${gg3}"
+  [[ -n "${gg1}" ]] && ECHOY " ${gg1}"
+  [[ -n "${gg2}" ]] && ECHOYY " ${gg2}"
+  [[ -n "${gg3}" ]] && ECHOY " ${gg3}"
   ECHOYY " Q、退出菜单"
   echo
-  XUANZHEOP="请输入数字"
+  XUANZHEOP="请输入数字,或按[Q/q]退出"
   while :; do
   read -p " ${XUANZHEOP}： " CHOOSE
   case $CHOOSE in
@@ -124,7 +126,7 @@ menuws() {
     break
     ;;
     *)
-      XUANZHEOP="请输入正确的数字编号!"
+      XUANZHEOP="请输入正确的数字编号,或按[Q/q]退出!"
     ;;
     esac
     done
