@@ -83,17 +83,14 @@ menuws() {
   case $CHOOSE in
     1)
       Firmware="${gujian1}"
-      menuaz
     break
     ;;
     2)
       Firmware="${gujian2}"
-      menuaz
     break
     ;;
     3)
       Firmware="${gujian3}"
-      menuaz
     break
     ;;
     3)
