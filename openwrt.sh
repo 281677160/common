@@ -177,11 +177,12 @@ menu() {
   ECHOY " 1. 检查更新(保留配置)"
   ECHOYY " 2. 检查更新(不保留配置)"
   ECHOY " 3. 测试模式,观看运行步骤(不安装固件)"
-  ECHOYY " 4. 查看状态信息"
-  ECHOY " 5. 更换检测固件的gihub地址"
-  ECHOYY " 6. 修改IP/DSN/网关"
-  ECHOY " 7. 恢复出厂设置"
-  ECHOYY " 8. 退出菜单"
+  ECHOYY " 4. 转换成其他源码作者固件(不保留配置)"
+  ECHOY " 5. 查看状态信息"
+  ECHOYY " 6. 更换检测固件的gihub地址"
+  ECHOY " 7. 修改IP/DSN/网关"
+  ECHOYY " 8. 恢复出厂设置"
+  ECHOY " 9. 退出菜单"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -200,22 +201,26 @@ menu() {
     break
     ;;
     4)
-      bash /bin/AutoUpdate.sh -h
+      bash /bin/replace2.sh
     break
     ;;
     5)
-      bash /bin/AutoUpdate.sh -c
+      bash /bin/AutoUpdate.sh -h
     break
     ;;
     6)
-      install_ws
+      bash /bin/AutoUpdate.sh -c
     break
     ;;
     7)
-      first_boot
+      install_ws
     break
     ;;
     8)
+      first_boot
+    break
+    ;;
+    9)
       ECHOR "您选择了退出程序"
       exit 0
     break
