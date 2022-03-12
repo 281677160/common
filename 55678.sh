@@ -45,12 +45,11 @@ function print_error() {
   echo -e "${ERROR} ${RedBG} $1 ${Font}"
   echo
 }
-
+ECHOB "加载数据中,请稍后..."
 if [ -f /bin/openwrt_info ]; then
   chmod +x /bin/openwrt_info && source /bin/openwrt_info
 else
   print_error "未检测到openwrt_info文件,无法运行更新程序!"
-  echo
   exit 1
 fi
 export Github="${Github}"
@@ -154,7 +153,6 @@ menuaz() {
         wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Github_Release}/${Firmware}" -O ${Firmware}
 	if [[ $? -ne 0 ]];then
 	   print_error "下载云端固件失败,请尝试手动安装!"
-	   echo
 	   exit 1
 	else
 	   print_ok "下载云端固件成功!"
@@ -169,7 +167,6 @@ menuaz() {
         wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
         if [[ $? -ne 0 ]];then
           print_error "下载云端固件失败,请尝试手动安装!"
-          echo
           exit 1
         else
           print_ok "下载云端固件成功!"
@@ -544,10 +541,12 @@ menu() {
     opapi
     lede_Firmware
     menuws
+    clear
   elif [[ ${REPO_Name} == "lienol" ]]; then
     opapi
     lienol_Firmware
     menuws
+    clear
   elif [[ ${REPO_Name} == "mortal" ]]; then
     opapi
     mortal_Firmware
@@ -556,6 +555,7 @@ menu() {
     opapi
     Tianling_Firmware
     menuws
+    clear
   fi
 }
 menu "$@"
