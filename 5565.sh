@@ -67,15 +67,34 @@ export Github_Release="${Github_Release}"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -fr ${Download_Path}/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 export PKG_List="${Download_Path}/Installed_PKG_List"
+export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
+
+function xianshi() {
+  case ${DEFAULT_Device} in
+  x86-64)
+    [ -d /sys/firmware/efi ] && {
+      export EFI_Mode="UEFI"
+    } || {
+      export EFI_Mode="Legacy"
+    }
+    ;;
+    *)
+      export EFI_Mode="squashfs"
+    esac
+  ECHOG "当前源码：${REPO_Name}  /  ${Luci_Edition} / ${Kernel}"
+  ECHOG "固件格式：${EFI_Mode}.${Firmware_Type}"
+  ECHOG "设备型号：${DEFAULT_Device}"
+}
 
 menuws() {
   clear
+  xianshi
   echo  
-  ECHOB "  请选择执行命令编码"
+  ECHOB " 请选择执行命令编码"
   ECHOY " ${gg1}"
   ECHOYY " ${gg2}"
   ECHOY " ${gg3}"
-  ECHOYY " 3. 退出菜单"
+  ECHOYY " Q、退出菜单"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -99,7 +118,7 @@ menuws() {
       anzhuang
     break
     ;;
-    3)
+    [Qq])
       ECHOR "您选择了退出程序"
       exit 0
     break
@@ -313,53 +332,35 @@ function lienol_Firmware() {
     gg1="1、${Name_1}"
     gujian2="${Name_2}"
     gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
   fi
 
   if [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian2="${Name_3}"
+    gg3="2、${Name_3}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_2}"
+    gg2="1、${Name_2}"
+    gujian2="${Name_3}"
+    gg3="2、${Name_3}"
   fi
 
   if [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_2}"
+    gg2="1、${Name_2}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_3}"
+    gg3="1、${Name_3}"
   fi
 }
 
