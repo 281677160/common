@@ -148,7 +148,6 @@ function anzhuang() {
   }
   chmod 777 ${Firmware}
   [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
-  echo
   ECHOG "正在更新固件,更新期间请不要断开电源或重启设备 ..."
   sleep 2
   sysupgrade -F -n ${Firmware}
