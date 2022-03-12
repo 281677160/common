@@ -28,7 +28,6 @@ function ECHOR() {
 function ECHOB() {
   echo
   echo -e "${Blue} $1 ${Font}"
-  echo
 }
 function ECHOYY() {
   echo -e "${Yellow} $1 ${Font}"
@@ -81,9 +80,9 @@ function xianshi() {
     *)
       export EFI_Mode="squashfs"
     esac
-  ECHOG "当前源码：${REPO_Name}  /  ${Luci_Edition} / ${Kernel}"
-  ECHOG "固件格式：${EFI_Mode}.${Firmware_Type}"
-  ECHOG "设备型号：${DEFAULT_Device}"
+  ECHOG " 当前源码：${REPO_Name}  /  ${Luci_Edition} / ${Kernel}"
+  ECHOG " 固件格式：${EFI_Mode}.${Firmware_Type}"
+  ECHOG " 设备型号：${DEFAULT_Device}"
 }
 
 menuws() {
@@ -186,6 +185,7 @@ menuaz() {
 }
 
 function anzhuang() {
+  cd ${Download_Path}
   export CLOUD_MD5=$(md5sum ${Firmware} | cut -c1-3)
   export CLOUD_256=$(sha256sum ${Firmware} | cut -c1-3)
   export MD5_256=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
@@ -203,8 +203,8 @@ function anzhuang() {
   [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
   TIME g "正在更新固件,更新期间请不要断开电源或重启设备 ..."
   sleep 2
-
-  ${Upgrade_Options} ${Firmware}
+  exit 0
+  ## sysupgrade -F -n ${Firmware}
 }
 
 
