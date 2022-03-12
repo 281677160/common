@@ -9,7 +9,7 @@ Shell_Helper() {
 [[ -f /etc/CLOUD_Name ]] && {
 	export CLOUD_Name="$(cat /etc/CLOUD_Name)" > /dev/null 2>&1
 } || {
-	wget -q -P ${Download_Path} --show-progress https://ghproxy.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags > /dev/null 2>&1
+	wget -q -P ${Download_Path} https://ghproxy.com/${Github_Tagstwo} -O ${Download_Path}/Github_Tags > /dev/null 2>&1
 	export CLOUD_Name="$(egrep -o "${LUCI_Name}-${CURRENT_Version}${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${Download_Tags} | awk 'END {print}')" > /dev/null 2>&1
 }
 clear
