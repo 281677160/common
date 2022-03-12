@@ -166,7 +166,7 @@ menuaz() {
         print_ok "下载云端固件成功!"
       fi
   else
-      TIME g "正在下载云端固件,请耐心等待..."
+      ECHOG "正在下载云端固件,请耐心等待..."
       wget -q --show-progress --progress=bar:force:noscroll "${Github_Release}/${Firmware}" -O ${Firmware}
       if [[ $? -ne 0 ]];then
         wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
@@ -201,7 +201,7 @@ function anzhuang() {
   }
   chmod 777 ${Firmware}
   [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
-  TIME g "正在更新固件,更新期间请不要断开电源或重启设备 ..."
+  ECHOG "正在更新固件,更新期间请不要断开电源或重启设备 ..."
   sleep 2
   exit 0
   ## sysupgrade -F -n ${Firmware}
