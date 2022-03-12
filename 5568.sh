@@ -383,7 +383,7 @@ menuws() {
   clear
   echo
   echo
-  ECHOYY " 当前源码：${REPO_Name}  /  ${Luci_Edition} / ${Kernel}"
+  ECHOYY " 当前源码：${REPO_Name} / ${Luci_Edition} / ${Kernel}"
   ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
   ECHOYY " 设备型号：${DEFAULT_Device}"
   echo  
