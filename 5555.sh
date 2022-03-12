@@ -539,7 +539,7 @@ function Tianling_Firmware() {
   fi
 }
 
-memu() {
+menu() {
   if [[ ${REPO_Name} == "lede" ]]; then
     opapi
     lede_Firmware
