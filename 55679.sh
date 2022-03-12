@@ -33,7 +33,6 @@ function ECHOYY() {
   echo -e "${Yellow} $1 ${Font}"
 }
 function ECHOG() {
-  echo
   echo -e "${Green} $1 ${Font}"
   echo
 }
@@ -65,69 +64,20 @@ export Github_Release="${Github_Release}"
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 export PKG_List="${Download_Path}/Installed_PKG_List"
 export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
-
-function xianshi() {
-  case ${DEFAULT_Device} in
-  x86-64)
-    [ -d /sys/firmware/efi ] && {
-      export EFI_Mode="UEFI"
-    } || {
-      export EFI_Mode="Legacy"
-    }
-    ;;
-    *)
-      export EFI_Mode="squashfs"
-    esac
-  ECHOYY " 当前源码：${REPO_Name}  /  ${Luci_Edition} / ${Kernel}"
-  ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
-  ECHOYY " 设备型号：${DEFAULT_Device}"
-}
-
-menuws() {
-  clear
-  echo
-  echo
-  xianshi
-  echo  
-  ECHOB " 检测到有如下固件可供选择转换"
-  [[ -n "${gg1}" ]] && ECHOY " ${gg1}"
-  [[ -n "${gg2}" ]] && ECHOYY " ${gg2}"
-  [[ -n "${gg3}" ]] && ECHOY " ${gg3}"
-  ECHOYY " Q、退出菜单"
-  echo
-  XUANZHEOP="请输入数字,或按[Q/q]退出"
-  while :; do
-  read -p " ${XUANZHEOP}： " CHOOSE
-  case $CHOOSE in
-    1)
-      Firmware="${gujian1}"
-      menuaz
-      anzhuang
-    break
-    ;;
-    2)
-      Firmware="${gujian2}"
-      menuaz
-      anzhuang
-    break
-    ;;
-    3)
-      Firmware="${gujian3}"
-      menuaz
-      anzhuang
-    break
-    ;;
-    [Qq])
-      ECHOR "您选择了退出程序"
-      exit 0
-    break
-    ;;
-    *)
-      XUANZHEOP="请输入正确的数字编号,或按[Q/q]退出!"
-    ;;
-    esac
-    done
-}
+case ${DEFAULT_Device} in
+x86-64)
+  [ -d /sys/firmware/efi ] && {
+    export BOOT_Type="UEFI"
+    export EFI_Mode="UEFI"
+  } || {
+    export BOOT_Type="UEFI"
+    export EFI_Mode="Legacy"
+  }
+  ;;
+  *)
+    export BOOT_Type="Sysupg"
+    export EFI_Mode="squashfs"
+esac
 
 opapi() {
   wget -q ${Github_Tags} -O ${Download_Tags} > /dev/null 2>&1
@@ -149,6 +99,7 @@ menuaz() {
   if [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]]; then
     export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
     if [ ! "$Google_Check" == 301 ];then
+      echo
       ECHOG "正在下载云端固件,请耐心等待..."
       wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
       if [[ $? -ne 0 ]];then
@@ -163,6 +114,7 @@ menuaz() {
         print_ok "下载云端固件成功!"
       fi
   else
+      echo
       ECHOG "正在下载云端固件,请耐心等待..."
       wget -q --show-progress --progress=bar:force:noscroll "${Github_Release}/${Firmware}" -O ${Firmware}
       if [[ $? -ne 0 ]];then
@@ -197,6 +149,7 @@ function anzhuang() {
   }
   chmod 777 ${Firmware}
   [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
+  echo
   ECHOG "正在更新固件,更新期间请不要断开电源或重启设备 ..."
   sleep 2
   exit 0
@@ -205,26 +158,12 @@ function anzhuang() {
 
 
 function lede_Firmware() {
-  case ${DEFAULT_Device} in
-  x86-64)
-    [ -d /sys/firmware/efi ] && {
-      export Name_1="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    } || {
-      export Name_1="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    }
-    ;;
-    *)
-      export Name_1="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    esac
+  export Name_1="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+  export Name_2="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+  export Name_3="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
 
   if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-   print_error "无其他作者固件!"
+   print_error "无其他作者固件,如果要更换请先编译出 Tianling、mortal或lienol 的固件）!"
    exit 1
   fi
 
@@ -242,77 +181,45 @@ function lede_Firmware() {
     gg1="1、${Name_1}"
     gujian2="${Name_2}"
     gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
   fi
 
   if [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian2="${Name_3}"
+    gg3="2、${Name_3}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_2}"
+    gg2="1、${Name_2}"
+    gujian2="${Name_3}"
+    gg3="2、${Name_3}"
   fi
 
   if [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_2}"
+    gg2="1、${Name_2}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_3}"
+    gg3="1、${Name_3}"
   fi
 }
 
 function lienol_Firmware() {
-  case ${DEFAULT_Device} in
-  x86-64)
-    [ -d /sys/firmware/efi ] && {
-      export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    } || {
-      export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    }
-    ;;
-    *)
-      export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    esac
+  export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+  export Name_2="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+  export Name_3="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
 
   if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-   print_error "无其他作者固件!"
+   print_error "无其他作者固件,如果要更换请先编译出 Tianling、mortal或lede 的固件）!"
    exit 1
   fi
 
@@ -363,26 +270,12 @@ function lienol_Firmware() {
 }
 
 function mortal_Firmware() {
-  case ${DEFAULT_Device} in
-  x86-64)
-    [ -d /sys/firmware/efi ] && {
-      export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    } || {
-      export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    }
-    ;;
-    *)
-      export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    esac
+  export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+  export Name_2="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+  export Name_3="$(egrep -o "18.06_tl-Tianling-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
 
   if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-   print_error "无其他作者固件!"
+   print_error "无其他作者固件,如需要更换请先编译出 Tianling、lienol或lede 的固件）!"
    exit 1
   fi
 
@@ -400,77 +293,45 @@ function mortal_Firmware() {
     gg1="1、${Name_1}"
     gujian2="${Name_2}"
     gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
   fi
 
   if [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian2="${Name_3}"
+    gg3="2、${Name_3}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_2}"
+    gg2="1、${Name_2}"
+    gujian2="${Name_3}"
+    gg3="2、${Name_3}"
   fi
 
   if [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_2}"
+    gg2="1、${Name_2}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_3}"
+    gg3="1、${Name_3}"
   fi
 }
 
 function Tianling_Firmware() {
-  case ${DEFAULT_Device} in
-  x86-64)
-    [ -d /sys/firmware/efi ] && {
-      export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-UEFI-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    } || {
-      export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-Legacy-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    }
-    ;;
-    *)
-      export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_2="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-      export Name_3="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-Sysupg-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-    esac
+  export Name_1="$(egrep -o "18.06-lede-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+  export Name_2="$(egrep -o "20.06-lienol-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+  export Name_3="$(egrep -o "21.02-mortal-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
 
   if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-   print_error "无其他作者固件!"
+   print_error "无其他作者固件,如需要更换请先编译出 mortal、lienol或lede 的固件）!"
    exit 1
   fi
 
@@ -488,54 +349,84 @@ function Tianling_Firmware() {
     gg1="1、${Name_1}"
     gujian2="${Name_2}"
     gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
   fi
 
   if [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian2="${Name_3}"
+    gg3="2、${Name_3}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_2}"
+    gg2="1、${Name_2}"
+    gujian2="${Name_3}"
+    gg3="2、${Name_3}"
   fi
 
   if [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_2}"
+    gg2="1、${Name_2}"
   fi
 
   if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
+    gujian1="${Name_3}"
+    gg3="1、${Name_3}"
   fi
+}
+
+menuws() {
+  clear
+  echo
+  echo
+  ECHOYY " 当前源码：${REPO_Name}  /  ${Luci_Edition} / ${Kernel}"
+  ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
+  ECHOYY " 设备型号：${DEFAULT_Device}"
+  echo  
+  ECHOB " 检测到有如下固件可供选择（如若转换,则不保留配置,安装固件）"
+  [[ -n "${gg1}" ]] && ECHOY " ${gg1}"
+  [[ -n "${gg2}" ]] && ECHOYY " ${gg2}"
+  [[ -n "${gg3}" ]] && ECHOY " ${gg3}"
+  ECHOYY " Q、退出菜单"
+  echo
+  XUANZHEOP="请输入数字,或按[Q/q]退出"
+  while :; do
+  read -p " ${XUANZHEOP}： " CHOOSE
+  case $CHOOSE in
+    1)
+      Firmware="${gujian1}"
+      menuaz
+      anzhuang
+    break
+    ;;
+    2)
+      Firmware="${gujian2}"
+      menuaz
+      anzhuang
+    break
+    ;;
+    3)
+      Firmware="${gujian3}"
+      menuaz
+      anzhuang
+    break
+    ;;
+    [Qq])
+      ECHOR "您选择了退出程序"
+      exit 0
+    break
+    ;;
+    *)
+      XUANZHEOP="请输入正确的数字编号,或按[Q/q]退出!"
+    ;;
+    esac
+    done
 }
 
 menu() {
