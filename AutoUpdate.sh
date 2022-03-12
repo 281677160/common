@@ -290,9 +290,9 @@ cd ${Download_Path}
 	export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 	if [ ! "$Google_Check" == 301 ];then
 		TIME g "正在下载云端固件,请耐心等待..."
-		wget -q --show-progress "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
+		wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
 		if [[ $? -ne 0 ]];then
-			wget -q --show-progress "https://pd.zwc365.com/${Github_Release}/${Firmware}" -O ${Firmware}
+			wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Github_Release}/${Firmware}" -O ${Firmware}
 			if [[ $? -ne 0 ]];then
 				TIME r "下载云端固件失败,请尝试手动安装!"
 				echo
@@ -305,9 +305,9 @@ cd ${Download_Path}
 		fi
 	else
 		TIME g "正在下载云端固件,请耐心等待..."
-		wget -q --show-progress "${Github_Release}/${Firmware}" -O ${Firmware}
+		wget -q --show-progress --progress=bar:force:noscroll "${Github_Release}/${Firmware}" -O ${Firmware}
 		if [[ $? -ne 0 ]];then
-			wget -q --show-progress "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
+			wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
 			if [[ $? -ne 0 ]];then
 				TIME r "下载云端固件失败,请尝试手动安装!"
 				echo
