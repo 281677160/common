@@ -62,7 +62,7 @@ export Github_Release="${Github_Release}"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -fr ${Download_Path}/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 export PKG_List="${Download_Path}/Installed_PKG_List"
-export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
+export Kernel="$(egrep -o "Version: [0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control |sed s/[[:space:]]//g |cut -d ":" -f2)"
 case ${DEFAULT_Device} in
 x86-64)
   [ -d /sys/firmware/efi ] && {
