@@ -83,14 +83,20 @@ menuws() {
   case $CHOOSE in
     1)
       Firmware="${gujian1}"
+      menuaz
+      anzhuang
     break
     ;;
     2)
       Firmware="${gujian2}"
+      menuaz
+      anzhuang
     break
     ;;
     3)
       Firmware="${gujian3}"
+      menuaz
+      anzhuang
     break
     ;;
     3)
@@ -181,7 +187,7 @@ function anzhuang() {
 }
 
 
-lede_Firmware() {
+function lede_Firmware() {
   case ${DEFAULT_Device} in
   x86-64)
     [ -d /sys/firmware/efi ] && {
@@ -269,7 +275,7 @@ lede_Firmware() {
   fi
 }
 
-lienol_Firmware() {
+function lienol_Firmware() {
   case ${DEFAULT_Device} in
   x86-64)
     [ -d /sys/firmware/efi ] && {
@@ -357,7 +363,7 @@ lienol_Firmware() {
   fi
 }
 
-mortal_Firmware() {
+function mortal_Firmware() {
   case ${DEFAULT_Device} in
   x86-64)
     [ -d /sys/firmware/efi ] && {
@@ -445,7 +451,7 @@ mortal_Firmware() {
   fi
 }
 
-Tianling_Firmware() {
+function Tianling_Firmware() {
   case ${DEFAULT_Device} in
   x86-64)
     [ -d /sys/firmware/efi ] && {
@@ -533,4 +539,23 @@ Tianling_Firmware() {
   fi
 }
 
-
+memu() {
+  if [[ ${REPO_Name} == "lede" ]]; then
+    opapi
+    lede_Firmware
+    menuws
+  elif [[ ${REPO_Name} == "lienol" ]]; then
+    opapi
+    lienol_Firmware
+    menuws
+  elif [[ ${REPO_Name} == "mortal" ]]; then
+    opapi
+    mortal_Firmware
+    menuws
+  elif [[ ${REPO_Name} == "Tianling" ]]; then
+    opapi
+    Tianling_Firmware
+    menuws
+  fi
+}
+menu "$@"
