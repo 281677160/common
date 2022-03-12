@@ -57,7 +57,7 @@ export Github="${Github}"
 export Apidz="${Github##*com/}"
 export Author="${Apidz%/*}"
 export CangKu="${Apidz##*/}"
-export Github_Tags="https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate"
+export Github_API="https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate"
 export Github_Release="${Github_Release}"
 [ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -fr ${Download_Path}/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
@@ -79,7 +79,7 @@ x86-64)
 esac
 
 opapi() {
-  wget -q ${Github_Tags} -O ${Download_Tags} > /dev/null 2>&1
+  wget -q ${Github_API} -O ${Download_Tags} > /dev/null 2>&1
   if [[ $? -ne 0 ]];then
   wget -q -P ${Download_Path} https://pd.zwc365.com/${Github_Release}/Github_Tags -O ${Download_Path}/Github_Tags > /dev/null 2>&1
     if [[ $? -ne 0 ]];then
