@@ -389,6 +389,7 @@ menuws() {
   ECHOYY " 设备型号：${DEFAULT_Device}"
   echo  
   ECHOB " 检测到有如下固件可供选择（如若转换,则不保留配置,安装固件）"
+  echo
   [[ -n "${gg1}" ]] && ECHOY " ${gg1}"
   [[ -n "${gg2}" ]] && ECHOYY " ${gg2}"
   [[ -n "${gg3}" ]] && ECHOY " ${gg3}"
