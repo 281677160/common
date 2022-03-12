@@ -47,7 +47,7 @@ function print_error() {
   echo
 }
 ECHOB "加载数据中,请稍后..."
-if [ -f /bin/openwrt_info ]; then
+if [[ -f /bin/openwrt_info ]] && [[ -f /bin/AutoUpdate.sh ]]; then
   chmod +x /bin/openwrt_info && source /bin/openwrt_info
 else
   print_error "未检测到openwrt_info文件,无法运行更新程序!"
