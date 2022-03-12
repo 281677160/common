@@ -152,8 +152,7 @@ function anzhuang() {
   echo
   ECHOG "正在更新固件,更新期间请不要断开电源或重启设备 ..."
   sleep 2
-  exit 0
-  ## sysupgrade -F -n ${Firmware}
+  sysupgrade -F -n ${Firmware}
 }
 
 
