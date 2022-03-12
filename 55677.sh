@@ -36,17 +36,14 @@ function ECHOG() {
   echo -e "${Green} $1 ${Font}"
 }
 function print_ok() {
+  echo
   echo -e " ${OK} ${Blue} $1 ${Font}"
+  echo
 }
 function print_error() {
+  echo
   echo -e "${ERROR} ${RedBG} $1 ${Font}"
-}
-judge() {
-  if [[ 0 -eq $? ]]; then
-    print_ok "$1 完成,等待重启openwrt"
-  else
-    print_error "$1 失败"
-  fi
+  echo
 }
 
 if [ -f /bin/openwrt_info ]; then
@@ -188,7 +185,7 @@ function anzhuang() {
   cd ${Download_Path}
   export CLOUD_MD5=$(md5sum ${Firmware} | cut -c1-3)
   export CLOUD_256=$(sha256sum ${Firmware} | cut -c1-3)
-  export MD5_256=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
+  export MD5_256=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+.${Firmware_Type}" | sed -r "s/(.*).${Firmware_Type}/\1/")
   export CURRENT_MD5="$(echo "${MD5_256}" | cut -c1-3)"
   export CURRENT_256="$(echo "${MD5_256}" | cut -c 4-)"
   [[ ${CURRENT_MD5} != ${CLOUD_MD5} ]] && {
