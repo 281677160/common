@@ -87,7 +87,7 @@ menuws() {
   echo
   xianshi
   echo  
-  ECHOB " 请选择执行命令编码"
+  ECHOB " 检测到有如下固件可供选择转换"
   [[ -n "${gg1}" ]] && ECHOY " ${gg1}"
   [[ -n "${gg2}" ]] && ECHOYY " ${gg2}"
   [[ -n "${gg3}" ]] && ECHOY " ${gg3}"
