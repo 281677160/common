@@ -388,12 +388,12 @@ menuws() {
   ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
   ECHOYY " 设备型号：${DEFAULT_Device}"
   echo  
-  ECHOB " 检测到有如下固件可供选择（如若转换,则不保留配置,安装固件）"
+  ECHOB " 检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
   echo
   [[ -n "${gg1}" ]] && ECHOY " ${gg1}"
   [[ -n "${gg2}" ]] && ECHOYY " ${gg2}"
   [[ -n "${gg3}" ]] && ECHOY " ${gg3}"
-  ECHOYY " Q、退出菜单"
+  ECHOYY " Q、退出程序"
   echo
   XUANZHEOP="请输入数字,或按[Q/q]退出"
   while :; do
@@ -419,6 +419,7 @@ menuws() {
     ;;
     [Qq])
       ECHOR "您选择了退出程序"
+      echo
       exit 0
     break
     ;;
