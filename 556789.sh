@@ -78,9 +78,9 @@ function xianshi() {
     *)
       export EFI_Mode="squashfs"
     esac
-  ECHOG " 当前源码：${REPO_Name}  /  ${Luci_Edition} / ${Kernel}"
-  ECHOG " 固件格式：${EFI_Mode}.${Firmware_Type}"
-  ECHOG " 设备型号：${DEFAULT_Device}"
+  ECHOYY " 当前源码：${REPO_Name}  /  ${Luci_Edition} / ${Kernel}"
+  ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
+  ECHOYY " 设备型号：${DEFAULT_Device}"
 }
 
 menuws() {
