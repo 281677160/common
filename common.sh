@@ -75,7 +75,9 @@ Diy_lienol() {
 find . -name 'luci-app-netdata' -o -name 'netdata' | xargs -i rm -rf {}
 find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci-app-wol' | xargs -i rm -rf {}
 find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
-sed -i "s/OpenWrt SNAPSHOT/OpenWrt/g" $ZZZ
+
+DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
+sed -i "s/${DISTRIB}/OpenWrt/g" $ZZZ
 
 ## git clone https://github.com/281677160/openwrt-passwall package/luci-app-passwall
 git clone https://github.com/xiaorouji/openwrt-passwall package/openwrt-passwall
