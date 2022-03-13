@@ -194,15 +194,14 @@ Diy_Part3() {
 	elif [[ `ls | grep -c "phicomm-k3"` -ge '1' ]]; then
 		rename -v "s/phicomm-k3/phicomm_k3/" * > /dev/null 2>&1
 	fi
-	
-	cd "${Home}"
-	mv -f ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
+	if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
+		cp -Rf ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
+	fi
 	if [[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]]; then
 		Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 		rm -rf ${Firmware_Path}/${Up_BinFirmware}
 		mv -f ${Zhuan_Yi}/*sysupgrade.bin ${Firmware_Path}/${Up_BinFirmware}
 	fi
-	
 	cd "${Firmware_Path}"
 	case "${TARGET_PROFILE}" in
 	x86-64)
