@@ -180,12 +180,9 @@ Diy_Part3() {
 	AutoBuild_Firmware="${LUCI_Name}-${Openwrt_Version}"
 	Firmware_Path="${Home}/upgrade"
 	Mkdir ${Home}/bin/Firmware
-	if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` == '1' ]]; then
-		Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-		mv ${Firmware_Path}/*sysupgrade.bin ${Home}/bin/Firmware/${Up_BinFirmware}
-		mv ${Home}/bin/Firmware/${Up_BinFirmware} ${Firmware_Path}/${Up_BinFirmware}
-	fi
-	cd ${Firmware_Path}
+	Mkdir ${Home}/bin/zhuanyi_Firmware
+	Zhuan_Yi="${Home}/bin/zhuanyi_Firmware"
+	cd "${Firmware_Path}"
 	if [[ `ls | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
 		rename -v "s/xiaomi_mi-router-3g/xiaomi_mir3g/" * > /dev/null 2>&1
 	elif [[ `ls | grep -c "xiaomi_mi-router-3g-v2"` -ge '1' ]]; then
@@ -197,6 +194,16 @@ Diy_Part3() {
 	elif [[ `ls | grep -c "phicomm-k3"` -ge '1' ]]; then
 		rename -v "s/phicomm-k3/phicomm_k3/" * > /dev/null 2>&1
 	fi
+	
+	cd "${Home}"
+	mv -f ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
+	if [[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]]; then
+		Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+		rm -rf ${Firmware_Path}/${Up_BinFirmware}
+		mv -f ${Zhuan_Yi}/*sysupgrade.bin ${Firmware_Path}/${Up_BinFirmware}
+	fi
+	
+	cd "${Firmware_Path}"
 	case "${TARGET_PROFILE}" in
 	x86-64)
 		[[ -e ${Legacy_Firmware} ]] && {
