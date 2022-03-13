@@ -213,8 +213,9 @@ menuws() {
   ECHOYY " 当前源码：${REPO_Name} / ${Luci_Edition} / ${Kernel}"
   ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
   ECHOYY " 设备型号：${DEFAULT_Device}"
+  echo
   print_gg " 检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
-  [[ -n "${gg1}" ]] && ECHOBG " ${gg1}"
+  ECHOBG " ${gg1}"
   [[ -n "${gg2}" ]] && ECHOBG " ${gg2}"
   [[ -n "${gg3}" ]] && ECHOBG " ${gg3}"
   ECHOBG " Q、退出程序"
