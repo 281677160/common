@@ -179,40 +179,28 @@ function Firmware_Path() {
     gg2="2、${Name_2}"
     gujian3="${Name_3}"
     gg3="3、${Name_3}"
-  fi
-
-  if [[ -n "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
+  elif [[ -n "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
     gujian2="${Name_2}"
     gg2="2、${Name_2}"
-  fi
-
-  if [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
+  elif [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
     gujian2="${Name_3}"
     gg3="2、${Name_3}"
-  fi
-
-  if [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
+  elif [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
     gujian1="${Name_2}"
     gg2="1、${Name_2}"
     gujian2="${Name_3}"
     gg3="2、${Name_3}"
-  fi
-
-  if [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
+  elif [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
-  fi
-
-  if [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
+  elif [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
     gujian1="${Name_2}"
     gg2="1、${Name_2}"
-  fi
-
-  if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
+  elif [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
     gujian1="${Name_3}"
     gg3="1、${Name_3}"
   fi
@@ -303,6 +291,9 @@ menu() {
     Firmware_Path
     menuws
     clear
+  else
+    print_error "没检测到您现有的源码作者!"
+    exit 1
   fi
 }
 menu "$@"
