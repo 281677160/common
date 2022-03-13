@@ -27,6 +27,10 @@ function ECHOR() {
 }
 function ECHOB() {
   echo
+  echo -e "${Blue} $1 ${Font}"
+}
+function ECHOBG() {
+  echo
   echo -e "${GreenBG} $1 ${Font}"
 }
 function ECHOYY() {
@@ -48,7 +52,7 @@ function print_error() {
 }
 function print_gg() {
   echo
-  echo -e " ${RedBG} $1 ${Font}"
+  echo -e "  ${RedBG} $1 ${Font}"
   echo
 }
 ECHOB "加载数据中,请稍后..."
@@ -222,10 +226,10 @@ menuws() {
   ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
   ECHOYY " 设备型号：${DEFAULT_Device}"
   print_gg " 检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
-  [[ -n "${gg1}" ]] && ECHOB " ${gg1}"
-  [[ -n "${gg2}" ]] && ECHOB " ${gg2}"
-  [[ -n "${gg3}" ]] && ECHOB " ${gg3}"
-  ECHOB " Q、退出程序"
+  [[ -n "${gg1}" ]] && ECHOBG " ${gg1}"
+  [[ -n "${gg2}" ]] && ECHOBG " ${gg2}"
+  [[ -n "${gg3}" ]] && ECHOBG " ${gg3}"
+  ECHOBG " Q、退出程序"
   echo
   echo
   XUANZHEOP=" 请输入数字,或按[Q/q]退出"
