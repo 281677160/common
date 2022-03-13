@@ -190,18 +190,18 @@ Diy_Part3() {
 		rm -rf ${Firmware_Path}/${Up_BinFirmware}
 		mv -f ${Zhuan_Yi}/*squashfs.trx ${Firmware_Path}/${Up_BinFirmware}
 	fi
-	if [[ `ls | grep -c "xiaomi_mi-router-3g-v2"` -ge '1' ]]; then
-		rename -v "s/xiaomi_mi-router-3g-v2/xiaomi_mir3g_v2/" * > /dev/null 2>&1
-	elif [[ `ls | grep -c "xiaomi_mir3gv2"` -ge '1' ]]; then
-		rename -v "s/xiaomi_mir3gv2/xiaomi_mir3g_v2/" * > /dev/null 2>&1
-	elif [[ `ls | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
-		rename -v "s/xiaomi_mi-router-3g/xiaomi_mir3g/" * > /dev/null 2>&1
-	elif [[ `ls | grep -c "xiaomi_mi-router-3-pro"` -ge '1' ]]; then
-		rename -v "s/xiaomi_mi-router-3-pro/xiaomi_mir3p/" * > /dev/null 2>&1
-	elif [[ `ls | grep -c "phicomm-k2p"` -ge '1' ]]; then
-		rename -v "s/phicomm-k2p/phicomm_k2p/" * > /dev/null 2>&1
-	fi
 	if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
+		if [[ `ls | grep -c "xiaomi_mi-router-3g-v2"` -ge '1' ]]; then
+			rename -v "s/xiaomi_mi-router-3g-v2/xiaomi_mir3g_v2/" * > /dev/null 2>&1
+		elif [[ `ls | grep -c "xiaomi_mir3gv2"` -ge '1' ]]; then
+			rename -v "s/xiaomi_mir3gv2/xiaomi_mir3g_v2/" * > /dev/null 2>&1
+		elif [[ `ls | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
+			rename -v "s/xiaomi_mi-router-3g/xiaomi_mir3g/" * > /dev/null 2>&1
+		elif [[ `ls | grep -c "xiaomi_mi-router-3-pro"` -ge '1' ]]; then
+			rename -v "s/xiaomi_mi-router-3-pro/xiaomi_mir3p/" * > /dev/null 2>&1
+		elif [[ `ls | grep -c "phicomm-k2p"` -ge '1' ]]; then
+			rename -v "s/phicomm-k2p/phicomm_k2p/" * > /dev/null 2>&1
+		fi
 		cp -Rf ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
 	fi
 	if [[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]]; then
