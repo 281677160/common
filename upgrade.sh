@@ -46,9 +46,9 @@ GET_TARGET_INFO() {
 		REPO_Name="lienol"
 		ZUOZHE="Lienol's"
 		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
-			UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
-			Firmware_sfx="${Firmware_sfxo}"
+			export Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
+			export UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
+			export Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 			export TARGET_PROFILE="phicomm_k3"
 			export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
@@ -79,9 +79,9 @@ GET_TARGET_INFO() {
 		REPO_Name="Tianling"
 		ZUOZHE="ctcgfw"
 		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			Legacy_Firmware="immortalwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
-			UEFI_Firmware="immortalwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
-			Firmware_sfx="${Firmware_sfxo}"
+			export Legacy_Firmware="immortalwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
+			export UEFI_Firmware="immortalwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
+			export Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 			export TARGET_PROFILE="phicomm_k3"
 			export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
@@ -112,9 +112,9 @@ GET_TARGET_INFO() {
 		REPO_Name="mortal"
 		ZUOZHE="ctcgfw"
 		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			Legacy_Firmware="immortalwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
-			UEFI_Firmware="immortalwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
-			Firmware_sfx="${Firmware_sfxo}"
+			export Legacy_Firmware="immortalwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
+			export UEFI_Firmware="immortalwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
+			export Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 			export TARGET_PROFILE="phicomm_k3"
 			export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
@@ -146,11 +146,11 @@ GET_TARGET_INFO() {
 	else
 		 AutoUpdate_Version=OFF
 	fi
-	In_Firmware_Info="${Home}/package/base-files/files/bin/openwrt_info"
-	Github_Release="${Github}/releases/download/AutoUpdate"
-	Github_UP_RELEASE="${Github}/releases/AutoUpdate"
-	Openwrt_Version="${REPO_Name}-${TARGET_PROFILE}-${Compile_Date}"
-	Egrep_Firmware="${LUCI_Name}-${REPO_Name}-${TARGET_PROFILE}"
+	export In_Firmware_Info="${Home}/package/base-files/files/bin/openwrt_info"
+	export Github_Release="${Github}/releases/download/AutoUpdate"
+	export Github_UP_RELEASE="${Github}/releases/AutoUpdate"
+	export Openwrt_Version="${REPO_Name}-${TARGET_PROFILE}-${Compile_Date}"
+	export Egrep_Firmware="${LUCI_Name}-${REPO_Name}-${TARGET_PROFILE}"
 }
 
 Diy_Part1() {
@@ -177,11 +177,11 @@ Diy_Part2() {
 
 Diy_Part3() {
 	GET_TARGET_INFO
-	AutoBuild_Firmware="${LUCI_Name}-${Openwrt_Version}"
-	Firmware_Path="${Home}/upgrade"
+	export AutoBuild_Firmware="${LUCI_Name}-${Openwrt_Version}"
+	export Firmware_Path="${Home}/upgrade"
 	Mkdir ${Home}/bin/Firmware
 	Mkdir ${Home}/bin/zhuanyi_Firmware
-	Zhuan_Yi="${Home}/bin/zhuanyi_Firmware"
+	export Zhuan_Yi="${Home}/bin/zhuanyi_Firmware"
 	cd "${Firmware_Path}"
 	if [[ "${TARGET_PROFILE}" == "phicomm_k3" ]]; then
 		rename -v "s/phicomm-k3/phicomm_k3/" * > /dev/null 2>&1
@@ -208,6 +208,9 @@ Diy_Part3() {
 		Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 		rm -rf ${Firmware_Path}/${Up_BinFirmware}
 		mv -f ${Zhuan_Yi}/*sysupgrade.bin ${Firmware_Path}/${Up_BinFirmware}
+	else
+		echo "没发现.bin后缀固件，或者是您编译的固件太大了，出不来.bin格式固件"
+		exit 1
 	fi
 	cd "${Firmware_Path}"
 	case "${TARGET_PROFILE}" in
