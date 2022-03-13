@@ -68,19 +68,19 @@ export Author="${Apidz%/*}"
 export CangKu="${Apidz##*/}"
 export Github_API="https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate"
 export Github_Release="${Github_Release}"
-[ ! -d "${Download_Path}" ] && mkdir -p ${Download_Path} || rm -fr ${Download_Path}/*
+[[ ! -d "${Download_Path}" ]] && mkdir -p ${Download_Path} || rm -fr ${Download_Path}/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 export PKG_List="${Download_Path}/Installed_PKG_List"
 export Kernel="$(egrep -o "Version: [0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control |sed s/[[:space:]]//g |cut -d ":" -f2)"
 case ${DEFAULT_Device} in
 x86-64)
-  [ -d /sys/firmware/efi ] && {
+  if [[ -d /sys/firmware/efi ]]; then
     export BOOT_Type="UEFI"
     export EFI_Mode="UEFI"
-  } || {
+  else
     export BOOT_Type="Legacy"
     export EFI_Mode="Legacy"
-  }
+  fi
   ;;
   *)
     export BOOT_Type="Sysupg"
@@ -113,10 +113,10 @@ menuaz() {
       if [[ $? -ne 0 ]];then
         wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Github_Release}/${Firmware}" -O ${Firmware}
 	if [[ $? -ne 0 ]];then
-	   print_error "下载云端固件失败,请尝试手动安装!"
-	   exit 1
+	  print_error "下载云端固件失败,请尝试手动安装!"
+	  exit 1
 	else
-	   print_ok "下载云端固件成功!"
+	  print_ok "下载云端固件成功!"
 	fi
       else
         print_ok "下载云端固件成功!"
