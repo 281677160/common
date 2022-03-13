@@ -20,7 +20,7 @@ GET_TARGET_INFO() {
 			export TARGET_PROFILE="phicomm_k3"
 			export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
 			export Firmware_sfx="trx"
-		elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
+		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k2p|phicomm-k2p) ]]; then
 			export TARGET_PROFILE="phicomm_k2p"
 			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
@@ -53,7 +53,7 @@ GET_TARGET_INFO() {
 			export TARGET_PROFILE="phicomm_k3"
 			export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
 			export Firmware_sfx="trx"
-		elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
+		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k2p|phicomm-k2p) ]]; then
 			export TARGET_PROFILE="phicomm_k2p"
 			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
@@ -86,7 +86,7 @@ GET_TARGET_INFO() {
 			export TARGET_PROFILE="phicomm_k3"
 			export Up_Firmware="immortalwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
 			export Firmware_sfx="trx"
-		elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
+		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k2p|phicomm-k2p) ]]; then
 			export TARGET_PROFILE="phicomm_k2p"
 			export Up_Firmware="immortalwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
@@ -119,7 +119,7 @@ GET_TARGET_INFO() {
 			export TARGET_PROFILE="phicomm_k3"
 			export Up_Firmware="immortalwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
 			export Firmware_sfx="trx"
-		elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
+		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k2p|phicomm-k2p) ]]; then
 			export TARGET_PROFILE="phicomm_k2p"
 			export Up_Firmware="immortalwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
