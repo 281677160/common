@@ -205,7 +205,7 @@ Diy_Part3() {
 		cp -Rf ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
 	fi
 	if [[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]]; then
-		Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+		export Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 		rm -rf ${Firmware_Path}/${Up_BinFirmware}
 		mv -f ${Zhuan_Yi}/*sysupgrade.bin ${Firmware_Path}/${Up_BinFirmware}
 	else
