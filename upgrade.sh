@@ -29,11 +29,11 @@ GET_TARGET_INFO() {
 			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
-			export TARGET_PROFILE="xiaomi_mir3g-v2"
+			export TARGET_PROFILE="xiaomi_mir3g_v2"
 			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
-			export TARGET_PROFILE="xxiaomi_mir3p"
+			export TARGET_PROFILE="xiaomi_mir3p"
 			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		else
@@ -62,11 +62,11 @@ GET_TARGET_INFO() {
 			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
-			export TARGET_PROFILE="xiaomi_mir3g-v2"
+			export TARGET_PROFILE="xiaomi_mir3g_v2"
 			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
-			export TARGET_PROFILE="xxiaomi_mir3p"
+			export TARGET_PROFILE="xiaomi_mir3p"
 			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		else
@@ -95,11 +95,11 @@ GET_TARGET_INFO() {
 			export Up_Firmware="immortalwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
-			export TARGET_PROFILE="xiaomi_mir3g-v2"
+			export TARGET_PROFILE="xiaomi_mir3g_v2"
 			export Up_Firmware="immortalwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
-			export TARGET_PROFILE="xxiaomi_mir3p"
+			export TARGET_PROFILE="xiaomi_mir3p"
 			export Up_Firmware="immortalwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		else
@@ -128,11 +128,11 @@ GET_TARGET_INFO() {
 			export Up_Firmware="immortalwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
-			export TARGET_PROFILE="xiaomi_mir3g-v2"
+			export TARGET_PROFILE="xiaomi_mir3g_v2"
 			export Up_Firmware="immortalwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
-			export TARGET_PROFILE="xxiaomi_mir3p"
+			export TARGET_PROFILE="xiaomi_mir3p"
 			export Up_Firmware="immortalwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 			export Firmware_sfx="bin"
 		else
@@ -190,10 +190,12 @@ Diy_Part3() {
 		rm -rf ${Firmware_Path}/${Up_BinFirmware}
 		mv -f ${Zhuan_Yi}/*squashfs.trx ${Firmware_Path}/${Up_BinFirmware}
 	fi
-	if [[ `ls | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
-		rename -v "s/xiaomi_mi-router-3g/xiaomi_mir3g/" * > /dev/null 2>&1
+	if [[ `ls | grep -c "xiaomi_mi-router-3g-v2"` -ge '1' ]]; then
+		rename -v "s/xiaomi_mi-router-3g-v2/xiaomi_mir3g_v2/" * > /dev/null 2>&1
 	elif [[ `ls | grep -c "xiaomi_mir3gv2"` -ge '1' ]]; then
-		rename -v "s/xiaomi_mir3gv2/xiaomi_mir3g-v2/" * > /dev/null 2>&1
+		rename -v "s/xiaomi_mir3gv2/xiaomi_mir3g_v2/" * > /dev/null 2>&1
+	elif [[ `ls | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
+		rename -v "s/xiaomi_mi-router-3g/xiaomi_mir3g/" * > /dev/null 2>&1
 	elif [[ `ls | grep -c "xiaomi_mi-router-3-pro"` -ge '1' ]]; then
 		rename -v "s/xiaomi_mi-router-3-pro/xiaomi_mir3p/" * > /dev/null 2>&1
 	elif [[ `ls | grep -c "phicomm-k2p"` -ge '1' ]]; then
