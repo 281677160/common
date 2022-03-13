@@ -183,6 +183,9 @@ Diy_Part3() {
 	Mkdir ${Home}/bin/zhuanyi_Firmware
 	export Zhuan_Yi="${Home}/bin/zhuanyi_Firmware"
 	cd "${Firmware_Path}"
+	if [[ `ls ${Firmware_Path} | grep -c "immortalwrt"` -ge '1' ]]; then
+		rename -v "s/^immortalwrt/openwrt/" *
+	fi
 	if [[ "${TARGET_PROFILE}" == "phicomm_k3" ]]; then
 		rename -v "s/phicomm-k3/phicomm_k3/" * > /dev/null 2>&1
 		export Up_BinFirmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
