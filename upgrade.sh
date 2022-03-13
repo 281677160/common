@@ -183,6 +183,13 @@ Diy_Part3() {
 	Mkdir ${Home}/bin/zhuanyi_Firmware
 	Zhuan_Yi="${Home}/bin/zhuanyi_Firmware"
 	cd "${Firmware_Path}"
+	if [[ "${TARGET_PROFILE}" == "phicomm_k3" ]]; then
+		rename -v "s/phicomm-k3/phicomm_k3/" * > /dev/null 2>&1
+		export Up_BinFirmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
+		cp -Rf ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
+		rm -rf ${Firmware_Path}/${Up_BinFirmware}
+		mv -f ${Zhuan_Yi}/*squashfs.trx ${Firmware_Path}/${Up_BinFirmware}
+	fi
 	if [[ `ls | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
 		rename -v "s/xiaomi_mi-router-3g/xiaomi_mir3g/" * > /dev/null 2>&1
 	elif [[ `ls | grep -c "xiaomi_mir3gv2"` -ge '1' ]]; then
@@ -191,8 +198,6 @@ Diy_Part3() {
 		rename -v "s/xiaomi_mi-router-3-pro/xiaomi_mir3p/" * > /dev/null 2>&1
 	elif [[ `ls | grep -c "phicomm-k2p"` -ge '1' ]]; then
 		rename -v "s/phicomm-k2p/phicomm_k2p/" * > /dev/null 2>&1
-	elif [[ `ls | grep -c "phicomm-k3"` -ge '1' ]]; then
-		rename -v "s/phicomm-k3/phicomm_k3/" * > /dev/null 2>&1
 	fi
 	if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
 		cp -Rf ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
