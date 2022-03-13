@@ -163,7 +163,6 @@ function Firmware_Path() {
    print_error "无其他作者固件,如需要更换请先编译出 ${tixinggg} 的固件!"
    exit 1
   fi
-  print_error "无其他作者固件,如需要更换请先编译出 ${tixinggg} 的固件222!"
   if [[ -n "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
@@ -214,6 +213,7 @@ menuws() {
   clear
   echo
   echo
+  print_error "无其他作者固件,如需要更换请先编译出 ${tixinggg} 的固件222!"
   ECHOYY " 当前源码：${REPO_Name} / ${Luci_Edition} / ${Kernel}"
   ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
   ECHOYY " 设备型号：${DEFAULT_Device}"
