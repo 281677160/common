@@ -46,6 +46,11 @@ function print_error() {
   echo -e "${ERROR} ${RedBG} $1 ${Font}"
   echo
 }
+function print_gg() {
+  echo
+  echo -e " ${RedBG} $1 ${Font}"
+  echo
+}
 ECHOB "加载数据中,请稍后..."
 if [[ -f /bin/openwrt_info ]]; then
   chmod +x /bin/openwrt_info && source /bin/openwrt_info
@@ -213,13 +218,10 @@ menuws() {
   clear
   echo
   echo
-  print_error "无其他作者固件,如需要更换请先编译出 ${tixinggg} 的固件222!"
   ECHOYY " 当前源码：${REPO_Name} / ${Luci_Edition} / ${Kernel}"
   ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
   ECHOYY " 设备型号：${DEFAULT_Device}"
-  echo  
-  ECHOG " 检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
-  echo
+  print_gg " 检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
   [[ -n "${gg1}" ]] && ECHOB " ${gg1}"
   [[ -n "${gg2}" ]] && ECHOB " ${gg2}"
   [[ -n "${gg3}" ]] && ECHOB " ${gg3}"
@@ -249,13 +251,13 @@ menuws() {
     break
     ;;
     [Qq])
-      ECHOR "您选择了退出程序"
+      ECHOR " 您选择了退出程序"
       echo
       exit 0
     break
     ;;
     *)
-      XUANZHEOP="请输入正确的数字编号,或按[Q/q]退出!"
+      XUANZHEOP=" 请输入正确的数字编号,或按[Q/q]退出!"
     ;;
     esac
     done
