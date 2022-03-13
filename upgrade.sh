@@ -180,7 +180,7 @@ Diy_Part3() {
 	AutoBuild_Firmware="${LUCI_Name}-${Openwrt_Version}"
 	Firmware_Path="${Home}/upgrade"
 	Mkdir ${Home}/bin/Firmware
-	if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
+	if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` == '1' ]]; then
 		Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
 		mv ${Firmware_Path}/*sysupgrade.bin ${Home}/bin/Firmware/${Up_BinFirmware}
 		mv ${Home}/bin/Firmware/${Up_BinFirmware} ${Firmware_Path}/${Up_BinFirmware}
