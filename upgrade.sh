@@ -191,7 +191,7 @@ Diy_Part3() {
 		export Up_BinFirmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
 		cp -Rf ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
 		rm -rf ${Firmware_Path}/${Up_BinFirmware}
-		mv -f ${Zhuan_Yi}/*squashfs.trx ${Firmware_Path}/${Up_BinFirmware}
+		mv -f ${Zhuan_Yi}/*.trx ${Firmware_Path}/${Up_BinFirmware}
 	fi
 	if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
 		if [[ `ls | grep -c "xiaomi_mi-router-3g-v2"` -ge '1' ]]; then
