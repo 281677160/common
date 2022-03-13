@@ -12,7 +12,7 @@ Red="\033[31m"
 Yellow="\033[33m"
 Blue="\033[36m"
 Font="\033[0m"
-GreenBG="\033[42;37m"
+GreenBG="\033[1;36m"
 RedBG="\033[41;37m"
 OK="${Green}[OK]${Font}"
 ERROR="${Red}[ERROR]${Font}"
@@ -218,12 +218,12 @@ menuws() {
   ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
   ECHOYY " 设备型号：${DEFAULT_Device}"
   echo  
-  ECHOB " 检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
+  ECHOG " 检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
   echo
   [[ -n "${gg1}" ]] && ECHOB " ${gg1}"
   [[ -n "${gg2}" ]] && ECHOB " ${gg2}"
   [[ -n "${gg3}" ]] && ECHOB " ${gg3}"
-  ECHOYY " Q、退出程序"
+  ECHOB " Q、退出程序"
   echo
   echo
   XUANZHEOP=" 请输入数字,或按[Q/q]退出"
