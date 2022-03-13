@@ -13,23 +13,28 @@ GET_TARGET_INFO() {
 		REPO_Name="lede"
 		ZUOZHE="Lean's"
 		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
-			UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
-			Firmware_sfx="${Firmware_sfxo}"
-		elif [[ "${TARGET_PROFILE}" == "phicomm_k3" ]]; then
-			Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
-			Firmware_sfx="trx"
-		elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
-			TARGET_PROFILE="xiaomi_mir3g"
-			Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			Firmware_sfx="bin"
+			export Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
+			export UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
+			export Firmware_sfx="${Firmware_sfxo}"
+		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
+			export TARGET_PROFILE="phicomm_k3"
+			export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
+			export Firmware_sfx="trx"
+		elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
+			export TARGET_PROFILE="phicomm_k2p"
+			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+			export Firmware_sfx="bin"
+		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g|xiaomi_mir3g) ]]; then
+			export TARGET_PROFILE="xiaomi_mir3g"
+			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+			export Firmware_sfx="bin"
 		elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g-v2" ]]; then
-			TARGET_PROFILE="xiaomi_mir3gv2"
-			Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			Firmware_sfx="bin"
+			export TARGET_PROFILE="xiaomi_mir3gv2"
+			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+			export Firmware_sfx="bin"
 		else
-			Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			Firmware_sfx="bin"
+			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+			export Firmware_sfx="bin"
 		fi
 	;;
 	"main")
