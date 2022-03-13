@@ -79,8 +79,8 @@ GET_TARGET_INFO() {
 		REPO_Name="Tianling"
 		ZUOZHE="ctcgfw"
 		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			export Legacy_Firmware="immortalwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
-			export UEFI_Firmware="immortalwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
+			export Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
+			export UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			export Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 			export TARGET_PROFILE="phicomm_k3"
@@ -112,8 +112,8 @@ GET_TARGET_INFO() {
 		REPO_Name="mortal"
 		ZUOZHE="ctcgfw"
 		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			export Legacy_Firmware="immortalwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
-			export UEFI_Firmware="immortalwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
+			export Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
+			export UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
 			export Firmware_sfx="${Firmware_sfxo}"
 		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 			export TARGET_PROFILE="phicomm_k3"
