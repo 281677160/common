@@ -212,6 +212,7 @@ menuws() {
   echo
   if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
    print_error "无其他作者固件,如需要更换请先编译出 ${tixinggg} 的固件!"
+   sleep 1
    exit 1
   fi
   print_gg " 检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
