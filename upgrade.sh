@@ -4,165 +4,69 @@
 # AutoBuild Functions
 
 GET_TARGET_INFO() {
-	[[ ${TARGET_PROFILE} == x86-64 ]] && {
-		[[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]] && Firmware_sfxo=img.gz || Firmware_sfxo=img 
-	}
 	case "${REPO_BRANCH}" in
 	"master")
 		LUCI_Name="18.06"
 		REPO_Name="lede"
 		ZUOZHE="Lean's"
-		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			export Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
-			export UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
-			export Firmware_sfx="${Firmware_sfxo}"
-		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="phicomm_k3"
-			export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
-			export Firmware_sfx="trx"
-		elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="phicomm_k2p"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3g_v2"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g|xiaomi_mir3g) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3g"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3p"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		else
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		fi
 	;;
 	"main")
 		LUCI_Name="20.06"
 		REPO_Name="lienol"
 		ZUOZHE="Lienol's"
-		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			export Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
-			export UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
-			export Firmware_sfx="${Firmware_sfxo}"
-		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="phicomm_k3"
-			export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
-			export Firmware_sfx="trx"
-		elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="phicomm_k2p"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3g_v2"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g|xiaomi_mir3g) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3g"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3p"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		else
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		fi
 	;;
 	"openwrt-18.06")
 		LUCI_Name="18.06_tl"
 		REPO_Name="Tianling"
 		ZUOZHE="ctcgfw"
-		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			export Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
-			export UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
-			export Firmware_sfx="${Firmware_sfxo}"
-		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="phicomm_k3"
-			export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
-			export Firmware_sfx="trx"
-		elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="phicomm_k2p"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3g_v2"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g|xiaomi_mir3g) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3g"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3p"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		else
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		fi
 	;;
 	"openwrt-21.02")
 		LUCI_Name="21.02"
 		REPO_Name="mortal"
 		ZUOZHE="ctcgfw"
-		if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-			export Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
-			export UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
-			export Firmware_sfx="${Firmware_sfxo}"
-		elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="phicomm_k3"
-			export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
-			export Firmware_sfx="trx"
-		elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="phicomm_k2p"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3g_v2"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g|xiaomi_mir3g) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3g"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
-			export Rename="${TARGET_PROFILE}"
-			export TARGET_PROFILE="xiaomi_mir3p"
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		else
-			export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-			export Firmware_sfx="bin"
-		fi
+	;;
+	*)
+		echo "没匹配到该源码的分支"
 	;;
 	esac
+	
+	if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
+		[[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]] && export Firmware_sfxo="img.gz" || export Firmware_sfxo="img"
+		export Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfxo}"
+		export UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfxo}"
+		export Firmware_sfx="${Firmware_sfxo}"
+	elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
+		export Rename="${TARGET_PROFILE}"
+		export TARGET_PROFILE="phicomm_k3"
+		export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.trx"
+		export Firmware_sfx="trx"
+	elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
+		export Rename="${TARGET_PROFILE}"
+		export TARGET_PROFILE="phicomm_k2p"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+		export Firmware_sfx="bin"
+	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
+		export Rename="${TARGET_PROFILE}"
+		export TARGET_PROFILE="xiaomi_mir3g_v2"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+		export Firmware_sfx="bin"
+	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g|xiaomi_mir3g) ]]; then
+		export Rename="${TARGET_PROFILE}"
+		export TARGET_PROFILE="xiaomi_mir3g"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+		export Firmware_sfx="bin"
+	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
+		export Rename="${TARGET_PROFILE}"
+		export TARGET_PROFILE="xiaomi_mir3p"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+		export Firmware_sfx="bin"
+	else
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+		export Firmware_sfx="bin"
+	fi
+	
 	AutoUp_Ver="${Home}/package/base-files/files/bin/AutoUpdate.sh"
-	[[ -f ${AutoUp_Ver} ]] && AutoUpdate_Version=$(egrep -o "V[0-9].+" ${Home}/package/base-files/files/bin/AutoUpdate.sh | awk 'END{print}')
+	[[ -f ${AutoUp_Ver} ]] && export AutoUpdate_Version=$(egrep -o "V[0-9].+" ${Home}/package/base-files/files/bin/AutoUpdate.sh | awk 'END{print}')
 	export In_Firmware_Info="${Home}/package/base-files/files/bin/openwrt_info"
 	export Github_Release="${Github}/releases/download/AutoUpdate"
 	export Github_UP_RELEASE="${Github}/releases/AutoUpdate"
@@ -202,6 +106,24 @@ Diy_Part3() {
 	cd "${Firmware_Path}"
 	if [[ `ls ${Firmware_Path} | grep -c "immortalwrt"` -ge '1' ]]; then
 		rename -v "s/^immortalwrt/openwrt/" *
+	fi
+	if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
+		if [[ `ls "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
+			mv -f ${Firmware_Path}/*ext4* ${Home}/bin/targets/
+		fi
+		if [[ `ls "${Firmware_Path}" | grep -c "rootfs"` -ge '1' ]]; then
+			mv -f ${Firmware_Path}/*rootfs* ${Home}/bin/targets/
+		fi
+		if [[ `ls "${Firmware_Path}" | grep -c "${Firmware_sfx}"` -ge '1' ]]; then
+			mv -f ${Firmware_Path}/*${Firmware_sfx}* "${Zhuan_Yi}"
+			rm -fr ${Firmware_Path}/*
+			fi [[ `ls "${Zhuan_Yi}" | grep -c "efi"` == '1' ]]; then
+				mv -f ${Zhuan_Yi}/*efi* "${Firmware_Path}/${UEFI_Firmware}"
+			fi
+			fi [[ `ls "${Zhuan_Yi}" | grep -c "squashfs"` == '1' ]]; then
+				mv -f ${Zhuan_Yi}/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
+			fi
+		fi
 	fi
 	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 		rename -v "s/${Rename}/phicomm_k3/" * > /dev/null 2>&1
