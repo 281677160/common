@@ -117,11 +117,11 @@ Diy_Part3() {
 		if [[ `ls "${Firmware_Path}" | grep -c "${Firmware_sfx}"` -ge '1' ]]; then
 			mv -f ${Firmware_Path}/*${Firmware_sfx}* "${Zhuan_Yi}"
 			rm -fr ${Firmware_Path}/*
-			fi [[ `ls "${Zhuan_Yi}" | grep -c "efi"` == '1' ]]; then
-				mv -f ${Zhuan_Yi}/*efi* "${Firmware_Path}/${UEFI_Firmware}"
+			fi [[ `ls "${Zhuan_Yi}" | grep -c "efi"` -eq '1' ]]; then
+				mv -f "${Zhuan_Yi}"/*efi* "${Firmware_Path}/${UEFI_Firmware}"
 			fi
-			fi [[ `ls "${Zhuan_Yi}" | grep -c "squashfs"` == '1' ]]; then
-				mv -f ${Zhuan_Yi}/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
+			fi [[ `ls "${Zhuan_Yi}" | grep -c "squashfs"` -eq '1' ]]; then
+				mv -f "${Zhuan_Yi}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
 			fi
 		fi
 	fi
@@ -142,7 +142,7 @@ Diy_Part3() {
 			rename -v "s/${Rename}/phicomm_k2p/" * > /dev/null 2>&1
 		fi
 		cp -Rf ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
-		if [[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]]; then
+		if [[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` -eq '1' ]]; then
 			rm -rf ${Firmware_Path}/${Up_Firmware}
 			mv -f ${Zhuan_Yi}/*sysupgrade.bin ${Firmware_Path}/${Up_Firmware}
 		else
