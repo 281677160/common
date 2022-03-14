@@ -206,9 +206,13 @@ Diy_Part3() {
 			rename -v "s/phicomm-k2p/phicomm_k2p/" * > /dev/null 2>&1
 		fi
 		cp -Rf ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
-		export Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
-		rm -rf ${Firmware_Path}/${Up_BinFirmware}
-		mv -f ${Zhuan_Yi}/*sysupgrade.bin ${Firmware_Path}/${Up_BinFirmware}
+		if [[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]]; then
+			export Up_BinFirmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.bin"
+			rm -rf ${Firmware_Path}/${Up_BinFirmware}
+			mv -f ${Zhuan_Yi}/*sysupgrade.bin ${Firmware_Path}/${Up_BinFirmware}
+		else
+			echo "没发现.bin后缀固件，或者是您编译的固件体积超出源码规定值，出不来.bin格式固件"
+		fi
 	fi
 	cd "${Firmware_Path}"
 	case "${TARGET_PROFILE}" in
