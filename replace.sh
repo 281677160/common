@@ -216,8 +216,9 @@ menuws() {
    print_error "无其他作者固件,如需要更换请先编译出 ${tixinggg} 的固件!"
    sleep 1
    exit 1
+  else
+    print_gg "检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
   fi
-  print_gg "检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
   if [[ -z "${gg1}" ]] && [[ -z "${gg2}" ]]; then
      [[ -n "${gg3}" ]] && ECHOBG " ${gg3}"
   elif [[ -z "${gg1}" ]]; then
