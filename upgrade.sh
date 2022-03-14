@@ -141,11 +141,8 @@ GET_TARGET_INFO() {
 		fi
 	;;
 	esac
-	if [[ ${REGULAR_UPDATE} == "true" ]]; then
-		AutoUpdate_Version=$(egrep -o "V[0-9].+" ${Home}/package/base-files/files/bin/AutoUpdate.sh | awk 'END{print}')
-	else
-		 AutoUpdate_Version=OFF
-	fi
+	AutoUp_Ver="${Home}/package/base-files/files/bin/AutoUpdate.sh"
+	[[ -f ${AutoUp_Ver} ]] && AutoUpdate_Version=$(egrep -o "V[0-9].+" ${Home}/package/base-files/files/bin/AutoUpdate.sh | awk 'END{print}')
 	export In_Firmware_Info="${Home}/package/base-files/files/bin/openwrt_info"
 	export Github_Release="${Github}/releases/download/AutoUpdate"
 	export Github_UP_RELEASE="${Github}/releases/AutoUpdate"
