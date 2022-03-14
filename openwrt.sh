@@ -201,7 +201,7 @@ menu() {
     break
     ;;
     4)
-      bash /bin/replace2.sh
+      bash /bin/replace.sh
     break
     ;;
     5)
