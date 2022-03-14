@@ -168,10 +168,6 @@ function Firmware_Path() {
   export Name_2="$(egrep -o "${zuozhe_2}-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
   export Name_3="$(egrep -o "${zuozhe_3}-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
 
-  if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-   print_error "无其他作者固件,如需要更换请先编译出 ${tixinggg} 的固件!"
-   exit 1
-  fi
   if [[ -n "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
     gujian1="${Name_1}"
     gg1="1、${Name_1}"
@@ -214,6 +210,10 @@ menuws() {
   ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
   ECHOYY " 设备型号：${DEFAULT_Device}"
   echo
+  if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
+   print_error "无其他作者固件,如需要更换请先编译出 ${tixinggg} 的固件!"
+   exit 1
+  fi
   print_gg " 检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
   ECHOBG " ${gg1}"
   [[ -n "${gg2}" ]] && ECHOBG " ${gg2}"
