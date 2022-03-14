@@ -15,6 +15,7 @@ Font="\033[0m"
 GreenBG="\033[1;36m"
 RedBG="\033[41;37m"
 OK="${Green}[OK]${Font}"
+GX=" ${Red}[恭喜]${Font}"
 ERROR="${Red}[ERROR]${Font}"
 
 function ECHOY() {
@@ -52,9 +53,10 @@ function print_error() {
 }
 function print_gg() {
   echo
-  echo -e "  ${RedBG} $1 ${Font}"
+  echo -e "${GX}${Green} $1 ${Font}"
   echo
 }
+
 ECHOB "加载数据中,请稍后..."
 if [[ -f /bin/openwrt_info ]]; then
   chmod +x /bin/openwrt_info && source /bin/openwrt_info
@@ -215,10 +217,17 @@ menuws() {
    sleep 1
    exit 1
   fi
-  print_gg " 检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
-  ECHOBG " ${gg1}"
-  [[ -n "${gg2}" ]] && ECHOBG " ${gg2}"
-  [[ -n "${gg3}" ]] && ECHOBG " ${gg3}"
+  print_gg "检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
+  if [[ -z "${gg1}" ]] && [[ -z "${gg2}" ]]; then
+     [[ -n "${gg3}" ]] && ECHOBG " ${gg3}"
+  elif [[ -z "${gg1}" ]]; then
+    [[ -n "${gg2}" ]] && ECHOBG " ${gg2}"
+    [[ -n "${gg3}" ]] && ECHOBG " ${gg3}"
+  else
+    [[ -n "${gg1}" ]] && ECHOBG " ${gg1}"
+    [[ -n "${gg2}" ]] && ECHOBG " ${gg2}"
+    [[ -n "${gg3}" ]] && ECHOBG " ${gg3}"
+  fi
   ECHOBG " Q、退出程序"
   echo
   echo
