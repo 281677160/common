@@ -120,9 +120,10 @@ cp -Rf "${Home}"/openwrt-package/* "${Home}" && rm -rf "${Home}"/openwrt-package
 
 if [[ ${REGULAR_UPDATE} == "true" ]]; then
 	git clone https://github.com/281677160/luci-app-autoupdate feeds/luci/applications/luci-app-autoupdate
-	cp -Rf "${PATH1}"/{AutoUpdate.sh,replace.sh,replace.sh} package/base-files/files/bin
+	[[ -f "${PATH1}/AutoUpdate.sh" ]] && cp -Rf "${PATH1}"/AutoUpdate.sh package/base-files/files/bin/AutoUpdate.sh
+	[[ -f "${PATH1}/replace.sh" ]] && cp -Rf "${PATH1}"/replace.sh package/base-files/files/bin/replace.sh
 fi
-cp -Rf "${PATH1}"/openwrt.sh package/base-files/files/sbin/openwrt
+[[ -f "${PATH1}/openwrt.sh" ]] && cp -Rf "${PATH1}"/openwrt.sh package/base-files/files/sbin/openwrt
 
 if [[ "${REPO_BRANCH}" == "master" ]]; then
 	cp -Rf "${Home}"/build/common/LEDE/files "${Home}"
