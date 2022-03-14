@@ -40,10 +40,6 @@ rm -rf package/luci-app-ssr-plus/{dns2socks,microsocks,ipt2socks,pdnsd-alt}
 
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 
-if [[ ! "${Modelfile}" == "openwrt_amlogic" ]]; then
-	sed -i '/IMAGES_GZIP/d' "${PATH1}/${CONFIG_FILE}" > /dev/null 2>&1
-	echo -e "\nCONFIG_TARGET_IMAGES_GZIP=y" >> "${PATH1}/${CONFIG_FILE}"
-fi
 if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 	# 修复NTFS格式优盘不自动挂载
 	packages=" \
@@ -124,6 +120,7 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
 	[[ -f "${PATH1}/replace.sh" ]] && cp -Rf "${PATH1}"/replace.sh package/base-files/files/bin/replace.sh
 fi
 [[ -f "${PATH1}/openwrt.sh" ]] && cp -Rf "${PATH1}"/openwrt.sh package/base-files/files/sbin/openwrt
+chmod 775 package/base-files/files/sbin/openwrt
 
 if [[ "${REPO_BRANCH}" == "master" ]]; then
 	cp -Rf "${Home}"/build/common/LEDE/files "${Home}"
@@ -340,6 +337,10 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${Home}/.config` -eq '1' ]]; 
 else
 	sed -i '/luci-app-argon-config/d' ${Home}/.config
 	echo -e "\n# CONFIG_PACKAGE_luci-app-argon-config is not set" >> ${Home}/.config
+fi
+if [[ `grep -c "CONFIG_TARGET_x86=y" ${Home}/.config` -eq '1' ]]; then
+	sed -i '/IMAGES_GZIP/d' "${Home}/.config"
+	echo -e "\nCONFIG_TARGET_IMAGES_GZIP=y" >> "${Home}/.config"
 fi
 if [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_bcm27xx=y" ${Home}/.config` -eq '1' ]]; then
 	sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${Home}/.config
