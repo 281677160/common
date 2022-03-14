@@ -4,31 +4,25 @@
 # AutoBuild Functions
 
 GET_TARGET_INFO() {
-	case "${REPO_BRANCH}" in
-	"master")
-		LUCI_Name="18.06"
-		REPO_Name="lede"
-		ZUOZHE="Lean's"
-	;;
-	"main")
-		LUCI_Name="20.06"
-		REPO_Name="lienol"
-		ZUOZHE="Lienol's"
-	;;
-	"openwrt-18.06")
-		LUCI_Name="18.06_tl"
-		REPO_Name="Tianling"
-		ZUOZHE="ctcgfw"
-	;;
-	"openwrt-21.02")
-		LUCI_Name="21.02"
-		REPO_Name="mortal"
-		ZUOZHE="ctcgfw"
-	;;
-	*)
+	if [[ "${REPO_BRANCH}" == "master" ]]; then
+		export LUCI_Name="18.06"
+		export REPO_Name="lede"
+		export ZUOZHE="Lean's"
+	elif [[ "${REPO_BRANCH}" == "main" ]]; then
+		export LUCI_Name="20.06"
+		export REPO_Name="lienol"
+		export ZUOZHE="Lienol's"
+	elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
+		export LUCI_Name="18.06_tl"
+		export REPO_Name="Tianling"
+		export ZUOZHE="ctcgfw"
+	elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+		export LUCI_Name="21.02"
+		export REPO_Name="mortal"
+		export ZUOZHE="ctcgfw"
+	else
 		echo "没匹配到该源码的分支"
-	;;
-	esac
+	fi
 	
 	if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
 		[[ `grep -c "CONFIG_TARGET_IMAGES_GZIP=y" ${Home}/.config` -ge '1' ]] && export Firmware_sfxo="img.gz" || export Firmware_sfxo="img"
@@ -116,11 +110,10 @@ Diy_Part3() {
 		fi
 		if [[ `ls "${Firmware_Path}" | grep -c "${Firmware_sfx}"` -ge '1' ]]; then
 			mv -f ${Firmware_Path}/*${Firmware_sfx}* "${Zhuan_Yi}"
-			rm -fr ${Firmware_Path}/*
-			fi [[ `ls "${Zhuan_Yi}" | grep -c "efi"` -eq '1' ]]; then
+			if [[ `ls "${Zhuan_Yi}" | grep -c "efi"` -eq '1' ]]; then
 				mv -f "${Zhuan_Yi}"/*efi* "${Firmware_Path}/${UEFI_Firmware}"
 			fi
-			fi [[ `ls "${Zhuan_Yi}" | grep -c "squashfs"` -eq '1' ]]; then
+			if [[ `ls "${Zhuan_Yi}" | grep -c "squashfs"` -eq '1' ]]; then
 				mv -f "${Zhuan_Yi}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
 			fi
 		fi
