@@ -219,7 +219,7 @@ menu() {
     ;;
     8)
       passwd -d root
-      ECHOG "正在为您重启openwrt中，预计需要1~2分钟，请稍后从新登录..."
+      ECHOG "密码已清空，正在为您重启openwrt中，请稍后从新登录..."
       echo
       reboot
     break
