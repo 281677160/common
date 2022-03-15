@@ -218,7 +218,10 @@ menu() {
     break
     ;;
     8)
-      passwd -d root && 
+      passwd -d root
+      ECHOG "正在为您重启openwrt中，预计需要1~2分钟，请稍后从新登录..."
+      
+      reboot
     break
     ;;
     9)
