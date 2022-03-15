@@ -181,8 +181,9 @@ menu() {
   ECHOY " 5. 查看状态信息"
   ECHOYY " 6. 更换检测固件的gihub地址"
   ECHOY " 7. 修改IP/DSN/网关"
-  ECHOYY " 8. 恢复出厂设置"
-  ECHOY " 9. 退出菜单"
+  ECHOY " 8. 清空密码"
+  ECHOYY " 9. 恢复出厂设置"
+  ECHOY " 10. 退出菜单"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -217,10 +218,14 @@ menu() {
     break
     ;;
     8)
-      first_boot
+      passwd -d root && 
     break
     ;;
     9)
+      first_boot
+    break
+    ;;
+    10)
       ECHOR "您选择了退出程序"
       exit 0
     break
