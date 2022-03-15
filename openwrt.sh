@@ -232,6 +232,7 @@ menu() {
     ;;
     8)
       passwd -d root
+      echo
       ECHOG "密码已清空，正在为您重启openwrt中，请稍后从新登录..."
       echo
       reboot
@@ -272,6 +273,7 @@ menuws() {
     ;;
     2)
       passwd -d root
+      echo
       ECHOG "密码已清空，正在为您重启openwrt中，请稍后从新登录..."
       echo
       reboot
