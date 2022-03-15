@@ -194,9 +194,9 @@ menu() {
   ECHOY " 5. 查看状态信息"
   ECHOYY " 6. 更换检测固件的gihub地址"
   ECHOY " 7. 修改IP/DSN/网关(会进行重启操作)"
-  ECHOY " 8. 清空密码(会进行重启操作)"
-  ECHOYY " 9. 恢复出厂设置(会进行重启操作)"
-  ECHOY " 10. 退出菜单"
+  ECHOYY " 8. 清空密码(会进行重启操作)"
+  ECHOY " 9. 恢复出厂设置(会进行重启操作)"
+  ECHOYY " 10. 退出菜单"
   echo
   XUANZHEOP="请输入数字"
   while :; do
