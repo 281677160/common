@@ -33,9 +33,6 @@ find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'l
 
 git clone -b main https://github.com/281677160/openwrt-passwall package/luci-app-passwall
 git clone -b passwall2 https://github.com/281677160/openwrt-passwall  package/luci-app-passwall2
-## git clone https://github.com/xiaorouji/openwrt-passwall package/openwrt-passwall
-## git clone https://github.com/xiaorouji/openwrt-passwall2 package/luci-app-passwall2
-## rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
 git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
 rm -rf package/luci-app-ssr-plus/{dns2socks,microsocks,ipt2socks,pdnsd-alt}
 
@@ -76,10 +73,8 @@ find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'l
 DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
 [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" $ZZZ
 
-## git clone https://github.com/281677160/openwrt-passwall package/luci-app-passwall
-git clone https://github.com/xiaorouji/openwrt-passwall package/openwrt-passwall
-git clone https://github.com/xiaorouji/openwrt-passwall2 package/luci-app-passwall2
-## rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
+git clone -b main https://github.com/281677160/openwrt-passwall package/luci-app-passwall
+git clone -b passwall2 https://github.com/281677160/openwrt-passwall  package/luci-app-passwall2
 git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
 rm -rf package/luci-app-ssr-plus/{dns2socks,microsocks,ipt2socks,pdnsd-alt}
 
