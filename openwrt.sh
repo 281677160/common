@@ -78,6 +78,18 @@ function ip_install() {
   ;;
   esac
   done
+  
+  echo
+  echo
+  read -p " 是否清空密码?直接回车跳过，按[Y/y]回车确认清空密码：" YN
+  case ${YN} in
+    [Yy]) 
+      passwd -d root
+    ;;
+    *)
+      ECHOR "您已跳过清空密码"
+    ;;
+  esac
 }
 
 function dns_install() {
@@ -218,10 +230,7 @@ menu() {
     break
     ;;
     8)
-      passwd -d root
-      ECHOG "密码已清空，正在为您重启openwrt中，请稍后从新登录..."
-      echo
-      reboot
+      passwd_install
     break
     ;;
     9)
