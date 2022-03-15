@@ -96,6 +96,7 @@ Diy_Tianling() {
 find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-netgear' | xargs -i rm -rf {}
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
 find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+find . -name 'luci-app-adguardhome' -o -name 'adguardhome' | xargs -i rm -rf {}
 }
 
 
@@ -105,6 +106,7 @@ find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | x
 Diy_mortal() {
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
 find . -name 'luci-app-wol' | xargs -i rm -rf {}
+find . -name 'luci-app-adguardhome' -o -name 'adguardhome' | xargs -i rm -rf {}
 }
 
 
