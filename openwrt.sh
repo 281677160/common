@@ -85,6 +85,7 @@ function ip_install() {
   case ${YN} in
     [Yy]) 
       passwd -d root
+      print_ok "清空密码"
     ;;
     *)
       ECHOR "您已跳过清空密码"
@@ -230,7 +231,10 @@ menu() {
     break
     ;;
     8)
-      passwd_install
+      passwd -d root
+      ECHOG "密码已清空，正在为您重启openwrt中，请稍后从新登录..."
+      echo
+      reboot
     break
     ;;
     9)
@@ -253,9 +257,10 @@ menuws() {
   clear
   echo  
   ECHOB "  请选择执行命令编码"
-  ECHOY " 1. 修改IP/DSN/网关"
-  ECHOYY " 2. 恢复出厂设置"
-  ECHOY " 3. 退出菜单"
+  ECHOY " 1. 修改IP/DSN/网关(会进行重启操作)"
+  ECHOYY " 2. 清空密码(会进行重启操作)"
+  ECHOYY " 3. 恢复出厂设置(会进行重启操作)"
+  ECHOY " 4. 退出菜单"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -266,10 +271,17 @@ menuws() {
     break
     ;;
     2)
-      first_boot
+      passwd -d root
+      ECHOG "密码已清空，正在为您重启openwrt中，请稍后从新登录..."
+      echo
+      reboot
     break
     ;;
     3)
+      first_boot
+    break
+    ;;
+    4)
       ECHOR "您选择了退出程序"
       exit 0
     break
