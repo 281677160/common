@@ -3,7 +3,7 @@
 # AutoBuild Module by Hyy2001
 # AutoUpdate for Openwrt
 
-Version=V6.5
+Version=V6.6
 
 Shell_Helper() {
 [[ -f /etc/CLOUD_Name ]] && {
