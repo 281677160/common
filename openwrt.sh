@@ -85,7 +85,7 @@ function ip_install() {
   case ${YN} in
     [Yy]) 
       passwd -d root
-      print_ok "清空密码"
+      judge "清空密码"
     ;;
     *)
       ECHOR "您已跳过清空密码"
