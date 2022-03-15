@@ -348,14 +348,6 @@ if [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] || [[ `gre
 	export REGULAR_UPDATE="false"
 	echo "REGULAR_UPDATE=false" >> $GITHUB_ENV
 fi
-if [[ `grep -c "CONFIG_PACKAGE_luci-app-passwall2=y" ${Home}/.config` -eq '1' ]]; then
-	if [[ `grep -c "CONFIG_PACKAGE_luci-app-passwall=y" ${Home}/.config` -eq '1' ]]; then
-		sed -i 's/CONFIG_PACKAGE_luci-app-passwall=y/# CONFIG_PACKAGE_luci-app-passwall is not set/g' ${Home}/.config
-		echo "TIME r \"您同时选择luci-app-passwall2和luci-app-passwall，插件有冲突，相同功能插件只能二选一，已删除luci-app-passwall\"" >>CHONGTU
-		echo "TIME z \"\"" >>CHONGTU
-		echo "TIME b \"插件冲突信息\"" > ${Home}/Chajianlibiao
-	fi
-fi
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${Home}/.config` -eq '1' ]]; then
 	if [[ `grep -c "CONFIG_TARGET_ROOTFS_PARTSIZE" ${Home}/.config` -eq '0' ]]; then
 		sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${Home}/.config > /dev/null 2>&1
