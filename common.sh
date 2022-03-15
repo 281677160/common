@@ -100,8 +100,9 @@ find . -name 'luci-app-adguardhome' -o -name 'adguardhome' | xargs -i rm -rf {}
 ################################################################################################################
 Diy_mortal() {
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
-find . -name 'luci-app-wol' | xargs -i rm -rf {}
+find . -name 'luci-app-wol' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
 find . -name 'luci-app-adguardhome' -o -name 'adguardhome' | xargs -i rm -rf {}
+rm -rf feeds/luci/themes
 }
 
 
