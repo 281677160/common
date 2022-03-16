@@ -283,8 +283,9 @@ menuws() {
   ECHOB "  请选择执行命令编码"
   ECHOY " 1. 修改IP/DSN/网关(会进行重启操作)"
   ECHOYY " 2. 清空密码(会进行重启操作)"
-  ECHOYY " 3. 恢复出厂设置(会进行重启操作)"
-  ECHOY " 4. 退出菜单"
+  ECHOY " 3. 尝试修复因主题错误进了不LUCI(强制重新安装官方主题,会进行重启操作)"
+  ECHOYY " 4. 恢复出厂设置(会进行重启操作)"
+  ECHOY " 5. 退出菜单"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -303,10 +304,14 @@ menuws() {
     break
     ;;
     3)
-      first_boot
+      install_bootstrap
     break
     ;;
     4)
+      first_boot
+    break
+    ;;
+    5)
       ECHOR "您选择了退出程序"
       exit 0
     break
