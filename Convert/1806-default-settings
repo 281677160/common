@@ -6,6 +6,17 @@ uci commit luci
 uci set fstab.@global[0].anon_mount=1
 uci commit fstab
 
+set system.@system[0].timezone='CST-8'
+set system.@system[0].zonename='Asia/Shanghai'
+delete system.ntp.server
+add_list system.ntp.server='time1.cloud.tencent.com'
+add_list system.ntp.server='ntp1.aliyun.com'
+add_list system.ntp.server='ntp.ntsc.ac.cn'
+add_list system.ntp.server='cn.ntp.org.cn'
+uci commit system
+
+sed -i 's,downloads.openwrt.org,mirrors.tencent.com/lede,g' /etc/opkg/distfeeds.conf
+
 rm -f /usr/lib/lua/luci/view/admin_status/index/mwan.htm
 rm -f /usr/lib/lua/luci/view/admin_status/index/upnp.htm
 rm -f /usr/lib/lua/luci/view/admin_status/index/ddns.htm
