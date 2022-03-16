@@ -183,6 +183,20 @@ function first_boot() {
   firstboot && reboot -f
 }
 
+function install_bootstrap() {
+  echo
+  ECHOY "正在安装官方主题，请耐心等候..."
+  echo
+  opkg update
+  opkg remove luci-theme-bootstrap
+  sed -i '/bootstrap/d' /etc/config/luci
+  rm -rf /tmp/luci-*cache
+  opkg install luci-theme-bootstrap
+  uci set luci.main.mediaurlbase='/luci-static/bootstrap'
+  uci commit luci
+  reboot -f
+}
+
 menu() {
   clear
   echo  
@@ -195,10 +209,11 @@ menu() {
   ECHOYY " 6. 更换检测固件的gihub地址"
   ECHOY " 7. 修改IP/DSN/网关(会进行重启操作)"
   ECHOYY " 8. 清空密码(会进行重启操作)"
-  ECHOY " 9. 恢复出厂设置(会进行重启操作)"
-  ECHOYY " 10. 退出菜单"
+  ECHOY " 9. 尝试修复因主题错误进了不LUCI(强制重新安装官方主题,会进行重启操作)"
+  ECHOYY " 10. 恢复出厂设置(会进行重启操作)"
+  ECHOY " Q. 退出菜单"
   echo
-  XUANZHEOP="请输入数字"
+  XUANZHEOP="请输入数字,或按[Q/q]退出菜单"
   while :; do
   read -p " ${XUANZHEOP}： " CHOOSE
   case $CHOOSE in
@@ -239,16 +254,20 @@ menu() {
     break
     ;;
     9)
-      first_boot
+      install_bootstrap
     break
     ;;
     10)
+      first_boot
+    break
+    ;;
+    [Qq])
       ECHOR "您选择了退出程序"
       exit 0
     break
     ;;
     *)
-      XUANZHEOP="请输入正确的数字编号!"
+      XUANZHEOP="请输入正确的数字编号,或按[Q/q]退出菜单!"
     ;;
     esac
     done
