@@ -194,6 +194,10 @@ function install_bootstrap() {
   opkg install luci-theme-bootstrap
   uci set luci.main.mediaurlbase='/luci-static/bootstrap'
   uci commit luci
+  echo
+  ECHOY "正在重启openwrt，请稍等一会进入后台..."
+  echo
+  sleep 2
   reboot -f
 }
 
