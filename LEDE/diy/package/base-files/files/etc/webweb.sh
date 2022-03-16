@@ -25,8 +25,10 @@ if [[ -f /etc/init.d/ddnsto ]]; then
  /etc/init.d/ddnsto enable
 fi
 
-uci set argon.@global[0].bing_background=0
-uci commit argon
+if [[ -d /usr/lib/lua/luci/view/themes/argon ]]; then
+  uci set argon.@global[0].bing_background=0
+  uci commit argon
+fi
 
 rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
