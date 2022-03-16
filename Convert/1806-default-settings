@@ -30,7 +30,7 @@ sed -i 's/cbi.submit\"] = true/cbi.submit\"] = \"1\"/g' /usr/lib/lua/luci/dispat
 sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
 echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION='18.06 by immortalwrt'" >> /etc/openwrt_release
+echo "DISTRIB_REVISION='immortalwrt-18.06'" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
 
