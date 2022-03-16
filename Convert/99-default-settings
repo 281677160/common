@@ -52,6 +52,6 @@ rm -f /tmp/luci-indexcache
 
 mv /etc/openwrt_banner /etc/banner
 
-chmod +x /etc/webweb.sh && source /etc/webweb.sh
+[ -f '/etc/webweb.sh' ] && chmod +x /etc/webweb.sh && source /etc/webweb.sh
 
 exit 0
