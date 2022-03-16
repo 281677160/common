@@ -180,7 +180,7 @@ function first_boot() {
   echo
   echo
   ECHOR "是否恢复出厂设置?按[Y/y]执行,按[N/n]退出,如果执行的话,请耐心等待openwrt重启完成"
-  firstboot && reboot
+  firstboot && reboot -f
 }
 
 menu() {
