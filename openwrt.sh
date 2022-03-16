@@ -173,7 +173,7 @@ function install_ws() {
   echo
   ECHOG "正在为您重启openwrt中，预计需要1~2分钟，请稍后..."
   echo
-  reboot
+  reboot -f
 }
 
 function first_boot() {
