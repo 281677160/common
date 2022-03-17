@@ -205,6 +205,7 @@ function install_bootstrap() {
   fi
   
   if [[ ${Anzhuang_shibai} == "1" ]]; then
+    rm -rf /tmp/luci-theme-bootstrap.ipk
     if [[ "$(. /etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "18" ]]; then
       wget --tries=4 -q -P /tmp https://ghproxy.com/https://github.com/281677160/openwrt-package/blob/usb/zhuti/luci-theme-bootstrap_18.06.ipk -O /tmp/luci-theme-bootstrap.ipk
       if [[ $? -ne 0 ]]; then
