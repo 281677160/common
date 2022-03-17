@@ -96,17 +96,19 @@ Diy_Part3() {
 	export Firmware_Path="${Home}/upgrade"
 	Mkdir ${Home}/bin/Firmware
 	Mkdir ${Home}/bin/zhuanyi_Firmware
+	Mkdir ${Home}/bin/targets/diuqugj
 	export Zhuan_Yi="${Home}/bin/zhuanyi_Firmware"
+	export Diuqu_gj="${Home}/bin/targets/diuqugj"
 	cd "${Firmware_Path}"
 	if [[ `ls ${Firmware_Path} | grep -c "immortalwrt"` -ge '1' ]]; then
 		rename -v "s/^immortalwrt/openwrt/" *
 	fi
 	if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
 		if [[ `ls "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
-			mv -f ${Firmware_Path}/*ext4* ${Home}/bin/targets/
+			mv -f ${Firmware_Path}/*ext4* ${Diuqu_gj}
 		fi
 		if [[ `ls "${Firmware_Path}" | grep -c "rootfs"` -ge '1' ]]; then
-			mv -f ${Firmware_Path}/*rootfs* ${Home}/bin/targets/
+			mv -f ${Firmware_Path}/*rootfs* ${Diuqu_gj}
 		fi
 		if [[ `ls "${Firmware_Path}" | grep -c "${Firmware_sfx}"` -ge '1' ]]; then
 			mv -f ${Firmware_Path}/*${Firmware_sfx}* "${Zhuan_Yi}"
@@ -170,6 +172,9 @@ Diy_Part3() {
 	;;
 	esac
 	cd ${Home}
+	rm -rf "${Firmware_Path}"
+	rm -rf "${Zhuan_Yi}"
+	rm -rf "${Diuqu_gj}"
 }
 
 Mkdir() {
