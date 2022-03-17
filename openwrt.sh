@@ -232,7 +232,7 @@ function install_bootstrap() {
         reboot -f
       fi
     else
-      rm -rf /tmp/luci-theme-bootstrap.ipk
+      rm -rf /tmp/luci-theme-material.ipk
       wget --tries=4 -q -P /tmp https://ghproxy.com/https://github.com/281677160/openwrt-package/blob/usb/zhuti/luci-theme-material_21.02.ipk -O /tmp/luci-theme-material.ipk
       if [[ $? -ne 0 ]]; then
         wget --tries=4 -q -P /tmp https://archive.openwrt.org/releases/packages-21.02/aarch64_cortex-a72/luci/luci-theme-material_git-21.295.66888-fc702bc_all.ipk -O /tmp/luci-theme-material.ipk
