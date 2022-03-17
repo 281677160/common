@@ -278,6 +278,17 @@ function install_material() {
     fi
   fi
 }
+function install_zhuti() {
+  if [[ "$(. /etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "18" ]]; then
+    install_bootstrap
+  elif [[ "$(. /etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "20" ]]; then
+    install_material
+  else
+    print_error "不清楚您固件的LUCI版本，无法运行程序!"
+    exit 1
+  fi
+}
+  
 
 menu() {
   clear
@@ -336,7 +347,7 @@ menu() {
     break
     ;;
     9)
-      install_bootstrap
+      install_zhuti
     break
     ;;
     10)
@@ -382,7 +393,7 @@ menuws() {
     break
     ;;
     3)
-      install_bootstrap
+      install_zhuti
     break
     ;;
     4)
