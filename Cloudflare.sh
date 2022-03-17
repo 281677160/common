@@ -7,6 +7,14 @@
 # 2、请更改 尾行 的 xxxxxxxxxx 字符串，为你自己 PassWall 的节点值
 
 ######################################################################################################
+
+#下载脚本
+# wget -q http://git.m.cc/cloudflare-passwall-ip/cloudflare-passwall-ip.sh -O /etc/config/cloudflare-passwall-ip.sh --no-check-certificate && chmod +x /etc/config/cloudflare-passwall-ip.sh
+
+#加入计划任务
+# 20 3 */2 * * bash /etc/config/cloudflare-passwall-ip.sh > /tmp/log/passwall.log #定时优选 cloudflare 网络IP
+
+######################################################################################################
 echo
 echo
 echo ==========================================================
@@ -14,68 +22,72 @@ echo   项目: 基于 CloudflareSpeedTest 的 OpenWRT 自动更新 IP
 echo   用途：用于自动筛选 Cloudflare IP，并自动替换优选 IP 为 PassWall 的节点地址
 echo ==========================================================
 echo
-echo =================脚本正在运行中.....=======================
+echo ====================脚本正在运行中.....====================
+echo
 
-# 准备测速,停止passwall
-/etc/init.d/passwall stop
-/etc/init.d/haproxy stop
 
 ######################################################################################################
-##参数设置!!
+
+# 准备测速,停止passwall
+/etc/init.d/haproxy stop
+/etc/init.d/passwall stop
+
+######################################################################################################
+# 参数设置!!
 
 #下载速度下限,请自行设置,单位 MB/S
-speed=5
+speed=10
 
 #下载测速数量,默认 10
-speeddn=10
-
-#测速线程数量,视设备性能大小而定,默认 200
-speedn=500
-
-#单个IP下载测速最长时间,默认 10 秒
-speeddt=10
+speeddn=5
 
 #平均延迟上限,默认 9999.00 ms
-speedtl=300
-
-#平均延迟下限,过滤假墙 IP；(默认 0 ms)
-speedtll=10
+speedtl=250
 
 #下载测速URL
 speedurl=https://speed.cloudflare.com/__down?bytes=300000000
 
-
 ######################################################################################################
 
 # 下载文件
-curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/CloudflareST > /tmp/CloudflareST
-curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ip.txt > /tmp/ip.txt
-curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ipv6.txt > /tmp/ipv6.txt
-chmod +x /tmp/CloudflareST
+echo =====================下载所需文件=====================
 cd /tmp
+curl -fsSL https://proxy.freecdn.workers.dev/?url=https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/CloudflareST > /tmp/CloudflareST
+curl -fsSL https://proxy.freecdn.workers.dev/?url=https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ip.txt > /tmp/ip.txt
+curl -fsSL https://proxy.freecdn.workers.dev/?url=https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ipv6.txt > /tmp/ipv6.txt
+chmod +x /tmp/CloudflareST
 
 ######################################################################################################
 ##检查网络！！
 ping speed.cloudflare.com -c1 >/dev/null 2>&1
         if [ $? -eq 0 ];then
                 echo
-                echo =================网络正常，继续运行=================
+                echo ===================网络正常，继续运行====================
         else
                 echo
-                echo =================网络异常，停止运行=================
-                /etc/init.d/passwall restart
-                /etc/init.d/haproxy restart
+                echo ===================网络异常，停止运行====================
+                [[ $(/etc/init.d/haproxy status) != "running" ]] && /etc/init.d/haproxy start
+                [[ $(/etc/init.d/passwall status) != "running" ]] && /etc/init.d/passwall start
+                exit 0
+        fi
+##检查文件！！
+if [ -f "/tmp/CloudflareST" -a -f "/tmp/ip.txt" -a -f "/tmp/ipv6.txt" ];then
+                echo
+                echo ==================文件下载成功，继续运行==================
+        else
+                echo
+                echo ==================文件下载失败，停止运行==================
+                [[ $(/etc/init.d/haproxy status) != "running" ]] && /etc/init.d/haproxy start
+                [[ $(/etc/init.d/passwall status) != "running" ]] && /etc/init.d/passwall start
                 exit 0
         fi
 ######################################################################################################
 
-######################################################################################################
-
 # 计算开始时间
-starttime=`date +'%Y-%m-%d %H:%M:%S'`
+START_TIME=`date +'%Y-%m-%d %H:%M:%S'`
 
 # 开始测速
-./CloudflareST -sl $speed -dn $speeddn -n $speedn -dt $speeddt -tl $speedtl -tll $speedtll -url $speedurl
+./CloudflareST -tll 10 -n 500 -dt 10 -sl $speed -dn $speeddn -tl $speedtl -url $speedurl
 
 # 参数：
 #    -n 200
@@ -121,20 +133,25 @@ IP3=$(sed -n "4p" result.csv | awk -F, '{print $1}')
 IP4=$(sed -n "5p" result.csv | awk -F, '{print $1}')
 IP5=$(sed -n "6p" result.csv | awk -F, '{print $1}')
 IP6=$(sed -n "7p" result.csv | awk -F, '{print $1}')
+IP7=$(sed -n "8p" result.csv | awk -F, '{print $1}')
 SP1=$(sed -n "2p" result.csv | awk -F, '{print $6}')
 SP2=$(sed -n "3p" result.csv | awk -F, '{print $6}')
 SP3=$(sed -n "4p" result.csv | awk -F, '{print $6}')
 SP4=$(sed -n "5p" result.csv | awk -F, '{print $6}')
 SP5=$(sed -n "6p" result.csv | awk -F, '{print $6}')
 SP6=$(sed -n "7p" result.csv | awk -F, '{print $6}')
+SP7=$(sed -n "8p" result.csv | awk -F, '{print $6}')
 
 # 判断一下是否成功获取到了 IP（如果没有就退出脚本）：
 [[ -z "${IP1}" ]] && echo "CloudflareST 测速结果 IP 数量为 0，跳过下面步骤..." && /etc/init.d/haproxy restart && /etc/init.d/passwall restart && echo && echo && exit 0
 
 # 计算结束时间
-endtime=`date +'%Y-%m-%d %H:%M:%S'`
-start_seconds=$(date --date="$starttime" +%s)
-end_seconds=$(date --date="$endtime" +%s)
+END_TIME=`date +'%Y-%m-%d %H:%M:%S'`
+START_SECONDS=$(date --date="$START_TIME" +%s)
+END_SECONDS=$(date --date="$END_TIME" +%s)
+SECONDS=$((END_SECONDS-START_SECONDS))
+MIN=$(( $SECONDS/60 ))
+SEC=$(( $SECONDS-${MIN}*60 ))
 
 echo 优选以下IP满足 $speed MB/S带宽需求
 echo IP: $IP1 实测带宽 $SP1 Mbps
@@ -143,25 +160,22 @@ echo IP: $IP3 实测带宽 $SP3 Mbps
 echo IP: $IP4 实测带宽 $SP4 Mbps
 echo IP: $IP5 实测带宽 $SP5 Mbps
 echo IP: $IP6 实测带宽 $SP6 Mbps
-echo 总计用时 $((end_seconds-start_seconds)) 秒
+echo 总计用时 ${MIN}分${SEC}秒
 echo
 echo
 
 ######################################################################################################
-
-uci set passwall.xxxxxxxxxxxxx.address=$IP1
-#uci set passwall.xxxxxxxxxxxxx.address=$IP2
-#uci set passwall.xxxxxxxxxxxxx.address=$IP3
-#uci set passwall.xxxxxxxxxxxxx.address=$IP4
-#uci set passwall.xxxxxxxxxxxxx.address=$IP5
-#uci set passwall.xxxxxxxxxxxxx.address=$IP6
-
-######################################################################################################
-
 uci commit passwall
-/etc/init.d/passwall restart
-/etc/init.d/haproxy restart
+uci set passwall.xxxxxxxx.address=$IP1
+uci set passwall.xxxxxxxx.address=$IP2
+uci set passwall.xxxxxxxx.address=$IP3
+uci set passwall.xxxxxxxx.address=$IP4
+uci set passwall.xxxxxxxx.address=$IP5
+uci commit passwall
+######################################################################################################
 
+[[ $(/etc/init.d/haproxy status) != "running" ]] && /etc/init.d/haproxy start
+[[ $(/etc/init.d/passwall status) != "running" ]] && /etc/init.d/passwall start
 exit 0
 
 
