@@ -192,6 +192,10 @@ function install_bootstrap() {
   sed -i '/bootstrap/d' /etc/config/luci
   rm -rf /tmp/luci-*cache
   opkg install luci-theme-bootstrap
+  if [[ $? -ne 0 ]]; then
+    echo "主题安装失败"
+    exit 0
+  fi
   uci set luci.main.mediaurlbase='/luci-static/bootstrap'
   uci commit luci
   echo
