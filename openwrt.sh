@@ -210,8 +210,8 @@ function install_bootstrap() {
   fi
   
   if [[ ${Anzhuang_shibai} == "1" ]]; then
-    rm -rf /tmp/luci-theme-bootstrap.ipk
     if [[ "$(. /etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "18" ]]; then
+      rm -rf /tmp/luci-theme-bootstrap.ipk
       wget --tries=4 -q -P /tmp https://ghproxy.com/https://github.com/281677160/openwrt-package/blob/usb/zhuti/luci-theme-bootstrap_18.06.ipk -O /tmp/luci-theme-bootstrap.ipk
       if [[ $? -ne 0 ]]; then
         wget --tries=4 -q -P /tmp https://archive.openwrt.org/releases/packages-18.06/aarch64_cortex-a72/luci/luci-theme-bootstrap_git-18.235.62437-6503756-1_all.ipk -O /tmp/luci-theme-bootstrap.ipk
@@ -220,28 +220,39 @@ function install_bootstrap() {
           exit 1
         fi
       fi
-    else
-      wget --tries=4 -q -P /tmp https://ghproxy.com/https://github.com/281677160/openwrt-package/blob/usb/zhuti/luci-theme-bootstrap_21.02.ipk -O /tmp/luci-theme-bootstrap.ipk
+      opkg remove luci-theme-bootstrap
+      opkg install /tmp/luci-theme-bootstrap.ipk
       if [[ $? -ne 0 ]]; then
-        wget --tries=4 -q -P /tmp https://archive.openwrt.org/releases/packages-21.02/aarch64_cortex-a72/luci/luci-theme-bootstrap_git-21.298.79182-a706a9c_all.ipk -O /tmp/luci-theme-bootstrap.ipk
-        if [[ $? -ne 0 ]]; then
-          print_error "下载主题插件失败，请检查网络"
-          exit 1
-        fi
+        print_error "主题安装失败"
+        exit 1
+      else
+        print_ok "主题安装成功，正在重启openwrt，请稍后登录..."
+        uci set luci.main.mediaurlbase='/luci-static/bootstrap'
+        uci commit luci
+        reboot -f
       fi
-    fi
-
-    opkg remove luci-theme-bootstrap
-    opkg install /tmp/luci-theme-bootstrap.ipk
-    if [[ $? -ne 0 ]]; then
-      print_error "主题安装失败"
-      exit 1
     else
-      print_ok "主题安装成功，正在重启openwrt，请稍后登录..."
-      uci set luci.main.mediaurlbase='/luci-static/bootstrap'
-      uci commit luci
-      reboot -f
-    fi
+      rm -rf /tmp/luci-theme-bootstrap.ipk
+      wget --tries=4 -q -P /tmp https://ghproxy.com/https://github.com/281677160/openwrt-package/blob/usb/zhuti/luci-theme-material_21.02.ipk -O /tmp/luci-theme-material.ipk
+      if [[ $? -ne 0 ]]; then
+        wget --tries=4 -q -P /tmp https://archive.openwrt.org/releases/packages-21.02/aarch64_cortex-a72/luci/luci-theme-material_git-21.295.66888-fc702bc_all.ipk -O /tmp/luci-theme-material.ipk
+          if [[ $? -ne 0 ]]; then
+            print_error "下载主题插件失败，请检查网络"
+            exit 1
+          fi
+       fi
+       opkg remove luci-theme-material
+       opkg install /tmp/luci-theme-material.ipk
+       if [[ $? -ne 0 ]]; then
+         print_error "主题安装失败"
+         exit 1
+        else
+          print_ok "主题安装成功，正在重启openwrt，请稍后登录..."
+          uci set luci.main.mediaurlbase='/luci-static/material'
+          uci commit luci
+          reboot -f
+        fi
+    fi 
   fi
 }
 
