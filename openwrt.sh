@@ -278,6 +278,7 @@ function install_material() {
     fi
   fi
 }
+
 function install_zhuti() {
   if [[ "$(. /etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "18" ]]; then
     install_bootstrap
