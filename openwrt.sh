@@ -193,16 +193,47 @@ function install_bootstrap() {
   rm -rf /tmp/luci-*cache
   opkg install luci-theme-bootstrap
   if [[ $? -ne 0 ]]; then
-    echo "主题安装失败"
-    exit 0
+    print_error "固件自带源安装主题失败，正在尝试外部源，请稍后..."
+    export Anzhuang_shibai="1"
+  else
+    export Anzhuang_shibai="0"
+    uci set luci.main.mediaurlbase='/luci-static/bootstrap'
+    uci commit luci
+    print_ok "正在重启openwrt，请稍等一会进入后台..."
+    sleep 2
+    reboot -f
   fi
-  uci set luci.main.mediaurlbase='/luci-static/bootstrap'
-  uci commit luci
-  echo
-  ECHOY "正在重启openwrt，请稍等一会进入后台..."
-  echo
-  sleep 2
-  reboot -f
+  
+  if [[ ${Anzhuang_shibai} == "1" ]]; then
+    if [[ "$(. /etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "18" ]]; then
+      wget --tries=4 -q -P /tmp https://ghproxy.com/https://github.com/281677160/openwrt-package/blob/usb/zhuti/luci-theme-bootstrap_18.06.ipk -O /tmp/luci-theme-bootstrap.ipk
+      if [[ $? -ne 0 ]]; then
+        wget --tries=4 -q -P /tmp https://archive.openwrt.org/releases/packages-18.06/aarch64_cortex-a72/luci/luci-theme-bootstrap_git-18.235.62437-6503756-1_all.ipk -O /tmp/luci-theme-bootstrap.ipk
+        if [[ $? -ne 0 ]]; then
+          print_error "下载主题插件失败，请检查网络"
+          exit 1
+        fi
+      fi
+    else
+      wget --tries=4 -q -P /tmp https://ghproxy.com/https://github.com/281677160/openwrt-package/blob/usb/zhuti/luci-theme-bootstrap_21.02.ipk -O /tmp/luci-theme-bootstrap.ipk
+      if [[ $? -ne 0 ]]; then
+        wget --tries=4 -q -P /tmp https://archive.openwrt.org/releases/packages-21.02/aarch64_cortex-a72/luci/luci-theme-bootstrap_git-21.164.71418-bd36169_all.ipk -O /tmp/luci-theme-bootstrap.ipk
+        if [[ $? -ne 0 ]]; then
+          print_error "下载主题插件失败，请检查网络"
+          exit 1
+        fi
+      fi
+    fi
+
+    opkg remove luci-theme-bootstrap && opkg install /tmp/luci-theme-bootstrap.ipk
+    if [[ $? -ne 0 ]]; then
+      print_error "安装插件失败"
+      exit 1
+    else
+      print_ok "主题安装成功，正在重启openwrt，请稍后登录..."
+      uci set luci.main.mediaurlbase='/luci-static/bootstrap' && uci commit luci && reboot -f
+    fi
+  fi
 }
 
 menu() {
