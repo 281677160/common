@@ -16,6 +16,10 @@ echo ==========================================================
 echo
 echo =================脚本正在运行中.....=======================
 
+# 准备测速,停止passwall
+service passwall stop
+service haproxy stop
+
 ######################################################################################################
 ##参数设置!!
 
@@ -59,13 +63,11 @@ ping speed.cloudflare.com -c1 >/dev/null 2>&1
         else
                 echo
                 echo =================网络异常，停止运行=================
+                service passwall start
+                service haproxy start
                 exit 0
         fi
 ######################################################################################################
-
-# 准备测速,停止passwall
-/etc/init.d/haproxy stop
-/etc/init.d/passwall stop
 
 ######################################################################################################
 
@@ -157,8 +159,9 @@ uci set passwall.xxxxxxxxxxxxx.address=$IP1
 ######################################################################################################
 
 uci commit passwall
-/etc/init.d/haproxy restart
-/etc/init.d/passwall restart
+service passwall start
+service haproxy start
+
 exit 0
 
 
