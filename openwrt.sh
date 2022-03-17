@@ -37,10 +37,14 @@ function ECHOG() {
   echo -e "${Green} $1 ${Font}"
 }
 function print_ok() {
+  echo
   echo -e " ${OK} ${Blue} $1 ${Font}"
+  echo
 }
 function print_error() {
+  echo
   echo -e "${ERROR} ${RedBG} $1 ${Font}"
+  echo
 }
 judge() {
   if [[ 0 -eq $? ]]; then
@@ -195,6 +199,7 @@ function install_bootstrap() {
   if [[ $? -ne 0 ]]; then
     print_error "固件自带源安装主题失败，正在尝试外部源，请稍后..."
     export Anzhuang_shibai="1"
+    sleep 2
   else
     export Anzhuang_shibai="0"
     uci set luci.main.mediaurlbase='/luci-static/bootstrap'
@@ -226,13 +231,16 @@ function install_bootstrap() {
       fi
     fi
 
-    opkg remove luci-theme-bootstrap && opkg install /tmp/luci-theme-bootstrap.ipk
+    opkg remove luci-theme-bootstrap
+    opkg install /tmp/luci-theme-bootstrap.ipk
     if [[ $? -ne 0 ]]; then
-      print_error "安装插件失败"
+      print_error "主题安装失败"
       exit 1
     else
       print_ok "主题安装成功，正在重启openwrt，请稍后登录..."
-      uci set luci.main.mediaurlbase='/luci-static/bootstrap' && uci commit luci && reboot -f
+      uci set luci.main.mediaurlbase='/luci-static/bootstrap'
+      uci commit luci
+      reboot -f
     fi
   fi
 }
