@@ -28,8 +28,6 @@ fi
 if [[ -d /usr/lib/lua/luci/view/themes/argon ]]; then
   uci set argon.@global[0].bing_background=0
   uci commit argon
-  uci set luci.main.mediaurlbase='/luci-static/argon'
-  uci commit luci
 fi
 
 rm -rf /etc/networkip
