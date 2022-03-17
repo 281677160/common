@@ -223,7 +223,7 @@ function install_bootstrap() {
     else
       wget --tries=4 -q -P /tmp https://ghproxy.com/https://github.com/281677160/openwrt-package/blob/usb/zhuti/luci-theme-bootstrap_21.02.ipk -O /tmp/luci-theme-bootstrap.ipk
       if [[ $? -ne 0 ]]; then
-        wget --tries=4 -q -P /tmp https://archive.openwrt.org/releases/packages-21.02/aarch64_cortex-a72/luci/luci-theme-bootstrap_git-21.164.71418-bd36169_all.ipk -O /tmp/luci-theme-bootstrap.ipk
+        wget --tries=4 -q -P /tmp https://archive.openwrt.org/releases/packages-21.02/aarch64_cortex-a72/luci/luci-theme-bootstrap_git-21.298.79182-a706a9c_all.ipk -O /tmp/luci-theme-bootstrap.ipk
         if [[ $? -ne 0 ]]; then
           print_error "下载主题插件失败，请检查网络"
           exit 1
