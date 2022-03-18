@@ -24,57 +24,55 @@ GET_TARGET_INFO() {
 		echo "没匹配到该源码的分支"
 	fi
 	
+	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
+		export Rename="${TARGET_PROFILE}"
+		export TARGET_PROFILE="phicomm_k3"
+	elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
+		export Rename="${TARGET_PROFILE}"
+		export TARGET_PROFILE="phicomm_k2p"
+	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
+		export Rename="${TARGET_PROFILE}"
+		export TARGET_PROFILE="xiaomi_mir3g_v2"
+	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g|xiaomi_mir3g) ]]; then
+		export Rename="${TARGET_PROFILE}"
+		export TARGET_PROFILE="xiaomi_mir3g"
+	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
+		export Rename="${TARGET_PROFILE}"
+		export TARGET_PROFILE="xiaomi_mir3p"
+	fi
+	
 	case "${TARGET_BOARD}" in
 	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
-		Firmware_sfx="bin"
+		export Firmware_sfx="bin"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.${Firmware_sfx}"
 	;;
-	rockchip | x86 | bcm27xx | mxs | sunxi | zynq)
-		Firmware_sfx="img.gz"
+	x86 | rockchip | bcm27xx | mxs | sunxi | zynq)
+		export Firmware_sfx="img.gz"
+		export Legacy_Firmware="openwrt-${TARGET_SUBTARGET}-generic-squashfs-combined.${Firmware_sfx}"
+		export UEFI_Firmware="openwrt-${TARGET_SUBTARGET}-generic-squashfs-combined-efi.${Firmware_sfx}"
 	;;
 	mvebu)
 		case "${TARGET_SUBTARGET}" in
 		cortexa53 | cortexa72)
-			Firmware_sfx="img.gz"
+			export Firmware_sfx="img.gz"
+			export Legacy_Firmware="openwrt-${TARGET_SUBTARGET}-generic-squashfs-combined.${Firmware_sfx}"
+			export UEFI_Firmware="openwrt-${TARGET_SUBTARGET}-generic-squashfs-combined-efi.${Firmware_sfx}"
 		;;
 		esac
 	;;
 	bcm53xx)
-		Firmware_sfx="trx"
+		export Firmware_sfx="trx"
+		export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.${Firmware_sfx}"
 	;;
 	octeon | oxnas | pistachio)
-		Firmware_sfx="tar"
+		export Firmware_sfx="tar"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-generic-${TARGET_PROFILE}-squashfs.tar"
 	;;
 	*)
-		Firmware_sfx="bin"
+		export Firmware_sfx="bin"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.${Firmware_sfx}"
 	;;
 	esac
-	
-	if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
-		export Legacy_Firmware="openwrt-x86-64-generic-squashfs-combined.${Firmware_sfx}"
-		export UEFI_Firmware="openwrt-x86-64-generic-squashfs-combined-efi.${Firmware_sfx}"
-	elif [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
-		export Rename="${TARGET_PROFILE}"
-		export TARGET_PROFILE="phicomm_k3"
-		export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.${Firmware_sfx}"
-	elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
-		export Rename="${TARGET_PROFILE}"
-		export TARGET_PROFILE="phicomm_k2p"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.${Firmware_sfx}"
-	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
-		export Rename="${TARGET_PROFILE}"
-		export TARGET_PROFILE="xiaomi_mir3g_v2"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.${Firmware_sfx}"
-	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g|xiaomi_mir3g) ]]; then
-		export Rename="${TARGET_PROFILE}"
-		export TARGET_PROFILE="xiaomi_mir3g"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.${Firmware_sfx}"
-	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
-		export Rename="${TARGET_PROFILE}"
-		export TARGET_PROFILE="xiaomi_mir3p"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.${Firmware_sfx}"
-	else
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.${Firmware_sfx}"
-	fi
 	
 	AutoUp_Ver="${Home}/package/base-files/files/bin/AutoUpdate.sh"
 	[[ -f ${AutoUp_Ver} ]] && export AutoUpdate_Version=$(egrep -o "V[0-9].+" ${Home}/package/base-files/files/bin/AutoUpdate.sh | awk 'END{print}')
@@ -120,10 +118,22 @@ Diy_Part3() {
 	if [[ `ls ${Firmware_Path} | grep -c ".img"` -ge '1' ]] && [[ `ls ${Firmware_Path} | grep -c ".img.gz"` == '0' ]]; then
 		gzip *.img
 	fi
-	if [[ `ls ${Firmware_Path} | grep -c "immortalwrt"` -ge '1' ]]; then
-		rename -v "s/^immortalwrt/openwrt/" *
-	fi
-	if [[ "${TARGET_PROFILE}" == "x86-64" ]]; then
+	
+	case "${TARGET_BOARD}" in
+	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
+		if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
+			if [[ -n ${Rename} ]]; then
+				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}/${Up_Firmware}"
+				rm -f "${Firmware_Path}/${Up_Firmware}"
+				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+			else
+				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}/${Up_Firmware}"
+				rm -f "${Firmware_Path}/${Up_Firmware}"
+				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+			fi
+		fi	
+	;;
+	x86 | rockchip | bcm27xx | mxs | sunxi | zynq)
 		if [[ `ls "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
 			mv -f ${Firmware_Path}/*ext4* ${Diuqu_gj}
 		fi
@@ -139,58 +149,89 @@ Diy_Part3() {
 				mv -f "${Zhuan_Yi}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
 			fi
 		fi
-	fi
-	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
-		rename -v "s/${Rename}/phicomm_k3/" * > /dev/null 2>&1
-		cp -Rf ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
-		rm -rf ${Firmware_Path}/${Up_Firmware}
-		mv -f ${Zhuan_Yi}/*.trx ${Firmware_Path}/${Up_Firmware}
-	fi
-	if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
-		if [[ `ls | grep -c "xiaomi_mi-router-3g-v2"` -ge '1' ]]; then
-			rename -v "s/${Rename}/xiaomi_mir3g_v2/" * > /dev/null 2>&1
-		elif [[ `ls | grep -c "xiaomi_mi-router-3g"` -ge '1' ]]; then
-			rename -v "s/${Rename}/xiaomi_mir3g/" * > /dev/null 2>&1
-		elif [[ `ls | grep -c "xiaomi_mi-router-3-pro"` -ge '1' ]]; then
-			rename -v "s/${Rename}/xiaomi_mir3p/" * > /dev/null 2>&1
-		elif [[ `ls | grep -c "phicomm-k2p"` -ge '1' ]]; then
-			rename -v "s/${Rename}/phicomm_k2p/" * > /dev/null 2>&1
+	;;
+	mvebu)
+		case "${TARGET_SUBTARGET}" in
+		cortexa53 | cortexa72)
+			if [[ `ls "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
+				mv -f ${Firmware_Path}/*ext4* ${Diuqu_gj}
+			fi
+			if [[ `ls "${Firmware_Path}" | grep -c "rootfs"` -ge '1' ]]; then
+				mv -f ${Firmware_Path}/*rootfs* ${Diuqu_gj}
+			fi
+			if [[ `ls "${Firmware_Path}" | grep -c "${Firmware_sfx}"` -ge '1' ]]; then
+				mv -f ${Firmware_Path}/*${Firmware_sfx}* "${Zhuan_Yi}"
+				if [[ `ls "${Zhuan_Yi}" | grep -c "efi"` -eq '1' ]]; then
+					mv -f "${Zhuan_Yi}"/*efi* "${Firmware_Path}/${UEFI_Firmware}"
+				fi
+				if [[ `ls "${Zhuan_Yi}" | grep -c "squashfs"` -eq '1' ]]; then
+					mv -f "${Zhuan_Yi}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
+				fi
+			fi
+		;;
+		esac
+	;;
+	bcm53xx)
+		if [[ `ls ${Firmware_Path} | grep -c ".trx"` -ge '1' ]]; then
+			if [[ -n ${Rename} ]]; then
+				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}/${Up_Firmware}"
+				rm -f "${Firmware_Path}/${Up_Firmware}"
+				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+			else
+				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}/${Up_Firmware}"
+				rm -f "${Firmware_Path}/${Up_Firmware}"
+				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+			fi
 		fi
-		cp -Rf ${Firmware_Path}/*${TARGET_PROFILE}* ${Zhuan_Yi}
-		if [[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` -eq '1' ]]; then
-			rm -rf ${Firmware_Path}/${Up_Firmware}
-			mv -f ${Zhuan_Yi}/*sysupgrade.bin ${Firmware_Path}/${Up_Firmware}
-		else
-			echo "没发现.bin后缀固件，或者是您编译的固件体积超出源码规定值，出不来.bin格式固件"
+	;;
+	octeon | oxnas | pistachio)
+		if [[ `ls ${Firmware_Path} | grep -c ".tar"` -ge '1' ]]; then
+			if [[ -n ${Rename} ]]; then
+				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}/${Up_Firmware}"
+				rm -f "${Firmware_Path}/${Up_Firmware}"
+				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+			else
+				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}/${Up_Firmware}"
+				rm -f "${Firmware_Path}/${Up_Firmware}"
+				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+			fi
 		fi
-	fi
+	;;
+	*)
+		if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
+			if [[ -n ${Rename} ]]; then
+				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}/${Up_Firmware}"
+				rm -f "${Firmware_Path}/${Up_Firmware}"
+				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+			else
+				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}/${Up_Firmware}"
+				rm -f "${Firmware_Path}/${Up_Firmware}"
+				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+			fi
+		fi
+	;;
+	esac
+
 	cd "${Firmware_Path}"
-	case "${TARGET_PROFILE}" in
-	x86-64)
-		[[ -f ${Legacy_Firmware} ]] && {
+	if [[ `ls ${Firmware_Path} | grep -c "${Legacy_Firmware}"` -ge '1' ]] || [[ `ls ${Firmware_Path} | grep -c "${UEFI_Firmware}"` -ge '1' ]]; then
+		if [[ `ls ${Firmware_Path} | grep -c "${Legacy_Firmware}"` -ge '1' ]]; then
 			MD5=$(md5sum ${Legacy_Firmware} | cut -c1-3)
 			SHA256=$(sha256sum ${Legacy_Firmware} | cut -c1-3)
 			SHA5BIT="${MD5}${SHA256}"
 			cp ${Legacy_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-Legacy-${SHA5BIT}.${Firmware_sfx}
-		}
-		[[ -f ${UEFI_Firmware} ]] && {
+	        fi
+		if [[ `ls ${Firmware_Path} | grep -c "${UEFI_Firmware}"` -ge '1' ]]; then
 			MD5=$(md5sum ${UEFI_Firmware} | cut -c1-3)
 			SHA256=$(sha256sum ${UEFI_Firmware} | cut -c1-3)
 			SHA5BIT="${MD5}${SHA256}"
 			cp ${UEFI_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-UEFI-${SHA5BIT}.${Firmware_sfx}
-		}
-	;;
-	*)
-		[[ -f ${Up_Firmware} ]] && {
-			MD5=$(md5sum ${Up_Firmware} | cut -c1-3)
-			SHA256=$(sha256sum ${Up_Firmware} | cut -c1-3)
-			SHA5BIT="${MD5}${SHA256}"
-			cp ${Up_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-Sysupg-${SHA5BIT}.${Firmware_sfx}
-		} || {
-			echo "Firmware is not detected !"
-		}
-	;;
-	esac
+		fi
+	else
+		MD5=$(md5sum ${Up_Firmware} | cut -c1-3)
+		SHA256=$(sha256sum ${Up_Firmware} | cut -c1-3)
+		SHA5BIT="${MD5}${SHA256}"
+		cp ${Up_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-Sysupg-${SHA5BIT}.${Firmware_sfx}
+	fi
 	cd ${Home}
 	rm -rf "${Firmware_Path}"
 	rm -rf "${Zhuan_Yi}"
