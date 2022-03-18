@@ -123,13 +123,13 @@ Diy_Part3() {
 	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
 		if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
 			if [[ -n ${Rename} ]]; then
-				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}/${Up_Firmware}"
+				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}"
 				rm -f "${Firmware_Path}/${Up_Firmware}"
-				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+				[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` -ge '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 			else
-				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}/${Up_Firmware}"
+				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}"
 				rm -f "${Firmware_Path}/${Up_Firmware}"
-				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+				[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` -ge '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 			fi
 		fi	
 	;;
@@ -174,39 +174,39 @@ Diy_Part3() {
 	bcm53xx)
 		if [[ `ls ${Firmware_Path} | grep -c ".trx"` -ge '1' ]]; then
 			if [[ -n ${Rename} ]]; then
-				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}/${Up_Firmware}"
+				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}"
 				rm -f "${Firmware_Path}/${Up_Firmware}"
-				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+				[[ `ls ${Zhuan_Yi} | grep -c ".trx"` -ge '1' ]] && mv -f ${Zhuan_Yi}/*.trx "${Firmware_Path}/${Up_Firmware}"
 			else
-				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}/${Up_Firmware}"
+				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}"
 				rm -f "${Firmware_Path}/${Up_Firmware}"
-				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+				[[ `ls ${Zhuan_Yi} | grep -c ".trx"` -ge '1' ]] && mv -f ${Zhuan_Yi}/*.trx "${Firmware_Path}/${Up_Firmware}"
 			fi
 		fi
 	;;
 	octeon | oxnas | pistachio)
 		if [[ `ls ${Firmware_Path} | grep -c ".tar"` -ge '1' ]]; then
 			if [[ -n ${Rename} ]]; then
-				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}/${Up_Firmware}"
+				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}"
 				rm -f "${Firmware_Path}/${Up_Firmware}"
-				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+				[[ `ls ${Zhuan_Yi} | grep -c ".tar"` -ge '1' ]] && mv -f ${Zhuan_Yi}/*.tar "${Firmware_Path}/${Up_Firmware}"
 			else
-				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}/${Up_Firmware}"
+				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}"
 				rm -f "${Firmware_Path}/${Up_Firmware}"
-				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+				[[ `ls ${Zhuan_Yi} | grep -c ".tar"` -ge '1' ]] && mv -f ${Zhuan_Yi}/*.tar "${Firmware_Path}/${Up_Firmware}"
 			fi
 		fi
 	;;
 	*)
 		if [[ `ls ${Firmware_Path} | grep -c "sysupgrade.bin"` -ge '1' ]]; then
 			if [[ -n ${Rename} ]]; then
-				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}/${Up_Firmware}"
+				mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}"
 				rm -f "${Firmware_Path}/${Up_Firmware}"
-				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+				[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` -ge '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 			else
-				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}/${Up_Firmware}"
+				mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}"
 				rm -f "${Firmware_Path}/${Up_Firmware}"
-				mv -f "${Zhuan_Yi}/${Up_Firmware}" "${Firmware_Path}/${Up_Firmware}"
+				[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` -ge '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 			fi
 		fi
 	;;
