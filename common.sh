@@ -349,11 +349,15 @@ else
 	sed -i '/luci-app-argon-config/d' ${Home}/.config
 	echo -e "\n# CONFIG_PACKAGE_luci-app-argon-config is not set" >> ${Home}/.config
 fi
-if [[ `grep -c "CONFIG_TARGET_x86=y" ${Home}/.config` -eq '1' ]]; then
+if [[ `grep -c "CONFIG_TARGET_x86=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_bcm27xx=y" ${Home}/.config` -eq '1' ]]; then
 	sed -i '/IMAGES_GZIP/d' "${Home}/.config"
 	echo -e "\nCONFIG_TARGET_IMAGES_GZIP=y" >> "${Home}/.config"
 fi
-if [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_bcm27xx=y" ${Home}/.config` -eq '1' ]]; then
+if [[ `grep -c "CONFIG_TARGET_mxs=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_sunxi=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_zynq=y" ${Home}/.config` -eq '1' ]]; then
+	sed -i '/IMAGES_GZIP/d' "${Home}/.config"
+	echo -e "\nCONFIG_TARGET_IMAGES_GZIP=y" >> "${Home}/.config"
+fi
+if [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]]; then
 	sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${Home}/.config
 	export REGULAR_UPDATE="false"
 	echo "REGULAR_UPDATE=false" >> $GITHUB_ENV
