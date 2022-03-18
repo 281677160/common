@@ -53,9 +53,9 @@ speedurl=https://speed.cloudflare.com/__down?bytes=300000000
 # 下载文件
 echo =====================下载所需文件=====================
 cd /tmp
-wget -q --show-progress --progress=bar:force:noscroll https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/CloudflareST > /tmp/CloudflareST
-wget -q --show-progress --progress=bar:force:noscroll https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ip.txt > /tmp/ip.txt
-wget -q --show-progress --progress=bar:force:noscroll https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ipv6.txt > /tmp/ipv6.txt
+curl -fsSL  https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/CloudflareST > /tmp/CloudflareST
+curl -fsSL  https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ip.txt > /tmp/ip.txt
+curl -fsSL  https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ipv6.txt > /tmp/ipv6.txt
 chmod +x /tmp/CloudflareST
 
 ######################################################################################################
