@@ -30,7 +30,7 @@ GET_TARGET_INFO() {
 	elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
 		export Rename="${TARGET_PROFILE}"
 		export TARGET_PROFILE="phicomm_k2p"
-	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3gv2) ]]; then
+	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3g-v2|xiaomi_mir3g_v2) ]]; then
 		export Rename="${TARGET_PROFILE}"
 		export TARGET_PROFILE="xiaomi_mir3g_v2"
 	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g|xiaomi_mir3g) ]]; then
