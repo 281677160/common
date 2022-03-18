@@ -401,12 +401,11 @@ exit 0
 ' >> ${Home}/package/base-files/files/etc/rc.local
 
 
-if [[ "${REPO_BRANCH}" == "main" ]] || [[ "${REPO_BRANCH}" == "master" ]]; then
-	if [[ "${TARGET_BOARD}" == "x86" ]]; then
-		cp -Rf "${Home}"/build/common/Custom/DRM-I915 target/linux/x86/DRM-I915
-		for X in $(ls -1 target/linux/x86 | grep "config-"); do echo -e "\n$(cat target/linux/x86/DRM-I915)" >> target/linux/x86/${X}; done
-	fi
-fi
+for X in $(ls -1 target/linux/generic | grep "config-")
+do
+	sed -i '/CONFIG_FAT_DEFAULT_IOCHARSET/d' target/linux/generic/${X}
+	echo -e '\nCONFIG_FAT_DEFAULT_IOCHARSET="utf8"' >> target/linux/generic/${X}
+done
 
 if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${Home}/.config` -eq '1' ]]; then
 	mkdir -p files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > files/etc/hotplug.d/block/10-mount
