@@ -28,48 +28,37 @@ echo
 
 ######################################################################################################
 
-# 准备测速,停止passwall
-/etc/init.d/haproxy stop
-/etc/init.d/passwall stop
-
-######################################################################################################
 # 参数设置!!
 
-#下载速度下限,请自行设置,单位 MB/S
-speed=10
+#下载速度下限,请自行设置,单位 MB/S，不要超过自己最大带宽限制，否则会导致无限运行下去
+speed=50
 
-#下载测速数量,默认 10
-speeddn=5
+#下载测速数量,默认 10，数量越多时间越久，选到的IP可能越好
+speeddn=10
 
 #平均延迟上限,默认 9999.00 ms
-speedtl=250
+speedtl=300
 
 #下载测速URL
 speedurl=https://speed.cloudflare.com/__down?bytes=300000000
 
 ######################################################################################################
 
+# 准备测速,停止passwall
+/etc/init.d/haproxy stop
+/etc/init.d/passwall stop
+
+######################################################################################################
+
 # 下载文件
 echo =====================下载所需文件=====================
 cd /tmp
-curl -fsSL https://proxy.freecdn.workers.dev/?url=https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/CloudflareST > /tmp/CloudflareST
-curl -fsSL https://proxy.freecdn.workers.dev/?url=https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ip.txt > /tmp/ip.txt
-curl -fsSL https://proxy.freecdn.workers.dev/?url=https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ipv6.txt > /tmp/ipv6.txt
+wget -q --show-progress --progress=bar:force:noscroll https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/CloudflareST > /tmp/CloudflareST
+wget -q --show-progress --progress=bar:force:noscroll https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ip.txt > /tmp/ip.txt
+wget -q --show-progress --progress=bar:force:noscroll https://ghproxy.com/https://raw.githubusercontent.com/db-one/dbone-packages/main/CloudflareSpeedTest/ipv6.txt > /tmp/ipv6.txt
 chmod +x /tmp/CloudflareST
 
 ######################################################################################################
-##检查网络！！
-ping speed.cloudflare.com -c1 >/dev/null 2>&1
-        if [ $? -eq 0 ];then
-                echo
-                echo ===================网络正常，继续运行====================
-        else
-                echo
-                echo ===================网络异常，停止运行====================
-                [[ $(/etc/init.d/haproxy status) != "running" ]] && /etc/init.d/haproxy start
-                [[ $(/etc/init.d/passwall status) != "running" ]] && /etc/init.d/passwall start
-                exit 0
-        fi
 ##检查文件！！
 if [ -f "/tmp/CloudflareST" -a -f "/tmp/ip.txt" -a -f "/tmp/ipv6.txt" ];then
                 echo
@@ -77,8 +66,6 @@ if [ -f "/tmp/CloudflareST" -a -f "/tmp/ip.txt" -a -f "/tmp/ipv6.txt" ];then
         else
                 echo
                 echo ==================文件下载失败，停止运行==================
-                [[ $(/etc/init.d/haproxy status) != "running" ]] && /etc/init.d/haproxy start
-                [[ $(/etc/init.d/passwall status) != "running" ]] && /etc/init.d/passwall start
                 exit 0
         fi
 ######################################################################################################
@@ -166,11 +153,13 @@ echo
 
 ######################################################################################################
 uci commit passwall
-uci set passwall.xxxxxxxx.address=$IP1
-uci set passwall.xxxxxxxx.address=$IP2
-uci set passwall.xxxxxxxx.address=$IP3
-uci set passwall.xxxxxxxx.address=$IP4
-uci set passwall.xxxxxxxx.address=$IP5
+uci set passwall.xxxxxxxxx.address=$IP1
+uci set passwall.xxxxxxxxx.address=$IP2
+uci set passwall.xxxxxxxxx.address=$IP3
+uci set passwall.xxxxxxxxx.address=$IP4
+uci set passwall.xxxxxxxxx.address=$IP5
+uci set passwall.xxxxxxxxx.address=$IP6
+uci set passwall.xxxxxxxxx.address=$IP7
 uci commit passwall
 ######################################################################################################
 
