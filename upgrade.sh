@@ -205,25 +205,50 @@ Diy_Part3() {
 	esac
 
 	cd "${Firmware_Path}"
-	if [[ `ls ${Firmware_Path} | grep -c "${Legacy_Firmware}"` -ge '1' ]] || [[ `ls ${Firmware_Path} | grep -c "${UEFI_Firmware}"` -ge '1' ]]; then
-		if [[ `ls ${Firmware_Path} | grep -c "${Legacy_Firmware}"` -ge '1' ]]; then
+	case "${TARGET_BOARD}" in
+	x86 | rockchip | bcm27xx | mxs | sunxi | zynq)
+		[[ -f ${Legacy_Firmware} ]] && {
 			MD5=$(md5sum ${Legacy_Firmware} | cut -c1-3)
 			SHA256=$(sha256sum ${Legacy_Firmware} | cut -c1-3)
 			SHA5BIT="${MD5}${SHA256}"
 			cp ${Legacy_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-Legacy-${SHA5BIT}.${Firmware_sfx}
-	        fi
-		if [[ `ls ${Firmware_Path} | grep -c "${UEFI_Firmware}"` -ge '1' ]]; then
+		}
+		[[ -f ${UEFI_Firmware} ]] && {
 			MD5=$(md5sum ${UEFI_Firmware} | cut -c1-3)
 			SHA256=$(sha256sum ${UEFI_Firmware} | cut -c1-3)
 			SHA5BIT="${MD5}${SHA256}"
 			cp ${UEFI_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-UEFI-${SHA5BIT}.${Firmware_sfx}
-		fi
-	else
-		MD5=$(md5sum ${Up_Firmware} | cut -c1-3)
-		SHA256=$(sha256sum ${Up_Firmware} | cut -c1-3)
-		SHA5BIT="${MD5}${SHA256}"
-		cp ${Up_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-Sysupg-${SHA5BIT}.${Firmware_sfx}
-	fi
+		}
+	;;
+	mvebu)
+		case "${TARGET_SUBTARGET}" in
+		cortexa53 | cortexa72)
+			[[ -f ${Legacy_Firmware} ]] && {
+				MD5=$(md5sum ${Legacy_Firmware} | cut -c1-3)
+				SHA256=$(sha256sum ${Legacy_Firmware} | cut -c1-3)
+				SHA5BIT="${MD5}${SHA256}"
+				cp ${Legacy_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-Legacy-${SHA5BIT}.${Firmware_sfx}
+			}
+			[[ -f ${UEFI_Firmware} ]] && {
+				MD5=$(md5sum ${UEFI_Firmware} | cut -c1-3)
+				SHA256=$(sha256sum ${UEFI_Firmware} | cut -c1-3)
+				SHA5BIT="${MD5}${SHA256}"
+				cp ${UEFI_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-UEFI-${SHA5BIT}.${Firmware_sfx}
+			}
+		;;
+		esac
+	;;
+	*)
+		[[ -f ${Up_Firmware} ]] && {
+			MD5=$(md5sum ${Up_Firmware} | cut -c1-3)
+			SHA256=$(sha256sum ${Up_Firmware} | cut -c1-3)
+			SHA5BIT="${MD5}${SHA256}"
+			cp ${Up_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-Sysupg-${SHA5BIT}.${Firmware_sfx}
+		} || {
+			echo "Firmware is not detected !"
+		}
+	;;
+	esac
 	cd ${Home}
 	rm -rf "${Firmware_Path}"
 	rm -rf "${Zhuan_Yi}"
