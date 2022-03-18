@@ -33,10 +33,10 @@ GET_TARGET_INFO() {
 	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3g-v2|xiaomi_mir3g_v2) ]]; then
 		export Rename="${TARGET_PROFILE}"
 		export TARGET_PROFILE="xiaomi_mir3g_v2"
-	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g|xiaomi_mir3g) ]]; then
+	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
 		export Rename="${TARGET_PROFILE}"
 		export TARGET_PROFILE="xiaomi_mir3g"
-	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3-pro|xiaomi_mir3p) ]]; then
+	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3-pro" ]]; then
 		export Rename="${TARGET_PROFILE}"
 		export TARGET_PROFILE="xiaomi_mir3p"
 	fi
