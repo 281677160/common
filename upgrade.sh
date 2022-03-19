@@ -113,8 +113,8 @@ Diy_Part3() {
 	Mkdir ${Home}/bin/Firmware
 	export Zhuan_Yi="${Home}/bin/zhuanyi_Firmware"
 	export Diuqu_gj="${Home}/bin/targets/diuqugj"
-	rm -rf $"{Zhuan_Yi}" && Mkdir $"{Zhuan_Yi}"
-	rm -rf $"{Diuqu_gj}" && Mkdir "${Diuqu_gj}"
+	rm -rf "${Zhuan_Yi}" && Mkdir "${Zhuan_Yi}"
+	rm -rf "${Diuqu_gj}" && Mkdir "${Diuqu_gj}"
 	cd "${Firmware_Path}"
 	if [[ `ls ${Firmware_Path} | grep -c ".img"` -ge '1' ]] && [[ `ls ${Firmware_Path} | grep -c ".img.gz"` == '0' ]]; then
 		gzip *.img
