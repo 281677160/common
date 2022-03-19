@@ -402,17 +402,12 @@ fi
 /etc/init.d/network restart
 /etc/init.d/uhttpd restart
 exit 0
+
 ' >> ${Home}/package/base-files/files/etc/rc.local
 
 
-for X in $(ls -1 target/linux/generic | grep "config-")
-do
-	sed -i '/CONFIG_FAT_DEFAULT_IOCHARSET/d' target/linux/generic/${X}
-	echo -e '\nCONFIG_FAT_DEFAULT_IOCHARSET="utf8"' >> target/linux/generic/${X}
-done
-
 if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${Home}/.config` -eq '1' ]]; then
-	mkdir -p files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > files/etc/hotplug.d/block/10-mount
+	mkdir -p ${Home}/files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > ${Home}/files/etc/hotplug.d/block/10-mount
 fi
 
 
