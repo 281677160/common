@@ -115,6 +115,7 @@ Diy_Part3() {
 	export Diuqu_gj="${Home}/bin/targets/diuqugj"
 	rm -rf "${Zhuan_Yi}" && Mkdir "${Zhuan_Yi}"
 	rm -rf "${Diuqu_gj}" && Mkdir "${Diuqu_gj}"
+	echo "${TARGET_BOARD}" > ${Zhuan_Yi}/1234
 	cd "${Firmware_Path}"
 	if [[ `ls ${Firmware_Path} | grep -c ".img"` -ge '1' ]] && [[ `ls ${Firmware_Path} | grep -c ".img.gz"` == '0' ]]; then
 		gzip *.img
@@ -122,11 +123,14 @@ Diy_Part3() {
 	
 	case "${TARGET_BOARD}" in
 	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
+		echo "${TARGET_BOARD}" > ${Zhuan_Yi}/4444
 		if [[ -n ${Rename} ]]; then
+			echo "${TARGET_BOARD}" > ${Zhuan_Yi}/2234
 			mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 		else
+			echo "${TARGET_BOARD}" > ${Zhuan_Yi}/3234
 			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
