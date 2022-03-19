@@ -125,12 +125,12 @@ Diy_Part3() {
 	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
 		echo "${TARGET_BOARD}" > ${Zhuan_Yi}/4444
 		if [[ -n ${Rename} ]]; then
-			echo "${TARGET_BOARD}" > ${Zhuan_Yi}/2234
+			echo "${Rename}" > ${Zhuan_Yi}/2234
 			mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 		else
-			echo "${TARGET_BOARD}" > ${Zhuan_Yi}/3234
+			echo "${TARGET_PROFILE}" > ${Zhuan_Yi}/3234
 			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
