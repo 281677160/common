@@ -111,10 +111,10 @@ Diy_Part3() {
 	export AutoBuild_Firmware="${LUCI_Name}-${Openwrt_Version}"
 	export Firmware_Path="${Home}/upgrade"
 	Mkdir ${Home}/bin/Firmware
-	Mkdir ${Home}/bin/zhuanyi_Firmware
-	Mkdir ${Home}/bin/targets/diuqugj
 	export Zhuan_Yi="${Home}/bin/zhuanyi_Firmware"
 	export Diuqu_gj="${Home}/bin/targets/diuqugj"
+	rm -rf $"{Zhuan_Yi}" && Mkdir $"{Zhuan_Yi}"
+	rm -rf $"{Diuqu_gj}" && Mkdir "${Diuqu_gj}"
 	cd "${Firmware_Path}"
 	if [[ `ls ${Firmware_Path} | grep -c ".img"` -ge '1' ]] && [[ `ls ${Firmware_Path} | grep -c ".img.gz"` == '0' ]]; then
 		gzip *.img
