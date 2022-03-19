@@ -104,8 +104,8 @@ LOGGER() {
 	[[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
 	echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate.sh)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
 }
-case ${DEFAULT_Device} in
-x86-64 | x86_32)
+case ${Firmware_Type} in
+img | img.gz)
 	[ -d /sys/firmware/efi ] && {
 		export BOOT_Type="-UEFI"
 		export EFI_Mode="UEFI"
@@ -279,7 +279,7 @@ sleep 1
 echo -e "\n固件作者：${Author}"
 echo "设备名称：${CURRENT_Device}"
 echo "固件格式：${Firmware_SFX}"
-[[ "${DEFAULT_Device}" =~ (x86-64|x86_32) ]] && {
+[[ "${Firmware_Type}" =~ (img|img.gz) ]] && {
 	echo "引导模式：${EFI_Mode}"
 }
 echo "固件名称：${Firmware}"
