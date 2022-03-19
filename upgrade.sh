@@ -269,6 +269,9 @@ Diy_Part3() {
 	;;
 	esac
 	cd ${Home}
+	rm -rf "${Firmware_Path}"
+	rm -rf "${Zhuan_Yi}"
+	rm -rf "${Diuqu_gj}"
 }
 
 Mkdir() {
