@@ -587,14 +587,14 @@ if [ -n "$(ls -A "${Home}/EXT4" 2>/dev/null)" ]; then
 	echo
 	chmod -R +x ${Home}/EXT4
 	source ${Home}/EXT4
-	rm -rf EXT4
+	rm -rf ${Home}/EXT4
 fi
 if [ -n "$(ls -A "${Home}/Chajianlibiao" 2>/dev/null)" ]; then
 	echo
 	echo
 	chmod -R +x ${Home}/CHONGTU
 	source ${Home}/CHONGTU
-	rm -rf {CHONGTU,Chajianlibiao}
+	rm -rf ${Home}/{CHONGTU,Chajianlibiao}
 	echo
 	echo
 fi
@@ -602,7 +602,7 @@ if [ -n "$(ls -A "${Home}/Plug-in" 2>/dev/null)" ]; then
 	TIME r "	      已选插件列表"
 	chmod -R +x ${Home}/Plug-in
 	source ${Home}/Plug-in
-	rm -rf {Plug-in,Plug-2}
+	rm -rf ${Home}/{Plug-in,Plug-2}
 	echo
 fi
 }
