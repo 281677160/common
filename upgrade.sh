@@ -51,6 +51,8 @@ GET_TARGET_INFO() {
 	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3-pro" ]]; then
 		export Rename="${TARGET_PROFILE}"
 		export TARGET_PROFILE="xiaomi_mir3p"
+	else
+		export TARGET_PROFILE="${TARGET_PROFILE}"
 	fi
 	
 	case "${TARGET_BOARD}" in
