@@ -4,6 +4,16 @@
 # AutoBuild Functions
 
 GET_TARGET_INFO() {
+	export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${Home}/.config)"
+	export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${Home}/.config)"
+	if [[ `grep -c "CONFIG_TARGET_x86_64=y" ${Home}/.config` -eq '1' ]]; then
+		export TARGET_PROFILE="x86-64"
+	elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${Home}/.config` -eq '1' ]]; then
+		export TARGET_PROFILE="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" ${Home}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+	else
+		export TARGET_PROFILE="armvirt"
+	fi
+	
 	if [[ "${REPO_BRANCH}" == "master" ]]; then
 		export LUCI_Name="18.06"
 		export REPO_Name="lede"
