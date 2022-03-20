@@ -62,15 +62,15 @@ GET_TARGET_INFO() {
 	;;
 	x86 | rockchip | bcm27xx | mxs | sunxi | zynq)
 		export Firmware_sfx="img.gz"
-		export Legacy_Firmware="openwrt-${TARGET_SUBTARGET}-generic-squashfs-combined.${Firmware_sfx}"
-		export UEFI_Firmware="openwrt-${TARGET_SUBTARGET}-generic-squashfs-combined-efi.${Firmware_sfx}"
+		export Legacy_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined.${Firmware_sfx}"
+		export UEFI_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined-efi.${Firmware_sfx}"
 	;;
 	mvebu)
 		case "${TARGET_SUBTARGET}" in
 		cortexa53 | cortexa72)
 			export Firmware_sfx="img.gz"
-			export Legacy_Firmware="openwrt-${TARGET_SUBTARGET}-generic-squashfs-combined.${Firmware_sfx}"
-			export UEFI_Firmware="openwrt-${TARGET_SUBTARGET}-generic-squashfs-combined-efi.${Firmware_sfx}"
+			export Legacy_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined.${Firmware_sfx}"
+			export UEFI_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined-efi.${Firmware_sfx}"
 		;;
 		esac
 	;;
