@@ -35,6 +35,9 @@ find . -name 'luci-app-ipsec-vpnd' -o -name 'luci-app-wol' | xargs -i rm -rf {}
 find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
 find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
 
+[[ -d "${Home}/package/luci-app-passwall" ]] && rm -rf "${Home}/package/luci-app-passwall"
+[[ -d "${Home}/package/luci-app-passwall2" ]] && rm -rf "${Home}/package/luci-app-passwall2"
+[[ -d "${Home}/package/luci-app-ssr-plus" ]] && rm -rf "${Home}/package/luci-app-ssr-plus"
 git clone -b main https://github.com/281677160/openwrt-passwall package/luci-app-passwall
 rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
 git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
@@ -81,12 +84,18 @@ find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'l
 DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
 [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" $ZZZ
 
+
+[[ -d "${Home}/package/luci-app-passwall" ]] && rm -rf "${Home}/package/luci-app-passwall"
+[[ -d "${Home}/package/luci-app-passwall2" ]] && rm -rf "${Home}/package/luci-app-passwall2"
+[[ -d "${Home}/package/luci-app-ssr-plus" ]] && rm -rf "${Home}/package/luci-app-ssr-plus"
 git clone -b main https://github.com/281677160/openwrt-passwall package/luci-app-passwall
 rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
 git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
 rm -rf package/luci-app-ssr-plus/{dns2socks,microsocks,ipt2socks,pdnsd-alt}
 
-sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall2/g' target/linux/x86/Makefile
+
+sed  -i  's/ luci-app-passwall//g' target/linux/*/Makefile
+sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/*/Makefile
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 }
 
