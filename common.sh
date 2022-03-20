@@ -34,10 +34,8 @@ find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -
 find . -name 'luci-app-ipsec-vpnd' -o -name 'luci-app-wol' | xargs -i rm -rf {}
 find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
 find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
+find . -name 'luci-app-passwall' -o -name 'luci-app-passwall2' -o -name 'luci-app-ssr-plus' | xargs -i rm -rf {}
 
-[[ -d "${Home}/package/luci-app-passwall" ]] && rm -rf "${Home}/package/luci-app-passwall"
-[[ -d "${Home}/package/luci-app-passwall2" ]] && rm -rf "${Home}/package/luci-app-passwall2"
-[[ -d "${Home}/package/luci-app-ssr-plus" ]] && rm -rf "${Home}/package/luci-app-ssr-plus"
 git clone -b main https://github.com/281677160/openwrt-passwall package/luci-app-passwall
 rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
 git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
@@ -80,14 +78,12 @@ echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${REC
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-ttyd' | xargs -i rm -rf {}
 find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci-app-wol' | xargs -i rm -rf {}
 find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
+find . -name 'luci-app-passwall' -o -name 'luci-app-passwall2' -o -name 'luci-app-ssr-plus' | xargs -i rm -rf {}
 
 DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
 [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" $ZZZ
 
 
-[[ -d "${Home}/package/luci-app-passwall" ]] && rm -rf "${Home}/package/luci-app-passwall"
-[[ -d "${Home}/package/luci-app-passwall2" ]] && rm -rf "${Home}/package/luci-app-passwall2"
-[[ -d "${Home}/package/luci-app-ssr-plus" ]] && rm -rf "${Home}/package/luci-app-ssr-plus"
 git clone -b main https://github.com/281677160/openwrt-passwall package/luci-app-passwall
 rm -rf package/luci-app-passwall/{v2ray-core,v2ray-plugin,v2ray-geodata,xray-core,xray-plugin}
 git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
@@ -438,7 +434,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${Home}/.config` -eq '1' 
 		latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
 		wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
 		tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${Home} > /dev/null 2>&1
-		mkdir -p package/base-files/files/usr/bin
+		[[-d package/base-files/files/usr/bin ]] && mkdir -p package/base-files/files/usr/bin || rm -rf package/base-files/files/usr/bin/AdGuardHome 2>/dev/null
 		mv -f AdGuardHome/AdGuardHome package/base-files/files/usr/bin/
 		chmod 777 package/base-files/files/usr/bin/AdGuardHome
 		rm -rf ./{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
