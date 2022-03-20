@@ -357,15 +357,21 @@ fi
 if [[ `grep -c "CONFIG_TARGET_x86=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_rockchip=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_bcm27xx=y" ${Home}/.config` -eq '1' ]]; then
 	sed -i '/IMAGES_GZIP/d' "${Home}/.config"
 	echo -e "\nCONFIG_TARGET_IMAGES_GZIP=y" >> "${Home}/.config"
+	sed -i '/CONFIG_PACKAGE_openssh-sftp-server/d' "${Home}/.config"
+	echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${Home}/.config"
 fi
 if [[ `grep -c "CONFIG_TARGET_mxs=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_sunxi=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_zynq=y" ${Home}/.config` -eq '1' ]]; then
 	sed -i '/IMAGES_GZIP/d' "${Home}/.config"
 	echo -e "\nCONFIG_TARGET_IMAGES_GZIP=y" >> "${Home}/.config"
+	sed -i '/CONFIG_PACKAGE_openssh-sftp-server/d' "${Home}/.config"
+	echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${Home}/.config"
 fi
 if [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]]; then
 	sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${Home}/.config
 	export REGULAR_UPDATE="false"
 	echo "REGULAR_UPDATE=false" >> $GITHUB_ENV
+	sed -i '/CONFIG_PACKAGE_openssh-sftp-server/d' "${Home}/.config"
+	echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${Home}/.config"
 fi
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${Home}/.config` -eq '1' ]]; then
 	if [[ `grep -c "CONFIG_TARGET_ROOTFS_PARTSIZE" ${Home}/.config` -eq '0' ]]; then
@@ -423,8 +429,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${Home}/.config` -eq '1' 
 		Arch="i386"
 	elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${Home}/.config` -eq '1' ]]; then
 		Arch="arm64"
-	fi
-	if [[ `grep -c "CONFIG_ARCH=\"arm\"" ${Home}/.config` -eq '1' ]]; then
+	elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${Home}/.config` -eq '1' ]]; then
 		if [[ `grep -c "CONFIG_arm_v7=y" ${Home}/.config` -eq '1' ]]; then
 			Arch="armv7"
 		fi	
