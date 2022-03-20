@@ -437,21 +437,9 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${Home}/.config` -eq '1' 
 fi
 
 if [[ "${BY_INFORMATION}" == "true" ]]; then
-	grep -i CONFIG_PACKAGE_luci-app .config | grep  -v \# > Plug-in
-	grep -i CONFIG_PACKAGE_luci-theme .config | grep  -v \# >> Plug-in
-	if [[ `grep -c "CONFIG_PACKAGE_luci-i18n-qbittorrent-zh-cn=y" ${Home}/.config` -eq '0' ]]; then
-		sed -i '/qbittorrent/d' Plug-in
-	fi
-	if [[ `grep -c "CONFIG_PACKAGE_luci-app-passwall2=y" ${Home}/.config` -eq '0' ]]; then
-		sed -i '/luci-app-passwall2/d' Plug-in
-	fi
-	sed -i '/INCLUDE/d' Plug-in > /dev/null 2>&1
-	sed -i '/=m/d' Plug-in > /dev/null 2>&1
-	sed -i 's/CONFIG_PACKAGE_/、/g' Plug-in
-	sed -i 's/=y/\"/g' Plug-in
-	awk '$0=NR$0' Plug-in > Plug-2
-	awk '{print "	" $0}' Plug-2 > Plug-in
-	sed -i "s/^/TIME g \"/g" Plug-in
+	Plug_in="$(grep -i 'CONFIG_PACKAGE_luci-app' ${Home}/.config && grep -i 'CONFIG_PACKAGE_luci-theme' ${Home}/.config)"
+	Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/_Transparent_Proxy/d' |sed '/qbittorrent_static/d' |sed 's/CONFIG_PACKAGE_//g' |sed 's/=y//g' |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"     /g')"
+	echo "${Plug_in2}" >Plug-in
 fi
 rm -rf ${Home}/files/{README,README.md}
 }
