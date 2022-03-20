@@ -407,7 +407,7 @@ exit 0
 
 
 if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${Home}/.config` -eq '1' ]]; then
-	mkdir -p ${Home}/files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > ${Home}/files/etc/hotplug.d/block/10-mount
+	mkdir -p ${Home}/package/base-files/files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > ${Home}/package/base-files/files/etc/hotplug.d/block/10-mount
 fi
 
 
