@@ -36,7 +36,6 @@ find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
 find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
 
 git clone -b main https://github.com/281677160/openwrt-passwall package/luci-app-passwall
-git clone -b passwall2 https://github.com/281677160/openwrt-passwall  package/luci-app-passwall2
 git clone https://github.com/281677160/helloworld package/luci-app-ssr-plus
 rm -rf package/luci-app-ssr-plus/{dns2socks,microsocks,ipt2socks,pdnsd-alt}
 
