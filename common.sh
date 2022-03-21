@@ -367,12 +367,16 @@ if [[ `grep -c "CONFIG_TARGET_x86=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c 
 	echo -e "\nCONFIG_TARGET_IMAGES_GZIP=y" >> "${Home}/.config"
 	sed -i '/CONFIG_PACKAGE_openssh-sftp-server/d' "${Home}/.config"
 	echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${Home}/.config"
+	sed -i '/CONFIG_GRUB_IMAGES/d' "${Home}/.config"
+	echo -e "\nCONFIG_GRUB_IMAGES=y" >> "${Home}/.config"
 fi
 if [[ `grep -c "CONFIG_TARGET_mxs=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_sunxi=y" ${Home}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_TARGET_zynq=y" ${Home}/.config` -eq '1' ]]; then
 	sed -i '/IMAGES_GZIP/d' "${Home}/.config"
 	echo -e "\nCONFIG_TARGET_IMAGES_GZIP=y" >> "${Home}/.config"
 	sed -i '/CONFIG_PACKAGE_openssh-sftp-server/d' "${Home}/.config"
 	echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${Home}/.config"
+	sed -i '/CONFIG_GRUB_IMAGES/d' "${Home}/.config"
+	echo -e "\nCONFIG_GRUB_IMAGES=y" >> "${Home}/.config"
 fi
 if [[ `grep -c "CONFIG_TARGET_armvirt=y" ${Home}/.config` -eq '1' ]]; then
 	sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${Home}/.config
