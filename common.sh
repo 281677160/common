@@ -28,7 +28,9 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 Diy_lede() {
 # 给源码做个记号
 RECOGNIZE="${Home}/package/base-files/files/etc/openwrt_release"
+sed -i '/DISTRIB_RECOGNIZE/d' $RECOGNIZE
 echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
+##
 
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
 find . -name 'luci-app-ipsec-vpnd' -o -name 'luci-app-wol' | xargs -i rm -rf {}
@@ -73,7 +75,9 @@ fi
 Diy_lienol() {
 # 给源码做个记号
 RECOGNIZE="${Home}/package/base-files/files/etc/openwrt_release"
+sed -i '/DISTRIB_RECOGNIZE/d' $RECOGNIZE
 echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
+##
 
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-ttyd' | xargs -i rm -rf {}
 find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci-app-wol' | xargs -i rm -rf {}
@@ -102,7 +106,9 @@ sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 Diy_Tianling() {
 # 给源码做个记号
 RECOGNIZE="${Home}/package/base-files/files/etc/openwrt_release"
+sed -i '/DISTRIB_RECOGNIZE/d' $RECOGNIZE
 echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
+##
 
 find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-netgear' | xargs -i rm -rf {}
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
@@ -117,7 +123,9 @@ find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-
 Diy_mortal() {
 # 给源码做个记号
 RECOGNIZE="${Home}/package/base-files/files/etc/openwrt_release"
+sed -i '/DISTRIB_RECOGNIZE/d' $RECOGNIZE
 echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
+##
 
 find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
 find . -name 'luci-app-wol' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
