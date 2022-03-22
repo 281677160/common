@@ -28,9 +28,26 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 Diy_lede() {
 ./scripts/feeds clean
 ./scripts/feeds update -a
-find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
-find . -name 'luci-app-ipsec-vpnd' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
+
+if [[ "${REPO_BRANCH}" == "master" ]]; then
+  find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
+  find . -name 'luci-app-ipsec-vpnd' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+  find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
+elif [[ "${REPO_BRANCH}" == "main" ]]; then
+  find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-ttyd' | xargs -i rm -rf {}
+  find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+  find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
+elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
+  find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-netgear' | xargs -i rm -rf {}
+  find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
+  find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+  find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
+elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+  find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
+  find . -name 'luci-app-wol' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+  find . -name 'luci-app-adguardhome' -o -name 'adguardhome' | xargs -i rm -rf {}
+fi
+
 echo "
 src-git helloworld https://github.com/fw876/helloworld
 src-git passwall https://github.com/281677160/openwrt-passwall
@@ -73,10 +90,7 @@ sed -i '/DISTRIB_RECOGNIZE/d' $RECOGNIZE
 echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
 ##
 
-find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-ttyd' | xargs -i rm -rf {}
-find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
-find . -name 'luci-app-passwall' -o -name 'luci-app-passwall2' -o -name 'luci-app-ssr-plus' | xargs -i rm -rf {}
+
 
 DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
 [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" $ZZZ
@@ -104,10 +118,7 @@ sed -i '/DISTRIB_RECOGNIZE/d' $RECOGNIZE
 echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
 ##
 
-find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-netgear' | xargs -i rm -rf {}
-find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
-find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
+
 }
 
 
@@ -121,9 +132,7 @@ sed -i '/DISTRIB_RECOGNIZE/d' $RECOGNIZE
 echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
 ##
 
-find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
-find . -name 'luci-app-wol' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-find . -name 'luci-app-adguardhome' -o -name 'adguardhome' | xargs -i rm -rf {}
+
 rm -rf feeds/luci/themes
 }
 
@@ -165,7 +174,7 @@ if [ -n "$(ls -A "${PATH1}/diy" 2>/dev/null)" ]; then
 	cp -Rf "${PATH1}"/diy/* "${Home}"
 fi
 if [ -n "$(ls -A "${PATH1}/files" 2>/dev/null)" ]; then
-	cp -Rf "${PATH1}/files" "${Home}" && chmod -R +x ${Home}/files
+	cp -Rf "${PATH1}/files" "${Home}"
 fi
 if [ -n "$(ls -A "${PATH1}/patches" 2>/dev/null)" ]; then
 	find "${PATH1}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
