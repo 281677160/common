@@ -132,15 +132,13 @@ rm -rf feeds/luci/themes
 # 全部作者源码公共diy.sh文件
 ################################################################################################################
 Diy_all() {
-git clone --depth 1 -b "${REPO_BRANCH}" https://github.com/281677160/openwrt-package "${Home}"/openwrt-package
-cp -Rf "${Home}"/openwrt-package/* "${Home}" && rm -rf "${Home}"/openwrt-package
 
 if [[ ${REGULAR_UPDATE} == "true" ]]; then
-	git clone https://github.com/281677160/luci-app-autoupdate feeds/luci/applications/luci-app-autoupdate
+	git clone https://github.com/281677160/luci-app-autoupdate package/luci-app-autoupdate
 	[[ -f "${PATH1}/AutoUpdate.sh" ]] && cp -Rf "${PATH1}"/AutoUpdate.sh package/base-files/files/bin/AutoUpdate.sh
 	[[ -f "${PATH1}/replace.sh" ]] && cp -Rf "${PATH1}"/replace.sh package/base-files/files/bin/replace.sh
 fi
-[[ -f "${PATH1}/openwrt.sh" ]] && cp -Rf "${PATH1}"/openwrt.sh package/base-files/files/sbin/openwrt
+[[ -f "${PATH1}/openwrt.sh" ]] && mv -f "${PATH1}"/openwrt.sh package/base-files/files/sbin/openwrt
 chmod 777 package/base-files/files/sbin/openwrt
 
 if [[ "${REPO_BRANCH}" == "master" ]]; then
