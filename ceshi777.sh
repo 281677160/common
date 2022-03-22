@@ -148,7 +148,7 @@ fi
 }
 
 Diy_AutoUpdate() {
-
+echo
 }
 
 
