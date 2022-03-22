@@ -30,6 +30,7 @@ Diy_laku() {
 # 拉库和做标记，一次性操作
 RECOGNIZE="$BASE_PATH/etc/openwrt_release"
 echo "11111111111"
+./scripts/feeds clean && ./scripts/feeds update -a
 if [[ "${REPO_BRANCH}" == "master" ]]; then
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
   find . -name 'luci-app-ipsec-vpnd' -o -name 'luci-app-wol' | xargs -i rm -rf {}
