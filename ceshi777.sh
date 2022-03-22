@@ -607,6 +607,7 @@ fi
 
 menu() {
 if [[ "${REPO_BRANCH}" == "master" ]]; then
+Diy_settings
 Diy_lede
 Diy_all
 /bin/bash "${PATH1}/$DIY_PART_SH"
