@@ -145,10 +145,10 @@ echo
 # 全部作者源码公共diy.sh文件
 ################################################################################################################
 Diy_all() {
-
+echo "55555555555555"
 cp -Rf $HOME_PATH/build/common/${YYYDDD}/* $BUILD_PATH
 
-if [ -n "$(ls -A "${PATH1}/diy" 2>/dev/null)" ]; then
+if [ -n "$(ls -A "$BUILD_PATH/diy" 2>/dev/null)" ]; then
 	cp -Rf $BUILD_PATH/diy/* $HOME_PATH
 fi
 if [ -n "$(ls -A "$BUILD_PATH/files" 2>/dev/null)" ]; then
@@ -161,12 +161,13 @@ fi
 
 
 Diy_INDEX() {
-if [[ "${REPO_BRANCH}" == "master" ]] && [[ ! ${byop} == "0" ]]; then
+echo "14488888888"
+if [[ "${REPO_BRANCH}" == "master" ]]; then
 	sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
 	sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
 	sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
 fi
-if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]] && [[ ! ${byop} == "0" ]]; then
+if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
 	sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/*/index.htm
 	sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/*/index.htm
 	sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/emortal/autocore/files/*/index.htm
