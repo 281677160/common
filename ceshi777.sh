@@ -189,21 +189,21 @@ fi
 # 判断脚本是否缺少主要文件（如果缺少settings.ini设置文件在检测脚本设置就运行错误了）
 ################################################################################################################
 Diy_settings() {
-rm -rf ${Home}/build/QUEWENJIANerros
-if [ -z "$(ls -A "$PATH1/${CONFIG_FILE}" 2>/dev/null)" ]; then
+rm -rf $HOME_PATH/build/QUEWENJIANerros
+if [ -z "$(ls -A "$BUILD_PATH/${CONFIG_FILE}" 2>/dev/null)" ]; then
 	echo
 	TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[build/${Modelfile}]文件夹内补齐"
-	echo "errors" > ${Home}/build/QUEWENJIANerros
+	echo "errors" > $HOME_PATH/build/QUEWENJIANerros
 	echo
 fi
-if [ -z "$(ls -A "$PATH1/${DIY_PART_SH}" 2>/dev/null)" ]; then
+if [ -z "$(ls -A "$BUILD_PATH/${DIY_PART_SH}" 2>/dev/null)" ]; then
 	echo
 	TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[build/${Modelfile}]文件夹内补齐"
-	echo "errors" > ${Home}/build/QUEWENJIANerros
+	echo "errors" > $HOME_PATH/build/QUEWENJIANerros
 	echo
 fi
-if [ -n "$(ls -A "${Home}/build/QUEWENJIANerros" 2>/dev/null)" ]; then
-rm -rf ${Home}/build/QUEWENJIANerros
+if [ -n "$(ls -A "$HOME_PATH/build/QUEWENJIANerros" 2>/dev/null)" ]; then
+rm -rf $HOME_PATH/build/QUEWENJIANerros
 exit 1
 fi
 rm -rf {build,README.md}
