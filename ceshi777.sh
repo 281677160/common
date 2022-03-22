@@ -35,7 +35,7 @@ echo "
 src-git helloworld https://github.com/fw876/helloworld
 src-git passwall https://github.com/281677160/openwrt-passwall
 src-git danshui https://github.com/281677160/openwrt-package.git;ceshi
-" >> ${Home}
+" >> "${Home}/feeds.conf.default"
 
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 
