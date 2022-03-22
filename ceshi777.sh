@@ -79,6 +79,7 @@ exit 0
 Diy_lede() {
 echo "1333333333"
 [[ -f $BUILD_PATH/openwrt.sh ]] && cp -Rf $BUILD_PATH/openwrt.sh $BASE_PATH/sbin/openwrt
+chmod 777 $BASE_PATH/sbin/openwrt
 
 if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 	# 修复NTFS格式优盘不自动挂载
