@@ -591,10 +591,16 @@ menu() {
 if [[ "${REPO_BRANCH}" == "master" ]]; then
 Diy_settings
 Diy_lede
-Diy_all
-[[ -e "$PATH1/$CONFIG_FILE" ]] && mv "$PATH1/$CONFIG_FILE" .config
+Diy_default
+Diy_INDEX
+Diy_all    
+/bin/bash $BUILD_PATH/$DIY_PART_SH
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
-source "${PATH1}/upgrade.sh" && Diy_Part1
+source $BUILD_PATH/upgrade.sh && Diy_Part1
 fi
+./scripts/feeds update -a
+./scripts/feeds install -a > /dev/null 2>&1
+./scripts/feeds install -a -f
+mv $BUILD_PATH/$CONFIG_FILE .config
 fi
 }
