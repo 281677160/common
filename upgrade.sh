@@ -98,6 +98,9 @@ GET_TARGET_INFO() {
 }
 
 Diy_Part1() {
+git clone https://github.com/281677160/luci-app-autoupdate package/luci-app-autoupdate
+[[ -f "${PATH1}/AutoUpdate.sh" ]] && cp -Rf "${PATH1}"/AutoUpdate.sh package/base-files/files/bin/AutoUpdate.sh
+[[ -f "${PATH1}/replace.sh" ]] && cp -Rf "${PATH1}"/replace.sh package/base-files/files/bin/replace.sh
 sed  -i  's/ luci-app-autoupdate luci-app-ttyd//g' target/linux/*/Makefile
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd/g' target/linux/*/Makefile
 }
