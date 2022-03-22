@@ -28,7 +28,8 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 Diy_laku() {
 
 # 拉库和做标记，一次性操作
-
+./scripts/feeds clean
+./scripts/feeds update -a
 RECOGNIZE="$BASE_PATH/etc/openwrt_release"
 
 if [[ "${REPO_BRANCH}" == "master" ]]; then
