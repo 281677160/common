@@ -590,11 +590,11 @@ fi
 
 menu() {
 if [[ "${REPO_BRANCH}" == "master" ]]; then
-Diy_settings
+Diy_laku
 Diy_lede
 Diy_default
 Diy_INDEX
-Diy_all    
+Diy_all
 /bin/bash $BUILD_PATH/$DIY_PART_SH
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
 source $BUILD_PATH/upgrade.sh && Diy_Part1
