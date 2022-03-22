@@ -35,7 +35,6 @@ if [[ "${REPO_BRANCH}" == "master" ]]; then
   find . -name 'luci-app-ipsec-vpnd' -o -name 'luci-app-wol' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
-  
 elif [[ "${REPO_BRANCH}" == "main" ]]; then
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-ttyd' | xargs -i rm -rf {}
   find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci-app-wol' | xargs -i rm -rf {}
@@ -44,14 +43,12 @@ elif [[ "${REPO_BRANCH}" == "main" ]]; then
   
   DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
   [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" $ZZZ
-  
 elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
   find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-netgear' | xargs -i rm -rf {}
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
   find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
-  
 elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
   find . -name 'luci-app-wol' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
@@ -65,16 +62,7 @@ src-git passwall https://github.com/281677160/openwrt-passwall
 src-git danshui https://github.com/281677160/openwrt-package.git;ceshi
 " >> $HOME_PATH/feeds.conf.default
 
-
-sed -i '$ s/exit 0$//' $BASE_PATH/etc/rc.local
-echo '
-if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
-  sed -i "/coremark/d" /etc/crontabs/root
-fi
-/etc/init.d/network restart
-/etc/init.d/uhttpd restart
-exit 0
-' >> $BASE_PATH/etc/rc.local
+echo "11111111111"
 
 }
 
