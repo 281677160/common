@@ -26,8 +26,6 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 # LEDE源码通用diy.sh文件
 ################################################################################################################
 Diy_lede() {
-./scripts/feeds clean
-./scripts/feeds update -a
 
 if [[ "${REPO_BRANCH}" == "master" ]]; then
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
