@@ -29,7 +29,7 @@ Diy_laku() {
 
 # 拉库和做标记，一次性操作
 
-RECOGNIZE="${Home}/package/base-files/files/etc/openwrt_release"
+RECOGNIZE="$BASE_PATH/etc/openwrt_release"
 
 if [[ "${REPO_BRANCH}" == "master" ]]; then
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
@@ -64,10 +64,10 @@ echo "
 src-git helloworld https://github.com/fw876/helloworld
 src-git passwall https://github.com/281677160/openwrt-passwall
 src-git danshui https://github.com/281677160/openwrt-package.git;ceshi
-" >> "${Home}/feeds.conf.default"
+" >> $HOME_PATH/feeds.conf.default
 
 
-sed -i '$ s/exit 0$//' ${Home}/package/base-files/files/etc/rc.local
+sed -i '$ s/exit 0$//' $BASE_PATH/etc/rc.local
 echo '
 if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
   sed -i "/coremark/d" /etc/crontabs/root
@@ -75,12 +75,13 @@ fi
 /etc/init.d/network restart
 /etc/init.d/uhttpd restart
 exit 0
-' >> ${Home}/package/base-files/files/etc/rc.local
+' >> $BASE_PATH/etc/rc.local
 
 }
 
 
 Diy_lede() {
+[[ -f $BUILD_PATH/openwrt.sh ]] && cp -Rf $BUILD_PATH/openwrt.sh $BASE_PATH/sbin/openwrt
 
 if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
 	# 修复NTFS格式优盘不自动挂载
@@ -112,7 +113,7 @@ fi
 Diy_lienol() {
 sed  -i  's/ luci-app-passwall//g' target/linux/*/Makefile
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/*/Makefile
-[[ -f "$PATH1/openwrt.sh" ]] && cp -Rf $PATH1/openwrt.sh $Home/package/base-files/files/sbin/openwrt
+[[ -f "$PATH1/openwrt.sh" ]] && cp -Rf $PATH1/openwrt.sh $BASE_PATH/sbin/openwrt
 }
 
 
@@ -156,16 +157,16 @@ Diy_AutoUpdate() {
 ################################################################################################################
 Diy_all() {
 
-cp -Rf "${Home}"/build/common/${YYYDDD}/* "${PATH1}"
+cp -Rf $HOME_PATH/build/common/${YYYDDD}/* $BUILD_PATH
 
 if [ -n "$(ls -A "${PATH1}/diy" 2>/dev/null)" ]; then
-	cp -Rf "${PATH1}"/diy/* "${Home}"
+	cp -Rf $BUILD_PATH/diy/* $HOME_PATH
 fi
-if [ -n "$(ls -A "${PATH1}/files" 2>/dev/null)" ]; then
-	cp -Rf "${PATH1}/files" "${Home}"
+if [ -n "$(ls -A "$BUILD_PATH/files" 2>/dev/null)" ]; then
+	cp -Rf "$BUILD_PATH/files" $HOME_PATH
 fi
-if [ -n "$(ls -A "${PATH1}/patches" 2>/dev/null)" ]; then
-	find "${PATH1}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
+if [ -n "$(ls -A "$BUILD_PATH/patches" 2>/dev/null)" ]; then
+	find "$BUILD_PATH/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
 }
 
