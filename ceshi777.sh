@@ -29,7 +29,7 @@ Diy_laku() {
 
 # 拉库和做标记，一次性操作
 RECOGNIZE="$BASE_PATH/etc/openwrt_release"
-
+echo "11111111111"
 if [[ "${REPO_BRANCH}" == "master" ]]; then
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
   find . -name 'luci-app-ipsec-vpnd' -o -name 'luci-app-wol' | xargs -i rm -rf {}
@@ -62,12 +62,13 @@ src-git passwall https://github.com/281677160/openwrt-passwall
 src-git danshui https://github.com/281677160/openwrt-package.git;ceshi
 " >> $HOME_PATH/feeds.conf.default
 
-echo "11111111111"
+echo "2222222222"
 
 }
 
 
 Diy_lede() {
+echo "1333333333"
 [[ -f $BUILD_PATH/openwrt.sh ]] && cp -Rf $BUILD_PATH/openwrt.sh $BASE_PATH/sbin/openwrt
 
 if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
@@ -121,15 +122,16 @@ Diy_mortal() {
 
 
 Diy_default() {
+echo "14444444441"
 if [[ "${REPO_BRANCH}" == "master" ]]; then
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ_PATH
 elif [[ "${REPO_BRANCH}" == "main" ]]; then
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ_PATH
 elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Convert/1806-default-settings > ${Home}/package/emortal/default-settings/files/99-default-settings
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Convert/1806-default-settings > $HOME_PATH/package/emortal/default-settings/files/99-default-settings
 elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-chmod -R 777 ${Home}/build/common/Convert
-cp -Rf ${Home}/build/common/Convert/* "${Home}"
+chmod -R 777 $HOME_PATH/build/common/Convert
+cp -Rf $HOME_PATH/build/common/Convert/* "$HOME_PATH"
 /bin/bash Convert.sh
 fi
 }
