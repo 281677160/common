@@ -54,6 +54,11 @@ src-git passwall https://github.com/281677160/openwrt-passwall
 src-git danshui https://github.com/281677160/openwrt-package.git;ceshi
 " >> "${Home}/feeds.conf.default"
 
+/bin/bash "${PATH1}/$DIY_PART_SH"
+./scripts/feeds update -a
+./scripts/feeds install -a > /dev/null 2>&1
+./scripts/feeds install -a
+
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ
 
 if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
@@ -616,10 +621,6 @@ if [[ "${REPO_BRANCH}" == "master" ]]; then
 Diy_settings
 Diy_lede
 Diy_all
-/bin/bash "${PATH1}/$DIY_PART_SH"
-./scripts/feeds update -a
-./scripts/feeds install -a > /dev/null 2>&1
-./scripts/feeds install -a
 [[ -e "$PATH1/$CONFIG_FILE" ]] && mv "$PATH1/$CONFIG_FILE" .config
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
 source "${PATH1}/upgrade.sh" && Diy_Part1
