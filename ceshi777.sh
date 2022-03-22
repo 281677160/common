@@ -63,7 +63,15 @@ src-git passwall https://github.com/281677160/openwrt-passwall
 src-git danshui https://github.com/281677160/openwrt-package.git;ceshi
 " >> $HOME_PATH/feeds.conf.default
 
-echo "2222222222"
+sed -i '$ s/exit 0$//' $BASE_PATH/etc/rc.local
+echo '
+if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
+  sed -i "/coremark/d" /etc/crontabs/root
+fi
+/etc/init.d/network restart
+/etc/init.d/uhttpd restart
+exit 0
+' >> $BASE_PATH/etc/rc.local
 
 }
 
