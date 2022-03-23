@@ -517,33 +517,33 @@ exit 0
 function Make_defconfig() {
 make defconfig > /dev/null 2>&1
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${Home}/.config)"
-  export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${Home}/.config)"
-  if [[ `grep -c "CONFIG_TARGET_x86_64=y" ${Home}/.config` -eq '1' ]]; then
+  export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
+  export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)"
+  if [[ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` -eq '1' ]]; then
     export TARGET_PROFILE="x86-64"
-  elif [[ `grep -c "CONFIG_TARGET_x86=y" ${Home}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" ${Home}/.config` == '0' ]]; then
+  elif [[ `grep -c "CONFIG_TARGET_x86=y" $HOME_PATH/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` == '0' ]]; then
     export TARGET_PROFILE="x86_32"
-  elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${Home}/.config` -eq '1' ]]; then
-    export TARGET_PROFILE="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" ${Home}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+  elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" $HOME_PATH/.config` -eq '1' ]]; then
+    export TARGET_PROFILE="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" $HOME_PATH/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
   else
     export TARGET_PROFILE="${TARGET_BOARD}"
   fi
   export TARGET_BSGET="$HOME_PATH/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
 else
-  export TAR_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${Home}/.config)"
-  export TAR_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${Home}/.config)"
-  echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
-  echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)" >> $GITHUB_ENV
+  export TAR_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
+  export TAR_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)"
+  echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)" >> $GITHUB_ENV
+  echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)" >> $GITHUB_ENV
   echo "Compile_Date=$(date +%Y%m%d-%H%M)" >> $GITHUB_ENV
-  if [ `grep -c "CONFIG_TARGET_x86_64=y" .config` -eq '1' ]; then
+  if [ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` -eq '1' ]; then
     echo "TARGET_PROFILE=x86-64" >> $GITHUB_ENV
-  elif [[ `grep -c "CONFIG_TARGET_x86=y" .config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" .config` == '0' ]]; then
+  elif [[ `grep -c "CONFIG_TARGET_x86=y" $HOME_PATH/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` == '0' ]]; then
     echo "TARGET_PROFILE=x86_32" >> $GITHUB_ENV
-  elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" .config` -eq '1' ]; then
-    grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+  elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" $HOME_PATH/.config` -eq '1' ]; then
+    grep '^CONFIG_TARGET.*DEVICE.*=y' $HOME_PATH/.config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
     [ -s DEVICE_NAME ] && echo "TARGET_PROFILE=$(cat DEVICE_NAME)" >> $GITHUB_ENV
   else
-    echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
+    echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)" >> $GITHUB_ENV
   fi
   echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> $GITHUB_ENV
 fi
