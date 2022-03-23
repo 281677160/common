@@ -106,7 +106,7 @@ echo "Diy_mortal"
 
 function Diy_amlogic() {
 echo "Diy_amlogic"
-if [[ "${Modelfile}" == "openwrt_amlogic" ]]; then
+if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
   # 修复NTFS格式优盘不自动挂载
   packages=" \
   block-mount fdisk usbutils badblocks ntfs-3g kmod-scsi-core kmod-usb-core \
@@ -366,7 +366,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-unblockneteasemusic=y" ${HOME_PATH}/.con
   fi
 fi
 
-if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${Home}/.config` -eq '1' ]]; then
+if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   mkdir -p ${HOME_PATH}/files/etc/hotplug.d/block && curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
 fi
 
@@ -417,7 +417,7 @@ fi
 echo
 echo
 if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
-	chmod -R +x ${Home}/EXT4
+	chmod -R +x ${HOME_PATH}/EXT4
 	source ${HOME_PATH}/EXT4
 	rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao,EXT4}
 	echo
@@ -449,20 +449,20 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
 	
   if [[ "${Arch}" =~ (amd64|i386|arm64|armv7) ]]; then
     downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
-    latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
-    wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
-    tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${HOME_PATH} > /dev/null 2>&1
+    latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHOME_PATH/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
+    wget -q https://github.com/AdguardTeam/AdGuardHOME_PATH/releases/download/${latest_ver}/AdGuardHOME_PATH_linux_${Arch}.tar.gz
+    tar -zxvf AdGuardHOME_PATH_linux_${Arch}.tar.gz -C ${HOME_PATH} > /dev/null 2>&1
     if [[ -d "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}" ]]; then
       mkdir -p ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin
-      [[ -f ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome ]] && rm -rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
-      mv -f AdGuardHome/AdGuardHome ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
-      chmod 777 ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
-      rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
+      [[ -f ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHOME_PATH ]] && rm -rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHOME_PATH
+      mv -f AdGuardHOME_PATH/AdGuardHOME_PATH ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHOME_PATH
+      chmod 777 ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHOME_PATH
+      rm -rf $HOME_PATH/{AdGuardHOME_PATH_linux_${Arch}.tar.gz,AdGuardHOME_PATH}
     else
        mkdir -p $HOME_PATH/files/usr/bin
-       mv -f AdGuardHome/AdGuardHome $HOME_PATH/files/usr/bin
-       chmod 777 files/usr/bin/AdGuardHome
-       rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
+       mv -f AdGuardHOME_PATH/AdGuardHOME_PATH $HOME_PATH/files/usr/bin
+       chmod 777 files/usr/bin/AdGuardHOME_PATH
+       rm -rf $HOME_PATH/{AdGuardHOME_PATH_linux_${Arch}.tar.gz,AdGuardHOME_PATH}
     fi
   fi
 fi
@@ -502,7 +502,7 @@ TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${ZUOZHE}"
 TIME b "Luci版本: ${OpenWrt_name}"
-[[ "${Modelfile}" == "openwrt_amlogic" ]] && {
+[[ "${matrixtarget}" == "openwrt_amlogic" ]] && {
 	TIME b "编译机型: 晶晨系列"
 } || {
 	TIME b "编译机型: ${TARGET_PROFILE}"
@@ -511,7 +511,7 @@ TIME b "固件作者: ${Author}"
 TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${CangKu}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
 TIME b "编译时间: ${Compte}"
-[[ "${Modelfile}" == "openwrt_amlogic" ]] && {
+[[ "${matrixtarget}" == "openwrt_amlogic" ]] && {
 	TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【晶晨系列】固件"
 } || {
 	TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_PROFILE}】固件"
@@ -583,7 +583,7 @@ cd ../ && df -hT $PWD && cd $HOME_PATH
 echo
 echo
 if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
-	chmod -R +x ${Home}/EXT4
+	chmod -R +x ${HOME_PATH}/EXT4
 	source ${HOME_PATH}/EXT4
 	rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao,EXT4}
 	echo
