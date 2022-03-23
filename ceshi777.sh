@@ -215,10 +215,10 @@ fi
 function Diy_patches() {
 echo "Diy_patches"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  cp -Rf $HOME_PATH/build/common/${MAIN_TAIN}/* $BUILD_PATH
+  cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
   cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* $BUILD_PATH
 else
-  cp -Rf $HOME_PATH/build/common/${MAIN_TAIN}/* $BUILD_PATH
+  cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
 fi
 if [ -n "$(ls -A "$BUILD_PATH/patches" 2>/dev/null)" ]; then
   find "$BUILD_PATH/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
@@ -467,10 +467,10 @@ fi
 function Diy_files() {
 echo "Diy_files"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  cp -Rf $HOME_PATH/build/common/${MAIN_TAIN}/* $BUILD_PATH
+  cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
   cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* $BUILD_PATH
 else
-  cp -Rf $HOME_PATH/build/common/${MAIN_TAIN}/* $BUILD_PATH
+  cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
 fi
 
 if [ -n "$(ls -A "$BUILD_PATH/diy" 2>/dev/null)" ]; then
@@ -492,10 +492,10 @@ Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/_Transpare
 echo "${Plug_in2}" >Plug-in
 
 echo
-TIME b "编译源码: ${MAIN_TAIN}"
+TIME b "编译源码: ${SOURCE}"
 TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
-TIME b "源码作者: ${ZUOZHE}"
+TIME b "源码作者: ${MAINTAIN}"
 TIME b "Luci版本: ${OpenWrt_name}"
 [[ "${matrixtarget}" == "openwrt_amlogic" ]] && {
 	TIME b "编译机型: 晶晨系列"
