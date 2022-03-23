@@ -24,6 +24,7 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 
 function Diy_variable() {
+echo "Diy_variable"
 echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV
 echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> $GITHUB_ENV
 echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> $GITHUB_ENV
@@ -156,7 +157,6 @@ echo "Diy_lede"
 
 function Diy_Lienol() {
 echo "Diy_lienol"
-
 sed  -i  's/ luci-app-passwall//g' target/linux/*/Makefile
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/*/Makefile
 }
@@ -199,6 +199,7 @@ fi
 
 
 function Package_amlogic() {
+echo "Package_amlogic"
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
 [ -d amlogic/openwrt-armvirt ] || mkdir -p amlogic/openwrt-armvirt
 cp -f $TARGET_BSGET/*.tar.gz amlogic/openwrt-armvirt/ && sync
@@ -244,8 +245,8 @@ fi
 ################################################################################################################
 # 判断插件冲突
 ################################################################################################################
-function Diy_chajian() {
-echo "Diy_chajian"
+function Diy_prevent() {
+echo "Conflict prevention"
 make defconfig > /dev/null 2>&1
 echo "TIME b \"					插件冲突信息\"" > ${HOME_PATH}/CHONGTU
 
@@ -453,7 +454,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
   elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     Arch="armv7"
   else
-    echo "no shipei adguardhome"
+    echo "This model does not support automatic core download"
   fi
 	
   if [[ "${Arch}" =~ (amd64|i386|arm64|armv7) ]]; then
@@ -542,6 +543,7 @@ exit 0
 
 
 function Make_defconfig() {
+echo "Make_defconfig"
 make defconfig > /dev/null 2>&1
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
   export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
@@ -579,6 +581,7 @@ fi
 
 function Diy_firmware() {
 # 整理固件
+echo "Diy_firmware"
 if [ "${REGULAR_UPDATE}" == "true" ]; then
   cp -Rf ${TARGET_BSGET} $HOME_PATH/upgrade
 fi
@@ -721,7 +724,7 @@ fi
 
 
 function Diy_menu2() {
-Diy_chajian
+Diy_prevent
 Diy_adguardhome
 Diy_files
 Diy_zzz
