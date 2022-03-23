@@ -11,6 +11,8 @@ else
   echo "0 1 * * 1 rm -rf /tmp/luci-*cache > /dev/null 2>&1" > /etc/crontabs/root
   chmod -R 755 /etc/crontabs
 fi
+/etc/init.d/cron restart
+
 
 if [[ `grep -c "x86_64" /etc/openwrt_release` -eq '0' ]]; then
   source /etc/openwrt_release
