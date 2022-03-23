@@ -595,20 +595,28 @@ if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
 fi
 }
 
+
+menu2() {
+Diy_chajian
+Diy_adguardhome
+Diy_files
+Diy_zzz
+}
+
 menu() {
-if [[ "${REPO_BRANCH}" == "master" ]]; then
+Diy_settings
 Diy_laku
-Diy_lede
-Diy_default
-Diy_INDEX
-Diy_all
+sbin_openwrt
+Diy_${SOURCE}
+Diy_amlogic
 /bin/bash $BUILD_PATH/$DIY_PART_SH
+Diy_indexhtm
+Diy_patches
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
 source $BUILD_PATH/upgrade.sh && Diy_Part1
 fi
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
-./scripts/feeds install -a -f
+./scripts/feeds install -a
 mv $BUILD_PATH/$CONFIG_FILE .config
-fi
 }
