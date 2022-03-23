@@ -367,16 +367,16 @@ fi
 echo
 echo
 if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
-	chmod -R +x ${HOME_PATH}/EXT4
-	source ${HOME_PATH}/EXT4
-	rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao,EXT4}
-	echo
+  chmod -R +x ${HOME_PATH}/EXT4
+  source ${HOME_PATH}/EXT4
+  [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]] && rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao,EXT4}
+  echo
 fi
 if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
-	chmod -R +x ${HOME_PATH}/CHONGTU
-	source ${HOME_PATH}/CHONGTU
-	rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao}
-	echo
+  chmod -R +x ${HOME_PATH}/CHONGTU
+  source ${HOME_PATH}/CHONGTU
+  [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]] && rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao}
+  echo
 fi
 }
 
@@ -409,10 +409,10 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
       chmod 777 ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHOME_PATH
       rm -rf $HOME_PATH/{AdGuardHOME_PATH_linux_${Arch}.tar.gz,AdGuardHOME_PATH}
     else
-       mkdir -p $HOME_PATH/files/usr/bin
-       mv -f AdGuardHOME_PATH/AdGuardHOME_PATH $HOME_PATH/files/usr/bin
-       chmod 777 files/usr/bin/AdGuardHOME_PATH
-       rm -rf $HOME_PATH/{AdGuardHOME_PATH_linux_${Arch}.tar.gz,AdGuardHOME_PATH}
+      mkdir -p $HOME_PATH/files/usr/bin
+      mv -f AdGuardHOME_PATH/AdGuardHOME_PATH $HOME_PATH/files/usr/bin
+      chmod 777 files/usr/bin/AdGuardHOME_PATH
+      rm -rf $HOME_PATH/{AdGuardHOME_PATH_linux_${Arch}.tar.gz,AdGuardHOME_PATH}
     fi
   fi
 fi
@@ -513,63 +513,64 @@ TIME b "编译时间: ${Compte}"
 echo
 echo
 if [[ ${UPLOAD_FIRMWARE} == "true" ]]; then
-	TIME y "上传固件在github actions: 开启"
+  TIME y "上传固件在github actions: 开启"
 else
-	TIME r "上传固件在github actions: 关闭"
+  TIME r "上传固件在github actions: 关闭"
 fi
 if [[ ${UPLOAD_CONFIG} == "true" ]]; then
-	TIME y "上传[.config]配置文件: 开启"
+  TIME y "上传[.config]配置文件: 开启"
 else
-	TIME r "上传[.config]配置文件: 关闭"
+  TIME r "上传[.config]配置文件: 关闭"
 fi
 if [[ ${UPLOAD_BIN_DIR} == "true" ]]; then
-	TIME y "上传BIN文件夹(固件+IPK): 开启"
+  TIME y "上传BIN文件夹(固件+IPK): 开启"
 else
-	TIME r "上传BIN文件夹(固件+IPK): 关闭"
+  TIME r "上传BIN文件夹(固件+IPK): 关闭"
 fi
 if [[ ${UPLOAD_WETRANSFER} == "true" ]]; then
-	TIME y "上传固件至【WETRANSFER】: 开启"
+  TIME y "上传固件至【WETRANSFER】: 开启"
 else
-	TIME r "上传固件至【WETRANSFER】: 关闭"
+  TIME r "上传固件至【WETRANSFER】: 关闭"
 fi
 if [[ ${UPLOAD_RELEASE} == "true" ]]; then
-	TIME y "发布固件: 开启"
+  TIME y "发布固件: 开启"
 else
-	TIME r "发布固件: 关闭"
+  TIME r "发布固件: 关闭"
 fi
 if [[ ${SERVERCHAN_SCKEY} == "true" ]]; then
-	TIME y "微信/电报通知: 开启"
+  TIME y "微信/电报通知: 开启"
 else
-	TIME r "微信/电报通知: 关闭"
+  TIME r "微信/电报通知: 关闭"
 fi
 if [[ ${BY_INFORMATION} == "true" ]]; then
-	TIME y "编译信息显示: 开启"
+  TIME y "编译信息显示: 开启"
 fi
 if [[ ${REGULAR_UPDATE} == "true" ]]; then
-	TIME y "把定时自动更新插件编译进固件: 开启"
+  TIME y "把定时自动更新插件编译进固件: 开启"
 else
-	TIME r "把定时自动更新插件编译进固件: 关闭"
+  TIME r "把定时自动更新插件编译进固件: 关闭"
 fi
+
 if [[ ${REGULAR_UPDATE} == "true" ]]; then
-	echo
-	TIME l "定时自动更新信息"
-	TIME z "插件版本: ${AutoUpdate_Version}"
-	if [[ ${TARGET_PROFILE} == "x86-64" ]]; then
-		TIME b "传统固件: ${Legacy_Firmware}"
-		TIME b "UEFI固件: ${UEFI_Firmware}"
-		TIME b "固件后缀: ${Firmware_sfx}"
-	else
-		TIME b "固件名称: ${Up_Firmware}"
-		TIME b "固件后缀: ${Firmware_sfx}"
-	fi
-	TIME b "固件版本: ${Openwrt_Version}"
-	TIME b "云端路径: ${Github_UP_RELEASE}"
-	TIME g "《编译成功后，会自动把固件发布到指定地址，然后才会生成云端路径》"
-	TIME g "《普通的那个发布固件跟云端的发布路径是两码事，如果你不需要普通发布的可以不用打开发布功能》"
-	TIME g "修改IP、DNS、网关或者在线更新，请输入命令：openwrt"
-	echo
+  echo
+  TIME l "定时自动更新信息"
+  TIME z "插件版本: ${AutoUpdate_Version}"
+  if [[ ${TARGET_PROFILE} == "x86-64" ]]; then
+    TIME b "传统固件: ${Legacy_Firmware}"
+    TIME b "UEFI固件: ${UEFI_Firmware}"
+    TIME b "固件后缀: ${Firmware_sfx}"
+  else
+    TIME b "固件名称: ${Up_Firmware}"
+    TIME b "固件后缀: ${Firmware_sfx}"
+  fi
+  TIME b "固件版本: ${Openwrt_Version}"
+  TIME b "云端路径: ${Github_UP_RELEASE}"
+  TIME g "《编译成功后，会自动把固件发布到指定地址，然后才会生成云端路径》"
+  TIME g "《普通的那个发布固件跟云端的发布路径是两码事，如果你不需要普通发布的可以不用打开发布功能》"
+  TIME g "修改IP、DNS、网关或者在线更新，请输入命令：openwrt"
+  echo
 else
-	echo
+  echo
 fi
 echo
 TIME z " 系统空间      类型   总数  已用  可用 使用率"
@@ -577,23 +578,23 @@ cd ../ && df -hT $PWD && cd $HOME_PATH
 echo
 echo
 if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
-	chmod -R +x ${HOME_PATH}/EXT4
-	source ${HOME_PATH}/EXT4
-	rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao,EXT4}
-	echo
+  chmod -R +x ${HOME_PATH}/EXT4
+  source ${HOME_PATH}/EXT4
+  rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao,EXT4}
+  echo
 fi
 if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
-	chmod -R +x ${HOME_PATH}/CHONGTU
-	source ${HOME_PATH}/CHONGTU
-	rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao}
-	echo
+  chmod -R +x ${HOME_PATH}/CHONGTU
+  source ${HOME_PATH}/CHONGTU
+  rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao}
+  echo
 fi
 if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
-	TIME r "	      已选插件列表"
-	chmod -R +x ${HOME_PATH}/Plug-in
-	source ${HOME_PATH}/Plug-in
-	rm -rf ${HOME_PATH}/{Plug-in,Plug-2}
-	echo
+  TIME r "	      已选插件列表"
+  chmod -R +x ${HOME_PATH}/Plug-in
+  source ${HOME_PATH}/Plug-in
+  rm -rf ${HOME_PATH}/{Plug-in,Plug-2}
+  echo
 fi
 }
 
