@@ -17,7 +17,7 @@ runs:
     - shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        echo "armvirt64_path"
+        echo "${armvirt64_path}222"
 branding:
   icon: 'terminal'
   color: 'gray-dark'
