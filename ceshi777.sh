@@ -435,38 +435,36 @@ fi
 # 为编译做最后处理
 ################################################################################################################
 Diy_adguardhome() {
-
-cd ${HOME_PATH}
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-	if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-		Arch="amd64"
-	elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-		Arch="i386"
-	elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-		Arch="arm64"
-	elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-		if [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-			Arch="armv7"
-		fi	
-	fi
-	if [[ "${Arch}" =~ (amd64|i386|arm64|armv7) ]]; then
-		downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
-		latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
-		wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
-		tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${HOME_PATH} > /dev/null 2>&1
-		if [[ -d "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}" ]]; then
-		  mkdir -p ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin
-		  [[ -f ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome ]] && rm -rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
-		  mv -f AdGuardHome/AdGuardHome ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
-		  chmod 777 ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
-		  rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
-		else
-		  mkdir -p $HOME_PATH/files/usr/bin
-		  mv -f AdGuardHome/AdGuardHome $HOME_PATH/files/usr/bin
-		  chmod 777 files/usr/bin/AdGuardHome
-		  rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
-		fi
-	fi
+  echo "Diy_adguardhome"
+  if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+    Arch="amd64"
+  elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+    Arch="i386"
+  elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+    Arch="arm64"
+  elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+    Arch="armv7"
+  fi
+	
+  if [[ "${Arch}" =~ (amd64|i386|arm64|armv7) ]]; then
+    downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
+    latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
+    wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
+    tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${HOME_PATH} > /dev/null 2>&1
+    if [[ -d "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}" ]]; then
+      mkdir -p ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin
+      [[ -f ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome ]] && rm -rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
+      mv -f AdGuardHome/AdGuardHome ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
+      chmod 777 ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
+      rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
+    else
+       mkdir -p $HOME_PATH/files/usr/bin
+       mv -f AdGuardHome/AdGuardHome $HOME_PATH/files/usr/bin
+       chmod 777 files/usr/bin/AdGuardHome
+       rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
+    fi
+  fi
 fi
 }
 
@@ -494,10 +492,12 @@ fi
 ################################################################################################################
 function Diy_xinxi() {
 
-
+Plug_in="$(grep -i 'CONFIG_PACKAGE_luci-app' $HOME_PATH/.config && grep -i 'CONFIG_PACKAGE_luci-theme' $HOME_PATH/.config)"
+Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/_Transparent_Proxy/d' |sed '/qbittorrent_static/d' |sed 's/CONFIG_PACKAGE_//g' |sed 's/=y//g' |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
+echo "${Plug_in2}" >Plug-in
 
 echo
-TIME b "编译源码: ${CODE}"
+TIME b "编译源码: ${MAIN_TAIN}"
 TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${ZUOZHE}"
@@ -512,9 +512,9 @@ TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${CangKu}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
 TIME b "编译时间: ${Compte}"
 [[ "${Modelfile}" == "openwrt_amlogic" ]] && {
-	TIME g "友情提示：您当前使用【${Modelfile}】文件夹编译【晶晨系列】固件"
+	TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【晶晨系列】固件"
 } || {
-	TIME g "友情提示：您当前使用【${Modelfile}】文件夹编译【${TARGET_PROFILE}】固件"
+	TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_PROFILE}】固件"
 }
 echo
 echo
@@ -532,11 +532,6 @@ if [[ ${UPLOAD_BIN_DIR} == "true" ]]; then
 	TIME y "上传BIN文件夹(固件+IPK): 开启"
 else
 	TIME r "上传BIN文件夹(固件+IPK): 关闭"
-fi
-if [[ ${UPLOAD_COWTRANSFER} == "true" ]]; then
-	TIME y "上传固件至【奶牛快传】: 开启"
-else
-	TIME r "上传固件至【奶牛快传】: 关闭"
 fi
 if [[ ${UPLOAD_WETRANSFER} == "true" ]]; then
 	TIME y "上传固件至【WETRANSFER】: 开启"
@@ -584,7 +579,7 @@ else
 fi
 echo
 TIME z " 系统空间      类型   总数  已用  可用 使用率"
-cd ../ && df -hT $PWD && cd openwrt
+cd ../ && df -hT $PWD && cd $HOME_PATH
 echo
 echo
 if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
