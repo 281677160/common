@@ -496,7 +496,7 @@ TIME b "编译源码: ${SOURCE}"
 TIME b "源码链接: ${REPO_URL}"
 TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${MAINTAIN}"
-TIME b "Luci版本: ${OpenWrt_name}"
+TIME b "Luci版本: ${LUCI_EDITION}"
 [[ "${matrixtarget}" == "openwrt_amlogic" ]] && {
 	TIME b "编译机型: 晶晨系列"
 } || {
