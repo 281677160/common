@@ -1,0 +1,19 @@
+name: 'Use common script to package Armvirt as OpenWrt'
+author: 'common'
+description: 'Package Armvirt as OpenWrt. Support Amlogic s9xxx tv box.'
+inputs:
+  mode:
+    description: 'Choose script.'
+    required: false
+    default: 'common'
+
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        cd ${GITHUB_ACTION_PATH}
+        echo -e "....."
+branding:
+  icon: 'terminal'
+  color: 'gray-dark'
