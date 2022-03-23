@@ -3,7 +3,7 @@
 # common Module by 28677160
 # matrix.target=${matrixtarget}
 
-TIME() {
+function TIME() {
 Compte=$(date +%Y年%m月%d号%H时%M分)
   [[ -z "$1" ]] && {
     echo -ne " "
