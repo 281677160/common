@@ -71,21 +71,10 @@ src-git helloworld https://github.com/fw876/helloworld
 src-git passwall https://github.com/281677160/openwrt-passwall
 src-git danshui https://github.com/281677160/openwrt-package.git;ceshi
 " >> $HOME_PATH/feeds.conf.default
-
-sed -i '$ s/exit 0$//' $BASE_PATH/etc/rc.local
-echo '
-if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
-  sed -i "/coremark/d" /etc/crontabs/root
-fi
-/etc/init.d/network restart
-/etc/init.d/uhttpd restart
-exit 0
-' >> $BASE_PATH/etc/rc.local
-
 }
 
 
-Diy_lede() {
+function Diy_lede() {
 echo "1333333333"
 [[ -f $BUILD_PATH/openwrt.sh ]] && cp -Rf $BUILD_PATH/openwrt.sh $BASE_PATH/sbin/openwrt
 chmod 777 $BASE_PATH/sbin/openwrt
@@ -117,7 +106,7 @@ fi
 ################################################################################################################
 # LIENOL源码通用diy.sh文件
 ################################################################################################################
-Diy_lienol() {
+function Diy_lienol() {
 sed  -i  's/ luci-app-passwall//g' target/linux/*/Makefile
 sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/*/Makefile
 [[ -f "$PATH1/openwrt.sh" ]] && cp -Rf $PATH1/openwrt.sh $BASE_PATH/sbin/openwrt
@@ -127,7 +116,7 @@ sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/li
 ################################################################################################################
 # 天灵源码18.06 diy.sh文件
 ################################################################################################################
-Diy_Tianling() {
+function Diy_Tianling() {
 [[ -f "$PATH1/openwrt.sh" ]] && cp -Rf $PATH1/openwrt.sh $Home/package/base-files/files/sbin/openwrt
 }
 
@@ -135,25 +124,26 @@ Diy_Tianling() {
 ################################################################################################################
 # 天灵源码21.02 diy.sh文件
 ################################################################################################################
-Diy_mortal() {
+function Diy_mortal() {
 [[ -f "$PATH1/openwrt.sh" ]] && cp -Rf $PATH1/openwrt.sh $Home/package/base-files/files/sbin/openwrt
 }
 
 
 function Diy_zzz() {
+echo "Diy_zzz"
 
 case "${REPO_BRANCH}" in
 master)
 
-  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ_PATH
+  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
 
 ;;
 main)
 
-  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ_PATH
+  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
   
   DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ_PATH |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
-  [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" $ZZZ_PATH
+  [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" "$ZZZ_PATH"
 
 ;;
 openwrt-18.06)
@@ -170,6 +160,39 @@ openwrt-21.02)
 
 ;;
 esac
+
+sed -i '$ s/exit 0$//' $BASE_PATH/etc/rc.local
+echo '
+if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
+  sed -i "/coremark/d" /etc/crontabs/root
+fi
+/etc/init.d/network restart
+/etc/init.d/uhttpd restart
+exit 0
+' >> $BASE_PATH/etc/rc.local
+}
+
+
+function Diy_indexhtm() {
+echo "Diy_index.htm"
+if [[ "${REPO_BRANCH}" == "master" ]]; then
+	sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
+	sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
+	sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
+fi
+if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
+	sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/*/index.htm
+	sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/*/index.htm
+	sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/emortal/autocore/files/*/index.htm
+fi
+}
+
+
+function Diy_patches() {
+echo "Diy_patches"
+if [ -n "$(ls -A "$BUILD_PATH/patches" 2>/dev/null)" ]; then
+	find "$BUILD_PATH/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
+fi
 }
 
 
@@ -190,27 +213,6 @@ if [ -n "$(ls -A "$BUILD_PATH/files" 2>/dev/null)" ]; then
 fi
 }
 
-function Diy_patches() {
-echo "Diy_patches"
-if [ -n "$(ls -A "$BUILD_PATH/patches" 2>/dev/null)" ]; then
-	find "$BUILD_PATH/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
-fi
-}
-
-
-Diy_INDEX() {
-echo "14488888888"
-if [[ "${REPO_BRANCH}" == "master" ]]; then
-	sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
-	sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
-	sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/lean/autocore/files/*/index.htm
-fi
-if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-	sed -i 's/distversion)%>/distversion)%><!--/g' package/emortal/autocore/files/*/index.htm
-	sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/emortal/autocore/files/*/index.htm
-	sed -i 's#localtime  = os.date()#localtime  = os.date("%Y-%m-%d") .. " " .. translate(os.date("%A")) .. " " .. os.date("%X")#g' package/emortal/autocore/files/*/index.htm
-fi
-}
 
 ################################################################################################################
 # 判断脚本是否缺少主要文件（如果缺少settings.ini设置文件在检测脚本设置就运行错误了）
