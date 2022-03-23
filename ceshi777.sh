@@ -104,12 +104,12 @@ chmod 777 $BASE_PATH/sbin/openwrt
 }
 
 
-function Diy_lede() {
+function Diy_Lede() {
 echo "Diy_lede"
 }
 
 
-function Diy_lienol() {
+function Diy_Lienol() {
 echo "Diy_lienol"
 
 sed  -i  's/ luci-app-passwall//g' target/linux/*/Makefile
@@ -117,12 +117,12 @@ sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/li
 }
 
 
-function Diy_tianling() {
+function Diy_Tianling() {
 echo "Diy_tianling"
 }
 
 
-function Diy_mortal() {
+function Diy_Mortal() {
 echo "Diy_mortal"
 }
 
