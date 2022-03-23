@@ -743,7 +743,7 @@ Diy_amlogic
 Diy_indexhtm
 Diy_patches
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
-  source $BUILD_PATH/upgrade.sh && Diy_Part1
+  source $BUILD_PATH/pvehy.sh && Diy_Part1
 fi
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
