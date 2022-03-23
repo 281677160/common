@@ -551,22 +551,24 @@ fi
 
 
 function Diy_firmware() {
-        
-if [ ! "${matrixtarget}" == "openwrt_amlogic" ]; then
-  cp -Rf "${HOME_PATH}"/bin/targets/*/* "${HOME_PATH}"/upgrade
+# 整理固件
+if [ "${REGULAR_UPDATE}" == "true" ]; then
+  cp -Rf ${TARGET_BSGET} $HOME_PATH/upgrade
 fi
-cd "${HOME_PATH}"/bin/targets/*/*
+cd ${TARGET_BSGET}
+rm -rf packages
 rename -v "s/^immortalwrt/openwrt/" *
 if [[ -f ${GITHUB_WORKSPACE}/Clear ]]; then
-  cp -Rf ${GITHUB_WORKSPACE}/Clear ./Clear.sh
-  chmod +x Clear.sh && source Clear.sh
-  rm -rf Clear
+  cp -Rf ${GITHUB_WORKSPACE}/Clear ${TARGET_BSGET}/Clear.sh
+  chmod +x ${TARGET_BSGET}/Clear.sh && ${TARGET_BSGET}/Clear.sh
+  rm -rf ${TARGET_BSGET}/Clear.sh
 fi
-rm -rf packages
 rename -v "s/^openwrt/${{ env.date1 }}-${{ env.SOURCE }}/" *
 
-echo "### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/update_log.txt
-	
+# 发布用的update_log.txt
+if [ "${UPLOAD_RELEASE}" == "true" ]; then
+  echo "### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/update_log.txt
+fi
 }	
 
 ################################################################################################################
