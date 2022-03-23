@@ -584,15 +584,24 @@ if [ "${UPLOAD_RELEASE}" == "true" ]; then
 fi
 }	
 
-################################################################################################################
-# 编译信息
-################################################################################################################
-function Diy_xinxi() {
 
+function Diy_Notice() {
+echo
+echo
+TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
+echo
+TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
+echo
+TIME r "修改IP、DNS、网关，请输入命令：openwrt"
+echo
+echo
+}
+
+
+function Diy_xinxi() {
 Plug_in="$(grep -i 'CONFIG_PACKAGE_luci-app' $HOME_PATH/.config && grep -i 'CONFIG_PACKAGE_luci-theme' $HOME_PATH/.config)"
 Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/_Transparent_Proxy/d' |sed '/qbittorrent_static/d' |sed 's/CONFIG_PACKAGE_//g' |sed 's/=y//g' |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
 echo "${Plug_in2}" >Plug-in
-
 echo
 TIME b "编译源码: ${SOURCE}"
 TIME b "源码链接: ${REPO_URL}"
