@@ -79,47 +79,61 @@ echo "Diy_settings"
 }
 
 
-function Diy_laku() {
-echo "Diy_laku"
-# 拉库和做标记，一次性操作
+function Diy_feeds() {
+echo "Diy_feeds"
+# 拉库和做标记
 
-./scripts/feeds clean && ./scripts/feeds update -a
+./scripts/feeds clean && ./scripts/feeds update -a > /dev/null 2>&1
 
 case "${REPO_BRANCH}" in
 master)
-
+  
+  # 删除重复插件（LEDE）
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
   find . -name 'luci-app-ipsec-vpnd' -o -name 'luci-app-wol' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
+  
+  # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
 
 ;;
 main)
-
+  
+  # 删除重复插件（Lienol）
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-ttyd' | xargs -i rm -rf {}
-  find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+  find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+  find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
+  
+  # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
 
 ;;
 openwrt-18.06)
 
-  find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-netgear' | xargs -i rm -rf {}
+  # 删除重复插件（天灵18.06）
+  find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' | xargs -i rm -rf {}
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
   find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
+  
+  # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
 
 ;;
 openwrt-21.02)
 
+  # 删除重复插件（天灵21.02）
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
-  find . -name 'luci-app-wol' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-  find . -name 'luci-app-adguardhome' -o -name 'adguardhome' | xargs -i rm -rf {}
+  find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+  find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
+  
+  # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
 
 ;;
 esac
 
+# 给feeds.conf.default增加源码源
 echo "
 src-git helloworld https://github.com/fw876/helloworld
 src-git passwall https://github.com/281677160/openwrt-passwall
