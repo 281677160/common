@@ -152,51 +152,6 @@ if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
 fi
 }
 
-
-function Diy_zzz() {
-echo "Diy_zzz"
-
-case "${REPO_BRANCH}" in
-master)
-
-  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
-
-;;
-main)
-
-  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
-  
-  DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ_PATH |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
-  [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" "$ZZZ_PATH"
-
-;;
-openwrt-18.06)
-
-  chmod -R 777 $HOME_PATH/build/common/Convert
-  cp -Rf $HOME_PATH/build/common/Convert/1806-default-settings "$ZZZ_PATH"
-
-;;
-openwrt-21.02)
-
-  chmod -R 777 $HOME_PATH/build/common/Convert
-  cp -Rf $HOME_PATH/build/common/Convert/* "$HOME_PATH"
-  /bin/bash Convert.sh
-
-;;
-esac
-
-sed -i '$ s/exit 0$//' $BASE_PATH/etc/rc.local
-echo '
-if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
-  sed -i "/coremark/d" /etc/crontabs/root
-fi
-/etc/init.d/network restart
-/etc/init.d/uhttpd restart
-exit 0
-' >> $BASE_PATH/etc/rc.local
-}
-
-
 function Diy_indexhtm() {
 echo "Diy_index.htm"
 if [[ "${REPO_BRANCH}" == "master" ]]; then
@@ -479,6 +434,50 @@ fi
 if [ -n "$(ls -A "$BUILD_PATH/files" 2>/dev/null)" ]; then
   cp -Rf $BUILD_PATH/files $HOME_PATH
 fi
+}
+
+
+function Diy_zzz() {
+echo "Diy_zzz"
+
+case "${REPO_BRANCH}" in
+master)
+
+  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
+
+;;
+main)
+
+  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
+  
+  DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ_PATH |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
+  [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" "$ZZZ_PATH"
+
+;;
+openwrt-18.06)
+
+  chmod -R 777 $HOME_PATH/build/common/Convert
+  cp -Rf $HOME_PATH/build/common/Convert/1806-default-settings "$ZZZ_PATH"
+
+;;
+openwrt-21.02)
+
+  chmod -R 777 $HOME_PATH/build/common/Convert
+  cp -Rf $HOME_PATH/build/common/Convert/* "$HOME_PATH"
+  /bin/bash Convert.sh
+
+;;
+esac
+
+sed -i '$ s/exit 0$//' $BASE_PATH/etc/rc.local
+echo '
+if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
+  sed -i "/coremark/d" /etc/crontabs/root
+fi
+/etc/init.d/network restart
+/etc/init.d/uhttpd restart
+exit 0
+' >> $BASE_PATH/etc/rc.local
 }
 
 
