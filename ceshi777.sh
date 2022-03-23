@@ -600,15 +600,10 @@ fi
 
 
 function Diy_Notice() {
-echo
-echo
 TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
-echo
 TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
-echo
 TIME r "修改IP、DNS、网关，请输入命令：openwrt"
-echo
-echo
+TIME r "如果您的机子在线更新固件可用，而又编译了，也可请输入命令查看在线更新操作：openwrt"
 }
 
 
