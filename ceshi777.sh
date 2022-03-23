@@ -394,24 +394,27 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
     Arch="arm64"
   elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     Arch="armv7"
+  else
+    echo "no shipei adguardhome"
   fi
 	
   if [[ "${Arch}" =~ (amd64|i386|arm64|armv7) ]]; then
     downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
-    latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHOME_PATH/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
-    wget -q https://github.com/AdguardTeam/AdGuardHOME_PATH/releases/download/${latest_ver}/AdGuardHOME_PATH_linux_${Arch}.tar.gz
-    tar -zxvf AdGuardHOME_PATH_linux_${Arch}.tar.gz -C ${HOME_PATH} > /dev/null 2>&1
+    latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
+    wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
+    tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C $HOME_PATH
+
     if [[ -d "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}" ]]; then
       mkdir -p ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin
-      [[ -f ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHOME_PATH ]] && rm -rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHOME_PATH
-      mv -f AdGuardHOME_PATH/AdGuardHOME_PATH ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHOME_PATH
-      chmod 777 ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHOME_PATH
-      rm -rf $HOME_PATH/{AdGuardHOME_PATH_linux_${Arch}.tar.gz,AdGuardHOME_PATH}
+      [[ -f "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome" ]] && rm -rf "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome"
+      [[ -f "AdGuardHome/AdGuardHome" ]] && mv -f AdGuardHome/AdGuardHome ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
+      [[ -f "AdGuardHome/AdGuardHome" ]] && chmod 777 ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
+      rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
     else
       mkdir -p $HOME_PATH/files/usr/bin
-      mv -f AdGuardHOME_PATH/AdGuardHOME_PATH $HOME_PATH/files/usr/bin
-      chmod 777 files/usr/bin/AdGuardHOME_PATH
-      rm -rf $HOME_PATH/{AdGuardHOME_PATH_linux_${Arch}.tar.gz,AdGuardHOME_PATH}
+      [[ -f "AdGuardHome/AdGuardHome" ]] && mv -f AdGuardHome/AdGuardHome $HOME_PATH/files/usr/bin
+      [[ -f "AdGuardHome/AdGuardHome" ]] && chmod 777 $HOME_PATH/files/usr/bin/AdGuardHome
+      rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
     fi
   fi
 fi
