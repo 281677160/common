@@ -514,6 +514,23 @@ exit 0
 }
 
 
+function Make_defconfig() {
+make defconfig > /dev/null 2>&1
+echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
+echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)" >> $GITHUB_ENV
+echo "Compile_Date=$(date +%Y%m%d-%H%M)" >> $GITHUB_ENV
+if [ `grep -c "CONFIG_TARGET_x86_64=y" .config` -eq '1' ]; then
+  echo "TARGET_PROFILE=x86-64" >> $GITHUB_ENV
+elif [[ `grep -c "CONFIG_TARGET_x86=y" .config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" .config` == '0' ]]; then
+  echo "TARGET_PROFILE=x86_32" >> $GITHUB_ENV
+elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" .config` -eq '1' ]; then
+  grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+  [ -s DEVICE_NAME ] && echo "TARGET_PROFILE=$(cat DEVICE_NAME)" >> $GITHUB_ENV
+else
+  echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)" >> $GITHUB_ENV
+fi
+}
+
 ################################################################################################################
 # 编译信息
 ################################################################################################################
@@ -637,6 +654,7 @@ Diy_chajian
 Diy_adguardhome
 Diy_files
 Diy_zzz
+Make_defconfig
 }
 
 function Diy_menu() {
