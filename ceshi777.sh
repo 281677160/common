@@ -169,12 +169,14 @@ fi
 
 function Diy_patches() {
 echo "Diy_patches"
+mv $HOME_PATH/build/common/LEDE $HOME_PATH/build/common/${SOURCE}
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
   cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
   cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* $BUILD_PATH
 else
   cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
 fi
+
 if [ -n "$(ls -A "$BUILD_PATH/patches" 2>/dev/null)" ]; then
   find "$BUILD_PATH/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
