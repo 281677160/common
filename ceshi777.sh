@@ -596,14 +596,14 @@ fi
 }
 
 
-menu2() {
+function Diy_menu2() {
 Diy_chajian
 Diy_adguardhome
 Diy_files
 Diy_zzz
 }
 
-menu() {
+function Diy_menu() {
 Diy_settings
 Diy_laku
 sbin_openwrt
