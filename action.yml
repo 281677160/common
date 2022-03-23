@@ -6,14 +6,18 @@ inputs:
     description: 'Choose script.'
     required: false
     default: 'common'
+  armvirt64_path:
+    description: 'Choose armvirt64 file path.'
+    required: false
+    default: 'openwrt/bin/targets/*/*/*rootfs.tar.gz'
 
 runs:
   using: "composite"
   steps:
     - shell: bash
       run: |
-        cd ${GITHUB_ACTION_PATH}
-        echo -e "....."
+        cd ${GITHUB_WORKSPACE}
+        echo "armvirt64_path"
 branding:
   icon: 'terminal'
   color: 'gray-dark'
