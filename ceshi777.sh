@@ -1,7 +1,7 @@
 #!/bin/bash
 # https://github.com/281677160/AutoBuild-OpenWrt
 # common Module by 28677160
-# matrix.target=${Modelfile}
+# matrix.target=${matrixtarget}
 
 TIME() {
 Compte=$(date +%Y年%m月%d号%H时%M分)
@@ -25,37 +25,46 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 ################################################################################################################
 # LEDE源码通用diy.sh文件
 ################################################################################################################
-Diy_laku() {
+function Diy_laku() {
 
 # 拉库和做标记，一次性操作
-RECOGNIZE="$BASE_PATH/etc/openwrt_release"
-echo "11111111111"
+
 ./scripts/feeds clean && ./scripts/feeds update -a
-if [[ "${REPO_BRANCH}" == "master" ]]; then
+
+case "${REPO_BRANCH}" in
+master)
+
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
   find . -name 'luci-app-ipsec-vpnd' -o -name 'luci-app-wol' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
-elif [[ "${REPO_BRANCH}" == "main" ]]; then
+  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+
+;;
+main)
+
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-ttyd' | xargs -i rm -rf {}
   find . -name 'ddns-scripts_aliyun' -o -name 'ddns-scripts_dnspod' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-  find . -name 'UnblockNeteaseMusic-Go' -o -name 'UnblockNeteaseMusic' -o -name 'luci-app-unblockmusic' | xargs -i rm -rf {}
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
-  
-  DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ_PATH |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
-  [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" $ZZZ_PATH
-elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
+  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+
+;;
+openwrt-18.06)
+
   find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-netgear' | xargs -i rm -rf {}
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
   find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
-elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+
+;;
+openwrt-21.02)
+
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
   find . -name 'luci-app-wol' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
   find . -name 'luci-app-adguardhome' -o -name 'adguardhome' | xargs -i rm -rf {}
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${RECOGNIZE}" && sed -i '/^\s*$/d' "${RECOGNIZE}"
-fi
+  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+
+;;
+esac
 
 echo "
 src-git helloworld https://github.com/fw876/helloworld
@@ -131,39 +140,58 @@ Diy_mortal() {
 }
 
 
-Diy_default() {
-echo "14444444441"
-if [[ "${REPO_BRANCH}" == "master" ]]; then
-sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ_PATH
-elif [[ "${REPO_BRANCH}" == "main" ]]; then
-sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ_PATH
-elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Convert/1806-default-settings > $HOME_PATH/package/emortal/default-settings/files/99-default-settings
-elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-chmod -R 777 $HOME_PATH/build/common/Convert
-cp -Rf $HOME_PATH/build/common/Convert/* "$HOME_PATH"
-/bin/bash Convert.sh
+function Diy_zzz() {
+
+case "${REPO_BRANCH}" in
+master)
+
+  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ_PATH
+
+;;
+main)
+
+  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" $ZZZ_PATH
+  
+  DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ_PATH |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
+  [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" $ZZZ_PATH
+
+;;
+openwrt-18.06)
+
+  chmod -R 777 $HOME_PATH/build/common/Convert
+  cp -Rf $HOME_PATH/build/common/Convert/1806-default-settings "$ZZZ_PATH"
+
+;;
+openwrt-21.02)
+
+  chmod -R 777 $HOME_PATH/build/common/Convert
+  cp -Rf $HOME_PATH/build/common/Convert/* "$HOME_PATH"
+  /bin/bash Convert.sh
+
+;;
+esac
+}
+
+
+function Diy_files() {
+echo "Diy_files"
+if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
+  cp -Rf $HOME_PATH/build/common/${YYYDDD}/* ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/
+  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${YYYDDD}/* $BUILD_PATH
+else
+  cp -Rf $HOME_PATH/build/common/${YYYDDD}/* $BUILD_PATH
 fi
-}
-
-Diy_AutoUpdate() {
-echo
-}
-
-
-################################################################################################################
-# 全部作者源码公共diy.sh文件
-################################################################################################################
-Diy_all() {
-echo "55555555555555"
-cp -Rf $HOME_PATH/build/common/${YYYDDD}/* $BUILD_PATH
 
 if [ -n "$(ls -A "$BUILD_PATH/diy" 2>/dev/null)" ]; then
 	cp -Rf $BUILD_PATH/diy/* $HOME_PATH
 fi
 if [ -n "$(ls -A "$BUILD_PATH/files" 2>/dev/null)" ]; then
-	cp -Rf "$BUILD_PATH/files" $HOME_PATH
+	cp -Rf $BUILD_PATH/files $HOME_PATH
 fi
+}
+
+function Diy_patches() {
+echo "Diy_patches"
 if [ -n "$(ls -A "$BUILD_PATH/patches" 2>/dev/null)" ]; then
 	find "$BUILD_PATH/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
