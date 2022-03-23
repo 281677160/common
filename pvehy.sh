@@ -91,7 +91,7 @@ function Diy_Part2() {
 	LOOKUP_Firmware="${LUCI_EDITION}-${Openwrt_Version}"
 	Download_Path="/tmp/Downloads"
 	Version="${AutoUpdate_Version}"
-	Download_Tags="/tmp/Downloads/Github_Tags"
+	API_PATH="/tmp/Downloads/Github_Tags"
 	Github_API1="${Github_API1}"
 	Github_API2="${Github_API2}"
 	Github_Release="${Github_Release}"
