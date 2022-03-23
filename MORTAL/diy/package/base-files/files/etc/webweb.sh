@@ -5,12 +5,13 @@
 cp -Rf /etc/config/network /mnt/network
 
 if [[ -f /etc/crontabs/root ]]; then
-  sed -i '/mp\/luci-/d' /etc/crontabs/root && echo "0 1 * * 1 rm -rf /tmp/luci-*cache > /dev/null 2>&1" >> /etc/crontabs/root
+  sed -i '/mp\/luci-/d' /etc/crontabs/root && echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
 else
   mkdir -p /etc/crontabs
-  echo "0 1 * * 1 rm -rf /tmp/luci-*cache > /dev/null 2>&1" > /etc/crontabs/root
+  echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" > /etc/crontabs/root
   chmod -R 755 /etc/crontabs
 fi
+/etc/init.d/cron restart
 
 if [[ `grep -c "x86_64" /etc/openwrt_release` -eq '0' ]]; then
   source /etc/openwrt_release
