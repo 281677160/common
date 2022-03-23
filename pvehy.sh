@@ -81,6 +81,7 @@ function Diy_Part2() {
 	GET_TARGET_INFO
 	cat >${In_Firmware_Info} <<-EOF
 	Github="${Github}"
+	Author="${Author}"
 	Library="${Library}"
 	Warehouse="${Warehouse}"
 	SOURCE="${SOURCE}"
