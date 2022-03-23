@@ -183,6 +183,19 @@ if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
 fi
 }
 
+
+function Package_amlogic() {
+git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
+[ -d amlogic/openwrt-armvirt ] || mkdir -p amlogic/openwrt-armvirt
+cp -f $TARGET_BSGET/*.tar.gz amlogic/openwrt-armvirt/ && sync
+cd amlogic
+sudo chmod +x make
+sudo ./make -d -b s905x3_s905x2_s905x_s905w_s905d_s922x_s912 -k 5.10.100_5.4.180 -a true
+sudo mv -f $GITHUB_WORKSPACE/amlogic/out/* $TARGET_BSGET/ && sync
+sudo rm -rf $GITHUB_WORKSPACE/amlogic
+}
+
+
 function Diy_indexhtm() {
 echo "Diy_index.htm"
 if [[ "${REPO_BRANCH}" == "master" ]]; then
