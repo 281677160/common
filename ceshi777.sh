@@ -5,21 +5,21 @@
 
 TIME() {
 Compte=$(date +%Y年%m月%d号%H时%M分)
-[[ -z "$1" ]] && {
-	echo -ne " "
-} || {
-     case $1 in
-	r) export Color="\e[31m";;
-	g) export Color="\e[32m";;
-	b) export Color="\e[34m";;
-	y) export Color="\e[33m";;
-	z) export Color="\e[35m";;
-	l) export Color="\e[36m";;
-      esac
-	[[ $# -lt 2 ]] && echo -e "\e[36m\e[0m ${1}" || {
-		echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
-	 }
+  [[ -z "$1" ]] && {
+    echo -ne " "
+    } || {
+    case $1 in
+    r) export Color="\e[31m";;
+    g) export Color="\e[32m";;
+    b) export Color="\e[34m";;
+    y) export Color="\e[33m";;
+    z) export Color="\e[35m";;
+    l) export Color="\e[36m";;
+    esac
+      [[ $# -lt 2 ]] && echo -e "\e[36m\e[0m ${1}" || {
+        echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
       }
+    }
 }
 
 
