@@ -73,23 +73,28 @@ function GET_TARGET_INFO() {
 	export Github_Release="${Github}/releases/download/AutoUpdate"
 	export Github_UP_RELEASE="${Github}/releases/AutoUpdate"
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Compile_Date}"
-	export Egrep_Firmware="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
+	export Github_API1="https://api.github.com/repos/${Warehouse}/releases/tags/AutoUpdate"
+	export Github_API2="${Github}/releases/download/AutoUpdate/Github_Tags"
 }
 
 function Diy_Part2() {
 	GET_TARGET_INFO
 	cat >${In_Firmware_Info} <<-EOF
-	Github=${Github}
-	SOURCE=${SOURCE}
-  LUCI_EDITION=${LUCI_EDITION}
-	DEFAULT_Device=${TARGET_PROFILE}
-	Firmware_Type=${Firmware_sfx}
-  CURRENT_Version=${Openwrt_Version}
-	Github_Release=${Github_Release}
-	Egrep_Firmware=${Egrep_Firmware}
-	Download_Path=/tmp/Downloads
-	Version=${AutoUpdate_Version}
-	Download_Tags=/tmp/Downloads/Github_Tags
+	Github="${Github}"
+	Library="${Library}"
+	Warehouse="${Warehouse}"
+	SOURCE="${SOURCE}"
+        LUCI_EDITION="${LUCI_EDITION}"
+	DEFAULT_Device="${TARGET_PROFILE}"
+	Firmware_SFX=".${Firmware_sfx}"
+        CURRENT_Version="${Openwrt_Version}"
+	LOOKUP_Firmware="${LUCI_EDITION}-${Openwrt_Version}"
+	Download_Path="/tmp/Downloads"
+	Version="${AutoUpdate_Version}"
+	Download_Tags="/tmp/Downloads/Github_Tags"
+	Github_API1="${Github_API1}"
+	Github_API2="${Github_API2}"
+	Github_Release="${Github_Release}"
 	EOF
 }
 
