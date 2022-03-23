@@ -22,9 +22,32 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
       }
 }
 
-################################################################################################################
-# LEDE源码通用diy.sh文件
-################################################################################################################
+
+function Diy_settings() {
+echo "Diy_settings"
+  [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]] && {
+    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/${CONFIG_FILE}" 2>/dev/null)" ]; then
+      TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[OP_DIY/${matrixtarget}]文件夹内补齐"
+      exit 1
+    fi
+    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/${DIY_PART_SH}" 2>/dev/null)" ]; then
+      TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[OP_DIY/${matrixtarget}]文件夹内补齐"
+      exit 1
+    fi
+  } || {
+    if [ -z "$(ls -A "$BUILD_PATH/${CONFIG_FILE}" 2>/dev/null)" ]; then
+      TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[build/${matrixtarget}]文件夹内补齐"
+      exit 1
+    fi
+    if [ -z "$(ls -A "$BUILD_PATH/${DIY_PART_SH}" 2>/dev/null)" ]; then
+      TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[build/${matrixtarget}]文件夹内补齐"
+      exit 1
+    fi
+  }
+ 
+}
+
+
 function Diy_laku() {
 echo "Diy_laku"
 # 拉库和做标记，一次性操作
@@ -69,7 +92,7 @@ esac
 echo "
 src-git helloworld https://github.com/fw876/helloworld
 src-git passwall https://github.com/281677160/openwrt-passwall
-src-git danshui https://github.com/281677160/openwrt-package.git;ceshi
+src-git danshui https://github.com/281677160/openwrt-package.git;${REPO_BRANCH}
 " >> $HOME_PATH/feeds.conf.default
 }
 
@@ -105,8 +128,8 @@ echo "Diy_mortal"
 
 
 function Diy_amlogic() {
-echo "Diy_amlogic"
 if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
+  echo "Diy_amlogic"
   # 修复NTFS格式优盘不自动挂载
   packages=" \
   block-mount fdisk usbutils badblocks ntfs-3g kmod-scsi-core kmod-usb-core \
@@ -119,13 +142,13 @@ if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
   sed -i '/FEATURES+=/ { s/cpiogz //; s/ext4 //; s/ramdisk //; s/squashfs //; }' \
   target/linux/armvirt/Makefile
   for x in $packages; do
-    sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" target/linux/armvirt/Makefile
+    sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" $HOME_PATH/target/linux/armvirt/Makefile
   done
 
   # luci-app-cpufreq修改一些代码适配amlogic
-  sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' feeds/luci/applications/luci-app-cpufreq/Makefile
+  sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' $HOME_PATH/feeds/luci/applications/luci-app-cpufreq/Makefile
   # 为 armvirt 添加 autocore 支持
-  sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' package/lean/autocore/Makefile
+  sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' $HOME_PATH/package/lean/autocore/Makefile
 fi
 }
 
@@ -200,34 +223,6 @@ fi
 if [ -n "$(ls -A "$BUILD_PATH/patches" 2>/dev/null)" ]; then
   find "$BUILD_PATH/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
-}
-
-
-################################################################################################################
-# 判断脚本是否缺少主要文件（如果缺少settings.ini设置文件在检测脚本设置就运行错误了）
-################################################################################################################
-function Diy_settings() {
-echo "Diy_settings"
-  [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]] && {
-    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/${CONFIG_FILE}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[OP_DIY/${matrixtarget}]文件夹内补齐"
-      exit 1
-    fi
-    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/${DIY_PART_SH}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[OP_DIY/${matrixtarget}]文件夹内补齐"
-      exit 1
-    fi
-  } || {
-    if [ -z "$(ls -A "$BUILD_PATH/${CONFIG_FILE}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[build/${matrixtarget}]文件夹内补齐"
-      exit 1
-    fi
-    if [ -z "$(ls -A "$BUILD_PATH/${DIY_PART_SH}" 2>/dev/null)" ]; then
-      TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[build/${matrixtarget}]文件夹内补齐"
-      exit 1
-    fi
-  }
- 
 }
 
 
