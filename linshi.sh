@@ -3,7 +3,7 @@
 # AutoBuild Module by Hyy2001
 # AutoUpdate for Openwrt
 
-Version=V6.6
+Version=V6.8
 
 Shell_Helper() {
 [[ -f /etc/LOCAL_Version ]] && {
@@ -235,17 +235,16 @@ export CLOUD_Xianshi="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_De
 
 let X=$(grep -n "${CLOUD_Version}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
+echo
 echo -e "\n本地版本：${LOCAL_Version}"
 echo "云端版本：${CLOUD_Version}"
-echo
-echo -e "\n固件作者：${Author}"
 echo "设备名称：${CURRENT_Device}"
+echo "固件作者：${Author}"
 [[ "${Firmware_SFX}" =~ (.img.gz|.img) ]] && {
 	echo "引导模式：${BOOT_Type}"
 }
 echo "固件体积：${CLOUD_Firmware_Size}M"
 echo
-
 if [[ ! "${Force_Update}" == 1 ]];then
   	if [[ "${LOCAL_Firmware}" -eq "${CLOUD_Firmware}" ]];then
 		[[ "${AutoUpdate_Mode}" == 1 ]] && exit 0
@@ -279,10 +278,11 @@ fi
 }
 
 cd ${Download_Path}
+TIME g "正在下载云端固件,请耐心等待..."
+echo
 [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]] && {
 	export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 	if [ ! "$Google_Check" == 301 ];then
-		TIME g "正在下载云端固件,请耐心等待..."
 		wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
 		if [[ $? -ne 0 ]];then
 			wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
@@ -297,7 +297,6 @@ cd ${Download_Path}
 			TIME y "下载云端固件成功!"
 		fi
 	else
-		TIME g "正在下载云端固件,请耐心等待..."
 		wget -q --show-progress --progress=bar:force:noscroll "${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
 		if [[ $? -ne 0 ]];then
 			wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
