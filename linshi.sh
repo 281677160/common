@@ -10,7 +10,7 @@ Shell_Helper() {
 	export LOCAL_Version="$(cat /etc/LOCAL_Version)" > /dev/null 2>&1
 } || {
 	wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
-	export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+-${Firmware_SFX}" ${API_PATH} | awk 'END {print}')" > /dev/null 2>&1
+	export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')" > /dev/null 2>&1
 }
 clear
 echo
@@ -215,7 +215,7 @@ if [[ $? -ne 0 ]];then
 		exit 1
 	fi
 fi
-export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+-${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
+export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 echo "${LOCAL_Version}" > /etc/LOCAL_Version
 TIME g "正在获取云端固件版本信息..."
 export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
@@ -235,12 +235,12 @@ export CLOUD_Xianshi="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_De
 
 let X=$(grep -n "${CLOUD_Version}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
-echo -e "\n本地版本：${LOCAL_Xianshi}"
-echo "云端版本：${CLOUD_Xianshi}"
+echo -e "\n本地版本：${LOCAL_Version}"
+echo "云端版本：${CLOUD_Version}"
 if [[ ! "${Force_Update}" == 1 ]];then
   	if [[ "${LOCAL_Firmware}" -eq "${CLOUD_Firmware}" ]];then
 		[[ "${AutoUpdate_Mode}" == 1 ]] && exit 0
-		TIME && read -p "当前版本和云端最新版本一致，是否还要重新安装固件?[Y/n]:" Choose
+		TIME && read -p "当前版本和云端最高版本一致，是否还要重新安装固件?[Y/n]:" Choose
 		[[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
 			TIME z "正在开始重新安装固件..."
 		} || {
@@ -259,7 +259,7 @@ if [[ ! "${Force_Update}" == 1 ]];then
 			exit 0
 		}
         else
-               TIME r "检测到有可更新的固件版本,立即更新固件!"
+               TIME y "检测到有可更新的固件版本,立即更新固件!"
 	fi
 fi
 [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]] && {
