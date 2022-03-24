@@ -6,7 +6,7 @@
 Version=V6.6
 
 Shell_Helper() {
-[[ -f /etc/CLOUD_Name ]] && {
+[[ -f /etc/LOCAL_Version ]] && {
 	export LOCAL_Version="$(cat /etc/LOCAL_Version)" > /dev/null 2>&1
 } || {
 	wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
