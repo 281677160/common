@@ -201,7 +201,7 @@ else
 fi
 [[ -z ${CURRENT_Version} ]] && TIME r "本地固件版本获取失败,请检查/bin/openwrt_info文件的值!" && exit 1
 [[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/bin/openwrt_info文件的值!" && exit 1
-TIME g "正在获取云端固件版本信息..."
+TIME g "正在获取云端数据..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q ${Github_API1} -O ${API_PATH} > /dev/null 2>&1
 if [[ $? -ne 0 ]];then
@@ -217,13 +217,15 @@ if [[ $? -ne 0 ]];then
 fi
 export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+-${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 echo "${LOCAL_Version}" > /etc/LOCAL_Version
-TIME g "正在比对云端固件和本地安装固件版本..."
+TIME g "正在获取云端固件版本信息..."
 export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
-export CLOUD_Xianshi="$(echo ${CLOUD_Firmware} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+-${BOOT_Type}")"
+export CLOUD_Xianshi="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+-${BOOT_Type}")"
 [[ -z "${CLOUD_Version}" ]] && {
-	TIME r "比对固件版本失败!"
+	TIME r "获取云端固件版本信息失败!"
 	exit 1
+} || {
+	TIME g "对比本地版本和云端版本..."
 }
 [[ "${Input_Other}" == "-w" ]] && {
 	echo -e "\nCLOUD_Firmware=${CLOUD_Firmware}" > /tmp/Version_Tags
@@ -312,16 +314,16 @@ cd ${Download_Path}
 		fi
 	fi
 }
-export CLOUD_MD5=$(md5sum ${CLOUD_Version} | cut -c1-3)
-export CLOUD_256=$(sha256sum ${CLOUD_Version} | cut -c1-3)
+export LOCAL_MD5=$(md5sum ${CLOUD_Version} | cut -c1-3)
+export LOCAL_256=$(sha256sum ${CLOUD_Version} | cut -c1-3)
 export MD5_256=$(echo ${CLOUD_Version} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
-export CURRENT_MD5="$(echo "${MD5_256}" | cut -c1-3)"
-export CURRENT_256="$(echo "${MD5_256}" | cut -c 4-)"
-[[ ${CURRENT_MD5} != ${CLOUD_MD5} ]] && {
+export CLOUD_MD5="$(echo "${MD5_256}" | cut -c1-3)"
+export CLOUD_256="$(echo "${MD5_256}" | cut -c 4-)"
+[[ ${LOCAL_MD5} != ${CLOUD_MD5} ]] && {
 	TIME r "MD5对比失败,固件可能在下载时损坏,请检查网络后重试!"
 	exit 1
 }
-[[ ${CURRENT_256} != ${CLOUD_256} ]] && {
+[[ ${LOCAL_256} != ${CLOUD_256} ]] && {
 	TIME r "SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!"
 	exit 1
 }
