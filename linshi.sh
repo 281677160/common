@@ -237,6 +237,15 @@ let X=$(grep -n "${CLOUD_Version}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
 echo -e "\n本地版本：${LOCAL_Version}"
 echo "云端版本：${CLOUD_Version}"
+echo
+echo -e "\n固件作者：${Author}"
+echo "设备名称：${CURRENT_Device}"
+[[ "${Firmware_SFX}" =~ (.img.gz|.img) ]] && {
+	echo "引导模式：${BOOT_Type}"
+}
+echo "固件体积：${CLOUD_Firmware_Size}M"
+echo
+
 if [[ ! "${Force_Update}" == 1 ]];then
   	if [[ "${LOCAL_Firmware}" -eq "${CLOUD_Firmware}" ]];then
 		[[ "${AutoUpdate_Mode}" == 1 ]] && exit 0
@@ -268,16 +277,7 @@ fi
 	echo
 	exit 1
 }
-TIME g "列出详细信息..."
-sleep 1
-echo -e "\n固件作者：${Author}"
-echo "设备名称：${CURRENT_Device}"
-echo "固件格式：${Firmware_SFX}"
-[[ "${Firmware_SFX}" =~ (.img.gz|.img) ]] && {
-	echo "引导模式：${BOOT_Type}"
-}
-echo "固件名称：${CLOUD_Version}"
-echo "固件体积：${CLOUD_Firmware_Size}M"
+
 cd ${Download_Path}
 [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]] && {
 	export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
