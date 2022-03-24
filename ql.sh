@@ -19,8 +19,8 @@ run_autoupdate()
 	fi
 	if [ -f /bin/AutoUpdate.sh ] && [ -f /bin/openwrt_info ];then
 		cus_url="$(uci get autoupdate.@login[0].github)"
-                                ApAuthor="${cus_url%.git}"
-                                custom_github_url="${ApAuthor##*com/}"
+                ApAuthor="${cus_url%.git}"
+                custom_github_url="${ApAuthor##*com/}"
 		current_github_url="$(grep Warehouse= /bin/openwrt_info | cut -d "=" -f2)"
 		[[ -n "${custom_github_url}" ]] && {
 			[[ "${custom_github_url}" != "${current_github_url}" ]] && {
