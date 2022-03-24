@@ -23,7 +23,7 @@ echo -e "${Yellow}详细参数：
 固件下载位置:		${Download_Path}
 当前设备名称:		${CURRENT_Device}
 固件上的名称:		${DEFAULT_Device}
-当前固件版本:		${LOCAL_Firmware}
+当前固件版本:		${CURRENT_Version}
 Github 地址:		${Github}
 解析 API 地址:		${Github_API1}
 固件下载地址:		${Github_Release}
@@ -111,7 +111,7 @@ case ${Firmware_SFX} in
   export BOOT_Type="sysupgrade"
 esac
 
-export LOCAL_Firmware="${CURRENT_Version}"
+
 cat > /etc/openwrt_upgrade <<-EOF
 LOCAL_Firmware=${CURRENT_Version}
 MODEL_type=${BOOT_Type}${Firmware_SFX}
@@ -231,8 +231,11 @@ if [[ $? -ne 0 ]];then
 fi
 
 
+# 搞出本地版本固件名字用作显示用途
 export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
+export LOCAL_Firmware="${CURRENT_Version}"
 echo "${LOCAL_Version}" > /etc/local_Version
+
 TIME g "正在获取云端固件版本信息..."
 export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
@@ -244,6 +247,7 @@ export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_D
 }
 
 
+# 用在LUCI页面的版本对比
 [[ "${Input_Other}" == "-w" ]] && {
 cat > /tmp/Version_Tags <<-EOF
 LOCAL_Firmware=${CURRENT_Version}
@@ -273,9 +277,9 @@ echo "固件作者：${Author}"
 }
 echo "固件体积：${CLOUD_Firmware_Size}M"
 echo
-if [[ ! "${Force_Update}" == 1 ]];then
+if [[ ! "${Force_Update}" == "1" ]];then
   if [[ "${LOCAL_Firmware}" -eq "${CLOUD_Firmware}" ]];then
-    [[ "${AutoUpdate_Mode}" == 1 ]] && exit 0
+    [[ "${AutoUpdate_Mode}" == "1" ]] && exit 0
     TIME && read -p "当前版本和云端最高版本一致，是否还要重新安装固件?[Y/n]:" Choose
     [[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
       TIME z "正在开始重新安装固件..."
@@ -285,7 +289,7 @@ if [[ ! "${Force_Update}" == 1 ]];then
       exit 0
     }
   elif [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]];then
-    [[ "${AutoUpdate_Mode}" == 1 ]] && exit 0
+    [[ "${AutoUpdate_Mode}" == "1" ]] && exit 0
     TIME && read -p "云端最高版本,低于您现在的版本,是否强制覆盖现有固件?[Y/n]:" Choose
     [[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
       TIME z "正在开始使用云端版本覆盖现有固件..."
