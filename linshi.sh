@@ -111,9 +111,7 @@ case ${Firmware_SFX} in
   export BOOT_Type="sysupgrade"
 esac
 
-
 export LOCAL_Firmware="${CURRENT_Version}"
-export LOCAL_Xianshi="${CURRENT_Version}-${BOOT_Type}"
 cat > /etc/openwrt_upgrade <<-EOF
 LOCAL_Firmware=${CURRENT_Version}
 MODEL_type=${BOOT_Type}${Firmware_SFX}
@@ -238,7 +236,6 @@ echo "${LOCAL_Version}" > /etc/local_Version
 TIME g "正在获取云端固件版本信息..."
 export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
-export CLOUD_Xianshi="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+-${BOOT_Type}")"
 [[ -z "${CLOUD_Version}" ]] && {
   TIME r "获取云端固件版本信息失败!"
   exit 1
@@ -248,9 +245,11 @@ export CLOUD_Xianshi="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_De
 
 
 [[ "${Input_Other}" == "-w" ]] && {
-  echo -e "\nCLOUD_Firmware=${CLOUD_Firmware}" > /tmp/Version_Tags
-  echo -e "\nLOCAL_Firmware=${CURRENT_Version}" >> /tmp/Version_Tags
-  exit 0
+cat > /tmp/Version_Tags <<-EOF
+LOCAL_Firmware=${CURRENT_Version}
+CLOUD_Firmware=${CLOUD_Firmware}
+EOF
+exit 0
 }
 
 
