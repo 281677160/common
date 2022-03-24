@@ -108,6 +108,10 @@ main)
   
   # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+  
+  # 给源码增加passwall为默认自选
+  sed  -i  's/ luci-app-passwall//g' target/linux/*/Makefile
+  sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/*/Makefile
 
 ;;
 openwrt-18.06)
@@ -158,8 +162,6 @@ echo "Diy_lede"
 
 function Diy_Lienol() {
 echo "Diy_lienol"
-sed  -i  's/ luci-app-passwall//g' target/linux/*/Makefile
-sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/*/Makefile
 }
 
 
