@@ -14,7 +14,7 @@ function Diy_Part1() {
 }
 
 function GET_TARGET_INFO() {
-	
+	source $BUILD_PATH/ceshi777.sh && Make_upgrade
 	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 		export Rename="${TARGET_PROFILE}"
 		export TARGET_PROFILE="phicomm_k3"
