@@ -730,7 +730,11 @@ Diy_prevent
 Diy_adguardhome
 Diy_files
 Diy_zzz
-Make_defconfig
+if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
+  Make_upgrade
+else
+  Make_defconfig
+fi
 }
 
 
