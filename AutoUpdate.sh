@@ -7,8 +7,8 @@ Version=V6.8
 
 
 Shell_Helper() {
-if [[ -f /etc/LOCAL_Version ]]; then
-  export LOCAL_Version="$(cat /etc/LOCAL_Version)" > /dev/null 2>&1
+if [[ -f /etc/local_Version ]]; then
+  export LOCAL_Version="$(cat /etc/local_Version)" > /dev/null 2>&1
 else
   wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
   export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')" > /dev/null 2>&1
