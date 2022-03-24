@@ -683,13 +683,13 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
   if [[ ${TARGET_PROFILE} == "x86-64" ]]; then
     TIME b "传统固件: ${Legacy_Firmware}"
     TIME b "UEFI固件: ${UEFI_Firmware}"
-    TIME b "固件后缀: ${Firmware_sfx}"
+    TIME b "固件后缀: ${Firmware_SFX}"
   else
     TIME b "固件名称: ${Up_Firmware}"
-    TIME b "固件后缀: ${Firmware_sfx}"
+    TIME b "固件后缀: ${Firmware_SFX}"
   fi
   TIME b "固件版本: ${Openwrt_Version}"
-  TIME b "云端路径: ${Github_UP_RELEASE}"
+  TIME b "云端路径: ${Github_Release}"
   TIME g "《编译成功后，会自动把固件发布到指定地址，然后才会生成云端路径》"
   TIME g "《普通的那个发布固件跟云端的发布路径是两码事，如果你不需要普通发布的可以不用打开发布功能》"
   TIME g "修改IP、DNS、网关或者在线更新，请输入命令：openwrt"
