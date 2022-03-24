@@ -139,7 +139,7 @@ openwrt-21.02)
 ;;
 esac
 
-# 给feeds.conf.default增加源码源
+# 给feeds.conf.default增加插件源
 echo "
 src-git helloworld https://github.com/fw876/helloworld
 src-git passwall https://github.com/281677160/openwrt-passwall
@@ -149,35 +149,35 @@ src-git danshui https://github.com/281677160/openwrt-package.git;${REPO_BRANCH}
 
 
 function sbin_openwrt() {
-echo "sbin_openwrt"
+echo "给固件增加passwall[openwrt]命令"
 [[ -f $BUILD_PATH/openwrt.sh ]] && cp -Rf $BUILD_PATH/openwrt.sh $BASE_PATH/sbin/openwrt
 chmod 777 $BASE_PATH/sbin/openwrt
 }
 
 
 function Diy_Lede() {
-echo "Diy_lede"
+echo "Lede专用自定义"
 }
 
 
 function Diy_Lienol() {
-echo "Diy_lienol"
+echo "Lienol专用自定义"
 }
 
 
 function Diy_Tianling() {
-echo "Diy_tianling"
+echo "Tianling专用自定义"
 }
 
 
 function Diy_Mortal() {
-echo "Diy_mortal"
+echo "Mortal专用自定义"
 }
 
 
 function Diy_amlogic() {
 if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
-  echo "Diy_amlogic"
+  echo "修复NTFS格式优盘不自动挂载，适配cpufreq，添加autocore支持"
   # 修复NTFS格式优盘不自动挂载
   packages=" \
   block-mount fdisk usbutils badblocks ntfs-3g kmod-scsi-core kmod-usb-core \
@@ -202,7 +202,7 @@ fi
 
 
 function Package_amlogic() {
-echo "Package_amlogic"
+echo "打包N1和景晨系列固件"
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
 [ -d amlogic/openwrt-armvirt ] || mkdir -p amlogic/openwrt-armvirt
 cp -f $TARGET_BSGET/*.tar.gz amlogic/openwrt-armvirt/ && sync
@@ -215,7 +215,7 @@ sudo rm -rf $GITHUB_WORKSPACE/amlogic
 
 
 function Diy_indexhtm() {
-echo "Diy_index.htm"
+echo "去除主页一串的LUCI版本号显示"
 if [[ "${REPO_BRANCH}" == "master" ]]; then
   sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
   sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
@@ -230,7 +230,7 @@ fi
 
 
 function Diy_patches() {
-echo "Diy_patches"
+echo "如果有补丁文件，给源码打补丁"
 mv $HOME_PATH/build/common/LEDE $HOME_PATH/build/common/${SOURCE}
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
   cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
@@ -249,7 +249,7 @@ fi
 # 判断插件冲突
 ################################################################################################################
 function Diy_prevent() {
-echo "Conflict prevention"
+echo "判断插件冲突"
 make defconfig > /dev/null 2>&1
 echo "TIME b \"					插件冲突信息\"" > ${HOME_PATH}/CHONGTU
 
@@ -447,7 +447,7 @@ fi
 
 function Diy_adguardhome() {
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  echo "Diy_adguardhome"
+  echo "给adguardhome下载核心"
   if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
     Arch="amd64"
   elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
@@ -484,7 +484,7 @@ fi
 
 
 function Diy_files() {
-echo "Diy_files"
+echo "files大法好，小白无烦恼"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
   cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
   cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* $BUILD_PATH
@@ -502,7 +502,7 @@ fi
 
 
 function Diy_zzz() {
-echo "Diy_zzz"
+echo "微微调整一下default-settings文件"
 
 case "${REPO_BRANCH}" in
 master)
@@ -546,7 +546,7 @@ exit 0
 
 
 function Make_defconfig() {
-echo "Make_defconfig"
+echo "加载机型"
 make defconfig > /dev/null 2>&1
 export TAR_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
 export TAR_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)"
@@ -566,7 +566,7 @@ echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> $GITHUB_
 }
 
 function Make_upgrade() {
-echo "Make_upgrade"
+echo "加载机型"
 export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
 export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)"
 if [[ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` -eq '1' ]]; then
@@ -582,8 +582,7 @@ export TARGET_BSGET="$HOME_PATH/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
 }
 
 function Diy_firmware() {
-# 整理固件
-echo "Diy_firmware"
+echo "整理固件,您不想要啥就删啥"
 if [ "${REGULAR_UPDATE}" == "true" ]; then
   cp -Rf ${TARGET_BSGET} $HOME_PATH/upgrade
 fi
