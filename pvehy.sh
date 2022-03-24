@@ -71,7 +71,7 @@ function GET_TARGET_INFO() {
 	[[ -f ${AutoUp_Ver} ]] && export AutoUpdate_Version=$(egrep -o "V[0-9].+" $BASE_PATH/bin/AutoUpdate.sh | awk 'END{print}')
 	export In_Firmware_Info="$BASE_PATH/bin/openwrt_info"
 	export Github_Release="${Github}/releases/tag/AutoUpdate"
-	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Compile_Date}"
+	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
 	export Github_API1="https://api.github.com/repos/${Warehouse}/releases/tags/AutoUpdate"
 	export Github_API2="${Github}/releases/download/AutoUpdate/Github_Tags"
 	export Firmware_SFX=".${Firmware_sfx}"
