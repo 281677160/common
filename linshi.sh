@@ -116,7 +116,7 @@ esac
 export LOCAL_Firmware="${CURRENT_Version}"
 export LOCAL_Xianshi="${CURRENT_Version}-${BOOT_Type}"
 
-cat >/etc/openwrt_ver <<-EOF
+cat >> /etc/openwrt_upgrade <<-EOF
 LOCAL_Firmware="${CURRENT_Version}"
 MODEL_type="${BOOT_Type}${Firmware_SFX}"
 KERNEL_type="${Kernel} - ${LUCI_EDITION}"
@@ -216,7 +216,7 @@ if [[ $? -ne 0 ]];then
 	fi
 fi
 export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
-echo "${LOCAL_Version}" > /etc/LOCAL_Version
+echo "${LOCAL_Version}" > /etc/local_Version
 TIME g "正在获取云端固件版本信息..."
 export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
