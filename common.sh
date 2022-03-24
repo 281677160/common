@@ -151,7 +151,7 @@ src-git danshui https://github.com/281677160/openwrt-package.git;${REPO_BRANCH}
 
 
 function sbin_openwrt() {
-echo "给固件增加passwall[openwrt]命令"
+echo "给固件增加[openwrt]命令"
 [[ -f $BUILD_PATH/openwrt.sh ]] && cp -Rf $BUILD_PATH/openwrt.sh $BASE_PATH/sbin/openwrt
 chmod 777 $BASE_PATH/sbin/openwrt
 }
