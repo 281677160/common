@@ -5,7 +5,51 @@
 
 Version=V6.8
 
-function TIME() {
+
+Shell_Helper() {
+if [[ -f /etc/LOCAL_Version ]]; then
+  export LOCAL_Version="$(cat /etc/LOCAL_Version)" > /dev/null 2>&1
+else
+  wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
+  export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')" > /dev/null 2>&1
+fi
+clear
+echo
+echo
+echo -e "${Yellow}详细参数：
+
+/overlay 可用:		${Overlay_Available}
+/tmp 可用:		${TMP_Available}M
+固件下载位置:		${Download_Path}
+当前设备名称:		${CURRENT_Device}
+固件上的名称:		${DEFAULT_Device}
+当前固件版本:		${LOCAL_Firmware}
+Github 地址:		${Github}
+解析 API 地址:		${Github_API1}
+固件下载地址:		${Github_Release}
+更新运行日志:		${AutoUpdate_Log_Path}/AutoUpdate.log
+固件作者:		${Author}
+作者仓库:		${Library}
+固件名称:		${LOCAL_Version}
+固件格式:		${BOOT_Type}${Firmware_SFX}
+
+${White}"
+exit 0
+}
+
+
+White="\033[0;37m"
+Yellow="\033[0;33m"
+White="\033[0;37m"
+Yellow="\033[0;33m"
+Red="\033[1;91m"
+Blue="\033[0;94m"
+BLUEB="\033[1;94m"
+BCyan="\033[1;36m"
+Grey="\033[1;34m"
+Green="\033[0;92m"
+Purple="\033[1;95m"
+TIME() {
   local Color
   [[ -z $1 ]] && {
     echo -ne "\n${Grey}[$(date "+%H:%M:%S")]${White} "
@@ -30,33 +74,6 @@ function TIME() {
   }
 }
 
-function Shell_Helper() {
-if [[ -f /etc/LOCAL_Version ]]; then
-  export LOCAL_Version="$(cat /etc/LOCAL_Version)" > /dev/null 2>&1
-else
-  wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
-  export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')" > /dev/null 2>&1
-fi
-clear
-echo
-echo
-详细参数：
-/overlay 可用:		${Overlay_Available}
-/tmp 可用:		${TMP_Available}M
-固件下载位置:		${Download_Path}
-当前设备名称:		${CURRENT_Device}
-固件上的名称:		${DEFAULT_Device}
-当前固件版本:		${LOCAL_Firmware}
-Github 地址:		${Github}
-解析 API 地址:		${Github_API1}
-固件下载地址:		${Github_Release}
-更新运行日志:		${AutoUpdate_Log_Path}/AutoUpdate.log
-固件作者:		${Author}
-作者仓库:		${Library}
-固件名称:		${LOCAL_Version}
-固件格式:		${BOOT_Type}${Firmware_SFX}
-exit 1
-}
 
 if [[ -f /bin/openwrt_info ]]; then
   [[ -z ${CURRENT_Version} ]] && TIME r "本地固件版本获取失败,请检查/bin/openwrt_info文件的值!" && exit 1
@@ -68,6 +85,7 @@ else
   exit 1
 fi
 
+
 export Input_Option=$1
 export Input_Other=$2
 export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
@@ -77,6 +95,7 @@ rm -rf "${Download_Path}" && export TMP_Available="$(df -m | grep "/tmp" | awk '
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 export PKG_List="${Download_Path}/Installed_PKG_List"
 export AutoUpdate_Log_Path="/tmp"
+
 
 case ${Firmware_SFX} in
 .img.gz | .img )
@@ -92,14 +111,15 @@ case ${Firmware_SFX} in
   export BOOT_Type="sysupgrade"
 esac
 
+
 export LOCAL_Firmware="${CURRENT_Version}"
 export LOCAL_Xianshi="${CURRENT_Version}-${BOOT_Type}"
-
 cat > /etc/openwrt_upgrade <<-EOF
 LOCAL_Firmware="${CURRENT_Version}"
 MODEL_type="${BOOT_Type}${Firmware_SFX}"
 KERNEL_type="${Kernel} - ${LUCI_EDITION}"
 EOF
+
 
 function GET_PID() {
   local Result
@@ -110,11 +130,13 @@ function GET_PID() {
   done
 }
 
+
 function LOGGER() {
   [[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
   [[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
   echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate.sh)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
 }
+
 
 cd /etc
 clear && echo "Openwrt-AutoUpdate Script ${Version}"
@@ -179,7 +201,7 @@ else
       }
   ;;
   -h | -H | -l | -L)
-    TIME y "加载信息中，请稍后..."
+    TIME g "加载信息中，请稍后..."
     Shell_Helper
   ;;
   -g | -G)
@@ -193,6 +215,7 @@ else
   ;;
   esac
 fi
+
 
 TIME g "正在获取云端数据..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
@@ -209,6 +232,7 @@ if [[ $? -ne 0 ]];then
   fi
 fi
 
+
 export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 echo "${LOCAL_Version}" > /etc/local_Version
 TIME g "正在获取云端固件版本信息..."
@@ -222,14 +246,24 @@ export CLOUD_Xianshi="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_De
   TIME g "对比本地版本和云端版本..."
 }
 
+
 [[ "${Input_Other}" == "-w" ]] && {
   echo -e "\nCLOUD_Firmware=${CLOUD_Firmware}" > /tmp/Version_Tags
   echo -e "\nLOCAL_Firmware=${CURRENT_Version}" >> /tmp/Version_Tags
   exit 0
 }
 
+
 let X=$(grep -n "${CLOUD_Version}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
 let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
+[[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]] && {
+  TIME g "tmp 剩余空间: ${TMP_Available}M"
+  TIME r "tmp空间不足[${CLOUD_Firmware_Size}M],不够下载固件所需,请清理tmp空间或者增加运行内存!"
+  echo
+  exit 1
+}
+
+
 echo
 echo -e "\n本地版本：${LOCAL_Version}"
 echo "云端版本：${CLOUD_Version}"
@@ -266,12 +300,6 @@ if [[ ! "${Force_Update}" == 1 ]];then
   fi
 fi
 
-[[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]] && {
-  TIME g "tmp 剩余空间: ${TMP_Available}M"
-  TIME r "tmp空间不足[${CLOUD_Firmware_Size}M],不够下载固件所需,请清理tmp空间或者增加运行内存!"
-  echo
-  exit 1
-}
 
 cd ${Download_Path}
 TIME g "正在下载云端固件,请耐心等待..."
@@ -309,6 +337,7 @@ echo
   fi
 }
 
+
 export LOCAL_MD5=$(md5sum ${CLOUD_Version} | cut -c1-3)
 export LOCAL_256=$(sha256sum ${CLOUD_Version} | cut -c1-3)
 export MD5_256=$(echo ${CLOUD_Version} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
@@ -329,6 +358,7 @@ export CLOUD_256="$(echo "${MD5_256}" | cut -c 4-)"
   exit 0
 }
 
+
 chmod 777 ${CLOUD_Version}
 [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
 TIME g "正在更新固件,更新期间请不要断开电源或重启设备 ..."
@@ -346,6 +376,7 @@ if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
     export Upgrade_Options="sysupgrade -q"
   }
 fi
+
 
 ${Upgrade_Options} ${CLOUD_Version}
 
