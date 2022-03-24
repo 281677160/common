@@ -24,7 +24,7 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 
 function Diy_variable() {
-echo "Diy_variable"
+echo "加载编译所用的路径"
 echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV
 echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> $GITHUB_ENV
 echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> $GITHUB_ENV
@@ -57,7 +57,7 @@ fi
 
 
 function Diy_settings() {
-echo "Diy_settings"
+echo "随便判断一下是不是缺少文件了"
   [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]] && {
     if [ -z "$(ls -A "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/${CONFIG_FILE}" 2>/dev/null)" ]; then
       TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[OP_DIY/${matrixtarget}]文件夹内补齐"
@@ -82,7 +82,7 @@ echo "Diy_settings"
 
 
 function Diy_feeds() {
-echo "Diy_feeds"
+echo "更新插件源,让源码更多插件存在"
 # 拉库和做标记
 
 ./scripts/feeds clean && ./scripts/feeds update -a > /dev/null 2>&1
