@@ -74,7 +74,10 @@ function GET_TARGET_INFO() {
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
 	export Github_API1="https://api.github.com/repos/${Warehouse}/releases/tags/AutoUpdate"
 	export Github_API2="${Github}/releases/download/AutoUpdate/Github_Tags"
+	export Release_download="https://github.com/${Warehouse}/releases/download/AutoUpdate"
 	export Firmware_SFX=".${Firmware_sfx}"
+	export LOCAL_CHAZHAO="${LUCI_EDITION}-${Openwrt_Version}"
+	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
 }
 
 function Diy_Part2() {
@@ -89,13 +92,15 @@ function Diy_Part2() {
 	DEFAULT_Device="${TARGET_PROFILE}"
 	Firmware_SFX=".${Firmware_sfx}"
 	CURRENT_Version="${Openwrt_Version}"
-	LOOKUP_Firmware="${LUCI_EDITION}-${Openwrt_Version}"
+	LOCAL_CHAZHAO="${LOCAL_CHAZHAO}"
+	CLOUD_CHAZHAO="${CLOUD_CHAZHAO}"
 	Download_Path="/tmp/Downloads"
 	Version="${AutoUpdate_Version}"
 	API_PATH="/tmp/Downloads/Github_Tags"
 	Github_API1="${Github_API1}"
 	Github_API2="${Github_API2}"
 	Github_Release="${Github_Release}"
+	Release_download="${Release_download}"
 	EOF
 }
 
