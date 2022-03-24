@@ -284,7 +284,7 @@ if [[ ! "${Force_Update}" == 1 ]];then
       sleep 2
       exit 0
     }
-  elif [[ "${LOCAL_Firmware}" -eq "${CLOUD_Firmware}" ]];then
+  elif [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]];then
     [[ "${AutoUpdate_Mode}" == 1 ]] && exit 0
     TIME && read -p "云端最高版本,低于您现在的版本,是否强制覆盖现有固件?[Y/n]:" Choose
     [[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
