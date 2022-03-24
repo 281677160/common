@@ -83,24 +83,24 @@ function GET_TARGET_INFO() {
 function Diy_Part2() {
 	GET_TARGET_INFO
 	cat >${In_Firmware_Info} <<-EOF
-	Github="${Github}"
-	Author="${Author}"
-	Library="${Library}"
-	Warehouse="${Warehouse}"
-	SOURCE="${SOURCE}"
-	LUCI_EDITION="${LUCI_EDITION}"
-	DEFAULT_Device="${TARGET_PROFILE}"
-	Firmware_SFX=".${Firmware_sfx}"
-	CURRENT_Version="${Openwrt_Version}"
-	LOCAL_CHAZHAO="${LOCAL_CHAZHAO}"
-	CLOUD_CHAZHAO="${CLOUD_CHAZHAO}"
-	Download_Path="/tmp/Downloads"
-	Version="${AutoUpdate_Version}"
-	API_PATH="/tmp/Downloads/Github_Tags"
-	Github_API1="${Github_API1}"
-	Github_API2="${Github_API2}"
-	Github_Release="${Github_Release}"
-	Release_download="${Release_download}"
+	Github=${Github}
+	Author=${Author}
+	Library=${Library}
+	Warehouse=${Warehouse}
+	SOURCE=${SOURCE}
+	LUCI_EDITION=${LUCI_EDITION}
+	DEFAULT_Device=${TARGET_PROFILE}
+	Firmware_SFX=.${Firmware_sfx}
+	CURRENT_Version=${Openwrt_Version}
+	LOCAL_CHAZHAO=${LOCAL_CHAZHAO}
+	CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
+	Download_Path=/tmp/Downloads
+	Version=${AutoUpdate_Version}
+	API_PATH="/tmp/Downloads/Github_Tags
+	Github_API1=${Github_API1}
+	Github_API2=${Github_API2}
+	Github_Release=${Github_Release}
+	Release_download=${Release_download}
 	EOF
 }
 
