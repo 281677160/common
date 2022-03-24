@@ -75,6 +75,7 @@ function GET_TARGET_INFO() {
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Compile_Date}"
 	export Github_API1="https://api.github.com/repos/${Warehouse}/releases/tags/AutoUpdate"
 	export Github_API2="${Github}/releases/download/AutoUpdate/Github_Tags"
+	export Firmware_SFX=".${Firmware_sfx}"
 }
 
 function Diy_Part2() {
