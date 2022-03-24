@@ -680,7 +680,7 @@ if [[ ${REGULAR_UPDATE} == "true" ]]; then
   echo
   TIME l "定时自动更新信息"
   TIME z "插件版本: ${AutoUpdate_Version}"
-  if [[ ${TARGET_PROFILE} == "x86-64" ]]; then
+  if [[ ${Firmware_SFX} == ".img.gz" ]]; then
     TIME b "传统固件: ${Legacy_Firmware}"
     TIME b "UEFI固件: ${UEFI_Firmware}"
     TIME b "固件后缀: ${Firmware_SFX}"
