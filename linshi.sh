@@ -10,7 +10,7 @@ Shell_Helper() {
 	export LOCAL_Version="$(cat /etc/LOCAL_Version)" > /dev/null 2>&1
 } || {
 	wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
-	export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')" > /dev/null 2>&1
+	export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+-${Firmware_SFX}" ${API_PATH} | awk 'END {print}')" > /dev/null 2>&1
 }
 clear
 echo
