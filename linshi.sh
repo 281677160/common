@@ -40,7 +40,7 @@ fi
 clear
 echo
 echo
-详细参数：
+TIME r "详细参数："
 /overlay 可用:		${Overlay_Available}
 /tmp 可用:		${TMP_Available}M
 固件下载位置:		${Download_Path}
