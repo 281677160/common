@@ -277,7 +277,6 @@ echo "固件格式：${Firmware_SFX}"
 	echo "引导模式：${BOOT_Type}"
 }
 echo "固件名称：${CLOUD_Version}"
-echo "下载保存：${Download_Path}"
 echo "固件体积：${CLOUD_Firmware_Size}M"
 cd ${Download_Path}
 [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]] && {
