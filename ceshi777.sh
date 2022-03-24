@@ -593,7 +593,7 @@ if [[ -f ${GITHUB_WORKSPACE}/Clear ]]; then
   chmod +x ${TARGET_BSGET}/Clear.sh && ${TARGET_BSGET}/Clear.sh
   rm -rf ${TARGET_BSGET}/Clear.sh
 fi
-rename -v "s/^openwrt/${{ env.Compile_Date }}-${{ env.SOURCE }}/" *
+rename -v "s/^openwrt/${SOURCE}/" *
 
 # 发布用的update_log.txt
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
@@ -628,7 +628,7 @@ TIME b "Luci版本: ${LUCI_EDITION}"
 TIME b "固件作者: ${Author}"
 TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${CangKu}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
-TIME b "编译时间: ${{ env.Compile_Date }}-${{ env.SOURCE }}"
+TIME b "编译时间: ${Compile_Date}-${SOURCE}"
 [[ "${matrixtarget}" == "openwrt_amlogic" ]] && {
 	TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【晶晨系列】固件"
 } || {
