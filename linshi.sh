@@ -119,7 +119,7 @@ export LOCAL_Xianshi="${CURRENT_Version}-${BOOT_Type}"
 cat >/etc/openwrt_ver <<-EOF
 LOCAL_Firmware="${CURRENT_Version}"
 MODEL_type="${BOOT_Type}${Firmware_SFX}"
-LUCI_type="${Kernel} - ${LUCI_EDITION}"
+KERNEL_type="${Kernel} - ${LUCI_EDITION}"
 EOF
 
 cd /etc
