@@ -7,7 +7,7 @@ Version=V6.6
 
 Shell_Helper() {
 [[ -f /etc/CLOUD_Name ]] && {
-	export LOCAL_Version="$(cat /etc/CLOUD_Name)" > /dev/null 2>&1
+	export LOCAL_Version="$(cat /etc/LOCAL_Version)" > /dev/null 2>&1
 } || {
 	wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
 	export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')" > /dev/null 2>&1
@@ -23,15 +23,15 @@ echo -e "${Green}详细参数：
 固件下载位置:		${Download_Path}
 当前设备名称:		${CURRENT_Device}
 固件上的名称:		${DEFAULT_Device}
-当前固件版本:		${CURRENT_Version}
+当前固件版本:		${LOCAL_Firmware}
 Github 地址:		${Github}
 解析 API 地址:		${Github_API1}
 固件下载地址:		${Github_Release}
 更新运行日志:		${AutoUpdate_Log_Path}/AutoUpdate.log
 固件作者:		${Author}
 作者仓库:		${Library}
-固件名称:		${CLOUD_Name}
-固件格式:		${EFI_Mode}${Firmware_SFX}
+固件名称:		${LOCAL_Version}
+固件格式:		${BOOT_Type}${Firmware_SFX}
 ${White}"
 exit 0
 }
@@ -100,7 +100,7 @@ LOGGER() {
 	echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate.sh)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
 }
 case ${Firmware_SFX} in
-.img | .img.gz)
+.img.gz | .img )
 	[ -d /sys/firmware/efi ] && {
 		export BOOT_Type="uefi"
 	} || {
