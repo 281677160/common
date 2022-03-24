@@ -3,39 +3,18 @@
 # AutoBuild Module by Hyy2001
 # AutoBuild Functions
 
-GET_TARGET_INFO() {
-	if [[ "${REPO_BRANCH}" == "master" ]]; then
-		export LUCI_Name="18.06"
-		export REPO_Name="lede"
-		export ZUOZHE="Lean's"
-	elif [[ "${REPO_BRANCH}" == "main" ]]; then
-		export LUCI_Name="20.06"
-		export REPO_Name="lienol"
-		export ZUOZHE="Lienol's"
-	elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-		export LUCI_Name="18.06_tl"
-		export REPO_Name="Tianling"
-		export ZUOZHE="ctcgfw"
-	elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-		export LUCI_Name="21.02"
-		export REPO_Name="mortal"
-		export ZUOZHE="ctcgfw"
-	else
-		echo "没匹配到该源码的分支"
-	fi
-	
-	export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${Home}/.config)"
-	export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${Home}/.config)"
-	if [[ `grep -c "CONFIG_TARGET_x86_64=y" ${Home}/.config` -eq '1' ]]; then
-		export TARGET_PROFILE="x86-64"
-	elif [[ `grep -c "CONFIG_TARGET_x86=y" ${Home}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" ${Home}/.config` == '0' ]]; then
-		export TARGET_PROFILE="x86_32"
-	elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${Home}/.config` -eq '1' ]]; then
-		export TARGET_PROFILE="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" ${Home}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
-	else
-		export TARGET_PROFILE="${TARGET_BOARD}"
-	fi
-	
+
+function Diy_Part1() {
+  [[ ! -d "$HOME_PATH/package/luci-app-autoupdate" ]] && git clone https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
+  [[ -f "$BUILD_PATH/AutoUpdate.sh" ]] && cp -Rf $BUILD_PATH/AutoUpdate.sh $BASE_PATH/bin/AutoUpdate.sh
+  [[ -f "$BUILD_PATH/replace.sh" ]] && cp -Rf $BUILD_PATH/replace.sh $BASE_PATH/bin/replace.sh
+  sed  -i  's/ luci-app-ttyd//g' $HOME_PATH/target/linux/*/Makefile
+  sed  -i  's/ luci-app-autoupdate//g' $HOME_PATH/target/linux/*/Makefile
+  sed -i 's#DEFAULT_PACKAGES +=#DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd#g' $HOME_PATH/target/linux/*/Makefile
+}
+
+function GET_TARGET_INFO() {
+	source $BUILD_PATH/ceshi777.sh && Make_upgrade
 	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 		export Rename="${TARGET_PROFILE}"
 		export TARGET_PROFILE="phicomm_k3"
@@ -88,51 +67,52 @@ GET_TARGET_INFO() {
 	;;
 	esac
 	
-	AutoUp_Ver="${Home}/package/base-files/files/bin/AutoUpdate.sh"
-	[[ -f ${AutoUp_Ver} ]] && export AutoUpdate_Version=$(egrep -o "V[0-9].+" ${Home}/package/base-files/files/bin/AutoUpdate.sh | awk 'END{print}')
-	export In_Firmware_Info="${Home}/package/base-files/files/bin/openwrt_info"
-	export Github_Release="${Github}/releases/download/AutoUpdate"
-	export Github_UP_RELEASE="${Github}/releases/AutoUpdate"
-	export Openwrt_Version="${REPO_Name}-${TARGET_PROFILE}-${Compile_Date}"
-	export Egrep_Firmware="${LUCI_Name}-${REPO_Name}-${TARGET_PROFILE}"
+	AutoUp_Ver="$BASE_PATH/bin/AutoUpdate.sh"
+	[[ -f ${AutoUp_Ver} ]] && export AutoUpdate_Version=$(egrep -o "V[0-9].+" $BASE_PATH/bin/AutoUpdate.sh | awk 'END{print}')
+	export In_Firmware_Info="$BASE_PATH/bin/openwrt_info"
+	export Github_Release="${Github}/releases/tag/AutoUpdate"
+	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
+	export Github_API1="https://api.github.com/repos/${Warehouse}/releases/tags/AutoUpdate"
+	export Github_API2="${Github}/releases/download/AutoUpdate/Github_Tags"
+	export Release_download="https://github.com/${Warehouse}/releases/download/AutoUpdate"
+	export Firmware_SFX=".${Firmware_sfx}"
+	export LOCAL_CHAZHAO="${LUCI_EDITION}-${Openwrt_Version}"
+	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
 }
 
-Diy_Part1() {
-git clone https://github.com/281677160/luci-app-autoupdate package/luci-app-autoupdate
-[[ -f "${PATH1}/AutoUpdate.sh" ]] && cp -Rf "${PATH1}"/AutoUpdate.sh package/base-files/files/bin/AutoUpdate.sh
-[[ -f "${PATH1}/replace.sh" ]] && cp -Rf "${PATH1}"/replace.sh package/base-files/files/bin/replace.sh
-sed  -i  's/ luci-app-autoupdate luci-app-ttyd//g' target/linux/*/Makefile
-sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd/g' target/linux/*/Makefile
-}
-
-Diy_Part2() {
+function Diy_Part2() {
 	GET_TARGET_INFO
 	cat >${In_Firmware_Info} <<-EOF
-	Github=${Github}
-	Luci_Edition=${OpenWrt_name}
-	CURRENT_Version=${Openwrt_Version}
-	DEFAULT_Device=${TARGET_PROFILE}
-	Firmware_Type=${Firmware_sfx}
-	LUCI_Name=${LUCI_Name}
-	REPO_Name=${REPO_Name}
-	Github_Release=${Github_Release}
-	Egrep_Firmware=${Egrep_Firmware}
-	Download_Path=/tmp/Downloads
-	Version=${AutoUpdate_Version}
-	Download_Tags=/tmp/Downloads/Github_Tags
+	Github="${Github}"
+	Author="${Author}"
+	Library="${Library}"
+	Warehouse="${Warehouse}"
+	SOURCE="${SOURCE}"
+	LUCI_EDITION="${LUCI_EDITION}"
+	DEFAULT_Device="${TARGET_PROFILE}"
+	Firmware_SFX=".${Firmware_sfx}"
+	CURRENT_Version="${Openwrt_Version}"
+	LOCAL_CHAZHAO="${LOCAL_CHAZHAO}"
+	CLOUD_CHAZHAO="${CLOUD_CHAZHAO}"
+	Download_Path="/tmp/Downloads"
+	Version="${AutoUpdate_Version}"
+	API_PATH="/tmp/Downloads/Github_Tags"
+	Github_API1="${Github_API1}"
+	Github_API2="${Github_API2}"
+	Github_Release="${Github_Release}"
+	Release_download="${Release_download}"
 	EOF
 }
 
-Diy_Part3() {
+function Diy_Part3() {
 	GET_TARGET_INFO
-	export AutoBuild_Firmware="${LUCI_Name}-${Openwrt_Version}"
-	export Firmware_Path="${Home}/upgrade"
-	Mkdir ${Home}/bin/Firmware
-	export Zhuan_Yi="${Home}/bin/zhuanyi_Firmware"
-	export Diuqu_gj="${Home}/bin/targets/diuqugj"
+	export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}"
+	export Firmware_Path="$HOME_PATH/upgrade"
+	Mkdir $HOME_PATH/bin/Firmware
+	export Zhuan_Yi="$HOME_PATH/bin/zhuanyi_Firmware"
+	export Diuqu_gj="$HOME_PATH/bin/targets/diuqugj"
 	rm -rf "${Zhuan_Yi}" && Mkdir "${Zhuan_Yi}"
 	rm -rf "${Diuqu_gj}" && Mkdir "${Diuqu_gj}"
-	echo "${TARGET_BOARD}" > ${Zhuan_Yi}/1234
 	cd "${Firmware_Path}"
 	if [[ `ls ${Firmware_Path} | grep -c ".img"` -ge '1' ]] && [[ `ls ${Firmware_Path} | grep -c ".img.gz"` == '0' ]]; then
 		gzip *.img
@@ -231,13 +211,13 @@ Diy_Part3() {
 			MD5=$(md5sum ${Legacy_Firmware} | cut -c1-3)
 			SHA256=$(sha256sum ${Legacy_Firmware} | cut -c1-3)
 			SHA5BIT="${MD5}${SHA256}"
-			cp ${Legacy_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-Legacy-${SHA5BIT}.${Firmware_sfx}
+			cp ${Legacy_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-Legacy-${SHA5BIT}.${Firmware_sfx}
 		}
 		[[ -f ${UEFI_Firmware} ]] && {
 			MD5=$(md5sum ${UEFI_Firmware} | cut -c1-3)
 			SHA256=$(sha256sum ${UEFI_Firmware} | cut -c1-3)
 			SHA5BIT="${MD5}${SHA256}"
-			cp ${UEFI_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-UEFI-${SHA5BIT}.${Firmware_sfx}
+			cp ${UEFI_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-UEFI-${SHA5BIT}.${Firmware_sfx}
 		}
 	;;
 	mvebu)
@@ -247,13 +227,13 @@ Diy_Part3() {
 				MD5=$(md5sum ${Legacy_Firmware} | cut -c1-3)
 				SHA256=$(sha256sum ${Legacy_Firmware} | cut -c1-3)
 				SHA5BIT="${MD5}${SHA256}"
-				cp ${Legacy_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-Legacy-${SHA5BIT}.${Firmware_sfx}
+				cp ${Legacy_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-Legacy-${SHA5BIT}.${Firmware_sfx}
 			}
 			[[ -f ${UEFI_Firmware} ]] && {
 				MD5=$(md5sum ${UEFI_Firmware} | cut -c1-3)
 				SHA256=$(sha256sum ${UEFI_Firmware} | cut -c1-3)
 				SHA5BIT="${MD5}${SHA256}"
-				cp ${UEFI_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-UEFI-${SHA5BIT}.${Firmware_sfx}
+				cp ${UEFI_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-UEFI-${SHA5BIT}.${Firmware_sfx}
 			}
 		;;
 		esac
@@ -263,13 +243,13 @@ Diy_Part3() {
 			MD5=$(md5sum ${Up_Firmware} | cut -c1-3)
 			SHA256=$(sha256sum ${Up_Firmware} | cut -c1-3)
 			SHA5BIT="${MD5}${SHA256}"
-			cp ${Up_Firmware} ${Home}/bin/Firmware/${AutoBuild_Firmware}-Sysupg-${SHA5BIT}.${Firmware_sfx}
+			cp ${Up_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-Sysupg-${SHA5BIT}.${Firmware_sfx}
 		} || {
 			echo "Firmware is not detected !"
 		}
 	;;
 	esac
-	cd ${Home}
+	cd $HOME_PATH
 	rm -rf "${Firmware_Path}"
 	rm -rf "${Zhuan_Yi}"
 	rm -rf "${Diuqu_gj}"
