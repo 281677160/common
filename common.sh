@@ -233,7 +233,6 @@ fi
 
 function Diy_patches() {
 echo "如果有补丁文件，给源码打补丁"
-mv $HOME_PATH/build/common/LEDE $HOME_PATH/build/common/${SOURCE}
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
   cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
   cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* $BUILD_PATH
