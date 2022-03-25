@@ -428,7 +428,7 @@ if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
 else
   rm -rf CHONGTU
 fi
-
+make defconfig > /dev/null 2>&1
 echo
 echo
 if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
