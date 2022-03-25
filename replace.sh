@@ -64,98 +64,92 @@ else
   print_error "未检测到openwrt_info文件,无法运行更新程序!"
   exit 1
 fi
-export Github="${Github}"
-export Apidz="${Github##*com/}"
-export Author="${Apidz%/*}"
-export CangKu="${Apidz##*/}"
-export Github_API="https://api.github.com/repos/${Apidz}/releases/tags/AutoUpdate"
-export Github_Release="${Github_Release}"
 [[ ! -d "${Download_Path}" ]] && mkdir -p ${Download_Path} || rm -fr ${Download_Path}/*
 opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 export PKG_List="${Download_Path}/Installed_PKG_List"
 export Kernel="$(egrep -o "Version: [0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control |sed s/[[:space:]]//g |cut -d ":" -f2)"
-case ${DEFAULT_Device} in
-x86-64)
-  if [[ -d /sys/firmware/efi ]]; then
-    export BOOT_Type="UEFI"
-    export EFI_Mode="UEFI"
-  else
-    export BOOT_Type="Legacy"
-    export EFI_Mode="Legacy"
-  fi
-  ;;
-  *)
-    export BOOT_Type="Sysupg"
-    export EFI_Mode="squashfs"
+
+case ${Firmware_SFX} in
+.img.gz | .img )
+  [ -d /sys/firmware/efi ] && {
+    export BOOT_Type="uefi"
+  } || {
+    export BOOT_Type="legacy"
+  }
+;;
+*)
+  export BOOT_Type="sysupgrade"
 esac
 
 opapi() {
-  wget -q ${Github_API} -O ${Download_Tags} > /dev/null 2>&1
+[ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
+wget -q ${Github_API1} -O ${API_PATH} > /dev/null 2>&1
+if [[ $? -ne 0 ]];then
+  wget -q -P ${Download_Path} https://pd.zwc365.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
   if [[ $? -ne 0 ]];then
-  wget -q -P ${Download_Path} https://pd.zwc365.com/${Github_Release}/Github_Tags -O ${Download_Path}/Github_Tags > /dev/null 2>&1
-    if [[ $? -ne 0 ]];then
-      wget -q -P ${Download_Path} https://ghproxy.com/${Github_Release}/Github_Tags -O ${Download_Path}/Github_Tags > /dev/null 2>&1
-    fi
-    if [[ $? -ne 0 ]];then
-      print_error "获取固件版本信息失败,请检测网络,或者您更改的Github地址为无效地址,或者您的仓库是私库,或者发布已被删除!"
-      echo
-      exit 1
-    fi
+    wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
   fi
+  if [[ $? -ne 0 ]];then
+    TIME r "获取固件版本信息失败,请检测网络,或者您更改的Github地址为无效地址,或者您的仓库是私库,或者发布已被删除!"
+    echo
+    exit 1
+  fi
+fi
 }
 
 menuaz() {
   ECHOG "正在下载云端固件,请耐心等待..."
   cd ${Download_Path}
-  if [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]]; then
+  [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]] && {
     export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
     if [ ! "$Google_Check" == 301 ];then
-      echo
-      wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
+      wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
       if [[ $? -ne 0 ]];then
-        wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Github_Release}/${Firmware}" -O ${Firmware}
-	if [[ $? -ne 0 ]];then
-	  print_error "下载云端固件失败,请尝试手动安装!"
-	  exit 1
-	else
-	  print_ok "下载云端固件成功!"
-	fi
-      else
-        print_ok "下载云端固件成功!"
-      fi
-  else
-      echo
-      wget -q --show-progress --progress=bar:force:noscroll "${Github_Release}/${Firmware}" -O ${Firmware}
-      if [[ $? -ne 0 ]];then
-        wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Github_Release}/${Firmware}" -O ${Firmware}
+        wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
         if [[ $? -ne 0 ]];then
-          print_error "下载云端固件失败,请尝试手动安装!"
+          TIME r "下载云端固件失败,请尝试手动安装!"
+          echo
           exit 1
         else
-          print_ok "下载云端固件成功!"
+          TIME y "下载云端固件成功!"
         fi
       else
-        print_ok "下载云端固件成功!"
+        TIME y "下载云端固件成功!"
+      fi
+    else
+      wget -q --show-progress --progress=bar:force:noscroll "${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+      if [[ $? -ne 0 ]];then
+        wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+        if [[ $? -ne 0 ]];then
+          TIME r "下载云端固件失败,请尝试手动安装!"
+          echo
+          exit 1
+        else
+          TIME y "下载云端固件成功!"
+        fi
+      else
+        TIME y "下载云端固件成功!"
       fi
     fi
-  fi
+  }
 }
 
 function anzhuang() {
   cd ${Download_Path}
-  export CLOUD_MD5=$(md5sum ${Firmware} | cut -c1-3)
-  export CLOUD_256=$(sha256sum ${Firmware} | cut -c1-3)
-  export MD5_256=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+.${Firmware_Type}" | sed -r "s/(.*).${Firmware_Type}/\1/")
-  export CURRENT_MD5="$(echo "${MD5_256}" | cut -c1-3)"
-  export CURRENT_256="$(echo "${MD5_256}" | cut -c 4-)"
-  [[ ${CURRENT_MD5} != ${CLOUD_MD5} ]] && {
-    print_error "MD5对比失败,固件可能在下载时损坏,请检查网络后重试!"
+  export LOCAL_MD5=$(md5sum ${CLOUD_Version} | cut -c1-3)
+  export LOCAL_256=$(sha256sum ${CLOUD_Version} | cut -c1-3)
+  export MD5_256=$(echo ${CLOUD_Version} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
+  export CLOUD_MD5="$(echo "${MD5_256}" | cut -c1-3)"
+  export CLOUD_256="$(echo "${MD5_256}" | cut -c 4-)"
+  [[ ${LOCAL_MD5} != ${CLOUD_MD5} ]] && {
+    TIME r "MD5对比失败,固件可能在下载时损坏,请检查网络后重试!"
     exit 1
   }
-  [[ ${CURRENT_256} != ${CLOUD_256} ]] && {
-    print_error "SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!"
+  [[ ${LOCAL_256} != ${CLOUD_256} ]] && {
+    TIME r "SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!"
     exit 1
   }
+
   chmod 777 ${Firmware}
   [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
   ECHOG "正在更新固件,更新期间请不要断开电源或重启设备 ..."
