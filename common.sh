@@ -465,20 +465,11 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
     downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
     latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
     wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
-    tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C $HOME_PATH
-
-    if [[ -d "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}" ]]; then
-      mkdir -p ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin
-      [[ -f "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome" ]] && rm -rf "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome"
-      [[ -f "AdGuardHome/AdGuardHome" ]] && mv -f AdGuardHome/AdGuardHome ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
-      [[ -f "AdGuardHome/AdGuardHome" ]] && chmod 777 ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/files/usr/bin/AdGuardHome
-      rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
-    else
-      mkdir -p $HOME_PATH/files/usr/bin
-      [[ -f "AdGuardHome/AdGuardHome" ]] && mv -f AdGuardHome/AdGuardHome $HOME_PATH/files/usr/bin
-      [[ -f "AdGuardHome/AdGuardHome" ]] && chmod 777 $HOME_PATH/files/usr/bin/AdGuardHome
-      rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
-    fi
+    [[ -f "AdGuardHome_linux_${Arch}.tar.gz" ]] && tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C $HOME_PATH || echo "下载核心不成功"
+    mkdir -p $HOME_PATH/files/usr/bin
+    [[ -f "AdGuardHome/AdGuardHome" ]] && mv -f AdGuardHome/AdGuardHome $HOME_PATH/files/usr/bin
+    [[ -f "AdGuardHome/AdGuardHome" ]] && chmod 777 $HOME_PATH/files/usr/bin/AdGuardHome
+    rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
   fi
 fi
 }
