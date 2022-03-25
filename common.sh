@@ -730,6 +730,7 @@ Diy_patches
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
   source $BUILD_PATH/upgrade.sh && Diy_Part1
 fi
+echo "更新feeds"
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
