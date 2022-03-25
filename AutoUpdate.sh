@@ -182,10 +182,10 @@ else
       [[ -n "${Github_uci}" ]] && [[ "${Github_uci}" != "${Input_Other}" ]] && {
         ApAuthor="${Input_Other%.git}"
         custom_github_url="${ApAuthor##*com/}"
-	      current_github_url="$(grep Warehouse= /bin/openwrt_info | cut -d "=" -f2)"
-	      sed -i "s?${current_github_url}?${custom_github_url}?g" /bin/openwrt_info
-	      Input_Other="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
-	      uci set autoupdate.@login[0].github=${Input_Other}
+        current_github_url="$(grep Warehouse= /bin/openwrt_info | cut -d "=" -f2)"
+        sed -i "s?${current_github_url}?${custom_github_url}?g" /bin/openwrt_info
+        Input_Other="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
+        uci set autoupdate.@login[0].github=${Input_Other}
         uci commit autoupdate
         TIME y "Github 地址已更换为: ${Input_Other}"
         TIME y "UCI 设置已更新!"
