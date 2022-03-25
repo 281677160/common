@@ -136,9 +136,9 @@ menuaz() {
 
 function anzhuang() {
   cd ${Download_Path}
-  export LOCAL_MD5=$(md5sum ${CLOUD_Version} | cut -c1-3)
-  export LOCAL_256=$(sha256sum ${CLOUD_Version} | cut -c1-3)
-  export MD5_256=$(echo ${CLOUD_Version} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
+  export LOCAL_MD5=$(md5sum ${Firmware} | cut -c1-3)
+  export LOCAL_256=$(sha256sum ${Firmware} | cut -c1-3)
+  export MD5_256=$(echo ${Firmware} | egrep -o "[a-zA-Z0-9]+${Firmware_SFX}" | sed -r "s/(.*)${Firmware_SFX}/\1/")
   export CLOUD_MD5="$(echo "${MD5_256}" | cut -c1-3)"
   export CLOUD_256="$(echo "${MD5_256}" | cut -c 4-)"
   [[ ${LOCAL_MD5} != ${CLOUD_MD5} ]] && {
@@ -159,9 +159,9 @@ function anzhuang() {
 
 
 function Firmware_Path() {
-  export CLOUD_Version_1="$(egrep -o "${MAINTAIN_1}-${DEFAULT_Device}-.*-${BOOT_Type}-.*${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
-  export CLOUD_Version_2="$(egrep -o "${MAINTAIN_2}-${DEFAULT_Device}-.*-${BOOT_Type}-.*${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
-  export CLOUD_Version_3="$(egrep -o "${MAINTAIN_3}-${DEFAULT_Device}-.*-${BOOT_Type}-.*${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
+  export CLOUD_Version_1="$(egrep -o "${MAINTAIN_1}-${DEFAULT_Device}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
+  export CLOUD_Version_2="$(egrep -o "${MAINTAIN_2}-${DEFAULT_Device}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
+  export CLOUD_Version_3="$(egrep -o "${MAINTAIN_3}-${DEFAULT_Device}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 
   if [[ -n "${CLOUD_Version_1}" ]] && [[ -n "${CLOUD_Version_2}" ]] && [[ -n "${CLOUD_Version_3}" ]]; then
     CLOUD_Firmware1="${CLOUD_Version_1}"
