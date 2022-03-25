@@ -22,7 +22,6 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
     }
 }
 
-
 function Diy_variable() {
 echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV
 echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> $GITHUB_ENV
@@ -57,7 +56,6 @@ else
 fi
 }
 
-
 function Diy_settings() {
 echo "编译提示：随便判断一下是不是缺少文件了"
   [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]] && {
@@ -85,7 +83,6 @@ echo "编译提示：随便判断一下是不是缺少文件了"
   }
  
 }
-
 
 function Diy_feeds() {
 echo "编译提示：更新插件源,让源码更多插件存在"
@@ -153,33 +150,27 @@ src-git danshui https://github.com/281677160/openwrt-package.git;${REPO_BRANCH}
 " >> $HOME_PATH/feeds.conf.default
 }
 
-
 function sbin_openwrt() {
 echo "编译提示：给固件增加[openwrt]命令"
 [[ -f $BUILD_PATH/openwrt.sh ]] && cp -Rf $BUILD_PATH/openwrt.sh $BASE_PATH/sbin/openwrt
 chmod 777 $BASE_PATH/sbin/openwrt
 }
 
-
 function Diy_Lede() {
 echo "编译提示：Lede专用自定义"
 }
-
 
 function Diy_Lienol() {
 echo "编译提示：Lienol专用自定义"
 }
 
-
 function Diy_Tianling() {
 echo "编译提示：Tianling专用自定义"
 }
 
-
 function Diy_Mortal() {
 echo "编译提示：Mortal专用自定义"
 }
-
 
 function Diy_amlogic() {
 if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
@@ -206,7 +197,6 @@ if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
 fi
 }
 
-
 function Package_amlogic() {
 echo "编译提示：打包N1和景晨系列固件"
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
@@ -218,7 +208,6 @@ sudo ./make -d -b s905x3_s905x2_s905x_s905w_s905d_s922x_s912 -k 5.10.100_5.4.180
 sudo mv -f $GITHUB_WORKSPACE/amlogic/out/* $TARGET_BSGET/ && sync
 sudo rm -rf $GITHUB_WORKSPACE/amlogic
 }
-
 
 function Diy_indexhtm() {
 echo "编译提示：去除主页一串的LUCI版本号显示"
@@ -234,7 +223,6 @@ if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
 fi
 }
 
-
 function Diy_patches() {
 echo "编译提示：如果有补丁文件，给源码打补丁"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
@@ -249,10 +237,6 @@ if [ -n "$(ls -A "$BUILD_PATH/patches" 2>/dev/null)" ]; then
 fi
 }
 
-
-################################################################################################################
-# 判断插件冲突
-################################################################################################################
 function Diy_prevent() {
 echo "编译提示：判断插件冲突减少编译错误"
 make defconfig > /dev/null 2>&1
@@ -447,7 +431,6 @@ if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
 fi
 }
 
-
 function Diy_adguardhome() {
 ## adguardhome编译时候带自选要不要编译内核了，此功能没用
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
@@ -478,7 +461,6 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
 fi
 }
 
-
 function Diy_files() {
 echo "编译提示：files大法好，小白无烦恼"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
@@ -495,7 +477,6 @@ if [ -n "$(ls -A "$BUILD_PATH/files" 2>/dev/null)" ]; then
   cp -Rf $BUILD_PATH/files $HOME_PATH
 fi
 }
-
 
 function Diy_zzz() {
 echo "编译提示：微微调整一下default-settings文件"
@@ -539,7 +520,6 @@ fi
 exit 0
 ' >> $BASE_PATH/etc/rc.local
 }
-
 
 function Make_defconfig() {
 echo "编译提示：加载机型"
@@ -598,14 +578,12 @@ if [ "${UPLOAD_RELEASE}" == "true" ]; then
 fi
 }	
 
-
 function Diy_Notice() {
 TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
 TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
 TIME r "修改IP、DNS、网关，请输入命令：openwrt"
 TIME r "如果您的机子在线更新固件可用，而又编译了，也可请输入命令查看在线更新操作：openwrt"
 }
-
 
 function Diy_xinxi() {
 Compte=$(date +%Y年%m月%d号%H时%M分)
