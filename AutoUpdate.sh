@@ -88,8 +88,6 @@ fi
 
 export Input_Option=$1
 export Input_Other=$2
-export Author="$(echo "${Github}" | cut -d "/" -f4)"
-export Library="$(echo "${Github}" | cut -d "/" -f5)"
 export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
 export Overlay_Available="$(df -h | grep ":/overlay" | awk '{print $4}' | awk 'NR==1')"
 rm -rf "${Download_Path}" && export TMP_Available="$(df -m | grep "/tmp" | awk '{print $4}' | awk 'NR==1' | awk -F. '{print $1}')"
