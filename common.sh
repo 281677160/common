@@ -697,6 +697,16 @@ if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
 fi
 }
 
+function Diy_menu3() {
+Diy_files
+Diy_zzz
+if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
+  Make_upgrade
+else
+  Make_defconfig
+fi
+}
+
 function Diy_menu2() {
 Diy_prevent
 Diy_files
