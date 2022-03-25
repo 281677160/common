@@ -434,13 +434,11 @@ echo
 if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
   chmod -R +x ${HOME_PATH}/EXT4
   source ${HOME_PATH}/EXT4
-  [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]] && rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao,EXT4}
   echo
 fi
 if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
   chmod -R +x ${HOME_PATH}/CHONGTU
   source ${HOME_PATH}/CHONGTU
-  [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]] && rm -rf ${HOME_PATH}/{CHONGTU,Chajianlibiao}
   echo
 fi
 }
