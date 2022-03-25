@@ -170,7 +170,7 @@ else
     esac
   ;;
   -c)
-      source /bin/openwrt_info
+      Github="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
       TIME h "执行：更换[Github地址]操作"
       TIME y "地址格式：https://github.com/帐号/仓库"
       TIME z  "正确地址示例：https://github.com/281677160/build-actions"
@@ -180,12 +180,18 @@ else
       Input_Other="${Input_Other:-"$Github"}"
       Github_uci=$(uci get autoupdate.@login[0].github 2>/dev/null)
       [[ -n "${Github_uci}" ]] && [[ "${Github_uci}" != "${Input_Other}" ]] && {
-        uci set autoupdate.@login[0].github=${Input_Other}
+        ApAuthor="${Input_Other%.git}"
+        custom_github_url="${ApAuthor##*com/}"
+	      current_github_url="$(grep Warehouse= /bin/openwrt_info | cut -d "=" -f2)"
+	      sed -i "s?${current_github_url}?${custom_github_url}?g" /bin/openwrt_info
+	      Input_Other="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
+	      uci set autoupdate.@login[0].github=${Input_Other}
         uci commit autoupdate
         TIME y "Github 地址已更换为: ${Input_Other}"
         TIME y "UCI 设置已更新!"
         echo
       }
+
       Input_Other="${Input_Other:-"$Github"}"
       [[ "${Github}" != "${Input_Other}" ]] && {
         sed -i "s?${Github}?${Input_Other}?g" /bin/openwrt_info
