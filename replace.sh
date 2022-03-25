@@ -103,9 +103,9 @@ menuaz() {
   [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]] && {
     export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
     if [ ! "$Google_Check" == 301 ];then
-      wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+      wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Release_download}/${Firmware}" -O ${Firmware}
       if [[ $? -ne 0 ]];then
-        wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+        wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Release_download}/${Firmware}" -O ${Firmware}
         if [[ $? -ne 0 ]];then
           TIME r "下载云端固件失败,请尝试手动安装!"
           echo
@@ -117,9 +117,9 @@ menuaz() {
         TIME y "下载云端固件成功!"
       fi
     else
-      wget -q --show-progress --progress=bar:force:noscroll "${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+      wget -q --show-progress --progress=bar:force:noscroll "${Release_download}/${Firmware}" -O ${Firmware}
       if [[ $? -ne 0 ]];then
-        wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+        wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Release_download}/${Firmware}" -O ${Firmware}
         if [[ $? -ne 0 ]];then
           TIME r "下载云端固件失败,请尝试手动安装!"
           echo
@@ -159,41 +159,41 @@ function anzhuang() {
 
 
 function Firmware_Path() {
-  export Name_1="$(egrep -o "${zuozhe_1}-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-  export Name_2="$(egrep -o "${zuozhe_2}-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
-  export Name_3="$(egrep -o "${zuozhe_3}-${DEFAULT_Device}-.*-${BOOT_Type}-.*.${Firmware_Type}" ${Download_Path}/Github_Tags | awk 'END {print}')"
+  export CLOUD_Version_1="$(egrep -o "${MAINTAIN_1}-${DEFAULT_Device}-.*-${BOOT_Type}-.*${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
+  export CLOUD_Version_2="$(egrep -o "${MAINTAIN_2}-${DEFAULT_Device}-.*-${BOOT_Type}-.*${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
+  export CLOUD_Version_3="$(egrep -o "${MAINTAIN_3}-${DEFAULT_Device}-.*-${BOOT_Type}-.*${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 
-  if [[ -n "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-    gujian3="${Name_3}"
-    gg3="3、${Name_3}"
-  elif [[ -n "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_2}"
-    gg2="2、${Name_2}"
-  elif [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-    gujian2="${Name_3}"
-    gg3="2、${Name_3}"
-  elif [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_2}"
-    gg2="1、${Name_2}"
-    gujian2="${Name_3}"
-    gg3="2、${Name_3}"
-  elif [[ -n "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-    gujian1="${Name_1}"
-    gg1="1、${Name_1}"
-  elif [[ -z "${Name_1}" ]] && [[ -n "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
-    gujian1="${Name_2}"
-    gg2="1、${Name_2}"
-  elif [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -n "${Name_3}" ]]; then
-    gujian1="${Name_3}"
-    gg3="1、${Name_3}"
+  if [[ -n "${CLOUD_Version_1}" ]] && [[ -n "${CLOUD_Version_2}" ]] && [[ -n "${CLOUD_Version_3}" ]]; then
+    CLOUD_Firmware1="${CLOUD_Version_1}"
+    Display_1="1、${CLOUD_Version_1}"
+    CLOUD_Firmware2="${CLOUD_Version_2}"
+    Display_2="2、${CLOUD_Version_2}"
+    CLOUD_Firmware3="${CLOUD_Version_3}"
+    Display_3="3、${CLOUD_Version_3}"
+  elif [[ -n "${CLOUD_Version_1}" ]] && [[ -n "${CLOUD_Version_2}" ]] && [[ -z "${CLOUD_Version_3}" ]]; then
+    CLOUD_Firmware1="${CLOUD_Version_1}"
+    Display_1="1、${CLOUD_Version_1}"
+    CLOUD_Firmware2="${CLOUD_Version_2}"
+    Display_2="2、${CLOUD_Version_2}"
+  elif [[ -n "${CLOUD_Version_1}" ]] && [[ -z "${CLOUD_Version_2}" ]] && [[ -n "${CLOUD_Version_3}" ]]; then
+    CLOUD_Firmware1="${CLOUD_Version_1}"
+    Display_1="1、${CLOUD_Version_1}"
+    CLOUD_Firmware2="${CLOUD_Version_3}"
+    Display_3="2、${CLOUD_Version_3}"
+  elif [[ -z "${CLOUD_Version_1}" ]] && [[ -n "${CLOUD_Version_2}" ]] && [[ -n "${CLOUD_Version_3}" ]]; then
+    CLOUD_Firmware1="${CLOUD_Version_2}"
+    Display_2="1、${CLOUD_Version_2}"
+    CLOUD_Firmware2="${CLOUD_Version_3}"
+    Display_3="2、${CLOUD_Version_3}"
+  elif [[ -n "${CLOUD_Version_1}" ]] && [[ -z "${CLOUD_Version_2}" ]] && [[ -z "${CLOUD_Version_3}" ]]; then
+    CLOUD_Firmware1="${CLOUD_Version_1}"
+    Display_1="1、${CLOUD_Version_1}"
+  elif [[ -z "${CLOUD_Version_1}" ]] && [[ -n "${CLOUD_Version_2}" ]] && [[ -z "${CLOUD_Version_3}" ]]; then
+    CLOUD_Firmware1="${CLOUD_Version_2}"
+    Display_2="1、${CLOUD_Version_2}"
+  elif [[ -z "${CLOUD_Version_1}" ]] && [[ -z "${CLOUD_Version_2}" ]] && [[ -n "${CLOUD_Version_3}" ]]; then
+    CLOUD_Firmware1="${CLOUD_Version_3}"
+    Display_3="1、${CLOUD_Version_3}"
   fi
 }
 
@@ -201,26 +201,26 @@ menuws() {
   clear
   echo
   echo
-  ECHOYY " 当前源码：${REPO_Name} / ${Luci_Edition} / ${Kernel}"
-  ECHOYY " 固件格式：${EFI_Mode}.${Firmware_Type}"
+  ECHOYY " 当前源码：${SOURCE} / ${LUCI_EDITION} / ${Kernel}"
+  ECHOYY " 固件格式：${BOOT_Type}${Firmware_SFX}"
   ECHOYY " 设备型号：${DEFAULT_Device}"
   echo
-  if [[ -z "${Name_1}" ]] && [[ -z "${Name_2}" ]] && [[ -z "${Name_3}" ]]; then
+  if [[ -z "${CLOUD_Version_1}" ]] && [[ -z "${CLOUD_Version_2}" ]] && [[ -z "${CLOUD_Version_3}" ]]; then
    print_error "无其他作者固件,如需要更换请先编译出 ${tixinggg} 的固件!"
    sleep 1
    exit 1
   else
     print_gg "检测到有如下固件可供选择（敬告：如若转换,则不保留配置安装固件）"
   fi
-  if [[ -z "${gg1}" ]] && [[ -z "${gg2}" ]]; then
-     [[ -n "${gg3}" ]] && ECHOBG " ${gg3}"
-  elif [[ -z "${gg1}" ]]; then
-    [[ -n "${gg2}" ]] && ECHOBG " ${gg2}"
-    [[ -n "${gg3}" ]] && ECHOBG " ${gg3}"
+  if [[ -z "${Display_1}" ]] && [[ -z "${Display_2}" ]]; then
+     [[ -n "${Display_3}" ]] && ECHOBG " ${Display_3}"
+  elif [[ -z "${Display_1}" ]]; then
+    [[ -n "${Display_2}" ]] && ECHOBG " ${Display_2}"
+    [[ -n "${Display_3}" ]] && ECHOBG " ${Display_3}"
   else
-    [[ -n "${gg1}" ]] && ECHOBG " ${gg1}"
-    [[ -n "${gg2}" ]] && ECHOBG " ${gg2}"
-    [[ -n "${gg3}" ]] && ECHOBG " ${gg3}"
+    [[ -n "${Display_1}" ]] && ECHOBG " ${Display_1}"
+    [[ -n "${Display_2}" ]] && ECHOBG " ${Display_2}"
+    [[ -n "${Display_3}" ]] && ECHOBG " ${Display_3}"
   fi
   ECHOBG " Q、退出程序"
   echo
@@ -230,19 +230,19 @@ menuws() {
   read -p " ${XUANZHEOP}： " CHOOSE
   case $CHOOSE in
     1)
-      Firmware="${gujian1}"
+      Firmware="${CLOUD_Firmware1}"
       menuaz
       anzhuang
     break
     ;;
     2)
-      Firmware="${gujian2}"
+      Firmware="${CLOUD_Firmware2}"
       menuaz
       anzhuang
     break
     ;;
     3)
-      Firmware="${gujian3}"
+      Firmware="${CLOUD_Firmware3}"
       menuaz
       anzhuang
     break
@@ -261,36 +261,36 @@ menuws() {
 }
 
 menu() {
-  if [[ ${REPO_Name} == "lede" ]]; then
-    export zuozhe_1="18.06_tl-Tianling"
-    export zuozhe_2="21.02-mortal"
-    export zuozhe_3="20.06-lienol"
+  if [[ ${SOURCE} == "Lede" ]]; then
+    export MAINTAIN_1="18.06-Tianling"
+    export MAINTAIN_2="21.02-mortal"
+    export MAINTAIN_3="20.06-lienol"
     export tixinggg="Tianling、mortal或lienol"
     opapi
     Firmware_Path
     menuws
     clear
-  elif [[ ${REPO_Name} == "lienol" ]]; then
-    export zuozhe_1="18.06-lede"
-    export zuozhe_2="21.02-mortal"
-    export zuozhe_3="18.06_tl-Tianling"
+  elif [[ ${SOURCE} == "Lienol" ]]; then
+    export MAINTAIN_1="18.06-lede"
+    export MAINTAIN_2="21.02-mortal"
+    export MAINTAIN_3="18.06-Tianling"
     export tixinggg="lede、mortal或Tianling"
     opapi
     Firmware_Path
     menuws
     clear
-  elif [[ ${REPO_Name} == "mortal" ]]; then
-    export zuozhe_1="18.06-lede"
-    export zuozhe_2="20.06-lienol"
-    export zuozhe_3="18.06_tl-Tianling"
+  elif [[ ${SOURCE} == "Mortal" ]]; then
+    export MAINTAIN_1="18.06-lede"
+    export MAINTAIN_2="20.06-lienol"
+    export MAINTAIN_3="18.06-Tianling"
     export tixinggg="lede、lienol或Tianling"
     opapi
     Firmware_Path
     menuws
-  elif [[ ${REPO_Name} == "Tianling" ]]; then
-    export zuozhe_1="18.06-lede"
-    export zuozhe_2="21.02-mortal"
-    export zuozhe_3="20.06-lienol"
+  elif [[ ${SOURCE} == "Tianling" ]]; then
+    export MAINTAIN_1="18.06-lede"
+    export MAINTAIN_2="21.02-mortal"
+    export MAINTAIN_3="20.06-lienol"
     export tixinggg="lede、mortal或lienol"
     opapi
     Firmware_Path
