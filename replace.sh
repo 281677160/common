@@ -263,35 +263,35 @@ menuws() {
 menu() {
   if [[ ${SOURCE} == "Lede" ]]; then
     export MAINTAIN_1="18.06-Tianling"
-    export MAINTAIN_2="21.02-mortal"
-    export MAINTAIN_3="20.06-lienol"
-    export tixinggg="Tianling、mortal或lienol"
+    export MAINTAIN_2="21.02-Mortal"
+    export MAINTAIN_3="20.06-Lienol"
+    export tixinggg="Tianling、Mortal或Lienol"
     opapi
     Firmware_Path
     menuws
     clear
   elif [[ ${SOURCE} == "Lienol" ]]; then
-    export MAINTAIN_1="18.06-lede"
-    export MAINTAIN_2="21.02-mortal"
+    export MAINTAIN_1="18.06-Lede"
+    export MAINTAIN_2="21.02-Mortal"
     export MAINTAIN_3="18.06-Tianling"
-    export tixinggg="lede、mortal或Tianling"
+    export tixinggg="Lede、Mortal或Tianling"
     opapi
     Firmware_Path
     menuws
     clear
   elif [[ ${SOURCE} == "Mortal" ]]; then
-    export MAINTAIN_1="18.06-lede"
-    export MAINTAIN_2="20.06-lienol"
+    export MAINTAIN_1="18.06-Lede"
+    export MAINTAIN_2="20.06-Lienol"
     export MAINTAIN_3="18.06-Tianling"
-    export tixinggg="lede、lienol或Tianling"
+    export tixinggg="Lede、Lienol或Tianling"
     opapi
     Firmware_Path
     menuws
   elif [[ ${SOURCE} == "Tianling" ]]; then
-    export MAINTAIN_1="18.06-lede"
-    export MAINTAIN_2="21.02-mortal"
-    export MAINTAIN_3="20.06-lienol"
-    export tixinggg="lede、mortal或lienol"
+    export MAINTAIN_1="18.06-Lede"
+    export MAINTAIN_2="21.02-Mortal"
+    export MAINTAIN_3="20.06-Lienol"
+    export tixinggg="Lede、Mortal或Lienol"
     opapi
     Firmware_Path
     menuws
