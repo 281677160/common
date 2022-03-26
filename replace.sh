@@ -90,7 +90,7 @@ if [[ $? -ne 0 ]];then
     wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
   fi
   if [[ $? -ne 0 ]];then
-    TIME r "获取固件版本信息失败,请检测网络,或者您更改的Github地址为无效地址,或者您的仓库是私库,或者发布已被删除!"
+    print_error "获取固件版本信息失败,请检测网络,或者您更改的Github地址为无效地址,或者您的仓库是私库,或者发布已被删除!"
     echo
     exit 1
   fi
@@ -107,28 +107,28 @@ menuaz() {
       if [[ $? -ne 0 ]];then
         wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Release_download}/${Firmware}" -O ${Firmware}
         if [[ $? -ne 0 ]];then
-          TIME r "下载云端固件失败,请尝试手动安装!"
+          print_error "下载云端固件失败,请尝试手动安装!"
           echo
           exit 1
         else
-          TIME y "下载云端固件成功!"
+          print_ok "下载云端固件成功!"
         fi
       else
-        TIME y "下载云端固件成功!"
+        print_ok "下载云端固件成功!"
       fi
     else
       wget -q --show-progress --progress=bar:force:noscroll "${Release_download}/${Firmware}" -O ${Firmware}
       if [[ $? -ne 0 ]];then
         wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Release_download}/${Firmware}" -O ${Firmware}
         if [[ $? -ne 0 ]];then
-          TIME r "下载云端固件失败,请尝试手动安装!"
+          print_error "下载云端固件失败,请尝试手动安装!"
           echo
           exit 1
         else
-          TIME y "下载云端固件成功!"
+          print_ok "下载云端固件成功!"
         fi
       else
-        TIME y "下载云端固件成功!"
+        print_ok "下载云端固件成功!"
       fi
     fi
   }
@@ -142,11 +142,11 @@ function anzhuang() {
   export CLOUD_MD5="$(echo "${MD5_256}" | cut -c1-3)"
   export CLOUD_256="$(echo "${MD5_256}" | cut -c 4-)"
   [[ ${LOCAL_MD5} != ${CLOUD_MD5} ]] && {
-    TIME r "MD5对比失败,固件可能在下载时损坏,请检查网络后重试!"
+    print_error "MD5对比失败,固件可能在下载时损坏,请检查网络后重试!"
     exit 1
   }
   [[ ${LOCAL_256} != ${CLOUD_256} ]] && {
-    TIME r "SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!"
+    print_error "SHA256对比失败,固件可能在下载时损坏,请检查网络后重试!"
     exit 1
   }
 
