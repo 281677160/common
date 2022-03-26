@@ -503,7 +503,7 @@ fi
 }
 
 function Diy_zzz() {
-echo " 编译提示：微微调整一下default-settings文件"
+echo " 编译提示：在default-settings文件加条执行命令"
 
 sed -i '/webweb.sh/d' "$ZZZ_PATH"
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
