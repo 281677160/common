@@ -40,7 +40,7 @@ elif [[ "${REPO_BRANCH}" == "main" ]]; then
   echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
   echo "SOURCE=Lienol" >> $GITHUB_ENV
   echo "MAINTAIN=Lienol's" >> $GITHUB_ENV
-  echo "LUCI_EDITION=20.06" >> $GITHUB_ENV
+  echo "LUCI_EDITION=20.07" >> $GITHUB_ENV
 elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
   echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
   echo "SOURCE=Tianling" >> $GITHUB_ENV
