@@ -173,6 +173,7 @@ src-git helloworld https://github.com/fw876/helloworld
 src-git passwall https://github.com/281677160/openwrt-passwall
 src-git danshui https://github.com/281677160/openwrt-package.git;${REPO_BRANCH}
 " >> $HOME_PATH/feeds.conf.default
+sed -i '/^\s*$/d' "$HOME_PATH/feeds.conf.default"
 }
 
 function sbin_openwrt() {
