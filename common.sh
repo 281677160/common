@@ -28,6 +28,7 @@ echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> $GITHUB_E
 echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> $GITHUB_ENV
 echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
 echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
+echo "Convert_path="$HOME_PATH/build/common/Convert" >> $GITHUB_ENV
 echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
 if [[ "${REPO_BRANCH}" == "master" ]]; then
