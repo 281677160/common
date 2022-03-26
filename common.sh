@@ -225,12 +225,31 @@ fi
 
 function Package_amlogic() {
 echo " 正在执行：打包N1和景晨系列固件"
+# 下载上游仓库
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
 [ -d amlogic/openwrt-armvirt ] || mkdir -p amlogic/openwrt-armvirt
 cp -f $TARGET_BSGET/*.tar.gz amlogic/openwrt-armvirt/ && sync
+
+# 自定义机型,内核,分区
+[[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]] && mv -f $GITHUB_WORKSPACE/amlogic_openwrt $GITHUB_WORKSPACE/amlogic_openwrt.sh
+chmod 775 $GITHUB_WORKSPACE/amlogic_openwrt.sh
+source $GITHUB_WORKSPACE/amlogic_openwrt.sh
+if [[ -n ${amlogic_model} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${rootfs_size} ]]; then
+  amlogic_model="${amlogic_model}"
+  amlogic_kernel="${amlogic_kernel}"
+  rootfs_size="${rootfs_size}"
+else
+  amlogic_model="s905x3_s905x2_s905x_s905w_s905d_s922x_s912"
+  amlogic_kernel="5.10.100_5.4.180 -a true"
+fi
+make_size="$(grep ROOT_MB= $GITHUB_WORKSPACE/amlogic/make)"
+zhiding_size="ROOT_MB=\"${rootfs_size}\""
+sed -i "s#${make_size}#${zhiding_size}#g" $GITHUB_WORKSPACE/amlogic/make
+
+# 开始打包
 cd amlogic
 sudo chmod +x make
-sudo ./make -d -b s905x3_s905x2_s905x_s905w_s905d_s922x_s912 -k 5.10.100_5.4.180 -a true
+sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel}
 sudo mv -f $GITHUB_WORKSPACE/amlogic/out/* $TARGET_BSGET/ && sync
 sudo rm -rf $GITHUB_WORKSPACE/amlogic
 }
