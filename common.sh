@@ -525,15 +525,15 @@ openwrt-21.02)
 esac
 
 if [[ `grep -c "crontabs" $BASE_PATH/etc/rc.local` -eq '0' ]] && [[ `grep -c "uhttpd" $BASE_PATH/etc/rc.local` -eq '0' ]]; then
-  sed -i '$ s/exit 0$//' $BASE_PATH/etc/rc.local
-  echo '
-  if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
-    sed -i "/coremark/d" /etc/crontabs/root
-  fi
-  /etc/init.d/network restart
-  /etc/init.d/uhttpd restart
-  exit 0
-  ' >> $BASE_PATH/etc/rc.local
+sed -i '$ s/exit 0$//g' $BASE_PATH/etc/rc.local
+echo '
+if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
+  sed -i "/coremark/d" /etc/crontabs/root
+fi
+/etc/init.d/network restart
+/etc/init.d/uhttpd restart
+exit 0
+' >> $BASE_PATH/etc/rc.local
 fi
 }
 
