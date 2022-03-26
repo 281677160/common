@@ -558,6 +558,7 @@ else
   export TARGET_PROFILE="${TARGET_BOARD}"
 fi
 export TARGET_BSGET="$HOME_PATH/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
+export TARGET_OPENWRT="openwrt/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
 }
 
 function Diy_firmware() {
