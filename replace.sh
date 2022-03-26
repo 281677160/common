@@ -61,7 +61,7 @@ ECHOB "加载数据中,请稍后..."
 if [[ -f /bin/openwrt_info ]]; then
   chmod +x /bin/openwrt_info && source /bin/openwrt_info
   if [[ $? -ne 0 ]];then
-    print_error "openwrt_info数据有误!"
+    print_error "openwrt_info数据有误,请检查openwrt_info!"
     exit 1
   fi
 else
