@@ -600,7 +600,7 @@ fi
 }
 
 function Diy_Language() {
-if [[ "${REPO_BRANCH}" == "main" ]] || [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
   echo " 正在执行：把插件语言转换成zh_Hans"
   cd $HOME_PATH
   cp -Rf $HOME_PATH/build/common/Convert/zh_Hans.sh $HOME_PATH/zh_Hans.sh
