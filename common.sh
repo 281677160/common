@@ -181,19 +181,19 @@ chmod 777 $BASE_PATH/sbin/openwrt
 }
 
 function Diy_Lede() {
-echo "编译提示：Lede专用自定义"
+echo " 编译提示：Lede专用自定义"
 }
 
 function Diy_Lienol() {
-echo "编译提示：Lienol专用自定义"
+echo " 编译提示：Lienol专用自定义"
 }
 
 function Diy_Tianling() {
-echo "编译提示：Tianling专用自定义"
+echo " 编译提示：Tianling专用自定义"
 }
 
 function Diy_Mortal() {
-echo "编译提示：Mortal专用自定义"
+echo " 编译提示：Mortal专用自定义"
 }
 
 function Diy_amlogic() {
