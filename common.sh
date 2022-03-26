@@ -26,9 +26,9 @@ function Diy_variable() {
 echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV
 echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> $GITHUB_ENV
 echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> $GITHUB_ENV
-echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
-echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
-echo "Convert_path="${GITHUB_WORKSPACE}/openwrt/build/common/Convert" >> $GITHUB_ENV
+echo "NETIP=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/networkip" >> $GITHUB_ENV
+echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> $GITHUB_ENV
+echo "Convert_path=${GITHUB_WORKSPACE}/openwrt/build/common/Convert" >> $GITHUB_ENV
 echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
 if [[ "${REPO_BRANCH}" == "master" ]]; then
