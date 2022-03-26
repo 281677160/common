@@ -58,7 +58,7 @@ fi
 }
 
 function Diy_settings() {
-echo "编译提示：随便判断一下是不是缺少文件了"
+echo " 编译提示：随便判断一下是不是缺少文件了"
   [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]] && {
     if [ -z "$(ls -A "${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/${CONFIG_FILE}" 2>/dev/null)" ]; then
       TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[OP_DIY/${matrixtarget}]文件夹内补齐"
@@ -89,7 +89,7 @@ echo "编译提示：随便判断一下是不是缺少文件了"
 }
 
 function Diy_feeds() {
-echo "编译提示：更新插件源,让源码更多插件存在"
+echo " 编译提示：更新插件源,让源码更多插件存在"
 # 拉库和做标记
 
 ./scripts/feeds clean && ./scripts/feeds update -a > /dev/null 2>&1
@@ -175,7 +175,7 @@ src-git danshui https://github.com/281677160/openwrt-package.git;${REPO_BRANCH}
 }
 
 function sbin_openwrt() {
-echo "编译提示：给固件增加[openwrt]命令"
+echo " 编译提示：给固件增加[openwrt]命令"
 [[ -f $BUILD_PATH/openwrt.sh ]] && cp -Rf $BUILD_PATH/openwrt.sh $BASE_PATH/sbin/openwrt
 chmod 777 $BASE_PATH/sbin/openwrt
 }
@@ -198,7 +198,7 @@ echo "编译提示：Mortal专用自定义"
 
 function Diy_amlogic() {
 if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
-  echo "编译提示：修复NTFS格式优盘不自动挂载，适配cpufreq，添加autocore支持"
+  echo " 编译提示：修复NTFS格式优盘不自动挂载，适配cpufreq，添加autocore支持"
   # 修复NTFS格式优盘不自动挂载
   packages=" \
   block-mount fdisk usbutils badblocks ntfs-3g kmod-scsi-core kmod-usb-core \
@@ -222,7 +222,7 @@ fi
 }
 
 function Package_amlogic() {
-echo "编译提示：打包N1和景晨系列固件"
+echo " 编译提示：打包N1和景晨系列固件"
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
 [ -d amlogic/openwrt-armvirt ] || mkdir -p amlogic/openwrt-armvirt
 cp -f $TARGET_BSGET/*.tar.gz amlogic/openwrt-armvirt/ && sync
@@ -234,7 +234,7 @@ sudo rm -rf $GITHUB_WORKSPACE/amlogic
 }
 
 function Diy_indexhtm() {
-echo "编译提示：去除主页一串的LUCI版本号显示"
+echo " 编译提示：去除主页一串的LUCI版本号显示"
 if [[ "${REPO_BRANCH}" == "master" ]]; then
   sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
   sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
@@ -248,7 +248,7 @@ fi
 }
 
 function Diy_patches() {
-echo "编译提示：如果有补丁文件，给源码打补丁"
+echo " 编译提示：如果有补丁文件，给源码打补丁"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
   cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
   cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* $BUILD_PATH
@@ -262,7 +262,7 @@ fi
 }
 
 function Diy_prevent() {
-echo "编译提示：判断插件冲突减少编译错误"
+echo " 编译提示：判断插件冲突减少编译错误"
 make defconfig > /dev/null 2>&1
 echo "TIME b \"					插件冲突信息\"" > ${HOME_PATH}/CHONGTU
 
@@ -486,7 +486,7 @@ fi
 }
 
 function Diy_files() {
-echo "编译提示：files大法好，小白无烦恼"
+echo " 编译提示：files大法好，小白无烦恼"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
   cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
   cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* $BUILD_PATH
@@ -503,7 +503,7 @@ fi
 }
 
 function Diy_zzz() {
-echo "编译提示：微微调整一下default-settings文件"
+echo " 编译提示：微微调整一下default-settings文件"
 
 case "${REPO_BRANCH}" in
 master)
@@ -546,7 +546,7 @@ fi
 }
 
 function Make_defconfig() {
-echo "编译提示：加载机型"
+echo " 编译提示：加载机型"
 export TAR_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
 export TAR_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)"
 echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)" >> $GITHUB_ENV
@@ -566,6 +566,7 @@ echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> $GITHUB_
 
 function Make_upgrade() {
 ## 本地编译加载机型用
+echo " 编译提示：加载机型"
 export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
 export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)"
 if [[ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` -eq '1' ]]; then
@@ -582,7 +583,7 @@ export TARGET_OPENWRT="openwrt/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
 }
 
 function Diy_firmware() {
-echo "编译提示：整理固件,您不想要啥就删啥"
+echo " 编译提示：整理固件,您不想要啥就删啥"
 if [ "${REGULAR_UPDATE}" == "true" ]; then
   cp -Rf ${TARGET_BSGET} $HOME_PATH/upgrade
 fi
@@ -818,7 +819,7 @@ Diy_patches
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
   source $BUILD_PATH/upgrade.sh && Diy_Part1
 fi
-echo "编译提示：更新feeds"
+echo " 编译提示：更新feeds"
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
