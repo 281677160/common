@@ -244,7 +244,7 @@ else
 fi
 make_size="$(grep ROOT_MB= $GITHUB_WORKSPACE/amlogic/make)"
 zhiding_size="ROOT_MB=\"${rootfs_size}\""
-sed -i "s#${make_size}#${zhiding_size}#g" $GITHUB_WORKSPACE/amlogic/make
+sed -i "s/${make_size}/${zhiding_size}/g" $GITHUB_WORKSPACE/amlogic/make
 
 # 开始打包
 cd amlogic
