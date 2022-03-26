@@ -60,6 +60,10 @@ function print_gg() {
 ECHOB "加载数据中,请稍后..."
 if [[ -f /bin/openwrt_info ]]; then
   chmod +x /bin/openwrt_info && source /bin/openwrt_info
+  if [[ $? -ne 0 ]];then
+    print_error "openwrt_info数据有误!"
+    exit 1
+  fi
 else
   print_error "未检测到openwrt_info文件,无法运行更新程序!"
   exit 1
