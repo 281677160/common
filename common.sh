@@ -582,7 +582,11 @@ fi
 }
 
 function Diy_Language() {
-echo "....."
+cd $HOME_PATH
+cp -Rf $HOME_PATH/build/common/Convert/zh_Hans.sh $HOME_PATH/zh_Hans.sh
+chmod +x $HOME_PATH/zh_Hans.sh
+/bin/bash $HOME_PATH/zh_Hans.sh
+rm -rf $HOME_PATH/zh_Hans.sh
 }
 
 function Diy_Notice() {
