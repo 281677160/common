@@ -160,7 +160,7 @@ openwrt-21.02)
   
   # 替换99-default-settings
   chmod -R 775 $HOME_PATH/build/common/Convert
-  /bin/bash "$HOME_PATH/build/common/Convert/Convert.sh"
+  source $HOME_PATH/build/common/Convert/Convert.sh
 
 ;;
 esac
