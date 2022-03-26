@@ -582,11 +582,14 @@ fi
 }
 
 function Diy_Language() {
-cd $HOME_PATH
-cp -Rf $HOME_PATH/build/common/Convert/zh_Hans.sh $HOME_PATH/zh_Hans.sh
-chmod +x $HOME_PATH/zh_Hans.sh
-/bin/bash $HOME_PATH/zh_Hans.sh
-rm -rf $HOME_PATH/zh_Hans.sh
+if [[ "${REPO_BRANCH}" == "main" ]] || [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+  echo " 正在执行：把插件语言转换成zh_Hans"
+  cd $HOME_PATH
+  cp -Rf $HOME_PATH/build/common/Convert/zh_Hans.sh $HOME_PATH/zh_Hans.sh
+  chmod +x $HOME_PATH/zh_Hans.sh
+  /bin/bash $HOME_PATH/zh_Hans.sh
+  rm -rf $HOME_PATH/zh_Hans.sh
+fi
 }
 
 function Diy_Notice() {
