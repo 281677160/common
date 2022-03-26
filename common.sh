@@ -118,6 +118,10 @@ main)
   # 给源码增加passwall为默认自选
   sed  -i  's/ luci-app-passwall//g' target/linux/*/Makefile
   sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/*/Makefile
+  
+  # 修改DISTRIB_DESCRIPTION
+  DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ_PATH |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
+  [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" "$ZZZ_PATH"
 
 ;;
 openwrt-18.06)
@@ -130,6 +134,10 @@ openwrt-18.06)
   
   # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+  
+  # 替换99-default-settings
+  chmod -R 777 $HOME_PATH/build/common/Convert
+  cp -Rf $HOME_PATH/build/common/Convert/1806-default-settings "$ZZZ_PATH"
 
 ;;
 openwrt-21.02)
@@ -141,6 +149,11 @@ openwrt-21.02)
   
   # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+  
+  # 替换99-default-settings
+  chmod -R 777 $HOME_PATH/build/common/Convert
+  cp -Rf $HOME_PATH/build/common/Convert/* "$HOME_PATH"
+  /bin/bash Convert.sh
 
 ;;
 esac
@@ -487,41 +500,41 @@ echo "编译提示：微微调整一下default-settings文件"
 case "${REPO_BRANCH}" in
 master)
 
+  sed -i '/webweb.sh/d' "$ZZZ_PATH"
   sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
 
 ;;
 main)
 
+  sed -i '/webweb.sh/d' "$ZZZ_PATH"
   sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
-  
-  DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ_PATH |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
-  [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" "$ZZZ_PATH"
 
 ;;
 openwrt-18.06)
 
-  chmod -R 777 $HOME_PATH/build/common/Convert
-  cp -Rf $HOME_PATH/build/common/Convert/1806-default-settings "$ZZZ_PATH"
+  sed -i '/webweb.sh/d' "$ZZZ_PATH"
+  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
 
 ;;
 openwrt-21.02)
 
-  chmod -R 777 $HOME_PATH/build/common/Convert
-  cp -Rf $HOME_PATH/build/common/Convert/* "$HOME_PATH"
-  /bin/bash Convert.sh
+  sed -i '/webweb.sh/d' "$ZZZ_PATH"
+  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
 
 ;;
 esac
 
-sed -i '$ s/exit 0$//' $BASE_PATH/etc/rc.local
-echo '
-if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
-  sed -i "/coremark/d" /etc/crontabs/root
+if [[ `grep -c "crontabs" $BASE_PATH/etc/rc.local` -eq '0' ]] && [[ `grep -c "uhttpd" $BASE_PATH/etc/rc.local` -eq '0' ]]; then
+  sed -i '$ s/exit 0$//' $BASE_PATH/etc/rc.local
+  echo '
+  if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
+    sed -i "/coremark/d" /etc/crontabs/root
+  fi
+  /etc/init.d/network restart
+  /etc/init.d/uhttpd restart
+  exit 0
+  ' >> $BASE_PATH/etc/rc.local
 fi
-/etc/init.d/network restart
-/etc/init.d/uhttpd restart
-exit 0
-' >> $BASE_PATH/etc/rc.local
 }
 
 function Make_defconfig() {
