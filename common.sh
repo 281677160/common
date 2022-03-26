@@ -135,6 +135,10 @@ openwrt-18.06)
   # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
   
+  # 给源码增加luci-app-ssr-plus为默认自选
+  sed  -i  's/ luci-app-ssr-plus//g' target/linux/*/Makefile
+  sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-ssr-plus/g' target/linux/*/Makefile
+  
   # 替换99-default-settings
   chmod -R 777 $HOME_PATH/build/common/Convert
   cp -Rf $HOME_PATH/build/common/Convert/1806-default-settings "$ZZZ_PATH"
@@ -149,6 +153,10 @@ openwrt-21.02)
   
   # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+  
+  # 给源码增加luci-app-ssr-plus为默认自选
+  sed  -i  's/ luci-app-ssr-plus//g' target/linux/*/Makefile
+  sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-ssr-plus/g' target/linux/*/Makefile
   
   # 替换99-default-settings
   chmod -R 777 $HOME_PATH/build/common/Convert
@@ -748,7 +756,7 @@ Diy_patches
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
   source $BUILD_PATH/upgrade.sh && Diy_Part1
 fi
-echo "更新feeds"
+echo "编译提示：更新feeds"
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
