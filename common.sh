@@ -623,7 +623,6 @@ Plug_in="$(grep -i 'CONFIG_PACKAGE_luci-app' $HOME_PATH/.config && grep -i 'CONF
 Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/_Transparent_Proxy/d' |sed '/qbittorrent_static/d' |sed 's/CONFIG_PACKAGE_//g' |sed 's/=y//g' |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
 echo "${Plug_in2}" >Plug-in
 
-
 if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]] || [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
   KERNEL_PATC=""
   KERNEL_PATC="$(egrep KERNEL_PATCHVER:=[0-9]+\.[0-9]+ $HOME_PATH/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
@@ -638,6 +637,12 @@ else
   [[ -z ${LINUX_KERNEL} ]] && LINUX_KERNEL="nono"
 fi
 
+if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
+  TARGET_PROFILE="晶晨系列"
+else
+  TARGET_PROFILE="${TARGET_PROFILE}"
+fi
+
 
 echo
 TIME b "编译源码: ${SOURCE}"
@@ -646,20 +651,12 @@ TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${LINUX_KERNEL}"
 TIME b "内核版本: ${MAINTAIN}"
 TIME b "Luci版本: ${LUCI_EDITION}"
-[[ "${matrixtarget}" == "openwrt_amlogic" ]] && {
-	TIME b "编译机型: 晶晨系列"
-} || {
-	TIME b "编译机型: ${TARGET_PROFILE}"
-}
+TIME b "编译机型: ${TARGET_PROFILE}"
 TIME b "固件作者: ${Author}"
 TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${Library}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
 TIME b "编译时间: ${Compte}"
-[[ "${matrixtarget}" == "openwrt_amlogic" ]] && {
-	TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【晶晨系列】固件"
-} || {
-	TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_PROFILE}】固件"
-}
+TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_PROFILE}】固件"
 echo
 echo
 if [[ ${UPLOAD_FIRMWARE} == "true" ]]; then
