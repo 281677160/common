@@ -505,32 +505,8 @@ fi
 function Diy_zzz() {
 echo " 编译提示：微微调整一下default-settings文件"
 
-case "${REPO_BRANCH}" in
-master)
-
-  sed -i '/webweb.sh/d' "$ZZZ_PATH"
-  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
-
-;;
-main)
-
-  sed -i '/webweb.sh/d' "$ZZZ_PATH"
-  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
-
-;;
-openwrt-18.06)
-
-  sed -i '/webweb.sh/d' "$ZZZ_PATH"
-  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
-
-;;
-openwrt-21.02)
-
-  sed -i '/webweb.sh/d' "$ZZZ_PATH"
-  sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
-
-;;
-esac
+sed -i '/webweb.sh/d' "$ZZZ_PATH"
+sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
 
 if [[ `grep -c "crontabs" $BASE_PATH/etc/rc.local` -eq '0' ]] && [[ `grep -c "uhttpd" $BASE_PATH/etc/rc.local` -eq '0' ]]; then
 sed -i '$ s/exit 0$//g' $BASE_PATH/etc/rc.local
