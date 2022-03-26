@@ -90,7 +90,7 @@ function Diy_Part2() {
 	SOURCE=${SOURCE}
 	LUCI_EDITION=${LUCI_EDITION}
 	DEFAULT_Device=${TARGET_PROFILE}
-	Firmware_SFX=.${Firmware_sfx}
+	Firmware_SFX=${Firmware_SFX}
 	CURRENT_Version=${Openwrt_Version}
 	LOCAL_CHAZHAO=${LOCAL_CHAZHAO}
 	CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
