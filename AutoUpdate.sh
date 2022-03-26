@@ -79,7 +79,11 @@ if [[ -f /bin/openwrt_info ]]; then
   [[ -z ${CURRENT_Version} ]] && TIME r "本地固件版本获取失败,请检查/bin/openwrt_info文件的值!" && exit 1
   [[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/bin/openwrt_info文件的值!" && exit 1
   chmod +x /bin/openwrt_info
-  source /bin/openwrt_info 
+  source /bin/openwrt_info
+  if [[ $? -ne 0 ]];then
+    print_error "openwrt_info数据有误,请检查openwrt_info!"
+    exit 1
+  fi
 else
   TIME r "未检测到openwrt_info文件,无法运行更新程序!"
   exit 1
