@@ -96,7 +96,7 @@ function Diy_Part2() {
 	CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
 	Download_Path=/tmp/Downloads
 	Version=${AutoUpdate_Version}
-	API_PATH="/tmp/Downloads/Github_Tags
+	API_PATH=/tmp/Downloads/Github_Tags
 	Github_API1=${Github_API1}
 	Github_API2=${Github_API2}
 	Github_Release=${Github_Release}
