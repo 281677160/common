@@ -159,9 +159,8 @@ openwrt-21.02)
   sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-ssr-plus/g' target/linux/*/Makefile
   
   # 替换99-default-settings
-  chmod -R 777 $HOME_PATH/build/common/Convert
-  cp -Rf $HOME_PATH/build/common/Convert/* "$HOME_PATH"
-  /bin/bash Convert.sh
+  chmod -R 775 $HOME_PATH/build/common/Convert
+  /bin/bash "$HOME_PATH/build/common/Convert/Convert.sh"
 
 ;;
 esac
