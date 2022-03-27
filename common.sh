@@ -242,9 +242,9 @@ else
   amlogic_model="s905x3_s905x2_s905x_s905w_s905d_s922x_s912"
   amlogic_kernel="5.10.100_5.4.180 -a true"
 fi
-make_size="$(grep ROOT_MB= $GITHUB_WORKSPACE/amlogic/make)"
+make_size="$(egrep -o ROOT_MB=\"[0-9]+\" "$GITHUB_WORKSPACE/amlogic/make")"
 zhiding_size="ROOT_MB=\"${rootfs_size}\""
-sed -i "s/${make_size}/${zhiding_size}/g" $GITHUB_WORKSPACE/amlogic/make
+sed -i "s?${make_size}?${zhiding_size}?g" "$GITHUB_WORKSPACE/amlogic/make"
 
 # 开始打包
 cd amlogic
