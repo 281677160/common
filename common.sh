@@ -31,6 +31,7 @@ echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile
 echo "Convert_path=${GITHUB_WORKSPACE}/openwrt/build/common/Convert" >> $GITHUB_ENV
 echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
+echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> $GITHUB_ENV
 if [[ "${REPO_BRANCH}" == "master" ]]; then
   echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
   echo "SOURCE=Lede" >> $GITHUB_ENV
@@ -618,7 +619,6 @@ TIME r "如果您的机子在线更新固件可用，而又编译了，也可请
 }
 
 function Diy_xinxi() {
-Compte=$(date +%Y年%m月%d号%H时%M分)
 Plug_in="$(grep -i 'CONFIG_PACKAGE_luci-app' $HOME_PATH/.config && grep -i 'CONFIG_PACKAGE_luci-theme' $HOME_PATH/.config)"
 Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/_Transparent_Proxy/d' |sed '/qbittorrent_static/d' |sed 's/CONFIG_PACKAGE_//g' |sed 's/=y//g' |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
 echo "${Plug_in2}" >Plug-in
@@ -655,7 +655,7 @@ TIME b "编译机型: ${TARGET_DHL}"
 TIME b "固件作者: ${Author}"
 TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${Library}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
-TIME b "编译时间: ${Compte}"
+TIME b "编译时间: ${Compte_Date}"
 TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_DHL}】固件"
 echo
 echo
