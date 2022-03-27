@@ -105,11 +105,6 @@ master)
   
   # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
-  
-  # 把大雕的autocore替换成LI大的
-  rm -rf $HOME_PATH/package/lean/autocore
-  svn co https://github.com/Lienol/openwrt-package/branches/other/lean/autocore $HOME_PATH/package/lean/autocore
-  rm -rf $HOME_PATH/package/lean/autocore/.svn
 
 ;;
 main)
