@@ -153,7 +153,7 @@ else
     case ${Input_Option} in
     -t)
       export Input_Other="-t"
-      TIME h "执行: 测试模式(只运行程序,不安装固件"
+      TIME h "执行: 测试模式(只运行程序,不安装固件)"
     ;;
     -w)
       export Input_Other="-w"
