@@ -95,13 +95,14 @@ if [[ $? -ne 0 ]];then
   fi
   if [[ $? -ne 0 ]];then
     print_error "获取固件版本信息失败,请检测网络,或者您更改的Github地址为无效地址,或者您的仓库是私库,或者发布已被删除!"
-    echo
     exit 1
   fi
 fi
 }
 
 menuaz() {
+  echo
+  echo
   ECHOG "正在下载云端固件,请耐心等待..."
   cd ${Download_Path}
   [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]] && {
@@ -112,7 +113,6 @@ menuaz() {
         wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Release_download}/${Firmware}" -O ${Firmware}
         if [[ $? -ne 0 ]];then
           print_error "下载云端固件失败,请尝试手动安装!"
-          echo
           exit 1
         else
           print_ok "下载云端固件成功!"
