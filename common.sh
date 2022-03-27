@@ -638,9 +638,9 @@ else
 fi
 
 if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
-  TARGET_DHL="晶晨系列"
+  export TARGET_DHL="晶晨系列"
 else
-  TARGET_DHL="${TARGET_PROFILE}"
+  export TARGET_DHL="${TARGET_PROFILE}"
 fi
 
 
