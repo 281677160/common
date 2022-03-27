@@ -522,6 +522,7 @@ fi
 if [ -n "$(ls -A "$BUILD_PATH/files" 2>/dev/null)" ]; then
   cp -Rf $BUILD_PATH/files $HOME_PATH
 fi
+chmod -R 775 $HOME_PATH/files
 rm -rf $HOME_PATH/files/{README,REA*.md}
 }
 
