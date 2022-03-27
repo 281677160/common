@@ -224,7 +224,7 @@ else
 fi
 
 TIME g "检测机器是否联网..."
-wget -q -p /tmp http://www.baidu.com/ -O /tmp/baidu.html
+curl -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com
 if [[ -f /tmp/baidu.html ]] && [[ `grep -c "百度一下" /tmp/baidu.html` -ge '1' ]]; then
 	rm -rf /tmp/baidu.html
   TIME y "您的网络正常!"
