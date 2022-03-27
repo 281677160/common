@@ -153,8 +153,7 @@ else
     case ${Input_Option} in
     -t)
       export Input_Other="-t"
-      TIME h "执行: 测试模式"
-      TIME z "测试模式(只运行,不安装,查看更新固件操作流程是否正确)"
+      TIME h "执行: 测试模式(只运行程序,不安装固件"
     ;;
     -w)
       export Input_Other="-w"
@@ -224,20 +223,35 @@ else
   esac
 fi
 
+TIME g "检测机器是否联网..."
+wget -q -p /tmp http://www.baidu.com/ -O /tmp/baidu.html
+if [[ -f /tmp/baidu.html ]] && [[ `grep -c "百度一下" /tmp/baidu.html` -ge '1' ]]; then
+	rm -rf /tmp/baidu.html
+  TIME y "您的网络正常!"
+else
+	TIME r "您可能没进行联网,请检查网络,或您的网络不能连接百度?"
+	exit 1
+fi
 
-TIME g "正在获取云端数据..."
+TIME g "正在获取云端API数据..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q ${Github_API1} -O ${API_PATH} > /dev/null 2>&1
 if [[ $? -ne 0 ]];then
   wget -q -P ${Download_Path} https://pd.zwc365.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
   if [[ $? -ne 0 ]];then
     wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
+  else
+    TIME y "获取云端API数据成功!"
   fi
   if [[ $? -ne 0 ]];then
-    TIME r "获取固件版本信息失败,请检测网络,或者您更改的Github地址为无效地址,或者您的仓库是私库,或者发布已被删除!"
+    TIME r "获取云端API数据失败,您更改的Github地址为无效地址,或者您的仓库是私库,或者云端发布已被删除!"
     echo
     exit 1
+  else
+    TIME y "获取云端API数据成功!"
   fi
+else
+  TIME y "获取云端API数据成功!"
 fi
 
 
@@ -250,10 +264,10 @@ TIME g "正在获取云端固件版本信息..."
 export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
 [[ -z "${CLOUD_Version}" ]] && {
-  TIME r "获取云端固件版本信息失败!"
+  TIME r "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致版本信息不一致!"
   exit 1
 } || {
-  TIME g "对比本地版本和云端版本..."
+  TIME y "获取云端固件版本成功,进行对比本地版本和云端版本!"
 }
 
 
@@ -287,30 +301,31 @@ echo "固件作者：${Author}"
 }
 echo "固件体积：${CLOUD_Firmware_Size}M"
 echo
-if [[ "${LOCAL_Firmware}" -eq "${CLOUD_Firmware}" ]]; then
-  [[ "${AutoUpdate_Mode}" == "1" ]] && exit 0
-  TIME && read -p "当前版本和云端最高版本一致，是否还要重新安装固件?[Y/n]:" Choose
-  [[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
-    TIME z "正在开始重新安装固件..."
-  } || {
-    TIME r "已取消重新安装固件,即将退出程序..."
-    sleep 2
-    exit 0
-  }
-elif [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
-  [[ "${AutoUpdate_Mode}" == "1" ]] && exit 0
-  TIME && read -p "云端最高版本,低于您现在的版本,是否强制覆盖现有固件?[Y/n]:" Choose
-  [[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
-    TIME z "正在开始使用云端版本覆盖现有固件..."
-  } || {
-    TIME r "已取消覆盖固件,退出程序..."
-    sleep 1
-    exit 0
-  }
-else
-  TIME y "检测到有可更新的固件版本,立即更新固件!"
+if [[ ! "${Input_Other}" == "-t" ]]; then
+  if [[ "${LOCAL_Firmware}" -eq "${CLOUD_Firmware}" ]]; then
+    [[ "${AutoUpdate_Mode}" == "1" ]] && exit 0
+    TIME && read -p "当前版本和云端最高版本一致，是否还要重新安装固件?[Y/n]:" Choose
+    [[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
+      TIME z "正在开始重新安装固件..."
+    } || {
+      TIME r "已取消重新安装固件,即将退出程序..."
+      sleep 1
+      exit 0
+    }
+  elif [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
+    [[ "${AutoUpdate_Mode}" == "1" ]] && exit 0
+    TIME && read -p "云端最高版本,低于您现在的版本,是否强制覆盖现有固件?[Y/n]:" Choose
+    [[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
+      TIME z "正在开始使用云端版本覆盖现有固件..."
+    } || {
+      TIME r "已取消覆盖固件,退出程序..."
+      sleep 1
+      exit 0
+    }
+  else
+    TIME y "检测到有可更新的固件版本,立即更新固件!"
+  fi
 fi
-
 
 cd ${Download_Path}
 TIME g "正在下载云端固件,请耐心等待..."
