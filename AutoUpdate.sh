@@ -237,9 +237,9 @@ TIME g "正在获取云端API数据..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q ${Github_API1} -O ${API_PATH} > /dev/null 2>&1
 if [[ $? -ne 0 ]];then
-  wget -q -P ${Download_Path} https://pd.zwc365.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
+  wget -q https://pd.zwc365.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
   if [[ $? -ne 0 ]];then
-    wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
+    wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
   else
     TIME y "获取云端API数据成功!"
   fi
