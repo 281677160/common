@@ -638,9 +638,9 @@ else
 fi
 
 if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
-  TARGET_PROFILE="晶晨系列"
+  TARGET_DHL="晶晨系列"
 else
-  TARGET_PROFILE="${TARGET_PROFILE}"
+  TARGET_DHL="${TARGET_PROFILE}"
 fi
 
 
@@ -651,12 +651,12 @@ TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${MAINTAIN}"
 TIME b "内核版本: ${LINUX_KERNEL}"
 TIME b "Luci版本: ${LUCI_EDITION}"
-TIME b "编译机型: ${TARGET_PROFILE}"
+TIME b "编译机型: ${TARGET_DHL}"
 TIME b "固件作者: ${Author}"
 TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${Library}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
 TIME b "编译时间: ${Compte}"
-TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_PROFILE}】固件"
+TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_DHL}】固件"
 echo
 echo
 if [[ ${UPLOAD_FIRMWARE} == "true" ]]; then
