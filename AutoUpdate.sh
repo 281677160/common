@@ -213,18 +213,20 @@ else
       TIME h  "现在所用地址为：${Github}"
       echo
       read -p "请输入新的Github地址(直接回车为不修改,退出程序)：" Input_Other
-      Input_Other="${Input_Other:-"$Github"}"
-      Github_uci=$(uci get autoupdate.@login[0].github 2>/dev/null)
+      export Input_Other="${Input_Other:-"$Github"}"
+      export Github_uci=$(uci get autoupdate.@login[0].github 2>/dev/null)
       [[ -n "${Github_uci}" ]] && [[ "${Github_uci}" != "${Input_Other}" ]] && {
-        ApAuthor="${Input_Other%.git}"
-        custom_github_url="${ApAuthor##*com/}"
-        current_github_url="$(grep Warehouse= /bin/openwrt_info | cut -d "=" -f2)"
-        sed -i "s?${current_github_url}?${custom_github_url}?g" /bin/openwrt_info
-        Input_Other="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
+        export ApAuthor="${Input_Other%.git}"
+        export custm_github_url="${ApAuthor##*com/}"
+        export curret_github_url="$(grep Warehouse= /bin/openwrt_info | cut -d "=" -f2)"
+        sed -i "s?${curret_github_url}?${custm_github_url}?g" /bin/openwrt_info
+        export Input_Other="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
         uci set autoupdate.@login[0].github=${Input_Other}
         uci commit autoupdate
         TIME y "Github 地址已更换为: ${Input_Other}"
         TIME y "UCI 设置已更新!"
+        export custm_github_url=""
+        export curret_github_url=""	
         echo
       }
 
