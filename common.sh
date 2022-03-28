@@ -102,9 +102,6 @@ master)
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-  
-  # 给固件LUCI做个标记
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
 
 ;;
 main)
@@ -112,6 +109,36 @@ main)
   # 删除重复插件（Lienol）
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-ttyd' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+
+;;
+openwrt-18.06)
+
+  # 删除重复插件（天灵18.06）
+  find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
+  find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
+  find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+  find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
+
+;;
+openwrt-21.02)
+
+  # 删除重复插件（天灵21.02）
+  find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
+  find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+
+;;
+esac
+}
+
+function Diy_conf() {
+case "${REPO_BRANCH}" in
+master)
+  
+  # 给固件LUCI做个标记
+  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+
+;;
+main)
   
   # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
@@ -126,12 +153,6 @@ main)
 
 ;;
 openwrt-18.06)
-
-  # 删除重复插件（天灵18.06）
-  find . -name 'luci-app-argon-config' -o -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-  find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' | xargs -i rm -rf {}
-  find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-  find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
   
   # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
@@ -146,10 +167,6 @@ openwrt-18.06)
 
 ;;
 openwrt-21.02)
-
-  # 删除重复插件（天灵21.02）
-  find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-cifs' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-  find . -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
   
   # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
@@ -164,9 +181,7 @@ openwrt-21.02)
 
 ;;
 esac
-}
 
-function Diy_conf() {
 # 给feeds.conf.default增加插件源
 echo "
 src-git helloworld https://github.com/fw876/helloworld
@@ -751,7 +766,7 @@ Diy_settings
 Diy_conf
 Diy_${SOURCE}
 Diy_amlogic
-/bin/bash $BUILD_PATH/$DIY_PART_SH
+/bin/bash $BUILD_PATH/$DIY_PART_SH > /dev/null 2>&1
 Diy_indexhtm
 Diy_patches
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
