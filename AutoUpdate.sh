@@ -259,7 +259,7 @@ else
 fi
 
 TIME g "检测机器是否联网..."
-curl -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com
+curl -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
 if [[ -f /tmp/baidu.html ]] && [[ `grep -c "百度一下" /tmp/baidu.html` -ge '1' ]]; then
 	rm -rf /tmp/baidu.html
   TIME y "您的网络正常!"
@@ -279,7 +279,7 @@ if [[ $? -ne 0 ]];then
     TIME y "获取云端API数据成功!"
   fi
   if [[ $? -ne 0 ]];then
-    TIME r "获取云端API数据失败,您更改的Github地址为无效地址,或者您的仓库是私库,或者云端发布已被删除!"
+    TIME r "获取云端API数据失败,您现在所用的Github地址上没检测到云端存在,或您的仓库为私库!"
     echo
     exit 1
   else
