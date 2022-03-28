@@ -150,6 +150,7 @@ cat > /etc/openwrt_upgrade <<-EOF
 LOCAL_Firmware=${CURRENT_Version}
 MODEL_type=${BOOT_Type}${Firmware_SFX}
 KERNEL_type=${Kernel} - ${LUCI_EDITION}
+CURRENT_Device=${CURRENT_Device}
 EOF
 
 
