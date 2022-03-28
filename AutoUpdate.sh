@@ -3,7 +3,7 @@
 # AutoBuild Module by Hyy2001
 # AutoUpdate for Openwrt
 
-Version=V6.8
+Version=V6.9
 
 
 Shell_Helper() {
@@ -101,14 +101,46 @@ export PKG_List="${Download_Path}/Installed_PKG_List"
 export AutoUpdate_Log_Path="/tmp"
 
 
-case ${Firmware_SFX} in
-.img.gz | .img )
+case "${TARGET_BOARD}" in
+x86)
+  [ -d /sys/firmware/efi ] && {
+    export BOOT_Type="uefi"
+  } || {
+    export BOOT_Type="legacy"
+  }
+  CPUmodel="$(cat "/tmp/sysinfo/model" |cut -d ":" -f1|sed 's/\ CPU//g'|sed 's/[ \t]*$//g')"
+  if [[ "$(echo ${CPUmodel} |grep -c 'Intel')" -ge '1' ]]; then
+    CPU_model="${CPUmodel%Intel*}"
+  elif [[ "$(echo ${CPUmodel} |grep -c 'AMD')" -ge '1' ]]; then
+    CPU_model="${CPUmodel%AMD*}"
+  else
+    CPU_model=""
+  fi
+  if [[ -n "${CPU_model}" ]]; then
+    CURRENT_Device="$(echo "${CPUmodel}" |sed "s/${CPU_model}//g")"
+  else
+    CURRENT_Device="${CPUmodel}"
+  fi
+;;
+rockchip | bcm27xx | mxs | sunxi | zynq)
   [ -d /sys/firmware/efi ] && {
     export BOOT_Type="uefi"
   } || {
     export BOOT_Type="legacy"
   }
   export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
+;;
+mvebu)
+  case "${TARGET_SUBTARGET}" in
+  cortexa53 | cortexa72)
+    [ -d /sys/firmware/efi ] && {
+      export BOOT_Type="uefi"
+    } || {
+      export BOOT_Type="legacy"
+    }
+    export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
+  ;;
+  esac
 ;;
 *)
   export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
@@ -120,6 +152,7 @@ cat > /etc/openwrt_upgrade <<-EOF
 LOCAL_Firmware=${CURRENT_Version}
 MODEL_type=${BOOT_Type}${Firmware_SFX}
 KERNEL_type=${Kernel} - ${LUCI_EDITION}
+CURRENT_Device=${CURRENT_Device}
 EOF
 
 
