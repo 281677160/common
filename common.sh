@@ -164,7 +164,9 @@ openwrt-21.02)
 
 ;;
 esac
+}
 
+function Diy_conf() {
 # 给feeds.conf.default增加插件源
 echo "
 src-git helloworld https://github.com/fw876/helloworld
@@ -744,6 +746,25 @@ if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
 fi
 }
 
+function Diy_menu() {
+Diy_settings
+Diy_conf
+Diy_${SOURCE}
+Diy_amlogic
+/bin/bash $BUILD_PATH/$DIY_PART_SH
+Diy_indexhtm
+Diy_patches
+if [[ "${REGULAR_UPDATE}" == "true" ]]; then
+  source $BUILD_PATH/upgrade.sh && Diy_Part1
+fi
+echo " 正在执行：更新feeds,请耐心等待..."
+./scripts/feeds update -a
+./scripts/feeds install -a > /dev/null 2>&1
+./scripts/feeds install -a
+mv $BUILD_PATH/$CONFIG_FILE .config
+make defconfig > /dev/null 2>&1
+}
+
 function Diy_menu3() {
 Diy_files
 Diy_zzz
@@ -772,6 +793,7 @@ fi
 function Diy_menu() {
 Diy_settings
 Diy_feeds
+Diy_conf
 Diy_${SOURCE}
 Diy_amlogic
 /bin/bash $BUILD_PATH/$DIY_PART_SH
