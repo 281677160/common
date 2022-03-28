@@ -134,7 +134,7 @@ mvebu)
     [ -d /sys/firmware/efi ] && {
       export BOOT_Type="uefi"
     } || {
-    export BOOT_Type="legacy"
+      export BOOT_Type="legacy"
     }
     export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
   ;;
