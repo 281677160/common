@@ -108,14 +108,16 @@ x86)
   } || {
     export BOOT_Type="legacy"
   }
-  CPUmodel="$(cat /tmp/sysinfo/model |cut -d ":" -f1|sed 's/\ CPU//g'|sed 's/[ \t]*$//g')"
-  if [[ "$(echo ${INTEL_CPU1} |grep -c 'Intel')" -ge '1' ]]; then
+  CPUmodel="$(cat "/tmp/sysinfo/model" |cut -d ":" -f1|sed 's/\ CPU//g'|sed 's/[ \t]*$//g')"
+  if [[ "$(echo ${CPUmodel} |grep -c 'Intel')" -ge '1' ]]; then
     CPU_model="${CPUmodel%Intel*}"
-  else
+  elif [[ "$(echo ${CPUmodel} |grep -c 'AMD')" -ge '1' ]]; then
     CPU_model="${CPUmodel%AMD*}"
+  else
+    CPU_model=""
   fi
   if [[ -n "${CPU_model}" ]]; then
-    CURRENT_Device="$(cat /tmp/sysinfo/model |sed "s/${CPU_model}//g")"
+    CURRENT_Device="$(echo "${CPUmodel}" |sed "s/${CPU_model}//g")"
   else
     CURRENT_Device="${CPUmodel}"
   fi
