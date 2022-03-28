@@ -746,7 +746,7 @@ if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
 fi
 }
 
-function Diy_menu() {
+function Diy_menu4() {
 Diy_settings
 Diy_conf
 Diy_${SOURCE}
