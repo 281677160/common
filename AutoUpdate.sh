@@ -216,7 +216,7 @@ else
       export Input_Other="${Input_Other:-"$Github"}"
       export Github_uci=$(uci get autoupdate.@login[0].github 2>/dev/null)
       [[ -n "${Github_uci}" ]] && [[ "${Github_uci}" != "${Input_Other}" ]] && {
-        export ApAuthor="${Input_Other%.git}"
+        export ApAuthor="${Input_Other%.git*}"
         export custm_github_url="${ApAuthor##*com/}"
         export curret_github_url="$(grep Warehouse= /bin/openwrt_info | cut -d "=" -f2)"
         sed -i "s?${curret_github_url}?${custm_github_url}?g" /bin/openwrt_info
