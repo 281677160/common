@@ -209,7 +209,6 @@ else
       Github="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
       TIME h "执行：更换[Github地址]操作"
       TIME y "地址格式：https://github.com/帐号/仓库"
-      TIME z  "正确地址示例：https://github.com/281677160/build-actions"
       TIME h  "现在所用地址为：${Github}"
       echo
       export YUMING="请输入新的Github地址(直接回车为不修改,退出程序)"      
@@ -227,6 +226,8 @@ else
       ;;
       *)
         export YUMING="您输入的 Github 地址无效,请输入正确格式的 Github 地址!"
+	echo
+	TIME z  "正确地址示例：https://github.com/281677160/build-actions"
       ;;
       esac
       done
