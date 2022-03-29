@@ -137,7 +137,7 @@ main)
   
   # 删除重复插件（Lienol）
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-ttyd' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-  find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
+  find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
 
 ;;
 openwrt-18.06)
