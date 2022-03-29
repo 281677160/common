@@ -316,8 +316,10 @@ export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
 [[ -z "${CLOUD_Version}" ]] && {
   TIME r "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致版本信息不一致!"
+  echo "版本信息不一致" > /tmp/format_tags
   exit 1
 } || {
+  rm -rf /tmp/format_tags > /dev/null 2>&1
   TIME y "获取云端固件版本成功,进行对比本地版本和云端版本!"
 }
 
