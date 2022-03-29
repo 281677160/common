@@ -65,27 +65,22 @@ fi
 function Bendi_variable() {
 # 本地用的变量，如果上面Diy_variable有修改，下面也要同步修改
 if [[ "${matrixtarget}" == "Lede_source" ]]; then
-  export matrixtarget="Lede_source"
   export ZZZ_PATH="${HOME_PATH}/package/lean/default-settings/files/zzz-default-settings"
   export SOURCE="Lede"
   export LUCI_EDITION="18.06"
 elif [[ "${matrixtarget}" == "Lienol_source" ]]; then
-  export matrixtarget="Lienol_source"
   export ZZZ_PATH="${HOME_PATH}/package/default-settings/files/zzz-default-settings"
   export SOURCE="Lienol"
   export LUCI_EDITION="20.07"
-elif [[ "${matrixtarget}" == "Tianling_source" ]] || [[ -n "$(ls -A "${HOME_PATH}/.Tianling_core" 2>/dev/null)" ]]; then
-  export matrixtarget="Tianling_source"
+elif [[ "${matrixtarget}" == "Tianling_source" ]]; then
   export ZZZ_PATH="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings"
   export SOURCE="Tianling"
   export LUCI_EDITION="18.06"
-elif [[ "${matrixtarget}" == "Mortal_source" ]] || [[ -n "$(ls -A "${HOME_PATH}/.Mortal_core" 2>/dev/null)" ]]; then
-  export matrixtarget="Mortal_source"
+elif [[ "${matrixtarget}" == "Mortal_source" ]]; then
   export ZZZ_PATH="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings"
   export SOURCE="Mortal"
   export LUCI_EDITION="21.02"
-elif [[ "${matrixtarget}" == "openwrt_amlogic" ]] || [[ -n "$(ls -A "${HOME_PATH}/.amlogic_core" 2>/dev/null)" ]]; then
-  export matrixtarget="openwrt_amlogic"
+elif [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
   export ZZZ_PATH="${HOME_PATH}/package/lean/default-settings/files/zzz-default-settings"
   export SOURCE="Lede"
   export LUCI_EDITION="18.06"
