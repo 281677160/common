@@ -212,8 +212,24 @@ else
       TIME z  "正确地址示例：https://github.com/281677160/build-actions"
       TIME h  "现在所用地址为：${Github}"
       echo
-      read -p "请输入新的Github地址(直接回车为不修改,退出程序)：" Input_Other
-      export Input_Other="${Input_Other:-"$Github"}"
+      export YUMING="请输入新的Github地址(直接回车为不修改,退出程序)"      
+      while :; do
+      dogithub=""
+      read -p "${YUMING}：" Input_Other
+      Input_Other="${Input_Other:-"$Github"}"
+      if [[ "$(echo ${Input_Other} |grep -c 'https://github.com/.*/.*')" == '1' ]]; then
+        dogithub="Y"
+      fi
+      case $dogithub in
+      Y)
+        export Input_Other="${Input_Other}"
+      break
+      ;;
+      *)
+        export YUMING="您输入的 Github 地址无效,请输入正确格式的 Github 地址!"
+      ;;
+      esac
+      done
       export Github_uci=$(uci get autoupdate.@login[0].github 2>/dev/null)
       [[ -n "${Github_uci}" ]] && [[ "${Github_uci}" != "${Input_Other}" ]] && {
         export ApAuthor="${Input_Other%.git*}"
