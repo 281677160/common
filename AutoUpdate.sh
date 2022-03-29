@@ -225,7 +225,7 @@ else
       break
       ;;
       *)
-        export YUMING="敬告：您输入的Github地址无效,请输入正确格式的Github地址!"
+        export YUMING="敬告：您输入的Github地址无效,请输入正确格式的Github地址,或留空回车退出!"
       ;;
       esac
       done
