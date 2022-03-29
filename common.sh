@@ -39,23 +39,23 @@ echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> $GITHUB_ENV
 if [[ "${REPO_BRANCH}" == "master" ]]; then
   echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
   echo "SOURCE=Lede" >> $GITHUB_ENV
-  echo "MAINTAIN=Lean's" >> $GITHUB_ENV
   echo "LUCI_EDITION=18.06" >> $GITHUB_ENV
+  echo "MAINTAIN=Lean's" >> $GITHUB_ENV
 elif [[ "${REPO_BRANCH}" == "main" ]]; then
   echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
   echo "SOURCE=Lienol" >> $GITHUB_ENV
-  echo "MAINTAIN=Lienol's" >> $GITHUB_ENV
   echo "LUCI_EDITION=20.07" >> $GITHUB_ENV
+  echo "MAINTAIN=Lienol's" >> $GITHUB_ENV
 elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
   echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
   echo "SOURCE=Tianling" >> $GITHUB_ENV
-  echo "MAINTAIN=CTCGFW's" >> $GITHUB_ENV
   echo "LUCI_EDITION=18.06" >> $GITHUB_ENV
+  echo "MAINTAIN=CTCGFW's" >> $GITHUB_ENV
 elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
   echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
   echo "SOURCE=Mortal" >> $GITHUB_ENV
-  echo "MAINTAIN=CTCGFW's" >> $GITHUB_ENV
   echo "LUCI_EDITION=21.02" >> $GITHUB_ENV
+  echo "MAINTAIN=CTCGFW's" >> $GITHUB_ENV
 else
   echo "没发现该源码的分支，如果您没更改过的话，应该是上游仓库修改了，请同步上游仓库"
   exit 1
@@ -66,33 +66,28 @@ function Bendi_variable() {
 # 本地用的变量，如果上面Diy_variable有修改，下面也要同步修改
 if [[ "${matrixtarget}" == "Lede_source" ]]; then
   export matrixtarget="Lede_source"
-  export SOURCE="Lede"
-  export BUILD_PATH="${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}"
   export ZZZ_PATH="${HOME_PATH}/package/lean/default-settings/files/zzz-default-settings"
+  export SOURCE="Lede"
   export LUCI_EDITION="18.06"
 elif [[ "${matrixtarget}" == "Lienol_source" ]]; then
   export matrixtarget="Lienol_source"
-  export SOURCE="Lienol"
-  export BUILD_PATH="${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}"
   export ZZZ_PATH="${HOME_PATH}/package/default-settings/files/zzz-default-settings"
+  export SOURCE="Lienol"
   export LUCI_EDITION="20.07"
 elif [[ "${matrixtarget}" == "Tianling_source" ]] || [[ -n "$(ls -A "${HOME_PATH}/.Tianling_core" 2>/dev/null)" ]]; then
   export matrixtarget="Tianling_source"
-  export SOURCE="Tianling"
-  export BUILD_PATH="${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}"
   export ZZZ_PATH="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings"
+  export SOURCE="Tianling"
   export LUCI_EDITION="18.06"
 elif [[ "${matrixtarget}" == "Mortal_source" ]] || [[ -n "$(ls -A "${HOME_PATH}/.Mortal_core" 2>/dev/null)" ]]; then
   export matrixtarget="Mortal_source"
-  export SOURCE="Mortal"
-  export BUILD_PATH="${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}"
   export ZZZ_PATH="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings"
+  export SOURCE="Mortal"
   export LUCI_EDITION="21.02"
 elif [[ "${matrixtarget}" == "openwrt_amlogic" ]] || [[ -n "$(ls -A "${HOME_PATH}/.amlogic_core" 2>/dev/null)" ]]; then
   export matrixtarget="openwrt_amlogic"
-  export SOURCE="Lede"
-  export BUILD_PATH="${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}"
   export ZZZ_PATH="${HOME_PATH}/package/lean/default-settings/files/zzz-default-settings"
+  export SOURCE="Lede"
   export LUCI_EDITION="18.06"
 fi
 }
