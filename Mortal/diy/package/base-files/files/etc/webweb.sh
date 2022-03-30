@@ -24,6 +24,8 @@ if [[ -f /etc/init.d/ddnsto ]]; then
  /etc/init.d/ddnsto enable
 fi
 
+[[ -f /etc/init.d/adguardhome ]] && rm -rf /etc/init.d/adguardhome
+
 if [[ -d /usr/lib/lua/luci/view/themes/argon ]]; then
   uci set argon.@global[0].bing_background=0
   uci commit argon
