@@ -797,23 +797,25 @@ fi
 }
 
 function Diy_menu2() {
-if [[ ! -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
+if [[ ! "${bendi_script}" == "1" ]]; then
   Diy_prevent
 fi
 Diy_files
 Diy_zzz
 sbin_openwrt
 Diy_Language
-if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  Make_upgrade
-else
+if [[ ! "${bendi_script}" == "1" ]]; then
   Make_defconfig
+else
+  Make_upgrade
 fi
 }
 
 function Diy_menu() {
 Diy_settings
-[[ ! ${Tishi} == "1" ]] && Diy_feeds
+if [[ ! ${Tishi} == "1" ]]; then
+  Diy_feeds
+fi
 Diy_conf
 Diy_${SOURCE}
 Diy_amlogic
