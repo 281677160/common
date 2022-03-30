@@ -20,6 +20,10 @@ if [[ ! -d /usr/share/AdGuardHome ]] && [[ ! -f /etc/init.d/AdGuardHome ]]; then
   rm -fr /etc/AdGuardHome.yaml
 fi
 
+[[ -f /etc/init.d/adguardhome ]] && rm -rf /etc/init.d/adguardhome
+[[ -f /etc/config/adguardhome ]] && rm -rf /etc/config/adguardhome
+[[ -f /etc/config/adguardhome.yaml ]] && rm -rf /etc/config/adguardhome.yaml
+
 if [[ -f /etc/init.d/ddnsto ]]; then
  /etc/init.d/ddnsto enable
 fi
