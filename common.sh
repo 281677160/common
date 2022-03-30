@@ -326,6 +326,12 @@ if [ -n "$(ls -A "$BUILD_PATH/patches" 2>/dev/null)" ]; then
 fi
 }
 
+function Diy_upgrade1() {
+if [[ "${REGULAR_UPDATE}" == "true" ]]; then
+  source $BUILD_PATH/upgrade.sh && Diy_Part1
+fi
+}
+
 function Diy_prevent() {
 echo " 正在执行：判断插件有否冲突减少编译错误"
 make defconfig > /dev/null 2>&1
@@ -790,39 +796,10 @@ if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
 fi
 }
 
-function Diy_menu4() {
-Diy_settings
-Diy_conf
-Diy_${SOURCE}
-Diy_amlogic
-/bin/bash $BUILD_PATH/$DIY_PART_SH > /dev/null 2>&1
-Diy_indexhtm
-Diy_patches
-if [[ "${REGULAR_UPDATE}" == "true" ]]; then
-  source $BUILD_PATH/upgrade.sh && Diy_Part1
-fi
-echo " 正在执行：更新feeds,请耐心等待..."
-./scripts/feeds update -a
-./scripts/feeds install -a > /dev/null 2>&1
-./scripts/feeds install -a
-mv $BUILD_PATH/$CONFIG_FILE .config
-make defconfig > /dev/null 2>&1
-}
-
-function Diy_menu3() {
-Diy_files
-Diy_zzz
-sbin_openwrt
-Diy_Language
-if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  Make_upgrade
-else
-  Make_defconfig
-fi
-}
-
 function Diy_menu2() {
-Diy_prevent
+if [[ ! -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
+  Diy_prevent
+fi
 Diy_files
 Diy_zzz
 sbin_openwrt
@@ -836,16 +813,15 @@ fi
 
 function Diy_menu() {
 Diy_settings
-Diy_feeds
+[[ ! ${Tishi} == "1" ]] && Diy_feeds
 Diy_conf
 Diy_${SOURCE}
 Diy_amlogic
 /bin/bash $BUILD_PATH/$DIY_PART_SH
 Diy_indexhtm
 Diy_patches
-if [[ "${REGULAR_UPDATE}" == "true" ]]; then
-  source $BUILD_PATH/upgrade.sh && Diy_Part1
-fi
+Diy_upgrade1
+
 echo " 正在执行：更新feeds,请耐心等待..."
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
