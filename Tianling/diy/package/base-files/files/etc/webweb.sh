@@ -11,8 +11,8 @@ sed -i '/mp\/luci-/d' /etc/crontabs/root && echo "0 1 * * 1 rm -rf /tmp/luci-*ca
 
 
 if [[ `grep -c "x86_64" /etc/openwrt_release` -eq '0' ]]; then
-  DISTRIB_TA="$(grep -i "DISTRIB_TARGET" /etc/openwrt_release |sed "s/'//g" |cut -f2 -d=)"
-  sed -i "s#x86_64#${DISTRIB_TA}#g" /etc/banner
+  export DISTRIB_TA="$(grep DISTRIB_TARGET= /etc/openwrt_release |sed "s/'//g" |cut -d "=" -f2)"
+  sed -i "s?x86_64?${DISTRIB_TA}?g" /etc/banner
 fi
 
 if [[ ! -d /usr/share/AdGuardHome ]] && [[ ! -f /etc/init.d/AdGuardHome ]]; then
@@ -23,8 +23,6 @@ fi
 [[ -f /etc/init.d/adguardhome ]] && rm -rf /etc/init.d/adguardhome
 [[ -f /etc/config/adguardhome ]] && rm -rf /etc/config/adguardhome
 [[ -f /etc/config/adguardhome.yaml ]] && rm -rf /etc/config/adguardhome.yaml
-
-[[ -f /etc/init.d/adguardhome ]] && rm -rf /etc/init.d/adguardhome
 
 if [[ -f /etc/init.d/ddnsto ]]; then
  /etc/init.d/ddnsto enable
