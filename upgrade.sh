@@ -110,9 +110,9 @@ function Diy_Part3() {
 	export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}"
 	export Firmware_Path="$HOME_PATH/upgrade"
 	Mkdir $HOME_PATH/bin/Firmware
-	export Zhuan_Yi="$HOME_PATH/bin/zhuanyi_Firmware"
+	export Transfer="$HOME_PATH/bin/transfer"
 	export Diuqu_gj="$HOME_PATH/bin/targets/diuqugj"
-	rm -rf "${Zhuan_Yi}" && Mkdir "${Zhuan_Yi}"
+	rm -rf "${Transfer}" && Mkdir "${Transfer}"
 	rm -rf "${Diuqu_gj}" && Mkdir "${Diuqu_gj}"
 	cd "${Firmware_Path}"
 	if [[ `ls ${Firmware_Path} | grep -c ".img"` -ge '1' ]] && [[ `ls ${Firmware_Path} | grep -c ".img.gz"` == '0' ]]; then
@@ -123,13 +123,13 @@ function Diy_Part3() {
 	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
 		echo "${Up_Firmware}" > "${Zhuan_Yi}"
 		if [[ -n ${Rename} ]]; then
-			mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}"
+			mv -f ${Firmware_Path}/*${Rename}* "${Transfer}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls ${Transfer} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 		else
 			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls ${Transfer} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 		fi	
 	;;
 	x86 | rockchip | bcm27xx | mxs | sunxi | zynq)
@@ -251,6 +251,9 @@ function Diy_Part3() {
 	;;
 	esac
 	cd $HOME_PATH
+	rm -rf "${Firmware_Path}"
+	rm -rf "${Zhuan_Yi}"
+	rm -rf "${Diuqu_gj}"
 }
 
 Mkdir() {
