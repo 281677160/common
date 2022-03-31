@@ -121,7 +121,6 @@ function Diy_Part3() {
 	
 	case "${TARGET_BOARD}" in
 	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
-		echo "${TARGET_BOARD},${Rename},${TARGET_PROFILE}" > ${Home}/4444
 		if [[ -n ${Rename} ]]; then
 			mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
