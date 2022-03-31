@@ -250,9 +250,6 @@ function Diy_Part3() {
 	;;
 	esac
 	cd $HOME_PATH
-	rm -rf "${Firmware_Path}"
-	rm -rf "${Zhuan_Yi}"
-	rm -rf "${Diuqu_gj}"
 }
 
 Mkdir() {
