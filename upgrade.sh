@@ -173,7 +173,7 @@ function Diy_Part3() {
 			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls -1 ${Transfer_Path} | grep -c ".trx"` == '1' ]] && mv -f ${Transfer_Path}/*.trx "${Firmware_Path}/${Up_Firmware}"
-		els -1e
+		else
 			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls -1 ${Transfer_Path} | grep -c ".trx"` == '1' ]] && mv -f ${Transfer_Path}/*.trx "${Firmware_Path}/${Up_Firmware}"
