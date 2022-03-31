@@ -36,34 +36,34 @@ function GET_TARGET_INFO() {
 	
 	case "${TARGET_BOARD}" in
 	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
-		export Firmware_sfx="bin"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.${Firmware_sfx}"
+		export Firmware_SFX=".bin"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade${Firmware_SFX}"
 	;;
 	x86 | rockchip | bcm27xx | mxs | sunxi | zynq)
-		export Firmware_sfx="img.gz"
-		export Legacy_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined.${Firmware_sfx}"
-		export UEFI_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined-efi.${Firmware_sfx}"
+		export Firmware_SFX=".img.gz"
+		export Legacy_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined${Firmware_SFX}"
+		export UEFI_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined-efi${Firmware_SFX}"
 	;;
 	mvebu)
 		case "${TARGET_SUBTARGET}" in
 		cortexa53 | cortexa72)
-			export Firmware_sfx="img.gz"
-			export Legacy_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined.${Firmware_sfx}"
-			export UEFI_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined-efi.${Firmware_sfx}"
+			export Firmware_SFX=".img.gz"
+			export Legacy_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined${Firmware_SFX}"
+			export UEFI_Firmware="openwrt-${TARGET_PROFILE}-generic-squashfs-combined-efi${Firmware_SFX}"
 		;;
 		esac
 	;;
 	bcm53xx)
-		export Firmware_sfx="trx"
-		export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs.${Firmware_sfx}"
+		export Firmware_SFX=".trx"
+		export Up_Firmware="openwrt-bcm53xx-generic-${TARGET_PROFILE}-squashfs${Firmware_SFX}"
 	;;
 	octeon | oxnas | pistachio)
-		export Firmware_sfx="tar"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-generic-${TARGET_PROFILE}-squashfs.tar"
+		export Firmware_SFX=".tar"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-generic-${TARGET_PROFILE}-squashfs${Firmware_SFX}"
 	;;
 	*)
-		export Firmware_sfx="bin"
-		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade.${Firmware_sfx}"
+		export Firmware_SFX=".bin"
+		export Up_Firmware="openwrt-${TARGET_BOARD}-${TARGET_SUBTARGET}-${TARGET_PROFILE}-squashfs-sysupgrade${Firmware_SFX}"
 	;;
 	esac
 	
@@ -75,7 +75,6 @@ function GET_TARGET_INFO() {
 	export Github_API1="https://api.github.com/repos/${Warehouse}/releases/tags/AutoUpdate"
 	export Github_API2="${Github}/releases/download/AutoUpdate/Github_Tags"
 	export Release_download="https://github.com/${Warehouse}/releases/download/AutoUpdate"
-	export Firmware_SFX=".${Firmware_sfx}"
 	export LOCAL_CHAZHAO="${LUCI_EDITION}-${Openwrt_Version}"
 	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE}"
 }
@@ -109,11 +108,11 @@ function Diy_Part3() {
 	GET_TARGET_INFO
 	export AutoBuild_Firmware="${LUCI_EDITION}-${Openwrt_Version}"
 	export Firmware_Path="$HOME_PATH/upgrade"
-	Mkdir $HOME_PATH/bin/Firmware
-	export Transfer="$HOME_PATH/bin/transfer"
-	export Diuqu_gj="$HOME_PATH/bin/targets/diuqugj"
-	rm -rf "${Transfer}" && Mkdir "${Transfer}"
-	rm -rf "${Diuqu_gj}" && Mkdir "${Diuqu_gj}"
+	export Transfer_Path="$HOME_PATH/bin/transfer"
+	export Discard_Path="$HOME_PATH/bin/targets/discard"
+	rm -rf $HOME_PATH/bin/Firmware && Mkdir $HOME_PATH/bin/Firmware
+	rm -rf "${Transfer_Path}" && Mkdir "${Transfer_Path}"
+	rm -rf "${Discard_Path}" && Mkdir "${Discard_Path}"
 	cd "${Firmware_Path}"
 	if [[ `ls ${Firmware_Path} | grep -c ".img"` -ge '1' ]] && [[ `ls ${Firmware_Path} | grep -c ".img.gz"` == '0' ]]; then
 		gzip *.img
@@ -121,31 +120,30 @@ function Diy_Part3() {
 	
 	case "${TARGET_BOARD}" in
 	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
-		echo "${Up_Firmware}" > "${Zhuan_Yi}"
 		if [[ -n ${Rename} ]]; then
-			mv -f ${Firmware_Path}/*${Rename}* "${Transfer}"
+			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Transfer} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 		else
-			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}"
+			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Transfer} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 		fi	
 	;;
 	x86 | rockchip | bcm27xx | mxs | sunxi | zynq)
 		if [[ `ls "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
-			mv -f ${Firmware_Path}/*ext4* ${Diuqu_gj}
+			mv -f ${Firmware_Path}/*ext4* ${Discard_Path}
 		fi
 		if [[ `ls "${Firmware_Path}" | grep -c "rootfs"` -ge '1' ]]; then
-			mv -f ${Firmware_Path}/*rootfs* ${Diuqu_gj}
+			mv -f ${Firmware_Path}/*rootfs* ${Discard_Path}
 		fi
-		if [[ `ls "${Firmware_Path}" | grep -c "${Firmware_sfx}"` -ge '1' ]]; then
-			mv -f ${Firmware_Path}/*${Firmware_sfx}* "${Zhuan_Yi}"
-			if [[ `ls "${Zhuan_Yi}" | grep -c "efi"` -eq '1' ]]; then
-				mv -f "${Zhuan_Yi}"/*efi* "${Firmware_Path}/${UEFI_Firmware}"
+		if [[ `ls "${Firmware_Path}" | grep -c "${Firmware_SFX}"` -ge '1' ]]; then
+			mv -f ${Firmware_Path}/*${Firmware_SFX}* "${Transfer_Path}"
+			if [[ `ls "${Transfer_Path}" | grep -c "efi"` -eq '1' ]]; then
+				mv -f "${Transfer_Path}"/*efi* "${Firmware_Path}/${UEFI_Firmware}"
 			fi
-			if [[ `ls "${Zhuan_Yi}" | grep -c "squashfs"` -eq '1' ]]; then
-				mv -f "${Zhuan_Yi}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
+			if [[ `ls "${Transfer_Path}" | grep -c "squashfs"` -eq '1' ]]; then
+				mv -f "${Transfer_Path}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
 			fi
 		fi
 	;;
@@ -153,18 +151,18 @@ function Diy_Part3() {
 		case "${TARGET_SUBTARGET}" in
 		cortexa53 | cortexa72)
 			if [[ `ls "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
-				mv -f ${Firmware_Path}/*ext4* ${Diuqu_gj}
+				mv -f ${Firmware_Path}/*ext4* ${Discard_Path}
 			fi
 			if [[ `ls "${Firmware_Path}" | grep -c "rootfs"` -ge '1' ]]; then
-				mv -f ${Firmware_Path}/*rootfs* ${Diuqu_gj}
+				mv -f ${Firmware_Path}/*rootfs* ${Discard_Path}
 			fi
-			if [[ `ls "${Firmware_Path}" | grep -c "${Firmware_sfx}"` -ge '1' ]]; then
-				mv -f ${Firmware_Path}/*${Firmware_sfx}* "${Zhuan_Yi}"
-				if [[ `ls "${Zhuan_Yi}" | grep -c "efi"` -eq '1' ]]; then
-					mv -f "${Zhuan_Yi}"/*efi* "${Firmware_Path}/${UEFI_Firmware}"
+			if [[ `ls "${Firmware_Path}" | grep -c "${Firmware_SFX}"` -ge '1' ]]; then
+				mv -f ${Firmware_Path}/*${Firmware_SFX}* "${Transfer_Path}"
+				if [[ `ls "${Transfer_Path}" | grep -c "efi"` -eq '1' ]]; then
+					mv -f "${Transfer_Path}"/*efi* "${Firmware_Path}/${UEFI_Firmware}"
 				fi
-				if [[ `ls "${Zhuan_Yi}" | grep -c "squashfs"` -eq '1' ]]; then
-					mv -f "${Zhuan_Yi}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
+				if [[ `ls "${Transfer_Path}" | grep -c "squashfs"` -eq '1' ]]; then
+					mv -f "${Transfer_Path}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
 				fi
 			fi
 		;;
@@ -172,35 +170,35 @@ function Diy_Part3() {
 	;;
 	bcm53xx)
 		if [[ -n ${Rename} ]]; then
-			mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}"
+			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Zhuan_Yi} | grep -c ".trx"` == '1' ]] && mv -f ${Zhuan_Yi}/*.trx "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls ${Transfer_Path} | grep -c ".trx"` == '1' ]] && mv -f ${Transfer_Path}/*.trx "${Firmware_Path}/${Up_Firmware}"
 		else
-			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}"
+			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Zhuan_Yi} | grep -c ".trx"` == '1' ]] && mv -f ${Zhuan_Yi}/*.trx "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls ${Transfer_Path} | grep -c ".trx"` == '1' ]] && mv -f ${Transfer_Path}/*.trx "${Firmware_Path}/${Up_Firmware}"
 		fi
 	;;
 	octeon | oxnas | pistachio)
 		if [[ -n ${Rename} ]]; then
-			mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}"
+			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Zhuan_Yi} | grep -c ".tar"` == '1' ]] && mv -f ${Zhuan_Yi}/*.tar "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls ${Transfer_Path} | grep -c ".tar"` == '1' ]] && mv -f ${Transfer_Path}/*.tar "${Firmware_Path}/${Up_Firmware}"
 		else
-			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}"
+			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Zhuan_Yi} | grep -c ".tar"` == '1' ]] && mv -f ${Zhuan_Yi}/*.tar "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls ${Transfer_Path} | grep -c ".tar"` == '1' ]] && mv -f ${Transfer_Path}/*.tar "${Firmware_Path}/${Up_Firmware}"
 		fi
 	;;
 	*)
 		if [[ -n ${Rename} ]]; then
-			mv -f ${Firmware_Path}/*${Rename}* "${Zhuan_Yi}"
+			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 		else
-			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Zhuan_Yi}"
+			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Zhuan_Yi} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Zhuan_Yi}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 		fi
 	;;
 	esac
@@ -212,13 +210,13 @@ function Diy_Part3() {
 			MD5=$(md5sum ${Legacy_Firmware} | cut -c1-3)
 			SHA256=$(sha256sum ${Legacy_Firmware} | cut -c1-3)
 			SHA5BIT="${MD5}${SHA256}"
-			cp ${Legacy_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-legacy-${SHA5BIT}.${Firmware_sfx}
+			cp ${Legacy_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-legacy-${SHA5BIT}${Firmware_SFX}
 		}
 		[[ -f ${UEFI_Firmware} ]] && {
 			MD5=$(md5sum ${UEFI_Firmware} | cut -c1-3)
 			SHA256=$(sha256sum ${UEFI_Firmware} | cut -c1-3)
 			SHA5BIT="${MD5}${SHA256}"
-			cp ${UEFI_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-uefi-${SHA5BIT}.${Firmware_sfx}
+			cp ${UEFI_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-uefi-${SHA5BIT}${Firmware_SFX}
 		}
 	;;
 	mvebu)
@@ -228,13 +226,13 @@ function Diy_Part3() {
 				MD5=$(md5sum ${Legacy_Firmware} | cut -c1-3)
 				SHA256=$(sha256sum ${Legacy_Firmware} | cut -c1-3)
 				SHA5BIT="${MD5}${SHA256}"
-				cp ${Legacy_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-legacy-${SHA5BIT}.${Firmware_sfx}
+				cp ${Legacy_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-legacy-${SHA5BIT}${Firmware_SFX}
 			}
 			[[ -f ${UEFI_Firmware} ]] && {
 				MD5=$(md5sum ${UEFI_Firmware} | cut -c1-3)
 				SHA256=$(sha256sum ${UEFI_Firmware} | cut -c1-3)
 				SHA5BIT="${MD5}${SHA256}"
-				cp ${UEFI_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-uefi-${SHA5BIT}.${Firmware_sfx}
+				cp ${UEFI_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-uefi-${SHA5BIT}${Firmware_SFX}
 			}
 		;;
 		esac
@@ -244,7 +242,7 @@ function Diy_Part3() {
 			MD5=$(md5sum ${Up_Firmware} | cut -c1-3)
 			SHA256=$(sha256sum ${Up_Firmware} | cut -c1-3)
 			SHA5BIT="${MD5}${SHA256}"
-			cp ${Up_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-sysupgrade-${SHA5BIT}.${Firmware_sfx}
+			cp ${Up_Firmware} $HOME_PATH/bin/Firmware/${AutoBuild_Firmware}-sysupgrade-${SHA5BIT}${Firmware_SFX}
 		} || {
 			echo "Firmware is not detected !"
 		}
@@ -252,8 +250,8 @@ function Diy_Part3() {
 	esac
 	cd $HOME_PATH
 	rm -rf "${Firmware_Path}"
-	rm -rf "${Zhuan_Yi}"
-	rm -rf "${Diuqu_gj}"
+	rm -rf "${Transfer_Path}"
+	rm -rf "${Discard_Path}"
 }
 
 Mkdir() {
