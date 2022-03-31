@@ -108,24 +108,10 @@ x86)
   } || {
     export BOOT_Type="legacy"
   }
-  export CPUmodel="$(cat "/tmp/sysinfo/model" |cut -d ":" -f1|sed 's/\ CPU//g'|sed 's/[ \t]*$//g')"
+  export CPUmodel="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')"
   if [[ "$(echo ${CPUmodel} |grep -c 'Intel')" -ge '1' ]]; then
-    export CPU_model="${CPUmodel%Intel*}"
-    if [[ -n "${CPU_model}" ]]; then
-      export Cpu1_Device="$(echo "${CPUmodel}" |sed "s/${CPU_model}//g")"
-      export Cpu2_Device="$(echo "${Cpu1_Device}" |awk '{print $2}')"
-      export CURRENT_Device="$(echo "${Cpu1_Device}" |sed "s/${Cpu2_Device}//g")"
-    else
-      export Cpu2_Device="$(echo "${CPUmodel}" |awk '{print $2}')"
-      export CURRENT_Device="$(echo "${CPUmodel}" |sed "s/${Cpu2_Device}//g")"
-    fi
-  elif [[ "$(echo ${CPUmodel} |grep -c 'AMD')" -ge '1' ]]; then
-    export CPU_model="${CPUmodel%AMD*}"
-    if [[ -n "${CPU_model}" ]]; then
-      export CURRENT_Device="$(echo "${CPUmodel}" |sed "s/${CPU_model}//g")"
-    else
-      export CURRENT_Device="${CPUmodel}"
-    fi
+    export Cpu_Device="$(echo "${CPUmodel}" |awk '{print $2}')"
+    export CURRENT_Device="$(echo "${CPUmodel}" |sed "s/${Cpu_Device}//g")"
   else
     export CURRENT_Device="${CPUmodel}"
   fi
