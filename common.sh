@@ -633,6 +633,7 @@ export TARGET_OPENWRT="openwrt/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
 function Diy_firmware() {
 echo " 正在执行：整理固件,您不想要啥就删啥,删删删"
 if [ "${REGULAR_UPDATE}" == "true" ]; then
+  echo "${TARGET_BSGET}" > $HOME_PATH/123
   cp -Rf ${TARGET_BSGET} $HOME_PATH/upgrade
 fi
 cd ${TARGET_BSGET}
