@@ -81,12 +81,15 @@ case ${Firmware_SFX} in
   } || {
     export BOOT_Type="legacy"
   }
-  export CPUmodel="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')"
-  if [[ "$(echo ${CPUmodel} |grep -c 'Intel')" -ge '1' ]]; then
-    export Cpu_Device="$(echo "${CPUmodel}" |awk '{print $2}')"
-    export CURRENT_Device="$(echo "${CPUmodel}" |sed "s/${Cpu_Device}//g")"
+  if [[ -f /etc/openwrt_upgrade ]]; then
+    export CURRENT_Device="$(grep CURRENT_Device= /etc/openwrt_upgrade | cut -c16-100)"
   else
-    export CURRENT_Device="${CPUmodel}"
+    export CPUmodel="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')"
+    if [[ "$(echo ${CPUmodel} |grep -c 'Intel')" -ge '1' ]]; then
+      export Cpu_Device="$(echo "${CPUmodel}" |awk '{print $2}')"
+      export CURRENT_Device="$(echo "${CPUmodel}" |sed "s/${Cpu_Device}//g")"
+    else
+      export CURRENT_Device="${CPUmodel}"
   fi
 ;;
 *)
