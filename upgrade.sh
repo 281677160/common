@@ -30,7 +30,7 @@ function GET_TARGET_INFO() {
 	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3-pro" ]]; then
 		export Rename="${TARGET_PROFILE}"
 		export TARGET_PROFILE="xiaomi_mir3p"
-	els -1e
+	else
 		export TARGET_PROFILE="${TARGET_PROFILE}"
 	fi
 	
@@ -124,7 +124,7 @@ function Diy_Part3() {
 			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
-		els -1e
+		else
 			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
@@ -184,7 +184,7 @@ function Diy_Part3() {
 			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls -1 ${Transfer_Path} | grep -c ".tar"` == '1' ]] && mv -f ${Transfer_Path}/*.tar "${Firmware_Path}/${Up_Firmware}"
-		els -1e
+		else
 			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls -1 ${Transfer_Path} | grep -c ".tar"` == '1' ]] && mv -f ${Transfer_Path}/*.tar "${Firmware_Path}/${Up_Firmware}"
@@ -195,7 +195,7 @@ function Diy_Part3() {
 			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
-		els -1e
+		else
 			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
 			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
