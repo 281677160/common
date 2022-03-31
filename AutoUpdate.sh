@@ -125,6 +125,7 @@ x86)
       export CURRENT_Device="$(echo "${CPUmodel}" |sed "s/${CPU_model}//g")"
     else
       export CURRENT_Device="${CPUmodel}"
+    fi
   else
     export CURRENT_Device="${CPUmodel}"
   fi
