@@ -73,6 +73,7 @@ opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 export PKG_List="${Download_Path}/Installed_PKG_List"
 export Kernel="$(egrep -o "Version: [0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control |sed s/[[:space:]]//g |cut -d ":" -f2)"
 
+
 case ${Firmware_SFX} in
 .img.gz | .img )
   [ -d /sys/firmware/efi ] && {
@@ -80,9 +81,17 @@ case ${Firmware_SFX} in
   } || {
     export BOOT_Type="legacy"
   }
+  export CPUmodel="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g'|sed 's/\ CPU//g')"
+  if [[ "$(echo ${CPUmodel} |grep -c 'Intel')" -ge '1' ]]; then
+    export Cpu_Device="$(echo "${CPUmodel}" |awk '{print $2}')"
+    export CURRENT_Device="$(echo "${CPUmodel}" |sed "s/${Cpu_Device}//g")"
+  else
+    export CURRENT_Device="${CPUmodel}"
+  fi
 ;;
 *)
   export BOOT_Type="sysupgrade"
+  export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
 esac
 
 opapi() {
@@ -103,7 +112,7 @@ fi
 menuaz() {
   echo
   echo
-  ECHOG "正在下载云端固件,请耐心等待..."
+  ECHOG "正在下载编号[ ${BianHao} ]云端固件,请耐心等待..."
   cd ${Download_Path}
   [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]] && {
     export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
@@ -207,7 +216,7 @@ menuws() {
   echo
   ECHOYY " 当前源码：${SOURCE} / ${LUCI_EDITION} / ${Kernel}"
   ECHOYY " 固件格式：${BOOT_Type}${Firmware_SFX}"
-  ECHOYY " 设备型号：${DEFAULT_Device}"
+  ECHOYY " 设备型号：${CURRENT_Device}"
   echo
   if [[ -z "${CLOUD_Version_1}" ]] && [[ -z "${CLOUD_Version_2}" ]] && [[ -z "${CLOUD_Version_3}" ]]; then
    print_error "无其他作者固件,如需要更换请先编译出 ${tixinggg} 的固件!"
@@ -234,19 +243,22 @@ menuws() {
   read -p " ${XUANZHEOP}： " CHOOSE
   case $CHOOSE in
     1)
-      Firmware="${CLOUD_Firmware1}"
+      export Firmware="${CLOUD_Firmware1}"
+      export BianHao="1"
       menuaz
       anzhuang
     break
     ;;
     2)
-      Firmware="${CLOUD_Firmware2}"
+      export Firmware="${CLOUD_Firmware2}"
+      export BianHao="2"
       menuaz
       anzhuang
     break
     ;;
     3)
-      Firmware="${CLOUD_Firmware3}"
+      export Firmware="${CLOUD_Firmware3}"
+      export BianHao="3"
       menuaz
       anzhuang
     break
