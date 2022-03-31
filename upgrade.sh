@@ -30,7 +30,7 @@ function GET_TARGET_INFO() {
 	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3-pro" ]]; then
 		export Rename="${TARGET_PROFILE}"
 		export TARGET_PROFILE="xiaomi_mir3p"
-	else
+	els -1e
 		export TARGET_PROFILE="${TARGET_PROFILE}"
 	fi
 	
@@ -114,7 +114,7 @@ function Diy_Part3() {
 	rm -rf "${Transfer_Path}" && Mkdir "${Transfer_Path}"
 	rm -rf "${Discard_Path}" && Mkdir "${Discard_Path}"
 	cd "${Firmware_Path}"
-	if [[ `ls ${Firmware_Path} | grep -c ".img"` -ge '1' ]] && [[ `ls ${Firmware_Path} | grep -c ".img.gz"` == '0' ]]; then
+	if [[ `ls -1 ${Firmware_Path} | grep -c ".img"` -ge '1' ]] && [[ `ls -1 ${Firmware_Path} | grep -c ".img.gz"` == '0' ]]; then
 		gzip *.img
 	fi
 	
@@ -123,26 +123,26 @@ function Diy_Part3() {
 		if [[ -n ${Rename} ]]; then
 			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
-		else
+			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
+		els -1e
 			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 		fi	
 	;;
 	x86 | rockchip | bcm27xx | mxs | sunxi | zynq)
-		if [[ `ls "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
+		if [[ `ls -1 "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
 			mv -f ${Firmware_Path}/*ext4* ${Discard_Path}
 		fi
-		if [[ `ls "${Firmware_Path}" | grep -c "rootfs"` -ge '1' ]]; then
+		if [[ `ls -1 "${Firmware_Path}" | grep -c "rootfs"` -ge '1' ]]; then
 			mv -f ${Firmware_Path}/*rootfs* ${Discard_Path}
 		fi
-		if [[ `ls "${Firmware_Path}" | grep -c "${Firmware_SFX}"` -ge '1' ]]; then
+		if [[ `ls -1 "${Firmware_Path}" | grep -c "${Firmware_SFX}"` -ge '1' ]]; then
 			mv -f ${Firmware_Path}/*${Firmware_SFX}* "${Transfer_Path}"
-			if [[ `ls "${Transfer_Path}" | grep -c "efi"` -eq '1' ]]; then
+			if [[ `ls -1 "${Transfer_Path}" | grep -c "efi"` -eq '1' ]]; then
 				mv -f "${Transfer_Path}"/*efi* "${Firmware_Path}/${UEFI_Firmware}"
 			fi
-			if [[ `ls "${Transfer_Path}" | grep -c "squashfs"` -eq '1' ]]; then
+			if [[ `ls -1 "${Transfer_Path}" | grep -c "squashfs"` -eq '1' ]]; then
 				mv -f "${Transfer_Path}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
 			fi
 		fi
@@ -150,18 +150,18 @@ function Diy_Part3() {
 	mvebu)
 		case "${TARGET_SUBTARGET}" in
 		cortexa53 | cortexa72)
-			if [[ `ls "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
+			if [[ `ls -1 "${Firmware_Path}" | grep -c "ext4"` -ge '1' ]]; then
 				mv -f ${Firmware_Path}/*ext4* ${Discard_Path}
 			fi
-			if [[ `ls "${Firmware_Path}" | grep -c "rootfs"` -ge '1' ]]; then
+			if [[ `ls -1 "${Firmware_Path}" | grep -c "rootfs"` -ge '1' ]]; then
 				mv -f ${Firmware_Path}/*rootfs* ${Discard_Path}
 			fi
-			if [[ `ls "${Firmware_Path}" | grep -c "${Firmware_SFX}"` -ge '1' ]]; then
+			if [[ `ls -1 "${Firmware_Path}" | grep -c "${Firmware_SFX}"` -ge '1' ]]; then
 				mv -f ${Firmware_Path}/*${Firmware_SFX}* "${Transfer_Path}"
-				if [[ `ls "${Transfer_Path}" | grep -c "efi"` -eq '1' ]]; then
+				if [[ `ls -1 "${Transfer_Path}" | grep -c "efi"` -eq '1' ]]; then
 					mv -f "${Transfer_Path}"/*efi* "${Firmware_Path}/${UEFI_Firmware}"
 				fi
-				if [[ `ls "${Transfer_Path}" | grep -c "squashfs"` -eq '1' ]]; then
+				if [[ `ls -1 "${Transfer_Path}" | grep -c "squashfs"` -eq '1' ]]; then
 					mv -f "${Transfer_Path}"/*squashfs* "${Firmware_Path}/${Legacy_Firmware}"
 				fi
 			fi
@@ -172,33 +172,33 @@ function Diy_Part3() {
 		if [[ -n ${Rename} ]]; then
 			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Transfer_Path} | grep -c ".trx"` == '1' ]] && mv -f ${Transfer_Path}/*.trx "${Firmware_Path}/${Up_Firmware}"
-		else
+			[[ `ls -1 ${Transfer_Path} | grep -c ".trx"` == '1' ]] && mv -f ${Transfer_Path}/*.trx "${Firmware_Path}/${Up_Firmware}"
+		els -1e
 			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Transfer_Path} | grep -c ".trx"` == '1' ]] && mv -f ${Transfer_Path}/*.trx "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls -1 ${Transfer_Path} | grep -c ".trx"` == '1' ]] && mv -f ${Transfer_Path}/*.trx "${Firmware_Path}/${Up_Firmware}"
 		fi
 	;;
 	octeon | oxnas | pistachio)
 		if [[ -n ${Rename} ]]; then
 			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Transfer_Path} | grep -c ".tar"` == '1' ]] && mv -f ${Transfer_Path}/*.tar "${Firmware_Path}/${Up_Firmware}"
-		else
+			[[ `ls -1 ${Transfer_Path} | grep -c ".tar"` == '1' ]] && mv -f ${Transfer_Path}/*.tar "${Firmware_Path}/${Up_Firmware}"
+		els -1e
 			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Transfer_Path} | grep -c ".tar"` == '1' ]] && mv -f ${Transfer_Path}/*.tar "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls -1 ${Transfer_Path} | grep -c ".tar"` == '1' ]] && mv -f ${Transfer_Path}/*.tar "${Firmware_Path}/${Up_Firmware}"
 		fi
 	;;
 	*)
 		if [[ -n ${Rename} ]]; then
 			mv -f ${Firmware_Path}/*${Rename}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
-		else
+			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
+		els -1e
 			mv -f ${Firmware_Path}/*${TARGET_PROFILE}* "${Transfer_Path}"
 			rm -f "${Firmware_Path}/${Up_Firmware}"
-			[[ `ls ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
+			[[ `ls -1 ${Transfer_Path} | grep -c "sysupgrade.bin"` == '1' ]] && mv -f ${Transfer_Path}/*sysupgrade.bin "${Firmware_Path}/${Up_Firmware}"
 		fi
 	;;
 	esac
