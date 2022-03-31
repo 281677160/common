@@ -10,7 +10,7 @@ function Diy_Part1() {
   [[ -f "$BUILD_PATH/replace.sh" ]] && cp -Rf $BUILD_PATH/replace.sh $BASE_PATH/bin/replace.sh
   sed  -i  's/ luci-app-ttyd//g' $HOME_PATH/target/linux/*/Makefile
   sed  -i  's/ luci-app-autoupdate//g' $HOME_PATH/target/linux/*/Makefile
-  sed -i 's#DEFAULT_PACKAGES +=#DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd#g' $HOME_PATH/target/linux/*/Makefile
+  sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd?g' $HOME_PATH/target/linux/*/Makefile
 }
 
 function GET_TARGET_INFO() {
