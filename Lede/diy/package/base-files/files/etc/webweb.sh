@@ -1,5 +1,7 @@
 #!/bin/bash
 
+touch /etc/crontabs/root
+
 chmod -R 775 /etc/init.d /usr/share
 
 [[ ! -f /mnt/network ]] && chmod +x /etc/networkip && source /etc/networkip
