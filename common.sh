@@ -579,6 +579,8 @@ rm -rf $HOME_PATH/files/{README,REA*.md}
 function Diy_zzz() {
 echo " 正在执行：在default-settings文件加条执行命令"
 
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > $BASE_PATH/etc/webweb.sh
+
 sed -i '/webweb.sh/d' "$ZZZ_PATH"
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
 
