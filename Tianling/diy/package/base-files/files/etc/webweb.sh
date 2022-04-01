@@ -28,7 +28,7 @@ if [[ -f /etc/init.d/ddnsto ]]; then
  /etc/init.d/ddnsto enable
 fi
 
-if [[ -d /usr/lib/lua/luci/view/themes/argon ]]; then
+if [[ `grep -c "bing_background" /etc/config/argon` -eq '1' ]]; then
   uci set argon.@global[0].bing_background=0
   uci commit argon
 fi
