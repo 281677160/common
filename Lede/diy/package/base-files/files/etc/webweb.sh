@@ -5,6 +5,10 @@ touch /etc/crontabs/root
 chmod -R 775 /etc/init.d /usr/share
 
 [[ ! -f /mnt/network ]] && chmod +x /etc/networkip && source /etc/networkip
+uci commit network
+uci commit dhcp
+uci commit system
+[[ -f /etc/config/ttyd ]] && uci commit ttyd
 
 cp -Rf /etc/config/network /mnt/network
 
