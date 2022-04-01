@@ -215,7 +215,8 @@ src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
 src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
 src-git danshui https://github.com/281677160/openwrt-package.git;${REPO_BRANCH}
 " >> $HOME_PATH/feeds.conf.default
-sed -i '/^\s*$/d' "$HOME_PATH/feeds.conf.default"
+sed -i '/^#/d' "$HOME_PATH/feeds.conf.default"
+sed -i '/^$/d' "$HOME_PATH/feeds.conf.default"
 }
 
 function sbin_openwrt() {
