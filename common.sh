@@ -580,6 +580,9 @@ function Diy_zzz() {
 echo " 正在执行：在default-settings文件加条执行命令"
 
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > $BASE_PATH/etc/webweb.sh
+if [[ $? -ne 0 ]]; then
+  wget -q -O webweb.sh -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh
+fi
 
 sed -i '/webweb.sh/d' "$ZZZ_PATH"
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
