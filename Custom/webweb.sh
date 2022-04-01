@@ -8,6 +8,7 @@ chmod -R 775 /etc/init.d /usr/share
 uci commit network
 uci commit dhcp
 uci commit system
+uci commit luci
 [[ -f /etc/config/ttyd ]] && uci commit ttyd
 
 cp -Rf /etc/config/network /mnt/network
