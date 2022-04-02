@@ -678,13 +678,6 @@ TIME r "修改IP、DNS、网关，请输入命令：openwrt"
 TIME r "如果您的机子在线更新固件可用，而又编译了，也可请输入命令查看在线更新操作：openwrt"
 }
 
-function Diy_Noti() {
-echo "${{steps.hello.outcome}}"
-if [[ "${{steps.hello.outcome}}" != "success" ]]; then
-  Diy_Notice
-fi
-}
-
 
 function Diy_xinxi() {
 Plug_in="$(grep -i 'CONFIG_PACKAGE_luci-app' $HOME_PATH/.config && grep -i 'CONFIG_PACKAGE_luci-theme' $HOME_PATH/.config)"
