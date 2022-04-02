@@ -592,9 +592,6 @@ sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
 if [[ `grep -c "crontabs" $BASE_PATH/etc/rc.local` -eq '0' ]] && [[ `grep -c "uhttpd" $BASE_PATH/etc/rc.local` -eq '0' ]]; then
 sed -i '$ s/exit 0$//g' $BASE_PATH/etc/rc.local
 echo '
-if [[ `grep -c "coremark" /etc/crontabs/root` -eq "1" ]]; then
-  sed -i "/coremark/d" /etc/crontabs/root
-fi
 /etc/init.d/network restart
 /etc/init.d/uhttpd restart
 exit 0
