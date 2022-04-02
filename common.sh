@@ -679,9 +679,10 @@ TIME r "如果您的机子在线更新固件可用，而又编译了，也可请
 }
 
 function Diy_Noti() {
+echo "${steps.hello.outcome}"
 if [[ "${steps.hello.outcome}" != "success" ]]; then
-  echo "${steps.hello.outcome}"
   Diy_Notice
+fi
 }
 
 
