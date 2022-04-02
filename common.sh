@@ -587,6 +587,9 @@ function Diy_zzz() {
 echo " 正在执行：在default-settings文件加条执行命令"
 
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > $BASE_PATH/etc/FinishIng.sh
+if [[ $? -ne 0 ]]; then
+  wget -q -O FinishIng.sh -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh
+fi
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > $BASE_PATH/etc/webweb.sh
 if [[ $? -ne 0 ]]; then
   wget -q -O webweb.sh -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh
@@ -594,15 +597,11 @@ fi
 sed -i '/webweb.sh/d' "$ZZZ_PATH"
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
 
-if [[ `grep -c "crontabs" $BASE_PATH/etc/rc.local` -eq '0' ]] && [[ `grep -c "uhttpd" $BASE_PATH/etc/rc.local` -eq '0' ]]; then
-sed -i '$ s/exit 0$//g' $BASE_PATH/etc/rc.local
-echo '
-/etc/init.d/network restart
-/etc/init.d/uhttpd restart
-exit 0
-' >> $BASE_PATH/etc/rc.local
-fi
-sed -i '/^$/d' "$BASE_PATH/etc/rc.local"
+sed -i '/etc\/init.d\/network\ restart/d' "$BASE_PATH/etc/rc.local"
+sed -i "/exit 0/i\/etc/init.d/network restart" "$BASE_PATH/etc/rc.local"
+
+sed -i '/etc\/init.d\/uhttpd\ restart/d' "$BASE_PATH/etc/rc.local"
+sed -i "/exit 0/i\/etc/init.d/uhttpd restart" "$BASE_PATH/etc/rc.local"
 }
 
 function Make_defconfig() {
