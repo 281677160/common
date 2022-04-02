@@ -45,10 +45,10 @@ if [[ "${REPO_BRANCH}" == "master" ]]; then
   echo "SOURCE=Lede" >> $GITHUB_ENV
   echo "LUCI_EDITION=18.06" >> $GITHUB_ENV
   echo "MAINTAIN=Lean's" >> $GITHUB_ENV
-elif [[ "${REPO_BRANCH}" == "main" ]]; then
+elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
   echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
   echo "SOURCE=Lienol" >> $GITHUB_ENV
-  echo "LUCI_EDITION=20.07" >> $GITHUB_ENV
+  echo "LUCI_EDITION=22.03" >> $GITHUB_ENV
   echo "MAINTAIN=Lienol's" >> $GITHUB_ENV
 elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
   echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
@@ -75,7 +75,7 @@ if [[ "${matrixtarget}" == "Lede_source" ]]; then
 elif [[ "${matrixtarget}" == "Lienol_source" ]]; then
   export ZZZ_PATH="${HOME_PATH}/package/default-settings/files/zzz-default-settings"
   export SOURCE="Lienol"
-  export LUCI_EDITION="20.07"
+  export LUCI_EDITION="22.03"
 elif [[ "${matrixtarget}" == "Tianling_source" ]]; then
   export ZZZ_PATH="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings"
   export SOURCE="Tianling"
@@ -133,9 +133,9 @@ master)
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
 
 ;;
-main)
+22.03)
   
-  # 删除重复插件（Lienol）
+  # 删除重复插件（Lienol-22.03）
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-ttyd' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
 
@@ -167,7 +167,7 @@ master)
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
 
 ;;
-main)
+22.03)
   
   # 给固件LUCI做个标记
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
