@@ -34,6 +34,7 @@ echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> $GITHUB_ENV
 
 if [[ "$REPO_URL" == "https://github.com/Lienol/openwrt" ]]
+  echo "REPO_BRANCH=main" >> $GITHUB_ENV
   export REPO_BRANCH="main"
 fi
 
