@@ -5,7 +5,8 @@
 
 
 function Diy_Part1() {
-  rm -rf "$HOME_PATH/package/luci-app-autoupdate" && git clone https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
+  rm -rf "$HOME_PATH/package/luci-app-autoupdate"
+  git clone https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
   [[ -f "$BUILD_PATH/AutoUpdate.sh" ]] && cp -Rf $BUILD_PATH/AutoUpdate.sh $BASE_PATH/bin/AutoUpdate.sh
   [[ -f "$BUILD_PATH/replace.sh" ]] && cp -Rf $BUILD_PATH/replace.sh $BASE_PATH/bin/replace.sh
   sed  -i  's/ luci-app-ttyd//g' $HOME_PATH/target/linux/*/Makefile
