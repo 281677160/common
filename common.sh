@@ -33,10 +33,6 @@ echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> $GITHUB_ENV
 
-if [[ "$REPO_URL" == "https://github.com/Lienol/openwrt" ]]; then
-  echo "REPO_BRANCH=main" >> $GITHUB_ENV
-  export REPO_BRANCH="main"
-fi
 
 # github用的变量，如果有修改，下面Bendi_variable也要同步修改
 
@@ -665,7 +661,7 @@ fi
 }
 
 function Diy_Language() {
-if [[ "${REPO_BRANCH}" == "main" ]] && [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+if [[ "${REPO_BRANCH}" == "22.03" ]] && [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
   echo " 正在执行：把插件语言转换成zh_Hans"
   cd $HOME_PATH
   cp -Rf $HOME_PATH/build/common/Convert/zh_Hans.sh $HOME_PATH/zh_Hans.sh
