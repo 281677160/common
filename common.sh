@@ -33,6 +33,9 @@ echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> $GITHUB_ENV
 
+if [[ "$REPO_URL" == "https://github.com/Lienol/openwrt" ]]
+  export REPO_BRANCH="main"
+fi
 
 # github用的变量，如果有修改，下面Bendi_variable也要同步修改
 
