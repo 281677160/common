@@ -646,7 +646,6 @@ if [ "${REGULAR_UPDATE}" == "true" ]; then
   cp -Rf ${TARGET_BSGET} $HOME_PATH/upgrade
 fi
 cd ${TARGET_BSGET}
-rm -rf packages
 rename -v "s/^immortalwrt/openwrt/" *
 if [[ -f ${GITHUB_WORKSPACE}/Clear ]]; then
   cp -Rf ${GITHUB_WORKSPACE}/Clear ${TARGET_BSGET}/Clear.sh
