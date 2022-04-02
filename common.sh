@@ -582,6 +582,7 @@ rm -rf $HOME_PATH/files/{README,REA*.md}
 function Diy_zzz() {
 echo " 正在执行：在default-settings文件加条执行命令"
 
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > $BASE_PATH/etc/FinishIng.sh
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > $BASE_PATH/etc/webweb.sh
 if [[ $? -ne 0 ]]; then
   wget -q -O webweb.sh -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh
