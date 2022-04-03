@@ -9,6 +9,7 @@ uci commit network
 uci commit dhcp
 uci commit system
 uci commit luci
+uci commit firewall
 [[ -f /etc/config/ttyd ]] && uci commit ttyd
 
 cp -Rf /etc/config/network /mnt/network
