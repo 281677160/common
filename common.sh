@@ -88,7 +88,7 @@ fi
 }
 
 function Diy_settings() {
-echo " 正在执行：随便判断一下是不是缺少文件了"
+echo "正在执行：随便判断一下是不是缺少文件了"
   [[ -d "${OP_DIY}" ]] && {
     if [ -z "$(ls -A "${OP_DIY}/${matrixtarget}/${CONFIG_FILE}" 2>/dev/null)" ]; then
       TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[${OP_DIY}/${matrixtarget}]文件夹内补齐"
@@ -115,7 +115,7 @@ echo " 正在执行：随便判断一下是不是缺少文件了"
 }
 
 function Diy_feeds() {
-echo " 正在执行：更新插件源,让源码更多插件存在"
+echo "正在执行：更新插件源,让源码更多插件存在"
 # 拉库和做标记
 
 ./scripts/feeds clean && ./scripts/feeds update -a > /dev/null 2>&1
@@ -220,30 +220,30 @@ sed -i '/^$/d' "$HOME_PATH/feeds.conf.default"
 }
 
 function sbin_openwrt() {
-echo " 正在执行：给固件增加[openwrt]命令"
+echo "正在执行：给固件增加[openwrt]命令"
 [[ -f $BUILD_PATH/openwrt.sh ]] && cp -Rf $BUILD_PATH/openwrt.sh $BASE_PATH/sbin/openwrt
 chmod 777 $BASE_PATH/sbin/openwrt
 }
 
 function Diy_Lede() {
-echo " 正在执行：Lede专用自定义"
+echo "正在执行：Lede专用自定义"
 }
 
 function Diy_Lienol() {
-echo " 正在执行：Lienol专用自定义"
+echo "正在执行：Lienol专用自定义"
 }
 
 function Diy_Tianling() {
-echo " 正在执行：Tianling专用自定义"
+echo "正在执行：Tianling专用自定义"
 }
 
 function Diy_Mortal() {
-echo " 正在执行：Mortal专用自定义"
+echo "正在执行：Mortal专用自定义"
 }
 
 function Diy_amlogic() {
 if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
-  echo " 正在执行：修复NTFS格式优盘不自动挂载，适配cpufreq，添加autocore支持"
+  echo "正在执行：修复NTFS格式优盘不自动挂载，适配cpufreq，添加autocore支持"
   # 修复NTFS格式优盘不自动挂载
   packages=" \
   block-mount fdisk usbutils badblocks ntfs-3g kmod-scsi-core kmod-usb-core \
@@ -267,7 +267,7 @@ fi
 }
 
 function Package_amlogic() {
-echo " 正在执行：打包N1和景晨系列固件"
+echo "正在执行：打包N1和景晨系列固件"
 # 下载上游仓库
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
 [ -d amlogic/openwrt-armvirt ] || mkdir -p amlogic/openwrt-armvirt
@@ -298,7 +298,7 @@ sudo rm -rf $GITHUB_WORKSPACE/amlogic
 }
 
 function Diy_indexhtm() {
-echo " 正在执行：去除主页一串的LUCI版本号显示"
+echo "正在执行：去除主页一串的LUCI版本号显示"
 if [[ "${REPO_BRANCH}" == "master" ]]; then
   sed -i 's/distversion)%>/distversion)%><!--/g' package/lean/autocore/files/*/index.htm
   sed -i 's/luciversion)%>)/luciversion)%>)-->/g' package/lean/autocore/files/*/index.htm
@@ -312,7 +312,7 @@ fi
 }
 
 function Diy_patches() {
-echo " 正在执行：如果有补丁文件，给源码打补丁"
+echo "正在执行：如果有补丁文件，给源码打补丁"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
   cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
   cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* $BUILD_PATH
@@ -332,7 +332,7 @@ fi
 }
 
 function Diy_prevent() {
-echo " 正在执行：判断插件有否冲突减少编译错误"
+echo "正在执行：判断插件有否冲突减少编译错误"
 make defconfig > /dev/null 2>&1
 echo "TIME b \"					插件冲突信息\"" > ${HOME_PATH}/CHONGTU
 
@@ -537,16 +537,19 @@ fi
 function Diy_adguardhome() {
 ## adguardhome编译时候带自选要不要编译内核了，此功能没用
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  echo " 正在执行：给adguardhome下载核心"
+  echo "正在执行：给adguardhome下载核心"
   if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
     Arch="amd64"
-    echo "X86机型"
+    echo "X86_64"
   elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
     Arch="i386"
+    echo "X86_32"
   elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
     Arch="arm64"
+    echo "armv8"
   elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     Arch="armv7"
+    echo "armv7"
   else
     echo "This model does not support automatic core download"
   fi
@@ -555,10 +558,20 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
     downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
     latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
     wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
-    [[ -f "AdGuardHome_linux_${Arch}.tar.gz" ]] && tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C $HOME_PATH || echo "下载核心不成功"
+    if [[ -f "AdGuardHome_linux_${Arch}.tar.gz" ]]; then
+      tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C $HOME_PATH
+      echo "核心下载成功"
+    else
+      echo "下载核心不成功"
+    fi
     mkdir -p $HOME_PATH/files/usr/bin
-    [[ -f "AdGuardHome/AdGuardHome" ]] && mv -f AdGuardHome/AdGuardHome $HOME_PATH/files/usr/bin
-    [[ -f "AdGuardHome/AdGuardHome" ]] && chmod 777 $HOME_PATH/files/usr/bin/AdGuardHome
+    if [[ -f "$HOME_PATH/AdGuardHome/AdGuardHome" ]] && 
+      mv -f $HOME_PATH/AdGuardHome/AdGuardHome $HOME_PATH/files/usr/bin
+      chmod 777 $HOME_PATH/files/usr/bin/AdGuardHome
+      echo "解压核心包成功,完成增加AdGuardHome核心工作"
+    else
+      echo "解压核心包失败,没能增加AdGuardHome核心"
+    fi
     rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
   fi
 fi
