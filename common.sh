@@ -174,7 +174,7 @@ master)
   
   # 修改DISTRIB_DESCRIPTION
   DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ_PATH |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
-  [[ -n "${DISTRIB}" ]] && sed -i "s/${DISTRIB}/OpenWrt/g" "$ZZZ_PATH"
+  [[ -n "${DISTRIB}" ]] && sed -i "s?${DISTRIB}?OpenWrt ?g" "$ZZZ_PATH"
 
 ;;
 openwrt-18.06)
