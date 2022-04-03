@@ -565,7 +565,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
       echo "下载核心不成功"
     fi
     mkdir -p $HOME_PATH/files/usr/bin
-    if [[ -f "$HOME_PATH/AdGuardHome/AdGuardHome" ]] && 
+    if [[ -f "$HOME_PATH/AdGuardHome/AdGuardHome" ]]; then
       mv -f $HOME_PATH/AdGuardHome/AdGuardHome $HOME_PATH/files/usr/bin
       chmod 777 $HOME_PATH/files/usr/bin/AdGuardHome
       echo "解压核心包成功,完成增加AdGuardHome核心工作"
