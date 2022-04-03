@@ -578,7 +578,7 @@ fi
 }
 
 function Diy_files() {
-echo " 正在执行：files大法，设置固件无烦恼"
+echo "正在执行：files大法，设置固件无烦恼"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
   cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
   cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* $BUILD_PATH
@@ -597,7 +597,7 @@ rm -rf $HOME_PATH/files/{README,REA*.md}
 }
 
 function Diy_zzz() {
-echo " 正在执行：在default-settings文件加条执行命令"
+echo "正在执行：在default-settings文件加条执行命令"
 
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > $BASE_PATH/etc/FinishIng.sh
 if [[ $? -ne 0 ]]; then
@@ -618,7 +618,7 @@ sed -i "/exit 0/i\/etc/init.d/uhttpd restart" "$BASE_PATH/etc/rc.local"
 }
 
 function Make_defconfig() {
-echo " 正在执行：加载机型中..."
+echo "正在执行：加载机型中..."
 export TAR_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
 export TAR_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)"
 echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)" >> $GITHUB_ENV
@@ -654,7 +654,7 @@ export TARGET_OPENWRT="openwrt/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
 }
 
 function Diy_firmware() {
-echo " 正在执行：整理固件,您不想要啥就删啥,删删删"
+echo "正在执行：整理固件,您不想要啥就删啥,删删删"
 if [ "${REGULAR_UPDATE}" == "true" ]; then
   cp -Rf ${TARGET_BSGET} $HOME_PATH/upgrade
 fi
@@ -675,7 +675,7 @@ fi
 
 function Diy_Language() {
 if [[ "${REPO_BRANCH}" == "22.03" ]] && [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-  echo " 正在执行：把插件语言转换成zh_Hans"
+  echo "正在执行：把插件语言转换成zh_Hans"
   cd $HOME_PATH
   cp -Rf $HOME_PATH/build/common/Convert/zh_Hans.sh $HOME_PATH/zh_Hans.sh
   chmod +x $HOME_PATH/zh_Hans.sh
@@ -848,7 +848,7 @@ Diy_indexhtm
 Diy_patches
 Diy_upgrade1
 
-echo " 正在执行：更新feeds,请耐心等待..."
+echo "正在执行：更新feeds,请耐心等待..."
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
