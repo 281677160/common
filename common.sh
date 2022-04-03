@@ -173,7 +173,7 @@ master)
   sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/*/Makefile
   
   # 修改DISTRIB_DESCRIPTION
-  DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.* '" $ZZZ_PATH |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
+  DISTRIB="$(egrep -o "DISTRIB_DESCRIPTION='.*'" $ZZZ_PATH |sed -r "s/DISTRIB_DESCRIPTION='(.*) '/\1/")"
   [[ -n "${DISTRIB}" ]] && sed -i "s?${DISTRIB}?OpenWrt ?g" "$ZZZ_PATH"
 
 ;;
