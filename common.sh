@@ -606,10 +606,12 @@ curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/Finish
 if [[ $? -ne 0 ]]; then
   wget -q -O FinishIng.sh -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh
 fi
+chmod 775 $BASE_PATH/etc/FinishIng.sh
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > $BASE_PATH/etc/webweb.sh
 if [[ $? -ne 0 ]]; then
   wget -q -O webweb.sh -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh
 fi
+chmod 777 $BASE_PATH/etc/webweb.sh
 sed -i '/webweb.sh/d' "$ZZZ_PATH"
 sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
 
@@ -618,6 +620,9 @@ sed -i "/exit 0/i\/etc/init.d/network restart" "$BASE_PATH/etc/rc.local"
 
 sed -i '/etc\/init.d\/uhttpd\ restart/d' "$BASE_PATH/etc/rc.local"
 sed -i "/exit 0/i\/etc/init.d/uhttpd restart" "$BASE_PATH/etc/rc.local"
+
+sed -i '/webweb.sh/d' "$BASE_PATH/etc/rc.local"
+sed -i "/exit 0/i\[[ -f '/etc/webweb.sh' ]] && source /etc/webweb.sh && reboot -f" "$BASE_PATH/etc/rc.local"
 }
 
 function Make_defconfig() {
