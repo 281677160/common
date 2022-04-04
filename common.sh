@@ -621,8 +621,8 @@ sed -i "/exit 0/i\/etc/init.d/network restart" "$BASE_PATH/etc/rc.local"
 sed -i '/etc\/init.d\/uhttpd\ restart/d' "$BASE_PATH/etc/rc.local"
 sed -i "/exit 0/i\/etc/init.d/uhttpd restart" "$BASE_PATH/etc/rc.local"
 
-sed -i '/webweb.sh/d' "$BASE_PATH/etc/rc.local"
-sed -i "/exit 0/i\[[ -f '/etc/webweb.sh' ]] && source /etc/webweb.sh && reboot -f" "$BASE_PATH/etc/rc.local"
+sed -i '/FinishIng.sh/d' "$BASE_PATH/etc/rc.local"
+sed -i "/exit 0/i\[[ -f '/etc/FinishIng.sh' ]] && source /etc/FinishIng.sh" "$BASE_PATH/etc/rc.local"
 }
 
 function Make_defconfig() {
