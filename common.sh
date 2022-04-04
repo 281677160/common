@@ -611,9 +611,9 @@ curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb
 if [[ $? -ne 0 ]]; then
   wget -q -O webweb.sh -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh
 fi
-chmod 777 $BASE_PATH/etc/webweb.sh
+chmod 775 $BASE_PATH/etc/webweb.sh
 sed -i '/webweb.sh/d' "$ZZZ_PATH"
-sed -i "/exit 0/i\chmod +x /etc/webweb.sh && source /etc/webweb.sh" "$ZZZ_PATH"
+sed -i "/exit 0/i\source /etc/webweb.sh" "$ZZZ_PATH"
 
 sed -i '/etc\/init.d\/network\ restart/d' "$BASE_PATH/etc/rc.local"
 sed -i "/exit 0/i\/etc/init.d/network restart" "$BASE_PATH/etc/rc.local"
