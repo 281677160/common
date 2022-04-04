@@ -43,5 +43,5 @@ sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 
 rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
-sed -i '/webweb.sh/d' /etc/rc.local
+
 exit 0
