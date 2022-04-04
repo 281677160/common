@@ -15,10 +15,8 @@ uci commit firewall
 cp -Rf /etc/config/network /mnt/network
 
 sed -i '/mp\/luci-/d' /etc/crontabs/root
-echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
 echo "*/2 * * * * source /etc/FinishIng.sh > /dev/null 2>&1" >> /etc/crontabs/root
 /etc/init.d/cron restart
-chmod -R 775 /etc/FinishIng.sh
 
 if [[ `grep -c "x86_64" /etc/openwrt_release` -eq '0' ]]; then
   export DISTRIB_TA="$(grep DISTRIB_TARGET= /etc/openwrt_release |sed "s/'//g" |cut -d "=" -f2)"
