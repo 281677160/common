@@ -669,6 +669,9 @@ if [ "${REGULAR_UPDATE}" == "true" ]; then
   cp -Rf ${TARGET_BSGET} $HOME_PATH/upgrade
 fi
 cd ${TARGET_BSGET}
+mkdir -p ipk
+cp -rf $(find $HOME_PATH/bin/packages/ -type f -name "*.ipk") ipk/ && sync
+sudo tar -czf ipk.tar.gz ipk && sudo rm -rf ipk && sync
 rename -v "s/^immortalwrt/openwrt/" *
 if [[ -f ${GITHUB_WORKSPACE}/Clear ]]; then
   cp -Rf ${GITHUB_WORKSPACE}/Clear ${TARGET_BSGET}/Clear.sh
