@@ -5,13 +5,15 @@
 
 
 function Diy_Part1() {
+  echo "正在执行给源码增加定时更新固件插件和设置插件和ttyd成默认自选"
   rm -rf "$HOME_PATH/package/luci-app-autoupdate"
-  git clone https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
+  git clone https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate > /dev/null 2>&1
   [[ -f "$BUILD_PATH/AutoUpdate.sh" ]] && cp -Rf $BUILD_PATH/AutoUpdate.sh $BASE_PATH/bin/AutoUpdate.sh
   [[ -f "$BUILD_PATH/replace.sh" ]] && cp -Rf $BUILD_PATH/replace.sh $BASE_PATH/bin/replace.sh
   sed  -i  's/ luci-app-ttyd//g' $HOME_PATH/target/linux/*/Makefile
   sed  -i  's/ luci-app-autoupdate//g' $HOME_PATH/target/linux/*/Makefile
   sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd?g' $HOME_PATH/target/linux/*/Makefile
+  [[ -d $HOME_PATH/package/luci-app-autoupdate ]] && echo "增加定时更新插件成功"
 }
 
 function GET_TARGET_INFO() {
