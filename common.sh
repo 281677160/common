@@ -597,7 +597,7 @@ if [ -n "$(ls -A "$BUILD_PATH/files" 2>/dev/null)" ]; then
   cp -Rf $BUILD_PATH/files $HOME_PATH
 fi
 chmod -R 775 $HOME_PATH/files
-rm -rf $HOME_PATH/files/{README,REA*.md}
+rm -rf $HOME_PATH/files/{LICENSE,README,REA*.md}
 }
 
 function Diy_zzz() {
@@ -684,7 +684,7 @@ fi
 }
 
 function Diy_Language() {
-if [[ "${REPO_BRANCH}" == "22.03" ]] && [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+if [[ "${REPO_BRANCH}" == "22.03" ]] || [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
   echo "正在执行：把插件语言转换成zh_Hans"
   cd $HOME_PATH
   cp -Rf $HOME_PATH/build/common/Convert/zh_Hans.sh $HOME_PATH/zh_Hans.sh
