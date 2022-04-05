@@ -170,7 +170,7 @@ master)
   
   # 给源码增加passwall为默认自选
   sed  -i  's/ luci-app-passwall//g' target/linux/*/Makefile
-  sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-passwall/g' target/linux/*/Makefile
+  sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-passwall?g' target/linux/*/Makefile
   
   # 修改DISTRIB_DESCRIPTION
   DISTRIB="$(grep DISTRIB_DESCRIPTION= $ZZZ_PATH |cut -d "=" -f2 |cut -d "'" -f2)"
@@ -184,7 +184,7 @@ openwrt-18.06)
   
   # 给源码增加luci-app-ssr-plus为默认自选
   sed  -i  's/ luci-app-ssr-plus//g' target/linux/*/Makefile
-  sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-ssr-plus/g' target/linux/*/Makefile
+  sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-ssr-plus?g' target/linux/*/Makefile
   
   # 替换99-default-settings
   chmod -R 777 $HOME_PATH/build/common/Convert
@@ -198,7 +198,7 @@ openwrt-21.02)
   
   # 给源码增加luci-app-ssr-plus为默认自选
   sed  -i  's/ luci-app-ssr-plus//g' target/linux/*/Makefile
-  sed -i 's/DEFAULT_PACKAGES +=/DEFAULT_PACKAGES += luci-app-ssr-plus/g' target/linux/*/Makefile
+  sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-ssr-plus?g' target/linux/*/Makefile
   
   # 替换99-default-settings
   chmod -R 775 $HOME_PATH/build/common/Convert
