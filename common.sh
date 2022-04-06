@@ -667,6 +667,7 @@ function Diy_firmware() {
 echo "正在执行：整理固件,您不想要啥就删啥,删删删"
 if [ "${REGULAR_UPDATE}" == "true" ]; then
   cp -Rf ${TARGET_BSGET} $HOME_PATH/upgrade
+  source $BUILD_PATH/upgrade.sh && Diy_Part3
 fi
 cd ${TARGET_BSGET}
 mkdir -p ipk
