@@ -663,12 +663,14 @@ export TARGET_BSGET="$HOME_PATH/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
 export TARGET_OPENWRT="openwrt/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
 }
 
-function Diy_firmware() {
-echo "正在执行：整理固件,您不想要啥就删啥,删删删"
+function Diy_upgrade3() {
 if [ "${REGULAR_UPDATE}" == "true" ]; then
   cp -Rf ${TARGET_BSGET} $HOME_PATH/upgrade
   source $BUILD_PATH/upgrade.sh && Diy_Part3
 fi
+}
+
+function Diy_organize() {
 cd ${TARGET_BSGET}
 mkdir -p ipk
 cp -rf $(find $HOME_PATH/bin/packages/ -type f -name "*.ipk") ipk/ && sync
@@ -687,6 +689,12 @@ cd $HOME_PATH
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
   echo "### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/update_log.txt
 fi
+}
+
+function Diy_firmware() {
+echo "正在执行：整理固件,您不想要啥就删啥,删删删"
+Diy_upgrade3
+Diy_organize
 }
 
 function Diy_Language() {
