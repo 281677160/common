@@ -679,7 +679,9 @@ if [[ -f ${GITHUB_WORKSPACE}/Clear ]]; then
   rm -rf ${TARGET_BSGET}/Clear.sh
 fi
 rename -v "s/^openwrt/${SOURCE}/" *
+echo "FIRMWARE=$PWD" >> $GITHUB_ENV
 
+cd $HOME_PATH
 # 发布用的update_log.txt
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
   echo "### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/update_log.txt
