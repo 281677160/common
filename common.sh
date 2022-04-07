@@ -882,7 +882,7 @@ Diy_patches
 Diy_upgrade1
 
 echo "正在执行：更新feeds,请耐心等待..."
-./scripts/feeds update -a
+./scripts/feeds update -a -f
 ./scripts/feeds install -a -f > /dev/null 2>&1
 ./scripts/feeds install -a -f
 mv $BUILD_PATH/$CONFIG_FILE .config
