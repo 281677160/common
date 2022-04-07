@@ -511,7 +511,7 @@ if [[ `grep -c "CONFIG_PACKAGE_odhcp6c=y" ${HOME_PATH}/.config` -eq '1' ]]; then
 fi
 
 if [[ ! "${REGULAR_UPDATE}" == "true" ]]; then
-  sed -i '/luci-app-autoupdate/d' "${HOME_PATH}/.config"
+  sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${HOME_PATH}/.config
 fi
 
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
