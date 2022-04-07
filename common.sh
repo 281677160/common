@@ -807,7 +807,10 @@ fi
 
 if [[ "${REGULAR_UPDATE}" == "true" ]] && [[ -z "${REPO_TOKEN}" ]]; then
   echo
-  TIME r "您虽然开启了在线编译,但是您的[REPO_TOKEN]密匙为空,无法将固件发布至云端,已为您自动关闭了编译在线更新固件"
+  echo
+  TIME r "您虽然开启了编译在线更新固件操作,但是您的[REPO_TOKEN]密匙为空,"
+  TIME r "无法将固件发布至云端,已为您自动关闭了编译在线更新固件"
+  echo
 elif [[ "${REGULAR_UPDATE}" == "true" ]] && [[ -n "${REPO_TOKEN}" ]]; then
   echo
   TIME l "定时自动更新信息"
