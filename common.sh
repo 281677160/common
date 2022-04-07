@@ -805,7 +805,10 @@ else
   TIME r "把定时自动更新插件编译进固件: 关闭"
 fi
 
-if [[ ${REGULAR_UPDATE} == "true" ]]; then
+if [[ "${REGULAR_UPDATE}" == "true" ]] && [[ -z "${REPO_TOKEN}" ]]; then
+  echo
+  TIME r "您虽然开启了在线编译,但是您的[REPO_TOKEN]密匙为空,已为您自动关闭了编译在线更新固件"
+elif [[ "${REGULAR_UPDATE}" == "true" ]] && [[ -n "${REPO_TOKEN}" ]]; then
   echo
   TIME l "定时自动更新信息"
   TIME z "插件版本: ${AutoUpdate_Version}"
