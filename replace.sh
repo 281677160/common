@@ -95,6 +95,7 @@ case ${Firmware_SFX} in
 *)
   export BOOT_Type="sysupgrade"
   export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
+;;
 esac
 
 opapi() {
