@@ -610,7 +610,7 @@ rm -rf $HOME_PATH/files/{LICENSE,README,REA*.md}
 }
 
 function Diy_zzz() {
-echo "正在执行：在default-settings文件加条执行命令"
+echo "正在执行：在zzz-default-settings文件加条执行命令"
 
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > $BASE_PATH/etc/FinishIng.sh
 if [[ $? -ne 0 ]]; then
