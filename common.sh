@@ -161,12 +161,14 @@ case "${REPO_BRANCH}" in
 master)
   
   # 给固件LUCI做个标记
+  sed -i '/DISTRIB_RECOGNIZE/d' "$BASE_PATH/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
 
 ;;
 22.03)
   
   # 给固件LUCI做个标记
+  sed -i '/DISTRIB_RECOGNIZE/d' "$BASE_PATH/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
   
   # 给源码增加passwall为默认自选
@@ -181,6 +183,7 @@ master)
 openwrt-18.06)
   
   # 给固件LUCI做个标记
+  sed -i '/DISTRIB_RECOGNIZE/d' "$BASE_PATH/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
   
   # 给源码增加luci-app-ssr-plus为默认自选
@@ -195,6 +198,7 @@ openwrt-18.06)
 openwrt-21.02)
   
   # 给固件LUCI做个标记
+  sed -i '/DISTRIB_RECOGNIZE/d' "$BASE_PATH/etc/openwrt_release"
   echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
   
   # 给源码增加luci-app-ssr-plus为默认自选
