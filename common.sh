@@ -625,11 +625,14 @@ chmod 775 $BASE_PATH/etc/webweb.sh
 sed -i '/webweb.sh/d' "$ZZZ_PATH"
 sed -i "/exit 0/i\source /etc/webweb.sh" "$ZZZ_PATH"
 
+sed -i '/etc\/init.d\/uhttpd\ restart/d' "$BASE_PATH/etc/rc.local"
+sed -i "/exit 0/i\/etc/init.d/uhttpd restart" "$BASE_PATH/etc/rc.local"
+
 sed -i '/etc\/init.d\/network\ restart/d' "$BASE_PATH/etc/rc.local"
 sed -i "/exit 0/i\/etc/init.d/network restart" "$BASE_PATH/etc/rc.local"
 
-sed -i '/etc\/init.d\/uhttpd\ restart/d' "$BASE_PATH/etc/rc.local"
-sed -i "/exit 0/i\/etc/init.d/uhttpd restart" "$BASE_PATH/etc/rc.local"
+sed -i '/service dnsmasq restart/d' "$BASE_PATH/etc/rc.local"
+sed -i "/exit 0/i\service dnsmasq restart" "$BASE_PATH/etc/rc.local"
 
 sed -i '/FinishIng.sh/d' "$BASE_PATH/etc/rc.local"
 sed -i "/exit 0/i\[[ -f '/etc/FinishIng.sh' ]] && source /etc/FinishIng.sh" "$BASE_PATH/etc/rc.local"
