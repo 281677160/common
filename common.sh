@@ -31,8 +31,8 @@ sudo -E apt-get -qq autoremove -y --purge
 sudo -E apt-get -qq clean
 sudo timedatectl set-timezone "$TZ"
 sudo mkdir -p /${{matrix.target}}
-sudo chown $USER:$GROUPS /${{matrix.target}}
-if [[ "${{matrix.target}}" == "openwrt_amlogic" ]]; then
+sudo chown $USER:$GROUPS /${matrixtarget}
+if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
 docker rmi $(docker images -q)
 sudo -E apt-get remove -y --purge azure-cli ghc zulu* hhvm llvm* firefox google* dotnet* powershell mysql* php* mssql-tools msodbcsql17 android*
 sudo rm -rf /etc/mysql /etc/php /swapfile
@@ -40,7 +40,7 @@ fi
 }
 
 function Diy_repo_url() {
-source "${GITHUB_WORKSPACE}/build/${matrix.target}/settings.ini"
+source "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini"
 echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
 echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
 echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
@@ -54,7 +54,7 @@ echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> $GITHUB_ENV
 echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> $GITHUB_ENV
 echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
 echo "Library=${Warehouse##*/}" >> $GITHUB_ENV
-echo "matrixtarget=${matrix.target}" >> $GITHUB_ENV
+echo "matrixtarget=${matrixtarget}" >> $GITHUB_ENV
 }
 
 function Diy_variable() {
