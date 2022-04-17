@@ -39,7 +39,7 @@ sudo rm -rf /etc/mysql /etc/php /swapfile
 fi
 }
 
-function Diy_settings() {
+function Diy_repo_url() {
 source "${GITHUB_WORKSPACE}/build/${{matrix.target}}/settings.ini"
 echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
 echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
