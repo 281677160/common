@@ -40,7 +40,7 @@ fi
 }
 
 function Diy_repo_url() {
-source "${GITHUB_WORKSPACE}/build/${{matrix.target}}/settings.ini"
+source "${GITHUB_WORKSPACE}/build/${matrix.target}/settings.ini"
 echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
 echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
 echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
@@ -54,7 +54,7 @@ echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> $GITHUB_ENV
 echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> $GITHUB_ENV
 echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
 echo "Library=${Warehouse##*/}" >> $GITHUB_ENV
-echo "matrixtarget=${{matrix.target}}" >> $GITHUB_ENV
+echo "matrixtarget=${matrix.target}" >> $GITHUB_ENV
 }
 
 function Diy_variable() {
