@@ -22,23 +22,6 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
     }
 }
 
-function Diy_update() {
-sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc
-sudo -E apt-get -qq update -y
-sudo -E apt-get -qq full-upgrade -y
-sudo -E apt-get -qq install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 lib32stdc++6 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl rename libpcap0.8-dev swig rsync
-sudo -E apt-get -qq autoremove -y --purge
-sudo -E apt-get -qq clean
-sudo timedatectl set-timezone "$TZ"
-sudo mkdir -p /${{matrix.target}}
-sudo chown $USER:$GROUPS /${matrixtarget}
-if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
-docker rmi $(docker images -q)
-sudo -E apt-get remove -y --purge azure-cli ghc zulu* hhvm llvm* firefox google* dotnet* powershell mysql* php* mssql-tools msodbcsql17 android*
-sudo rm -rf /etc/mysql /etc/php /swapfile
-fi
-}
-
 function Diy_repo_url() {
 source "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini"
 echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
@@ -55,6 +38,23 @@ echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> $GITHUB_ENV
 echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
 echo "Library=${Warehouse##*/}" >> $GITHUB_ENV
 echo "matrixtarget=${matrixtarget}" >> $GITHUB_ENV
+}
+
+function Diy_update() {
+sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc
+sudo -E apt-get -qq update -y
+sudo -E apt-get -qq full-upgrade -y
+sudo -E apt-get -qq install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 lib32stdc++6 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl rename libpcap0.8-dev swig rsync
+sudo -E apt-get -qq autoremove -y --purge
+sudo -E apt-get -qq clean
+sudo timedatectl set-timezone "$TZ"
+sudo mkdir -p /${matrixtarget}
+sudo chown $USER:$GROUPS /${matrixtarget}
+if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
+docker rmi $(docker images -q)
+sudo -E apt-get remove -y --purge azure-cli ghc zulu* hhvm llvm* firefox google* dotnet* powershell mysql* php* mssql-tools msodbcsql17 android*
+sudo rm -rf /etc/mysql /etc/php /swapfile
+fi
 }
 
 function Diy_variable() {
