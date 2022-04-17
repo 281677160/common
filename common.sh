@@ -958,7 +958,6 @@ fi
 }
 
 function Diy_menu() {
-Diy_settings
 if [[ ! ${Tishi} == "1" ]]; then
   Diy_feeds
 fi
