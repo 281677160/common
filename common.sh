@@ -175,11 +175,11 @@ echo "正在执行：随便判断一下是不是缺少文件了"
       exit 1
     fi
   } || {
-    if [ -z "$(ls -A "$BUILD_PATH/${CONFIG_FILE}" 2>/dev/null)" ]; then
+    if [ -z "$(ls -A "$GITHUB_WORKSPACE/build/${{matrix.target}}/${CONFIG_FILE}" 2>/dev/null)" ]; then
       TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[build/${matrixtarget}]文件夹内补齐"
       exit 1
     fi
-    if [ -z "$(ls -A "$BUILD_PATH/${DIY_PART_SH}" 2>/dev/null)" ]; then
+    if [ -z "$(ls -A "$GITHUB_WORKSPACE/build/${{matrix.target}}/${DIY_PART_SH}" 2>/dev/null)" ]; then
       TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[build/${matrixtarget}]文件夹内补齐"
       exit 1
     fi
