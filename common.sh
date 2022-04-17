@@ -23,7 +23,12 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 }
 
 function Diy_repo_url() {
-source "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini"
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本缺少[settings.ini]名称的配置文件,请在[build/${matrixtarget}]文件夹内补齐"
+  exit 1
+else
+  source "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini"
+fi
 echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
 echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
 echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
