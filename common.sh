@@ -336,9 +336,9 @@ if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
     sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" $HOME_PATH/target/linux/armvirt/Makefile
   done
 
-  # luci-app-cpufreq修改一些代码适配amlogic
+  echo "修改luci-app-cpufreq一些代码适配amlogic"
   sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' $HOME_PATH/feeds/luci/applications/luci-app-cpufreq/Makefile
-  # 为 armvirt 添加 autocore 支持
+  echo "为 armvirt 添加 autocore 支持"
   sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' $HOME_PATH/package/lean/autocore/Makefile
 fi
 }
