@@ -46,7 +46,7 @@ echo "matrixtarget=${matrixtarget}" >> $GITHUB_ENV
 }
 
 function Diy_settings() {
-echo "正在执行：随便判断一下是不是缺少文件了"
+echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件了"
   [[ -d "${OP_DIY}" ]] && {
     if [ -z "$(ls -A "${OP_DIY}/${matrixtarget}/${CONFIG_FILE}" 2>/dev/null)" ]; then
       TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[${OP_DIY}/${matrixtarget}]文件夹内补齐"
