@@ -80,9 +80,11 @@ sudo -E apt-get -qq install -y build-essential asciidoc binutils bzip2 gawk gett
 sudo -E apt-get -qq autoremove -y --purge
 sudo -E apt-get -qq clean
 sudo timedatectl set-timezone "$TZ"
-sudo mkdir -p /${matrixtarget}
-sudo chown $USER:$GROUPS /${matrixtarget}
-if [[ "${matrixtarget}" == "openwrt_amlogic" ]] && [[ -z ${bendi_script} ]]; then
+if [[ ! ${bendi_script} == "1" ]]; then
+  sudo mkdir -p /${matrixtarget}
+  sudo chown $USER:$GROUPS /${matrixtarget}
+fi
+if [[ "${matrixtarget}" == "openwrt_amlogic" ]] && [[ ! ${bendi_script} == "1" ]]; then
 docker rmi $(docker images -q)
 sudo -E apt-get remove -y --purge azure-cli ghc zulu* hhvm llvm* firefox google* dotnet* powershell mysql* php* mssql-tools msodbcsql17 android*
 sudo rm -rf /etc/mysql /etc/php /swapfile
