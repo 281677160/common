@@ -381,9 +381,9 @@ echo
 [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]] && {
   export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
   if [ ! "$Google_Check" == 301 ];then
-    wget -q "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+    rm -rf "${CLOUD_Version}" && curl -# -LJO "https://ghproxy.com/${Release_download}/${CLOUD_Version}"
     if [[ $? -ne 0 ]];then
-      wget -q "https://pd.zwc365.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+      rm -rf "${CLOUD_Version}" && wget -q "https://pd.zwc365.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
       if [[ $? -ne 0 ]];then
         TIME r "下载云端固件失败,请尝试手动安装!"
         echo
@@ -395,9 +395,9 @@ echo
       TIME y "下载云端固件成功!"
     fi
   else
-    wget -q "${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+    rm -rf "${CLOUD_Version}" && curl -# -LJO "${Release_download}/${CLOUD_Version}"
     if [[ $? -ne 0 ]];then
-      wget -q "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+      rm -rf "${CLOUD_Version}" && wget -q "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
       if [[ $? -ne 0 ]];then
         TIME r "下载云端固件失败,请尝试手动安装!"
         echo
