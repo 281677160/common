@@ -457,7 +457,8 @@ fi
   
   cp -Rf /etc/config/network /mnt/network
   mv -f /etc/config/luci /tmp/luci
-  rm -rf /mnt/back.tar.gz && sysupgrade -b /mnt/back.tar.gz
+  rm -rf /mnt/back.tar.gz
+  sysupgrade -b /mnt/back.tar.gz
   [[ $? -ne 0 ]] && {
     mv -f /tmp/luci /etc/config/luci
     export Upgrade_Options="sysupgrade -q"
