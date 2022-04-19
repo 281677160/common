@@ -93,6 +93,7 @@ echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> $GITHUB_E
 echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> $GITHUB_ENV
 echo "NETIP=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/networkip" >> $GITHUB_ENV
 echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> $GITHUB_ENV
+echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/FinishIng.sh" >> $GITHUB_ENV
 echo "Convert_path=${GITHUB_WORKSPACE}/openwrt/build/common/Convert" >> $GITHUB_ENV
 echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
@@ -687,9 +688,7 @@ chmod -R 775 $HOME_PATH/files
 rm -rf $HOME_PATH/files/{LICENSE,README,REA*.md}
 }
 
-function Diy_zzz() {
-echo "正在执行：在zzz-default-settings文件加条执行命令"
-
+function Diy_webweb() {
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > $BASE_PATH/etc/FinishIng.sh
 if [[ $? -ne 0 ]]; then
   wget -q -O FinishIng.sh -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh
@@ -700,6 +699,10 @@ if [[ $? -ne 0 ]]; then
   wget -q -O webweb.sh -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh
 fi
 chmod 775 $BASE_PATH/etc/webweb.sh
+}
+
+function Diy_zzz() {
+echo "正在执行：在zzz-default-settings文件加条执行命令"
 sed -i '/webweb.sh/d' "$ZZZ_PATH"
 sed -i "/exit 0/i\source /etc/webweb.sh" "$ZZZ_PATH"
 
@@ -947,6 +950,7 @@ if [[ ! "${bendi_script}" == "1" ]]; then
   Diy_prevent
 fi
 Diy_files
+Diy_zzz
 sbin_openwrt
 Diy_adguardhome
 Diy_Language
@@ -962,7 +966,7 @@ if [[ ! ${Tishi} == "1" ]]; then
   Diy_feeds
 fi
 Diy_conf
-Diy_zzz
+Diy_webweb
 Diy_${SOURCE}
 Diy_amlogic
 /bin/bash $BUILD_PATH/$DIY_PART_SH
