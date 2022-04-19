@@ -454,15 +454,16 @@ else
   rm -rf /mnt/Detectionnetwork
   sed -i "/Detectionnetwork/d" /etc/crontabs/root
 fi
-' >/mnt/Detectionnetwork
+' > /mnt/Detectionnetwork
   sed -i '/^$/d' "/mnt/Detectionnetwork"
   chmod 755 "/mnt/Detectionnetwork"
   sed -i '/Detectionnetwork/d' "/etc/rc.local"
   echo "*/5 * * * * source /mnt/Detectionnetwork > /dev/null 2>&1" >> /etc/crontabs/root
   /etc/init.d/cron restart
   
-  sed -i '/FinishIng.sh/d' "/etc/rc.local"
-  sed -i "/exit 0/i\[[ -f '/etc/FinishIng.sh' ]] && source /etc/FinishIng.sh" "/etc/rc.local"
+  if [[ `grep -c "FinishIng.sh" /etc/rc.local` -eq '0' ]]; then
+    sed -i "/exit 0/i\[[ -f '/etc/FinishIng.sh' ]] && source /etc/FinishIng.sh" "/etc/rc.local"
+  fi
   
   cp -Rf /etc/config/network /mnt/network
   mv -f /etc/config/luci /tmp/luci
