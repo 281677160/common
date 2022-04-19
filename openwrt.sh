@@ -54,6 +54,19 @@ judge() {
   fi
 }
 
+function ceshi_wangluo() {
+  curl -o /tmp/baidu1.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
+  curl -o /tmp/baidu2.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
+  if [[ `grep -c "百度一下" /tmp/baidu1.html` -eq '0' ]] && [[ `grep -c "登录" /tmp/baidu2.html` -eq '0' ]]; then
+    rm -rf /tmp/baidu*
+    reobot -f
+  else
+    rm -rf /tmp/baidu*
+    
+  fi
+}
+
+
 function ip_install() {
   echo
   echo
