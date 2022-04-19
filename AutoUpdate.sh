@@ -289,7 +289,6 @@ if [[ $? -ne 0 ]];then
   fi
   if [[ $? -ne 0 ]];then
     TIME r "获取云端API数据失败"
-    echo
     TIME g "您当前Github地址:${Github}"
     TIME y "您当前Github地址上没检测到云端存在,或您的仓库为私库!"
     echo
