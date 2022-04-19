@@ -173,6 +173,7 @@ echo
 if [[ -z "${Input_Option}" ]];then
   export Upgrade_Options="sysupgrade -q"
   export Update_Mode="1"
+  export Update_explain="保留配置更新固件"
   TIME h "执行: 更新固件[保留配置]"
 else
   case ${Input_Option} in
@@ -188,6 +189,7 @@ else
     -n | -N)
       export Upgrade_Options="sysupgrade -n"
       TIME h "执行: 更新固件(不保留配置)"
+      export Update_explain="不保留配置更新固件"
     ;;
     -s)
       export Upgrade_Options="sysupgrade -F -n"
@@ -435,7 +437,7 @@ export CLOUD_256="$(echo "${MD5_256}" | cut -c 4-)"
 
 chmod 777 ${CLOUD_Version}
 [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
-TIME g "正在更新固件,更新期间请不要断开电源或重启设备 ..."
+TIME g "正在执行"${Update_explain}",更新期间请不要断开电源或重启设备 ..."
 sleep 2
 if [[ "${AutoUpdate_Mode}" == "1" ]] || [[ "${Update_Mode}" == "1" ]]; then
   source /etc/deletefile
