@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "$(date +%Y年%m月%d号%H时%M分%S秒)" > /etc/123
+
 touch /etc/crontabs/root
 
 chmod -R 775 /etc/init.d /usr/share
