@@ -4,7 +4,7 @@ if [[ -f '/etc/webweb.sh' ]]; then
   source /etc/webweb.sh
   reboot -f
 fi
-if [[ -f /mnt/network ]]; then
+if [[ -f '/mnt/network' ]]; then
   cp -Rf /mnt/network /etc/config/network
   uci commit luci
 fi
