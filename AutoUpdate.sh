@@ -442,15 +442,15 @@ if [[ "${AutoUpdate_Mode}" == "1" ]] || [[ "${Update_Mode}" == "1" ]]; then
 
 echo '
 #!/bin/bash
-curl -o /tmp/baidu1.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
-curl -o /tmp/baidu2.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
-if [[ `grep -c "百度一下" /tmp/baidu1.html` -eq "0" ]] && [[ `grep -c "登录" /tmp/baidu2.html` -eq "0" ]]; then
-  rm -rf /tmp/baidu*
+curl -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
+curl -o /tmp/taobao.html -s -w %{time_namelookup}: https://www.taobao.com > /dev/null 2>&1
+if [[ `grep -c "百度一下" /tmp/baidu.html` -eq "0" ]] && [[ `grep -c "淘宝" /tmp/taobao.html` -eq "0" ]]; then
+  rm -rf /tmp/baidu.html /tmp/taobao.html
   rm -rf /mnt/Detectionnetwork
   sed -i "/Detectionnetwork/d" /etc/crontabs/root
   reboot -f
 else
-  rm -rf /tmp/baidu*
+  rm -rf /tmp/baidu.html /tmp/taobao.html
   rm -rf /mnt/Detectionnetwork
   sed -i "/Detectionnetwork/d" /etc/crontabs/root
 fi
