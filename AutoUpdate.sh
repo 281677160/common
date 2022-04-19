@@ -172,7 +172,7 @@ clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
 if [[ -z "${Input_Option}" ]];then
   export Upgrade_Options="sysupgrade -q"
-  export Update_Mode=1
+  export Update_Mode="1"
   TIME h "执行: 更新固件[保留配置]"
 else
   case ${Input_Option} in
@@ -194,7 +194,7 @@ else
       TIME h "执行: 强制更新固件(不保留配置)"
     ;;
     -u)
-      export AutoUpdate_Mode=1
+      export AutoUpdate_Mode="1"
       export Upgrade_Options="sysupgrade -q"
     ;;
     esac
@@ -437,7 +437,7 @@ chmod 777 ${CLOUD_Version}
 [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
 TIME g "正在更新固件,更新期间请不要断开电源或重启设备 ..."
 sleep 2
-if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
+if [[ "${AutoUpdate_Mode}" == "1" ]] || [[ "${Update_Mode}" == "1" ]]; then
   source /etc/deletefile
 
 echo '
