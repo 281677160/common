@@ -456,14 +456,13 @@ fi
   
   
   cp -Rf /etc/config/network /mnt/network
-  mv -f /etc/config/luci /etc/config/luci-
-  sysupgrade -b /mnt/back.tar.gz
-  [[ $? == 0 ]] && {
-    mv -f /etc/config/luci- /etc/config/luci
-    export Upgrade_Options="sysupgrade -f /mnt/back.tar.gz"
-  } || {
-    mv -f /etc/config/luci- /etc/config/luci
+  mv -f /etc/config/luci /tmp/luci
+  rm -rf /mnt/back.tar.gz && sysupgrade -b /mnt/back.tar.gz
+  [[ $? -ne 0 ]] && {
+    mv -f /tmp/luci /etc/config/luci
     export Upgrade_Options="sysupgrade -q"
+  } || {
+    export Upgrade_Options="sysupgrade -f /mnt/back.tar.gz"
   }
 fi
 
