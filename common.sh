@@ -706,6 +706,9 @@ sed -i "/exit 0/i\source /etc/webweb.sh" "$ZZZ_PATH"
 sed -i '/FinishIng.sh/d' "$BASE_PATH/etc/rc.local"
 sed -i "/exit 0/i\[[ -f '/etc/FinishIng.sh' ]] && source /etc/FinishIng.sh" "$BASE_PATH/etc/rc.local"
 
+
+sed -i '/exit 0/i\echo "$(date +%Y年%m月%d号%H时%M分%S秒)" > /etc/456' "/etc/rc.local"
+
 sed -i '/etc\/init.d\/uhttpd\ restart/d' "$BASE_PATH/etc/rc.local"
 sed -i "/exit 0/i\/etc/init.d/uhttpd restart" "$BASE_PATH/etc/rc.local"
 
