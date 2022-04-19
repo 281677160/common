@@ -94,6 +94,7 @@ echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> $GITHUB
 echo "NETIP=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/networkip" >> $GITHUB_ENV
 echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> $GITHUB_ENV
 echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/FinishIng.sh" >> $GITHUB_ENV
+echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> $GITHUB_ENV
 echo "Convert_path=${GITHUB_WORKSPACE}/openwrt/build/common/Convert" >> $GITHUB_ENV
 echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
@@ -308,18 +309,42 @@ chmod 777 $BASE_PATH/sbin/openwrt
 
 function Diy_Lede() {
 echo "正在执行：Lede专用自定义"
+echo '
+/mnt/network
+/mnt/Detectionnetwork
+/etc/config/AdGuardHome.yaml
+' > "${KEEPD}"
+sed -i '/^$/d' "${KEEPD}"
 }
 
 function Diy_Lienol() {
 echo "正在执行：Lienol专用自定义"
+echo '
+/mnt/network
+/mnt/Detectionnetwork
+/etc/config/AdGuardHome.yaml
+' > "${KEEPD}"
+sed -i '/^$/d' "${KEEPD}"
 }
 
 function Diy_Tianling() {
 echo "正在执行：Tianling专用自定义"
+echo '
+/mnt/network
+/mnt/Detectionnetwork
+/etc/config/AdGuardHome.yaml
+' > "${KEEPD}"
+sed -i '/^$/d' "${KEEPD}"
 }
 
 function Diy_Mortal() {
 echo "正在执行：Mortal专用自定义"
+echo '
+/mnt/network
+/mnt/Detectionnetwork
+/etc/config/AdGuardHome.yaml
+' > "${KEEPD}"
+sed -i '/^$/d' "${KEEPD}"
 }
 
 function Diy_amlogic() {
