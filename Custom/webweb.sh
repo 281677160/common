@@ -4,16 +4,18 @@ touch /etc/crontabs/root
 
 chmod -R 775 /etc/init.d /usr/share
 
-chmod +x /etc/networkip
-source /etc/networkip
-rm -rf /etc/networkip
-[[ -f /mnt/network ]] && cp -Rf /mnt/network /etc/config/network
-uci commit network
-uci commit dhcp
-uci commit system
-uci commit luci
-uci commit firewall
-[[ -f /etc/config/ttyd ]] && uci commit ttyd
+if [[ -f /etc/networkip ]]; then
+  chmod +x /etc/networkip
+  source /etc/networkip
+  rm -rf /etc/networkip
+  [[ -f /mnt/network ]] && cp -Rf /mnt/network /etc/config/network
+  uci commit network
+  uci commit dhcp
+  uci commit system
+  uci commit luci
+  uci commit firewall
+  [[ -f /etc/config/ttyd ]] && uci commit ttyd
+fi
 
 sed -i '/tmp\/luci-/d' /etc/crontabs/root
 echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
