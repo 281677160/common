@@ -10,6 +10,5 @@
 /etc/sysctl.conf
 /etc/rc.local
 /mnt/network
-/etc/docker/daemon.json
-/etc/docker/key.json
+/mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
