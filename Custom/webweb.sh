@@ -4,7 +4,17 @@ touch /etc/crontabs/root
 
 chmod -R 775 /etc/init.d /usr/share
 
-[[ ! -f /mnt/network ]] && chmod +x /etc/networkip && source /etc/networkip
+if [[ -f /mnt/network ]]; then
+  chmod +x /etc/networkip
+  source /etc/networkip
+  cp -Rf /mnt/network /etc/config/network
+  rm -rf /etc/networkip
+else
+  chmod +x /etc/networkip
+  source /etc/networkip
+  rm -rf /etc/networkip
+fi
+
 uci commit network
 uci commit dhcp
 uci commit system
@@ -12,11 +22,8 @@ uci commit luci
 uci commit firewall
 [[ -f /etc/config/ttyd ]] && uci commit ttyd
 
-cp -Rf /etc/config/network /mnt/network
-
-sed -i '/mp\/luci-/d' /etc/crontabs/root
+sed -i '/tmp\/luci-/d' /etc/crontabs/root
 echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
-/etc/init.d/cron restart
 
 if [[ `grep -c "x86_64" /etc/openwrt_release` -eq '0' ]]; then
   export DISTRIB_TA="$(grep DISTRIB_TARGET= /etc/openwrt_release |sed "s/'//g" |cut -d "=" -f2)"
@@ -41,7 +48,6 @@ sed -i '/danshui/d' /etc/opkg/distfeeds.conf
 sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
 sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 
-rm -rf /etc/networkip
 rm -rf /etc/webweb.sh
 
 exit 0
