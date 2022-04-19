@@ -437,6 +437,7 @@ TIME g "正在更新固件,更新期间请不要断开电源或重启设备 ..."
 sleep 2
 if [[ "${AutoUpdate_Mode}" == 1 ]] || [[ "${Update_Mode}" == 1 ]]; then
   source /etc/deletefile
+
 echo '
 #!/bin/bash
 curl -o /tmp/baidu1.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
@@ -454,7 +455,6 @@ fi
   chmod 755 "/mnt/Detectionnetwork"
   echo "*/3* * * * source /mnt/Detectionnetwork > /dev/null 2>&1" >> /etc/crontabs/root
   /etc/init.d/cron restart
-  
   
   cp -Rf /etc/config/network /mnt/network
   mv -f /etc/config/luci /tmp/luci
