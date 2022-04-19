@@ -451,6 +451,7 @@ else
 fi
 ' >/mnt/Detectionnetwork
   sed -i '/^$/d' "/mnt/Detectionnetwork"
+  chmod 755 "/mnt/Detectionnetwork"
   echo "*/3* * * * source /mnt/Detectionnetwork > /dev/null 2>&1" >> /etc/crontabs/root
   /etc/init.d/cron restart
   
