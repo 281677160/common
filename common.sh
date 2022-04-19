@@ -706,9 +706,6 @@ sed -i "/exit 0/i\source /etc/webweb.sh" "$ZZZ_PATH"
 sed -i '/FinishIng.sh/d' "$BASE_PATH/etc/rc.local"
 sed -i "/exit 0/i\[[ -f '/etc/FinishIng.sh' ]] && source /etc/FinishIng.sh" "$BASE_PATH/etc/rc.local"
 
-
-sed -i '/exit 0/i\echo "$(date +%Y年%m月%d号%H时%M分%S秒)" > /etc/456' "$BASE_PATH/etc/rc.local"
-
 sed -i '/etc\/init.d\/uhttpd\ restart/d' "$BASE_PATH/etc/rc.local"
 sed -i "/exit 0/i\/etc/init.d/uhttpd restart" "$BASE_PATH/etc/rc.local"
 
@@ -950,7 +947,6 @@ if [[ ! "${bendi_script}" == "1" ]]; then
   Diy_prevent
 fi
 Diy_files
-Diy_zzz
 sbin_openwrt
 Diy_adguardhome
 Diy_Language
@@ -966,6 +962,7 @@ if [[ ! ${Tishi} == "1" ]]; then
   Diy_feeds
 fi
 Diy_conf
+Diy_zzz
 Diy_${SOURCE}
 Diy_amlogic
 /bin/bash $BUILD_PATH/$DIY_PART_SH
