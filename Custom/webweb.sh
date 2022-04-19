@@ -8,10 +8,6 @@ if [[ -f /etc/networkip ]]; then
   chmod +x /etc/networkip
   source /etc/networkip
   rm -rf /etc/networkip
-  if [[ -f /mnt/network ]]; then
-    cp -Rf /mnt/network /etc/config/network
-    echo "123" > /mnt/55555
-  fi
   uci commit network
   uci commit dhcp
   uci commit system
