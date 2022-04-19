@@ -10,5 +10,6 @@ if [[ -f '/mnt/network' ]]; then
 fi
 sed -i '/coremark/d' /etc/rc.local
 sed -i '/mediaurlbase/d' /etc/rc.local
+rm -rf /etc/config/FinishIng.sh
 
 exit 0
