@@ -4,17 +4,10 @@ touch /etc/crontabs/root
 
 chmod -R 775 /etc/init.d /usr/share
 
-if [[ -f /mnt/network ]]; then
-  chmod +x /etc/networkip
-  source /etc/networkip
-  cp -Rf /mnt/network /etc/config/network
-  rm -rf /etc/networkip
-else
-  chmod +x /etc/networkip
-  source /etc/networkip
-  rm -rf /etc/networkip
-fi
-
+chmod +x /etc/networkip
+source /etc/networkip
+rm -rf /etc/networkip
+[[ -f /mnt/network ]] && cp -Rf /mnt/network /etc/config/network
 uci commit network
 uci commit dhcp
 uci commit system
