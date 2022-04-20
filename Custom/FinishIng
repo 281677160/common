@@ -6,14 +6,14 @@ START=99
 run_FinishIng()
 {
 	if [[ -f '/etc/webweb.sh' ]]; then
-		bsah /etc/webweb.sh
+		/etc/webweb.sh
 	fi
 	if [[ -f '/mnt/network' ]]; then
 		cp -Rf /mnt/network /etc/config/network
 		uci commit luci
 	fi
 	if [[ -f '/etc/FinishIng.sh' ]]; then
-		bsah /etc/FinishIng.sh
+		/etc/FinishIng.sh
 	fi
 	if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
 		echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
