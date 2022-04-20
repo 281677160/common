@@ -11,6 +11,7 @@ run_FinishIng()
 	if [[ -f '/mnt/network' ]]; then
 		cp -Rf /mnt/network /etc/config/network
 		uci commit luci
+		rm -rf /mnt/network
 	fi
 	if [[ -f '/etc/FinishIng.sh' ]]; then
 		/etc/FinishIng.sh
