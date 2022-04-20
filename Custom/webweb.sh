@@ -4,10 +4,6 @@ touch /etc/crontabs/root
 
 chmod -R 775 /etc/init.d /usr/share
 
-if [[ `grep -c "FinishIng.sh" /etc/rc.local` -eq '0' ]]; then
-  sed -i "/exit 0/i\[[ -f '/etc/FinishIng.sh' ]] && source /etc/FinishIng.sh" "/etc/rc.local"
-fi
-
 if [[ -f /etc/networkip ]]; then
   chmod +x /etc/networkip
   source /etc/networkip
