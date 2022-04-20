@@ -7,13 +7,13 @@ chmod -R 775 /etc/init.d /usr/share
 if [[ -f /etc/networkip ]]; then
   chmod +x /etc/networkip
   source /etc/networkip
-  rm -rf /etc/networkip
   uci commit network
   uci commit dhcp
   uci commit system
   uci commit luci
   uci commit firewall
   [[ -f /etc/config/ttyd ]] && uci commit ttyd
+  rm -rf /etc/networkip
 fi
 
 if [[ `grep -c "x86_64" /etc/openwrt_release` -eq '0' ]]; then
