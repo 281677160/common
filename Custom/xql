@@ -1,0 +1,30 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2008 OpenWrt.org
+
+START=99
+
+run_FinishIng()
+{
+	if [[ -f '/etc/webweb.sh' ]]; then
+		bsah /etc/webweb.sh
+		reboot -f
+	fi
+	if [[ -f '/mnt/network' ]]; then
+		cp -Rf /mnt/network /etc/config/network
+		uci commit luci
+	fi
+	if [[ -f '/etc/FinishIng.sh' ]]; then
+		bsah /etc/FinishIng.sh
+	fi
+}
+
+
+start() {        
+	echo start
+	run_FinishIng
+}                 
+ 
+stop() {          
+	echo stop
+	run_FinishIng
+}
