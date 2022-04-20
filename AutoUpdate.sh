@@ -444,15 +444,16 @@ if [[ "${AutoUpdate_Mode}" == "1" ]] || [[ "${Update_Mode}" == "1" ]]; then
 
 echo '
 #!/bin/bash
-curl -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
-curl -o /tmp/taobao.html -s -w %{time_namelookup}: https://www.taobao.com > /dev/null 2>&1
-if [[ `grep -c "百度一下" /tmp/baidu.html` -eq "0" ]] && [[ `grep -c "淘宝" /tmp/taobao.html` -eq "0" ]]; then
-  rm -rf /tmp/baidu.html /tmp/taobao.html
+ceshi_ip=""
+rm -rf /tmp/baidu.html /tmp/google.html
+curl --connect-timeout 10 -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
+curl --connect-timeout 10 -o /tmp/google.html -s -w %{time_namelookup}: https://www.google.com > /dev/null 2>&1
+ceshi_ip="$(ping www.taobao.com -c 3 |sed '1{s/[^(]*(//;s/).*//;q}')"
+if [[ ! -f /tmp/baidu.html ]] && [[ ! -f /tmp/google.html ]] && [[ -z ${ceshi_ip} ]]; then
   rm -rf /mnt/Detectionnetwork
   sed -i "/Detectionnetwork/d" /etc/crontabs/root
   reboot -f
 else
-  rm -rf /tmp/baidu.html /tmp/taobao.html
   rm -rf /mnt/Detectionnetwork
   sed -i "/Detectionnetwork/d" /etc/crontabs/root
 fi
