@@ -467,10 +467,6 @@ fi
   echo "*/5 * * * * source /mnt/Detectionnetwork > /dev/null 2>&1" >> /etc/crontabs/root
   /etc/init.d/cron restart
   
-  if [[ `grep -c "FinishIng.sh" /etc/rc.local` -eq '0' ]]; then
-    sed -i "/exit 0/i\[[ -f '/etc/FinishIng.sh' ]] && source /etc/FinishIng.sh" "/etc/rc.local"
-  fi
-  
   cp -Rf /etc/config/network /mnt/network
   mv -f /etc/config/luci /tmp/luci
   rm -rf /mnt/back.tar.gz
