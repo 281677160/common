@@ -20,8 +20,6 @@ run_FinishIng()
 		echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
 		/etc/init.d/cron restart
 	fi
-
-
 }
 
 
