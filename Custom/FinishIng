@@ -7,7 +7,6 @@ run_FinishIng()
 {
 	if [[ -f '/etc/webweb.sh' ]]; then
 		bsah /etc/webweb.sh
-		reboot -f
 	fi
 	if [[ -f '/mnt/network' ]]; then
 		cp -Rf /mnt/network /etc/config/network
