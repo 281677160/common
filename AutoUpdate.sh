@@ -450,12 +450,16 @@ curl --connect-timeout 10 -o /tmp/baidu.html -s -w %{time_namelookup}: http://ww
 curl --connect-timeout 10 -o /tmp/google.html -s -w %{time_namelookup}: https://www.google.com > /dev/null 2>&1
 ceshi_ip="$(ping www.taobao.com -c 3 |sed '1{s/[^(]*(//;s/).*//;q}')"
 if [[ ! -f /tmp/baidu.html ]] && [[ ! -f /tmp/google.html ]] && [[ -z ${ceshi_ip} ]]; then
+  [[ ! -d /tmp/log ]] && mkdir -p /tmp/log
+  [[ ! -f /tmp/log/network.log ]] && touch /tmp/log/network.log
   rm -rf /mnt/Detectionnetwork
   sed -i "/Detectionnetwork/d" /etc/crontabs/root
+  echo "[没检测到网络，重启系统于$(date "+%Y年%m月%d日%H时%M分%S秒")]" >> /tmp/log/network.log
   reboot -f
 else
   rm -rf /mnt/Detectionnetwork
   sed -i "/Detectionnetwork/d" /etc/crontabs/root
+  echo "[您的网络相当正常-$(date "+%Y年%m月%d日%H时%M分%S秒")]" >> /tmp/log/network.log
 fi
 ' > /mnt/Detectionnetwork
   sed -i '/^$/d' "/mnt/Detectionnetwork"
