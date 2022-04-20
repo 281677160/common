@@ -448,7 +448,7 @@ ceshi_ip=""
 rm -rf /tmp/baidu.html /tmp/google.html
 curl --connect-timeout 10 -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
 curl --connect-timeout 10 -o /tmp/google.html -s -w %{time_namelookup}: https://www.google.com > /dev/null 2>&1
-ceshi_ip="$(ping www.taobao.com -c 3 |sed '1{s/[^(]*(//;s/).*//;q}')"
+ceshi_ip="$(ping www.taobao.com -c 3 |sed "1{s/[^(]*(//;s/).*//;q}")"
 if [[ ! -f /tmp/baidu.html ]] && [[ ! -f /tmp/google.html ]] && [[ -z ${ceshi_ip} ]]; then
   [[ ! -f /tmp/network.log ]] && touch /tmp/network.log
   rm -rf /mnt/Detectionnetwork
