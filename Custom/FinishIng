@@ -20,6 +20,11 @@ run_FinishIng()
 		echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
 		/etc/init.d/cron restart
 	fi
+	if [[ `grep -c "Detectionnetwork" /etc/crontabs/root` -ge '1' ]]; then
+		if [[ ! -f '/mnt/Detectionnetwork' ]]; then
+			sed -i '/Detectionnetwork/d' /etc/crontabs/root
+		fi
+	fi
 	/etc/init.d/uhttpd restart
 	/etc/init.d/dnsmasq restart
 	/etc/init.d/firewall restart
