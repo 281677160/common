@@ -124,7 +124,7 @@ function dns_install() {
 }
 
 function wg_install() {
-  export YUMING="请输入您的主路由IP（网关）"
+  export YUMING="请输入您的主路由IP（gateway）"
   ECHOYY "${YUMING}[比如:192.168.2.1]"
   while :; do
   domainw=""
@@ -137,8 +137,8 @@ function wg_install() {
     export domainwg="${domainwg}"
     uci set network.lan.gateway="${domainwg}"
     uci commit network
-    judge "DNS 修改"
-    ECHOG "您的DNS为：${domainwg}"
+    judge "网关 修改"
+    ECHOG "您的网关为：${domainwg}"
   break
   ;;
   *)
@@ -173,11 +173,7 @@ function install_ws() {
       ECHOR "您已跳过网关设置"
     ;;
   esac
-  echo
-  echo
-  ECHOG "正在为您重启openwrt中，预计需要1~2分钟，请稍后..."
-  echo
-  reboot -f
+  /etc/init.d/network restart
 }
 
 function first_boot() {
@@ -301,11 +297,11 @@ menu() {
   ECHOYY " 4. 转换成其他源码作者固件(不保留配置)"
   ECHOY " 5. 查看状态信息"
   ECHOYY " 6. 更换检测固件的gihub地址"
-  ECHOY " 7. 修改IP/DSN/网关(会进行重启操作)"
-  ECHOYY " 8. 清空密码(会进行重启操作)"
-  ECHOY " 9. 尝试修复因主题错误进了不LUCI(强制重新安装官方主题,会进行重启操作)"
-  ECHOYY " 10. 恢复出厂设置(会进行重启操作)"
-  ECHOY " Q. 退出菜单"
+  ECHOY " 7. 修改IP/DNS/网关(modify IP/DNS/gateway)"
+  ECHOYY " 8. 清空密码(Clear password)"
+  ECHOY " 9. 尝试修复因主题错误进了不LUCI(Attempt to fix Luci error)"
+  ECHOYY " 10. 恢复出厂设置(Restore factory settings)"
+  ECHOY " Q. 退出菜单(EXIT)"
   echo
   XUANZHEOP="请输入数字,或按[Q/q]退出菜单"
   while :; do
@@ -341,10 +337,6 @@ menu() {
     ;;
     8)
       passwd -d root
-      echo
-      ECHOG "密码已清空，正在为您重启openwrt中，请稍后从新登录..."
-      echo
-      reboot
     break
     ;;
     9)
@@ -371,11 +363,11 @@ menuws() {
   clear
   echo  
   ECHOB "  请选择执行命令编码"
-  ECHOY " 1. 修改IP/DSN/网关(会进行重启操作)"
-  ECHOYY " 2. 清空密码(会进行重启操作)"
-  ECHOY " 3. 尝试修复因主题错误进了不LUCI(强制重新安装官方主题,会进行重启操作)"
-  ECHOYY " 4. 恢复出厂设置(会进行重启操作)"
-  ECHOY " 5. 退出菜单"
+  ECHOY " 1. 修改IP/DNS/网关(modify IP/DNS/gateway)"
+  ECHOYY " 2. 清空密码(Clear password)"
+  ECHOY " 3. 尝试修复因主题错误进了不LUCI(Attempt to fix Luci error)"
+  ECHOYY " 4. 恢复出厂设置(Restore factory settings)"
+  ECHOY " 5. 退出菜单(EXIT)"
   echo
   XUANZHEOP="请输入数字"
   while :; do
@@ -388,9 +380,6 @@ menuws() {
     2)
       passwd -d root
       echo
-      ECHOG "密码已清空，正在为您重启openwrt中，请稍后从新登录..."
-      echo
-      reboot
     break
     ;;
     3)
