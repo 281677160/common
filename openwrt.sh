@@ -85,6 +85,7 @@ function ip_install() {
   
   echo
   echo
+  ECHOYY "Clear password"
   read -p " 是否清空密码?直接回车跳过，按[Y/y]回车确认清空密码：" YN
   case ${YN} in
     [Yy]) 
@@ -153,6 +154,7 @@ function install_ws() {
   ip_install
   echo
   echo
+  ECHOYY "modify DNS? [Y/n]"
   read -p " 是否设置DNS?主路由一般无需设置DSN,直接回车跳过，旁路由按[Y/y]设置：" YN
   case ${YN} in
     [Yy]) 
@@ -164,6 +166,7 @@ function install_ws() {
   esac
   echo
   echo
+  ECHOYY "modify gateway? [Y/n]"
   read -p " 是否设置网关?主路由无需设置网关,直接回车跳过，旁路由按[Y/y]设置：" YN
   case ${YN} in
     [Yy]) 
@@ -173,7 +176,8 @@ function install_ws() {
       ECHOR "您已跳过网关设置"
     ;;
   esac
-  /etc/init.d/network restart
+    print_ok "正在重启openwrt，请稍等一会进入后台..."
+    reboot -f
 }
 
 function first_boot() {
@@ -337,6 +341,7 @@ menu() {
     ;;
     8)
       passwd -d root
+      print_ok "清空密码完成"
     break
     ;;
     9)
@@ -379,7 +384,7 @@ menuws() {
     ;;
     2)
       passwd -d root
-      echo
+      print_ok "清空密码完成"
     break
     ;;
     3)
