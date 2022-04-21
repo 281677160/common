@@ -45,7 +45,7 @@ elif [[ ${SOURCE_CODE} == "TIANLING" ]]; then
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export REPO_BRANCH="openwrt-18.06"
 else
-  TIME r "没有发现该源码"
+  TIME r "没有发现该源码,源码获取方法已更改,请及时同步仓库使用"
   exit 1
 fi
 
