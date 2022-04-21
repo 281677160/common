@@ -44,6 +44,9 @@ elif [[ ${SOURCE_CODE} == "IMMORTAL" ]]; then
 elif [[ ${SOURCE_CODE} == "TIANLING" ]]; then
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export REPO_BRANCH="openwrt-18.06"
+else
+  TIME r "没有发现该源码"
+  exit 1
 fi
 
 if [[ ! ${bendi_script} == "1" ]]; then
