@@ -385,6 +385,7 @@ echo
   if [ ! "$Google_Check" == 301 ];then
     rm -rf "${CLOUD_Version}" && curl -# -LJO "https://ghproxy.com/${Release_download}/${CLOUD_Version}"
     if [[ $? -ne 0 ]];then
+      echo "下载错误，切换工具继续下载中..."
       rm -rf "${CLOUD_Version}" && wget -q "https://pd.zwc365.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
       if [[ $? -ne 0 ]];then
         TIME r "下载云端固件失败,请尝试手动安装!"
@@ -399,6 +400,7 @@ echo
   else
     rm -rf "${CLOUD_Version}" && curl -# -LJO "${Release_download}/${CLOUD_Version}"
     if [[ $? -ne 0 ]];then
+      echo "下载错误，切换工具继续下载中..."
       rm -rf "${CLOUD_Version}" && wget -q "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
       if [[ $? -ne 0 ]];then
         TIME r "下载云端固件失败,请尝试手动安装!"
