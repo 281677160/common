@@ -453,12 +453,12 @@ if [[ ! -f /tmp/baidu.html ]] && [[ ! -f /tmp/google.html ]] && [[ -z ${ceshi_ip
   [[ ! -f /tmp/network.log ]] && touch /tmp/network.log
   rm -rf /mnt/Detectionnetwork
   sed -i "/Detectionnetwork/d" /etc/crontabs/root
-  echo "[没检测到网络，重启系统于$(date "+%Y年%m月%d日%H时%M分%S秒")]" >> /tmp/network.log
+  echo "[没检测到网络，重启系统于$(date "+%Y年%m月%d日%H时%M分%S秒")]" >> /mnt/network.log
   reboot -f
 else
   rm -rf /mnt/Detectionnetwork
   sed -i "/Detectionnetwork/d" /etc/crontabs/root
-  echo "[您的网络相当正常-$(date "+%Y年%m月%d日%H时%M分%S秒")]" >> /tmp/network.log
+  rm -rf /tmp/baidu.html /tmp/google.html
 fi
 ' > /mnt/Detectionnetwork
   sed -i '/^$/d' "/mnt/Detectionnetwork"
