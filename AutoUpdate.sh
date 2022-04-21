@@ -441,32 +441,15 @@ TIME g "正在执行"${Update_explain}",更新期间请不要断开电源或重�
 sleep 2
 if [[ "${AutoUpdate_Mode}" == "1" ]] || [[ "${Update_Mode}" == "1" ]]; then
   source /etc/deletefile
-
-echo '
-#!/bin/bash
-ceshi_ip=""
-rm -rf /tmp/baidu.html /tmp/google.html
-curl --connect-timeout 10 -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
-curl --connect-timeout 10 -o /tmp/google.html -s -w %{time_namelookup}: https://www.google.com > /dev/null 2>&1
-ceshi_ip="$(ping www.taobao.com -c 3 |sed "1{s/[^(]*(//;s/).*//;q}")"
-if [[ ! -f /tmp/baidu.html ]] && [[ ! -f /tmp/google.html ]] && [[ -z ${ceshi_ip} ]]; then
-  [[ ! -f /tmp/network.log ]] && touch /tmp/network.log
-  rm -rf /mnt/Detectionnetwork
-  sed -i "/Detectionnetwork/d" /etc/crontabs/root
-  echo "[没检测到网络，重启系统于$(date "+%Y年%m月%d日%H时%M分%S秒")]" >> /mnt/network.log
-  reboot -f
-else
-  rm -rf /mnt/Detectionnetwork
-  sed -i "/Detectionnetwork/d" /etc/crontabs/root
-  rm -rf /tmp/baidu.html /tmp/google.html
-fi
-' > /mnt/Detectionnetwork
-  sed -i '/^$/d' "/mnt/Detectionnetwork"
-  chmod 755 "/mnt/Detectionnetwork"
-  sed -i '/Detectionnetwork/d' "/etc/rc.local"
-  echo "*/3 * * * * source /mnt/Detectionnetwork > /dev/null 2>&1" >> /etc/crontabs/root
-  /etc/init.d/cron restart
-  
+  curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/281677160/common/main/Custom/Detectionnetwork > /mnt/Detectionnetwork
+  if [[ $? -ne 0 ]]; then
+    wget -P /mnt https://raw.githubusercontent.com/281677160/common/main/Custom/Detectionnetwork -O /mnt/Detectionnetwork
+  fi
+  if [[ $? -eq 0 ]]; then
+    chmod 755 "/mnt/Detectionnetwork"
+    echo "*/5 * * * * source /mnt/Detectionnetwork > /dev/null 2>&1" >> /etc/crontabs/root
+    /etc/init.d/cron restart
+  fi
   cp -Rf /etc/config/network /mnt/network
   mv -f /etc/config/luci /tmp/luci
   rm -rf /mnt/back.tar.gz
