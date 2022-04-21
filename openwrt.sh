@@ -85,7 +85,7 @@ function ip_install() {
   
   echo
   echo
-  ECHOYY "Clear password"
+  ECHOYY "Clear password? [Y/n]"
   read -p " 是否清空密码?直接回车跳过，按[Y/y]回车确认清空密码：" YN
   case ${YN} in
     [Yy]) 
