@@ -219,7 +219,8 @@ function Diy_feeds() {
 echo "正在执行：更新插件源,让源码更多插件存在"
 # 拉库和做标记
 
-./scripts/feeds clean && ./scripts/feeds update -a > /dev/null 2>&1
+./scripts/feeds clean
+./scripts/feeds update -a > /dev/null 2>&1
 
 case "${REPO_BRANCH}" in
 master)
@@ -235,7 +236,6 @@ master)
   # 删除重复插件（Lienol-22.03）
   find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-app-ttyd' -o -name 'luci-app-eqos' -o -name 'luci-theme-argon' | xargs -i rm -rf {}
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
-  find . -name 'frp' -o -name 'luci-app-frpc' | xargs -i rm -rf {}
 
 ;;
 openwrt-18.06)
