@@ -70,13 +70,15 @@ echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件"
 
 function Diy_update() {
 if [[ ! ${bendi_script} == "1" ]]; then
+  export INS="sudo -E apt-get -qq"
   sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc
+else
+  export INS="apt-get"
 fi
-sudo -E apt-get -qq update -y
-sudo -E apt-get -qq full-upgrade -y
-sudo -E apt-get -qq install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 lib32stdc++6 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl rename libpcap0.8-dev swig rsync
-sudo -E apt-get -qq autoremove -y --purge
-sudo -E apt-get -qq clean
+${INS} update -y
+${INS} install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 lib32stdc++6 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl rename libpcap0.8-dev swig rsync
+${INS} autoremove -y --purge
+${INS} -qq clean
 if [[ ! ${bendi_script} == "1" ]]; then
   sudo timedatectl set-timezone "$TZ"
   sudo mkdir -p /${matrixtarget}
@@ -84,7 +86,7 @@ if [[ ! ${bendi_script} == "1" ]]; then
 fi
 if [[ ! ${bendi_script} == "1" ]]; then
 docker rmi $(docker images -q)
-sudo -E apt-get remove -y --purge azure-cli ghc zulu* hhvm llvm* firefox google* dotnet* powershell mysql* php* mssql-tools msodbcsql17 android*
+${INS} remove -y --purge azure-cli ghc zulu* hhvm llvm* firefox google* dotnet* powershell mysql* php* mssql-tools msodbcsql17 android*
 sudo rm -rf /etc/mysql /etc/php /swapfile
 fi
 }
