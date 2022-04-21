@@ -23,39 +23,45 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 }
 
 function Diy_repo_url() {
-if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini" 2>/dev/null)" ]; then
-  TIME r "错误提示：编译脚本缺少[settings.ini]名称的配置文件,请在[build/${matrixtarget}]文件夹内补齐"
-  exit 1
-else
-  source "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini"
+if [[ ! ${bendi_script} == "1" ]]; then
+  if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini" 2>/dev/null)" ]; then
+    TIME r "错误提示：编译脚本缺少[settings.ini]名称的配置文件,请在[build/${matrixtarget}]文件夹内补齐"
+    exit 1
+  else
+    source "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini"
+  fi
 fi
+
 if [[ ${SOURCE_CODE} == "LEDE" ]]; then
-  REPO_URL="https://github.com/coolsnowwolf/lede"
-  REPO_BRANCH="master"
+  export REPO_URL="https://github.com/coolsnowwolf/lede"
+  export REPO_BRANCH="master"
 elif [[ ${SOURCE_CODE} == "LIENOL" ]]; then
-  REPO_URL="https://github.com/Lienol/openwrt"
-  REPO_BRANCH="22.03"
+  export REPO_URL="https://github.com/Lienol/openwrt"
+  export REPO_BRANCH="22.03"
 elif [[ ${SOURCE_CODE} == "IMMORTAL" ]]; then
-  REPO_URL="https://github.com/immortalwrt/immortalwrt"
-  REPO_BRANCH="openwrt-21.02"
+  export REPO_URL="https://github.com/immortalwrt/immortalwrt"
+  export REPO_BRANCH="openwrt-21.02"
 elif [[ ${SOURCE_CODE} == "TIANLING" ]]; then
-  REPO_URL="https://github.com/immortalwrt/immortalwrt"
-  REPO_BRANCH="openwrt-18.06"
+  export REPO_URL="https://github.com/immortalwrt/immortalwrt"
+  export REPO_BRANCH="openwrt-18.06"
 fi
-echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
-echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
-echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
-echo "DIY_PART_SH=${DIY_PART_SH}" >> $GITHUB_ENV
-echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> $GITHUB_ENV
-echo "UPLOAD_WETRANSFER=${UPLOAD_WETRANSFER}" >> $GITHUB_ENV
-echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> $GITHUB_ENV
-echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> $GITHUB_ENV
-echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> $GITHUB_ENV
-echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> $GITHUB_ENV
-echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> $GITHUB_ENV
-echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
-echo "Library=${Warehouse##*/}" >> $GITHUB_ENV
-echo "matrixtarget=${matrixtarget}" >> $GITHUB_ENV
+
+if [[ ! ${bendi_script} == "1" ]]; then
+  echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
+  echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
+  echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
+  echo "DIY_PART_SH=${DIY_PART_SH}" >> $GITHUB_ENV
+  echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> $GITHUB_ENV
+  echo "UPLOAD_WETRANSFER=${UPLOAD_WETRANSFER}" >> $GITHUB_ENV
+  echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> $GITHUB_ENV
+  echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> $GITHUB_ENV
+  echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> $GITHUB_ENV
+  echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> $GITHUB_ENV
+  echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> $GITHUB_ENV
+  echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
+  echo "Library=${Warehouse##*/}" >> $GITHUB_ENV
+  echo "matrixtarget=${matrixtarget}" >> $GITHUB_ENV
+fi
 }
 
 function Diy_settings() {
