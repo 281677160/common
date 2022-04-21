@@ -29,6 +29,19 @@ if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini" 2>/dev
 else
   source "${GITHUB_WORKSPACE}/build/${matrixtarget}/settings.ini"
 fi
+if [[ ${SOURCE_CODE} == "LEDE" ]]; then
+  REPO_URL="https://github.com/coolsnowwolf/lede"
+  REPO_BRANCH="master"
+elif [[ ${SOURCE_CODE} == "LIENOL" ]]; then
+  REPO_URL="https://github.com/Lienol/openwrt"
+  REPO_BRANCH="22.03"
+elif [[ ${SOURCE_CODE} == "IMMORTAL" ]]; then
+  REPO_URL="https://github.com/immortalwrt/immortalwrt"
+  REPO_BRANCH="openwrt-21.02"
+elif [[ ${SOURCE_CODE} == "TIANLING" ]]; then
+  REPO_URL="https://github.com/immortalwrt/immortalwrt"
+  REPO_BRANCH="openwrt-18.06"
+fi
 echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
 echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
 echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
