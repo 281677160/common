@@ -28,7 +28,11 @@ run_FinishIng()
 	/etc/init.d/uhttpd restart
 	/etc/init.d/dnsmasq restart
 	/etc/init.d/firewall restart
-	/etc/init.d/network restart
+	if [[ `grep -c "wan" /etc/config/network` -eq '0' ]]; then
+	  /etc/init.d/network restart
+	else
+	  ifup wan
+	fi
 }
 
 
