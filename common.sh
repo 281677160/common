@@ -293,10 +293,6 @@ openwrt-18.06)
   # 给源码增加luci-app-ssr-plus为默认自选
   sed  -i  's/ luci-app-ssr-plus//g' target/linux/*/Makefile
   sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-ssr-plus?g' target/linux/*/Makefile
-  
-  # 替换99-default-settings
-  chmod -R 777 $HOME_PATH/build/common/Convert
-  cp -Rf $HOME_PATH/build/common/Convert/1806-default-settings "$ZZZ_PATH"
 
 ;;
 openwrt-21.02)
@@ -308,10 +304,6 @@ openwrt-21.02)
   # 给源码增加luci-app-ssr-plus为默认自选
   sed  -i  's/ luci-app-ssr-plus//g' target/linux/*/Makefile
   sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-ssr-plus?g' target/linux/*/Makefile
-  
-  # 替换99-default-settings
-  chmod -R 775 $HOME_PATH/build/common/Convert
-  source $HOME_PATH/build/common/Convert/Convert.sh
 
 ;;
 esac
@@ -337,42 +329,74 @@ chmod 777 $BASE_PATH/sbin/openwrt
 
 function Diy_Lede() {
 echo "正在执行：Lede专用自定义"
-echo '
+cat >"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
-' > "${KEEPD}"
-sed -i '/^$/d' "${KEEPD}"
+EOF
 }
 
 function Diy_Lienol() {
 echo "正在执行：Lienol专用自定义"
-echo '
+cat >"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
-' > "${KEEPD}"
-sed -i '/^$/d' "${KEEPD}"
-}
-
-function Diy_Tianling() {
-echo "正在执行：Tianling专用自定义"
-echo '
-/mnt/network
-/mnt/Detectionnetwork
-/etc/config/AdGuardHome.yaml
-' > "${KEEPD}"
-sed -i '/^$/d' "${KEEPD}"
+EOF
 }
 
 function Diy_Mortal() {
-echo "正在执行：Mortal专用自定义"
-echo '
+echo "正在执行：Tianling专用自定义"
+cat >"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
-' > "${KEEPD}"
-sed -i '/^$/d' "${KEEPD}"
+EOF
+
+sed -i '/DISTRIB_RELEAS/d' "$ZZZ_PATH"
+sed -i '/DISTRIB_REVISION/d' "$ZZZ_PATH"
+sed -i '/DISTRIB_DESCRIPTION/d' "$ZZZ_PATH"
+sed -i '/exit 0/d' "$ZZZ_PATH"
+sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "$ZZZ_PATH"
+cat >"$ZZZ_PATH" <<-EOF
+sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
+echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION='21.02'" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"Immortalwrt-21.02\"" >> /usr/lib/lua/luci/version.lua
+
+exit 0
+EOF
+}
+
+function Diy_Tianling() {
+echo "正在执行：Mortal专用自定义"
+cat >"${KEEPD}" <<-EOF
+/mnt/network
+/mnt/Detectionnetwork
+/etc/config/AdGuardHome.yaml
+EOF
+
+sed -i '/DISTRIB_RELEAS/d' "$ZZZ_PATH"
+sed -i '/DISTRIB_REVISION/d' "$ZZZ_PATH"
+sed -i '/DISTRIB_DESCRIPTION/d' "$ZZZ_PATH"
+sed -i '/exit 0/d' "$ZZZ_PATH"
+sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "$ZZZ_PATH"
+cat >"$ZZZ_PATH" <<-EOF
+sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
+echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION='immortalwrt-18.06'" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+
+exit 0
+EOF
 }
 
 function Diy_amlogic() {
