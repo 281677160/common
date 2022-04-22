@@ -442,13 +442,13 @@ chmod 777 ${CLOUD_Version}
 TIME g "正在执行"${Update_explain}",更新期间请不要断开电源或重启设备 ..."
 sleep 2
 if [[ "${AutoUpdate_Mode}" == "1" ]] || [[ "${Update_Mode}" == "1" ]]; then
-  source /etc/deletefile
+  chmod 775 "/etc/deletefile" && source /etc/deletefile
   curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/281677160/common/main/Custom/Detectionnetwork > /mnt/Detectionnetwork
   if [[ $? -ne 0 ]]; then
     wget -P /mnt https://raw.githubusercontent.com/281677160/common/main/Custom/Detectionnetwork -O /mnt/Detectionnetwork
   fi
   if [[ $? -eq 0 ]]; then
-    chmod 755 "/mnt/Detectionnetwork"
+    chmod 775 "/mnt/Detectionnetwork"
     echo "*/5 * * * * source /mnt/Detectionnetwork > /dev/null 2>&1" >> /etc/crontabs/root
     /etc/init.d/cron restart
   fi
