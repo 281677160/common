@@ -329,7 +329,7 @@ chmod 777 $BASE_PATH/sbin/openwrt
 
 function Diy_Lede() {
 echo "正在执行：Lede专用自定义"
-cat >"${KEEPD}" <<-EOF
+cat >>"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
@@ -338,7 +338,7 @@ EOF
 
 function Diy_Lienol() {
 echo "正在执行：Lienol专用自定义"
-cat >"${KEEPD}" <<-EOF
+cat >>"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
@@ -347,7 +347,7 @@ EOF
 
 function Diy_Mortal() {
 echo "正在执行：Tianling专用自定义"
-cat >"${KEEPD}" <<-EOF
+cat >>"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
@@ -358,7 +358,7 @@ sed -i '/DISTRIB_REVISION/d' "$ZZZ_PATH"
 sed -i '/DISTRIB_DESCRIPTION/d' "$ZZZ_PATH"
 sed -i '/exit 0/d' "$ZZZ_PATH"
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "$ZZZ_PATH"
-cat >"$ZZZ_PATH" <<-EOF
+cat >>"$ZZZ_PATH" <<-EOF
 sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
 echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
@@ -376,7 +376,7 @@ EOF
 
 function Diy_Tianling() {
 echo "正在执行：Mortal专用自定义"
-cat >"${KEEPD}" <<-EOF
+cat >>"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
@@ -387,7 +387,7 @@ sed -i '/DISTRIB_REVISION/d' "$ZZZ_PATH"
 sed -i '/DISTRIB_DESCRIPTION/d' "$ZZZ_PATH"
 sed -i '/exit 0/d' "$ZZZ_PATH"
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "$ZZZ_PATH"
-cat >"$ZZZ_PATH" <<-EOF
+cat >>"$ZZZ_PATH" <<-EOF
 sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
 echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
