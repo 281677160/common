@@ -744,20 +744,17 @@ rm -rf $HOME_PATH/files/{LICENSE,README,REA*.md}
 function Diy_webweb() {
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > $BASE_PATH/etc/FinishIng.sh
 if [[ $? -ne 0 ]]; then
-  rm -rf $BASE_PATH/etc/FinishIng.sh
-  wget -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh
+  wget -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh -O $BASE_PATH/etc/FinishIng.sh
 fi
 chmod 775 $BASE_PATH/etc/FinishIng.sh
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng > $BASE_PATH/etc/init.d/FinishIng
 if [[ $? -ne 0 ]]; then
-  rm -rf $BASE_PATH/etc/init.d/FinishIng
-  wget -P $BASE_PATH/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng
+  wget -P $BASE_PATH/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng -O $BASE_PATH/etc/init.d/FinishIng
 fi
 chmod 775 $BASE_PATH/etc/init.d/FinishIng
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > $BASE_PATH/etc/webweb.sh
 if [[ $? -ne 0 ]]; then
-  rm -rf $BASE_PATH/etc/webweb.sh
-  wget -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh
+  wget -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh -O $BASE_PATH/etc/webweb.sh
 fi
 chmod 775 $BASE_PATH/etc/webweb.sh
 }
