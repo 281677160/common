@@ -122,9 +122,9 @@ menuaz() {
   [[ "$(cat ${Download_Path}/Installed_PKG_List)" =~ curl ]] && {
     export Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
     if [ ! "$Google_Check" == 301 ];then
-      wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Release_download}/${Firmware}" -O ${Firmware}
+      rm -rf "${Firmware}" && curl -# -LJO "https://ghproxy.com/${Release_download}/${Firmware}"
       if [[ $? -ne 0 ]];then
-        wget -q --show-progress --progress=bar:force:noscroll "https://pd.zwc365.com/${Release_download}/${Firmware}" -O ${Firmware}
+        wget -q "https://pd.zwc365.com/${Release_download}/${Firmware}" -O ${Firmware}
         if [[ $? -ne 0 ]];then
           print_error "下载云端固件失败,请尝试手动安装!"
           exit 1
@@ -135,9 +135,9 @@ menuaz() {
         print_ok "下载云端固件成功!"
       fi
     else
-      wget -q --show-progress --progress=bar:force:noscroll "${Release_download}/${Firmware}" -O ${Firmware}
+      rm -rf "${Firmware}" && curl -# -LJO "${Release_download}/${Firmware}"
       if [[ $? -ne 0 ]];then
-        wget -q --show-progress --progress=bar:force:noscroll "https://ghproxy.com/${Release_download}/${Firmware}" -O ${Firmware}
+        wget -q "https://ghproxy.com/${Release_download}/${Firmware}" -O ${Firmware}
         if [[ $? -ne 0 ]];then
           print_error "下载云端固件失败,请尝试手动安装!"
           echo
