@@ -373,7 +373,7 @@ echo "luciname    = \"Immortalwrt-21.02\"" >> /usr/lib/lua/luci/version.lua
 exit 0
 EOF
 
-ttydjson="$HOME_PATH/feeds/luci/applications/luci-app-ttyd/luci-app-ttyd.json"
+ttydjson="$HOME_PATH/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
 if [[ -f "${ttydjson}" ]]; then
 cat >"${ttydjson}" <<-EOF
 {
