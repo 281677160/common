@@ -372,6 +372,41 @@ echo "luciname    = \"Immortalwrt-21.02\"" >> /usr/lib/lua/luci/version.lua
 
 exit 0
 EOF
+
+ttydjson="$HOME_PATH/feeds/luci/applications/luci-app-ttyd/luci-app-ttyd.json"
+if [[ -f "${ttydjson}" ]]; then
+cat >"${ttydjson}" <<-EOF
+{
+	"admin/system/ttyd": {
+		"title": "Terminal",
+		"order": 10,
+		"action": {
+			"type": "firstchild"
+		},
+		"depends": {
+			"acl": [ "luci-app-ttyd" ],
+			"uci": { "ttyd": true }
+		}
+	},
+	"admin/system/ttyd/ttyd": {
+		"title": "Terminal",
+		"order": 1,
+		"action": {
+			"type": "view",
+			"path": "ttyd/term"
+		}
+	},
+	"admin/system/ttyd/config": {
+		"title": "Config",
+		"order": 2,
+		"action": {
+			"type": "view",
+			"path": "ttyd/config"
+		}
+	}
+}
+EOF
+fi
 }
 
 function Diy_Tianling() {
