@@ -472,9 +472,11 @@ else
   cp -Rf ${TARGET_BSGET}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 fi
 # 自定义机型,内核,分区
-[[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]] && mv -f $GITHUB_WORKSPACE/amlogic_openwrt $GITHUB_WORKSPACE/amlogic_openwrt.sh
-chmod 775 $GITHUB_WORKSPACE/amlogic_openwrt.sh
-source $GITHUB_WORKSPACE/amlogic_openwrt.sh
+if [[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]]; then
+  amlogic_model="$(grep "amlogic_model" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2)"
+  amlogic_kernel="$(grep "amlogic_kernel" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2)"
+  rootfs_size="$(grep "rootfs_size" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2)"
+fi
 if [[ -n ${amlogic_model} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${rootfs_size} ]]; then
   export amlogic_model="${amlogic_model}"
   export amlogic_kernel="${amlogic_kernel}"
