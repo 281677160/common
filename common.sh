@@ -468,7 +468,7 @@ git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
 if [[ `ls -1 "${TARGET_BSGET}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
   cp -Rf ${TARGET_BSGET}/.*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 else
-  armvirtargz="$(ls -1 "${TARGET_BSGET}" |awk 'END {print}')"
+  armvirtargz="$(ls -1 "${TARGET_BSGET}" |grep ".*tar.gz" |awk 'END {print}')"
   cp -Rf ${TARGET_BSGET}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 fi
 # 自定义机型,内核,分区
