@@ -465,8 +465,12 @@ echo "正在执行：打包N1和景晨系列固件"
 # 下载上游仓库
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
 [ -d amlogic/openwrt-armvirt ] || mkdir -p amlogic/openwrt-armvirt
-cp -f $TARGET_BSGET/*.tar.gz amlogic/openwrt-armvirt/ && sync
-
+if [[ `ls -1 "${TARGET_BSGET}" | grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
+  cp -Rf ${TARGET_BSGET}/.*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+else
+  armvirtargz="$(ls -1 "${TARGET_BSGET}"  |awk 'END {print}')"
+  cp -Rf ${TARGET_BSGET}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+fi
 # 自定义机型,内核,分区
 [[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]] && mv -f $GITHUB_WORKSPACE/amlogic_openwrt $GITHUB_WORKSPACE/amlogic_openwrt.sh
 chmod 775 $GITHUB_WORKSPACE/amlogic_openwrt.sh
