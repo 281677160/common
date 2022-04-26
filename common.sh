@@ -497,7 +497,8 @@ sudo rm -rf $GITHUB_WORKSPACE/amlogic
 }
 
 function Package_Clear() {
-for X in $(cat "$HOME_PATH/Clear" |sed 's/^/bin\/targets\/${TAR_BOARD}\/${TAR_SUBTARGET}\//g'); do
+cd ${TARGET_BSGET}
+for X in $(cat "${HOME_PATH}/Clear"); do
    rm -rf "${X}"
 done
 }
