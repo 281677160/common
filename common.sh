@@ -974,6 +974,11 @@ else
 fi
 
 if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
+  if [[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]]; then
+    amlogic_model="$(grep "amlogic_model" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
+    amlogic_kernel="$(grep "amlogic_kernel" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
+    rootfs_size="$(grep "rootfs_size" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
+  fi
   export TARGET_DHL="晶晨系列"
 else
   export TARGET_DHL="${TARGET_PROFILE}"
@@ -987,7 +992,25 @@ TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${MAINTAIN}"
 TIME b "内核版本: ${LINUX_KERNEL}"
 TIME b "Luci版本: ${LUCI_EDITION}"
-TIME b "编译机型: ${TARGET_DHL}"
+if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
+  TIME b "编译机型: 晶晨系列"
+  if [[ ${AUTOMATIC_AMLOGIC} == "true" ]]; then
+    if [[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]]; then
+      amlogic_model="$(grep "amlogic_model" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
+      amlogic_kernel="$(grep "amlogic_kernel" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
+      rootfs_size="$(grep "rootfs_size" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
+      if [[ -n ${amlogic_model} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${rootfs_size} ]]; then
+        TIME b "打包机型: ${amlogic_model}"
+        TIME b "打包内核: ${amlogic_kernel}"
+        TIME b "分区大小: ${rootfs_size}"
+      else
+        TIME r "没设置打包需要的数值或者缺少某数值，使用脚本默认数值打包"
+      fi
+    fi
+  fi
+else
+  TIME b "编译机型: ${TARGET_PROFILE}"
+fi
 TIME b "固件作者: ${Author}"
 TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${Library}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
