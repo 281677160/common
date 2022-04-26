@@ -475,14 +475,12 @@ else
 fi
 # 自定义机型,内核,分区
 if [[ -f "${AMLOGIC_SH_PATH}" ]]; then
-  amlogic_model="$(grep "amlogic_model=" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
-  amlogic_kernel="$(grep "amlogic_kernel=" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
-  rootfs_size="$(grep "rootfs_size=" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
-fi
-if [[ -n ${amlogic_model} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${rootfs_size} ]]; then
-  export amlogic_model="${amlogic_model}"
-  export amlogic_kernel="${amlogic_kernel}"
-  export rootfs_size="${rootfs_size}"
+  export amlogic_model="$(grep "amlogic_model" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
+  [[ -z "${amlogic_model}" ]] && export amlogic_model="all"
+  export amlogic_kernel="$(grep "amlogic_kernel" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
+  [[ -z "${amlogic_kernel}" ]] && export amlogic_kernel="5.15.25 -a true"
+  export rootfs_size="$(grep "rootfs_size" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
+  [[ -z "${rootfs_size}" ]] && export rootfs_size="1024"
 else
   export amlogic_model="all"
   export amlogic_kernel="5.15.25 -a true"
@@ -992,15 +990,16 @@ if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
   if [[ "${AUTOMATIC_AMLOGIC}" == "true" ]]; then
     if [[ -f "${AMLOGIC_SH_PATH}" ]]; then
       amlogic_model="$(grep "amlogic_model" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
+      [[ -z "${amlogic_model}" ]] && amlogic_model="填写格式错误,未获取到数据,脚本默认打包全机型"
       amlogic_kernel="$(grep "amlogic_kernel" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
+      [[ -z "${amlogic_kernel}" ]] && amlogic_kernel="填写格式错误,未获取到数据,脚本默认5.15.xx"
       rootfs_size="$(grep "rootfs_size" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
-      if [[ -n ${amlogic_model} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${rootfs_size} ]]; then
-        TIME g "打包机型: ${amlogic_model}"
-        TIME g "打包内核: ${amlogic_kernel}"
-        TIME g "分区大小: ${rootfs_size}"
-      else
-        TIME r "打包数据：没设置打包需要的数值或者缺少某数值，使用脚本默认数值打包"
-      fi
+      [[ -z "${rootfs_size}" ]] && rootfs_size="填写格式错误,未获取到数据,脚本默认1024"
+      TIME g "打包机型: ${amlogic_model}"
+      TIME g "打包内核: ${amlogic_kernel}"
+      TIME g "分区大小: ${rootfs_size}"
+    else
+      TIME r "打包数据：没发现打包数据文件存在，使用脚本默认数值打包"
     fi
   fi
 else
