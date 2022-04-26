@@ -902,12 +902,12 @@ cd ${TARGET_BSGET}
 mkdir -p ipk
 cp -rf $(find $HOME_PATH/bin/packages/ -type f -name "*.ipk") ipk/ && sync
 sudo tar -czf ipk.tar.gz ipk && sudo rm -rf ipk && sync
-rename -v "s/^immortalwrt/openwrt/" *
-if [[ -f ${GITHUB_WORKSPACE}/Clear ]]; then
-  cp -Rf ${GITHUB_WORKSPACE}/Clear ${TARGET_BSGET}/Clear.sh
-  chmod +x ${TARGET_BSGET}/Clear.sh && source ${TARGET_BSGET}/Clear.sh
-  rm -rf ${TARGET_BSGET}/Clear.sh
+if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
+  rename -v "s/^immortalwrt/openwrt/" *
 fi
+for X in $(cat "${CLEAR_PATH}" |cut -d '-' -f3- |sed 's/^/*/g'); do
+   rm -rf "${X}"
+done
 rename -v "s/^openwrt/${SOURCE}/" *
 echo "FIRMWARE=$PWD" >> $GITHUB_ENV
 
