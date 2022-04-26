@@ -498,7 +498,7 @@ sudo rm -rf $GITHUB_WORKSPACE/amlogic
 
 function Package_Clear() {
 cd ${TARGET_BSGET}
-for X in $(cat "${HOME_PATH}/Clear"); do
+for X in $(cat "${HOME_PATH}/Clear"|cut -d '-' -f3-|sed 's/^/*/g'); do
    rm -rf "${X}"
 done
 }
