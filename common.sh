@@ -503,9 +503,6 @@ for X in $(cat "${HOME_PATH}/Clear"|cut -d '-' -f3-|sed 's/^/*/g'); do
 done
 }
 
-export TAR_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
-export TAR_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)"
-
 function Diy_indexhtm() {
 echo "正在执行：去除主页一串的LUCI版本号显示"
 if [[ "${REPO_BRANCH}" == "master" ]]; then
