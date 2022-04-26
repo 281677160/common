@@ -464,34 +464,20 @@ fi
 function Package_amlogic() {
 echo "正在执行：打包N1和景晨系列固件"
 # 下载上游仓库
-git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git amlogic
-[ -d amlogic/openwrt-armvirt ] || mkdir -p amlogic/openwrt-armvirt
+cd ${GITHUB_WORKSPACE}
+git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
+[ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
 if [[ `ls -1 "${TARGET_BSGET}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
   cp -Rf ${TARGET_BSGET}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 else
   armvirtargz="$(ls -1 "${TARGET_BSGET}" |grep ".*tar.gz" |awk 'END {print}')"
   cp -Rf ${TARGET_BSGET}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 fi
-# 自定义机型,内核,分区
-if [[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]]; then
-  amlogic_model="$(grep "amlogic_model" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2)"
-  amlogic_kernel="$(grep "amlogic_kernel" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2)"
-  rootfs_size="$(grep "rootfs_size" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2)"
-fi
-if [[ -n ${amlogic_model} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${rootfs_size} ]]; then
-  export amlogic_model="${amlogic_model}"
-  export amlogic_kernel="${amlogic_kernel}"
-  export rootfs_size="${rootfs_size}"
-  export make_size="$(egrep -o ROOT_MB=\"[0-9]+\" "$GITHUB_WORKSPACE/amlogic/make")"
-  export zhiding_size="ROOT_MB=\"${rootfs_size}\""
-  sed -i "s?${make_size}?${zhiding_size}?g" "$GITHUB_WORKSPACE/amlogic/make"
-else
-  amlogic_model="s905x3_s905x2_s905x_s905w_s905d_s922x_s912"
-  amlogic_kernel="5.10.100_5.4.180 -a true"
-fi
-
+export make_size="$(egrep -o ROOT_MB=\"[0-9]+\" "$GITHUB_WORKSPACE/amlogic/make")"
+export zhiding_size="ROOT_MB=\"${rootfs_size}\""
+sed -i "s?${make_size}?${zhiding_size}?g" "$GITHUB_WORKSPACE/amlogic/make"
 # 开始打包
-cd amlogic
+cd ${GITHUB_WORKSPACE}/amlogic
 sudo chmod +x make
 sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel}
 sudo mv -f $GITHUB_WORKSPACE/amlogic/out/* $TARGET_BSGET/ && sync
@@ -929,6 +915,21 @@ if [[ "${REPO_BRANCH}" == "22.03" ]] || [[ "${REPO_BRANCH}" == "openwrt-21.02" ]
   chmod +x $HOME_PATH/zh_Hans.sh
   /bin/bash $HOME_PATH/zh_Hans.sh
   rm -rf $HOME_PATH/zh_Hans.sh
+fi
+}
+
+function Diy_part_sh() {
+echo "正在执行：运行$DIY_PART_SH文件"
+cd $HOME_PATH
+/bin/bash $BUILD_PATH/$DIY_PART_SH
+if [[ -n ${amlogic_model} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${rootfs_size} ]]; then
+  echo "amlogic_model=${amlogic_model}" >> $GITHUB_ENV
+  echo "amlogic_kernel=${amlogic_kernel}" >> $GITHUB_ENV
+  echo "rootfs_size=${rootfs_size}" >> $GITHUB_ENV
+else
+  echo "amlogic_model=all" >> $GITHUB_ENV
+  echo "amlogic_kernel=5.15.25_5.10.100 -a true" >> $GITHUB_ENV
+  echo "rootfs_size=1024" >> $GITHUB_ENV
 fi
 }
 
