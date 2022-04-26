@@ -1009,7 +1009,7 @@ TIME b "固件作者: ${Author}"
 TIME b "仓库地址: ${Github}"
 TIME b "启动编号: #${Run_number}（${Library}仓库第${Run_number}次启动[${Run_workflow}]工作流程）"
 TIME b "编译时间: ${Compte_Date}"
-TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_DHL}】固件"
+TIME g "友情提示：您当前使用【${matrixtarget}】文件夹编译【${TARGET_PROFILE}】固件"
 echo
 echo
 if [[ ${UPLOAD_FIRMWARE} == "true" ]]; then
