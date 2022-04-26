@@ -469,18 +469,21 @@ mkdir -p "${TARGET_BSGET}"
 wget -P ${TARGET_BSGET} https://github.com/ophub/amlogic-s9xxx-openwrt/releases/download/openwrt_s9xxx_lede_2022.04.25.1109/openwrt-armvirt-64-default-rootfs.tar.gz -O ${TARGET_BSGET}/openwrt-armvirt-64-default-rootfs.tar.gz
 
 if [[ `ls -1 "${TARGET_BSGET}" |grep -c "openwrt-armvirt-64-default-rootfs.tar.gz"` == '1' ]]; then
-  echo "amlogic_path=openwrt/bin/targets/*/*/openwrt-armvirt-64-default-rootfs.tar.gz" >> $GITHUB_ENV
+  echo "amlogic_path=openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz" >> $GITHUB_ENV
 elif [[ `ls -1 "${TARGET_BSGET}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
   cp -Rf ${TARGET_BSGET}/*default-rootfs.tar.gz ${TARGET_BSGET}/openwrt-armvirt-64-default-rootfs.tar.gz
-  echo "amlogic_path=openwrt/bin/targets/*/*/openwrt-armvirt-64-default-rootfs.tar.gz" >> $GITHUB_ENV
+  echo "amlogic_path=openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz" >> $GITHUB_ENV
 else
   armvirtargz="$(ls -1 "${TARGET_BSGET}" |grep ".*tar.gz" |awk 'END {print}')"
   cp -Rf ${TARGET_BSGET}/${armvirtargz} ${TARGET_BSGET}/openwrt-armvirt-64-default-rootfs.tar.gz
-  echo "amlogic_path=openwrt/bin/targets/*/*/openwrt-armvirt-64-default-rootfs.tar.gz" >> $GITHUB_ENV
+  echo "amlogic_path=openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz" >> $GITHUB_ENV
 fi
 if [[ -f "${amlogic_sh_path}" ]]; then
   chmod +x "${amlogic_sh_path}"
   source "${amlogic_sh_path}"
+  echo "${amlogic_soc} ${amlogic_kernel} ${amlogic_size}"
+else
+  echo "没有${amlogic_sh_path}"
 fi
 if [[ -n ${amlogic_soc} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${amlogic_size} ]]; then
   echo "amlogic_soc=${amlogic_soc}" >> $GITHUB_ENV
