@@ -481,14 +481,14 @@ if [[ -f $HOME_PATH/amlogic_openwrt ]]; then
   export amlogic_kernel="$(grep "amlogic_kernel" $HOME_PATH/amlogic_openwrt | cut -d "=" -f2)"
   export amlogic_size="$(grep "amlogic_size" $HOME_PATH/amlogic_openwrt | cut -d "=" -f2)"
 fi
-if [[ -n ${amlogic_model} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${rootfs_size} ]]; then
-  export amlogic_soc="${amlogic_model}"
-  export amlogic_kernel="${amlogic_kernel}"
-  export amlogic_size="${rootfs_size}"
+if [[ -n ${amlogic_soc} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${amlogic_size} ]]; then
+  echo "amlogic_soc=${amlogic_soc}" >> $GITHUB_ENV
+  echo "amlogic_kernel=${amlogic_kernel}" >> $GITHUB_ENV
+  echo "amlogic_size=${amlogic_size}" >> $GITHUB_ENV
 else
-  export amlogic_soc="all"
-  export amlogic_kernel="5.15.25_5.10.100"
-  export amlogic_size="1024"
+  echo "amlogic_soc=all" >> $GITHUB_ENV
+  echo "amlogic_kernel=5.15.25_5.10.100" >> $GITHUB_ENV
+  echo "amlogic_size=1024" >> $GITHUB_ENV
 fi
 }
 
