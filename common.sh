@@ -475,9 +475,9 @@ else
 fi
 # 自定义机型,内核,分区
 if [[ -f "${AMLOGIC_SH_PATH}" ]]; then
-  amlogic_model="$(grep "amlogic_model" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
-  amlogic_kernel="$(grep "amlogic_kernel" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
-  rootfs_size="$(grep "rootfs_size" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
+  amlogic_model="$(grep "amlogic_model=" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
+  amlogic_kernel="$(grep "amlogic_kernel=" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
+  rootfs_size="$(grep "rootfs_size=" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
 fi
 if [[ -n ${amlogic_model} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${rootfs_size} ]]; then
   export amlogic_model="${amlogic_model}"
@@ -989,8 +989,8 @@ TIME b "内核版本: ${LINUX_KERNEL}"
 TIME b "Luci版本: ${LUCI_EDITION}"
 if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
   TIME b "编译机型: 晶晨系列"
-  if [[ ${AUTOMATIC_AMLOGIC} == "true" ]]; then
-    if [[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]]; then
+  if [[ "${AUTOMATIC_AMLOGIC}" == "true" ]]; then
+    if [[ -f "${AMLOGIC_SH_PATH}" ]]; then
       amlogic_model="$(grep "amlogic_model" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
       amlogic_kernel="$(grep "amlogic_kernel" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
       rootfs_size="$(grep "rootfs_size" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")" > /dev/null 2>&1
