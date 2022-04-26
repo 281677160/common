@@ -122,7 +122,7 @@ echo "NETIP=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/networkip" 
 echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> $GITHUB_ENV
 echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/FinishIng.sh" >> $GITHUB_ENV
 echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> $GITHUB_ENV
-echo "AMLOGICSH_PATH=${GITHUB_WORKSPACE}/openwrt/amlogic_openwrt.sh" >> $GITHUB_ENV
+echo "AMLOGICSH_PATH=${GITHUB_WORKSPACE}/openwrt/amlogic_openwrt" >> $GITHUB_ENV
 echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear.sh" >> $GITHUB_ENV
 echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
@@ -482,7 +482,7 @@ if [[ -f "$AMLOGICSH_PATH" ]]; then
   source "$AMLOGICSH_PATH"
   echo "${amlogic_soc} ${amlogic_kernel} ${amlogic_size}"
 else
-  echo "没有${amlogic_sh_path}"
+  echo "没有${AMLOGICSH_PATH}"
 fi
 if [[ -n ${amlogic_soc} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${amlogic_size} ]]; then
   echo "amlogic_soc=${amlogic_soc}" >> $GITHUB_ENV
