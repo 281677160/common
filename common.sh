@@ -496,6 +496,15 @@ sudo mv -f $GITHUB_WORKSPACE/amlogic/out/* $TARGET_BSGET/ && sync
 sudo rm -rf $GITHUB_WORKSPACE/amlogic
 }
 
+function Package_Clear() {
+for X in $(cat Clear |sed 's/^/bin\/targets\/${TAR_BOARD}\/${TAR_SUBTARGET}\//g'); do
+   rm -rf "${X}"
+done
+}
+
+export TAR_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
+export TAR_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)"
+
 function Diy_indexhtm() {
 echo "正在执行：去除主页一串的LUCI版本号显示"
 if [[ "${REPO_BRANCH}" == "master" ]]; then
