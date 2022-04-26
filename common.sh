@@ -219,7 +219,7 @@ elif [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
 fi
 }
 
-function Diy_feeds() {
+function Diy_clean() {
 echo "正在执行：更新插件源,让源码更多插件存在"
 # 拉库和做标记
 
@@ -473,13 +473,25 @@ else
   armvirtargz="$(ls -1 "${TARGET_BSGET}" |grep ".*tar.gz" |awk 'END {print}')"
   cp -Rf ${TARGET_BSGET}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 fi
-export make_size="$(egrep -o ROOT_MB=\"[0-9]+\" "$GITHUB_WORKSPACE/amlogic/make")"
-export zhiding_size="ROOT_MB=\"${rootfs_size}\""
-sed -i "s?${make_size}?${zhiding_size}?g" "$GITHUB_WORKSPACE/amlogic/make"
+# 自定义机型,内核,分区
+if [[ -f $GITHUB_WORKSPACE/amlogic_openwrt ]]; then
+  amlogic_model="$(grep "amlogic_model" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
+  amlogic_kernel="$(grep "amlogic_kernel" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
+  rootfs_size="$(grep "rootfs_size" $GITHUB_WORKSPACE/amlogic_openwrt | cut -d "=" -f2 |sed 's/\"//g' |sed 's/ //g' |sed "s/'//g")"
+fi
+if [[ -n ${amlogic_model} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${rootfs_size} ]]; then
+  export amlogic_model="${amlogic_model}"
+  export amlogic_kernel="${amlogic_kernel}"
+  export rootfs_size="${rootfs_size}"
+else
+  export amlogic_model="all"
+  export amlogic_kernel="5.15.25 -a true"
+  export rootfs_size="1024"
+fi
 # 开始打包
 cd ${GITHUB_WORKSPACE}/amlogic
 sudo chmod +x make
-sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel}
+sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
 sudo mv -f $GITHUB_WORKSPACE/amlogic/out/* $TARGET_BSGET/ && sync
 sudo rm -rf $GITHUB_WORKSPACE/amlogic
 }
@@ -922,15 +934,15 @@ function Diy_part_sh() {
 echo "正在执行：运行$DIY_PART_SH文件"
 cd $HOME_PATH
 /bin/bash $BUILD_PATH/$DIY_PART_SH
-if [[ -n ${amlogic_model} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${rootfs_size} ]]; then
-  echo "amlogic_model=${amlogic_model}" >> $GITHUB_ENV
-  echo "amlogic_kernel=${amlogic_kernel}" >> $GITHUB_ENV
-  echo "rootfs_size=${rootfs_size}" >> $GITHUB_ENV
-else
-  echo "amlogic_model=all" >> $GITHUB_ENV
-  echo "amlogic_kernel=5.15.25_5.10.100 -a true" >> $GITHUB_ENV
-  echo "rootfs_size=1024" >> $GITHUB_ENV
-fi
+}
+
+function Diy_feeds() {
+echo "正在执行：更新feeds,请耐心等待..."
+./scripts/feeds update -a
+./scripts/feeds install -a > /dev/null 2>&1
+./scripts/feeds install -a
+[[ -f $BUILD_PATH/$CONFIG_FILE ]] && mv $BUILD_PATH/$CONFIG_FILE .config
+make defconfig > /dev/null 2>&1
 }
 
 function Diy_Notice() {
@@ -1092,7 +1104,7 @@ fi
 
 function Diy_menu() {
 if [[ ! ${Tishi} == "1" ]]; then
-  Diy_feeds
+  Diy_clean
 fi
 Diy_conf
 Diy_webweb
@@ -1102,11 +1114,5 @@ Diy_part_sh
 Diy_indexhtm
 Diy_patches
 Diy_upgrade1
-
-echo "正在执行：更新feeds,请耐心等待..."
-./scripts/feeds update -a
-./scripts/feeds install -a > /dev/null 2>&1
-./scripts/feeds install -a
-mv $BUILD_PATH/$CONFIG_FILE .config
-make defconfig > /dev/null 2>&1
+Diy_feeds
 }
