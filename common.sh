@@ -461,41 +461,6 @@ if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
 fi
 }
 
-
-function Pac_amlogic() {
-export TARGET_BSGET="$HOME_PATH/bin/targets/armvirt/64"
-mkdir -p "${TARGET_BSGET}"
-wget -P ${TARGET_BSGET} https://github.com/ophub/amlogic-s9xxx-openwrt/releases/download/openwrt_s9xxx_lede_2022.04.25.1109/openwrt-armvirt-64-default-rootfs.tar.gz -O ${TARGET_BSGET}/openwrt-armvirt-64-default-rootfs.tar.gz
-
-if [[ `ls -1 "${TARGET_BSGET}" |grep -c "openwrt-armvirt-64-default-rootfs.tar.gz"` == '1' ]]; then
-  echo "amlogic_path=openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz" >> $GITHUB_ENV
-elif [[ `ls -1 "${TARGET_BSGET}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
-  cp -Rf ${TARGET_BSGET}/*default-rootfs.tar.gz ${TARGET_BSGET}/openwrt-armvirt-64-default-rootfs.tar.gz
-  echo "amlogic_path=openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz" >> $GITHUB_ENV
-else
-  armvirtargz="$(ls -1 "${TARGET_BSGET}" |grep ".*tar.gz" |awk 'END {print}')"
-  cp -Rf ${TARGET_BSGET}/${armvirtargz} ${TARGET_BSGET}/openwrt-armvirt-64-default-rootfs.tar.gz
-  echo "amlogic_path=openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz" >> $GITHUB_ENV
-fi
-if [[ -f "$AMLOGICSH_PATH" ]]; then
-  chmod +x "$AMLOGICSH_PATH"
-  source "$AMLOGICSH_PATH"
-  echo "${amlogic_soc} ${amlogic_kernel} ${amlogic_size}"
-else
-  echo "没有${AMLOGICSH_PATH}"
-fi
-if [[ -n ${amlogic_soc} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${amlogic_size} ]]; then
-  echo "amlogic_soc=${amlogic_soc}" >> $GITHUB_ENV
-  echo "amlogic_kernel=${amlogic_kernel}" >> $GITHUB_ENV
-  echo "amlogic_size=${amlogic_size}" >> $GITHUB_ENV
-else
-  echo "amlogic_soc=s905x3" >> $GITHUB_ENV
-  echo "amlogic_kernel=5.10.100" >> $GITHUB_ENV
-  echo "amlogic_size=1024" >> $GITHUB_ENV
-fi
-}
-
-
 function Package_amlogic() {
 echo "正在执行：打包N1和景晨系列固件"
 # 下载上游仓库
