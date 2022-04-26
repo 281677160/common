@@ -478,10 +478,9 @@ else
   cp -Rf ${TARGET_BSGET}/${armvirtargz} ${TARGET_BSGET}/openwrt-armvirt-64-default-rootfs.tar.gz
   echo "amlogic_path=openwrt/bin/targets/*/*/openwrt-armvirt-64-default-rootfs.tar.gz" >> $GITHUB_ENV
 fi
-if [[ -f $HOME_PATH/amlogic_openwrt ]]; then
-  export amlogic_soc="$(grep "amlogic_soc" $HOME_PATH/amlogic_openwrt | cut -d "=" -f2)"
-  export amlogic_kernel="$(grep "amlogic_kernel" $HOME_PATH/amlogic_openwrt | cut -d "=" -f2)"
-  export amlogic_size="$(grep "amlogic_size" $HOME_PATH/amlogic_openwrt | cut -d "=" -f2)"
+if [[ -f "${amlogic_sh_path}" ]]; then
+  chmod +x "${amlogic_sh_path}"
+  source "${amlogic_sh_path}"
 fi
 if [[ -n ${amlogic_soc} ]] && [[ -n ${amlogic_kernel} ]] && [[ -n ${amlogic_size} ]]; then
   echo "amlogic_soc=${amlogic_soc}" >> $GITHUB_ENV
