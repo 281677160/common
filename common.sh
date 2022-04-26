@@ -938,6 +938,7 @@ cd $HOME_PATH
 
 function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
+cd $HOME_PATH
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
