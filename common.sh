@@ -475,11 +475,11 @@ else
 fi
 # 自定义机型,内核,分区
 if [[ -f "${AMLOGIC_SH_PATH}" ]]; then
-  export amlogic_model="$(grep "amlogic_model" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed "s/'//g")"
+  export amlogic_model="$(grep "amlogic_model=" "${AMLOGIC_SH_PATH}" 2>&1 | cut -d "=" -f2 |sed 's/\"//g' |sed "s/'//g")"
   [[ -z "${amlogic_model}" ]] && export amlogic_model="all"
-  export amlogic_kernel="$(grep "amlogic_kernel" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed "s/'//g")"
+  export amlogic_kernel="$(grep "amlogic_kernel=" "${AMLOGIC_SH_PATH}" 2>&1 | cut -d "=" -f2 |sed 's/\"//g' |sed "s/'//g")"
   [[ -z "${amlogic_kernel}" ]] && export amlogic_kernel="5.15.25 -a true"
-  export rootfs_size="$(grep "rootfs_size" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/\"//g' |sed "s/'//g")"
+  export rootfs_size="$(grep "rootfs_size=" "${AMLOGIC_SH_PATH}" 2>&1 | cut -d "=" -f2 |sed 's/\"//g' |sed "s/'//g")"
   [[ -z "${rootfs_size}" ]] && export rootfs_size="1024"
 else
   export amlogic_model="all"
@@ -989,11 +989,11 @@ if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
   TIME b "编译机型: 晶晨系列"
   if [[ "${AUTOMATIC_AMLOGIC}" == "true" ]]; then
     if [[ -f "${AMLOGIC_SH_PATH}" ]]; then
-      amlogic_model="$(grep "amlogic_model" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/ [  \t]*$//g' |sed 's/\"//g' |sed "s/'//g")"
+      amlogic_model="$(grep "amlogic_model=" "${AMLOGIC_SH_PATH}" 2>&1 | cut -d "=" -f2 |sed 's/ [  \t]*$//g' |sed 's/\"//g' |sed "s/'//g")"
       [[ -z "${amlogic_model}" ]] && amlogic_model="填写格式错误,未获取到数据,脚本默认打包全机型"
-      amlogic_kernel="$(grep "amlogic_kernel" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/ [  \t]*$//g' |sed 's/\"//g' |sed "s/'//g")"
+      amlogic_kernel="$(grep "amlogic_kernel=" "${AMLOGIC_SH_PATH}" 2>&1 | cut -d "=" -f2 |sed 's/ [  \t]*$//g' |sed 's/\"//g' |sed "s/'//g")"
       [[ -z "${amlogic_kernel}" ]] && amlogic_kernel="填写格式错误,未获取到数据,脚本默认5.15.xx"
-      rootfs_size="$(grep "rootfs_size" "${AMLOGIC_SH_PATH}" | cut -d "=" -f2 |sed 's/ [  \t]*$//g' |sed 's/\"//g' |sed "s/'//g")"
+      rootfs_size="$(grep "rootfs_size=" "${AMLOGIC_SH_PATH}" 2>&1 | cut -d "=" -f2 |sed 's/ [  \t]*$//g' |sed 's/\"//g' |sed "s/'//g")"
       [[ -z "${rootfs_size}" ]] && rootfs_size="填写格式错误,未获取到数据,脚本默认1024"
       TIME g "打包机型: ${amlogic_model}"
       TIME g "打包内核: ${amlogic_kernel}"
