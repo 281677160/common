@@ -495,7 +495,7 @@ sudo rm -rf $GITHUB_WORKSPACE/amlogic
 }
 
 function Package_Clear() {
-cd ${TARGET_BSGET}
+cd openwrt/bin/targets/armvirt/64
 for X in $(cat "${CLEAR_PATH}" 2>&1 |cut -d '-' -f3- |sed 's/^/*/g' |sed 's/$/*/g'); do
    rm -rf "${X}"
 done
