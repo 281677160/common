@@ -128,6 +128,7 @@ echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> $GITHUB_ENV
 echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> $GITHUB_ENV
+echo "Gujian_Date=$(date +%m%d)" >> $GITHUB_ENV
 
 
 # github用的变量，如果有修改，下面Bendi_variable也要同步修改
@@ -492,13 +493,6 @@ sudo chmod +x make
 sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
 sudo mv -f $GITHUB_WORKSPACE/amlogic/out/* $TARGET_BSGET/ && sync
 sudo rm -rf $GITHUB_WORKSPACE/amlogic
-}
-
-function Package_Clear() {
-cd openwrt/bin/targets/armvirt/64
-for X in $(cat "${CLEAR_PATH}" 2>&1 |cut -d '-' -f3- |sed 's/^/*/g' |sed 's/$/*/g'); do
-   rm -rf "${X}"
-done
 }
 
 function Diy_indexhtm() {
@@ -905,10 +899,10 @@ sudo tar -czf ipk.tar.gz ipk && sudo rm -rf ipk && sync
 if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
 fi
-for X in $(cat "${CLEAR_PATH}" |cut -d '-' -f3- |sed 's/^/*/g'); do
+for X in $(cat "${CLEAR_PATH}" |cut -d '-' -f4- |sed '/^$/d' |sed 's/ //g' |sed 's/^/*/g' |sed 's/$/*/g'); do
    rm -rf "${X}"
 done
-rename -v "s/^openwrt/${SOURCE}/" *
+rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}/" *
 echo "FIRMWARE=$PWD" >> $GITHUB_ENV
 
 cd $HOME_PATH
