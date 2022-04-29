@@ -1118,7 +1118,7 @@ fi
 }
 
 function Diy_menu() {
-if [[ ! ${Tishi} == "1" ]]; then
+if [[ ! ${ERCI_BYGJ} == "1" ]]; then
   Diy_clean
 fi
 Diy_conf
