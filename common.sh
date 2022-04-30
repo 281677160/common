@@ -231,9 +231,9 @@ case "${REPO_BRANCH}" in
 master)
   
   # 删除重复插件（LEDE）
-  find "${HOME_PATH}" \( -path ${HOME_PATH}/feeds/danshui -o -path ${HOME_PATH}/package/feeds/danshui \) -prune -o -name 'luci-app-netdata' -print -o -name 'netdata' -print -o -name 'luci-theme-argon' -print -o -name 'mentohust' -print | xargs -i rm -rf {}
-  find "${HOME_PATH}" \( -path ${HOME_PATH}/feeds/danshui -o -path ${HOME_PATH}/package/feeds/danshui \) -prune -o -name 'luci-app-wrtbwmon' -print -o -name 'wrtbwmon' -print -o -name 'luci-app-eqos' -print | xargs -i rm -rf {}
-  find "${HOME_PATH}" \( -path ${HOME_PATH}/feeds/danshui -o -path ${HOME_PATH}/package/feeds/danshui \) -prune -o -name 'adguardhome' -print -o -name 'luci-app-adguardhome' -print -o -name 'luci-app-wol' -print | xargs -i rm -rf {}
+  find . -name 'luci-app-netdata' -o -name 'netdata' -o -name 'luci-theme-argon' -o -name 'mentohust' | xargs -i rm -rf {}
+  find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
+  find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
 
 ;;
 22.03)
