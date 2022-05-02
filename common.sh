@@ -338,6 +338,7 @@ cat >>"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
+/www/luci-static/argon/background
 EOF
 }
 
@@ -347,6 +348,7 @@ cat >>"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
+/www/luci-static/argon/background
 EOF
 }
 
@@ -356,6 +358,7 @@ cat >>"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
+/www/luci-static/argon/background
 EOF
 
 sed -i '/DISTRIB_RELEAS/d' "$ZZZ_PATH"
@@ -420,6 +423,7 @@ cat >>"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
 /etc/config/AdGuardHome.yaml
+/www/luci-static/argon/background
 EOF
 
 sed -i '/DISTRIB_RELEAS/d' "$ZZZ_PATH"
