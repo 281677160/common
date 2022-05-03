@@ -905,7 +905,7 @@ sudo tar -czf ipk.tar.gz ipk && sudo rm -rf ipk && sync
 if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
 fi
-for X in $(cat "/home/dan/2222" |sed 's/rm -rf//g' |sed 's/rm -fr//g' |sed 's/\r//' |sed 's/ //g' |cut -d '-' -f4- |sed '/^$/d' |sed 's/^/*/g' |sed 's/$/*/g'); do
+for X in $(cat "${CLEAR_PATH}" |sed 's/rm -rf//g' |sed 's/rm -fr//g' |sed 's/\r//' |sed 's/ //g' |cut -d '-' -f4- |sed '/^$/d' |sed 's/^/*/g' |sed 's/$/*/g'); do
    rm -rf "${X}"
 done
 rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}/" *
