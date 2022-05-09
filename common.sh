@@ -354,7 +354,7 @@ EOF
 }
 
 function Diy_Mortal() {
-echo "正在执行：Tianling专用自定义"
+echo "正在执行：Mortal专用自定义"
 cat >>"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
@@ -419,7 +419,7 @@ fi
 }
 
 function Diy_Tianling() {
-echo "正在执行：Mortal专用自定义"
+echo "正在执行：Tianling专用自定义"
 cat >>"${KEEPD}" <<-EOF
 /mnt/network
 /mnt/Detectionnetwork
