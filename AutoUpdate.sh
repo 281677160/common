@@ -346,9 +346,9 @@ echo -e "\n本地版本：${LOCAL_Version}"
 echo "云端版本：${CLOUD_Version}"
 echo "设备名称：${CURRENT_Device}"
 echo "固件作者：${Author}"
-[[ "${Firmware_SFX}" =~ (.img.gz|.img) ]] && {
+if [[ "${Firmware_SFX}" =~ "(.img.gz|.img)" ]]; then
   echo "引导模式：${BOOT_Type}"
-}
+fi
 echo "固件体积：${CLOUD_Firmware_Size}M"
 echo
 if [[ ! "${Input_Other}" == "-t" ]]; then
