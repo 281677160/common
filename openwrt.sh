@@ -312,27 +312,27 @@ menu() {
   read -p " ${XUANZHEOP}： " CHOOSE
   case $CHOOSE in
     1)
-      bash /bin/AutoUpdate.sh
+      AutoUpdate
     break
     ;;
     2)
-      bash /bin/AutoUpdate.sh -n
+      AutoUpdate -n
     break
     ;;
     3)
-      bash /bin/AutoUpdate.sh -t
+      AutoUpdate -t
     break
     ;;
     4)
-      bash /bin/replace.sh
+      replace
     break
     ;;
     5)
-      bash /bin/AutoUpdate.sh -h
+      AutoUpdate -h
     break
     ;;
     6)
-      bash /bin/AutoUpdate.sh -c
+      AutoUpdate -c
     break
     ;;
     7)
