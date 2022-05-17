@@ -407,7 +407,7 @@ menuws() {
     done
 }
 
-if [[ -f /bin/openwrt_info ]] && [[ -f /bin/AutoUpdate.sh ]];then
+if [[ -f "/bin/openwrt_info" ]] && [[ -f "/usr/bin/AutoUpdate" ]];then
   menu "$@"
 else
   menuws "$@"
