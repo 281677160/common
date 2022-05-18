@@ -436,8 +436,8 @@ ${Upgrade_Options} ${CLOUD_Version}
 
 function Update_u() {
 lian_wang
-model_name
 api_data
+model_name
 cloud_Version
 record_version
 firmware_Size
@@ -449,8 +449,8 @@ update_firmware
 
 function Update_Options() {
 lian_wang
-model_name
 api_data
+model_name
 cloud_Version
 record_version
 firmware_Size
