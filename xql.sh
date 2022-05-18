@@ -115,7 +115,6 @@ function GET_PID() {
   done
 }
 
-
 function LOGGER() {
   [[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
   [[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
@@ -177,15 +176,6 @@ mvebu)
 esac
 }
 
-function openwrt_upgrade() {
-cat > /etc/openwrt_upgrade <<-EOF
-LOCAL_Firmware=${CURRENT_Version}
-MODEL_type=${BOOT_Type}${Firmware_SFX}
-KERNEL_type=${Kernel} - ${LUCI_EDITION}
-CURRENT_Device=${CURRENT_Device}
-EOF
-}
-
 function api_shuju() {
 TIME g "正在获取云端API数据..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
@@ -200,7 +190,8 @@ if [[ $? -ne 0 ]];then
   if [[ $? -ne 0 ]];then
     TIME r "获取云端API数据失败"
     TIME g "您当前Github地址:${Github}"
-    TIME y "您当前Github地址上没检测到云端存在,或您的仓库为私库!"
+    TIME y "您当前Github地址获取API数据失败,或您的仓库为私库!"
+    echo "您当前Github地址获取API数据失败,或您的仓库为私库!" > /tmp/cloud_version
     echo
     exit 1
   else
@@ -211,13 +202,12 @@ else
 fi
 }
 
-
 function cloud_Version() {
 # 搞出本地版本固件名字用作显示用途
 export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 export LOCAL_Firmware="$(grep 'CURRENT_Version=' "/bin/openwrt_info" | cut -d "=" -f2)"
 if [[ -z "${LOCAL_Version}" ]]; then
-  export LOCAL_Version="云端有没有现在安装的固件版本存在"
+  export LOCAL_Version="云端有没发现您现在安装的固件版本存在"
 fi
 echo "${LOCAL_Version}" > /etc/local_Version
 
@@ -226,6 +216,7 @@ export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
 if [[ -z "${CLOUD_Version}" ]]; then
   TIME r "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致版本信息不一致!"
+  echo "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致版本信息不一致!" > /tmp/cloud_version
   exit 1
 else
   TIME y "获取云端固件版本成功,进行对比本地版本和云端版本!"
@@ -237,11 +228,17 @@ cat > /tmp/Version_Tags <<-EOF
 LOCAL_Firmware=${LOCAL_Firmware}
 CLOUD_Firmware=${CLOUD_Firmware}
 EOF
+cat > /etc/openwrt_upgrade <<-EOF
+LOCAL_Firmware=${LOCAL_Firmware}
+MODEL_type=${BOOT_Type}${Firmware_SFX}
+KERNEL_type=${Kernel} - ${LUCI_EDITION}
+CURRENT_Device=${CURRENT_Device}
+EOF
 if [[ "${Input_Other}" == "-w" ]]; then
 exit 0
 fi
-LOCAL_Firmware="$(grep 'LOCAL_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
-CLOUD_Firmware="$(grep 'CLOUD_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
+export LOCAL_Firmware="$(grep 'LOCAL_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
+export CLOUD_Firmware="$(grep 'CLOUD_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
 }
 
 function firmware_Size() {
@@ -268,7 +265,7 @@ echo "固件体积：${CLOUD_Firmware_Size}M"
 echo
 if [[ ! "${Input_Other}" == "-t" ]]; then
   if [[ "${LOCAL_Firmware}" == "${CLOUD_Firmware}" ]]; then
-    QLMEUN="当前版本和云端最高版本一致，是否还要重新安装固件?[Y/n]"
+    QLMEUN="当前版本和云端最高版本一致，是否需要重新安装固件?[Y/n]"
     while :; do
       read -p "${QLMEUN}"： Choose
       case $Choose in
@@ -287,7 +284,7 @@ if [[ ! "${Input_Other}" == "-t" ]]; then
        esac
     done
   elif [[ "${LOCAL_Firmware}" -gt "${CLOUD_Firmware}" ]]; then
-    QLMEUN="云端最高版本,低于您现在的版本,是否强制覆盖现有固件?[Y/n]"
+    QLMEUN="云端最高版本,低于您现在安装的版本,是否强制覆盖现有固件?[Y/n]"
     while :; do
       read -p "${QLMEUN}"： Choose
       case $Choose in
@@ -309,6 +306,14 @@ if [[ ! "${Input_Other}" == "-t" ]]; then
     TIME y "检测到有可更新的固件版本,立即更新固件!"
   fi
 fi
+}
+
+function u_firmware() {
+if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
+  TIME y "检测到有可更新的固件版本,立即更新固件!"
+else
+  TIME r "没检测到有可更新的固件版本,退出程序!"
+  exit 0
 }
 
 function download_firmware() {
@@ -364,6 +369,15 @@ if [[ ! "${LOCAL_256}" == "${CLOUD_256}" ]]; then
 fi
 }
 
+function input_other_t() {
+if [[ "${Input_Other}" == "-t" ]]; then
+  TIME z "测试模式运行完毕!"
+  rm -rf "${Download_Path}"
+  echo
+  exit 0
+fi
+}
+
 function update_firmware() {
 chmod 777 ${CLOUD_Version}
 [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
@@ -392,11 +406,23 @@ if [[ "${AutoUpdate_Mode}" == "1" ]] || [[ "${Update_Mode}" == "1" ]]; then
   }
 fi
 
-
 ${Upgrade_Options} ${CLOUD_Version}
 }
 
-function baoliu_Update() {
+function Update_u() {
+lian_wang
+model_name
+api_shuju
+cloud_Version
+Version_Tags
+firmware_Size
+u_firmware
+download_firmware
+md5sum_sha256sum
+update_firmware
+}
+
+function Update_Options() {
 lian_wang
 model_name
 api_shuju
@@ -406,16 +432,18 @@ firmware_Size
 bidui_firmware
 download_firmware
 md5sum_sha256sum
+input_other_t
 update_firmware
 }
 
-function menu() {
+clear && echo "Openwrt-AutoUpdate Script ${Version}"
+echo
 if [[ -z "${Input_Option}" ]]; then
   export Upgrade_Options="sysupgrade -q"
   export Update_Mode="1"
   export Update_explain="保留配置更新固件"
   TIME h "执行: 更新固件[保留配置]"
-  baoliu_Update
+  Update_Options
 else
   case ${Input_Option} in
   -t | -n | -f | -u | -N | -w)
@@ -423,18 +451,22 @@ else
     -t)
       export Input_Other="-t"
       TIME h "执行: 测试模式(只运行程序,不安装固件)"
+      Update_Options
     ;;
     -w)
       export Input_Other="-w"
+      Update_Options
     ;;
     -n | -N)
-      export Upgrade_Options="sysupgrade -n"
+      export Upgrade_Options="sysupgrade -F -n"
       TIME h "执行: 更新固件(不保留配置)"
       export Update_explain="不保留配置更新固件"
+      Update_Options
     ;;
     -u)
-      export AutoUpdate_Mode="1"
       export Upgrade_Options="sysupgrade -q"
+      export Update_explain="保留配置更新固件"
+      Update_u
     ;;
     esac
   ;;
@@ -500,5 +532,3 @@ else
   ;;
   esac
 fi
-}
-menu "$@"
