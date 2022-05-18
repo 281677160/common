@@ -442,6 +442,7 @@ update_firmware
 }
 
 clear
+echo
 echo "Openwrt-AutoUpdate Script ${Version}"
 echo
 if [[ -z "${Input_Option}" ]]; then
