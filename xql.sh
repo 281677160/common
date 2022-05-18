@@ -41,17 +41,6 @@ TIME() {
 
 
 Version=V6.9
-TIME g "检测机器是否联网..."
-curl --connect-timeout 8 -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
-if [[ -f /tmp/baidu.html ]] && [[ `grep -c "百度一下" /tmp/baidu.html` -ge '1' ]]; then
-  rm -rf /tmp/baidu.html
-  TIME y "您的网络正常!"
-else
-  TIME r "您可能没进行联网,请检查网络,或您的网络不能连接百度?"
-  echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?" > /tmp/cloud_version
-  exit 1
-fi
-
 if [[ -f /bin/openwrt_info ]]; then
   chmod +x /bin/openwrt_info
   source /bin/openwrt_info
@@ -115,6 +104,35 @@ Github 地址:		${Github}
 
 ${White}"
 exit 0
+}
+
+function GET_PID() {
+  local Result
+  while [[ $1 ]];do
+    Result=$(busybox ps | grep "$1" | grep -v "grep" | awk '{print $1}' | awk 'NR==1')
+    [[ -n ${Result} ]] && echo ${Result}
+  shift
+  done
+}
+
+
+function LOGGER() {
+  [[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
+  [[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
+  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate.sh)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
+}
+
+function lian_wang() {
+TIME g "检测机器是否联网..."
+curl --connect-timeout 8 -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
+if [[ -f /tmp/baidu.html ]] && [[ `grep -c "百度一下" /tmp/baidu.html` -ge '1' ]]; then
+  rm -rf /tmp/baidu.html
+  TIME y "您的网络正常!"
+else
+  TIME r "您可能没进行联网,请检查网络,或您的网络不能连接百度?"
+  echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?" > /tmp/cloud_version
+  exit 1
+fi
 }
 
 function model_name() {
@@ -197,7 +215,10 @@ fi
 function cloud_Version() {
 # 搞出本地版本固件名字用作显示用途
 export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
-export LOCAL_Firmware="${CURRENT_Version}"
+export LOCAL_Firmware="$(grep 'CURRENT_Version=' "/bin/openwrt_info" | cut -d "=" -f2)"
+if [[ -z "${LOCAL_Version}" ]]; then
+  export LOCAL_Version="云端有没有现在安装的固件版本存在"
+fi
 echo "${LOCAL_Version}" > /etc/local_Version
 
 TIME g "正在获取云端固件版本信息..."
@@ -205,23 +226,22 @@ export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
 if [[ -z "${CLOUD_Version}" ]]; then
   TIME r "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致版本信息不一致!"
-  echo "版本信息不一致" > /tmp/format_tags
   exit 1
 else
-  rm -rf /tmp/format_tags > /dev/null 2>&1
   TIME y "获取云端固件版本成功,进行对比本地版本和云端版本!"
 fi
 }
 
-function cloud_Version() {
-# 用在LUCI页面的版本对比
-if [[ "${Input_Other}" == "-w" ]]; then
+function Version_Tags() {
 cat > /tmp/Version_Tags <<-EOF
-LOCAL_Firmware=${CURRENT_Version}
+LOCAL_Firmware=${LOCAL_Firmware}
 CLOUD_Firmware=${CLOUD_Firmware}
 EOF
+if [[ "${Input_Other}" == "-w" ]]; then
 exit 0
 fi
+LOCAL_Firmware="$(grep 'LOCAL_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
+CLOUD_Firmware="$(grep 'CLOUD_Firmware=' "/tmp/Version_Tags" | cut -d "-" -f4)"
 }
 
 function firmware_Size() {
@@ -247,26 +267,44 @@ fi
 echo "固件体积：${CLOUD_Firmware_Size}M"
 echo
 if [[ ! "${Input_Other}" == "-t" ]]; then
-  if [[ "${LOCAL_Firmware}" -eq "${CLOUD_Firmware}" ]]; then
-    [[ "${AutoUpdate_Mode}" == "1" ]] && exit 0
-    TIME && read -p "当前版本和云端最高版本一致，是否还要重新安装固件?[Y/n]:" Choose
-    [[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
-      TIME z "正在开始重新安装固件..."
-    } || {
-      TIME r "已取消重新安装固件,即将退出程序..."
-      sleep 1
-      exit 0
-    }
-  elif [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
-    [[ "${AutoUpdate_Mode}" == "1" ]] && exit 0
-    TIME && read -p "云端最高版本,低于您现在的版本,是否强制覆盖现有固件?[Y/n]:" Choose
-    [[ "${Choose}" == Y ]] || [[ "${Choose}" == y ]] && {
-      TIME z "正在开始使用云端版本覆盖现有固件..."
-    } || {
-      TIME r "已取消覆盖固件,退出程序..."
-      sleep 1
-      exit 0
-    }
+  if [[ "${LOCAL_Firmware}" == "${CLOUD_Firmware}" ]]; then
+    QLMEUN="当前版本和云端最高版本一致，是否还要重新安装固件?[Y/n]"
+    while :; do
+      read -p "${QLMEUN}"： Choose
+      case $Choose in
+      [Yy])
+        TIME z "正在开始重新安装固件..."
+      break
+      ;;
+      [Nn])
+        TIME r "已取消重新安装固件!"
+        exit 1
+       break
+       ;;
+       *)
+         QLMEUN="请输入正确选择[Y/n]"
+       ;;
+       esac
+    done
+  elif [[ "${LOCAL_Firmware}" -gt "${CLOUD_Firmware}" ]]; then
+    QLMEUN="云端最高版本,低于您现在的版本,是否强制覆盖现有固件?[Y/n]"
+    while :; do
+      read -p "${QLMEUN}"： Choose
+      case $Choose in
+      [Yy])
+        TIME z "开始使用云端版本覆盖现有固件..."
+      break
+      ;;
+      [Nn])
+        TIME r "已取消重新安装固件!"
+        exit 1
+       break
+       ;;
+       *)
+         QLMEUN="请输入正确选择[Y/n]"
+       ;;
+       esac
+    done
   else
     TIME y "检测到有可更新的固件版本,立即更新固件!"
   fi
@@ -359,9 +397,11 @@ ${Upgrade_Options} ${CLOUD_Version}
 }
 
 function baoliu_Update() {
-api_shuju
+lian_wang
 model_name
+api_shuju
 cloud_Version
+Version_Tags
 firmware_Size
 bidui_firmware
 download_firmware
