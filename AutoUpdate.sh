@@ -54,7 +54,7 @@ TIME() {
   }
 }
 
-if [[ -f /bin/openwrt_info ]]; then
+if [[ -f "/bin/openwrt_info" ]]; then
   chmod +x /bin/openwrt_info
   source /bin/openwrt_info
   if [[ $? -ne 0 ]];then
@@ -90,7 +90,7 @@ export PKG_List="${Download_Path}/Installed_PKG_List"
 export AutoUpdate_Log_Path="/tmp"
 
 function Shell_Helper() {
-if [[ -f /etc/local_Version ]]; then
+if [[ -f "/etc/local_Version" ]]; then
   export LOCAL_Version="$(cat /etc/local_Version)" > /dev/null 2>&1
 else
   wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
