@@ -15,7 +15,7 @@ function GET_PID() {
 function LOGGER() {
   [[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
   [[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
-  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate.sh)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
+  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate)-${Update_explain}] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
 }
 
 White="\033[0;37m"
@@ -379,8 +379,11 @@ chmod 777 ${CLOUD_Version}
 [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
 TIME g "正在执行"${Update_explain}",更新期间请不要断开电源或重启设备 ..."
 sleep 2
-if [[ "${AutoUpdate_Mode}" == "1" ]] || [[ "${Update_Mode}" == "1" ]]; then
-  chmod 775 "/etc/deletefile" && source /etc/deletefile
+if [[ "${AutoUpdate_Mode}" == "1" ]]; then
+  if [[ -f "/etc/deletefile" ]]; then
+    chmod 775 "/etc/deletefile"
+    source /etc/deletefile
+  fi
   curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/281677160/common/main/Custom/Detectionnetwork > /mnt/Detectionnetwork
   if [[ $? -ne 0 ]]; then
     wget -P /mnt https://raw.githubusercontent.com/281677160/common/main/Custom/Detectionnetwork -O /mnt/Detectionnetwork
@@ -435,18 +438,20 @@ update_firmware
 clear && echo "Openwrt-AutoUpdate Script ${Version}"
 echo
 if [[ -z "${Input_Option}" ]]; then
-  export Upgrade_Options="sysupgrade -q"
-  export Update_Mode="1"
-  export Update_explain="保留配置更新固件"
   TIME h "执行: 更新固件[保留配置]"
+  export Update_explain="保留配置更新固件"
+  export Upgrade_Options="sysupgrade -q"
+  export AutoUpdate_Mode="1"
   Update_Options
 else
   case ${Input_Option} in
   -t | -n | -f | -u | -N | -w)
     case ${Input_Option} in
     -t)
-      export Input_Other="-t"
       TIME h "执行: 测试模式(只运行程序,不安装固件)"
+      export Update_explain="测试模式"
+      export AutoUpdate_Mode="0"
+      export Input_Other="-t"
       Update_Options
     ;;
     -w)
@@ -454,14 +459,16 @@ else
       Update_Options
     ;;
     -n | -N)
-      export Upgrade_Options="sysupgrade -F -n"
       TIME h "执行: 更新固件(不保留配置)"
       export Update_explain="不保留配置更新固件"
+      export Upgrade_Options="sysupgrade -F -n"
+      export AutoUpdate_Mode="0"
       Update_Options
     ;;
     -u)
+      export Update_explain="在线静默保留配置更新固件"
       export Upgrade_Options="sysupgrade -q"
-      export Update_explain="保留配置更新固件"
+      export AutoUpdate_Mode="1"
       Update_u
     ;;
     esac
