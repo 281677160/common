@@ -186,7 +186,7 @@ if [[ $? -ne 0 ]];then
     TIME r "获取云端API数据失败"
     TIME g "您当前Github地址:${Github}"
     TIME y "您当前Github地址获取API数据失败,或您的仓库为私库!"
-    echo "您当前Github地址获取API数据失败,或您的仓库为私库!" > /tmp/cloud_version
+    echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
     echo
     exit 1
   else
