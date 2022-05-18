@@ -96,15 +96,15 @@ echo
 echo
 echo "命令说明：
 
-AutoUpdate  保留配置更新固件
+AutoUpdate    保留配置更新固件
 
-AutoUpdate -n 不保留配置更新固件
+AutoUpdate -n   不保留配置更新固件
 
-AutoUpdate -s 查看详情
+AutoUpdate -m   查看命令说明
 
-AutoUpdate -h 查看命令说明
+AutoUpdate -h   查看详情
 
-AutoUpdate -z 转换其他作者固件（前提是您编译了有其他作者的固件）
+AutoUpdate -z   转换其他作者固件（前提是您编译了有其他作者的固件）
 
 "
 exit 0
@@ -562,7 +562,7 @@ else
     model_name
     Shell_Helper
   ;;
-  -s)
+  -m)
     Helper_ml
   ;;
   *)
