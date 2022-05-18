@@ -314,6 +314,7 @@ if [[ "${LOCAL_Firmware}" -lt "${CLOUD_Firmware}" ]]; then
 else
   TIME r "没检测到有可更新的固件版本,退出程序!"
   exit 0
+fi
 }
 
 function download_firmware() {
