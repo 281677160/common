@@ -175,7 +175,7 @@ mvebu)
 esac
 }
 
-function api_shuju() {
+function api_data() {
 TIME g "正在获取云端API数据..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q ${Github_API1} -O ${API_PATH} > /dev/null 2>&1
@@ -210,15 +210,15 @@ TIME g "正在获取云端固件版本信息..."
 export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
 if [[ -z "${CLOUD_Version}" ]]; then
-  TIME r "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致版本信息不一致!"
-  echo "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致版本信息不一致!" > /tmp/cloud_version
+  TIME r "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致固件版本信息不一致!"
+  echo "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致固件版本信息不一致!" > /tmp/cloud_version
   exit 1
 else
   TIME y "获取云端固件版本成功,进行对比本地版本和云端版本!"
 fi
 }
 
-function Version_Tags() {
+function record_version() {
 cat > /tmp/Version_Tags <<-EOF
 LOCAL_Firmware=${LOCAL_Firmware}
 CLOUD_Firmware=${CLOUD_Firmware}
@@ -247,7 +247,7 @@ if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
 fi
 }
 
-function bidui_firmware() {
+function comparison_firmware() {
 echo
 echo -e "\n本地版本：${LOCAL_Version}"
 echo "云端版本：${CLOUD_Version}"
@@ -411,9 +411,9 @@ ${Upgrade_Options} ${CLOUD_Version}
 function Update_u() {
 lian_wang
 model_name
-api_shuju
+api_data
 cloud_Version
-Version_Tags
+record_version
 firmware_Size
 u_firmware
 download_firmware
@@ -424,11 +424,11 @@ update_firmware
 function Update_Options() {
 lian_wang
 model_name
-api_shuju
+api_data
 cloud_Version
-Version_Tags
+record_version
 firmware_Size
-bidui_firmware
+comparison_firmware
 download_firmware
 md5sum_sha256sum
 input_other_t
