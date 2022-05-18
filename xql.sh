@@ -54,7 +54,6 @@ TIME() {
   }
 }
 
-Version=V6.9
 if [[ -f /bin/openwrt_info ]]; then
   chmod +x /bin/openwrt_info
   source /bin/openwrt_info
@@ -78,6 +77,8 @@ else
   echo "未检测到openwrt_info文件,无法运行更新程序!" > /tmp/cloud_version
   exit 1
 fi
+
+export Version=V6.9
 export Input_Option=$1
 export Input_Other=$2
 export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
@@ -435,7 +436,8 @@ input_other_t
 update_firmware
 }
 
-clear && echo "Openwrt-AutoUpdate Script ${Version}"
+clear
+echo "Openwrt-AutoUpdate Script ${Version}"
 echo
 if [[ -z "${Input_Option}" ]]; then
   TIME h "执行: 更新固件[保留配置]"
