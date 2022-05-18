@@ -78,7 +78,7 @@ else
   exit 1
 fi
 
-export Version=V6.9
+export Version=V7.0
 export Input_Option=$1
 export Input_Other=$2
 export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
