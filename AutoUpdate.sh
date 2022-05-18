@@ -453,7 +453,7 @@ if [[ -z "${Input_Option}" ]]; then
   Update_Options
 else
   case ${Input_Option} in
-  -t | -n | -f | -u | -N | -w)
+  -t | -w | -n | -N | -u)
     case ${Input_Option} in
     -t)
       TIME h "执行: 测试模式(只运行程序,不安装固件)"
