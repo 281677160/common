@@ -3,6 +3,21 @@
 # AutoBuild Module by Hyy2001
 # AutoUpdate for Openwrt
 
+function GET_PID() {
+  local Result
+  while [[ $1 ]];do
+    Result=$(busybox ps | grep "$1" | grep -v "grep" | awk '{print $1}' | awk 'NR==1')
+    [[ -n ${Result} ]] && echo ${Result}
+  shift
+  done
+}
+
+function LOGGER() {
+  [[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
+  [[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
+  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate.sh)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
+}
+
 White="\033[0;37m"
 Yellow="\033[0;33m"
 White="\033[0;37m"
@@ -38,7 +53,6 @@ TIME() {
     }
   }
 }
-
 
 Version=V6.9
 if [[ -f /bin/openwrt_info ]]; then
@@ -106,21 +120,6 @@ ${White}"
 exit 0
 }
 
-function GET_PID() {
-  local Result
-  while [[ $1 ]];do
-    Result=$(busybox ps | grep "$1" | grep -v "grep" | awk '{print $1}' | awk 'NR==1')
-    [[ -n ${Result} ]] && echo ${Result}
-  shift
-  done
-}
-
-function LOGGER() {
-  [[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
-  [[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
-  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate.sh)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
-}
-
 function lian_wang() {
 TIME g "检测机器是否联网..."
 curl --connect-timeout 8 -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
@@ -181,12 +180,8 @@ TIME g "正在获取云端API数据..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q ${Github_API1} -O ${API_PATH} > /dev/null 2>&1
 if [[ $? -ne 0 ]];then
-  wget -q https://pd.zwc365.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
-  if [[ $? -ne 0 ]];then
-    wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
-  else
-    TIME y "获取云端API数据成功!"
-  fi
+  TIME r "获取云端API数据失败，切换工具继续下载中..."
+  wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
   if [[ $? -ne 0 ]];then
     TIME r "获取云端API数据失败"
     TIME g "您当前Github地址:${Github}"
