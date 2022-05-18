@@ -154,6 +154,28 @@ else
 fi
 }
 
+function api_data() {
+TIME g "正在获取云端API数据..."
+[ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
+wget -q ${Github_API1} -O ${API_PATH} > /dev/null 2>&1
+if [[ $? -ne 0 ]];then
+  TIME r "获取云端API数据失败，切换工具继续下载中..."
+  wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
+  if [[ $? -ne 0 ]];then
+    TIME r "获取云端API数据失败"
+    TIME g "您当前Github地址:${Github}"
+    TIME y "您当前Github地址获取API数据失败,或您的仓库为私库!"
+    echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
+    echo
+    exit 1
+  else
+    TIME y "获取云端API数据成功!"
+  fi
+else
+  TIME y "获取云端API数据成功!"
+fi
+}
+
 function model_name() {
 case "${TARGET_BOARD}" in
 x86)
@@ -194,28 +216,6 @@ mvebu)
   export CURRENT_Device="$(jsonfilter -e '@.model.id' < /etc/board.json | tr ',' '_')"
   export BOOT_Type="sysupgrade"
 esac
-}
-
-function api_data() {
-TIME g "正在获取云端API数据..."
-[ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-wget -q ${Github_API1} -O ${API_PATH} > /dev/null 2>&1
-if [[ $? -ne 0 ]];then
-  TIME r "获取云端API数据失败，切换工具继续下载中..."
-  wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
-  if [[ $? -ne 0 ]];then
-    TIME r "获取云端API数据失败"
-    TIME g "您当前Github地址:${Github}"
-    TIME y "您当前Github地址获取API数据失败,或您的仓库为私库!"
-    echo "获取API数据失败,Github地址不正确，或此地址没云端存在，或您的仓库为私库!" > /tmp/cloud_version
-    echo
-    exit 1
-  else
-    TIME y "获取云端API数据成功!"
-  fi
-else
-  TIME y "获取云端API数据成功!"
-fi
 }
 
 function cloud_Version() {
@@ -259,7 +259,7 @@ export CLOUD_Firmware="$(grep 'CLOUD_Firmware=' "/tmp/Version_Tags" | cut -d "-"
 
 function firmware_Size() {
 let X="$(grep -n ${CLOUD_Version} ${API_PATH} | tail -1 | cut -d : -f 1)-4"
-if [[ "$X" = "-3" ]]; then
+if [[ "$X" =~ "(-3|-4)" ]]; then
   TIME r "获取云端固件体积失败!"
   export CLOUD_Firmware_Size="1"
 else
@@ -339,7 +339,7 @@ fi
 }
 
 function download_firmware() {
-cd ${Download_Path}
+cd "${Download_Path}"
 TIME g "正在下载云端固件,请耐心等待..."
 echo
 if [[ "$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)" == "301" ]]; then
@@ -348,7 +348,7 @@ if [[ "$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)" 
     TIME r "下载固件失败，切换工具继续下载中..."
     rm -rf "${CLOUD_Version}" && wget -q "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
     if [[ $? -ne 0 ]];then
-      TIME r "下载云端固件失败,请尝试手动安装!"
+      TIME r "下载云端固件失败,请检查网络再尝试或手动安装固件!"
       echo
       exit 1
     else
@@ -360,10 +360,10 @@ if [[ "$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)" 
 else
   rm -rf "${CLOUD_Version}" && curl -# -LJO "https://ghproxy.com/${Release_download}/${CLOUD_Version}"
   if [[ $? -ne 0 ]];then
-    echo "下载错误，切换工具继续下载中..."
+    TIME r "下载固件失败，切换工具继续下载中..."
     rm -rf "${CLOUD_Version}" && wget -q "https://pd.zwc365.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
     if [[ $? -ne 0 ]];then
-      TIME r "下载云端固件失败,请尝试手动安装!"
+      TIME r "下载云端固件失败,请检查网络再尝试或手动安装固件!"
       echo
       exit 1
     else
@@ -401,9 +401,10 @@ fi
 }
 
 function update_firmware() {
-chmod 777 ${CLOUD_Version}
-[[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
+cd "${Download_Path}"
 TIME g "正在执行"${Update_explain}",更新期间请不要断开电源或重启设备 ..."
+chmod 777 "${CLOUD_Version}"
+[[ "$(cat ${PKG_List})" =~ "gzip" ]] && opkg remove gzip > /dev/null 2>&1
 sleep 2
 if [[ "${AutoUpdate_Mode}" == "1" ]]; then
   if [[ -f "/etc/deletefile" ]]; then
@@ -420,18 +421,18 @@ if [[ "${AutoUpdate_Mode}" == "1" ]]; then
     /etc/init.d/cron restart
   fi
   cp -Rf /etc/config/network /mnt/network
-  mv -f /etc/config/luci /tmp/luci
+  mv -f /etc/config/luci /tmp/luci_luci
   rm -rf /mnt/back.tar.gz
   sysupgrade -b /mnt/back.tar.gz
   [[ $? -ne 0 ]] && {
-    mv -f /tmp/luci /etc/config/luci
+    mv -f /tmp/luci_luci /etc/config/luci
     export Upgrade_Options="sysupgrade -q"
   } || {
     export Upgrade_Options="sysupgrade -f /mnt/back.tar.gz"
   }
 fi
 
-${Upgrade_Options} ${CLOUD_Version}
+"${Upgrade_Options}" "${CLOUD_Version}"
 }
 
 function Update_u() {
@@ -525,8 +526,8 @@ else
       ;;
       esac
       done
-      export Github_uci=$(uci get autoupdate.@login[0].github 2>/dev/null)
-      [[ -n "${Github_uci}" ]] && [[ "${Github_uci}" != "${Input_Other}" ]] && {
+      export Github_uci="$(uci get autoupdate.@login[0].github 2>/dev/null)"
+      if [[ -n "${Github_uci}" ]] && [[ ! "${Github_uci}" == "${Input_Other}" ]]; then
         export ApAuthor="${Input_Other%.git*}"
         export custm_github_url="${ApAuthor##*com/}"
         export curret_github_url="$(grep Warehouse= /bin/openwrt_info | cut -d "=" -f2)"
@@ -539,19 +540,19 @@ else
         export custm_github_url=""
         export curret_github_url=""	
         echo
-      }
+      fi
 
       Input_Other="${Input_Other:-"$Github"}"
-      [[ "${Github}" != "${Input_Other}" ]] && {
+      if [[ ! "${Github}" == "${Input_Other}" ]]; then
         sed -i "s?${Github}?${Input_Other}?g" /bin/openwrt_info
         unset Input_Other
         exit 0
-      } || {
+      else
         TIME g "INPUT: ${Input_Other}"
         TIME r "输入的 Github 地址相同,无需修改!"
         echo
         exit 1
-      }
+      fi
   ;;
   -z)
     TIME g "加载信息中，请稍后..."
