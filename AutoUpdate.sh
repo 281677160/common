@@ -89,6 +89,27 @@ opkg list | awk '{print $1}' > ${Download_Path}/Installed_PKG_List
 export PKG_List="${Download_Path}/Installed_PKG_List"
 export AutoUpdate_Log_Path="/tmp"
 
+
+function Helper_ml() {
+clear
+echo
+echo
+echo "命令说明：
+
+AutoUpdate  保留配置更新固件
+
+AutoUpdate -n 不保留配置更新固件
+
+AutoUpdate -s 查看详情
+
+AutoUpdate -h 查看命令说明
+
+AutoUpdate -z 转换其他作者固件（前提是您编译了有其他作者的固件）
+
+"
+exit 0
+}
+
 function Shell_Helper() {
 if [[ -f "/etc/local_Version" ]]; then
   export LOCAL_Version="$(cat /etc/local_Version)" > /dev/null 2>&1
@@ -532,15 +553,21 @@ else
         exit 1
       }
   ;;
+  -z)
+    TIME g "加载信息中，请稍后..."
+    replace
+  ;;
   -h)
     TIME g "加载信息中，请稍后..."
     model_name
     Shell_Helper
   ;;
+  -s)
+    Helper_ml
+  ;;
   *)
     echo -e "\nERROR INPUT: [$*]"
-    model_name
-    Shell_Helper
+    Helper_ml
   ;;
   esac
 fi
