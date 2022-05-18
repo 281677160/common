@@ -15,7 +15,7 @@ function GET_PID() {
 function LOGGER() {
   [[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
   [[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
-  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
+  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate)-${Update_explain}] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
 }
 
 White="\033[0;37m"
@@ -54,7 +54,6 @@ TIME() {
   }
 }
 
-Version=V6.9
 if [[ -f /bin/openwrt_info ]]; then
   chmod +x /bin/openwrt_info
   source /bin/openwrt_info
@@ -78,6 +77,8 @@ else
   echo "未检测到openwrt_info文件,无法运行更新程序!" > /tmp/cloud_version
   exit 1
 fi
+
+export Version=V6.9
 export Input_Option=$1
 export Input_Other=$2
 export Kernel="$(egrep -o "[0-9]+\.[0-9]+\.[0-9]+" /usr/lib/opkg/info/kernel.control)"
@@ -175,7 +176,7 @@ mvebu)
 esac
 }
 
-function api_shuju() {
+function api_data() {
 TIME g "正在获取云端API数据..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
 wget -q ${Github_API1} -O ${API_PATH} > /dev/null 2>&1
@@ -210,15 +211,15 @@ TIME g "正在获取云端固件版本信息..."
 export CLOUD_Version="$(egrep -o "${CLOUD_CHAZHAO}-[0-9]+-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')"
 export CLOUD_Firmware="$(echo ${CLOUD_Version} | egrep -o "${SOURCE}-${DEFAULT_Device}-[0-9]+")"
 if [[ -z "${CLOUD_Version}" ]]; then
-  TIME r "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致版本信息不一致!"
-  echo "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致版本信息不一致!" > /tmp/cloud_version
+  TIME r "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致固件版本信息不一致!"
+  echo "获取云端固件版本信息失败,如果是x86的话,注意固件的引导模式是否对应,或者是蛋痛的脚本作者修改过脚本导致固件版本信息不一致!" > /tmp/cloud_version
   exit 1
 else
   TIME y "获取云端固件版本成功,进行对比本地版本和云端版本!"
 fi
 }
 
-function Version_Tags() {
+function record_version() {
 cat > /tmp/Version_Tags <<-EOF
 LOCAL_Firmware=${LOCAL_Firmware}
 CLOUD_Firmware=${CLOUD_Firmware}
@@ -237,8 +238,13 @@ export CLOUD_Firmware="$(grep 'CLOUD_Firmware=' "/tmp/Version_Tags" | cut -d "-"
 }
 
 function firmware_Size() {
-let X=$(grep -n "${CLOUD_Version}" ${API_PATH} | tail -1 | cut -d : -f 1)-4
-let CLOUD_Firmware_Size=$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1
+let X="$(grep -n ${CLOUD_Version} ${API_PATH} | tail -1 | cut -d : -f 1)-4"
+if [[ "$X" = "-3" ]]; then
+  TIME r "获取云端固件体积失败!"
+  export CLOUD_Firmware_Size="1"
+else
+  let CLOUD_Firmware_Size="$(sed -n "${X}p" ${API_PATH} | egrep -o "[0-9]+" | awk '{print ($1)/1048576}' | awk -F. '{print $1}')+1"
+fi
 if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
   TIME g "tmp 剩余空间: ${TMP_Available}M"
   TIME r "tmp空间不足[${CLOUD_Firmware_Size}M],不够下载固件所需,请清理tmp空间或者增加运行内存!"
@@ -247,7 +253,7 @@ if [[ "${TMP_Available}" -lt "${CLOUD_Firmware_Size}" ]]; then
 fi
 }
 
-function bidui_firmware() {
+function comparison_firmware() {
 echo
 echo -e "\n本地版本：${LOCAL_Version}"
 echo "云端版本：${CLOUD_Version}"
@@ -319,7 +325,7 @@ echo
 if [[ "$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)" == "301" ]]; then
   rm -rf "${CLOUD_Version}" && curl -# -LJO "${Release_download}/${CLOUD_Version}"
   if [[ $? -ne 0 ]];then
-    echo "下载错误，切换工具继续下载中..."
+    TIME r "下载固件失败，切换工具继续下载中..."
     rm -rf "${CLOUD_Version}" && wget -q "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
     if [[ $? -ne 0 ]];then
       TIME r "下载云端固件失败,请尝试手动安装!"
@@ -379,8 +385,11 @@ chmod 777 ${CLOUD_Version}
 [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
 TIME g "正在执行"${Update_explain}",更新期间请不要断开电源或重启设备 ..."
 sleep 2
-if [[ "${AutoUpdate_Mode}" == "1" ]] || [[ "${Update_Mode}" == "1" ]]; then
-  chmod 775 "/etc/deletefile" && source /etc/deletefile
+if [[ "${AutoUpdate_Mode}" == "1" ]]; then
+  if [[ -f "/etc/deletefile" ]]; then
+    chmod 775 "/etc/deletefile"
+    source /etc/deletefile
+  fi
   curl -fsSL https://ghproxy.com/https://raw.githubusercontent.com/281677160/common/main/Custom/Detectionnetwork > /mnt/Detectionnetwork
   if [[ $? -ne 0 ]]; then
     wget -P /mnt https://raw.githubusercontent.com/281677160/common/main/Custom/Detectionnetwork -O /mnt/Detectionnetwork
@@ -408,9 +417,9 @@ ${Upgrade_Options} ${CLOUD_Version}
 function Update_u() {
 lian_wang
 model_name
-api_shuju
+api_data
 cloud_Version
-Version_Tags
+record_version
 firmware_Size
 u_firmware
 download_firmware
@@ -421,32 +430,36 @@ update_firmware
 function Update_Options() {
 lian_wang
 model_name
-api_shuju
+api_data
 cloud_Version
-Version_Tags
+record_version
 firmware_Size
-bidui_firmware
+comparison_firmware
 download_firmware
 md5sum_sha256sum
 input_other_t
 update_firmware
 }
 
-clear && echo "Openwrt-AutoUpdate Script ${Version}"
+clear
+echo
+echo "Openwrt-AutoUpdate Script ${Version}"
 echo
 if [[ -z "${Input_Option}" ]]; then
-  export Upgrade_Options="sysupgrade -q"
-  export Update_Mode="1"
-  export Update_explain="保留配置更新固件"
   TIME h "执行: 更新固件[保留配置]"
+  export Update_explain="保留配置更新固件"
+  export Upgrade_Options="sysupgrade -q"
+  export AutoUpdate_Mode="1"
   Update_Options
 else
   case ${Input_Option} in
   -t | -n | -f | -u | -N | -w)
     case ${Input_Option} in
     -t)
-      export Input_Other="-t"
       TIME h "执行: 测试模式(只运行程序,不安装固件)"
+      export Update_explain="测试模式"
+      export AutoUpdate_Mode="0"
+      export Input_Other="-t"
       Update_Options
     ;;
     -w)
@@ -454,14 +467,16 @@ else
       Update_Options
     ;;
     -n | -N)
-      export Upgrade_Options="sysupgrade -F -n"
       TIME h "执行: 更新固件(不保留配置)"
       export Update_explain="不保留配置更新固件"
+      export Upgrade_Options="sysupgrade -F -n"
+      export AutoUpdate_Mode="0"
       Update_Options
     ;;
     -u)
+      export Update_explain="在线静默保留配置更新固件"
       export Upgrade_Options="sysupgrade -q"
-      export Update_explain="保留配置更新固件"
+      export AutoUpdate_Mode="1"
       Update_u
     ;;
     esac
