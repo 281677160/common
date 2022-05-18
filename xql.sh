@@ -319,7 +319,7 @@ echo
 if [[ "$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)" == "301" ]]; then
   rm -rf "${CLOUD_Version}" && curl -# -LJO "${Release_download}/${CLOUD_Version}"
   if [[ $? -ne 0 ]];then
-    echo "下载错误，切换工具继续下载中..."
+    TIME r "下载固件失败，切换工具继续下载中..."
     rm -rf "${CLOUD_Version}" && wget -q "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
     if [[ $? -ne 0 ]];then
       TIME r "下载云端固件失败,请尝试手动安装!"
