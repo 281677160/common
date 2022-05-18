@@ -534,10 +534,12 @@ else
   ;;
   -h)
     TIME g "加载信息中，请稍后..."
+    model_name
     Shell_Helper
   ;;
   *)
     echo -e "\nERROR INPUT: [$*]"
+    model_name
     Shell_Helper
   ;;
   esac
