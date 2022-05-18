@@ -42,13 +42,14 @@ TIME() {
 
 Version=V6.9
 TIME g "检测机器是否联网..."
-curl -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
+curl --connect-timeout 8 -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
 if [[ -f /tmp/baidu.html ]] && [[ `grep -c "百度一下" /tmp/baidu.html` -ge '1' ]]; then
-	rm -rf /tmp/baidu.html
+  rm -rf /tmp/baidu.html
   TIME y "您的网络正常!"
 else
-	TIME r "您可能没进行联网,请检查网络,或您的网络不能连接百度?"
-	exit 1
+  TIME r "您可能没进行联网,请检查网络,或您的网络不能连接百度?"
+  echo "您可能没进行联网,请检查网络,或您的网络不能连接百度?" > /tmp/cloud_version
+  exit 1
 fi
 
 if [[ -f /bin/openwrt_info ]]; then
@@ -56,12 +57,22 @@ if [[ -f /bin/openwrt_info ]]; then
   source /bin/openwrt_info
   if [[ $? -ne 0 ]];then
     TIME r "openwrt_info数据有误,请检查openwrt_info!"
+    echo "/bin/openwrt_info文件数据有误,请检查openwrt_info!" > /tmp/cloud_version
     exit 1
   fi
-  [[ -z ${CURRENT_Version} ]] && TIME r "本地固件版本获取失败,请检查/bin/openwrt_info文件的值!" && exit 1
-  [[ -z ${Github} ]] && TIME r "Github地址获取失败,请检查/bin/openwrt_info文件的值!" && exit 1
+  if [[ -z ${CURRENT_Version} ]]; then
+    TIME r "本地固件版本信息获取失败,请检查/bin/openwrt_info文件的值!"
+    echo "本地固件版本信息获取失败,请检查/bin/openwrt_info文件的值!" > /tmp/cloud_version
+    exit 1
+  fi
+  if [[ -z ${Github} ]]; then
+    TIME r "Github地址获取失败,请检查/bin/openwrt_info文件的值!"
+    echo "Github地址获取失败,请检查/bin/openwrt_info文件的值!" > /tmp/cloud_version
+    exit 1
+  fi
 else
   TIME r "未检测到openwrt_info文件,无法运行更新程序!"
+  echo "未检测到openwrt_info文件,无法运行更新程序!" > /tmp/cloud_version
   exit 1
 fi
 export Input_Option=$1
@@ -148,112 +159,14 @@ mvebu)
 esac
 }
 
+function openwrt_upgrade() {
 cat > /etc/openwrt_upgrade <<-EOF
 LOCAL_Firmware=${CURRENT_Version}
 MODEL_type=${BOOT_Type}${Firmware_SFX}
 KERNEL_type=${Kernel} - ${LUCI_EDITION}
 CURRENT_Device=${CURRENT_Device}
 EOF
-
-
-function GET_PID() {
-  local Result
-  while [[ $1 ]];do
-    Result=$(busybox ps | grep "$1" | grep -v "grep" | awk '{print $1}' | awk 'NR==1')
-    [[ -n ${Result} ]] && echo ${Result}
-  shift
-  done
 }
-
-
-function LOGGER() {
-  [[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
-  [[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
-  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
-}
-
-
-clear && echo "Openwrt-AutoUpdate Script ${Version}"
-  export Upgrade_Options="sysupgrade -q"
-  export Update_Mode="1"
-  export Update_explain="保留配置更新固件"
-  TIME h "执行: 更新固件[保留配置]"
-
-
-  case ${Input_Option} in
-    -t)
-      export Input_Other="-t"
-      TIME h "执行: 测试模式(只运行程序,不安装固件)"
-    ;;
-    -w)
-      export Input_Other="-w"
-    ;;
-    -n)
-      export Upgrade_Options="sysupgrade -n"
-      TIME h "执行: 更新固件(不保留配置)"
-      export Update_explain="不保留配置更新固件"
-    ;;
-    -u)
-      export AutoUpdate_Mode="1"
-      export Upgrade_Options="sysupgrade -q"
-    ;;
-    -c)
-      Github="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
-      TIME h "执行：更换[Github地址]操作"
-      TIME y "正确地址格式：https://github.com/帐号/仓库"
-      TIME h  "现在所用地址为：${Github}"
-      echo
-      export YUMING="请输入新的Github地址(直接回车为不修改,退出程序)"      
-      while :; do
-      dogithub=""
-      read -p "${YUMING}：" Input_Other
-      Input_Other="${Input_Other:-"$Github"}"
-      if [[ "$(echo ${Input_Other} |grep -c 'https://github.com/.*/.*')" == '1' ]]; then
-        dogithub="Y"
-      fi
-      case $dogithub in
-      Y)
-        export Input_Other="${Input_Other}"
-      break
-      ;;
-      *)
-        export YUMING="敬告：您输入的Github地址无效,请输入正确格式的Github地址,或留空回车退出!"
-      ;;
-      esac
-      done
-      export Github_uci=$(uci get autoupdate.@login[0].github 2>/dev/null)
-      [[ -n "${Github_uci}" ]] && [[ "${Github_uci}" != "${Input_Other}" ]] && {
-        export ApAuthor="${Input_Other%.git*}"
-        export custm_github_url="${ApAuthor##*com/}"
-        export curret_github_url="$(grep Warehouse= /bin/openwrt_info | cut -d "=" -f2)"
-        sed -i "s?${curret_github_url}?${custm_github_url}?g" /bin/openwrt_info
-        export Input_Other="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
-        uci set autoupdate.@login[0].github=${Input_Other}
-        uci commit autoupdate
-        TIME y "Github 地址已更换为: ${Input_Other}"
-        TIME y "UCI 设置已更新!"
-        export custm_github_url=""
-        export curret_github_url=""	
-        echo
-      }
-
-      Input_Other="${Input_Other:-"$Github"}"
-      [[ "${Github}" != "${Input_Other}" ]] && {
-        sed -i "s?${Github}?${Input_Other}?g" /bin/openwrt_info
-        unset Input_Other
-        exit 0
-      } || {
-        TIME g "INPUT: ${Input_Other}"
-        TIME r "输入的 Github 地址相同,无需修改!"
-        echo
-        exit 1
-      }
-    ;;
-    -h)
-      TIME g "加载信息中，请稍后..."
-      Shell_Helper
-  ;;
-  esac
 
 function api_shuju() {
 TIME g "正在获取云端API数据..."
@@ -300,13 +213,15 @@ else
 fi
 }
 
+function cloud_Version() {
 # 用在LUCI页面的版本对比
-[[ "${Input_Other}" == "-w" ]] && {
+if [[ "${Input_Other}" == "-w" ]]; then
 cat > /tmp/Version_Tags <<-EOF
 LOCAL_Firmware=${CURRENT_Version}
 CLOUD_Firmware=${CLOUD_Firmware}
 EOF
 exit 0
+fi
 }
 
 function firmware_Size() {
@@ -411,18 +326,6 @@ if [[ ! "${LOCAL_256}" == "${CLOUD_256}" ]]; then
 fi
 }
 
-
-
-
-
-
-[[ "${Input_Other}" == "-t" ]] && {
-  TIME z "测试模式运行完毕!"
-  rm -rf "${Download_Path}"
-  echo
-  exit 0
-}
-
 function update_firmware() {
 chmod 777 ${CLOUD_Version}
 [[ "$(cat ${PKG_List})" =~ gzip ]] && opkg remove gzip > /dev/null 2>&1
@@ -455,4 +358,107 @@ fi
 ${Upgrade_Options} ${CLOUD_Version}
 }
 
-exit 0
+function baoliu_Update() {
+api_shuju
+model_name
+cloud_Version
+firmware_Size
+bidui_firmware
+download_firmware
+md5sum_sha256sum
+update_firmware
+}
+
+function menu() {
+if [[ -z "${Input_Option}" ]]; then
+  export Upgrade_Options="sysupgrade -q"
+  export Update_Mode="1"
+  export Update_explain="保留配置更新固件"
+  TIME h "执行: 更新固件[保留配置]"
+  baoliu_Update
+else
+  case ${Input_Option} in
+  -t | -n | -f | -u | -N | -w)
+    case ${Input_Option} in
+    -t)
+      export Input_Other="-t"
+      TIME h "执行: 测试模式(只运行程序,不安装固件)"
+    ;;
+    -w)
+      export Input_Other="-w"
+    ;;
+    -n | -N)
+      export Upgrade_Options="sysupgrade -n"
+      TIME h "执行: 更新固件(不保留配置)"
+      export Update_explain="不保留配置更新固件"
+    ;;
+    -u)
+      export AutoUpdate_Mode="1"
+      export Upgrade_Options="sysupgrade -q"
+    ;;
+    esac
+  ;;
+  -c)
+      Github="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
+      TIME h "执行：更换[Github地址]操作"
+      TIME y "正确地址格式：https://github.com/帐号/仓库"
+      TIME h  "现在所用地址为：${Github}"
+      echo
+      export YUMING="请输入新的Github地址(直接回车为不修改,退出程序)"      
+      while :; do
+      dogithub=""
+      read -p "${YUMING}：" Input_Other
+      Input_Other="${Input_Other:-"$Github"}"
+      if [[ "$(echo ${Input_Other} |grep -c 'https://github.com/.*/.*')" == '1' ]]; then
+        dogithub="Y"
+      fi
+      case $dogithub in
+      Y)
+        export Input_Other="${Input_Other}"
+      break
+      ;;
+      *)
+        export YUMING="敬告：您输入的Github地址无效,请输入正确格式的Github地址,或留空回车退出!"
+      ;;
+      esac
+      done
+      export Github_uci=$(uci get autoupdate.@login[0].github 2>/dev/null)
+      [[ -n "${Github_uci}" ]] && [[ "${Github_uci}" != "${Input_Other}" ]] && {
+        export ApAuthor="${Input_Other%.git*}"
+        export custm_github_url="${ApAuthor##*com/}"
+        export curret_github_url="$(grep Warehouse= /bin/openwrt_info | cut -d "=" -f2)"
+        sed -i "s?${curret_github_url}?${custm_github_url}?g" /bin/openwrt_info
+        export Input_Other="$(grep Github= /bin/openwrt_info | cut -d "=" -f2)"
+        uci set autoupdate.@login[0].github=${Input_Other}
+        uci commit autoupdate
+        TIME y "Github 地址已更换为: ${Input_Other}"
+        TIME y "UCI 设置已更新!"
+        export custm_github_url=""
+        export curret_github_url=""	
+        echo
+      }
+
+      Input_Other="${Input_Other:-"$Github"}"
+      [[ "${Github}" != "${Input_Other}" ]] && {
+        sed -i "s?${Github}?${Input_Other}?g" /bin/openwrt_info
+        unset Input_Other
+        exit 0
+      } || {
+        TIME g "INPUT: ${Input_Other}"
+        TIME r "输入的 Github 地址相同,无需修改!"
+        echo
+        exit 1
+      }
+  ;;
+  -h)
+    TIME g "加载信息中，请稍后..."
+    Shell_Helper
+  ;;
+  *)
+    echo -e "\nERROR INPUT: [$*]"
+    Shell_Helper
+  ;;
+  esac
+fi
+}
+menu "$@"
