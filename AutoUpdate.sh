@@ -90,7 +90,7 @@ export PKG_List="${Download_Path}/Installed_PKG_List"
 export AutoUpdate_Log_Path="/tmp"
 
 
-function Helper_ml() {
+function mingling_sm() {
 clear
 echo
 echo
@@ -563,11 +563,11 @@ else
     Shell_Helper
   ;;
   -m)
-    Helper_ml
+    mingling_sm
   ;;
   *)
     echo -e "\nERROR INPUT: [$*]"
-    Helper_ml
+    mingling_sm
   ;;
   esac
 fi
