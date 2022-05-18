@@ -15,7 +15,7 @@ function GET_PID() {
 function LOGGER() {
   [[ ! -d ${AutoUpdate_Log_Path} ]] && mkdir -p ${AutoUpdate_Log_Path}
   [[ ! -f ${AutoUpdate_Log_Path}/AutoUpdate.log ]] && touch ${AutoUpdate_Log_Path}/AutoUpdate.log
-  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate.sh)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
+  echo "[$(date "+%Y-%m-%d-%H:%M:%S")] [$(GET_PID AutoUpdate)] $*" >> ${AutoUpdate_Log_Path}/AutoUpdate.log
 }
 
 White="\033[0;37m"
