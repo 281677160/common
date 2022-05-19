@@ -288,7 +288,7 @@ if [[ ! "${Input_Other}" == "-t" ]]; then
   if [[ "${LOCAL_Firmware}" == "${CLOUD_Firmware}" ]]; then
     QLMEUN="当前版本和云端最高版本一致，是否需要重新安装固件?[Y/n]"
     while :; do
-      read -p "${QLMEUN}"： Choose
+      TIME && read -p "${QLMEUN}"： Choose
       case $Choose in
       [Yy])
         TIME z "正在开始重新安装固件..."
@@ -307,7 +307,7 @@ if [[ ! "${Input_Other}" == "-t" ]]; then
   elif [[ "${LOCAL_Firmware}" -gt "${CLOUD_Firmware}" ]]; then
     QLMEUN="云端最高版本,低于您现在安装的版本,是否强制覆盖现有固件?[Y/n]"
     while :; do
-      read -p "${QLMEUN}"： Choose
+      TIME && read -p "${QLMEUN}"： Choose
       case $Choose in
       [Yy])
         TIME z "开始使用云端版本覆盖现有固件..."
