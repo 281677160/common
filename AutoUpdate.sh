@@ -143,7 +143,7 @@ exit 0
 
 function lian_wang() {
 TIME g "检测机器是否联网..."
-curl --connect-timeout 8 -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
+curl --connect-timeout 6 -o /tmp/baidu.html -s -w %{time_namelookup}: http://www.baidu.com > /dev/null 2>&1
 if [[ -f /tmp/baidu.html ]] && [[ `grep -c "百度一下" /tmp/baidu.html` -ge '1' ]]; then
   rm -rf /tmp/baidu.html
   TIME y "您的网络正常!"
@@ -343,7 +343,7 @@ cd "${Download_Path}"
 TIME g "正在下载云端固件,请耐心等待..."
 echo
 if [[ "$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)" == "301" ]]; then
-  rm -rf "${CLOUD_Version}" && curl -# -LJO "${Release_download}/${CLOUD_Version}"
+  curl -# -L -O "${Release_download}/${CLOUD_Version}"
   if [[ $? -ne 0 ]];then
     TIME r "下载固件失败，切换工具继续下载中..."
     wget --no-check-certificate --content-disposition -q -T 8 -t 2 "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
@@ -358,7 +358,7 @@ if [[ "$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)" 
     TIME y "下载云端固件成功!"
   fi
 else
-  rm -rf "${CLOUD_Version}" && curl -# -LJO "https://ghproxy.com/${Release_download}/${CLOUD_Version}"
+  curl -# -L -O "https://ghproxy.com/${Release_download}/${CLOUD_Version}"
   if [[ $? -ne 0 ]];then
     TIME r "下载固件失败，切换工具继续下载中..."
     wget --no-check-certificate --content-disposition -q -T 8 -t 2 "https://pd.zwc365.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
