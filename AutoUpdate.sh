@@ -114,7 +114,7 @@ function Shell_Helper() {
 if [[ -f "/etc/local_Version" ]]; then
   export LOCAL_Version="$(cat /etc/local_Version)" > /dev/null 2>&1
 else
-  wget -q -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
+  wget --no-check-certificate -q -T 8 -t 2 -P ${Download_Path} https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
   export LOCAL_Version="$(egrep -o "${LOCAL_CHAZHAO}-${BOOT_Type}-[a-zA-Z0-9]+${Firmware_SFX}" ${API_PATH} | awk 'END {print}')" > /dev/null 2>&1
 fi
 clear
@@ -157,10 +157,10 @@ fi
 function api_data() {
 TIME g "正在获取云端API数据..."
 [ ! -d ${Download_Path} ] && mkdir -p ${Download_Path}
-wget -q ${Github_API1} -O ${API_PATH} > /dev/null 2>&1
+wget --no-check-certificate -q -T 8 -t 2 ${Github_API1} -O ${API_PATH} > /dev/null 2>&1
 if [[ $? -ne 0 ]];then
   TIME r "获取云端API数据失败，切换工具继续下载中..."
-  wget -q https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
+  wget --no-check-certificate -q -T 8 -t 2 https://ghproxy.com/${Github_API2} -O ${API_PATH} > /dev/null 2>&1
   if [[ $? -ne 0 ]];then
     TIME r "获取云端API数据失败"
     TIME g "您当前Github地址:${Github}"
@@ -346,7 +346,7 @@ if [[ "$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)" 
   rm -rf "${CLOUD_Version}" && curl -# -LJO "${Release_download}/${CLOUD_Version}"
   if [[ $? -ne 0 ]];then
     TIME r "下载固件失败，切换工具继续下载中..."
-    rm -rf "${CLOUD_Version}" && wget -q "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+    rm -rf "${CLOUD_Version}" && wget --no-check-certificate -q -T 8 -t 2 "https://ghproxy.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
     if [[ $? -ne 0 ]];then
       TIME r "下载云端固件失败,请检查网络再尝试或手动安装固件!"
       echo
@@ -361,7 +361,7 @@ else
   rm -rf "${CLOUD_Version}" && curl -# -LJO "https://ghproxy.com/${Release_download}/${CLOUD_Version}"
   if [[ $? -ne 0 ]];then
     TIME r "下载固件失败，切换工具继续下载中..."
-    rm -rf "${CLOUD_Version}" && wget -q "https://pd.zwc365.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
+    rm -rf "${CLOUD_Version}" && wget --no-check-certificate -q -T 8 -t 2 "https://pd.zwc365.com/${Release_download}/${CLOUD_Version}" -O ${CLOUD_Version}
     if [[ $? -ne 0 ]];then
       TIME r "下载云端固件失败,请检查网络再尝试或手动安装固件!"
       echo
