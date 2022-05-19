@@ -96,6 +96,7 @@ Author=${Author}
 Library=${Library}
 Warehouse=${Warehouse}
 SOURCE=${SOURCE}
+LUCI_EDITION=${LUCI_EDITION}
 DEFAULT_Device=${TARGET_PROFILE}
 Firmware_SFX=${Firmware_SFX}
 TARGET_BOARD=${TARGET_BOARD}
