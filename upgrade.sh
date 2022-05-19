@@ -13,13 +13,13 @@ function Diy_Part1() {
     cp -Rf $BUILD_PATH/AutoUpdate.sh $BASE_PATH/usr/bin/AutoUpdate
     cp -Rf $BUILD_PATH/replace.sh $BASE_PATH/usr/bin/replace
     chmod 777 $BASE_PATH/usr/bin/AutoUpdate $BASE_PATH/usr/bin/replace
+    sed  -i  's/ luci-app-ttyd//g' $HOME_PATH/target/linux/*/Makefile
+    sed  -i  's/ luci-app-autoupdate//g' $HOME_PATH/target/linux/*/Makefile
+    sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd?g' $HOME_PATH/target/linux/*/Makefile
+    [[ -d $HOME_PATH/package/luci-app-autoupdate ]] && echo "增加定时更新插件成功"
   else
     echo "没发现AutoUpdate.sh文件存在，不能增加在线升级固件程序"
   fi
-  sed  -i  's/ luci-app-ttyd//g' $HOME_PATH/target/linux/*/Makefile
-  sed  -i  's/ luci-app-autoupdate//g' $HOME_PATH/target/linux/*/Makefile
-  sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-autoupdate luci-app-ttyd?g' $HOME_PATH/target/linux/*/Makefile
-  [[ -d $HOME_PATH/package/luci-app-autoupdate ]] && echo "增加定时更新插件成功"
 }
 
 function GET_TARGET_INFO() {
@@ -89,28 +89,27 @@ function GET_TARGET_INFO() {
 }
 
 function Diy_Part2() {
-	GET_TARGET_INFO
-	cat >${In_Firmware_Info} <<-EOF
-	Github=${Github}
-	Author=${Author}
-	Library=${Library}
-	Warehouse=${Warehouse}
-	SOURCE=${SOURCE}
-	LUCI_EDITION=${LUCI_EDITION}
-	DEFAULT_Device=${TARGET_PROFILE}
-	Firmware_SFX=${Firmware_SFX}
-	TARGET_BOARD=${TARGET_BOARD}
-	CURRENT_Version=${Openwrt_Version}
-	LOCAL_CHAZHAO=${LOCAL_CHAZHAO}
-	CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
-	Download_Path=/tmp/Downloads
-	Version=${AutoUpdate_Version}
-	API_PATH=/tmp/Downloads/Github_Tags
-	Github_API1=${Github_API1}
-	Github_API2=${Github_API2}
-	Github_Release=${Github_Release}
-	Release_download=${Release_download}
-	EOF
+GET_TARGET_INFO
+cat >${In_Firmware_Info} <<-EOF
+Github=${Github}
+Author=${Author}
+Library=${Library}
+Warehouse=${Warehouse}
+SOURCE=${SOURCE}
+DEFAULT_Device=${TARGET_PROFILE}
+Firmware_SFX=${Firmware_SFX}
+TARGET_BOARD=${TARGET_BOARD}
+CURRENT_Version=${Openwrt_Version}
+LOCAL_CHAZHAO=${LOCAL_CHAZHAO}
+CLOUD_CHAZHAO=${CLOUD_CHAZHAO}
+Download_Path=/tmp/Downloads
+Version=${AutoUpdate_Version}
+API_PATH=/tmp/Downloads/Github_Tags
+Github_API1=${Github_API1}
+Github_API2=${Github_API2}
+Github_Release=${Github_Release}
+Release_download=${Release_download}
+EOF
 }
 
 function Diy_Part3() {
