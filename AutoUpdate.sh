@@ -424,12 +424,12 @@ if [[ "${AutoUpdate_Mode}" == "1" ]]; then
   mv -f /etc/config/luci /tmp/luci_luci
   rm -rf /mnt/back.tar.gz
   sysupgrade -b /mnt/back.tar.gz
-  [[ $? -ne 0 ]] && {
+  if [[ `ls -1 /mnt | grep -c "back.tar.gz"` -ge '0' ]]; then
     mv -f /tmp/luci_luci /etc/config/luci
     export Upgrade_Options="sysupgrade -q"
-  } || {
+  else
     export Upgrade_Options="sysupgrade -f /mnt/back.tar.gz"
-  }
+  fi
 fi
 
 "${Upgrade_Options}" "${CLOUD_Version}"
