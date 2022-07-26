@@ -768,7 +768,6 @@ fi
 }
 
 function Diy_adguardhome() {
-## adguardhome编译时候带自选要不要编译内核了，此功能没用
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo "正在执行：给adguardhome下载核心"
   if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
@@ -874,6 +873,7 @@ else
 fi
 echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> $GITHUB_ENV
 echo "FIRMWARE=$HOME_PATH/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> $GITHUB_ENV
+echo "您正在编译的机型为：${{ env.TARGET_PROFILE }}"
 }
 
 function Make_upgrade() {
@@ -952,6 +952,15 @@ cd $HOME_PATH
 ./scripts/feeds install -a
 [[ -f $BUILD_PATH/$CONFIG_FILE ]] && mv $BUILD_PATH/$CONFIG_FILE .config
 make defconfig > /dev/null 2>&1
+if [[ "${openclash_branch}" = "master" ]]; then
+  find . -name 'luci-app-openclash-dev' | xargs -i rm -rf {}
+  echo "正在使用master分支的openclash"
+elif [[ "${openclash_branch}" = "dev" ]]; then
+  find . -name 'luci-app-openclash-master' | xargs -i rm -rf {}
+  echo "正在使用dev分支的openclash"
+else
+  echo "没发现该分支的openclash"
+fi
 }
 
 function Diy_Notice() {
