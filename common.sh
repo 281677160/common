@@ -952,10 +952,10 @@ cd $HOME_PATH
 ./scripts/feeds install -a
 [[ -f $BUILD_PATH/$CONFIG_FILE ]] && mv $BUILD_PATH/$CONFIG_FILE .config
 make defconfig > /dev/null 2>&1
-if [[ "${openclash_branch}" == "master" ]]; then
+if [[ "${OpenClash_branch}" == "master" ]]; then
   find . -name 'luci-app-openclash-dev' | xargs -i rm -rf {}
   echo "正在使用master分支的openclash"
-elif [[ "${openclash_branch}" == "dev" ]]; then
+elif [[ "${OpenClash_branch}" == "dev" ]]; then
   find . -name 'luci-app-openclash-master' | xargs -i rm -rf {}
   echo "正在使用dev分支的openclash"
 else
