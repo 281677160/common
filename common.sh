@@ -873,7 +873,6 @@ else
 fi
 echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> $GITHUB_ENV
 echo "FIRMWARE=$HOME_PATH/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> $GITHUB_ENV
-echo "您正在编译的机型为：${{ env.TARGET_PROFILE }}"
 }
 
 function Make_upgrade() {
