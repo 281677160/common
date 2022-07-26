@@ -942,6 +942,13 @@ function Diy_part_sh() {
 echo "正在执行：运行$DIY_PART_SH文件"
 cd $HOME_PATH
 /bin/bash $BUILD_PATH/$DIY_PART_SH
+if [[ "${OpenClash_branch}" == "master" ]]; then
+  echo "OpenClash_branch=master" >> $GITHUB_ENV
+elif [[ "${OpenClash_branch}" == "dev" ]]; then
+  echo "OpenClash_branch=dev" >> $GITHUB_ENV
+else
+  echo "没发现该分支的openclash"
+fi
 }
 
 function Diy_feeds() {
