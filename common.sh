@@ -960,7 +960,9 @@ elif [ -n "$(ls -A "dev" 2>/dev/null)" ]; then
   find . -name 'luci-app-openclash-master' | xargs -i rm -rf {}
   echo "正在使用dev分支的openclash"
 else
-  echo "没发现该分支的openclash"
+  echo "没发现该分支的openclash，默认使用master分支"
+  find . -name 'luci-app-openclash-dev' | xargs -i rm -rf {}
+  echo "正在使用master分支的openclash"
 fi
 }
 
