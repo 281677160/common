@@ -940,7 +940,8 @@ fi
 function Diy_part_sh() {
 echo "正在执行：运行$DIY_PART_SH文件"
 cd $HOME_PATH
-rm -rf mastet dev
+rm -rf mastet > /dev/null 2>&1
+rm -rf dev > /dev/null 2>&1
 /bin/bash $BUILD_PATH/$DIY_PART_SH
 }
 
