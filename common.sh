@@ -940,14 +940,8 @@ fi
 function Diy_part_sh() {
 echo "正在执行：运行$DIY_PART_SH文件"
 cd $HOME_PATH
+rm -rf mastet dev
 /bin/bash $BUILD_PATH/$DIY_PART_SH
-if [[ "${OpenClash_branch}" == "master" ]]; then
-  echo "OpenClash_branch=master" >> $GITHUB_ENV
-elif [[ "${OpenClash_branch}" == "dev" ]]; then
-  echo "OpenClash_branch=dev" >> $GITHUB_ENV
-else
-  echo "没发现该分支的openclash"
-fi
 }
 
 function Diy_feeds() {
@@ -958,10 +952,10 @@ cd $HOME_PATH
 ./scripts/feeds install -a
 [[ -f $BUILD_PATH/$CONFIG_FILE ]] && mv $BUILD_PATH/$CONFIG_FILE .config
 make defconfig > /dev/null 2>&1
-if [[ "${OpenClash_branch}" == "master" ]]; then
+if [ -n "$(ls -A "master" 2>/dev/null)" ]; then
   find . -name 'luci-app-openclash-dev' | xargs -i rm -rf {}
   echo "正在使用master分支的openclash"
-elif [[ "${OpenClash_branch}" == "dev" ]]; then
+elif [ -n "$(ls -A "dev" 2>/dev/null)" ]; then
   find . -name 'luci-app-openclash-master' | xargs -i rm -rf {}
   echo "正在使用dev分支的openclash"
 else
