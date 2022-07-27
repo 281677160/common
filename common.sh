@@ -943,28 +943,25 @@ cd $HOME_PATH
 rm -rf mastet > /dev/null 2>&1
 rm -rf dev > /dev/null 2>&1
 /bin/bash $BUILD_PATH/$DIY_PART_SH
+if [ -n "$(ls -A "master" 2>/dev/null)" ]; then
+  rm -rf package/luci-app-openclash
+  git clone -b "master" --single-branch "https://github.com/vernesong/OpenClash" package/luci-app-openclash
+  echo "正在使用master分支的openclash"
+elif [ -n "$(ls -A "dev" 2>/dev/null)" ]; then
+  rm -rf package/luci-app-openclash
+  git clone -b "dev" --single-branch "https://github.com/vernesong/OpenClash" package/luci-app-openclash
+  echo "正在使用dev分支的openclash"
+else
+  echo "没发现该分支的openclash，默认使用master分支"
+  rm -rf package/luci-app-openclash
+  git clone -b "master" --single-branch "https://github.com/vernesong/OpenClash" package/luci-app-openclash
+  echo "正在使用master分支的openclash"
+fi
 }
 
 function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd $HOME_PATH
-
-
-if [ -n "$(ls -A "master" 2>/dev/null)" ]; then
-  find . -name 'luci-app-openclash' | xargs -i rm -rf {}
-  git clone https://github.com/vernesong/OpenClash package/luci-app-openclash
-  echo "正在使用master分支的openclash"
-elif [ -n "$(ls -A "dev" 2>/dev/null)" ]; then
-  find . -name 'luci-app-openclash' | xargs -i rm -rf {}
-  git clone -b dev https://github.com/vernesong/OpenClash package/luci-app-openclash
-  echo "正在使用dev分支的openclash"
-else
-  echo "没发现该分支的openclash，默认使用master分支"
-  find . -name 'luci-app-openclash' | xargs -i rm -rf {}
-  git clone https://github.com/vernesong/OpenClash package/luci-app-openclash
-  echo "正在使用master分支的openclash"
-fi
-
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
