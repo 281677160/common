@@ -949,10 +949,6 @@ function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd $HOME_PATH
 ./scripts/feeds update -a
-./scripts/feeds install -a > /dev/null 2>&1
-./scripts/feeds install -a
-[[ -f $BUILD_PATH/$CONFIG_FILE ]] && mv $BUILD_PATH/$CONFIG_FILE .config
-make defconfig > /dev/null 2>&1
 if [ -n "$(ls -A "master" 2>/dev/null)" ]; then
   find . -name 'luci-app-openclash-dev' | xargs -i rm -rf {}
   echo "正在使用master分支的openclash"
@@ -964,6 +960,10 @@ else
   find . -name 'luci-app-openclash-dev' | xargs -i rm -rf {}
   echo "正在使用master分支的openclash"
 fi
+./scripts/feeds install -a > /dev/null 2>&1
+./scripts/feeds install -a
+[[ -f $BUILD_PATH/$CONFIG_FILE ]] && mv $BUILD_PATH/$CONFIG_FILE .config
+make defconfig > /dev/null 2>&1
 }
 
 function Diy_Notice() {
