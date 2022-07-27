@@ -951,9 +951,11 @@ cd $HOME_PATH
 ./scripts/feeds update -a
 if [ -n "$(ls -A "master" 2>/dev/null)" ]; then
   find . -name 'luci-app-openclash-dev' | xargs -i rm -rf {}
+  mv -f feeds/danshui/luci-app-openclash-master/luci-app-openclash luci-app-openclash
   echo "正在使用master分支的openclash"
 elif [ -n "$(ls -A "dev" 2>/dev/null)" ]; then
   find . -name 'luci-app-openclash-master' | xargs -i rm -rf {}
+  mv -f feeds/danshui/luci-app-openclash-dev/luci-app-openclash luci-app-openclash
   echo "正在使用dev分支的openclash"
 else
   echo "没发现该分支的openclash，默认使用master分支"
