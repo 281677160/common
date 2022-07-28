@@ -1,5 +1,5 @@
 #!/bin/bash
-# https://github.com/281677160/AutoBuild-OpenWrt
+# https://github.com/281677160/build-actions
 # common Module by 28677160
 # matrix.target=${matrixtarget}
 
