@@ -945,16 +945,16 @@ rm -rf dev > /dev/null 2>&1
 /bin/bash $BUILD_PATH/$DIY_PART_SH
 if [ -n "$(ls -A "master" 2>/dev/null)" ]; then
   rm -rf package/luci-app-openclash
-  git clone -b "master" --single-branch "https://github.com/vernesong/OpenClash" package/luci-app-openclash
+  git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
   echo "正在使用master分支的openclash"
 elif [ -n "$(ls -A "dev" 2>/dev/null)" ]; then
   rm -rf package/luci-app-openclash
-  git clone -b "dev" --single-branch "https://github.com/vernesong/OpenClash" package/luci-app-openclash
+  git clone -b dev --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
   echo "正在使用dev分支的openclash"
 else
   echo "没发现该分支的openclash，默认使用master分支"
   rm -rf package/luci-app-openclash
-  git clone -b "master" --single-branch "https://github.com/vernesong/OpenClash" package/luci-app-openclash
+  git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
   echo "正在使用master分支的openclash"
 fi
 rm -rf master > /dev/null 2>&1
