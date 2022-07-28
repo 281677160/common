@@ -940,7 +940,7 @@ fi
 function Diy_part_sh() {
 echo "正在执行：运行$DIY_PART_SH文件"
 cd $HOME_PATH
-rm -rf mastet > /dev/null 2>&1
+rm -rf master > /dev/null 2>&1
 rm -rf dev > /dev/null 2>&1
 /bin/bash $BUILD_PATH/$DIY_PART_SH
 if [ -n "$(ls -A "master" 2>/dev/null)" ]; then
@@ -957,6 +957,8 @@ else
   git clone -b "master" --single-branch "https://github.com/vernesong/OpenClash" package/luci-app-openclash
   echo "正在使用master分支的openclash"
 fi
+rm -rf master > /dev/null 2>&1
+rm -rf dev > /dev/null 2>&1
 }
 
 function Diy_feeds() {
