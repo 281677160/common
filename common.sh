@@ -110,7 +110,7 @@ if [[ ! ${bendi_script} == "1" ]]; then
 fi
 if [[ ! ${bendi_script} == "1" ]] && [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
 docker rmi $(docker images -q)
-${INS} remove -y --purge azure-cli ghc zulu* hhvm llvm* firefox google* dotnet* powershell mysql* php* mssql-tools msodbcsql17 android*
+${INS} remove -y --purge azure-cli ghc zulu* llvm* firefox google* dotnet* powershell mysql* php* mssql-tools msodbcsql17 android*
 sudo rm -rf /etc/mysql /etc/php /swapfile
 fi
 }
