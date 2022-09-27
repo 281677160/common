@@ -321,6 +321,8 @@ src-git passwall https://github.com/xiaorouji/openwrt-passwall;packages
 src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
 src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
 src-git danshui https://github.com/281677160/openwrt-package.git;${REPO_BRANCH}
+src-git nas https://github.com/linkease/nas-packages.git;master
+src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main
 " >> $HOME_PATH/feeds.conf.default
 sed -i '/^#/d' "$HOME_PATH/feeds.conf.default"
 sed -i '/^$/d' "$HOME_PATH/feeds.conf.default"
