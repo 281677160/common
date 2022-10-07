@@ -37,7 +37,7 @@ if [[ ${SOURCE_CODE} == "LEDE" ]]; then
   export REPO_BRANCH="master"
 elif [[ ${SOURCE_CODE} == "LIENOL" ]]; then
   export REPO_URL="https://github.com/Lienol/openwrt"
-  export REPO_BRANCH="22.03"
+  export REPO_BRANCH="21.02"
 elif [[ ${SOURCE_CODE} == "IMMORTAL" ]]; then
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export REPO_BRANCH="openwrt-21.02"
