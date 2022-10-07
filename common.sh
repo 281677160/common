@@ -244,9 +244,9 @@ master)
   find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
 
 ;;
-22.03)
+21.02)
   
-  # 删除重复插件（Lienol-22.03）
+  # 删除重复插件（Lienol-21.02）
   find . -name 'luci-app-ttyd' -o -name 'luci-app-eqos' -o -name 'luci-theme-argon' | xargs -i rm -rf {}
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' -o -name 'luci-app-frpc' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
@@ -281,7 +281,7 @@ master)
   echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
 
 ;;
-22.03)
+21.02)
   
   # 给固件LUCI做个标记
   sed -i '/DISTRIB_RECOGNIZE/d' "$BASE_PATH/etc/openwrt_release"
@@ -947,7 +947,7 @@ Diy_organize
 }
 
 function Diy_Language() {
-if [[ "${REPO_BRANCH}" == "22.03" ]] || [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+if [[ "${REPO_BRANCH}" == "21.02" ]] || [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
   echo "正在执行：把插件语言转换成zh_Hans"
   cd $HOME_PATH
   cp -Rf $HOME_PATH/build/common/Convert/zh_Hans.sh $HOME_PATH/zh_Hans.sh
