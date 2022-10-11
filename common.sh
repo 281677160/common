@@ -242,6 +242,7 @@ master)
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
   find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
+  find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
 
 ;;
 21.02)
@@ -251,6 +252,7 @@ master)
   find . -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' -o -name 'luci-app-frpc' | xargs -i rm -rf {}
   find . -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
   find . -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
+  find . -name 'luci-app-smartdns' -o -name 'smartdns' | xargs -i rm -rf {}
 
 ;;
 openwrt-18.06)
