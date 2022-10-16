@@ -1005,6 +1005,7 @@ make defconfig > /dev/null 2>&1
 }
 
 function Diy_Notice() {
+TIME r ""
 TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
 TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
 TIME r "修改IP、DNS、网关，请输入命令：openwrt"
@@ -1013,6 +1014,7 @@ TIME r ""
 TIME r ""
 TIME g "您现在编译所用的服务器CPU型号为[ ${Model_Name} ]"
 TIME g "在github使用核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
+TIME r ""
 }
 
 
