@@ -335,6 +335,9 @@ src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main
 " >> $HOME_PATH/feeds.conf.default
 sed -i '/^#/d' "$HOME_PATH/feeds.conf.default"
 sed -i '/^$/d' "$HOME_PATH/feeds.conf.default"
+
+Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
+Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
 }
 
 function sbin_openwrt() {
@@ -1007,6 +1010,10 @@ TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固
 TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
 TIME r "修改IP、DNS、网关，请输入命令：openwrt"
 TIME r "如果您的机子在线更新固件可用，而又编译了，也可请输入命令查看在线更新操作：openwrt"
+TIME r ""
+TIME r ""
+TIME g "您现在编译所用的服务器CPU型号为[ ${Model_Name} ]"
+TIME g "在github使用核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
 }
 
 
