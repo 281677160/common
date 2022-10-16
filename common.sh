@@ -969,6 +969,10 @@ fi
 function Diy_part_sh() {
 echo "正在执行：运行$DIY_PART_SH文件"
 cd $HOME_PATH
+# 修正连接数
+echo -e "\nnet.netfilter.nf_conntrack_max=165535' >>package/base-files/files/etc/sysctl.conf
+
+# openclash分支选择
 rm -rf master > /dev/null 2>&1
 rm -rf dev > /dev/null 2>&1
 /bin/bash $BUILD_PATH/$DIY_PART_SH
