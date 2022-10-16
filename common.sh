@@ -137,6 +137,8 @@ echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> $GITHUB_ENV
 echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> $GITHUB_ENV
 echo "Gujian_Date=$(date +%m%d)" >> $GITHUB_ENV
 
+export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
+export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
 
 # github用的变量，如果有修改，下面Bendi_variable也要同步修改
 
@@ -335,9 +337,6 @@ src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main
 " >> $HOME_PATH/feeds.conf.default
 sed -i '/^#/d' "$HOME_PATH/feeds.conf.default"
 sed -i '/^$/d' "$HOME_PATH/feeds.conf.default"
-
-export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
-export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
 }
 
 function sbin_openwrt() {
