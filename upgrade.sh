@@ -76,8 +76,11 @@ function GET_TARGET_INFO() {
 	;;
 	esac
 	
-	AutoUp_Ver="$BASE_PATH/bin/AutoUpdate.sh"
-	[[ -f ${AutoUp_Ver} ]] && export AutoUpdate_Version=$(egrep -o "Version=V[0-9]\.[0-9]" $BASE_PATH/bin/AutoUpdate.sh | awk 'END{print}')
+	if [[ -f ${AutoUp_Ver} ]]; then
+	  export AutoUpdate_Version=$(egrep -o "Version=V[0-9]\.[0-9]" $BASE_PATH/bin/AutoUpdate.sh |cut -d "=" -f2 | sed 's/^.//g')
+	else
+	  export AutoUpdate_Version="7.1"
+	fi
 	export In_Firmware_Info="$BASE_PATH/bin/openwrt_info"
 	export Github_Release="${Github}/releases/tag/AutoUpdate"
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE}-${Upgrade_Date}"
