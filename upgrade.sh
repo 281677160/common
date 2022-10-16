@@ -76,7 +76,7 @@ function GET_TARGET_INFO() {
 	;;
 	esac
 	
-	if [[ -f ${AutoUp_Ver} ]]; then
+	if [[ -f $BASE_PATH/bin/AutoUpdate.sh ]]; then
 	  export AutoUpdate_Version=$(egrep -o "Version=V[0-9]\.[0-9]" $BASE_PATH/bin/AutoUpdate.sh |cut -d "=" -f2 | sed 's/^.//g')
 	else
 	  export AutoUpdate_Version="7.1"
