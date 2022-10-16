@@ -139,6 +139,8 @@ echo "Gujian_Date=$(date +%m%d)" >> $GITHUB_ENV
 
 export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
 export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
+export RAM_total="$(free -h |awk '{print $(1)}' |awk NF |sed 's/.$//')"
+export RAM_available="$(free -h |awk '{print $(7)}' |awk NF |sed 's/.$//')"
 
 # github用的变量，如果有修改，下面Bendi_variable也要同步修改
 
@@ -1014,6 +1016,7 @@ TIME r ""
 TIME r ""
 TIME g "您现在编译所用的服务器CPU型号为[ ${Model_Name} ]"
 TIME g "在github使用核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
+TIME g "在github使用内存为[ ${RAM_total} ],现内存剩余为[ ${available} ]"
 TIME r ""
 }
 
