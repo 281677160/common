@@ -1016,7 +1016,7 @@ TIME r ""
 TIME r ""
 TIME g "您现在编译所用的服务器CPU型号为[ ${Model_Name} ]"
 TIME g "在此服务器分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
-TIME g "在此服务器分配内存为[ ${RAM_total} ],现内存剩余为[ ${RAM_available} ]"
+TIME g "在此服务器分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
 TIME r ""
 }
 
