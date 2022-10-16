@@ -336,8 +336,8 @@ src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main
 sed -i '/^#/d' "$HOME_PATH/feeds.conf.default"
 sed -i '/^$/d' "$HOME_PATH/feeds.conf.default"
 
-Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
-Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
+export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
+export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
 }
 
 function sbin_openwrt() {
