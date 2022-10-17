@@ -949,7 +949,10 @@ echo "FIRMWARE=$PWD" >> $GITHUB_ENV
 cd $HOME_PATH
 # 发布用的update_log.txt
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
-  echo "### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/update_log.txt
+  echo "#### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/update_log.txt
+fi
+if [ "${REGULAR_UPDATE}" == "true" ]; then
+  echo "#### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/AutoUpdate_log.txt
 fi
 }
 
