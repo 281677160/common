@@ -99,7 +99,7 @@ else
   export INS="sudo apt"
 fi
 sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
-${INS} -y rename
+${INS} install -y rename
 ${INS} autoremove -y --purge
 ${INS} clean
 if [[ ! ${bendi_script} == "1" ]]; then
