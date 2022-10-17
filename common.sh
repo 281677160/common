@@ -129,7 +129,7 @@ echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> $GITHUB_ENV
 echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> $GITHUB_ENV
-echo "Gujian_Date=$(date +%m%d)" >> $GITHUB_ENV
+echo "Gujian_Date=$(date +%m.%d)" >> $GITHUB_ENV
 
 export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
 export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
