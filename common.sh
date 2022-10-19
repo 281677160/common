@@ -973,15 +973,15 @@ cd ${HOME_PATH}
 # 修正连接数
 echo -e "\nnet.netfilter.nf_conntrack_max=165535" >>package/base-files/files/etc/sysctl.conf
 
-# openclash分支选择
-rm -rf master > /dev/null 2>&1
-rm -rf dev > /dev/null 2>&1
+
 /bin/bash ${BUILD_PATH}/$DIY_PART_SH
-rm -rf package/luci-app-openclash > /dev/null 2>&1
-if [ -n "$(ls -A "master" 2>/dev/null)" ]; then
+
+# openclash分支选择
+find . -name 'luci-app-openclash' | xargs -i rm -rf {}
+if [[ "${OpenClash_branch}" == "master" ]]; then
   git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
   echo "正在使用master分支的openclash"
-elif [ -n "$(ls -A "dev" 2>/dev/null)" ]; then
+elif [[ "${OpenClash_branch}" == "dev" ]]; then
   git clone -b dev --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
   echo "正在使用dev分支的openclash"
 else
@@ -989,8 +989,6 @@ else
   git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
   echo "正在使用master分支的openclash"
 fi
-rm -rf master > /dev/null 2>&1
-rm -rf dev > /dev/null 2>&1
 }
 
 function Diy_feeds() {
