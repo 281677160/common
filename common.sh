@@ -968,13 +968,12 @@ fi
 }
 
 function Diy_part_sh() {
-echo "正在执行：运行$DIY_PART_SH文件"
 cd ${HOME_PATH}
+echo "正在执行：运行$DIY_PART_SH文件"
+source "${BUILD_PATH}/${DIY_PART_SH}"
+
 # 修正连接数
 echo -e "\nnet.netfilter.nf_conntrack_max=165535" >>package/base-files/files/etc/sysctl.conf
-
-
-"${BUILD_PATH}/${DIY_PART_SH}"
 
 # openclash分支选择
 find . -name 'luci-app-openclash' | xargs -i rm -rf {}
