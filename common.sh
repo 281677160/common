@@ -50,21 +50,22 @@ else
 fi
 
 if [[ ! ${bendi_script} == "1" ]]; then
-  echo "REPO_URL=${REPO_URL}" >> $GITHUB_ENV
-  echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
-  echo "CONFIG_FILE=${CONFIG_FILE}" >> $GITHUB_ENV
-  echo "DIY_PART_SH=${DIY_PART_SH}" >> $GITHUB_ENV
-  echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> $GITHUB_ENV
-  echo "UPLOAD_CONFIG=${UPLOAD_CONFIG}" >> $GITHUB_ENV
-  echo "UPLOAD_WETRANSFER=${UPLOAD_WETRANSFER}" >> $GITHUB_ENV
-  echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> $GITHUB_ENV
-  echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> $GITHUB_ENV
-  echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> $GITHUB_ENV
-  echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> $GITHUB_ENV
-  echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> $GITHUB_ENV
-  echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
-  echo "Library=${Warehouse##*/}" >> $GITHUB_ENV
-  echo "matrixtarget=${matrixtarget}" >> $GITHUB_ENV
+  echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
+  echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
+  echo "CONFIG_FILE=${CONFIG_FILE}" >> ${GITHUB_ENV}
+  echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
+  echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${GITHUB_ENV}
+  echo "UPLOAD_CONFIG=${UPLOAD_CONFIG}" >> ${GITHUB_ENV}
+  echo "UPLOAD_WETRANSFER=${UPLOAD_WETRANSFER}" >> ${GITHUB_ENV}
+  echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
+  echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> ${GITHUB_ENV}
+  echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> ${GITHUB_ENV}
+  echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> ${GITHUB_ENV}
+  echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> ${GITHUB_ENV}
+  echo "BY_INFORMATION=${BY_INFORMATION}" >> ${GITHUB_ENV}
+  echo "Library=${Warehouse##*/}" >> ${GITHUB_ENV}
+  echo "matrixtarget=${matrixtarget}" >> ${GITHUB_ENV}
+  echo "status=success" >> ${GITHUB_OUTPUT}
 fi
 }
 
@@ -117,19 +118,19 @@ fi
 function Diy_variable() {
 cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
 echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> $GITHUB_ENV
-echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> $GITHUB_ENV
-echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> $GITHUB_ENV
-echo "NETIP=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/networkip" >> $GITHUB_ENV
-echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> $GITHUB_ENV
-echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/FinishIng.sh" >> $GITHUB_ENV
-echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> $GITHUB_ENV
-echo "AMLOGIC_SH_PATH=${GITHUB_WORKSPACE}/openwrt/amlogic_openwrt" >> $GITHUB_ENV
-echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> $GITHUB_ENV
-echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
-echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> $GITHUB_ENV
-echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> $GITHUB_ENV
-echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> $GITHUB_ENV
-echo "Gujian_Date=$(date +%m.%d)" >> $GITHUB_ENV
+echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${matrixtarget}" >> ${GITHUB_ENV}
+echo "BASE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
+echo "NETIP=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/networkip" >> ${GITHUB_ENV}
+echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
+echo "FIN_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/FinishIng.sh" >> ${GITHUB_ENV}
+echo "KEEPD=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
+echo "AMLOGIC_SH_PATH=${GITHUB_WORKSPACE}/openwrt/amlogic_openwrt" >> ${GITHUB_ENV}
+echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
+echo "Upgrade_Date=$(date +%Y%m%d%H%M)" >> ${GITHUB_ENV}
+echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
+echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
+echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
+echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 
 export Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
 export Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
@@ -139,41 +140,41 @@ export RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
 # github用的变量，如果有修改，下面Bendi_variable也要同步修改
 
 if [[ "${REPO_BRANCH}" == "master" ]]; then
-  echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+  echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings" >> ${GITHUB_ENV}
   if [[ ! -f "${GITHUB_WORKSPACE}/openwrt/package/lean/default-settings/files/zzz-default-settings" ]]; then
     TIME r "上游源码作者修改了zzz-default-settings文件的路径或者名称，找编译脚本的作者及时更正脚本代码"
     exit 1
   fi
-  echo "SOURCE=Lede" >> $GITHUB_ENV
-  echo "LUCI_EDITION=18.06" >> $GITHUB_ENV
-  echo "MAINTAIN=Lean's" >> $GITHUB_ENV
+  echo "SOURCE=Lede" >> ${GITHUB_ENV}
+  echo "LUCI_EDITION=18.06" >> ${GITHUB_ENV}
+  echo "MAINTAIN=Lean's" >> ${GITHUB_ENV}
 elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
-  echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+  echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings" >> ${GITHUB_ENV}
   if [[ ! -f "${GITHUB_WORKSPACE}/openwrt/package/default-settings/files/zzz-default-settings" ]]; then
     TIME r "上游源码作者修改了zzz-default-settings文件的路径或者名称，找编译脚本的作者及时更正脚本代码"
     exit 1
   fi
-  echo "SOURCE=Lienol" >> $GITHUB_ENV
-  echo "LUCI_EDITION=21.02" >> $GITHUB_ENV
-  echo "MAINTAIN=Lienol's" >> $GITHUB_ENV
+  echo "SOURCE=Lienol" >> ${GITHUB_ENV}
+  echo "LUCI_EDITION=21.02" >> ${GITHUB_ENV}
+  echo "MAINTAIN=Lienol's" >> ${GITHUB_ENV}
 elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-  echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
+  echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings" >> ${GITHUB_ENV}
   if [[ ! -f "${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings" ]]; then
     TIME r "上游源码作者修改了zzz-default-settings文件的路径或者名称，找编译脚本的作者及时更正脚本代码"
     exit 1
   fi
-  echo "SOURCE=Tianling" >> $GITHUB_ENV
-  echo "LUCI_EDITION=18.06" >> $GITHUB_ENV
-  echo "MAINTAIN=CTCGFW's" >> $GITHUB_ENV
+  echo "SOURCE=Tianling" >> ${GITHUB_ENV}
+  echo "LUCI_EDITION=18.06" >> ${GITHUB_ENV}
+  echo "MAINTAIN=CTCGFW's" >> ${GITHUB_ENV}
 elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-  echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings" >> $GITHUB_ENV
+  echo "ZZZ_PATH=${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings" >> ${GITHUB_ENV}
   if [[ ! -f "${GITHUB_WORKSPACE}/openwrt/package/emortal/default-settings/files/99-default-settings" ]]; then
     TIME r "上游源码作者修改了zzz-default-settings文件的路径或者名称，找编译脚本的作者及时更正脚本代码"
     exit 1
   fi
-  echo "SOURCE=Mortal" >> $GITHUB_ENV
-  echo "LUCI_EDITION=21.02" >> $GITHUB_ENV
-  echo "MAINTAIN=CTCGFW's" >> $GITHUB_ENV
+  echo "SOURCE=Mortal" >> ${GITHUB_ENV}
+  echo "LUCI_EDITION=21.02" >> ${GITHUB_ENV}
+  echo "MAINTAIN=CTCGFW's" >> ${GITHUB_ENV}
 else
   echo "没发现该源码的分支，应该是上游源码作者修改了该分支号或者删除了该分支"
   exit 1
