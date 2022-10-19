@@ -883,7 +883,7 @@ sed -i "/exit 0/i\/etc/init.d/FinishIng enable" "${ZZZ_PATH}"
 }
 
 function Make_defconfig() {
-echo "正在执行：加载机型中..."
+echo "正在执行：识别源码编译为何机型"
 export TAR_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
 export TAR_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
 echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
@@ -898,8 +898,8 @@ elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]; the
 else
   echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
 fi
-echo "TARGET_BSGET=${HOME_PATH}/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> ${GITHUB_ENV}
-echo "FIRMWARE=${HOME_PATH}/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> ${GITHUB_ENV}
+echo "TARGET_BSGET=${HOME_PATH}/bin/targets/${TAR_BOARD}/${TAR_SUBTARGET}" >> ${GITHUB_ENV}
+echo "FIRMWARE=${HOME_PATH}/bin/targets/${TAR_BOARD}/${TAR_SUBTARGET}" >> ${GITHUB_ENV}
 }
 
 function Make_upgrade() {
@@ -915,8 +915,8 @@ elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; t
 else
   export TARGET_PROFILE="${TARGET_BOARD}"
 fi
-export TARGET_BSGET="${HOME_PATH}/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
-export TARGET_OPENWRT="openwrt/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
+export TARGET_BSGET="${HOME_PATH}/bin/targets/${TAR_BOARD}/${TAR_SUBTARGET}"
+export TARGET_OPENWRT="openwrt/bin/targets/${TAR_BOARD}/${TAR_SUBTARGET}"
 }
 
 function Diy_upgrade3() {
