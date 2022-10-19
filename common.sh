@@ -65,7 +65,7 @@ if [[ ! ${bendi_script} == "1" ]]; then
   echo "BY_INFORMATION=${BY_INFORMATION}" >> ${GITHUB_ENV}
   echo "Library=${Warehouse##*/}" >> ${GITHUB_ENV}
   echo "matrixtarget=${matrixtarget}" >> ${GITHUB_ENV}
-  echo "status=success" >> ${GITHUB_OUTPUT}
+  echo "outcome=success" >> ${GITHUB_OUTPUT}
 fi
 }
 
