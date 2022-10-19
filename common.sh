@@ -974,7 +974,7 @@ cd ${HOME_PATH}
 echo -e "\nnet.netfilter.nf_conntrack_max=165535" >>package/base-files/files/etc/sysctl.conf
 
 
-source "${BUILD_PATH}/${DIY_PART_SH}"
+"${BUILD_PATH}/${DIY_PART_SH}"
 
 # openclash分支选择
 find . -name 'luci-app-openclash' | xargs -i rm -rf {}
