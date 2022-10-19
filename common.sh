@@ -748,7 +748,7 @@ fi
 if [[ `grep -c "CONFIG_TARGET_armvirt=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   sed -i 's/CONFIG_PACKAGE_luci-app-autoupdate=y/# CONFIG_PACKAGE_luci-app-autoupdate is not set/g' ${HOME_PATH}/.config
   export REGULAR_UPDATE="false"
-  echo "REGULAR_UPDATE=false" >> $GITHUB_ENV
+  echo "REGULAR_UPDATE=false" >> ${GITHUB_ENV}
   sed -i '/CONFIG_PACKAGE_openssh-sftp-server/d' "${HOME_PATH}/.config"
   echo -e "\nCONFIG_PACKAGE_openssh-sftp-server=y" >> "${HOME_PATH}/.config"
 fi
@@ -890,12 +890,12 @@ export TAR_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH
 echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)" >> ${GITHUB_ENV}
 echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)" >> ${GITHUB_ENV}
 if [ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` -eq '1' ]; then
-  echo "TARGET_PROFILE=x86-64" >> $GITHUB_ENV
+  echo "TARGET_PROFILE=x86-64" >> ${GITHUB_ENV}
 elif [[ `grep -c "CONFIG_TARGET_x86=y" $HOME_PATH/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` == '0' ]]; then
-  echo "TARGET_PROFILE=x86_32" >> $GITHUB_ENV
+  echo "TARGET_PROFILE=x86_32" >> ${GITHUB_ENV}
 elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" $HOME_PATH/.config` -eq '1' ]; then
   grep '^CONFIG_TARGET.*DEVICE.*=y' $HOME_PATH/.config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
-  [ -s DEVICE_NAME ] && echo "TARGET_PROFILE=$(cat DEVICE_NAME)" >> $GITHUB_ENV
+  [ -s DEVICE_NAME ] && echo "TARGET_PROFILE=$(cat DEVICE_NAME)" >> ${GITHUB_ENV}
 else
   echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)" >> ${GITHUB_ENV}
 fi
@@ -939,7 +939,7 @@ for X in $(cat "${CLEAR_PATH}" |sed 's/rm -rf//g' |sed 's/rm -fr//g' |sed 's/\r/
    rm -rf "${X}"
 done
 rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}/" *
-echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+echo "FIRMWARE=$PWD" >> ${GITHUB_ENV}
 
 cd $HOME_PATH
 # 发布用的update_log.txt
