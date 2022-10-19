@@ -81,11 +81,11 @@ echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件"
       exit 1
     fi
   } || {
-    if [ -z "$(ls -A "$GITHUB_WORKSPACE/build/${matrixtarget}/${CONFIG_FILE}" 2>/dev/null)" ]; then
+    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${matrixtarget}/${CONFIG_FILE}" 2>/dev/null)" ]; then
       TIME r "错误提示：编译脚本缺少[${CONFIG_FILE}]名称的配置文件,请在[build/${matrixtarget}]文件夹内补齐"
       exit 1
     fi
-    if [ -z "$(ls -A "$GITHUB_WORKSPACE/build/${matrixtarget}/${DIY_PART_SH}" 2>/dev/null)" ]; then
+    if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${matrixtarget}/${DIY_PART_SH}" 2>/dev/null)" ]; then
       TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[build/${matrixtarget}]文件夹内补齐"
       exit 1
     fi
@@ -278,30 +278,30 @@ case "${REPO_BRANCH}" in
 master)
   
   # 给固件LUCI做个标记
-  sed -i '/DISTRIB_RECOGNIZE/d' "$BASE_PATH/etc/openwrt_release"
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+  sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
+  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
 
 ;;
 21.02)
   
   # 给固件LUCI做个标记
-  sed -i '/DISTRIB_RECOGNIZE/d' "$BASE_PATH/etc/openwrt_release"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+  sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
+  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
   
   # 给源码增加passwall为默认自选
   sed -i 's/ luci-app-passwall//g' target/linux/*/Makefile
   sed -i 's?DEFAULT_PACKAGES +=?DEFAULT_PACKAGES += luci-app-passwall?g' target/linux/*/Makefile
   
   # 修改DISTRIB_DESCRIPTION
-  DISTRIB="$(grep DISTRIB_DESCRIPTION= $ZZZ_PATH |cut -d "=" -f2 |cut -d "'" -f2)"
-  [[ -n "${DISTRIB}" ]] && sed -i "s?${DISTRIB}?OpenWrt ?g" "$ZZZ_PATH"
+  DISTRIB="$(grep DISTRIB_DESCRIPTION= ${ZZZ_PATH} |cut -d "=" -f2 |cut -d "'" -f2)"
+  [[ -n "${DISTRIB}" ]] && sed -i "s?${DISTRIB}?OpenWrt ?g" "${ZZZ_PATH}"
 
 ;;
 openwrt-18.06)
   
   # 给固件LUCI做个标记
-  sed -i '/DISTRIB_RECOGNIZE/d' "$BASE_PATH/etc/openwrt_release"
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+  sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
+  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
   
   # 给源码增加luci-app-ssr-plus为默认自选
   sed -i 's/ luci-app-ssr-plus//g' target/linux/*/Makefile
@@ -311,8 +311,8 @@ openwrt-18.06)
 openwrt-21.02)
   
   # 给固件LUCI做个标记
-  sed -i '/DISTRIB_RECOGNIZE/d' "$BASE_PATH/etc/openwrt_release"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "$BASE_PATH/etc/openwrt_release" && sed -i '/^\s*$/d' "$BASE_PATH/etc/openwrt_release"
+  sed -i '/DISTRIB_RECOGNIZE/d' "${BASE_PATH}/etc/openwrt_release"
+  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${BASE_PATH}/etc/openwrt_release" && sed -i '/^\s*$/d' "${BASE_PATH}/etc/openwrt_release"
   
   # 给源码增加luci-app-ssr-plus为默认自选
   sed -i 's/ luci-app-ssr-plus//g' target/linux/*/Makefile
@@ -331,17 +331,17 @@ src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
 src-git danshui https://github.com/281677160/openwrt-package.git;${REPO_BRANCH}
 src-git nas https://github.com/linkease/nas-packages.git;master
 src-git nas_luci https://github.com/linkease/nas-packages-luci.git;main
-" >> $HOME_PATH/feeds.conf.default
-sed -i '/^#/d' "$HOME_PATH/feeds.conf.default"
-sed -i '/^$/d' "$HOME_PATH/feeds.conf.default"
+" >> ${HOME_PATH}/feeds.conf.default
+sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
+sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
 }
 
 function sbin_openwrt() {
-if [[ -f $BUILD_PATH/openwrt.sh ]]; then
+if [[ -f ${BUILD_PATH}/openwrt.sh ]]; then
   echo "正在执行：给固件增加[openwrt]命令"
-  [[ ! -d "$BASE_PATH/usr/bin" ]] && mkdir $BASE_PATH/usr/bin
-  cp -Rf $BUILD_PATH/openwrt.sh $BASE_PATH/usr/bin/openwrt
-  chmod 777 $BASE_PATH/usr/bin/openwrt
+  [[ ! -d "${BASE_PATH}/usr/bin" ]] && mkdir ${BASE_PATH}/usr/bin
+  cp -Rf ${BUILD_PATH}/openwrt.sh ${BASE_PATH}/usr/bin/openwrt
+  chmod 777 ${BASE_PATH}/usr/bin/openwrt
 fi
 }
 
@@ -374,12 +374,12 @@ cat >>"${KEEPD}" <<-EOF
 /www/luci-static/argon/background
 EOF
 
-sed -i '/DISTRIB_RELEAS/d' "$ZZZ_PATH"
-sed -i '/DISTRIB_REVISION/d' "$ZZZ_PATH"
-sed -i '/DISTRIB_DESCRIPTION/d' "$ZZZ_PATH"
-sed -i '/exit 0/d' "$ZZZ_PATH"
-sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "$ZZZ_PATH"
-cat >>"$ZZZ_PATH" <<-EOF
+sed -i '/DISTRIB_RELEAS/d' "${ZZZ_PATH}"
+sed -i '/DISTRIB_REVISION/d' "${ZZZ_PATH}"
+sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
+sed -i '/exit 0/d' "${ZZZ_PATH}"
+sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+cat >>"${ZZZ_PATH}" <<-EOF
 sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
 echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
@@ -394,7 +394,7 @@ echo "luciname    = \"Immortalwrt-21.02\"" >> /usr/lib/lua/luci/version.lua
 exit 0
 EOF
 
-ttydjson="$HOME_PATH/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
+ttydjson="${HOME_PATH}/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json"
 if [[ -f "${ttydjson}" ]]; then
 cat >"${ttydjson}" <<-EOF
 {
@@ -439,12 +439,12 @@ cat >>"${KEEPD}" <<-EOF
 /www/luci-static/argon/background
 EOF
 
-sed -i '/DISTRIB_RELEAS/d' "$ZZZ_PATH"
-sed -i '/DISTRIB_REVISION/d' "$ZZZ_PATH"
-sed -i '/DISTRIB_DESCRIPTION/d' "$ZZZ_PATH"
-sed -i '/exit 0/d' "$ZZZ_PATH"
-sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "$ZZZ_PATH"
-cat >>"$ZZZ_PATH" <<-EOF
+sed -i '/DISTRIB_RELEAS/d' "${ZZZ_PATH}"
+sed -i '/DISTRIB_REVISION/d' "${ZZZ_PATH}"
+sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
+sed -i '/exit 0/d' "${ZZZ_PATH}"
+sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+cat >>"${ZZZ_PATH}" <<-EOF
 sed -i '/DISTRIB_RELEAS/d' /etc/openwrt_release
 echo "DISTRIB_RELEASE='SNAPSHOT'" >> /etc/openwrt_release
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
@@ -471,13 +471,13 @@ if [[ "${matrixtarget}" == "openwrt_amlogic" ]]; then
   sed -i '/FEATURES+=/ { s/cpiogz //; s/ext4 //; s/ramdisk //; s/squashfs //; }' \
   target/linux/armvirt/Makefile
   for x in $packages; do
-    sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" $HOME_PATH/target/linux/armvirt/Makefile
+    sed -i "/DEFAULT_PACKAGES/ s/$/ $x/" ${HOME_PATH}/target/linux/armvirt/Makefile
   done
 
   echo "修改luci-app-cpufreq一些代码适配amlogic"
-  sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' $HOME_PATH/feeds/luci/applications/luci-app-cpufreq/Makefile
+  sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' ${HOME_PATH}/feeds/luci/applications/luci-app-cpufreq/Makefile
   echo "为 armvirt 添加 autocore 支持"
-  sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' $HOME_PATH/package/lean/autocore/Makefile
+  sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' ${HOME_PATH}/package/lean/autocore/Makefile
 fi
 }
 
@@ -510,8 +510,8 @@ fi
 cd ${GITHUB_WORKSPACE}/amlogic
 sudo chmod +x make
 sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
-sudo mv -f $GITHUB_WORKSPACE/amlogic/out/* $TARGET_BSGET/ && sync
-sudo rm -rf $GITHUB_WORKSPACE/amlogic
+sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* $TARGET_BSGET/ && sync
+sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
 }
 
 function Diy_indexhtm() {
@@ -531,20 +531,20 @@ fi
 function Diy_patches() {
 echo "正在执行：如果有补丁文件，给源码打补丁"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
-  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* $BUILD_PATH
+  cp -Rf ${HOME_PATH}/build/common/${SOURCE}/* ${BUILD_PATH}
+  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* ${BUILD_PATH}
 else
-  cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
+  cp -Rf ${HOME_PATH}/build/common/${SOURCE}/* ${BUILD_PATH}
 fi
 
-if [ -n "$(ls -A "$BUILD_PATH/patches" 2>/dev/null)" ]; then
-  find "$BUILD_PATH/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
+if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
+  find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
 }
 
 function Diy_upgrade1() {
 if [[ "${REGULAR_UPDATE}" == "true" ]]; then
-  source $BUILD_PATH/upgrade.sh && Diy_Part1
+  source ${BUILD_PATH}/upgrade.sh && Diy_Part1
 fi
 }
 
@@ -663,8 +663,8 @@ fi
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   pmg="$(echo "$(date +%d)" | sed 's/^.//g')"
-  mkdir -p $HOME_PATH/files/www/luci-static/argon/background
-  curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/argon/jpg/${pmg}.jpg > $HOME_PATH/files/www/luci-static/argon/background/moren.jpg
+  mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
+  curl -fsSL  https://raw.githubusercontent.com/281677160/openwrt-package/usb/argon/jpg/${pmg}.jpg > ${HOME_PATH}/files/www/luci-static/argon/background/moren.jpg
   if [[ $? -ne 0 ]]; then
     echo "拉取文件错误,请检测网络"
     exit 1
@@ -819,20 +819,20 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq
     latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
     wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_linux_${Arch}.tar.gz
     if [[ -f "AdGuardHome_linux_${Arch}.tar.gz" ]]; then
-      tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C $HOME_PATH
+      tar -zxvf AdGuardHome_linux_${Arch}.tar.gz -C ${HOME_PATH}
       echo "核心下载成功"
     else
       echo "下载核心不成功"
     fi
-    mkdir -p $HOME_PATH/files/usr/bin
-    if [[ -f "$HOME_PATH/AdGuardHome/AdGuardHome" ]]; then
-      mv -f $HOME_PATH/AdGuardHome/AdGuardHome $HOME_PATH/files/usr/bin
-      chmod 777 $HOME_PATH/files/usr/bin/AdGuardHome
+    mkdir -p ${HOME_PATH}/files/usr/bin
+    if [[ -f "${HOME_PATH}/AdGuardHome/AdGuardHome" ]]; then
+      mv -f ${HOME_PATH}/AdGuardHome/AdGuardHome ${HOME_PATH}/files/usr/bin
+      chmod 777 ${HOME_PATH}/files/usr/bin/AdGuardHome
       echo "解压核心包成功,完成增加AdGuardHome核心工作"
     else
       echo "解压核心包失败,没能增加AdGuardHome核心"
     fi
-    rm -rf $HOME_PATH/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
+    rm -rf ${HOME_PATH}/{AdGuardHome_linux_${Arch}.tar.gz,AdGuardHome}
   fi
 fi
 }
@@ -840,97 +840,97 @@ fi
 function Diy_files() {
 echo "正在执行：files大法，设置固件无烦恼"
 if [[ -d "${GITHUB_WORKSPACE}/OP_DIY" ]]; then
-  cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
-  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* $BUILD_PATH
+  cp -Rf ${HOME_PATH}/build/common/${SOURCE}/* ${BUILD_PATH}
+  cp -Rf ${GITHUB_WORKSPACE}/OP_DIY/${matrixtarget}/* ${BUILD_PATH}
 else
-  cp -Rf $HOME_PATH/build/common/${SOURCE}/* $BUILD_PATH
+  cp -Rf ${HOME_PATH}/build/common/${SOURCE}/* ${BUILD_PATH}
 fi
 
-if [ -n "$(ls -A "$BUILD_PATH/diy" 2>/dev/null)" ]; then
-  cp -Rf $BUILD_PATH/diy/* $HOME_PATH
+if [ -n "$(ls -A "${BUILD_PATH}/diy" 2>/dev/null)" ]; then
+  cp -Rf ${BUILD_PATH}/diy/* ${HOME_PATH}
 fi
-if [ -n "$(ls -A "$BUILD_PATH/files" 2>/dev/null)" ]; then
-  cp -Rf $BUILD_PATH/files $HOME_PATH
+if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
+  cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
 fi
-chmod -R 775 $HOME_PATH/files
-rm -rf $HOME_PATH/files/{LICENSE,README,REA*.md}
+chmod -R 775 ${HOME_PATH}/files
+rm -rf ${HOME_PATH}/files/{LICENSE,README,REA*.md}
 }
 
 function Diy_webweb() {
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > $BASE_PATH/etc/FinishIng.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh > ${BASE_PATH}/etc/FinishIng.sh
 if [[ $? -ne 0 ]]; then
-  wget -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh -O $BASE_PATH/etc/FinishIng.sh
+  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng.sh -O ${BASE_PATH}/etc/FinishIng.sh
 fi
-chmod 775 $BASE_PATH/etc/FinishIng.sh
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng > $BASE_PATH/etc/init.d/FinishIng
+chmod 775 ${BASE_PATH}/etc/FinishIng.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng > ${BASE_PATH}/etc/init.d/FinishIng
 if [[ $? -ne 0 ]]; then
-  wget -P $BASE_PATH/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng -O $BASE_PATH/etc/init.d/FinishIng
+  wget -P ${BASE_PATH}/etc/init.d https://raw.githubusercontent.com/281677160/common/main/Custom/FinishIng -O ${BASE_PATH}/etc/init.d/FinishIng
 fi
-chmod 775 $BASE_PATH/etc/init.d/FinishIng
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > $BASE_PATH/etc/webweb.sh
+chmod 775 ${BASE_PATH}/etc/init.d/FinishIng
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh > ${BASE_PATH}/etc/webweb.sh
 if [[ $? -ne 0 ]]; then
-  wget -P $BASE_PATH/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh -O $BASE_PATH/etc/webweb.sh
+  wget -P ${BASE_PATH}/etc https://raw.githubusercontent.com/281677160/common/main/Custom/webweb.sh -O ${BASE_PATH}/etc/webweb.sh
 fi
-chmod 775 $BASE_PATH/etc/webweb.sh
+chmod 775 ${BASE_PATH}/etc/webweb.sh
 }
 
 function Diy_zzz() {
 echo "正在执行：在zzz-default-settings文件加条执行命令"
-sed -i '/webweb.sh/d' "$ZZZ_PATH"
-sed -i "/exit 0/i\source /etc/webweb.sh" "$ZZZ_PATH"
+sed -i '/webweb.sh/d' "${ZZZ_PATH}"
+sed -i "/exit 0/i\source /etc/webweb.sh" "${ZZZ_PATH}"
 
-sed -i '/FinishIng/d' "$ZZZ_PATH"
-sed -i "/exit 0/i\/etc/init.d/FinishIng enable" "$ZZZ_PATH"
+sed -i '/FinishIng/d' "${ZZZ_PATH}"
+sed -i "/exit 0/i\/etc/init.d/FinishIng enable" "${ZZZ_PATH}"
 }
 
 function Make_defconfig() {
 echo "正在执行：加载机型中..."
-export TAR_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
-export TAR_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)"
-echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)" >> ${GITHUB_ENV}
-echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)" >> ${GITHUB_ENV}
-if [ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` -eq '1' ]; then
+export TAR_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
+export TAR_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
+echo "TARGET_BOARD=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
+echo "TARGET_SUBTARGET=$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
+if [ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` -eq '1' ]; then
   echo "TARGET_PROFILE=x86-64" >> ${GITHUB_ENV}
-elif [[ `grep -c "CONFIG_TARGET_x86=y" $HOME_PATH/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` == '0' ]]; then
+elif [[ `grep -c "CONFIG_TARGET_x86=y" ${HOME_PATH}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` == '0' ]]; then
   echo "TARGET_PROFILE=x86_32" >> ${GITHUB_ENV}
-elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" $HOME_PATH/.config` -eq '1' ]; then
-  grep '^CONFIG_TARGET.*DEVICE.*=y' $HOME_PATH/.config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]; then
+  grep '^CONFIG_TARGET.*DEVICE.*=y' ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
   [ -s DEVICE_NAME ] && echo "TARGET_PROFILE=$(cat DEVICE_NAME)" >> ${GITHUB_ENV}
 else
-  echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)" >> ${GITHUB_ENV}
+  echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
 fi
-echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> ${GITHUB_ENV}
-echo "FIRMWARE=$HOME_PATH/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> ${GITHUB_ENV}
+echo "TARGET_BSGET=${HOME_PATH}/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> ${GITHUB_ENV}
+echo "FIRMWARE=${HOME_PATH}/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> ${GITHUB_ENV}
 }
 
 function Make_upgrade() {
 ## 本地编译加载机型用
-export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' $HOME_PATH/.config)"
-export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' $HOME_PATH/.config)"
-if [[ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` -eq '1' ]]; then
+export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
+export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
+if [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   export TARGET_PROFILE="x86-64"
-elif [[ `grep -c "CONFIG_TARGET_x86=y" $HOME_PATH/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" $HOME_PATH/.config` == '0' ]]; then
+elif [[ `grep -c "CONFIG_TARGET_x86=y" ${HOME_PATH}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` == '0' ]]; then
   export TARGET_PROFILE="x86_32"
-elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" $HOME_PATH/.config` -eq '1' ]]; then
-  export TARGET_PROFILE="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" $HOME_PATH/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  export TARGET_PROFILE="$(egrep -o "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
 else
   export TARGET_PROFILE="${TARGET_BOARD}"
 fi
-export TARGET_BSGET="$HOME_PATH/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
+export TARGET_BSGET="${HOME_PATH}/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
 export TARGET_OPENWRT="openwrt/bin/targets/$TARGET_BOARD/$TARGET_SUBTARGET"
 }
 
 function Diy_upgrade3() {
 if [ "${REGULAR_UPDATE}" == "true" ]; then
-  cp -Rf ${TARGET_BSGET} $HOME_PATH/upgrade
-  source $BUILD_PATH/upgrade.sh && Diy_Part3
+  cp -Rf ${TARGET_BSGET} ${HOME_PATH}/upgrade
+  source ${BUILD_PATH}/upgrade.sh && Diy_Part3
 fi
 }
 
 function Diy_organize() {
 cd ${TARGET_BSGET}
 mkdir -p ipk
-cp -rf $(find $HOME_PATH/bin/packages/ -type f -name "*.ipk") ipk/ && sync
+cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
 sudo tar -czf ipk.tar.gz ipk && sudo rm -rf ipk && sync
 if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
@@ -941,7 +941,7 @@ done
 rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}/" *
 echo "FIRMWARE=$PWD" >> ${GITHUB_ENV}
 
-cd $HOME_PATH
+cd ${HOME_PATH}
 # 发布用的update_log.txt
 if [ "${UPLOAD_RELEASE}" == "true" ]; then
   echo "#### $(date +"%Y年%m月%d号-%H点%M分")" > ${GITHUB_WORKSPACE}/update_log.txt
@@ -960,24 +960,24 @@ Diy_organize
 function Diy_Language() {
 if [[ "${REPO_BRANCH}" == "21.02" ]] || [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
   echo "正在执行：把插件语言转换成zh_Hans"
-  cd $HOME_PATH
-  cp -Rf $HOME_PATH/build/common/Convert/zh_Hans.sh $HOME_PATH/zh_Hans.sh
-  chmod +x $HOME_PATH/zh_Hans.sh
-  /bin/bash $HOME_PATH/zh_Hans.sh
-  rm -rf $HOME_PATH/zh_Hans.sh
+  cd ${HOME_PATH}
+  cp -Rf ${HOME_PATH}/build/common/Convert/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
+  chmod +x ${HOME_PATH}/zh_Hans.sh
+  /bin/bash ${HOME_PATH}/zh_Hans.sh
+  rm -rf ${HOME_PATH}/zh_Hans.sh
 fi
 }
 
 function Diy_part_sh() {
 echo "正在执行：运行$DIY_PART_SH文件"
-cd $HOME_PATH
+cd ${HOME_PATH}
 # 修正连接数
 echo -e "\nnet.netfilter.nf_conntrack_max=165535" >>package/base-files/files/etc/sysctl.conf
 
 # openclash分支选择
 rm -rf master > /dev/null 2>&1
 rm -rf dev > /dev/null 2>&1
-/bin/bash $BUILD_PATH/$DIY_PART_SH
+/bin/bash ${BUILD_PATH}/$DIY_PART_SH
 rm -rf package/luci-app-openclash > /dev/null 2>&1
 if [ -n "$(ls -A "master" 2>/dev/null)" ]; then
   git clone -b master --depth 1 https://github.com/vernesong/OpenClash package/luci-app-openclash
@@ -996,11 +996,11 @@ rm -rf dev > /dev/null 2>&1
 
 function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
-cd $HOME_PATH
+cd ${HOME_PATH}
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
-[[ -f $BUILD_PATH/$CONFIG_FILE ]] && mv $BUILD_PATH/$CONFIG_FILE .config
+[[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 make defconfig > /dev/null 2>&1
 }
 
@@ -1021,22 +1021,22 @@ TIME r ""
 
 
 function Diy_xinxi() {
-Plug_in="$(grep -i 'CONFIG_PACKAGE_luci-app' $HOME_PATH/.config && grep -i 'CONFIG_PACKAGE_luci-theme' $HOME_PATH/.config)"
+Plug_in="$(grep -i 'CONFIG_PACKAGE_luci-app' ${HOME_PATH}/.config && grep -i 'CONFIG_PACKAGE_luci-theme' ${HOME_PATH}/.config)"
 Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/=m/d' |sed '/_Transparent_Proxy/d' |sed '/qbittorrent_static/d' |sed 's/CONFIG_PACKAGE_//g' |sed 's/=y//g' |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
 echo "${Plug_in2}" >Plug-in
 sed -i '/luci-app-qbittorrent-simple_dynamic/d' Plug-in > /dev/null 2>&1
 
 if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]] || [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
   export KERNEL_PATC=""
-  export KERNEL_PATC="$(egrep KERNEL_PATCHVER:=[0-9]+\.[0-9]+ $HOME_PATH/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
-  [[ -z ${KERNEL_PATC} ]] && export KERNEL_PATC="$(egrep KERNEL_PATCHVER=[0-9]+\.[0-9]+ $HOME_PATH/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
-  [[ -n ${KERNEL_PATC} ]] && export LINUX_KERNEL="$(egrep -o LINUX_KERNEL_HASH-${KERNEL_PATC}\.[0-9]+ $HOME_PATH/include/kernel-version.mk |cut -d "-" -f2)"
+  export KERNEL_PATC="$(egrep KERNEL_PATCHVER:=[0-9]+\.[0-9]+ ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
+  [[ -z ${KERNEL_PATC} ]] && export KERNEL_PATC="$(egrep KERNEL_PATCHVER=[0-9]+\.[0-9]+ ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
+  [[ -n ${KERNEL_PATC} ]] && export LINUX_KERNEL="$(egrep -o LINUX_KERNEL_HASH-${KERNEL_PATC}\.[0-9]+ ${HOME_PATH}/include/kernel-version.mk |cut -d "-" -f2)"
   [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
 else
   export KERNEL_PATC=""
-  export KERNEL_PATC="$(egrep KERNEL_PATCHVER:=[0-9]+\.[0-9]+ $HOME_PATH/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
-  [[ -z ${KERNEL_PATC} ]] && export KERNEL_PATC="$(egrep KERNEL_PATCHVER=[0-9]+\.[0-9]+ $HOME_PATH/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
-  [[ -n ${KERNEL_PATC} ]] && export LINUX_KERNEL="$(egrep -o LINUX_KERNEL_HASH-${KERNEL_PATC}\.[0-9]+ $HOME_PATH/include/kernel-${KERNEL_PATC} |cut -d "-" -f2)"
+  export KERNEL_PATC="$(egrep KERNEL_PATCHVER:=[0-9]+\.[0-9]+ ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
+  [[ -z ${KERNEL_PATC} ]] && export KERNEL_PATC="$(egrep KERNEL_PATCHVER=[0-9]+\.[0-9]+ ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile |cut -d "=" -f2)"
+  [[ -n ${KERNEL_PATC} ]] && export LINUX_KERNEL="$(egrep -o LINUX_KERNEL_HASH-${KERNEL_PATC}\.[0-9]+ ${HOME_PATH}/include/kernel-${KERNEL_PATC} |cut -d "-" -f2)"
   [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
 fi
 
@@ -1142,7 +1142,7 @@ else
 fi
 echo
 TIME z " 系统空间      类型   总数  已用  可用 使用率"
-cd ../ && df -hT $PWD && cd $HOME_PATH
+cd ../ && df -hT $PWD && cd ${HOME_PATH}
 echo
 echo
 if [ -n "$(ls -A "${HOME_PATH}/EXT4" 2>/dev/null)" ]; then
