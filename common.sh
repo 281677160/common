@@ -927,9 +927,9 @@ fi
 }
 
 function Diy_organize() {
-cd ${TARGET_BSGET}
-mkdir -p ipk
-cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
+mkdir -p "${TARGET_BSGET}/ipk"
+cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ${TARGET_BSGET}/ipk/ && sync
+cd "${TARGET_BSGET}"
 sudo tar -czf ipk.tar.gz ipk && sudo rm -rf ipk && sync
 if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
