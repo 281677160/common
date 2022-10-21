@@ -927,7 +927,7 @@ fi
 }
 
 function Diy_organize() {
-cd $FIRMWARE
+cd ${HOME_PATH}/bin/targets/${TAR_BOARD}/${TAR_SUBTARGET}
 mkdir -p ipk
 cp -rf $(find $HOME_PATH/bin/packages/ -type f -name "*.ipk") ipk/ && sync
 sudo tar -czf ipk.tar.gz ipk && sudo rm -rf ipk && sync
