@@ -486,8 +486,8 @@ echo "正在执行：打包N1和景晨系列固件"
 cd ${GITHUB_WORKSPACE}
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
 [ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
-if [[ `ls -1 "${TARGET_BSGET}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
-  cp -Rf ${TARGET_BSGET}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+if [[ `ls -1 "$TARGET_BSGET" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
+  cp -Rf $TARGET_BSGET/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 else
   armvirtargz="$(ls -1 "${TARGET_BSGET}" |grep ".*tar.gz" |awk 'END {print}')"
   cp -Rf ${TARGET_BSGET}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
@@ -898,8 +898,8 @@ elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]; the
 else
   echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
 fi
-echo "TARGET_BSGET=${HOME_PATH}/bin/targets/${TAR_BOARD}/${TAR_SUBTARGET}" >> ${GITHUB_ENV}
-echo "FIRMWARE=${HOME_PATH}/bin/targets/${TAR_BOARD}/${TAR_SUBTARGET}" >> ${GITHUB_ENV}
+echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD/$TARGET_BSGET" >> ${GITHUB_ENV}
+echo "FIRMWARE=$HOME_PATH/bin/targets/$TAR_BOARD/$TARGET_BSGET" >> ${GITHUB_ENV}
 }
 
 function Make_upgrade() {
@@ -927,9 +927,9 @@ fi
 }
 
 function Diy_organize() {
-mkdir -p "${TARGET_BSGET}/ipk"
-cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ${TARGET_BSGET}/ipk/ && sync
-cd "${TARGET_BSGET}"
+cd $TARGET_BSGET
+mkdir -p ipk
+cp -rf $(find $HOME_PATH/bin/packages/ -type f -name "*.ipk") ipk/ && sync
 sudo tar -czf ipk.tar.gz ipk && sudo rm -rf ipk && sync
 if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
