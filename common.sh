@@ -898,8 +898,8 @@ elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]; the
 else
   echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
 fi
-echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD/$TARGET_BSGET" >> $GITHUB_ENV
-echo "FIRMWARE=$HOME_PATH/bin/targets/$TAR_BOARD/$TARGET_BSGET" >> $GITHUB_ENV
+echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> $GITHUB_ENV
+echo "FIRMWARE=$HOME_PATH/bin/targets/$TAR_BOARD/$TAR_SUBTARGET" >> $GITHUB_ENV
 }
 
 function Make_upgrade() {
