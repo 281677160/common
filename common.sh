@@ -938,7 +938,6 @@ for X in $(cat "${CLEAR_PATH}" |sed 's/rm -rf//g' |sed 's/rm -fr//g' |sed 's/\r/
    rm -rf "${X}"
 done
 rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}/" *
-echo "FIRMWARE=$PWD" >> ${GITHUB_ENV}
 
 cd ${HOME_PATH}
 # 发布用的update_log.txt
