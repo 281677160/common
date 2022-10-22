@@ -914,7 +914,7 @@ elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; t
 else
   export TARGET_PROFILE="${TARGET_BOARD}"
 fi
-export FIRMWARE="${HOME_PATH}/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1"
+export FIRMWARE_PATH="${HOME_PATH}/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1"
 export TARGET_OPENWRT="openwrt/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1"
 }
 
