@@ -499,11 +499,11 @@ if [[ -f "${AMLOGIC_SH_PATH}" ]]; then
   export amlogic_kernel="$(grep "amlogic_kernel=" "${AMLOGIC_SH_PATH}" 2>&1 | cut -d "=" -f2 |sed 's/\"//g' |sed "s/'//g")"
   [[ -z "${amlogic_kernel}" ]] && export amlogic_kernel="5.15.25 -a true"
   export rootfs_size="$(grep "rootfs_size=" "${AMLOGIC_SH_PATH}" 2>&1 | cut -d "=" -f2 |sed 's/\"//g' |sed "s/'//g")"
-  [[ -z "${rootfs_size}" ]] && export rootfs_size="1024"
+  [[ -z "${rootfs_size}" ]] && export rootfs_size="960"
 else
   export amlogic_model="all"
   export amlogic_kernel="5.15.25 -a true"
-  export rootfs_size="1024"
+  export rootfs_size="960"
 fi
 # 开始打包
 cd ${GITHUB_WORKSPACE}/amlogic
