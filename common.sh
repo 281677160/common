@@ -929,7 +929,7 @@ function Diy_organize() {
 cd ${FIRMWARE}
 mkdir -p ipk
 cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
-sudo tar -czf ipk.tar.gz ipk && sudo rm -rf ipk && sync
+sudo tar -czf ipk.tar.gz ipk && sync && sudo rm -rf ipk
 if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
 fi
