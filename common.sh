@@ -486,11 +486,11 @@ echo "正在执行：打包N1和景晨系列固件"
 cd ${GITHUB_WORKSPACE}
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
 [ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
-if [[ `ls -1 "$TARGET_BSGET" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
-  cp -Rf $TARGET_BSGET/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+if [[ `ls -1 "${FIRMWARE}" |grep -c ".*default-rootfs.tar.gz"` == '1' ]]; then
+  cp -Rf ${FIRMWARE}/*default-rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 else
-  armvirtargz="$(ls -1 "${TARGET_BSGET}" |grep ".*tar.gz" |awk 'END {print}')"
-  cp -Rf ${TARGET_BSGET}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
+  armvirtargz="$(ls -1 "${FIRMWARE}" |grep ".*tar.gz" |awk 'END {print}')"
+  cp -Rf ${FIRMWARE}/${armvirtargz} ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz && sync
 fi
 # 自定义机型,内核,分区
 if [[ -f "${AMLOGIC_SH_PATH}" ]]; then
@@ -509,7 +509,7 @@ fi
 cd ${GITHUB_WORKSPACE}/amlogic
 sudo chmod +x make
 sudo ./make -d -b ${amlogic_model} -k ${amlogic_kernel} -s ${rootfs_size}
-sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* $TARGET_BSGET/ && sync
+sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE}/ && sync
 sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
 }
 
@@ -898,14 +898,13 @@ elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]; the
 else
   echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
 fi
-echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1" >> ${GITHUB_ENV}
 echo "FIRMWARE=$HOME_PATH/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1" >> ${GITHUB_ENV}
 }
 
 function Make_upgrade() {
 ## 本地编译加载机型用
-export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
-export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
+export TARGET_BOARD1="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
+export TARGET_SUBTARGET1="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
 if [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   export TARGET_PROFILE="x86-64"
 elif [[ `grep -c "CONFIG_TARGET_x86=y" ${HOME_PATH}/.config` == '1' ]] && [[ `grep -c "CONFIG_TARGET_x86_64=y" ${HOME_PATH}/.config` == '0' ]]; then
@@ -915,13 +914,13 @@ elif [[ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; t
 else
   export TARGET_PROFILE="${TARGET_BOARD}"
 fi
-export TARGET_BSGET="${HOME_PATH}/bin/targets/${TAR_BOARD}/${TAR_SUBTARGET}"
-export TARGET_OPENWRT="openwrt/bin/targets/${TAR_BOARD}/${TAR_SUBTARGET}"
+export FIRMWARE="${HOME_PATH}/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1"
+export TARGET_OPENWRT="openwrt/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1"
 }
 
 function Diy_upgrade3() {
 if [ "${REGULAR_UPDATE}" == "true" ]; then
-  cp -Rf ${TARGET_BSGET} ${HOME_PATH}/upgrade
+  cp -Rf ${FIRMWARE} ${HOME_PATH}/upgrade
   source ${BUILD_PATH}/upgrade.sh && Diy_Part3
 fi
 }
