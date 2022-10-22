@@ -898,8 +898,8 @@ elif [ `grep -c "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]; the
 else
   echo "TARGET_PROFILE=$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)" >> ${GITHUB_ENV}
 fi
-echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1" >> $GITHUB_ENV
-echo "FIRMWARE=$HOME_PATH/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1" >> $GITHUB_ENV
+echo "TARGET_BSGET=$HOME_PATH/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1" >> ${GITHUB_ENV}
+echo "FIRMWARE=$HOME_PATH/bin/targets/$TAR_BOARD1/$TAR_SUBTARGET1" >> ${GITHUB_ENV}
 }
 
 function Make_upgrade() {
@@ -927,9 +927,9 @@ fi
 }
 
 function Diy_organize() {
-cd $TARGET_BSGET
+cd ${FIRMWARE}
 mkdir -p ipk
-cp -rf $(find $HOME_PATH/bin/packages/ -type f -name "*.ipk") ipk/ && sync
+cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
 sudo tar -czf ipk.tar.gz ipk && sudo rm -rf ipk && sync
 if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
