@@ -971,8 +971,8 @@ echo "正在执行：运行$DIY_PART_SH文件"
 source "${BUILD_PATH}/${DIY_PART_SH}"
 
 # 修正连接数
-sed -i '/net.netfilter.nf_conntrack_max/d' package/base-files/files/etc/sysctl.conf
-echo -e "\nnet.netfilter.nf_conntrack_max=165535" >>package/base-files/files/etc/sysctl.conf
+sed -i '/net.netfilter.nf_conntrack_max/d' ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
+echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
 
 # openclash分支选择
 find . -name 'luci-app-openclash' | xargs -i rm -rf {}
