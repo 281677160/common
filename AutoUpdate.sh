@@ -432,7 +432,7 @@ if [[ "${AutoUpdate_Mode}" == "1" ]]; then
   fi
 fi
 
-"${Upgrade_Options}" "${CLOUD_Version}"
+${Upgrade_Options} ${CLOUD_Version}
 }
 
 function Update_u() {
