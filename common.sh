@@ -110,6 +110,8 @@ ${INS} install -y rename
 ${INS} autoremove -y --purge
 ${INS} clean
 if [[ ! ${bendi_script} == "1" ]]; then
+  sudo -E update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 9
+  sudo -E update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 9
   sudo timedatectl set-timezone "$TZ"
   sudo mkdir -p /${matrixtarget}
   sudo chown $USER:$GROUPS /${matrixtarget}
