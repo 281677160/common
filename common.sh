@@ -546,8 +546,8 @@ fi
 if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
   find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
-rm -rf feeds/packages/lang/golang
-svn export https://github.com/sbwml/packages_lang_golang/trunk feeds/packages/lang/golang
+rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+svn export https://github.com/sbwml/packages_lang_golang/trunk ${HOME_PATH}/feeds/packages/lang/golang
 }
 
 function Diy_upgrade1() {
