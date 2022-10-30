@@ -371,6 +371,8 @@ cat >>"${KEEPD}" <<-EOF
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background
 EOF
+
+sed -i '/kmod-inet-diag/d' "${HOME_PATH}/feeds/passwall/sing-box/Makefile"
 }
 
 function Diy_Mortal() {
@@ -790,6 +792,7 @@ if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
 else
   rm -rf CHONGTU
 fi
+rm -rf ./tmp
 make defconfig > /dev/null 2>&1
 echo
 echo
