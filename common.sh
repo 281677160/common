@@ -372,7 +372,7 @@ cat >>"${KEEPD}" <<-EOF
 /www/luci-static/argon/background
 EOF
 
-sed -i '/kmod-inet-diag/d' "${HOME_PATH}/feeds/passwall/sing-box/Makefile"
+sed -i '/kmod-inet-diag/d' "${HOME_PATH}/package/feeds/passwall/sing-box/Makefile"
 }
 
 function Diy_Mortal() {
