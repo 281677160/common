@@ -371,8 +371,6 @@ cat >>"${KEEPD}" <<-EOF
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background
 EOF
-
-sed -i '/kmod-inet-diag/d' "${HOME_PATH}/package/feeds/passwall/sing-box/Makefile"
 }
 
 function Diy_Mortal() {
