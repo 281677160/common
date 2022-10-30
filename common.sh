@@ -790,7 +790,6 @@ if [ -n "$(ls -A "${HOME_PATH}/Chajianlibiao" 2>/dev/null)" ]; then
 else
   rm -rf CHONGTU
 fi
-rm -rf tmp/.config-package.in
 make defconfig > /dev/null 2>&1
 echo
 echo
