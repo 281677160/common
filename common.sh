@@ -371,6 +371,14 @@ cat >>"${KEEPD}" <<-EOF
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background
 EOF
+
+
+
+if [[ "${REPO_BRANCH}" == "21.02" ]]; then
+  if [[ `grep -c "KernelPackage/inet-diag" ${HOME_PATH}/package/kernel/linux/modules/netsupport.mk` -eq '0' ]]; then
+    curl -fsSL https://raw.githubusercontent.com/281677160/openwrt-package/usb/libs/package/kernel/linux/modules/2102netsupport.mk > ${HOME_PATH}/package/kernel/linux/modules/netsupport.mk
+  fi
+fi  
 }
 
 function Diy_Mortal() {
