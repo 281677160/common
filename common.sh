@@ -106,7 +106,7 @@ git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev lib
 libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz \
 mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pip libpython3-dev qemu-utils \
 rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
-${INS} install -y rename
+${INS} install -y rename pigz libfuse-dev
 ${INS} autoremove -y --purge
 ${INS} clean
 if [[ ! ${bendi_script} == "1" ]]; then
