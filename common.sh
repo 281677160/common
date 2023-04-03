@@ -455,11 +455,11 @@ fi
 
 if [[ -d "${HOME_PATH}/extra" ]]; then
   for X in "${HOME_PATH}/feeds" "${HOME_PATH}/package"  "${HOME_PATH}/extra"; do
-     find ${X} -type d -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+     find ${X} -type d -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-argon-mod' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
   done
 else
   for X in "${HOME_PATH}/feeds" "${HOME_PATH}/package"; do
-    find ${X} -type d -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-argon-mod' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
   done
 fi
 if [[ "${applica}" == "1" ]]; then
