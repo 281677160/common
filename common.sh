@@ -2182,7 +2182,7 @@ if [[ `ls -1 | grep -c "armvirt"` -ge '1' ]]; then
      rm -rf *"$X"*
   done
 else
-  for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_PROFILE}//g"); do
+  for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
      rm -rf *"$X"*
   done
 fi
