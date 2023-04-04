@@ -2177,15 +2177,9 @@ if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
 fi
 
-if [[ `ls -1 | grep -c "armvirt"` -ge '1' ]]; then
-  for X in $(cat ${CLEAR_PATH} |sed "s/.*armvirt//g"); do
-     rm -rf *"$X"*
-  done
-else
-  for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
-     rm -rf *"$X"*
-  done
-fi
+for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
+  rm -rf *"$X"*
+done
 
 if [[ `ls -1 | grep -c "armvirt"` -eq '0' ]]; then
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
