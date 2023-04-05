@@ -84,29 +84,24 @@ if [[ ! "$USER" == "openwrt" ]] && [[ "${CURRENT_PATH}" == "openwrt" ]]; then
   print_error "已在openwrt文件夹内,请在勿在此路径使用一键命令"
   exit 1
 fi
-if [[ ! -f "/etc/oprelyon" ]]; then
-  source /etc/os-release
-  case "${UBUNTU_CODENAME}" in
-  "bionic"|"focal"|"jammy")
-    # Nothing to do
-  ;;
-  *)
-    print_error "请使用Ubuntu 64位系统，推荐 Ubuntu 20.04 LTS 或 Ubuntu 22.04 LTS"
-    exit 1
-  ;;
-  esac
-  if [[ "$USER" == "root" ]]; then
-  print_error "警告：请勿使用root用户编译，换一个普通用户吧~~"
+source /etc/os-release
+if [[ "${UBUNTU_CODENAME}" =~ (bionic|focal|jammy) ]]; then
+  # Nothing to do
+else
+  print_error "请使用Ubuntu 64位系统，推荐 Ubuntu 20.04 LTS 或 Ubuntu 22.04 LTS"
   exit 1
+fi
+if [[ "$USER" == "root" ]]; then
+ print_error "警告：请勿使用root用户编译，换一个普通用户吧~~"
+ exit 1
 fi
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
   print_error "提醒：编译之前请自备梯子，编译全程都需要稳定翻墙的梯子~~"
   exit 1
 fi
-  if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` -eq '0' ]]; then
-    sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
-  fi
+if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` -eq '0' ]]; then
+  sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
 fi
 
 
@@ -430,14 +425,14 @@ echo
 }
 
 function Bendi_Download() {
-ECHOGG "下载${SOURCE_CODE}-${LUCI_EDITION}源码"
+ECHOGG "下载${SOURCE_CODE}-${LUCI_EDITION}源码中，请耐心等候..."
 cd ${GITHUB_WORKSPACE}
 sudo rm -rf ${HOME_PATH}
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" ${HOME_PATH}
-judge "源码下载"
+judge "${SOURCE_CODE}-${LUCI_EDITION}源码下载"
 cd ${HOME_PATH}
 mkdir -p LICENSES/doc
-ECHOGG "整理源码"
+ECHOGG "整理源码，请耐心等候..."
 source ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/common.sh && Diy_checkout
 judge "整理源码"
 mv -f ${GITHUB_WORKSPACE}/build ${HOME_PATH}/build
