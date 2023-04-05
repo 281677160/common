@@ -463,16 +463,16 @@ else
   done
 fi
 if [[ "${applica}" == "1" ]]; then
-  git clone -b 21.02 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon" > /dev/null 2>&1
+  git clone -b master https://github.com/jerrykuku/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon" > /dev/null 2>&1
   git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config" > /dev/null 2>&1
 elif [[ "${applica}" == "2" ]]; then
   if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
     git clone -b argonv3 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/themes/luci-theme-argonv3" > /dev/null 2>&1
-    git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}//extra/luci/themes/luci-theme-argon" > /dev/null 2>&1
+    git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon "${HOME_PATH}//extra/luci/themes/luci-theme-argon" > /dev/null 2>&1
     git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/applications/luci-app-argon-config" > /dev/null 2>&1
   else
     git clone -b argonv3 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argonv3" > /dev/null 2>&1
-    git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon" > /dev/null 2>&1
+    git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon" > /dev/null 2>&1
     git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config" > /dev/null 2>&1
   fi
 fi
