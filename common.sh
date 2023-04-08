@@ -580,8 +580,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
 fi
-  
-# 给固件LUCI做个标记
+
 case "${REPO_BRANCH}" in
 master)
   rm -rf ${HOME_PATH}/feeds/other/lean/autosamba
@@ -592,8 +591,7 @@ master)
 21.02)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
 ;;
-19.07) 
-  # 内核
+19.07)
   sed -i 's?PATCHVER:=.*?PATCHVER:=4.14?g' target/linux/x86/Makefile
 ;;
 esac
