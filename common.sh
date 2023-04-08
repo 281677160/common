@@ -442,8 +442,10 @@ else
 fi
 if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '15' ]]; then
   applica="1"
+  echo "applica=1" >> ${GITHUB_ENV}
 else
   applica="2"
+  echo "applica=2" >> ${GITHUB_ENV}
 fi
 
 settingss="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
@@ -557,10 +559,6 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   done
 fi
 
-# 给固件LUCI做个标记
-sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-
 case "${GL_BRANCH}" in
 lede_ax1800)
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
@@ -581,53 +579,29 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
-else
-  svn export https://github.com/xiaorouji/openwrt-passwall/trunk/pdnsd-alt package/pdnsd-alt
 fi
   
 # 给固件LUCI做个标记
 case "${REPO_BRANCH}" in
 master)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-  
   rm -rf ${HOME_PATH}/feeds/other/lean/autosamba
   svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/autosamba ${HOME_PATH}/feeds/other/lean/autosamba
-  
   rm -rf ${HOME_PATH}/feeds/other/lean/automount
   svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/automount ${HOME_PATH}/feeds/other/lean/automount
-
 ;;
 21.02)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-
 ;;
-22.03)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-
-;;
-19.07)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-    
+19.07) 
   # 内核
   sed -i 's?PATCHVER:=.*?PATCHVER:=4.14?g' target/linux/x86/Makefile
-
-;;
-19.07-test)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-  
 ;;
 esac
 
 rm -rf "${HOME_PATH}/feeds/other/lean/mt"
 svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/mt ${HOME_PATH}/feeds/other/lean/mt > /dev/null 2>&1
-
+rm -rf "${HOME_PATH}/feeds/other/lean/pdnsd-alt"
+svn co https://github.com/xiaorouji/openwrt-passwall/trunk/pdnsd-alt ${HOME_PATH}/feeds/other/lean/pdnsd-alt > /dev/null 2>&1
 }
 
 
@@ -644,30 +618,6 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
   done
 fi
-# 给固件LUCI做个标记
-case "${REPO_BRANCH}" in
-openwrt-21.02)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-
-;;
-master)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='20'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-  find . -name 'default-settings' | xargs -i rm -rf {}
-
-;;
-openwrt-18.06)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-
-;;
-openwrt-18.06-k5.4)
-  sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-  echo -e "\nDISTRIB_RECOGNIZE='18'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-
-;;
-esac
 }
 
 
@@ -683,10 +633,6 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
 fi
-
-# 给固件LUCI做个标记
-sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
   
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 if [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]] && [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
@@ -715,10 +661,6 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   done
 fi
 
-# 给固件LUCI做个标记
-sed -i '/DISTRIB_RECOGNIZE/d' "${REPAIR_PATH}"
-echo -e "\nDISTRIB_RECOGNIZE='21'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-
 sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 if [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]] && [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
   sed -i 's?dnsmasq?default-settings dnsmasq-full luci ?g' "include/target.mk"
@@ -738,6 +680,7 @@ fi
 
 function Diy_distrib() {
 # 获取ZZZ_PATH路径
+[[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 cd ${HOME_PATH}
 ZZZ_PATH1="$(find ./package -type f -name "*default-settings" |grep files |cut -d '/' -f2-)"
 if [[ -n "${ZZZ_PATH1}" ]]; then
@@ -775,7 +718,7 @@ sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
 sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
 
-if [[ "$(. ${FILES_PATH}/etc/openwrt_release && echo "$DISTRIB_RECOGNIZE")" == "18" ]]; then
+if [[ "${applica}" == "2" ]]; then
 cat >> "${ZZZ_PATH}" <<-EOF
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
@@ -794,7 +737,6 @@ sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
 EOF
 fi
-
 }
 
 
