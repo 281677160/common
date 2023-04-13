@@ -1204,7 +1204,8 @@ echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
 echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
 echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
 echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
-echo "kernel_repo=${kernel_repo}" >> ${GITHUB_ENV}
+echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
+echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 
 
@@ -2033,7 +2034,7 @@ echo "芯片型号：${amlogic_model}"
 echo "使用内核：${amlogic_kernel}"
 echo "自动检测：${auto_kernel}"
 echo "rootfs大小：${rootfs_size}"
-echo "内核仓库：${kernel_repo}"
+echo "内核仓库：${kernel_usage}"
 
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
 [ ! -d ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt ] && mkdir -p ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt
@@ -2081,9 +2082,9 @@ cd ${GITHUB_WORKSPACE}/amlogic
 sed -i '/The source_codename/aecho "source_codename=${source_codename}" >> ${GITHUB_ENV}' "${GITHUB_WORKSPACE}/amlogic/make"
 sudo chmod +x make
 if [[ -z "${gh_token}" ]]; then
-  sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size} -r ${kernel_repo}
+  sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size} -r ${kernel_repo} -u ${kernel_usage}
 else
-  sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size} -r ${kernel_repo} -g ${gh_token}
+  sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size} -r ${kernel_repo} -u ${kernel_usage} -g ${gh_token}
 fi
 if [[ 0 -eq $? ]]; then
   sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
