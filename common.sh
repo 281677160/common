@@ -2019,15 +2019,16 @@ cd ${GITHUB_WORKSPACE}
 [[ ! -d "${HOME_PATH}/bin/targets/armvirt/64" ]] && mkdir -p "${HOME_PATH}/bin/targets/armvirt/64"
 export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
 [[ -z "${amlogic_model}" ]] && export amlogic_model="s905d"
-if [[ -z "${amlogic_kernel}" ]]; then
-  curl -fsSL https://github.com/281677160/common/releases/download/API/stable.api -o ${HOME_PATH}/stable.api
-  export amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+"' "${HOME_PATH}/stable.api" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'NR==1')"
-  [[ -z "${amlogic_kernel}" ]] && export amlogic_kernel="5.10.170"
-fi
 [[ -z "${auto_kernel}" ]] && export auto_kernel="true"
 [[ -z "${rootfs_size}" ]] && export rootfs_size="960"
-[[ -z "${kernel_repo}" ]] && export kernel_repo="https://github.com/ophub/kernel/tree/main/pub"
+[[ -z "${kernel_repo}" ]] && export kernel_repo="ophub/kernel"
+[[ -z "${kernel_usage}" ]] && export kernel_usage="stable"
 [[ -z "${UPLOAD_WETRANSFER}" ]] && export UPLOAD_WETRANSFER="true"
+if [[ -z "${amlogic_kernel}" ]]; then
+  curl -fsSL https://github.com/281677160/common/releases/download/API/${kernel_usage}.api -o ${HOME_PATH}/${kernel_usage}.api
+  export amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+\.tar.gz"' ${HOME_PATH}/${kernel_usage}.api |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'END {print}' |sed s/[[:space:]]//g)"
+  [[ -z "${amlogic_kernel}" ]] && export amlogic_kernel="5.10.170"
+fi
 export gh_token="${REPO_TOKEN}"
 
 echo "芯片型号：${amlogic_model}"
