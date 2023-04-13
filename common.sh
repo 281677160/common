@@ -1963,10 +1963,11 @@ export YML_PATH="${FOLDER_NAME2}/.github/workflows/packaging.yml"
 cp -Rf ${GITHUB_WORKSPACE}/.github/workflows/packaging.yml ${YML_PATH}
 export PATHS1="$(grep -A 5 'paths:' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |grep -Eo "\- '.*'" |cut -d"'" -f2 |awk 'NR==1')"
 export PATHS2="build/${FOLDER_NAME}/relevance/${SOURCE}start"
-export ER_NAME1="$(grep 'FOLDER_NAME:' "${YML_PATH}"|sed 's/^[ ]*//g' |grep -v "^#" |cut -d' ' -f2)"
-export ER_NAME2="${FOLDER_NAME}"
-export SOURCE_NAME1="$(grep 'SOURCE:' "${YML_PATH}"|sed 's/^[ ]*//g' |grep -v "^#" |cut -d' ' -f2)"
-export SOURCE_NAME2="${SOURCE}"
+export SOURCE_NAME1="$(grep 'SOURCE:' "${YML_PATH}"|sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
+export SOURCE_NAME2="SOURCE: ${SOURCE}"
+export ER_NAME1="$(grep 'FOLDER_NAME:' "${YML_PATH}"|sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
+export ER_NAME2="FOLDER_NAME: ${FOLDER_NAME}"
+
 
 if [[ -n "${PATHS1}" ]] && [[ -n "${ER_NAME1}" ]] && [[ -n "${SOURCE_NAME1}" ]]; then
   sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
