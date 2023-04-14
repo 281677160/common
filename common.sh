@@ -2079,7 +2079,7 @@ if [[ `ls -1 "${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt" |grep -c ".*default-r
     echo "source_codename=${source_codename}" >> ${GITHUB_ENV}
     sudo rm -rf ${GITHUB_WORKSPACE}/amlogic/temp_dir
   else
-    source_codename="amlogic"
+    source_codename="armvirt"
     echo "source_codename=${source_codename}" >> ${GITHUB_ENV}
     sudo rm -rf ${GITHUB_WORKSPACE}/amlogic/temp_dir
   fi
