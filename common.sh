@@ -482,17 +482,10 @@ fi
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
 svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
 
-
 if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
    sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
 elif [[ -d "${HOME_PATH}/feeds/luci/collections/luci-light" ]] && [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"` -eq '1' ]]; then
    sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
-fi
-
-if [[ "${REPO_BRANCH}" =~ (19.07|19.07-test|openwrt-19.07) ]]; then
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap > /dev/null 2>&1
-  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap > /dev/null 2>&1
 fi
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
@@ -561,7 +554,7 @@ fi
 
 case "${GL_BRANCH}" in
 lede_ax1800)
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
 ;;
 esac
 }
@@ -588,11 +581,13 @@ master)
   rm -rf ${HOME_PATH}/feeds/other/lean/automount
   svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/automount ${HOME_PATH}/feeds/other/lean/automount
 ;;
+19.07|19.07-test)
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap > /dev/null 2>&1
+  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap > /dev/null 2>&1
+;;
 21.02)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-;;
-19.07)
-  sed -i 's?PATCHVER:=.*?PATCHVER:=4.14?g' target/linux/x86/Makefile
 ;;
 esac
 
@@ -666,6 +661,17 @@ elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]
   dnsmq="$(grep -Eo 'dnsmasq.*' "include/target.mk" |sed 's/^[ ]*//g' |awk '{print $(1)}')"
   sed -i "s?${dnsmq}?default-settings dnsmasq-full luci?g" "include/target.mk"
 fi
+
+case "${REPO_BRANCH}" in
+openwrt-21.02)
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+;;
+openwrt-19.07)
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap > /dev/null 2>&1
+  rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap > /dev/null 2>&1
+;;
+esac
 
 if [[ "${REPO_BRANCH}" = "openwrt-21.02" ]]; then
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
