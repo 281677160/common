@@ -2090,7 +2090,6 @@ fi
 
 echo "开始打包"
 cd ${GITHUB_WORKSPACE}/amlogic
-sed -i '/The source_codename/aecho "source_codename=${source_codename}" >> ${GITHUB_ENV}' "${GITHUB_WORKSPACE}/amlogic/make"
 sudo chmod +x make
 if [[ -z "${gh_token}" ]]; then
   sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size} -r ${kernel_repo} -u ${kernel_usage}
