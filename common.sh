@@ -1096,7 +1096,13 @@ if [[ "${Replace_Kernel}" == "0" ]] || [[ -z "${Replace_Kernel}" ]]; then
   echo "Replace_Kernel=0" >> ${GITHUB_ENV}
   echo "使用默认内核"
 elif [[ -n "${Replace_Kernel}" ]]; then
-  echo "Replace_Kernel=${Replace_Kernel}" >> ${GITHUB_ENV}
+  Replace_nel="$(echo ${Replace_Kernel} |grep -Eo "[0-9]+\.[0-9]+")"
+  if [[ -n "${Replace_nel}" ]]; then
+    echo "Replace_Kernel=${Replace_Kernel}" >> ${GITHUB_ENV}
+  else
+    echo "Replace_Kernel=0" >> ${GITHUB_ENV}
+    echo "填写的内核格式错误,使用源码默认内核编译"
+  fi
 fi
 
 if [[ "${Ipv4_ipaddr}" == "0" ]] || [[ -z "${Ipv4_ipaddr}" ]]; then
