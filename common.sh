@@ -2031,7 +2031,7 @@ export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
 [[ -z "${amlogic_model}" ]] && export amlogic_model="s905d"
 [[ -z "${auto_kernel}" ]] && export auto_kernel="true"
 [[ -z "${rootfs_size}" ]] && export rootfs_size="2560"
-[[ -z "${kernel_repo}" ]] && export kernel_repo="ophub/kernel"
+export kernel_repo="ophub/kernel"
 [[ -z "${kernel_usage}" ]] && export kernel_usage="stable"
 [[ -z "${UPLOAD_WETRANSFER}" ]] && export UPLOAD_WETRANSFER="true"
 if [[ -z "${amlogic_kernel}" ]]; then
