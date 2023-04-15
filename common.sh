@@ -1215,17 +1215,6 @@ echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
 echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
 echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
-
-
-if [[ "${Replace_mac80211}" == "1" ]] && [[ "${GL_BRANCH}" != "lede_ax1800" ]] && [[ ! -d "package/kernel/mac80211/.svn" ]]; then
-  echo "替换mac80211源码文件"
-  rm -rf package/kernel/{mac80211,acx-mac80211}
-  rm -rf package/firmware/{ath10k-ct-firmware,b43legacy-firmware}
-  svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/kernel/acx-mac80211 package/kernel/acx-mac80211
-  svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/kernel/mac80211 package/kernel/mac80211
-  svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/firmware/ath10k-ct-firmware package/firmware/ath10k-ct-firmware
-  svn co https://github.com/openwrt/openwrt/branches/openwrt-22.03/package/firmware/b43legacy-firmware package/firmware/b43legacy-firmware
-fi
 }
 
 
