@@ -455,15 +455,8 @@ elif [[ ! -d "${settingss}" ]] && [[ "${applica}" == "2" ]]; then
   svn export https://github.com/281677160/common/trunk/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 fi
 
-if [[ -d "${HOME_PATH}/extra" ]]; then
-  for X in "${HOME_PATH}/feeds" "${HOME_PATH}/package"  "${HOME_PATH}/extra"; do
-     find ${X} -type d -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-argon-mod' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-  done
-else
-  for X in "${HOME_PATH}/feeds" "${HOME_PATH}/package"; do
-    find ${X} -type d -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-argon-mod' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
-  done
-fi
+find . -type d -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-argon-mod' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
+
 if [[ "${applica}" == "1" ]]; then
   git clone -b master https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon"
   git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config"
