@@ -465,22 +465,22 @@ else
   done
 fi
 if [[ "${applica}" == "1" ]]; then
-  git clone -b master https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon" > /dev/null 2>&1
-  git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config" > /dev/null 2>&1
+  git clone -b master https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon"
+  git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config"
 elif [[ "${applica}" == "2" ]]; then
   if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
-    git clone -b argonv3 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/themes/luci-theme-argonv3" > /dev/null 2>&1
-    git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}//extra/luci/themes/luci-theme-argon" > /dev/null 2>&1
-    git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/applications/luci-app-argon-config" > /dev/null 2>&1
+    git clone -b argonv3 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/themes/luci-theme-argonv3"
+    git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}//extra/luci/themes/luci-theme-argon"
+    git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/applications/luci-app-argon-config"
   else
-    git clone -b argonv3 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argonv3" > /dev/null 2>&1
-    git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon" > /dev/null 2>&1
-    git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config" > /dev/null 2>&1
+    git clone -b argonv3 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argonv3"
+    git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon"
+    git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config"
   fi
 fi
 
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
+svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang
 
 if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
    sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
