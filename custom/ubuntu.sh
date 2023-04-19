@@ -4,6 +4,7 @@
 # Copyright (C) ImmortalWrt.org
 
 function Delete_useless(){
+# 删除一些不需要的东西
 sudo apt-get update -y
 docker rmi `docker images -q`
 sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /usr/lib/jvm /opt/ghc /swapfile
@@ -30,7 +31,6 @@ sudo apt-get install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt) > 
 function update_apt_source(){
 node --version
 yarn --version
-
 sudo apt-get autoremove -y --purge
 sudo apt-get clean
 }
