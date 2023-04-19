@@ -14,7 +14,8 @@ sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /
 function install_mustrelyon(){
 # 安装我仓库需要的依赖
 sudo apt-get install -y rename pigz curl libfuse-dev upx
-sudo -E systemctl daemon-reload
+git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+git config --global user.name "github-actions[bot]"
 
 # 安装天灵大佬的依赖
 sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
