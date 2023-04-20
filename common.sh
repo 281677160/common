@@ -746,6 +746,13 @@ sed -i '/passwall/d' "${HOME_PATH}/feeds.conf.default"
 find . -type d -name 'v2ray-core' -o -name 'v2ray-geodata' -o -name 'v2ray-plugin' -o -name 'xray-core' -o -name 'xray-plugin' | xargs -i rm -rf {}
 find . -type d -name 'trojan' -o -name 'trojan-go' -o -name 'trojan-plus' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
 
+if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+  svn export https://github.com/coolsnowwolf/packages/trunk/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+  rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
+  svn export https://github.com/immortalwrt/packages/trunk/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
+fi
+
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
 cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
 src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
@@ -1228,13 +1235,8 @@ rm -rf ${HOME_PATH}/diy_pa_sh
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 
-if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]] && [[ ! "${ERCI}" == "1" ]]; then
-  rm -rf ./feeds/packages/net/xray-core
-  rm -rf ./feeds/packages/net/kcptun
-  svn co https://github.com/immortalwrt/packages/trunk/net/kcptun ./feeds/packages/net/kcptun > /dev/null 2>&1
+if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
   ln -sf ../../../feeds/packages/net/kcptun ./package/feeds/packages/kcptun
-  rm -rf ./feeds/packages/net/shadowsocks-libev
-  svn co https://github.com/coolsnowwolf/packages/trunk/net/shadowsocks-libev ./package/net/shadowsocks-libev > /dev/null 2>&1
   ln -sf ../../../feeds/packages/net/shadowsocks-libev ./package/feeds/packages/shadowsocks-libev
 fi
 
