@@ -743,50 +743,19 @@ echo "正在执行：给feeds.conf.default增加插件源"
 sed -i '/danshui/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/helloworld/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/passwall/d' "${HOME_PATH}/feeds.conf.default"
-
-cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
-src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
-EOF
+find . -type d -name 'v2ray-core' -o -name 'v2ray-geodata' -o -name 'v2ray-plugin' -o -name 'xray-core' -o -name 'xray-plugin' | xargs -i rm -rf {}
+find . -type d -name 'trojan' -o -name 'trojan-go' -o -name 'trojan-plus' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
 
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-  [[ -d "${HOME_PATH}/package/passwal" ]] && rm -rf ${HOME_PATH}/package/passwal/* || mkdir -p ${HOME_PATH}/package/passwal
-  find . -type d -name 'v2ray-core' -o -name 'v2raya' -o -name 'xray-core' -o -name 'v2ray-geodata' | xargs -i rm -rf {}
-  find . -type d -name 'trojan-go' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
 cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
+src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
 src-git passwall https://github.com/xiaorouji/openwrt-passwall;packages
 src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
 src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
 EOF
-elif [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
-  rm -rf ${HOME_PATH}/package/{passwall_pkg,passwall_luci,passwall_luci2,ssrp}
-  find . -type d -name 'trojan-go' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
-  git clone -b packages --depth 1 https://github.com/xiaorouji/openwrt-passwall package/passwall_pkg > /dev/null 2>&1
-  git clone -b luci --depth 1 https://github.com/xiaorouji/openwrt-passwall package/passwall_luci > /dev/null 2>&1
-  git clone -b main --depth 1 https://github.com/xiaorouji/openwrt-passwall2 package/passwall_luci2 > /dev/null 2>&1
-  find . -type d -name 'v2ray-core' -o -name 'v2raya' | xargs -i rm -rf {}
-  find . -type d -name 'xray-core' -o -name 'redsocks2' -o -name 'v2ray-geodata' | xargs -i rm -rf {}
-  git clone -b master --depth 1 https://github.com/fw876/helloworld package/ssrp > /dev/null 2>&1
-
-  sed -i 's,iptables-legacy,iptables-nft,g' package/passwall_luci/luci-app-passwall/Makefile
-
-echo '
-teamviewer.com
-epicgames.com
-dangdang.com
-account.synology.com
-ddns.synology.com
-checkip.synology.com
-checkip.dyndns.org
-checkipv6.synology.com
-ntp.aliyun.com
-cn.ntp.org.cn
-ntp.ntsc.ac.cn
-' >>./package/passwall_luci/luci-app-passwall/root/usr/share/passwall/rules/direct_host
-pushd package/ssrp
-wget -qO - https://github.com/fw876/helloworld/commit/5bbf6e7.patch | patch -p1
-popd
 else
 cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
+src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
 src-git helloworld https://github.com/fw876/helloworld
 src-git passwall https://github.com/xiaorouji/openwrt-passwall;packages
 src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
