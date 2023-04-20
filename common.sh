@@ -451,6 +451,7 @@ fi
 settingss="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
 if [[ ! -d "${settingss}" ]] && [[ "${applica}" == "1" ]]; then
   svn export https://github.com/281677160/common/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+  [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && svn export https://github.com/openwrt/luci/branches/openwrt-22.03/libs/luci-lib-base ${HOME_PATH}/feeds/luci/libs/luci-lib-base > /dev/null 2>&1
 elif [[ ! -d "${settingss}" ]] && [[ "${applica}" == "2" ]]; then
   svn export https://github.com/281677160/common/trunk/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 fi
@@ -747,9 +748,7 @@ cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
 src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
 EOF
 
-if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-  sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
-elif [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
+if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
   rm -rf ${HOME_PATH}/package/{passwall_pkg,passwall_luci,passwall_luci2,ssrp}
   find . -type d -name 'trojan-go' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
   git clone -b packages --depth 1 https://github.com/xiaorouji/openwrt-passwall package/passwall_pkg > /dev/null 2>&1
