@@ -756,7 +756,7 @@ EOF
 else
 cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
 src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
-src-git helloworld https://github.com/fw876/helloworld
+src-git helloworld https://github.com/fw876/helloworld.git
 src-git passwall https://github.com/xiaorouji/openwrt-passwall;packages
 src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
 src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
