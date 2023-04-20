@@ -752,31 +752,11 @@ if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07
   [[ -d "${HOME_PATH}/package/passwal" ]] && rm -rf ${HOME_PATH}/package/passwal/* || mkdir -p ${HOME_PATH}/package/passwal
   find . -type d -name 'v2ray-core' -o -name 'v2raya' -o -name 'xray-core' -o -name 'v2ray-geodata' | xargs -i rm -rf {}
   find . -type d -name 'trojan-go' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
-  
-  git clone -b packages --depth 1 https://github.com/xiaorouji/openwrt-passwall ${HOME_PATH}/package/passwal/passwall_pkg > /dev/null 2>&1
-  git clone -b luci --depth 1 https://github.com/xiaorouji/openwrt-passwall ${HOME_PATH}/package/passwal/passwall_luci > /dev/null 2>&1
-  git clone -b main --depth 1 https://github.com/xiaorouji/openwrt-passwall2 ${HOME_PATH}/package/passwal/passwall_luci2 > /dev/null 2>&1
-  
-  svn co https://github.com/jerrykuku/luci-app-vssr/trunk ${HOME_PATH}/package/passwal/luci-app-vssr > /dev/null 2>&1
-  svn co https://github.com/jerrykuku/lua-maxminddb/trunk ${HOME_PATH}/package/passwal/lua-maxminddb > /dev/null 2>&1
-  svn co https://github.com/immortalwrt/packages/trunk/net/redsocks2 ${HOME_PATH}/package/passwal/redsocks2 > /dev/null 2>&1
-  svn co https://github.com/coolsnowwolf/packages/trunk/net/kcptun ${HOME_PATH}/package/passwal/kcptun > /dev/null 2>&1
-  
-  sed -i 's,iptables-legacy,iptables-nft,g' ${HOME_PATH}/package/passwal/passwall_luci/luci-app-passwall/Makefile
-
-echo '
-teamviewer.com
-epicgames.com
-dangdang.com
-account.synology.com
-ddns.synology.com
-checkip.synology.com
-checkip.dyndns.org
-checkipv6.synology.com
-ntp.aliyun.com
-cn.ntp.org.cn
-ntp.ntsc.ac.cn
-' >> ${HOME_PATH}/package/passwal/passwall_luci/luci-app-passwall/root/usr/share/passwall/rules/direct_host
+cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
+src-git passwall https://github.com/xiaorouji/openwrt-passwall;packages
+src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
+src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
+EOF
 elif [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
   rm -rf ${HOME_PATH}/package/{passwall_pkg,passwall_luci,passwall_luci2,ssrp}
   find . -type d -name 'trojan-go' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
@@ -1587,11 +1567,11 @@ if [[ `grep -c "CONFIG_PACKAGE_odhcp6c=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   sed -i '/CONFIG_PACKAGE_odhcpd_full_ext_cer_id=0/d' "${HOME_PATH}/.config"
 fi
 
-if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
-sed -i 's/CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy=y/# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy is not set/g' ${HOME_PATH}/.config
-sed -i 's/CONFIG_PACKAGE_naiveproxy=y/# CONFIG_PACKAGE_naiveproxy is not set/g' ${HOME_PATH}/.config
-sed -i 's/CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy=y/# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy is not set/g' ${HOME_PATH}/.config
-sed -i 's/CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_NaiveProxy=y/# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_NaiveProxy is not set/g' ${HOME_PATH}/.config
+if [[ "${GL_BRANCH}" == "lede_ax1800" ]] || [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
+  sed -i 's/CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy=y/# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy is not set/g' ${HOME_PATH}/.config
+  sed -i 's/CONFIG_PACKAGE_naiveproxy=y/# CONFIG_PACKAGE_naiveproxy is not set/g' ${HOME_PATH}/.config
+  sed -i 's/CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy=y/# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy is not set/g' ${HOME_PATH}/.config
+  sed -i 's/CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_NaiveProxy=y/# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_NaiveProxy is not set/g' ${HOME_PATH}/.config
 fi
 
 if [[ ! "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] || [[ -z "${REPO_TOKEN}" ]]; then
