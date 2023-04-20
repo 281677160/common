@@ -571,9 +571,9 @@ fi
 case "${REPO_BRANCH}" in
 master)
   rm -rf ${HOME_PATH}/feeds/other/lean/autosamba
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/autosamba ${HOME_PATH}/feeds/other/lean/autosamba
+  svn export https://github.com/coolsnowwolf/lede/trunk/package/lean/autosamba ${HOME_PATH}/feeds/other/lean/autosamba > /dev/null 2>&1
   rm -rf ${HOME_PATH}/feeds/other/lean/automount
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/automount ${HOME_PATH}/feeds/other/lean/automount
+  svn export https://github.com/coolsnowwolf/lede/trunk/package/lean/automount ${HOME_PATH}/feeds/other/lean/automount > /dev/null 2>&1
 ;;
 19.07|19.07-test)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
