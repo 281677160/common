@@ -451,7 +451,7 @@ fi
 settingss="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
 if [[ ! -d "${settingss}" ]] && [[ "${applica}" == "1" ]]; then
   svn export https://github.com/281677160/common/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
-  [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && svn export https://github.com/openwrt/luci/branches/openwrt-22.03/libs/luci-lib-base ${HOME_PATH}/feeds/luci/libs/luci-lib-base > /dev/null 2>&1
+  [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
 elif [[ ! -d "${settingss}" ]] && [[ "${applica}" == "2" ]]; then
   svn export https://github.com/281677160/common/trunk/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 fi
