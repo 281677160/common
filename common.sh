@@ -474,7 +474,7 @@ elif [[ "${applica}" == "2" ]]; then
 fi
 
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang
+svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
 
 if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
    sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
@@ -748,9 +748,9 @@ find . -type d -name 'trojan' -o -name 'trojan-go' -o -name 'trojan-plus' -o -na
 
 if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
-  svn export https://github.com/coolsnowwolf/packages/trunk/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+  svn export https://github.com/coolsnowwolf/packages/trunk/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev > /dev/null 2>&1
   rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
-  svn export https://github.com/immortalwrt/packages/trunk/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
+  svn export https://github.com/immortalwrt/packages/trunk/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun > /dev/null 2>&1
 fi
 
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
@@ -1234,11 +1234,6 @@ fi
 rm -rf ${HOME_PATH}/diy_pa_sh
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
-
-if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
-  ln -sf ../../../feeds/packages/net/kcptun ./package/feeds/packages/kcptun
-  ln -sf ../../../feeds/packages/net/shadowsocks-libev ./package/feeds/packages/shadowsocks-libev
-fi
 
 if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]] && [[ ! "${ERCI}" == "1" ]]; then
   cp /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
