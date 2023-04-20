@@ -749,20 +749,20 @@ src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANC
 EOF
 
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-  rm -rf ${HOME_PATH}/package/{passwall_pkg,passwall_luci,passwall_luci2,ssrp}
+  [[ -d "${HOME_PATH}/package/passwal" ]] && rm -rf ${HOME_PATH}/package/passwal/* || mkdir -p ${HOME_PATH}/package/passwal
+  find . -type d -name 'v2ray-core' -o -name 'v2raya' -o -name 'xray-core' -o -name 'redsocks2' -o -name 'v2ray-geodata' | xargs -i rm -rf {}
   find . -type d -name 'trojan-go' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
-  git clone -b packages --depth 1 https://github.com/xiaorouji/openwrt-passwall package/passwall_pkg > /dev/null 2>&1
-  git clone -b luci --depth 1 https://github.com/xiaorouji/openwrt-passwall package/passwall_luci > /dev/null 2>&1
-  git clone -b main --depth 1 https://github.com/xiaorouji/openwrt-passwall2 package/passwall_luci2 > /dev/null 2>&1
-  find . -type d -name 'v2ray-core' -o -name 'v2raya' | xargs -i rm -rf {}
-  find . -type d -name 'xray-core' -o -name 'redsocks2' -o -name 'v2ray-geodata' | xargs -i rm -rf {}
   
-  svn co https://github.com/jerrykuku/luci-app-vssr/trunk package/luci-app-vssr
-  svn co https://github.com/jerrykuku/lua-maxminddb/trunk package/lua-maxminddb
-  svn co https://github.com/immortalwrt/packages/trunk/net/redsocks2 package/redsocks2
-  svn co https://github.com/coolsnowwolf/packages/trunk/net/kcptun package/kcptun
+  git clone -b packages --depth 1 https://github.com/xiaorouji/openwrt-passwall ${HOME_PATH}/package/passwal/passwall_pkg > /dev/null 2>&1
+  git clone -b luci --depth 1 https://github.com/xiaorouji/openwrt-passwall ${HOME_PATH}/package/passwal/passwall_luci > /dev/null 2>&1
+  git clone -b main --depth 1 https://github.com/xiaorouji/openwrt-passwall2 ${HOME_PATH}/package/passwal/passwall_luci2 > /dev/null 2>&1
   
-  sed -i 's,iptables-legacy,iptables-nft,g' package/passwall_luci/luci-app-passwall/Makefile
+  svn co https://github.com/jerrykuku/luci-app-vssr/trunk ${HOME_PATH}/package/passwal/luci-app-vssr > /dev/null 2>&1
+  svn co https://github.com/jerrykuku/lua-maxminddb/trunk ${HOME_PATH}/package/passwal/lua-maxminddb > /dev/null 2>&1
+  svn co https://github.com/immortalwrt/packages/trunk/net/redsocks2 ${HOME_PATH}/package/passwal/redsocks2 > /dev/null 2>&1
+  svn co https://github.com/coolsnowwolf/packages/trunk/net/kcptun ${HOME_PATH}/package/passwal/kcptun > /dev/null 2>&1
+  
+  sed -i 's,iptables-legacy,iptables-nft,g' ${HOME_PATH}/package/passwal/passwall_luci/luci-app-passwall/Makefile
 
 echo '
 teamviewer.com
@@ -776,7 +776,7 @@ checkipv6.synology.com
 ntp.aliyun.com
 cn.ntp.org.cn
 ntp.ntsc.ac.cn
-' >>./package/passwall_luci/luci-app-passwall/root/usr/share/passwall/rules/direct_host
+' >> ${HOME_PATH}/package/passwal/passwall_luci/luci-app-passwall/root/usr/share/passwall/rules/direct_host
 elif [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
   rm -rf ${HOME_PATH}/package/{passwall_pkg,passwall_luci,passwall_luci2,ssrp}
   find . -type d -name 'trojan-go' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
