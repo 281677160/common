@@ -750,7 +750,7 @@ EOF
 
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
   [[ -d "${HOME_PATH}/package/passwal" ]] && rm -rf ${HOME_PATH}/package/passwal/* || mkdir -p ${HOME_PATH}/package/passwal
-  find . -type d -name 'v2ray-core' -o -name 'v2raya' -o -name 'xray-core' -o -name 'redsocks2' -o -name 'v2ray-geodata' | xargs -i rm -rf {}
+  find . -type d -name 'v2ray-core' -o -name 'v2raya' -o -name 'xray-core' -o -name 'v2ray-geodata' | xargs -i rm -rf {}
   find . -type d -name 'trojan-go' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
   
   git clone -b packages --depth 1 https://github.com/xiaorouji/openwrt-passwall ${HOME_PATH}/package/passwal/passwall_pkg > /dev/null 2>&1
