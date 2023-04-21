@@ -24,6 +24,9 @@ fi
 if [[ `grep -c "passwall" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
   sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 fi
+if [[ `grep -c "openwrt_x" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
+  sed -i '/openwrt_x/d' /etc/opkg/distfeeds.conf
+fi
 
 if [[ -f "/usr/share/ucode/luci/version.uc" ]]; then
   sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
