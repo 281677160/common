@@ -758,7 +758,7 @@ if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
   svn export https://github.com/immortalwrt/packages/trunk/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun > /dev/null 2>&1
   rm -rf ${HOME_PATH}/feeds/packages/net/v2raya
-  svn export https://github.com/fw876/helloworld/trunk/v2raya ${HOME_PATH}/feeds/packages/net/v2raya
+  svn export https://github.com/fw876/helloworld/trunk/v2raya ${HOME_PATH}/feeds/packages/net/v2raya > /dev/null 2>&1
 fi
 
 cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
