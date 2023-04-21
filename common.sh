@@ -1226,8 +1226,13 @@ cd ${HOME_PATH}
 ./scripts/feeds update -a
 if [[ -f "${HOME_PATH}/diy_pa_sh" ]] && [[ ! "${ERCI}" == "1" ]]; then
   source ${HOME_PATH}/diy_pa_sh
+  rm -rf ${HOME_PATH}/diy_pa_sh
 fi
-rm -rf ${HOME_PATH}/diy_pa_sh
+if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]] && [[ -d "feeds/helloworld" ]] && [[ ! "${ERCI}" == "1" ]]; then
+pushd feeds/helloworld
+wget -qO - https://github.com/fw876/helloworld/commit/5bbf6e7.patch | patch -p1
+popd
+fi
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 
