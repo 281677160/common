@@ -492,9 +492,7 @@ fi
 
 if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
   sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-fi
-
-if [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; then
+elif [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; then
   sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=libustream-openssl ?g' "${HOME_PATH}/include/target.mk"
 fi
 
