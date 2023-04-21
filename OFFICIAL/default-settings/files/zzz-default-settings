@@ -40,7 +40,7 @@ echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
 rm -rf /tmp/luci-modulecache/
 rm -f /tmp/luci-indexcache
 
-if [[ `grep -c "downloads.openwrt.org" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
+if [[ -n $(grep "downloads.openwrt.org" /etc/opkg/distfeeds.conf) ]]; then
   sed -i 's?downloads.openwrt.org?mirrors.tuna.tsinghua.edu.cn/openwrt?g' /etc/opkg/distfeeds.conf
 fi
 
