@@ -489,6 +489,26 @@ fi
 if [[ ! -d "${HOME_PATH}/feeds/packages/utils/parted" ]]; then
   svn export https://github.com/coolsnowwolf/packages/trunk/utils/parted ${HOME_PATH}/feeds/packages/utils/parted > /dev/null 2>&1
 fi
+
+if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
+  sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+fi
+
+if [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=libustream-openssl ?g' "${HOME_PATH}/include/target.mk"
+fi
+
+if [[ -n "$(grep "dnsmasq" ${HOME_PATH}/include/target.mk)" ]] && [[ -z "$(grep "dnsmasq-full" ${HOME_PATH}/include/target.mk)" ]]; then
+  sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+fi
+
+if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
+fi
+
+if [[ -z "$(grep "luci-lib-ipkg" ${HOME_PATH}/include/target.mk)" ]]; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+fi
 }
 
 function Diy_wenjian2() {
@@ -619,14 +639,6 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
 fi
-  
-sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-if [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]] && [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's?dnsmasq?default-settings dnsmasq-full luci ?g' "include/target.mk"
-elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-  dnsmq="$(grep -Eo 'dnsmasq.*' "include/target.mk" |sed 's/^[ ]*//g' |awk '{print $(1)}')"
-  sed -i "s?${dnsmq}?default-settings dnsmasq-full luci" "include/target.mk"
-fi
 
 if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
   echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
@@ -645,14 +657,6 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
-fi
-
-sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-if [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]] && [[ `grep -c 'dnsmasq-full' "include/target.mk"` -eq '0' ]]; then
-  sed -i 's?dnsmasq?default-settings dnsmasq-full luci ?g' "include/target.mk"
-elif [[ `grep -c 'default-settings' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-  dnsmq="$(grep -Eo 'dnsmasq.*' "include/target.mk" |sed 's/^[ ]*//g' |awk '{print $(1)}')"
-  sed -i "s?${dnsmq}?default-settings dnsmasq-full luci?g" "include/target.mk"
 fi
 
 case "${REPO_BRANCH}" in
@@ -753,14 +757,6 @@ if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
   svn export https://github.com/immortalwrt/packages/trunk/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun > /dev/null 2>&1
 fi
 
-if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
-src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
-src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
-src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
-src-git passwall3 https://github.com/xiaorouji/openwrt-passwall;packages
-EOF
-else
 cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
 src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
 src-git helloworld https://github.com/fw876/helloworld.git
@@ -768,7 +764,7 @@ src-git passwall1 https://github.com/xiaorouji/openwrt-passwall;luci
 src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2;main
 src-git passwall3 https://github.com/xiaorouji/openwrt-passwall;packages
 EOF
-fi
+
 sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
 ;;
