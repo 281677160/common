@@ -666,6 +666,10 @@ openwrt-19.07)
   rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap > /dev/null 2>&1
   rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap > /dev/null 2>&1
 ;;
+openwrt-22.03)
+  rm -rf ${HOME_PATH}/feeds/packages/net/apinger
+  svn export https://github.com/openwrt/packages/trunk/net/apinger ${HOME_PATH}/feeds/packages/net/apinger
+;;
 esac
 
 if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
