@@ -666,6 +666,7 @@ openwrt-21.02)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
 ;;
 openwrt-19.07)
+  [[ -d "${HOME_PATH}/package/feeds/danshui/autosamba" ]] && sed -i "s?luci-app-samba4?luci-app-samba?g" ${HOME_PATH}/package/feeds/danshui/autosamba/Makefile
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
   rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn export https://github.com/281677160/common/trunk/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap > /dev/null 2>&1
   rm -rf ${HOME_PATH}/package/libs/libpcap && svn export https://github.com/281677160/common/trunk/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap > /dev/null 2>&1
