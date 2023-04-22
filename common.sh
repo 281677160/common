@@ -490,6 +490,10 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/utils/parted" ]]; then
   svn export https://github.com/coolsnowwolf/packages/trunk/utils/parted ${HOME_PATH}/feeds/packages/utils/parted > /dev/null 2>&1
 fi
 
+if [[ ! -d "${HOME_PATH}/package/utils/bcm27xx-userland" ]]; then
+  svn export https://github.com/openwrt/openwrt/trunk/package/utils/bcm27xx-userland ${HOME_PATH}/package/utils/bcm27xx-userland > /dev/null 2>&1
+fi
+
 if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
   sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
 elif [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; then
