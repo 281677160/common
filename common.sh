@@ -209,7 +209,7 @@ OFFICIAL)
     export LUCI_EDITION="master"
     export DIY_WORK="${FOLDER_NAME}MASTER"
   elif [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-    export PACKAGE_BRANCH="official-master"
+    export PACKAGE_BRANCH="21.02"
     export LUCI_EDITION="19.07"
     export DIY_WORK="${FOLDER_NAME}1907"
   elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
