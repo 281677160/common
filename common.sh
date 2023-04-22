@@ -205,7 +205,7 @@ OFFICIAL)
   export SOURCE="Official"
   export SOURCE_OWNER="openwrt"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
-    export PACKAGE_BRANCH="official-master"
+    export PACKAGE_BRANCH="official-19.07"
     export LUCI_EDITION="master"
     export DIY_WORK="${FOLDER_NAME}MASTER"
   elif [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
@@ -213,11 +213,11 @@ OFFICIAL)
     export LUCI_EDITION="19.07"
     export DIY_WORK="${FOLDER_NAME}1907"
   elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-    export PACKAGE_BRANCH="official-master"
+    export PACKAGE_BRANCH="official-19.07"
     export LUCI_EDITION="21.02"
     export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
-    export PACKAGE_BRANCH="official-master"
+    export PACKAGE_BRANCH="official-19.07"
     export LUCI_EDITION="22.03"
     export DIY_WORK="${FOLDER_NAME}2203"
   fi
