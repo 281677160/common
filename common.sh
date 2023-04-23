@@ -1244,7 +1244,7 @@ if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]] && [[ -d "feeds/helloworld" ]]; the
   SSR_LUA="${HOME_PATH}/feeds/helloworld/luci-app-ssr-plus/root/usr/share/shadowsocksr/subscribe.lua"
   [[ -f "${SSR_LUA}" ]] && sed -i 's?result.insecure = "0"?result.insecure = "1"?g' "${SSR_LUA}"
 
-  if [[ -d "${HOME_PATH}/feeds/danshui/luci-app-store" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]
+  if [[ -d "${HOME_PATH}/feeds/danshui/luci-app-store" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
     rm -rf ${HOME_PATH}/feeds/danshui/luci-app-store
     rm -rf ${HOME_PATH}/feeds/danshui/luci-app-istorex
   fi
