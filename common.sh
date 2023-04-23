@@ -1238,10 +1238,13 @@ if [[ -f "${HOME_PATH}/diy_pa_sh" ]] && [[ ! "${ERCI}" == "1" ]]; then
   source ${HOME_PATH}/diy_pa_sh
   rm -rf ${HOME_PATH}/diy_pa_sh
 fi
-if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]] && [[ -d "feeds/helloworld" ]] && [[ ! "${ERCI}" == "1" ]]; then
-pushd feeds/helloworld
-wget -qO - https://github.com/fw876/helloworld/commit/5bbf6e7.patch | patch -p1
-popd
+if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]] && [[ -d "feeds/helloworld" ]]; then
+  SSR_LUA="${HOME_PATH}/feeds/helloworld/luci-app-ssr-plus/root/usr/share/shadowsocksr/subscribe.lua"
+  [[ -f "${SSR_LUA}" ]] && sed -i 's?result.insecure = "0"?result.insecure = "1"?g' "${SSR_LUA}"
+
+  if [[ -d "${HOME_PATH}/feeds/danshui/luci-app-store" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]
+    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-store
+  fi
 fi
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
