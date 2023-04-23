@@ -1228,6 +1228,11 @@ if [[ -d "${apptions}" ]] && [[ `find "${apptions}" -type d -name "zh_Hans" |gre
   chmod +x zh_Hans.sh
   /bin/bash zh_Hans.sh
   rm -rf zh_Hans.sh
+else
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh-cn.sh -o zh-cn.sh
+  chmod +x zh-cn.sh
+  /bin/bash zh-cn.sh
+  rm -rf zh-cn.sh
 fi
 }
 
