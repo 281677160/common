@@ -501,7 +501,11 @@ elif [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; the
 fi
 
 if [[ -n "$(grep "dnsmasq" ${HOME_PATH}/include/target.mk)" ]] && [[ -z "$(grep "dnsmasq-full" ${HOME_PATH}/include/target.mk)" ]]; then
-  sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?dnsmasq?dnsmasq-full luci luci-newapi kmod-nf-nathelper kmod-nf-nathelper-extra luci-compat luci-lib-base luci-lib-fs luci-lib-ipkg?g' "${HOME_PATH}/include/target.mk"
+fi
+
+if [[ -z "$(grep "ca-bundle" ${HOME_PATH}/include/target.mk)" ]]; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
 fi
 
 if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
@@ -509,7 +513,7 @@ if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
 fi
 
 if [[ -z "$(grep "luci-lib-ipkg" ${HOME_PATH}/include/target.mk)" ]]; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi kmod-nf-nathelper kmod-nf-nathelper-extra luci-compat luci-lib-base luci-lib-fs luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
 fi
 }
 
