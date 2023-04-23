@@ -638,7 +638,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-dockerman' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
 fi
@@ -657,7 +657,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-dockerman' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
   done
 fi
