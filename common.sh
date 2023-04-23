@@ -1223,11 +1223,11 @@ fi
 function Diy_Language() {
 cd ${HOME_PATH}
 apptions="$(find "${HOME_PATH}/feeds" -type d -name "applications")"
-if [[ -d "${apptions}" ]] && [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -ge '15' ]]; then
-  cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
-  sudo chmod +x ${HOME_PATH}/zh_Hans.sh
-  /bin/bash ${HOME_PATH}/zh_Hans.sh
-  rm -rf ${HOME_PATH}/zh_Hans.sh
+if [[ -d "${apptions}" ]] && [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -ge '20' ]]; then
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh_Hans.sh -o zh_Hans.sh
+  chmod +x zh_Hans.sh
+  /bin/bash zh_Hans.sh
+  rm -rf zh_Hans.sh
 fi
 }
 
