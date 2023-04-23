@@ -1244,6 +1244,7 @@ if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]] && [[ -d "feeds/helloworld" ]]; the
 
   if [[ -d "${HOME_PATH}/feeds/danshui/luci-app-store" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]
     rm -rf ${HOME_PATH}/feeds/danshui/luci-app-store
+    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-istorex
   fi
 fi
 ./scripts/feeds install -a > /dev/null 2>&1
