@@ -505,8 +505,15 @@ if [[ -z "$(grep "ca-bundle" ${HOME_PATH}/include/target.mk)" ]]; then
   sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
 fi
 
-if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
+settings_chinese="$(find "${HOME_PATH}/package" -type f -name "*-default-settings-chinese" |grep files)"
+if [[ -f "${settings_chinese}" ]]; then
+  if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
+  fi
+else
+  if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
+  fi
 fi
 
 if [[ -z "$(grep "luci-lib-ipkg" ${HOME_PATH}/include/target.mk)" ]]; then
@@ -689,14 +696,10 @@ function Diy_distrib() {
 # 获取ZZZ_PATH路径
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 cd ${HOME_PATH}
-ZZZ_PATH1="$(find ./package -type f -name "*default-settings" |grep files |cut -d '/' -f2-)"
-if [[ -n "${ZZZ_PATH1}" ]]; then
-  ZZZ_PATH="${HOME_PATH}/${ZZZ_PATH1}"
+ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
+if [[ -f "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   sed -i '/exit 0/d' "${ZZZ_PATH}"
-  ZZZ_PATHR="1"
-else
-  ZZZ_PATHR="0"
 fi
 
 ttydjso="$(find ./ -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d |cut -d '/' -f2-)"
