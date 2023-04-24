@@ -45,7 +45,7 @@ done
 makefile_file="$({ find|grep Makefile|grep -v settings |sed "/Makefile./d"; } 2>"/dev/null")"
 for f in ${makefile_file}
 do
-	[ -n "$(grep "zh_Hans" "$f")" ] && sed -i "s/zh_Hans/zh-cn/g" "$f"
-	[ -n "$(grep "zh-cn.lmo" "$f")" ] && sed -i "s/zh-cn.lmo/zh_Hans.lmo/g" "$f"
+	[ -n "$(grep "zh-cn" "$f")" ] && sed -i "s/zh-cn/zh_Hans/g" "$f"
+	[ -n "$(grep "zh_Hans.lmo" "$f")" ] && sed -i "s/zh_Hans.lmo/zh-cn.lmo/g" "$f"
 done
 exit 0
