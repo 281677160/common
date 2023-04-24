@@ -509,14 +509,10 @@ if [[ -z "$(grep "ca-bundle" ${HOME_PATH}/include/target.mk)" ]]; then
 fi
 
 settings_chinese="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings-chinese"
-if [[ -f "${settings_chinese}" ]]; then
-  if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
+if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]] && [[ -f "${settings_chinese}" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
-  fi
-else
-  if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
+elif [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
-  fi
 fi
 echo "1"
 
