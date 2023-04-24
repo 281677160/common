@@ -508,7 +508,7 @@ if [[ -z "$(grep "ca-bundle" ${HOME_PATH}/include/target.mk)" ]]; then
   sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
 fi
 
-settings_chinese="$(find "${HOME_PATH}/package" -type f -name "*-default-settings-chinese" |grep files)"
+settings_chinese="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings-chinese"
 if [[ -f "${settings_chinese}" ]]; then
   if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
