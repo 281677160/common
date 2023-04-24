@@ -575,7 +575,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
   done
 fi
 
@@ -597,7 +597,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
   done
 fi
 
@@ -634,7 +634,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-app-gost' -o -name 'gost' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
   done
 fi
 }
@@ -649,8 +649,8 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
   done
 fi
 
@@ -669,8 +669,8 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
   done
 fi
 
@@ -1254,12 +1254,6 @@ fi
 if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]] && [[ -d "feeds/helloworld" ]]; then
   SSR_LUA="${HOME_PATH}/feeds/helloworld/luci-app-ssr-plus/root/usr/share/shadowsocksr/subscribe.lua"
   [[ -f "${SSR_LUA}" ]] && sed -i 's?result.insecure = "0"?result.insecure = "1"?g' "${SSR_LUA}"
-
-  if [[ -d "${HOME_PATH}/feeds/danshui/luci-app-store" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-store
-    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-istorex
-    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-quickstart
-  fi
 fi
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
