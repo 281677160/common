@@ -5,6 +5,9 @@
 # Convert translation files zh-cn to zh_Hans
 # The script is still in testing, welcome to report bugs.
 
+for X in $(find . -type l -name 'zh_Hans' |grep po); do rm -rf "${X}"; done
+for X in $(find . -type f -name 'zh_Hans' |grep po); do rm -rf "${X}"; done
+
 po_file="$({ find |grep -E "[a-z0-9]+\.zh\-cn.+po" |grep -v "openclash\|store"; } 2>"/dev/null")"
 for a in ${po_file}
 do
