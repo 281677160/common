@@ -464,7 +464,7 @@ if [[ "${applica}" == "1" ]]; then
 elif [[ "${applica}" == "2" ]]; then
   if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
     git clone -b argonv3 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/themes/luci-theme-argonv3"
-    git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}//extra/luci/themes/luci-theme-argon"
+    git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/themes/luci-theme-argon"
     git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/applications/luci-app-argon-config"
   else
     git clone -b argonv3 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argonv3"
