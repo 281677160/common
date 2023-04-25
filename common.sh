@@ -658,6 +658,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
+    find ${X} -type d -name 'r8168' -o -name 'r8125' | xargs -i rm -rf {}
   done
 fi
 
@@ -678,6 +679,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
+    find ${X} -type d -name 'r8168' -o -name 'r8125' | xargs -i rm -rf {}
   done
 fi
 
