@@ -769,7 +769,7 @@ echo "正在执行：给feeds.conf.default增加插件源"
 sed -i '/danshui/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/helloworld/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/passwall/d' "${HOME_PATH}/feeds.conf.default"
-find . -type d -name 'luci-app-ssr-plus' -o -name 'luci-app-passwall' -o -name 'luci-app-passwall2' | xargs -i rm -rf {}
+find . -type d -name 'luci-app-ssr-plus' -o -name 'luci-app-passwall' -o -name 'luci-app-passwall2' -o -name 'tcping' | xargs -i rm -rf {}
 find . -type d -name 'v2ray-core' -o -name 'v2ray-geodata' -o -name 'v2ray-plugin' -o -name 'xray-core' -o -name 'xray-plugin' | xargs -i rm -rf {}
 find . -type d -name 'trojan' -o -name 'trojan-go' -o -name 'trojan-plus' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
 
