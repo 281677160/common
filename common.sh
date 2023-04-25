@@ -466,6 +466,12 @@ elif [[ "${applica}" == "2" ]]; then
     git clone -b argonv3 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/themes/luci-theme-argonv3"
     git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/themes/luci-theme-argon"
     git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/applications/luci-app-argon-config"
+    rm -rf ${HOME_PATH}/feeds/packages/utils/docker-ce
+    rm -rf ${HOME_PATH}/feeds/packages/utils/cgroupfs-mount && svn co https://github.com/coolsnowwolf/packages/trunk/utils/cgroupfs-mount ${HOME_PATH}/feeds/packages/utils/cgroupfs-mount
+    rm -rf ${HOME_PATH}/feeds/packages/utils/containerd && svn co https://github.com/coolsnowwolf/packages/trunk/utils/containerd ${HOME_PATH}/feeds/packages/utils/containerd
+    rm -rf ${HOME_PATH}/feeds/packages/utils/libnetwork && svn co https://github.com/coolsnowwolf/packages/trunk/utils/libnetwork ${HOME_PATH}/feeds/packages/utils/libnetwork
+    rm -rf ${HOME_PATH}/feeds/packages/utils/tini && svn co https://github.com/coolsnowwolf/packages/trunk/utils/tini ${HOME_PATH}/feeds/packages/utils/tini
+    rm -rf ${HOME_PATH}/feeds/packages/utils/runc && svn co https://github.com/coolsnowwolf/packages/trunk/utils/runc ${HOME_PATH}/feeds/packages/utils/runc
   else
     git clone -b argonv3 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argonv3"
     git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon"
