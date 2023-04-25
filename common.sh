@@ -1258,10 +1258,6 @@ if [[ -f "${HOME_PATH}/diy_pa_sh" ]] && [[ ! "${ERCI}" == "1" ]]; then
   source ${HOME_PATH}/diy_pa_sh
   rm -rf ${HOME_PATH}/diy_pa_sh
 fi
-if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]] && [[ -d "feeds/helloworld" ]]; then
-  SSR_LUA="${HOME_PATH}/feeds/helloworld/luci-app-ssr-plus/root/usr/share/shadowsocksr/subscribe.lua"
-  [[ -f "${SSR_LUA}" ]] && sed -i 's?result.insecure = "0"?result.insecure = "1"?g' "${SSR_LUA}"
-fi
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 
