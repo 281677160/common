@@ -13,7 +13,6 @@ for X in $({ find . -type f -name 'zh_Hans' |grep po |grep -v "openclash\|store\
 po_file="$({ find |grep -E "[a-z0-9]+\.zh\-cn.+po" |grep -v "openclash\|store\|settings"; } 2>"/dev/null")"
 for a in ${po_file}
 do
-	[ -n "$(grep "Language: zh_CN" "$a")" ] && sed -i "s/Language: zh_CN/Language: zh_Hans/g" "$a"
 	po_new_file="$(echo -e "$a"|sed "s/zh-cn/zh_Hans/g")"
 	mv "$a" "${po_new_file}" 2>"/dev/null"
 done
