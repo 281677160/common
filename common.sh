@@ -478,12 +478,6 @@ fi
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
 svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
 
-if [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"` -eq '1' ]]; then
-   sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
-elif [[ -d "${HOME_PATH}/feeds/luci/collections/luci-light" ]] && [[ `grep -c 'attendedsysupgrade' "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"` -eq '1' ]]; then
-   sed -i '/attendedsysupgrade/d' "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
-fi
-
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
   svn export https://github.com/coolsnowwolf/packages/trunk/devel/packr ${HOME_PATH}/feeds/packages/devel/packr > /dev/null 2>&1
 fi
@@ -495,48 +489,47 @@ fi
 
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
-if [[ ! -d "${HOME_PATH}/package/utils/bcm27xx-userland" ]]; then
-  svn export https://github.com/openwrt/openwrt/trunk/package/utils/bcm27xx-userland ${HOME_PATH}/package/utils/bcm27xx-userland > /dev/null 2>&1
-fi
+  if [[ ! -d "${HOME_PATH}/package/utils/bcm27xx-userland" ]]; then
+    svn export https://github.com/openwrt/openwrt/trunk/package/utils/bcm27xx-userland ${HOME_PATH}/package/utils/bcm27xx-userland > /dev/null 2>&1
+  fi
 
-if [[ ! -d "${HOME_PATH}/feeds/packages/utils/docker-compose" ]]; then
-  svn export https://github.com/coolsnowwolf/packages/trunk/utils/docker-compose ${HOME_PATH}/feeds/packages/utils/docker-compose > /dev/null 2>&1
-fi
+  if [[ ! -d "${HOME_PATH}/feeds/packages/utils/docker-compose" ]]; then
+    svn export https://github.com/coolsnowwolf/packages/trunk/utils/docker-compose ${HOME_PATH}/feeds/packages/utils/docker-compose > /dev/null 2>&1
+  fi
 
-if [[ ! -d "${HOME_PATH}/feeds/packages/utils/docker" ]]; then
-  svn export https://github.com/coolsnowwolf/packages/trunk/utils/docker ${HOME_PATH}/feeds/packages/utils/docker > /dev/null 2>&1
-fi
+  if [[ ! -d "${HOME_PATH}/feeds/packages/utils/docker" ]]; then
+    svn export https://github.com/coolsnowwolf/packages/trunk/utils/docker ${HOME_PATH}/feeds/packages/utils/docker > /dev/null 2>&1
+  fi
 
-if [[ ! -d "${HOME_PATH}/feeds/packages/utils/dockerd" ]]; then
-  svn export https://github.com/coolsnowwolf/packages/trunk/utils/dockerd ${HOME_PATH}/feeds/packages/utils/dockerd > /dev/null 2>&1
-fi
+  if [[ ! -d "${HOME_PATH}/feeds/packages/utils/dockerd" ]]; then
+    svn export https://github.com/coolsnowwolf/packages/trunk/utils/dockerd ${HOME_PATH}/feeds/packages/utils/dockerd > /dev/null 2>&1
+  fi
+
+  if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
+    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+  elif [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=libustream-openssl ?g' "${HOME_PATH}/include/target.mk"
+  fi
+
+  if [[ -n "$(grep "dnsmasq" ${HOME_PATH}/include/target.mk)" ]] && [[ -z "$(grep "dnsmasq-full" ${HOME_PATH}/include/target.mk)" ]]; then
+    sed -i 's?dnsmasq?dnsmasq-full luci luci-newapi kmod-nf-nathelper kmod-nf-nathelper-extra luci-compat luci-lib-base luci-lib-fs luci-lib-ipkg?g' "${HOME_PATH}/include/target.mk"
+  fi
+
+  if [[ -z "$(grep "ca-bundle" ${HOME_PATH}/include/target.mk)" ]]; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
+  fi
+
+  if [[ -z "$(grep "luci-lib-ipkg" ${HOME_PATH}/include/target.mk)" ]]; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi kmod-nf-nathelper kmod-nf-nathelper-extra luci-compat luci-lib-base luci-lib-fs luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+  fi
 ;;
 esac
-
-
-if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
-  sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-elif [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=libustream-openssl ?g' "${HOME_PATH}/include/target.mk"
-fi
-
-if [[ -n "$(grep "dnsmasq" ${HOME_PATH}/include/target.mk)" ]] && [[ -z "$(grep "dnsmasq-full" ${HOME_PATH}/include/target.mk)" ]]; then
-  sed -i 's?dnsmasq?dnsmasq-full luci luci-newapi kmod-nf-nathelper kmod-nf-nathelper-extra luci-compat luci-lib-base luci-lib-fs luci-lib-ipkg?g' "${HOME_PATH}/include/target.mk"
-fi
-
-if [[ -z "$(grep "ca-bundle" ${HOME_PATH}/include/target.mk)" ]]; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
-fi
 
 settings_chinese="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings-chinese"
 if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]] && [[ -f "${settings_chinese}" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
 elif [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
-fi
-
-if [[ -z "$(grep "luci-lib-ipkg" ${HOME_PATH}/include/target.mk)" ]]; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi kmod-nf-nathelper kmod-nf-nathelper-extra luci-compat luci-lib-base luci-lib-fs luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
 fi
 }
 
