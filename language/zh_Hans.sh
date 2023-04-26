@@ -21,7 +21,13 @@ done
 po_file2="$({ find |grep "/zh-cn/" |grep "\.po" |grep -v "openclash\|store\|settings"; } 2>"/dev/null")"
 for b in ${po_file2}
 do
+	cc="$(echo ${po_file2%/*})"
+	dd="$(echo ${cc} |sed "s/zh-cn/zh_Hans/g")"
+	if [[ -d "${cc}" ]] && [[ -d "${dd}" ]]; then
+	  rm -rf ${dd}
+	fi
 	[ -n "$(grep "Language: zh_CN" "$b")" ] && sed -i "s/Language: zh_CN/Language: zh_Hans/g" "$b"
+	[ -n "$(grep "Language: zh_cn" "$b")" ] && sed -i "s/Language: zh_cn/Language: zh_Hans/g" "$b"
 	po_new_file2="$(echo -e "$b"|sed "s/zh-cn/zh_Hans/g")"
 	mv "$b" "${po_new_file2}" 2>"/dev/null"
 done
