@@ -124,7 +124,7 @@ COOLSNOWWOLF)
     export SOURCE="Lede"
     export LUCI_EDITION="18.06"
     export SOURCE_OWNER="Lede's"
-    export PACKAGE_BRANCH="master"
+    export PACKAGE_BRANCH="lede-master"
     export DIY_WORK="${FOLDER_NAME}MASTER"
     echo "GL_BRANCH=lede" >> ${GITHUB_ENV}
   elif [[ "${REPO_BRANCH}" == "gl-ax1800" ]]; then
@@ -132,7 +132,7 @@ COOLSNOWWOLF)
     export SOURCE="Lede"
     export LUCI_EDITION="gl-ax1800"
     export SOURCE_OWNER="Lede's"
-    export PACKAGE_BRANCH="master"
+    export PACKAGE_BRANCH="lede-master"
     export REPO_BRANCH="master"
     export DIY_WORK="${FOLDER_NAME}ax1800"
     echo "GL_BRANCH=lede_ax1800" >> ${GITHUB_ENV}
@@ -143,23 +143,23 @@ LIENOL)
   export SOURCE="Lienol"
   export SOURCE_OWNER="Lienol's"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
-    export PACKAGE_BRANCH="21.02"
+    export PACKAGE_BRANCH="lienol-master"
     export LUCI_EDITION="master"
     export DIY_WORK="${FOLDER_NAME}MASTER"
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
-    export PACKAGE_BRANCH="21.02"
+    export PACKAGE_BRANCH="lienol-master"
     export LUCI_EDITION="21.02"
     export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
-    export PACKAGE_BRANCH="21.02"
+    export PACKAGE_BRANCH="lienol-master"
     export LUCI_EDITION="22.03"
     export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "19.07-test" ]]; then
-    export PACKAGE_BRANCH="19.07"
+    export PACKAGE_BRANCH="lienol-17.01"
     export LUCI_EDITION="19.07-test"
     export DIY_WORK="${FOLDER_NAME}CANNO"
   elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
-    export PACKAGE_BRANCH="19.07"
+    export PACKAGE_BRANCH="lienol-17.01"
     export LUCI_EDITION="19.07"
     export DIY_WORK="${FOLDER_NAME}1907"
   fi
@@ -169,19 +169,19 @@ IMMORTALWRT)
   export SOURCE="Immortalwrt"
   export SOURCE_OWNER="ctcgfw's"
   if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-    export PACKAGE_BRANCH="openwrt-21.02"
+    export PACKAGE_BRANCH="immortalwrt-master"
     export LUCI_EDITION="21.02"
     export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "master" ]]; then
-    export PACKAGE_BRANCH="openwrt-21.02"
+    export PACKAGE_BRANCH="immortalwrt-master"
     export LUCI_EDITION="master"
     export DIY_WORK="${FOLDER_NAME}MASTER"
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-    export PACKAGE_BRANCH="openwrt-18.06"
+    export PACKAGE_BRANCH="immortalwrt-18.06"
     export LUCI_EDITION="18.06"
     export DIY_WORK="${FOLDER_NAME}1806"
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
-    export PACKAGE_BRANCH="openwrt-18.06"
+    export PACKAGE_BRANCH="immortalwrt-18.06"
     export LUCI_EDITION="18.06.K5.4"
     export DIY_WORK="${FOLDER_NAME}K54"
   fi
@@ -190,37 +190,17 @@ XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="Xwrt"
   export SOURCE_OWNER="ptpt52"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |cut -d"-" -f2-)"
   export PACKAGE_BRANCH="official-master"
-  export LUCI_EDITION="${REPO_BRANCH}"
-  if [[ "${REPO_BRANCH}" == "21.10" ]]; then
-    export DIY_WORK="${FOLDER_NAME}2110"
-  elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
-    export DIY_WORK="${FOLDER_NAME}2203"
-  else
-    export DIY_WORK="${FOLDER_NAME}${REPO_BRANCH}"
-  fi
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
 OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
   export SOURCE="Official"
   export SOURCE_OWNER="openwrt"
-  if [[ "${REPO_BRANCH}" == "master" ]]; then
-    export PACKAGE_BRANCH="official-master"
-    export LUCI_EDITION="master"
-    export DIY_WORK="${FOLDER_NAME}MASTER"
-  elif [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-    export PACKAGE_BRANCH="official-master"
-    export LUCI_EDITION="19.07"
-    export DIY_WORK="${FOLDER_NAME}1907"
-  elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-    export PACKAGE_BRANCH="official-master"
-    export LUCI_EDITION="21.02"
-    export DIY_WORK="${FOLDER_NAME}2102"
-  elif [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
-    export PACKAGE_BRANCH="official-master"
-    export LUCI_EDITION="22.03"
-    export DIY_WORK="${FOLDER_NAME}2203"
-  fi
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |cut -d"-" -f2-)"
+  export PACKAGE_BRANCH="official-master"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
 *)
   TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL"
