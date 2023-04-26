@@ -29,8 +29,6 @@ do
 	po_new_file2="$(echo -e "$b"|sed "s/zh-cn/zh_Hans/g")"
 	mv "$b" "${po_new_file2}" 2>"/dev/null"
 	ee="$(echo -e "$po_file2"|sed "s/zh-cn/zh_Hans/g")"
-	[ -n "$(grep "Language: zh_CN" "$ee")" ] && sed -i "s/Language: zh_CN/Language: zh_Hans/g" "$ee"
-	[ -n "$(grep "Language: zh_cn" "$ee")" ] && sed -i "s/Language: zh_cn/Language: zh_Hans/g" "$ee"
 done
 
 lmo_file="$({ find |grep -E "[a-z0-9]+\.zh_Hans.+lmo" |grep -v "openclash\|store\|settings"; } 2>"/dev/null")"
