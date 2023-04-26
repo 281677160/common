@@ -492,6 +492,9 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/utils/parted" ]]; then
   svn export https://github.com/coolsnowwolf/packages/trunk/utils/parted ${HOME_PATH}/feeds/packages/utils/parted > /dev/null 2>&1
 fi
 
+
+case "${SOURCE_CODE}" in
+XWRT|OFFICIAL)
 if [[ ! -d "${HOME_PATH}/package/utils/bcm27xx-userland" ]]; then
   svn export https://github.com/openwrt/openwrt/trunk/package/utils/bcm27xx-userland ${HOME_PATH}/package/utils/bcm27xx-userland > /dev/null 2>&1
 fi
@@ -507,6 +510,9 @@ fi
 if [[ ! -d "${HOME_PATH}/feeds/packages/utils/dockerd" ]]; then
   svn export https://github.com/coolsnowwolf/packages/trunk/utils/dockerd ${HOME_PATH}/feeds/packages/utils/dockerd > /dev/null 2>&1
 fi
+;;
+esac
+
 
 if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
   sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
@@ -580,7 +586,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   # 删除重复插件（LEDE）
   for X in "${HOME_PATH}/feeds" "${HOME_PATH}/package"; do
     find ${X} -type d -name 'luci-theme-argon-mod' -o -name 'mentohust' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-app-dockerman' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-app-eqos' | xargs -i rm -rf {}
     find ${X} -type d -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
