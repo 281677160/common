@@ -457,7 +457,7 @@ elif [[ ! -d "${settingss}" ]] && [[ "${applica}" == "2" ]]; then
 fi
 
 echo
-echo "更改源码中的[luci-theme-argon[主题为[jerrykuku]大佬的版本"
+echo "统一源码中的[luci-theme-argon]主题为[jerrykuku]大佬的版本"
 echo
 find . -type d -name 'luci-theme-argon' -o -name 'luci-theme-argonv3' -o -name 'luci-theme-argon-mod' -o -name 'luci-app-argon-config' | xargs -i rm -rf {}
 if [[ "${applica}" == "1" ]]; then
