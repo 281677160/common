@@ -10,6 +10,7 @@ for X in $({ find . -type f -name 'zh-cn' |grep po |grep -v "openclash\|store\|s
 for X in $({ find . -type l -name 'zh_Hans' |grep po |grep -v "openclash\|store\|settings"; } 2>"/dev/null"); do rm -rf "${X}"; done
 for X in $({ find . -type f -name 'zh_Hans' |grep po |grep -v "openclash\|store\|settings"; } 2>"/dev/null"); do rm -rf "${X}"; done
 
+
 po_file="$({ find |grep -E "[a-z0-9]+\.zh\-cn.+po" |grep -v "openclash\|store\|settings"; } 2>"/dev/null")"
 for a in ${po_file}
 do
@@ -27,6 +28,8 @@ do
 	fi
 	po_new_file2="$(echo -e "$b"|sed "s/zh-cn/zh_Hans/g")"
 	mv "$b" "${po_new_file2}" 2>"/dev/null"
+	sed -i "s/Language: zh_CN/Language: zh_Hans/g" "${po_new_file2}" > /dev/null 2>&1
+	sed -i "s/Language: zh_cn/Language: zh_Hans/g" "${po_new_file2}" > /dev/null 2>&1
 done
 
 lmo_file="$({ find |grep -E "[a-z0-9]+\.zh_Hans.+lmo" |grep -v "openclash\|store\|settings"; } 2>"/dev/null")"
