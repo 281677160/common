@@ -26,10 +26,10 @@ do
 	if [[ -d "${cc}" ]] && [[ -d "${dd}" ]]; then
 	  rm -rf ${dd}
 	fi
-	[ -n "$(grep "Language: zh_CN" "$b")" ] && sed -i "s/Language: zh_CN/Language: zh_Hans/g" "$b"
-	[ -n "$(grep "Language: zh_cn" "$b")" ] && sed -i "s/Language: zh_cn/Language: zh_Hans/g" "$b"
 	po_new_file2="$(echo -e "$b"|sed "s/zh-cn/zh_Hans/g")"
 	mv "$b" "${po_new_file2}" 2>"/dev/null"
+	[ -n "$(grep "Language: zh_CN" "$po_new_file2")" ] && sed -i "s/Language: zh_CN/Language: zh_Hans/g" "$po_new_file2"
+	[ -n "$(grep "Language: zh_cn" "$po_new_file2")" ] && sed -i "s/Language: zh_cn/Language: zh_Hans/g" "$po_new_file2"
 done
 
 lmo_file="$({ find |grep -E "[a-z0-9]+\.zh_Hans.+lmo" |grep -v "openclash\|store\|settings"; } 2>"/dev/null")"
