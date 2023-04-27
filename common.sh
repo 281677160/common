@@ -485,13 +485,6 @@ XWRT|OFFICIAL)
     svn export https://github.com/coolsnowwolf/packages/trunk/utils/dockerd ${HOME_PATH}/feeds/packages/utils/dockerd > /dev/null 2>&1
   fi
   
-  rm -rf ${HOME_PATH}/package/network/services/dnsmasq
-  svn co https://github.com/immortalwrt/immortalwrt/trunk/package/network/services/dnsmasq ${HOME_PATH}/package/network/services/dnsmasq > /dev/null 2>&1
-  if [[ $? -ne 0 ]]; then
-    rm -rf ${HOME_PATH}/package/network/services/dnsmasq
-    svn co https://github.com/coolsnowwolf/lede/trunk/package/network/services/dnsmasq package/network/services/dnsmasq > /dev/null 2>&1
-  fi
-  
   if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
   elif [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; then
