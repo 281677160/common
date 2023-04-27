@@ -549,7 +549,6 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
   done
 fi
 
