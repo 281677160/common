@@ -549,6 +549,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' | xargs -i rm -rf {}
   done
 fi
 
@@ -621,9 +622,9 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'r8168' -o -name 'r8125' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
-    find ${X} -type d -name 'r8168' -o -name 'r8125' -o -name 'docker' -o -name 'dockerd' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' | xargs -i rm -rf {}
   done
 fi
 
@@ -642,9 +643,9 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'r8168' -o -name 'r8125' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
-    find ${X} -type d -name 'r8168' -o -name 'r8125' -o -name 'docker' -o -name 'dockerd' | xargs -i rm -rf {}
+    find ${X} -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' | xargs -i rm -rf {}
   done
 fi
 
