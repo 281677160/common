@@ -469,22 +469,6 @@ fi
 
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
-  if [[ ! -d "${HOME_PATH}/package/utils/bcm27xx-userland" ]]; then
-    svn export https://github.com/openwrt/openwrt/trunk/package/utils/bcm27xx-userland ${HOME_PATH}/package/utils/bcm27xx-userland > /dev/null 2>&1
-  fi
-
-  if [[ ! -d "${HOME_PATH}/feeds/packages/utils/docker-compose" ]]; then
-    svn export https://github.com/coolsnowwolf/packages/trunk/utils/docker-compose ${HOME_PATH}/feeds/packages/utils/docker-compose > /dev/null 2>&1
-  fi
-
-  if [[ ! -d "${HOME_PATH}/feeds/packages/utils/docker" ]]; then
-    svn export https://github.com/coolsnowwolf/packages/trunk/utils/docker ${HOME_PATH}/feeds/packages/utils/docker > /dev/null 2>&1
-  fi
-
-  if [[ ! -d "${HOME_PATH}/feeds/packages/utils/dockerd" ]]; then
-    svn export https://github.com/coolsnowwolf/packages/trunk/utils/dockerd ${HOME_PATH}/feeds/packages/utils/dockerd > /dev/null 2>&1
-  fi
-  
   if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
   elif [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; then
@@ -660,7 +644,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find ${X} -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
     find ${X} -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
-    find ${X} -type d -name 'r8168' -o -name 'r8125' | xargs -i rm -rf {}
+    find ${X} -type d -name 'r8168' -o -name 'r8125' -o -name 'docker' -o -name 'dockerd' | xargs -i rm -rf {}
   done
 fi
 
