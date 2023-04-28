@@ -21,7 +21,7 @@ define Package/default-settings
   CATEGORY:=LuCI
   TITLE:=LuCI support for Default Settings
   PKGARCH:=all
-  DEPENDS:=+luci-base +luci-lib-base +luci-compat +luci-lib-ipkg +@LUCI_LANG_zh_Hans +luci-i18n-base-zh-cn
+  DEPENDS:=+luci-base +luci-lib-base +luci-compat +luci-lib-ipkg +luci-i18n-base-zh-cn
 endef
 
 define Package/default-settings/description
