@@ -1454,6 +1454,22 @@ elif [[ `grep -c "CONFIG_PACKAGE_samba4-server=y" ${HOME_PATH}/.config` -eq '1' 
   echo "# CONFIG_PACKAGE_samba4-utils is not set" >> ${HOME_PATH}/.config
 fi
 
+if [[ `grep -c "CONFIG_PACKAGE_luci-app-diskman=y" ${HOME_PATH}/.config` -eq '0' ]]; then
+  echo "# CONFIG_PACKAGE_luci-app-diskman_INCLUDE_btrfs_progs is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_luci-app-diskman_INCLUDE_lsblk is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_luci-app-diskman_INCLUDE_mdadm is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_luci-app-diskman_INCLUDE_kmod_md_raid456 is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_luci-app-diskman_INCLUDE_kmod_md_linear is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_luci-i18n-diskman-zh-cn is not set" >> ${HOME_PATH}/.config
+fi
+
+if [[ `grep -c "CONFIG_PACKAGE_luci-app-dockerman=y" ${HOME_PATH}/.config` -eq '0' ]] || [[ `grep -c "CONFIG_PACKAGE_luci-app-docker=y" ${HOME_PATH}/.config` -eq '0' ]]; then
+  echo "# CONFIG_PACKAGE_luci-lib-docker is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_luci-i18n-dockerman-zh-cn is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_docker is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_dockerd is not set" >> ${HOME_PATH}/.config
+fi
+
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   pmg="$(echo "$(date +%d)" | sed 's/^.//g')"
   mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
