@@ -5,10 +5,10 @@ touch /etc/crontabs/root
 
 source /etc/openwrt_release
 if [[ ! "${DISTRIB_ARCH}" == "x86_64" ]]; then
-  sed -i "s?x86_64?${DISTRIB_TARGET}?g" /etc/banner
+	sed -i "s?x86_64?${DISTRIB_TARGET}?g" /etc/banner
 fi
 if [[ "${DISTRIB_ID}" == "ImmortalWrt" ]]; then
-  sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+	  sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
 fi
 
 if [[ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]]; then
