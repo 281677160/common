@@ -493,6 +493,8 @@ XWRT|OFFICIAL)
   sed -i "${ax1}s?default y?default n?" ${dns_services}
   ax2="$(grep -n "Build with the facility to act" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
   sed -i "${ax2}s?default y?default n?" ${dns_services}
+  ax7="$(grep -n "Build with IPset support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+  sed -i "${ax7}s?default n?default y?" ${dns_services}
   ax3="$(grep -n "Build with Nftset support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
   sed -i "${ax3}s?default y?default n?" ${dns_services}
   ax4="$(grep -n "Build with Conntrack support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
