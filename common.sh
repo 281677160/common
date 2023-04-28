@@ -506,13 +506,6 @@ XWRT|OFFICIAL)
 ;;
 esac
 
-settings_chinese="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings-chinese"
-if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]] && [[ -f "${settings_chinese}" ]]; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
-elif [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
-fi
-
 amba4="$(find . -type d -name 'luci-app-samba4')"
 autosam="$(find . -type d -name 'autosamba')"
 if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
