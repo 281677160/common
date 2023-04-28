@@ -467,6 +467,12 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/utils/parted" ]]; then
   svn export https://github.com/coolsnowwolf/packages/trunk/utils/parted ${HOME_PATH}/feeds/packages/utils/parted > /dev/null 2>&1
 fi
 
+settings_chinese="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings-chinese"
+if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]] && [[ -f "${settings_chinese}" ]]; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
+elif [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
+fi
 
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
