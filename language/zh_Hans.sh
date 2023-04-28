@@ -33,7 +33,7 @@ done
 ha_file="$({ find |grep "/zh_Hans/" |grep "\.po" |grep -v "openclash\|store\|settings"; } 2>"/dev/null")"
 for g in ${ha_file}
 do
-	sed -i "s?Language: .*\\\n?Language: zh_Hans\\\n?g" "$g" 2>"/dev/null"
+	sed -i "s?Language: .*\\\\n?Language: zh_Hans\\\\n?g" "$g" 2>"/dev/null"
 done
 
 lmo_file="$({ find |grep -E "[a-z0-9]+\.zh_Hans.+lmo" |grep -v "openclash\|store\|settings"; } 2>"/dev/null")"
