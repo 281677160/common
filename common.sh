@@ -487,6 +487,20 @@ XWRT|OFFICIAL)
   if [[ -z "$(grep "luci-lib-ipkg" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi kmod-nf-nathelper kmod-nf-nathelper-extra luci-lib-fs ?g' "${HOME_PATH}/include/target.mk"
   fi
+  
+  dns_services="${HOME_PATH}/package/network/services/dnsmasq/Makefile"
+  ax1="$(grep -n "Build with DNSSEC support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+  sed -i "${ax1}s?default y?default n?" ${dns_services}
+  ax2="$(grep -n "Build with the facility to act" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+  sed -i "${ax2}s?default y?default n?" ${dns_services}
+  ax3="$(grep -n "Build with Nftset support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+  sed -i "${ax3}s?default y?default n?" ${dns_services}
+  ax4="$(grep -n "Build with Conntrack support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+  sed -i "${ax4}s?default y?default n?" ${dns_services}
+  ax5="$(grep -n "Build with NO_ID" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+  sed -i "${ax5}s?default y?default n?" ${dns_services}
+  ax6="$(grep -n "Build with HAVE_BROKEN_RTC" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+  sed -i "${ax6}s?default y?default n?" ${dns_services}
 ;;
 esac
 
