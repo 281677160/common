@@ -61,9 +61,9 @@ settings_file="$({ find |grep Makefile |grep default-settings |sed "/Makefile./d
 for f in ${settings_file}
 do
 	if [ -z "$(grep "LUCI_LANG_zh-cn" "$f")" ] && [ -z "$(grep "LUCI_LANG_zh_Hans" "$f")" ]; then
-		sed -i "s?DEPENDS:=?DEPENDS:=\+\@LUCI_LANG_zh-cn ?g" "$f"
+		[ -f "$f" ] && sed -i "s?DEPENDS:=?DEPENDS:=\+\@LUCI_LANG_zh-cn ?g" "$f"
 	elif [ -n "$(grep "LUCI_LANG_zh_Hans" "$f")" ]; then
-		sed -i "s/LUCI_LANG_zh_Hans/LUCI_LANG_zh-cn/g" "$f"
+		[ -f "$f" ] && sed -i "s/LUCI_LANG_zh_Hans/LUCI_LANG_zh-cn/g" "$f"
 	fi
 done
 exit 0
