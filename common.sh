@@ -1468,6 +1468,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-dockerman=y" ${HOME_PATH}/.config` -eq '
   echo "# CONFIG_PACKAGE_luci-i18n-dockerman-zh-cn is not set" >> ${HOME_PATH}/.config
   echo "# CONFIG_PACKAGE_docker is not set" >> ${HOME_PATH}/.config
   echo "# CONFIG_PACKAGE_dockerd is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_runc is not set" >> ${HOME_PATH}/.config
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
