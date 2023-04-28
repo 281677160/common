@@ -51,3 +51,10 @@ fi
 
 sed -i 's?=== WARNING! =====================================?=================== WARNING! ====================?g' /etc/profile
 
+lmo_file="$({ find "/usr/lib/lua/luci/i18n" |grep "zh_Hans.lmo"; } 2>"/dev/null")"
+for b in ${lmo_file}
+do
+	lmo_new_file="$(echo -e "$b"|sed "s/zh_Hans/zh-cn/g")"
+	mv "$b" "${lmo_new_file}" 2>"/dev/null"
+done
+
