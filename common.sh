@@ -1425,6 +1425,12 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-samba4=y" ${HOME_PATH}/.config` -eq '1' 
     echo "TIME r \"您同时选择luci-app-samba和luci-app-samba4，插件有冲突，相同功能插件只能二选一，已删除luci-app-samba\"" >>CHONGTU
     echo "" >>CHONGTU
   fi
+elif [[ `grep -c "CONFIG_PACKAGE_luci-app-samba4=y" ${HOME_PATH}/.config` -eq '0' ]]; then
+  echo "# CONFIG_PACKAGE_samba4-admin is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_samba4-client is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_samba4-libs is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_samba4-server is not set" >> ${HOME_PATH}/.config
+  echo "# CONFIG_PACKAGE_samba4-utils is not set" >> ${HOME_PATH}/.config
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
