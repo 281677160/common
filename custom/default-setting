@@ -8,45 +8,45 @@ if [[ ! "${DISTRIB_ARCH}" == "x86_64" ]]; then
 	sed -i "s?x86_64?${DISTRIB_TARGET}?g" /etc/banner
 fi
 if [[ "${DISTRIB_ID}" == "ImmortalWrt" ]]; then
-	  sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+	sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
 fi
 
 if [[ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]]; then
-  sed -i 's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
+	sed -i 's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
 fi
 
 if [[ `grep -c "danshui" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
-  sed -i '/danshui/d' /etc/opkg/distfeeds.conf
+	sed -i '/danshui/d' /etc/opkg/distfeeds.conf
 fi
 if [[ `grep -c "helloworld" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
-  sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
+	sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
 fi
 if [[ `grep -c "passwall" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
-  sed -i '/passwall/d' /etc/opkg/distfeeds.conf
+	sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 fi
 if [[ `grep -c "openwrt_x" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
-  sed -i '/openwrt_x/d' /etc/opkg/distfeeds.conf
+	sed -i '/openwrt_x/d' /etc/opkg/distfeeds.conf
 fi
 
 if [[ -f "/usr/share/ucode/luci/version.uc" ]]; then
-  sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
-  echo "export const revision = '112233', branch = '';" >> "/usr/share/ucode/luci/version.uc"
+	sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
+	echo "export const revision = '112233', branch = '';" >> "/usr/share/ucode/luci/version.uc"
 fi
 
 if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/crontabs/root` -eq '0' ]]; then
-  rm -rf /etc/networkdetection
+	rm -rf /etc/networkdetection
 fi
 
 luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
 if [[ -f '/etc/index.htm' ]]; then
-  sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "/etc/index.htm"
+	sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "/etc/index.htm"
 else
-  sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "${luci_web}"
+	sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "${luci_web}"
 fi
 if [[ -f '/etc/index.htm' ]] && [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "/etc/index.htm"` -eq '1' ]]; then
-  sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "/etc/index.htm"
+	sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "/etc/index.htm"
 elif [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "${luci_web}"` -eq '1' ]]; then
-  sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "${luci_web}"
+	sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "${luci_web}"
 fi
 
 sed -i 's?=== WARNING! =====================================?=================== WARNING! ====================?g' /etc/profile
