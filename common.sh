@@ -496,6 +496,12 @@ if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]] && [
 elif [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
 fi
+
+amba4="$(find . -type d -name 'luci-app-samba4')"
+autosam="$(find . -type d -name 'autosamba')"
+if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
+  for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
+fi
 }
 
 function Diy_wenjian2() {
@@ -1224,11 +1230,6 @@ cd ${HOME_PATH}
 if [[ -f "${HOME_PATH}/diy_pa_sh" ]] && [[ ! "${ERCI}" == "1" ]]; then
   source ${HOME_PATH}/diy_pa_sh
   rm -rf ${HOME_PATH}/diy_pa_sh
-fi
-amba4="$(find . -type d -name 'luci-app-samba4')"
-autosam="$(find . -type d -name 'autosamba')"
-if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
-  for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
 fi
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
