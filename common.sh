@@ -571,12 +571,6 @@ fi
 case "${GL_BRANCH}" in
 lede_ax1800)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/upx ${HOME_PATH}/package/upx
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ucl ${HOME_PATH}/package/ucl
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8101 ${HOME_PATH}/package/r8101
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8125 ${HOME_PATH}/package/r8125
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8168 ${HOME_PATH}/package/r8168
-  rm -rf ${HOME_PATH}/feeds/packages/utils/runc && svn co https://github.com/coolsnowwolf/packages/trunk/utils/runc ${HOME_PATH}/feeds/packages/utils/runc
 ;;
 esac
 }
