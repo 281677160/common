@@ -46,14 +46,10 @@ endef
 " >>  package/kernel/linux/modules/netsupport.mk
 fi
 
-if [[ `grep -c "kmod-netlink-diag" package/network/utils/iproute2/Makefile` -eq '0' ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/network/utils/iproute2/netlink_diag > netlink_diag
-  sed -i "/Socket statistics utility/a\danshui" package/network/utils/iproute2/Makefile
-  line_cnt="$(cat ./netlink_diag)"
-  sed -i "s/danshui/${line_cnt}/g" package/network/utils/iproute2/Makefile
-  let Size="$(nl -ba package/network/utils/iproute2/Makefile |grep "Socket statistics utility" |sed 's/^[ ]*//g'| awk '{print $1}')+2"
-  sed -i "${Size}d" package/network/utils/iproute2/Makefile
-  rm -rf ./netlink_diag
+iproute1="package/network/utils/iproute2/Makefile"
+if [[ `grep -c "kmod-netlink-diag" ${iproute1}` -eq '0' ]] && [[ `grep -c "Socket statistics utility" ${iproute1}` -eq '1' ]]; then
+  ax="$(grep -n "Socket statistics utility" -A 1 ${iproute1} |awk 'END {print}' |grep -Eo [0-9]+)"
+  sed -i "${ax}s?.*?  DEPENDS:=+libnl-tiny +(PACKAGE_devlink||PACKAGE_rdma):libmnl +(PACKAGE_tc||PACKAGE_ip-full):libelf +PACKAGE_ip-full:libcap +kmod-netlink-diag?" ${iproute1}
 fi
 
 exit 0
