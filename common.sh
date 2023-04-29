@@ -466,14 +466,14 @@ fi
 if [[ ! -d "${HOME_PATH}/feeds/packages/utils/parted" ]]; then
   svn export https://github.com/coolsnowwolf/packages/trunk/utils/parted ${HOME_PATH}/feeds/packages/utils/parted > /dev/null 2>&1
 fi
-echo "11"
+
 settings_chinese="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings-chinese"
 if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]] && [[ -f "${settings_chinese}" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
 elif [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
 fi
-echo "12"
+
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
   if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
@@ -493,28 +493,36 @@ XWRT|OFFICIAL)
   if [[ -z "$(grep "luci-lib-ipkg" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi kmod-nf-nathelper kmod-nf-nathelper-extra luci-lib-fs ?g' "${HOME_PATH}/include/target.mk"
   fi
-  echo "13"
+
   dns_services="${HOME_PATH}/package/network/services/dnsmasq/Makefile"
-  ax1="$(grep -n "Build with DNSSEC support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  [[ -n "${ax1}" ]] && sed -i "${ax1}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
-  ax2="$(grep -n "Build with the facility to act" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  [[ -n "${ax2}" ]] && sed -i "${ax2}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
-  echo "14"
-  ax7="$(grep -n "Build with IPset support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  [[ -n "${ax7}" ]] && sed -i "${ax7}s?default .*?default y?" ${dns_services} > /dev/null 2>&1
-  echo "${ax7}"
-  ax3="$(grep -n "Build with Nftset support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  [[ -n "${ax3}" ]] && sed -i "${ax3}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
-  echo "${ax3}"
-  ax4="$(grep -n "Build with Conntrack support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  [[ -n "${ax4}" ]] && sed -i "${ax4}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
-  echo "${ax4}"
-  ax5="$(grep -n "Build with NO_ID" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  [[ -n "${ax5}" ]] && sed -i "${ax5}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
-  echo "${ax5}"
-  ax6="$(grep -n "Build with HAVE_BROKEN_RTC" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  [[ -n "${ax6}" ]] && sed -i "${ax6}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
-  echo "${ax6}"
+  if [[ -n "$(grep "Build with DNSSEC support" ${dns_services})" ]]; then
+    ax1="$(grep -n "Build with DNSSEC support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+    sed -i "${ax1}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
+  fi
+  if [[ -n "$(grep "Build with the facility to act" ${dns_services})" ]]; then
+    ax2="$(grep -n "Build with the facility to act" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+    sed -i "${ax2}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
+  fi
+  if [[ -n "$(grep "Build with IPset support" ${dns_services})" ]]; then
+    ax7="$(grep -n "Build with IPset support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+    sed -i "${ax7}s?default .*?default y?" ${dns_services} > /dev/null 2>&1
+  fi
+  if [[ -n "$(grep "Build with Nftset support" ${dns_services})" ]]; then
+    ax3="$(grep -n "Build with Nftset support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+    sed -i "${ax3}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
+  fi
+  if [[ -n "$(grep "Build with Conntrack support" ${dns_services})" ]]; then
+    ax4="$(grep -n "Build with Conntrack support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+    sed -i "${ax4}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
+  fi
+  if [[ -n "$(grep "Build with NO_ID" ${dns_services})" ]]; then
+    ax5="$(grep -n "Build with NO_ID" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+    sed -i "${ax5}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
+  fi
+  if [[ -n "$(grep "Build with HAVE_BROKEN_RTC" ${dns_services})" ]]; then
+    ax6="$(grep -n "Build with HAVE_BROKEN_RTC" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
+    sed -i "${ax6}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
+  fi
 ;;
 esac
 echo "13"
