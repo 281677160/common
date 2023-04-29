@@ -563,7 +563,7 @@ function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   s="luci-theme-argon-mod,mentohust,luci-app-eqos,luci-app-netdata,netdata,adguardhome,luci-app-adguardhome,luci-app-wol,v2ray-geodata, \
-  mosdns,luci-app-mosdns,luci-app-smartdns,smartdns,luci-app-gost,gost,luci-app-msd_lite,msd_lite,upx,ucl,r8101,r8125,r8168, \
+  mosdns,luci-app-mosdns,luci-app-smartdns,smartdns,luci-app-gost,gost,luci-app-msd_lite,msd_lite,upx,ucl,r8101,r8125,r8168,luci-app-openclash, \
   luci-theme-design,luci-app-design-config,luci-app-wizard,luci-app-diskman"
   c=(${s//,/ })
   for i in ${c[@]}; do \
@@ -583,7 +583,7 @@ function Diy_LIENOL() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   s="mentohust,luci-app-eqos,adguardhome,luci-app-adguardhome,luci-app-wol,v2ray-geodata,luci-app-dockerman, \
-  mosdns,luci-app-mosdns,luci-app-smartdns,smartdns,luci-app-gost,gost,luci-app-msd_lite,msd_lite, \
+  mosdns,luci-app-mosdns,luci-app-smartdns,smartdns,luci-app-gost,gost,luci-app-msd_lite,msd_lite,luci-app-openclash, \
   luci-theme-design,luci-app-design-config,luci-app-wizard"
   c=(${s//,/ })
   for i in ${c[@]}; do \
@@ -618,8 +618,8 @@ svn co https://github.com/xiaorouji/openwrt-passwall/trunk/pdnsd-alt ${HOME_PATH
 function Diy_IMMORTALWRT() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol, \
-  luci-app-gost,gost,luci-app-cifs,luci-theme-design,luci-app-design-config,luci-app-wizard"
+  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
+  luci-app-gost,gost,luci-app-cifs,luci-theme-design,luci-app-design-config,luci-app-wizard,luci-theme-opentomato"
   c=(${s//,/ })
   for i in ${c[@]}; do \
     find . -type d -name "${i}" | xargs -i rm -rf {}; \
@@ -631,7 +631,7 @@ fi
 function Diy_XWRT() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol, \
+  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
   luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
   luci-app-msd_lite,msd_lite,r8168,r8125,luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
   c=(${s//,/ })
@@ -649,7 +649,7 @@ fi
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol, \
+  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
   luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
   luci-app-msd_lite,msd_lite,r8168,r8125,luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
   c=(${s//,/ })
