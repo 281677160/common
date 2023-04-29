@@ -495,23 +495,20 @@ XWRT|OFFICIAL)
   fi
   echo "13"
   dns_services="${HOME_PATH}/package/network/services/dnsmasq/Makefile"
-  echo "$dns_services"
   ax1="$(grep -n "Build with DNSSEC support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  sed -i "${ax1}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
+  [[ -n "${ax1}" ]] && sed -i "${ax1}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
   ax2="$(grep -n "Build with the facility to act" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  sed -i "${ax2}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
-  echo "14"
+  [[ -n "${ax2}" ]] && sed -i "${ax2}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
   ax7="$(grep -n "Build with IPset support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  sed -i "${ax7}s?default .*?default y?" ${dns_services} > /dev/null 2>&1
+  [[ -n "${ax7}" ]] && sed -i "${ax7}s?default .*?default y?" ${dns_services} > /dev/null 2>&1
   ax3="$(grep -n "Build with Nftset support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  sed -i "${ax3}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
+  [[ -n "${ax3}" ]] && sed -i "${ax3}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
   ax4="$(grep -n "Build with Conntrack support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  sed -i "${ax4}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
-  echo "15"
+  [[ -n "${ax4}" ]] && sed -i "${ax4}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
   ax5="$(grep -n "Build with NO_ID" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  sed -i "${ax5}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
+  [[ -n "${ax5}" ]] && sed -i "${ax5}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
   ax6="$(grep -n "Build with HAVE_BROKEN_RTC" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
-  sed -i "${ax6}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
+  [[ -n "${ax6}" ]] && sed -i "${ax6}s?default .*?default n?" ${dns_services} > /dev/null 2>&1
 ;;
 esac
 echo "13"
