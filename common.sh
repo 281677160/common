@@ -466,14 +466,14 @@ fi
 if [[ ! -d "${HOME_PATH}/feeds/packages/utils/parted" ]]; then
   svn export https://github.com/coolsnowwolf/packages/trunk/utils/parted ${HOME_PATH}/feeds/packages/utils/parted > /dev/null 2>&1
 fi
-
+echo "11"
 settings_chinese="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings-chinese"
 if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]] && [[ -f "${settings_chinese}" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
 elif [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
 fi
-
+echo "12"
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
   if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
@@ -493,7 +493,7 @@ XWRT|OFFICIAL)
   if [[ -z "$(grep "luci-lib-ipkg" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi kmod-nf-nathelper kmod-nf-nathelper-extra luci-lib-fs ?g' "${HOME_PATH}/include/target.mk"
   fi
-  
+  echo "13"
   dns_services="${HOME_PATH}/package/network/services/dnsmasq/Makefile"
   ax1="$(grep -n "Build with DNSSEC support" -A 1 ${dns_services} |awk 'END {print}' |grep -Eo [0-9]+)"
   sed -i "${ax1}s?default y?default n?" ${dns_services} > /dev/null 2>&1
