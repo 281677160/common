@@ -745,9 +745,12 @@ echo "正在执行：给feeds.conf.default增加插件源"
 sed -i '/danshui/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/helloworld/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/passwall/d' "${HOME_PATH}/feeds.conf.default"
-find . -type d -name 'luci-app-ssr-plus' -o -name 'luci-app-passwall' -o -name 'luci-app-passwall2' -o -name 'tcping' | xargs -i rm -rf {}
-find . -type d -name 'v2ray-core' -o -name 'v2ray-geodata' -o -name 'v2ray-plugin' -o -name 'xray-core' -o -name 'xray-plugin' | xargs -i rm -rf {}
-find . -type d -name 'trojan' -o -name 'trojan-go' -o -name 'trojan-plus' -o -name 'redsocks2' -o -name 'sing-box' -o -name 'microsocks' | xargs -i rm -rf {}
+s="luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,tcping,v2ray-core,v2ray-geodata, \
+v2ray-plugin,trojan,trojan-go,trojan-plus,redsocks2,sing-box,microsocks"
+c=(${s//,/ })
+for i in ${c[@]}; do \
+  find . -type d -name "${i}" | xargs -i rm -rf {}; \
+done
 
 if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
