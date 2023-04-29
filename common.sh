@@ -562,14 +562,13 @@ EOF
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  # 删除重复插件（LEDE）
-    find . -type d -name 'luci-theme-argon-mod' -o -name 'mentohust' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-eqos' -o -name 'luci-app-netdata' -o -name 'netdata' | xargs -i rm -rf {}
-    find . -type d -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-    find . -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'upx' -o -name 'ucl' -o -name 'r8101' -o -name 'r8125' -o -name 'r8168' | xargs -i rm -rf {}
-    find . -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-wizard' -o -name 'luci-app-diskman' | xargs -i rm -rf {}
+  s="luci-theme-argon-mod,mentohust,luci-app-eqos,luci-app-netdata,netdata,adguardhome,luci-app-adguardhome,luci-app-wol,v2ray-geodata, \
+  mosdns,luci-app-mosdns,luci-app-smartdns,smartdns,luci-app-gost,gost,luci-app-msd_lite,msd_lite,upx,ucl,r8101,r8125,r8168, \
+  luci-theme-design,luci-app-design-config,luci-app-wizard,luci-app-diskman"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" | xargs -i rm -rf {}; \
+  done
 fi
 
 case "${GL_BRANCH}" in
