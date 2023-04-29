@@ -517,6 +517,7 @@ autosam="$(find . -type d -name 'autosamba')"
 if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
   for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
 fi
+echo "1"
 }
 
 function Diy_wenjian2() {
@@ -657,7 +658,7 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     find . -type d -name "${i}" | xargs -i rm -rf {}; \
   done
 fi
-
+echo "2"
 case "${REPO_BRANCH}" in
 openwrt-21.02)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
