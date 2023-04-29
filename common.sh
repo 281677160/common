@@ -633,7 +633,7 @@ cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol, \
   luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
-  luci-app-msd_lite,msd_lite,r8168,r8125,luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd"
+  luci-app-msd_lite,msd_lite,r8168,r8125,luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
   c=(${s//,/ })
   for i in ${c[@]}; do \
     find . -type d -name "${i}" | xargs -i rm -rf {}; \
@@ -651,7 +651,7 @@ cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol, \
   luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
-  luci-app-msd_lite,msd_lite,r8168,r8125,luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd"
+  luci-app-msd_lite,msd_lite,r8168,r8125,luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
   c=(${s//,/ })
   for i in ${c[@]}; do \
     find . -type d -name "${i}" | xargs -i rm -rf {}; \
