@@ -582,12 +582,13 @@ esac
 function Diy_LIENOL() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  # 删除重复插件（Lienol）
-    find . -type d -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' -o -name 'luci-app-dockerman' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
-    find . -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-    find . -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
+  s="mentohust,luci-app-eqos,adguardhome,luci-app-adguardhome,luci-app-wol,v2ray-geodata,luci-app-dockerman, \
+  mosdns,luci-app-mosdns,luci-app-smartdns,smartdns,luci-app-gost,gost,luci-app-msd_lite,msd_lite, \
+  luci-theme-design,luci-app-design-config,luci-app-wizard"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" | xargs -i rm -rf {}; \
+  done
 fi
 
 case "${REPO_BRANCH}" in
@@ -617,12 +618,12 @@ svn co https://github.com/xiaorouji/openwrt-passwall/trunk/pdnsd-alt ${HOME_PATH
 function Diy_IMMORTALWRT() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  # 删除重复插件（天灵）
-    find . -type d -name 'luci-app-cifs' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-adguardhome' -o -name 'adguardhome' -o -name 'luci-theme-opentomato' | xargs -i rm -rf {}
-    find . -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
-    find . -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-gost' -o -name 'gost' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
+  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns, \
+  luci-app-gost,gost,luci-app-cifs,luci-theme-design,luci-app-design-config,luci-app-wizard"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" | xargs -i rm -rf {}; \
+  done
 fi
 }
 
@@ -630,14 +631,13 @@ fi
 function Diy_XWRT() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  # 删除重复插件（X-WRT）
-    find . -type d -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-    find . -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-    find . -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'r8168' -o -name 'r8125' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' | xargs -i rm -rf {}
+  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol, \
+  luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
+  luci-app-msd_lite,msd_lite,r8168,r8125,luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" | xargs -i rm -rf {}; \
+  done
 fi
 
 if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
@@ -649,14 +649,13 @@ fi
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  # 删除重复插件（X-WRT）
-    find .-type d -name 'adguardhome' -o -name 'luci-app-adguardhome' -o -name 'luci-app-wol' | xargs -i rm -rf {}
-    find . -type d -name 'v2ray-geodata' -o -name 'mosdns' -o -name 'luci-app-mosdns' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-smartdns' -o -name 'smartdns' -o -name 'luci-app-gost' -o -name 'gost' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-msd_lite' -o -name 'msd_lite' -o -name 'luci-app-eqos' | xargs -i rm -rf {}
-    find . -type d -name 'luci-theme-design' -o -name 'luci-app-design-config' -o -name 'r8168' -o -name 'r8125' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-wrtbwmon' -o -name 'wrtbwmon' -o -name 'luci-app-wizard' | xargs -i rm -rf {}
-    find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' | xargs -i rm -rf {}
+  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol, \
+  luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
+  luci-app-msd_lite,msd_lite,r8168,r8125,luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" | xargs -i rm -rf {}; \
+  done
 fi
 
 case "${REPO_BRANCH}" in
