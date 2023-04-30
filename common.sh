@@ -449,11 +449,12 @@ echo
 find . -type d -name '*luci-theme-argon*' |grep 'luci\/themes' |xargs -i rm -rf {}
 find . -type d -name '*luci-theme-Butterfly*' |grep 'luci\/themes' |xargs -i rm -rf {}
 find . -type d -name '*luci-theme-netgear*' |grep 'luci\/themes' |xargs -i rm -rf {}
+find . -type d -name '*luci-theme-atmaterial*' |grep 'luci\/themes' |xargs -i rm -rf {}
 z="luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design, \
 luci-app-design-config,luci-app-argon-config,luci-theme-bootstrap-mod,luci-theme-opentomato"
-c=(${z//,/ })
-for t in ${c[@]}; do \
-  find . -type d -name "${t}" | xargs -i rm -rf {}; \
+t=(${z//,/ })
+for x in ${t[@]}; do \
+  find . -type d -name "${x}" | xargs -i rm -rf {}; \
 done
 
 if [[ "${applica}" == "1" ]]; then
