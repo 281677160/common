@@ -701,8 +701,9 @@ if [[ -f "${ZZZ_PATH}" ]]; then
 fi
 
 ttydjso="$(find ${HOME_PATH}/ -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d)"
+echo "${ttydjso}"
 if [[ -f "${ttydjso}" ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${ttydjson}"
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${ttydjso}"
 fi
 
 [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
