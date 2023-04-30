@@ -782,6 +782,7 @@ fi
 
 cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
 src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
+src-git danshui2 https://github.com/281677160/openwrt-package.git;${PACKAGE_THEME}
 src-git helloworld https://github.com/fw876/helloworld.git
 src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci
 src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
