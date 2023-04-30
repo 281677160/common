@@ -124,7 +124,7 @@ COOLSNOWWOLF)
     export SOURCE="Lede"
     export LUCI_EDITION="18.06"
     export SOURCE_OWNER="Lede's"
-    export PACKAGE_BRANCH="lede-master"
+    export PACKAGE_BRANCH="lede"
     export DIY_WORK="${FOLDER_NAME}MASTER"
     echo "GL_BRANCH=lede" >> ${GITHUB_ENV}
   elif [[ "${REPO_BRANCH}" == "gl-ax1800" ]]; then
@@ -132,7 +132,7 @@ COOLSNOWWOLF)
     export SOURCE="Lede"
     export LUCI_EDITION="gl-ax1800"
     export SOURCE_OWNER="Lede's"
-    export PACKAGE_BRANCH="lede-master"
+    export PACKAGE_BRANCH="lede"
     export REPO_BRANCH="master"
     export DIY_WORK="${FOLDER_NAME}ax1800"
     echo "GL_BRANCH=lede_ax1800" >> ${GITHUB_ENV}
@@ -142,48 +142,50 @@ LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
   export SOURCE="Lienol"
   export SOURCE_OWNER="Lienol's"
+  export PACKAGE_BRANCH="lienol"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
-    export PACKAGE_BRANCH="lienol-master"
     export LUCI_EDITION="master"
     export DIY_WORK="${FOLDER_NAME}MASTER"
+    export PACKAGE_THEME="theme2"
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
-    export PACKAGE_BRANCH="lienol-master"
     export LUCI_EDITION="21.02"
     export DIY_WORK="${FOLDER_NAME}2102"
+    export PACKAGE_THEME="theme2"
   elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
-    export PACKAGE_BRANCH="lienol-master"
     export LUCI_EDITION="22.03"
-    export DIY_WORK="${FOLDER_NAME}2102"
+    export DIY_WORK="${FOLDER_NAME}2203"
+    export PACKAGE_THEME="theme2"
   elif [[ "${REPO_BRANCH}" == "19.07-test" ]]; then
-    export PACKAGE_BRANCH="lienol-17.01"
     export LUCI_EDITION="19.07-test"
-    export DIY_WORK="${FOLDER_NAME}CANNO"
+    export DIY_WORK="${FOLDER_NAME}test"
+    export PACKAGE_THEME="theme1"
   elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
-    export PACKAGE_BRANCH="lienol-17.01"
     export LUCI_EDITION="19.07"
     export DIY_WORK="${FOLDER_NAME}1907"
+    export PACKAGE_THEME="theme1"
   fi
 ;;
 IMMORTALWRT)
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export SOURCE="Immortalwrt"
   export SOURCE_OWNER="ctcgfw's"
+  export PACKAGE_BRANCH="immortalwrt"
   if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-    export PACKAGE_BRANCH="immortalwrt-master"
     export LUCI_EDITION="21.02"
+    export PACKAGE_THEME="theme2"
     export DIY_WORK="${FOLDER_NAME}2102"
   elif [[ "${REPO_BRANCH}" == "master" ]]; then
-    export PACKAGE_BRANCH="immortalwrt-master"
     export LUCI_EDITION="master"
     export DIY_WORK="${FOLDER_NAME}MASTER"
+    export PACKAGE_THEME="theme2"
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-    export PACKAGE_BRANCH="immortalwrt-18.06"
     export LUCI_EDITION="18.06"
     export DIY_WORK="${FOLDER_NAME}1806"
+    export PACKAGE_THEME="theme1"
   elif [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
-    export PACKAGE_BRANCH="immortalwrt-18.06"
     export LUCI_EDITION="18.06.K5.4"
     export DIY_WORK="${FOLDER_NAME}K54"
+    export PACKAGE_THEME="theme1"
   fi
 ;;
 XWRT)
@@ -191,7 +193,8 @@ XWRT)
   export SOURCE="Xwrt"
   export SOURCE_OWNER="ptpt52"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |cut -d"-" -f2-)"
-  export PACKAGE_BRANCH="official-master"
+  export PACKAGE_BRANCH="official"
+  export PACKAGE_THEME="theme2"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
 OFFICIAL)
@@ -199,7 +202,8 @@ OFFICIAL)
   export SOURCE="Official"
   export SOURCE_OWNER="openwrt"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |cut -d"-" -f2-)"
-  export PACKAGE_BRANCH="official-master"
+  export PACKAGE_BRANCH="official"
+  export PACKAGE_THEME="theme2"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
 *)
@@ -442,6 +446,8 @@ echo
 find . -type d -name '*luci-theme-argon*' |grep 'luci\/themes' |xargs -i rm -rf {}
 find . -type d -name '*luci-theme-Butterfly*' |grep 'luci\/themes' |xargs -i rm -rf {}
 find . -type d -name '*luci-theme-netgear*' |grep 'luci\/themes' |xargs -i rm -rf {}
+find . -type d -name 'luci-theme-rosy' -o -name 'luci-theme-darkmatter' -o -name 'luci-theme-infinityfreedom' -o -name 'luci-theme-design' | xargs -i rm -rf {}
+find . -type d -name 'luci-theme-bootstrap-mod' -o -name 'luci-theme-opentomato' -o -name -o -name 'luci-app-design-config' 'luci-app-argon-config' | xargs -i rm -rf {}
 if [[ "${applica}" == "1" ]]; then
   git clone -b master https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon"
   git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config"
@@ -632,7 +638,7 @@ function Diy_IMMORTALWRT() {
 cd ${HOME_PATH}
 if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
   s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
-  luci-app-gost,gost,luci-app-cifs,luci-theme-design,luci-app-design-config,luci-app-wizard,luci-theme-opentomato"
+  luci-app-gost,gost,luci-app-cifs,luci-theme-design,luci-app-design-config,luci-app-wizard"
   c=(${s//,/ })
   for i in ${c[@]}; do \
     find . -type d -name "${i}" | xargs -i rm -rf {}; \
