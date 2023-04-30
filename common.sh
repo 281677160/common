@@ -700,9 +700,12 @@ if [[ -f "${ZZZ_PATH}" ]]; then
   sed -i '/exit 0/d' "${ZZZ_PATH}"
 fi
 
-ttydjso="$({ find |grep -E "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d; } 2>"/dev/null")"
-if [[ -f "${ttydjso}" ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${ttydjso}"
+ttydjso="$(find ./ -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d |cut -d '/' -f2-)"
+if [[ -n "${ttydjso}" ]]; then
+  ttydjson="${HOME_PATH}/${ttydjso}"
+fi
+if [[ -f "${ttydjson}" ]]; then
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${ttydjson}"
 fi
 
 [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
