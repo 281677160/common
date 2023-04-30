@@ -296,6 +296,7 @@ else
 fi
 }
 
+
 function Diy_checkout() {
 cd ${GITHUB_WORKSPACE}/openwrt
 case "${SOURCE_CODE}" in
@@ -329,6 +330,7 @@ else
 fi
 }
 
+
 function Diy_Notice() {
 TIME r ""
 TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
@@ -342,6 +344,7 @@ TIME r ""
 TIME g "CPU性能：8370C > 8272CL > 8171M > E5系列"
 TIME r ""
 }
+
 
 function build_openwrt() {
 cd ${GITHUB_WORKSPACE}
@@ -419,6 +422,7 @@ git commit -m "${kaisbianyixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}�
 git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 }
 
+
 function Diy_wenjian1() {
 cd ${HOME_PATH}
 # 拉取源码之后增加应用文件
@@ -441,27 +445,6 @@ if [[ ! -d "${settingss}" ]] && [[ "${applica}" == "1" ]]; then
   [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
 elif [[ ! -d "${settingss}" ]] && [[ "${applica}" == "2" ]]; then
   svn export https://github.com/281677160/common/trunk/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
-fi
-
-echo
-echo "统一源码中的[luci-theme-argon]主题为[jerrykuku]大佬的版本"
-echo
-find . -type d -name '*luci-theme-argon*' |grep 'luci\/themes' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-argon*' |grep 'luci\/themes' |xargs -i rm -rf {}
-
-if [[ "${applica}" == "1" ]]; then
-  git clone -b master https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon"
-  git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config"
-elif [[ "${applica}" == "2" ]]; then
-  if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
-    [[ ! -d "${HOME_PATH}/extra/luci/themes" ]] && mkdir -p ${HOME_PATH}/extra/luci/themes
-    git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/themes/luci-theme-argon"
-    git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/applications/luci-app-argon-config"
-    find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
-  else
-    git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon"
-    git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config"
-  fi
 fi
 
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
@@ -540,6 +523,7 @@ if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
 fi
 }
 
+
 function Diy_wenjian2() {
 rm -rf "${DEFAULT_PATH}" && cp ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
@@ -595,6 +579,7 @@ fi
 case "${GL_BRANCH}" in
 lede_ax1800)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
   svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/upx ${HOME_PATH}/package/upx > /dev/null 2>&1
   svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ucl ${HOME_PATH}/package/ucl > /dev/null 2>&1
   svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8168 ${HOME_PATH}/package/r8168
@@ -704,6 +689,7 @@ if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/l
 fi
 }
 
+
 function Diy_distrib() {
 # 获取ZZZ_PATH路径
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
@@ -714,14 +700,10 @@ if [[ -f "${ZZZ_PATH}" ]]; then
   sed -i '/exit 0/d' "${ZZZ_PATH}"
 fi
 
-ttydjso="$(find ./ -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d |cut -d '/' -f2-)"
-if [[ -n "${ttydjso}" ]]; then
-  ttydjson="${HOME_PATH}/${ttydjso}"
-fi
-if [[ -f "${ttydjson}" ]]; then
+ttydjso="$(find ${HOME_PATH}/ -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d)"
+if [[ -f "${ttydjso}" ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${ttydjson}"
 fi
-
 
 [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
 [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
@@ -736,6 +718,7 @@ if [[ -f "${HOME_PATH}/LICENSES/doc/config_generates" ]]; then
 else
   cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
 fi
+
 sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
 sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
@@ -772,6 +755,8 @@ sed -i '/danshui/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/helloworld/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/passwall/d' "${HOME_PATH}/feeds.conf.default"
 
+find . -type d -name '*luci-theme-argon*' |xargs -i rm -rf {}
+find . -type d -name '*luci-app-argon-config*' |xargs -i rm -rf {}
 find . -type d -name '*luci-theme-Butterfly*' |grep 'luci\/themes' |xargs -i rm -rf {}
 find . -type d -name '*luci-theme-netgear*' |grep 'luci\/themes' |xargs -i rm -rf {}
 find . -type d -name '*luci-theme-atmaterial*' |grep 'luci\/themes' |xargs -i rm -rf {}
@@ -835,6 +820,7 @@ sudo chmod -R 775 ${HOME_PATH}/files
 rm -rf ${HOME_PATH}/files/{LICENSE,.*README}
 }
 
+
 function Diy_zdypartsh() {
 cat >"${HOME_PATH}/diy_pa_sh" <<-EOF
 $(cat "$BUILD_PATH/$DIY_PART_SH" |grep '\egrep' |grep '\-rl')
@@ -843,6 +829,7 @@ sudo chmod -R 775 ${HOME_PATH}/diy_pa_sh
 sed -i '/egrep ".*" -rl .\//d' $BUILD_PATH/$DIY_PART_SH
 source $BUILD_PATH/$DIY_PART_SH
 }
+
 
 function Diy_Publicarea() {
 cd ${HOME_PATH}
@@ -992,7 +979,6 @@ exit 0
 EOF
   fi
 fi
-
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
   echo "固件加入IPV6功能"
@@ -1222,7 +1208,6 @@ if [[ "${Cancel_running}" == "1" ]]; then
    echo "sed -i '/coremark/d' /etc/crontabs/root" >> "${DEFAULT_PATH}"
    echo "删除每天跑分任务完成"
 fi
-
 
 # 晶晨CPU机型自定义机型,内核,分区
 echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
