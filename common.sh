@@ -450,7 +450,7 @@ find . -type d -name '*luci-theme-argon*' |grep 'luci\/themes' |xargs -i rm -rf 
 find . -type d -name '*luci-theme-Butterfly*' |grep 'luci\/themes' |xargs -i rm -rf {}
 find . -type d -name '*luci-theme-netgear*' |grep 'luci\/themes' |xargs -i rm -rf {}
 find . -type d -name 'luci-theme-rosy' -o -name 'luci-theme-darkmatter' -o -name 'luci-theme-infinityfreedom' -o -name 'luci-theme-design' | xargs -i rm -rf {}
-find . -type d -name 'luci-theme-bootstrap-mod' -o -name 'luci-theme-opentomato' -o -name -o -name 'luci-app-design-config' 'luci-app-argon-config' | xargs -i rm -rf {}
+find . -type d -name 'luci-theme-bootstrap-mod' -o -name 'luci-theme-opentomato' -o -name 'luci-app-design-config' 'luci-app-argon-config' | xargs -i rm -rf {}
 if [[ "${applica}" == "1" ]]; then
   git clone -b master https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon"
   git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config"
