@@ -447,15 +447,7 @@ echo
 echo "统一源码中的[luci-theme-argon]主题为[jerrykuku]大佬的版本"
 echo
 find . -type d -name '*luci-theme-argon*' |grep 'luci\/themes' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-Butterfly*' |grep 'luci\/themes' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-netgear*' |grep 'luci\/themes' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-atmaterial*' |grep 'luci\/themes' |xargs -i rm -rf {}
-z="luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design, \
-luci-app-design-config,luci-app-argon-config,luci-theme-bootstrap-mod,luci-theme-opentomato"
-t=(${z//,/ })
-for x in ${t[@]}; do \
-  find . -type d -name "${x}" | xargs -i rm -rf {}; \
-done
+find . -type d -name '*luci-theme-argon*' |grep 'luci\/themes' |xargs -i rm -rf {}
 
 if [[ "${applica}" == "1" ]]; then
   git clone -b master https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon"
@@ -779,11 +771,17 @@ echo "正在执行：给feeds.conf.default增加插件源"
 sed -i '/danshui/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/helloworld/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/passwall/d' "${HOME_PATH}/feeds.conf.default"
-s="luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,tcping,v2ray-core,v2ray-geodata, \
-v2ray-plugin,trojan,trojan-go,trojan-plus,redsocks2,sing-box,microsocks"
-c=(${s//,/ })
-for i in ${c[@]}; do \
-  find . -type d -name "${i}" | xargs -i rm -rf {}; \
+
+find . -type d -name '*luci-theme-Butterfly*' |grep 'luci\/themes' |xargs -i rm -rf {}
+find . -type d -name '*luci-theme-netgear*' |grep 'luci\/themes' |xargs -i rm -rf {}
+find . -type d -name '*luci-theme-atmaterial*' |grep 'luci\/themes' |xargs -i rm -rf {}
+z="luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,tcping,v2ray-core,v2ray-geodata, \
+v2ray-plugin,trojan,trojan-go,trojan-plus,redsocks2,sing-box,microsocks, \
+luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design, \
+luci-app-design-config,luci-theme-bootstrap-mod,luci-theme-opentomato"
+t=(${z//,/ })
+for x in ${t[@]}; do \
+  find . -type d -name "${x}" | xargs -i rm -rf {}; \
 done
 
 if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
