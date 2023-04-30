@@ -449,13 +449,19 @@ echo
 find . -type d -name '*luci-theme-argon*' |grep 'luci\/themes' |xargs -i rm -rf {}
 find . -type d -name '*luci-theme-Butterfly*' |grep 'luci\/themes' |xargs -i rm -rf {}
 find . -type d -name '*luci-theme-netgear*' |grep 'luci\/themes' |xargs -i rm -rf {}
-find . -type d -name 'luci-theme-rosy' -o -name 'luci-theme-darkmatter' -o -name 'luci-theme-infinityfreedom' -o -name 'luci-theme-design' | xargs -i rm -rf {}
-find . -type d -name 'luci-theme-bootstrap-mod' -o -name 'luci-theme-opentomato' -o -name 'luci-app-design-config' -o -name'luci-app-argon-config' | xargs -i rm -rf {}
+z="luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design, \
+luci-app-design-config,luci-app-argon-config,luci-theme-bootstrap-mod,luci-theme-opentomato"
+c=(${z//,/ })
+for t in ${c[@]}; do \
+  find . -type d -name "${t}" | xargs -i rm -rf {}; \
+done
+
 if [[ "${applica}" == "1" ]]; then
   git clone -b master https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon"
   git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/applications/luci-app-argon-config"
 elif [[ "${applica}" == "2" ]]; then
   if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
+    [[ ! -d "${HOME_PATH}/extra/luci/themes" ]] && mkdir -p ${HOME_PATH}/extra/luci/themes
     git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/themes/luci-theme-argon"
     git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/applications/luci-app-argon-config"
     find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
