@@ -462,13 +462,8 @@ if [[ "${applica}" == "1" ]]; then
 elif [[ "${applica}" == "2" ]]; then
   if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
     [[ ! -d "${HOME_PATH}/extra/luci/themes" ]] && mkdir -p ${HOME_PATH}/extra/luci/themes
-    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/upx ${HOME_PATH}/package/upx > /dev/null 2>&1
     git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/themes/luci-theme-argon"
-    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ucl ${HOME_PATH}/package/ucl > /dev/null 2>&1
-    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8168 ${HOME_PATH}/package/r8168 > /dev/null 2>&1
     git clone -b argon-config https://github.com/281677160/luci-theme-argon "${HOME_PATH}/extra/luci/applications/luci-app-argon-config"
-    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8101 ${HOME_PATH}/package/r8101 > /dev/null 2>&1
-    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8125 ${HOME_PATH}/package/r8125 > /dev/null 2>&1
     find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
   else
     git clone -b 18.06 https://github.com/281677160/luci-theme-argon "${HOME_PATH}/feeds/luci/themes/luci-theme-argon"
@@ -607,6 +602,11 @@ fi
 case "${GL_BRANCH}" in
 lede_ax1800)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/upx ${HOME_PATH}/package/upx > /dev/null 2>&1
+  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ucl ${HOME_PATH}/package/ucl > /dev/null 2>&1
+  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8168 ${HOME_PATH}/package/r8168 > /dev/null 2>&1
+  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8101 ${HOME_PATH}/package/r8101 > /dev/null 2>&1
+  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8125 ${HOME_PATH}/package/r8125 > /dev/null 2>&1
 ;;
 esac
 }
