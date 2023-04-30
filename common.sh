@@ -701,6 +701,8 @@ if [[ -f "${ZZZ_PATH}" ]]; then
 fi
 
 ttydjso="$(find ${HOME_PATH}/ -type f -name "luci-app-ttyd.json" |grep -v 'dir' |grep menu.d)"
+
+ttydjso="$({ find |grep -E "luci-app-ttyd.json"; } 2>"/dev/null")"
 if [[ -f "${ttydjso}" ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${ttydjso}"
 fi
