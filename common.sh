@@ -125,6 +125,7 @@ COOLSNOWWOLF)
     export LUCI_EDITION="18.06"
     export SOURCE_OWNER="Lede's"
     export PACKAGE_BRANCH="lede"
+    export PACKAGE_THEME="theme1"
     export DIY_WORK="${FOLDER_NAME}MASTER"
     echo "GL_BRANCH=lede" >> ${GITHUB_ENV}
   elif [[ "${REPO_BRANCH}" == "gl-ax1800" ]]; then
@@ -133,6 +134,7 @@ COOLSNOWWOLF)
     export LUCI_EDITION="gl-ax1800"
     export SOURCE_OWNER="Lede's"
     export PACKAGE_BRANCH="lede"
+    export PACKAGE_THEME="theme1"
     export REPO_BRANCH="master"
     export DIY_WORK="${FOLDER_NAME}ax1800"
     echo "GL_BRANCH=lede_ax1800" >> ${GITHUB_ENV}
