@@ -766,7 +766,7 @@ find . -type d -name '*luci-theme-atmaterial*' |grep 'luci\/themes' |xargs -i rm
 z="luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,tcping,v2ray-core,v2ray-geodata, \
 v2ray-plugin,trojan,trojan-go,trojan-plus,redsocks2,sing-box,microsocks, \
 luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design, \
-luci-app-design-config,luci-theme-bootstrap-mod,luci-theme-opentomato"
+luci-app-design-config,luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato"
 t=(${z//,/ })
 for x in ${t[@]}; do \
   find . -type d -name "${x}" | xargs -i rm -rf {}; \
