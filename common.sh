@@ -702,7 +702,7 @@ if [[ -f "${ZZZ_PATH}" ]]; then
 fi
 
 ttydjso="$({ find |grep -E "luci-app-ttyd\.json" |grep -v 'dir' |grep 'menu.d'; } 2>"/dev/null")"
-if [[ -n "$(grep '"title"' "${ttydjso}")" ]]; then
+if [[ -n "$(grep "title" "${ttydjso}")" ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${ttydjso}"
 fi
 
