@@ -1273,18 +1273,12 @@ fi
 
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 
-if [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
-cat >> "${HOME_PATH}/.config" <<-EOF
-CONFIG_PACKAGE_luci=y
-CONFIG_PACKAGE_default-settings-chn=y
-EOF
 sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
-else
 cat >> "${HOME_PATH}/.config" <<-EOF
 CONFIG_PACKAGE_luci=y
 CONFIG_PACKAGE_default-settings=y
+CONFIG_PACKAGE_default-settings-chn=y
 EOF
-fi
 
 if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
   echo "CONFIG_TARGET_KERNEL_PARTSIZE=${Kernel_partition_size}" >> ${HOME_PATH}/.config
