@@ -528,7 +528,7 @@ XWRT|OFFICIAL)
   fi
 
   if [[ -z "$(grep "luci-lib-ipkg" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi kmod-nf-nathelper kmod-nf-nathelper-extra luci-lib-fs ?g' "${HOME_PATH}/include/target.mk"
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi luci-lib-fs ?g' "${HOME_PATH}/include/target.mk"
   fi
   
   if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
