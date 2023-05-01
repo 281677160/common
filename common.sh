@@ -311,7 +311,7 @@ sed -i '/helloworld/d' "feeds.conf.default"
 sed -i '/passwall/d' "feeds.conf.default"
 
 if [[ "${SOURCE_CODE}" == "COOLSNOWWOLF" ]]; then
-  s="luci-app-netdata,netdata,luci-app-diskman"
+  s="luci-app-netdata,netdata,luci-app-diskman,mentohust"
   c=(${s//,/ })
   for i in ${c[@]}; do \
     find . -type d -name "${i}" | xargs -i rm -rf {}; \
