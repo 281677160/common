@@ -295,18 +295,13 @@ fi
 
 function Diy_checkout() {
 cd ${GITHUB_WORKSPACE}/openwrt
-case "${SOURCE_CODE}" in
-OFFICIAL)
-  if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
-    export LUCI_CHECKUT="$(git tag| awk 'END {print}')"
-    git checkout ${LUCI_CHECKUT}
-    git switch -c ${LUCI_CHECKUT}
-    export LUCI_CHECKUT="$(echo ${LUCI_CHECKUT} |sed 's/v//')"
-    echo "正在使用${LUCI_CHECKUT}版本源码进行编译"
-    echo
-  fi
-;;
-esac
+if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
+  export LUCI_CHECKUT="$(git tag| awk 'END {print}')"
+  git checkout ${LUCI_CHECKUT}
+  git switch -c ${LUCI_CHECKUT}
+  export LUCI_CHECKUT="$(echo ${LUCI_CHECKUT} |sed 's/v//')"
+  echo "正在使用${LUCI_CHECKUT}版本源码进行编译"
+fi
 
 case "${COLLECTED_PACKAGES}" in
 true)
@@ -315,15 +310,44 @@ sed -i '/danshui/d' "feeds.conf.default"
 sed -i '/helloworld/d' "feeds.conf.default"
 sed -i '/passwall/d' "feeds.conf.default"
 
+if [[ "${SOURCE_CODE}" == "COOLSNOWWOLF" ]]; then
+  s="luci-app-netdata,netdata,luci-app-diskman"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" | xargs -i rm -rf {}; \
+  done
+elif [[ "${SOURCE_CODE}" == "LIENOL" ]]; then
+  s="luci-app-dockerman"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" | xargs -i rm -rf {}; \
+  done
+elif [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
+  s="luci-app-cifs"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" | xargs -i rm -rf {}; \
+  done
+elif [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
+  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" | xargs -i rm -rf {}; \
+  done
+fi
+
 find . -type d -name '*luci-theme-argon*' |xargs -i rm -rf {}
 find . -type d -name '*luci-app-argon-config*' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-Butterfly*' |grep 'luci\/themes' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-netgear*' |grep 'luci\/themes' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-atmaterial*' |grep 'luci\/themes' |xargs -i rm -rf {}
+find . -type d -name '*luci-theme-Butterfly*' |xargs -i rm -rf {}
+find . -type d -name '*luci-theme-netgear*' |xargs -i rm -rf {}
+find . -type d -name '*luci-theme-atmaterial*' |xargs -i rm -rf {}
 z="luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,tcping,v2ray-core,v2ray-geodata, \
 v2ray-plugin,trojan,trojan-go,trojan-plus,redsocks2,sing-box,microsocks, \
 luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design, \
-luci-app-design-config,luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato"
+luci-app-design-config,luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato, \
+luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
+luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
+luci-app-msd_lite,msd_lite"
 t=(${z//,/ })
 for x in ${t[@]}; do \
   find . -type d -name "${x}" | xargs -i rm -rf {}; \
@@ -565,16 +589,6 @@ EOF
 
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
-if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  s="luci-theme-argon-mod,mentohust,luci-app-eqos,luci-app-netdata,netdata,adguardhome,luci-app-adguardhome,luci-app-wol,v2ray-geodata, \
-  mosdns,luci-app-mosdns,luci-app-smartdns,smartdns,luci-app-gost,gost,luci-app-msd_lite,msd_lite,luci-app-openclash, \
-  luci-theme-design,luci-app-design-config,luci-app-wizard,luci-app-diskman"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" | xargs -i rm -rf {}; \
-  done
-fi
-
 case "${GL_BRANCH}" in
 lede)
   rm -rf ${HOME_PATH}/target/linux/ramips/patches-5.15
@@ -599,16 +613,6 @@ esac
 
 function Diy_LIENOL() {
 cd ${HOME_PATH}
-if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  s="mentohust,luci-app-eqos,adguardhome,luci-app-adguardhome,luci-app-wol,v2ray-geodata,luci-app-dockerman, \
-  mosdns,luci-app-mosdns,luci-app-smartdns,smartdns,luci-app-gost,gost,luci-app-msd_lite,msd_lite,luci-app-openclash, \
-  luci-theme-design,luci-app-design-config,luci-app-wizard"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" | xargs -i rm -rf {}; \
-  done
-fi
-
 case "${REPO_BRANCH}" in
 master)
   rm -rf ${HOME_PATH}/feeds/other/lean/autosamba
@@ -635,47 +639,16 @@ svn co https://github.com/xiaorouji/openwrt-passwall/trunk/pdnsd-alt ${HOME_PATH
 
 function Diy_IMMORTALWRT() {
 cd ${HOME_PATH}
-if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
-  luci-app-gost,gost,luci-app-cifs,luci-theme-design,luci-app-design-config,luci-app-wizard"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" | xargs -i rm -rf {}; \
-  done
-fi
 }
 
 
 function Diy_XWRT() {
 cd ${HOME_PATH}
-if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
-  luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
-  luci-app-msd_lite,msd_lite,luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" | xargs -i rm -rf {}; \
-  done
-fi
-
-if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
-  echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
-fi
 }
 
 
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
-if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-  s="luci-app-eqos,adguardhome,luci-app-adguardhome,v2ray-geodata,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
-  luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
-  luci-app-msd_lite,msd_lite,luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" | xargs -i rm -rf {}; \
-  done
-fi
-
 case "${REPO_BRANCH}" in
 openwrt-21.02)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
@@ -690,10 +663,6 @@ openwrt-22.03)
   svn export https://github.com/openwrt/packages/trunk/net/apinger ${HOME_PATH}/feeds/packages/net/apinger
 ;;
 esac
-
-if [[ `grep -c "net.netfilter.nf_conntrack_helper" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
-  echo "net.netfilter.nf_conntrack_helper = 1" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
-fi
 }
 
 
