@@ -322,11 +322,58 @@ COOLSNOWWOLF)
 ;;
 esac
 
+case "${COLLECTED_PACKAGES}" in
+true)
+# 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
+sed -i '/danshui/d' "feeds.conf.default"
+sed -i '/helloworld/d' "feeds.conf.default"
+sed -i '/passwall/d' "feeds.conf.default"
+
+find . -type d -name '*luci-theme-argon*' |xargs -i rm -rf {}
+find . -type d -name '*luci-app-argon-config*' |xargs -i rm -rf {}
+find . -type d -name '*luci-theme-Butterfly*' |grep 'luci\/themes' |xargs -i rm -rf {}
+find . -type d -name '*luci-theme-netgear*' |grep 'luci\/themes' |xargs -i rm -rf {}
+find . -type d -name '*luci-theme-atmaterial*' |grep 'luci\/themes' |xargs -i rm -rf {}
+z="luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,tcping,v2ray-core,v2ray-geodata, \
+v2ray-plugin,trojan,trojan-go,trojan-plus,redsocks2,sing-box,microsocks, \
+luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design, \
+luci-app-design-config,luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato"
+t=(${z//,/ })
+for x in ${t[@]}; do \
+  find . -type d -name "${x}" | xargs -i rm -rf {}; \
+done
+
+cat >>"feeds.conf.default" <<-EOF
+src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
+src-git danshui2 https://github.com/281677160/openwrt-package.git;${PACKAGE_THEME}
+src-git helloworld https://github.com/fw876/helloworld.git
+src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci
+src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
+src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
+EOF
+
+sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
+sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
+;;
+*)
+  echo "没有启用作者收集的插件源包"
+;;
+esac
+
 ./scripts/feeds clean
 if [[ -n "${BENDI_VERSION}" ]]; then
   ./scripts/feeds update -a
 else
   ./scripts/feeds update -a > /dev/null 2>&1
+fi
+
+if [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+  svn export https://github.com/coolsnowwolf/packages/trunk/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev > /dev/null 2>&1
+  rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
+  svn export https://github.com/immortalwrt/packages/trunk/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun > /dev/null 2>&1
+  rm -rf ${HOME_PATH}/feeds/packages/net/v2raya
+  svn export https://github.com/fw876/helloworld/trunk/v2raya ${HOME_PATH}/feeds/packages/net/v2raya > /dev/null 2>&1
 fi
 }
 
@@ -719,52 +766,6 @@ fi
 
 function Diy_chajianyuan() {
 cd ${HOME_PATH}
-case "${COLLECTED_PACKAGES}" in
-true)
-# 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
-sed -i '/danshui/d' "${HOME_PATH}/feeds.conf.default"
-sed -i '/helloworld/d' "${HOME_PATH}/feeds.conf.default"
-sed -i '/passwall/d' "${HOME_PATH}/feeds.conf.default"
-
-find . -type d -name '*luci-theme-argon*' |xargs -i rm -rf {}
-find . -type d -name '*luci-app-argon-config*' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-Butterfly*' |grep 'luci\/themes' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-netgear*' |grep 'luci\/themes' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-atmaterial*' |grep 'luci\/themes' |xargs -i rm -rf {}
-z="luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,tcping,v2ray-core,v2ray-geodata, \
-v2ray-plugin,trojan,trojan-go,trojan-plus,redsocks2,sing-box,microsocks, \
-luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design, \
-luci-app-design-config,luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato"
-t=(${z//,/ })
-for x in ${t[@]}; do \
-  find . -type d -name "${x}" | xargs -i rm -rf {}; \
-done
-
-if [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
-  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
-  svn export https://github.com/coolsnowwolf/packages/trunk/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev > /dev/null 2>&1
-  rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
-  svn export https://github.com/immortalwrt/packages/trunk/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun > /dev/null 2>&1
-  rm -rf ${HOME_PATH}/feeds/packages/net/v2raya
-  svn export https://github.com/fw876/helloworld/trunk/v2raya ${HOME_PATH}/feeds/packages/net/v2raya > /dev/null 2>&1
-fi
-
-cat >>"${HOME_PATH}/feeds.conf.default" <<-EOF
-src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
-src-git danshui2 https://github.com/281677160/openwrt-package.git;${PACKAGE_THEME}
-src-git helloworld https://github.com/fw876/helloworld.git
-src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci
-src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
-src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
-EOF
-
-sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
-sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
-;;
-*)
-  echo "没有启用作者收集的插件源包"
-;;
-esac
 }
 
 
