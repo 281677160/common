@@ -425,6 +425,7 @@ git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 
 function Diy_wenjian1() {
 cd ${HOME_PATH}
+echo "正在执行：增加插件源,请耐心等待..."
 # 拉取源码之后增加应用文件
 if [[ -d "${HOME_PATH}/extra" ]]; then
   apptions="$(find "${HOME_PATH}/extra" -type d -name "applications"  |grep 'luci')"
@@ -752,7 +753,6 @@ function Diy_chajianyuan() {
 cd ${HOME_PATH}
 case "${COLLECTED_PACKAGES}" in
 true)
-echo "正在执行：给feeds.conf.default增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 sed -i '/danshui/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/helloworld/d' "${HOME_PATH}/feeds.conf.default"
