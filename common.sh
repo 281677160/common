@@ -1181,8 +1181,6 @@ function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
 ./scripts/feeds update -a
-# 执行语言包更新
-Diy_Language
 if [[ -f "${HOME_PATH}/diy_pa_sh" ]] && [[ ! "${ERCI}" == "1" ]]; then
   source ${HOME_PATH}/diy_pa_sh
   rm -rf ${HOME_PATH}/diy_pa_sh
@@ -2227,6 +2225,7 @@ Diy_upgrade2
 function Diy_menu4() {
 Diy_files
 Diy_shpart
+Diy_Language
 Diy_feeds
 Diy_IPv6helper
 }
