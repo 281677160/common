@@ -119,22 +119,18 @@ fi
 
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
+  export SOURCE="Lede"
+  export SOURCE_OWNER="Lede's"
+  export PACKAGE_BRANCH="lede"
+  export PACKAGE_THEME="theme1"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export REPO_URL="https://github.com/coolsnowwolf/lede"
-    export SOURCE="Lede"
     export LUCI_EDITION="18.06"
-    export SOURCE_OWNER="Lede's"
-    export PACKAGE_BRANCH="lede"
-    export PACKAGE_THEME="theme1"
     export DIY_WORK="${FOLDER_NAME}MASTER"
     echo "GL_BRANCH=lede" >> ${GITHUB_ENV}
   elif [[ "${REPO_BRANCH}" == "gl-ax1800" ]]; then
     export REPO_URL="https://github.com/coolsnowwolf/openwrt-gl-ax1800"
-    export SOURCE="Lede"
     export LUCI_EDITION="gl-ax1800"
-    export SOURCE_OWNER="Lede's"
-    export PACKAGE_BRANCH="lede"
-    export PACKAGE_THEME="theme1"
     export REPO_BRANCH="master"
     export DIY_WORK="${FOLDER_NAME}ax1800"
     echo "GL_BRANCH=lede_ax1800" >> ${GITHUB_ENV}
@@ -310,16 +306,6 @@ OFFICIAL)
     echo
   fi
 ;;
-COOLSNOWWOLF)
-  if [[ "${GL_BRANCH}" == "lede" ]]; then
-    rm -rf ${HOME_PATH}/target/linux/ramips/patches-5.15
-    svn co https://github.com/lede-project/source/trunk/target/linux/ramips/patches-5.15 ${HOME_PATH}/target/linux/ramips/patches-5.15 > /dev/null 2>&1
-    for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
-        [[ ! -f "${HOME_PATH}/target/linux/ramips/$i/config-5.15" ]] &&  \
-        curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 > ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
-    done
-  fi
-;;
 esac
 
 case "${COLLECTED_PACKAGES}" in
@@ -361,20 +347,7 @@ sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
 esac
 
 ./scripts/feeds clean
-if [[ -n "${BENDI_VERSION}" ]]; then
-  ./scripts/feeds update -a
-else
-  ./scripts/feeds update -a > /dev/null 2>&1
-fi
-
-if [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
-  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
-  svn export https://github.com/coolsnowwolf/packages/trunk/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev > /dev/null 2>&1
-  rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
-  svn export https://github.com/immortalwrt/packages/trunk/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun > /dev/null 2>&1
-  rm -rf ${HOME_PATH}/feeds/packages/net/v2raya
-  svn export https://github.com/fw876/helloworld/trunk/v2raya ${HOME_PATH}/feeds/packages/net/v2raya > /dev/null 2>&1
-fi
+./scripts/feeds update -a > /dev/null 2>&1
 }
 
 
@@ -474,6 +447,7 @@ function Diy_wenjian1() {
 cd ${HOME_PATH}
 echo "正在执行：增加插件源,请耐心等待..."
 # 拉取源码之后增加应用文件
+
 if [[ -d "${HOME_PATH}/extra" ]]; then
   apptions="$(find "${HOME_PATH}/extra" -type d -name "applications"  |grep 'luci')"
 else
@@ -531,6 +505,13 @@ XWRT|OFFICIAL)
 
   if [[ -z "$(grep "luci-lib-ipkg" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi kmod-nf-nathelper kmod-nf-nathelper-extra luci-lib-fs ?g' "${HOME_PATH}/include/target.mk"
+  fi
+  
+  if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
+    rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+    svn export https://github.com/coolsnowwolf/packages/trunk/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev > /dev/null 2>&1
+    rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
+    svn export https://github.com/immortalwrt/packages/trunk/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun > /dev/null 2>&1
   fi
 ;;
 esac
@@ -595,6 +576,14 @@ if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
 fi
 
 case "${GL_BRANCH}" in
+lede)
+  rm -rf ${HOME_PATH}/target/linux/ramips/patches-5.15
+  svn co https://github.com/lede-project/source/trunk/target/linux/ramips/patches-5.15 ${HOME_PATH}/target/linux/ramips/patches-5.15 > /dev/null 2>&1
+  for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
+    [[ ! -f "${HOME_PATH}/target/linux/ramips/$i/config-5.15" ]] &&  \
+    curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 > ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
+  done
+;;
 lede_ax1800)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
   find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
@@ -761,11 +750,6 @@ sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
 EOF
 fi
-}
-
-
-function Diy_chajianyuan() {
-cd ${HOME_PATH}
 }
 
 
@@ -2283,7 +2267,6 @@ Diy_wenjian1
 Diy_wenjian2
 Diy_${SOURCE_CODE}
 Diy_distrib
-Diy_chajianyuan
 Diy_upgrade1
 }
 
