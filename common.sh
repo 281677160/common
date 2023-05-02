@@ -541,7 +541,7 @@ XWRT|OFFICIAL)
   
   if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
     rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
-    svn export https://github.com/coolsnowwolf/packages/trunk/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev > /dev/null 2>&1
+    svn export https://github.com/immortalwrt/packages/trunk/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev > /dev/null 2>&1
     rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
     svn export https://github.com/immortalwrt/packages/trunk/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun > /dev/null 2>&1
   fi
