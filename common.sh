@@ -191,7 +191,7 @@ XWRT)
   export SOURCE="Xwrt"
   export SOURCE_OWNER="ptpt52"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |cut -d"-" -f2-)"
-  export PACKAGE_BRANCH="official"
+  export PACKAGE_BRANCH="xwrt"
   export PACKAGE_THEME="theme2"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
