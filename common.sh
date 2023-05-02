@@ -310,49 +310,6 @@ sed -i '/danshui/d' "feeds.conf.default"
 sed -i '/helloworld/d' "feeds.conf.default"
 sed -i '/passwall/d' "feeds.conf.default"
 
-if [[ "${SOURCE_CODE}" == "COOLSNOWWOLF" ]]; then
-  s="luci-app-netdata,netdata,luci-app-diskman,mentohust"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" | xargs -i rm -rf {}; \
-  done
-elif [[ "${SOURCE_CODE}" == "LIENOL" ]]; then
-  s="luci-app-dockerman"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" | xargs -i rm -rf {}; \
-  done
-elif [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
-  s="luci-app-cifs"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" | xargs -i rm -rf {}; \
-  done
-elif [[ "${SOURCE_CODE}" =~ (XWRT|OFFICIAL) ]]; then
-  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" | xargs -i rm -rf {}; \
-  done
-fi
-
-find . -type d -name '*luci-theme-argon*' |xargs -i rm -rf {}
-find . -type d -name '*luci-app-argon-config*' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-Butterfly*' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-netgear*' |xargs -i rm -rf {}
-find . -type d -name '*luci-theme-atmaterial*' |xargs -i rm -rf {}
-z="luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,tcping,v2ray-core,v2ray-geodata, \
-v2ray-plugin,trojan,trojan-go,trojan-plus,redsocks2,sing-box,microsocks, \
-luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design, \
-luci-app-design-config,luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato, \
-luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
-luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
-luci-app-msd_lite,msd_lite"
-t=(${z//,/ })
-for x in ${t[@]}; do \
-  find . -type d -name "${x}" | xargs -i rm -rf {}; \
-done
-
 cat >>"feeds.conf.default" <<-EOF
 src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
 src-git danshui2 https://github.com/281677160/openwrt-package.git;${PACKAGE_THEME}
@@ -365,13 +322,64 @@ EOF
 sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
 sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
 ;;
+esac
+
+
+./scripts/feeds clean
+./scripts/feeds update -a > /dev/null 2>&1
+
+
+case "${COLLECTED_PACKAGES}" in
+true)
+if [[ "${SOURCE_CODE}" == "COOLSNOWWOLF" ]]; then
+  s="luci-app-netdata,netdata,luci-app-diskman,mentohust"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+  done
+elif [[ "${SOURCE_CODE}" == "LIENOL" ]]; then
+  s="luci-app-dockerman"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+  done
+elif [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
+  s="luci-app-cifs"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+  done
+elif [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
+  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+  done
+ elif [[ "${SOURCE_CODE}" == "XWRT" ]]; then
+  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+  done
+fi
+
+z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
+luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design, \
+luci-app-design-config,luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato, \
+luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
+luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
+luci-app-msd_lite,msd_lite, \
+luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,tcping,v2ray-core,v2ray-geodata, \
+v2ray-plugin,trojan,trojan-go,trojan-plus,redsocks2,sing-box,microsocks"
+t=(${z//,/ })
+for x in ${t[@]}; do \
+  find . -type d -name "${x}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+done
+;;
 *)
   echo "没有启用作者收集的插件源包"
 ;;
 esac
-
-./scripts/feeds clean
-./scripts/feeds update -a > /dev/null 2>&1
 }
 
 
