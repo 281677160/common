@@ -11,7 +11,7 @@ for X in $(find . -regex '.*zh-cn\|.*zh_Hans' -type f |grep po |grep -v "opencla
 po_file="$({ find |grep -E "[a-z0-9]+\.zh\_Hans.+po" |grep -v "openclash\|store"; } 2>"/dev/null")"
 for a in ${po_file}
 do
-	x="$(grep -Eo "Language: .*\n" "$a")"
+	x="$(grep -Eo "Language:.*\n" "$a")"
 	[ -n "${x}" ] && sed -i "s?${x}?Language: zh_CN\n?g" "$a"
 	po_new_file="$(echo -e "$a"|sed "s/zh_Hans/zh-cn/g")"
 	mv "$a" "${po_new_file}" 2>"/dev/null"
@@ -20,7 +20,7 @@ done
 po_file2="$({ find |grep "/zh_Hans/" |grep "\.po" |grep -v "openclash\|store"; } 2>"/dev/null")"
 for b in ${po_file2}
 do
-	xx="$(grep -Eo "Language: .*\n" "$b")"
+	xx="$(grep -Eo "Language:.*\n" "$b")"
 	[ -n "${xx}" ] && sed -i "s?${xx}?Language: zh_CN\n?g" "$b"
 	cc="$(echo ${po_file2%/*})"
 	dd="$(echo ${cc} |sed "s/zh_Hans/zh-cn/g")"
