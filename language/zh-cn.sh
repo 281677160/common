@@ -12,7 +12,7 @@ po_file="$({ find |grep -E "[a-z0-9]+\.zh\_Hans.+po" |grep -v "openclash\|store"
 for a in ${po_file}
 do
 	x="$(grep -Eo "Language: .*\n" "$a")"
-	[ -n "${s}" ] && sed -i "s?${x}?Language: zh_CN\n?g" "$a"
+	[ -n "${x}" ] && sed -i "s?${x}?Language: zh_CN\n?g" "$a"
 	po_new_file="$(echo -e "$a"|sed "s/zh_Hans/zh-cn/g")"
 	mv "$a" "${po_new_file}" 2>"/dev/null"
 done
@@ -20,7 +20,8 @@ done
 po_file2="$({ find |grep "/zh_Hans/" |grep "\.po" |grep -v "openclash\|store"; } 2>"/dev/null")"
 for b in ${po_file2}
 do
-	[ -n "$(grep "Language: zh_Hans" "$b")" ] && sed -i "s/Language: zh_Hans/Language: zh_CN/g" "$b"
+	xx="$(grep -Eo "Language: .*\n" "$b")"
+	[ -n "${xx}" ] && sed -i "s?${xx}?Language: zh_CN\n?g" "$b"
 	cc="$(echo ${po_file2%/*})"
 	dd="$(echo ${cc} |sed "s/zh_Hans/zh-cn/g")"
 	[[ -d "${cc}" && -d "${dd}" ]] && rm -rf "${dd}"
