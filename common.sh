@@ -581,6 +581,11 @@ XWRT|OFFICIAL)
 ;;
 esac
 
+ttydjso="$({ find |grep -E "luci-app-ttyd\.json" |grep -v 'dir' |grep 'menu.d' |cut -d '/' -f2-; } 2>"/dev/null")"
+if [[ -n "${ttydjso}" ]]; then
+  j="${HOME_PATH}/${ttydjso}"
+  [[ -n "$(grep "title" "$j")" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${j}"
+fi
 
 rm -rf "${DEFAULT_PATH}" && cp ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
@@ -698,25 +703,6 @@ openwrt-22.03)
 ;;
 esac
 }
-
-
-function Diy_distrib() {
-# 获取ZZZ_PATH路径
-[[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
-cd ${HOME_PATH}
-ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
-if [[ -f "${ZZZ_PATH}" ]]; then
-  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
-  sed -i '/exit 0/d' "${ZZZ_PATH}"
-fi
-
-ttydjso="$({ find |grep -E "luci-app-ttyd\.json" |grep -v 'dir' |grep 'menu.d' |cut -d '/' -f2-; } 2>"/dev/null")"
-if [[ -n "${ttydjso}" ]]; then
-  j="${HOME_PATH}/${ttydjso}"
-  [[ -n "$(grep "title" "$j")" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${j}"
-fi
-}
-
 
 function Diy_files() {
 cd ${HOME_PATH}
@@ -2244,7 +2230,6 @@ Diy_IPv6helper
 function Diy_menu3() {
 Diy_wenjian
 Diy_${SOURCE_CODE}
-Diy_distrib
 Diy_upgrade1
 }
 
