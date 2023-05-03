@@ -93,9 +93,7 @@ fi
 
 function Diy_variable() {
 # 读取变量
-
 export DIY_PART_SH="diy-part.sh"
-
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
 elif [[ "${Manually_Run}" == "1" ]]; then
@@ -313,7 +311,7 @@ sed -i '/helloworld/d' "feeds.conf.default"
 sed -i '/passwall/d' "feeds.conf.default"
 
 cat >>"feeds.conf.default" <<-EOF
-src-git danshui https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
+src-git danshui1 https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
 src-git danshui2 https://github.com/281677160/openwrt-package.git;${PACKAGE_THEME}
 src-git helloworld https://github.com/fw876/helloworld.git
 src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci
@@ -326,7 +324,6 @@ sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
 ;;
 esac
 
-
 ./scripts/feeds clean
 ./scripts/feeds update -a > /dev/null 2>&1
 
@@ -335,7 +332,6 @@ autosam="$(find . -type d -name 'autosamba')"
 if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
   for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
 fi
-
 
 case "${COLLECTED_PACKAGES}" in
 true)
@@ -558,21 +554,24 @@ function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
 case "${GL_BRANCH}" in
 lede)
+if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
   rm -rf ${HOME_PATH}/target/linux/ramips/patches-5.15
   svn co https://github.com/lede-project/source/trunk/target/linux/ramips/patches-5.15 ${HOME_PATH}/target/linux/ramips/patches-5.15 > /dev/null 2>&1
   for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
-    [[ ! -f "${HOME_PATH}/target/linux/ramips/$i/config-5.15" ]] &&  \
-    curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 > ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
+    curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
   done
+fi
 ;;
 lede_ax1800)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-  find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/upx ${HOME_PATH}/package/upx > /dev/null 2>&1
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ucl ${HOME_PATH}/package/ucl > /dev/null 2>&1
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8168 ${HOME_PATH}/package/r8168
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8101 ${HOME_PATH}/package/r8101
-  svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8125 ${HOME_PATH}/package/r8125
+  if [[ -d "${HOME_PATH}/feeds/packages/utils/docker-ce" ]]; then
+    find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
+    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/upx ${HOME_PATH}/package/upx > /dev/null 2>&1
+    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ucl ${HOME_PATH}/package/ucl > /dev/null 2>&1
+    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8168 ${HOME_PATH}/package/r8168
+    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8101 ${HOME_PATH}/package/r8101
+    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8125 ${HOME_PATH}/package/r8125
+  fi
 ;;
 esac
 }
