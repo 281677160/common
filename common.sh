@@ -524,7 +524,6 @@ if [[ -f "${ZZZ_PATH}" ]]; then
     cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
   fi
 
-  if [[ -z "$(grep "version\.lua" ${ZZZ_PATH})" ]]; then
 cat >> "${ZZZ_PATH}" <<-EOF
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
@@ -533,7 +532,6 @@ echo "luciversion    = \"${luci_version}\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"${luci_name}\"" >> /usr/lib/lua/luci/version.lua
 EOF
-  fi
 fi
 
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
