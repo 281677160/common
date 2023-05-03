@@ -370,11 +370,10 @@ elif [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
 fi
 
 z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
-luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design, \
-luci-app-design-config,luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato, \
+luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
+luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato, \
 luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
-luci-app-gost,gost,luci-app-smartdns,smartdns,luci-theme-design,luci-app-design-config,luci-app-wizard, \
-luci-app-msd_lite,msd_lite, \
+luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
 luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,tcping,v2ray-core,v2ray-geodata, \
 v2ray-plugin,trojan,trojan-go,trojan-plus,redsocks2,sing-box,microsocks"
 t=(${z//,/ })
