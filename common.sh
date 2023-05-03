@@ -485,24 +485,20 @@ cd ${HOME_PATH}
 echo "正在执行：增加插件源,请耐心等待..."
 # 拉取源码之后增加应用文件
 
-if [[ -d "${HOME_PATH}/extra" ]]; then
-  apptions="$(find "${HOME_PATH}/extra" -type d -name "applications"  |grep 'luci')"
+apptions="$(find . -type d -name "applications" |grep 'luci')"
+if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
+  LUCI_BANBEN="2"
+  echo "LUCI_BANBEN=2" >> ${GITHUB_ENV}
 else
-  apptions="$(find "${HOME_PATH}/feeds" -type d -name "applications"  |grep 'luci')"
-fi
-if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '15' ]]; then
-  applica="1"
-  echo "applica=1" >> ${GITHUB_ENV}
-else
-  applica="2"
-  echo "applica=2" >> ${GITHUB_ENV}
+  LUCI_BANBEN="1"
+  echo "LUCI_BANBEN=1" >> ${GITHUB_ENV}
 fi
 
 settingss="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
-if [[ ! -d "${settingss}" ]] && [[ "${applica}" == "1" ]]; then
+if [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
   svn export https://github.com/281677160/common/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
   [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
-elif [[ ! -d "${settingss}" ]] && [[ "${applica}" == "2" ]]; then
+elif [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
   svn export https://github.com/281677160/common/trunk/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 fi
 
