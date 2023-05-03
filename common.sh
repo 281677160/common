@@ -429,8 +429,17 @@ elif [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
   svn export https://github.com/281677160/common/trunk/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 fi
 
+if [[ -n "$(ls -1 "${settingss}" | gerp -Eo ".*default-settings-chn")" ]]; then
+  if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
+  fi
+else
+  if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
+  fi
+fi
+
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
-echo "1"
 if [[ -n "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
 
@@ -459,7 +468,7 @@ sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"${luci_name}\"" >> /usr/lib/lua/luci/version.lua
 EOF
 fi
-echo "2"
+
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
 svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
 
@@ -471,17 +480,6 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/utils/parted" ]]; then
   svn export https://github.com/coolsnowwolf/packages/trunk/utils/parted ${HOME_PATH}/feeds/packages/utils/parted > /dev/null 2>&1
 fi
 
-chinese="$(find "${HOME_PATH}/package" -type f -name "*-default-settings-chinese" |grep files)"
-if [[ -n "${chinese}" ]]; then
-  if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
-  fi
-else
-  if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
-  fi
-fi
-echo "3"
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
   if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
