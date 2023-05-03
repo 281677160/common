@@ -517,8 +517,8 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/utils/parted" ]]; then
   svn export https://github.com/coolsnowwolf/packages/trunk/utils/parted ${HOME_PATH}/feeds/packages/utils/parted > /dev/null 2>&1
 fi
 
-settings_chinese="${HOME_PATH}/package/emortal/default-settings/files/99-default-settings-chinese"
-if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]] && [[ -f "${settings_chinese}" ]]; then
+chinese="$(find "${HOME_PATH}/package" -type f -name "*-default-settings-chinese" |grep files)"
+if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]] && [[ -n "${chinese}" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
 elif [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
@@ -540,7 +540,7 @@ XWRT|OFFICIAL)
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
   fi
 
-  if [[ -z "$(grep "luci-lib-ipkg" ${HOME_PATH}/include/target.mk)" ]]; then
+  if [[ -z "$(grep "luci" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi luci-lib-fs ?g' "${HOME_PATH}/include/target.mk"
   fi
   
