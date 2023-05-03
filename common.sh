@@ -22,8 +22,8 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
     }
 }
 
-
 function settings_variable() {
+# 手动启动变量转换
 if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   ymlpath="build/${FOLDER_NAME}/settings.ini"
   if [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
@@ -92,6 +92,7 @@ fi
 }
 
 function Diy_variable() {
+# 读取变量
 
 export DIY_PART_SH="diy-part.sh"
 
@@ -294,6 +295,7 @@ fi
 
 
 function Diy_checkout() {
+# 下载源码后，进行源码微调和增加插件源
 cd ${GITHUB_WORKSPACE}/openwrt
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
   export LUCI_CHECKUT="$(git tag| awk 'END {print}')"
@@ -400,83 +402,6 @@ fi
 TIME r ""
 TIME g "CPU性能：8370C > 8272CL > 8171M > E5系列"
 TIME r ""
-}
-
-
-function build_openwrt() {
-cd ${GITHUB_WORKSPACE}
-if [[ `echo "${CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]] || [[ `echo "${CPU_SELECTION}" |grep -Eoc 'e5'` -eq '1' ]]; then
-  export CPU_SELECTIO="E5"
-  export kaisbianyixx="弃用E5-编译"
-elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
-  export CPU_SELECTIO="8370"
-  export kaisbianyixx="选择8370-编译"
-elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8272'` -eq '1' ]]; then
-  export CPU_SELECTIO="8272"
-  export kaisbianyixx="选择8272-编译"
-elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8171'` -eq '1' ]]; then
-  export CPU_SELECTIO="8171"
-  export kaisbianyixx="选择8171-编译"
-else
-  export kaisbianyixx="编译"
-fi
-git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
-if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" ]]; then
-  mkdir -p "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance"
-fi
-export YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
-cp -Rf ${GITHUB_WORKSPACE}/.github/workflows/compile.yml ${YML_PATH}
-export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-export TARGET2="target: \\[${FOLDER_NAME}\\]"
-export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
-export PATHS2="- 'build/${FOLDER_NAME}/relevance/start'"
-export cpu1="CPU_OPTIMIZATION=.*"
-export cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTIO}\\\""
-export CPU_PASS1="CPU_PASSWORD=.*"
-if [[ "${t1}" == "1234567" ]]; then
-  export CPU_PASS2="CPU_PASSWORD\\=\\\"1234567\\\""
-else
-  if [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
-    rm -fr ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*.ini
-    mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${t1}.ini
-  fi
-  export CPU_PASS2="CPU_PASSWORD\\=\\\"${t1}\\\""
-  echo "$CPU_PASS2"
-fi
-
-if [[ -n "${CPU_PASS1}" ]] && [[ -n "${CPU_PASS2}" ]]; then
-  sed -i "s?${CPU_PASS1}?${CPU_PASS2}?g" "${YML_PATH}"
-else
-  echo "获取变量失败,请勿胡乱修改compile.yml文件"
-  exit 1
-fi
-
-if [[ -n "${PATHS1}" ]] && [[ -n "${TARGET1}" ]]; then
-  sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
-  sed -i "s?${TARGET1}?${TARGET2}?g" "${YML_PATH}"
-else
-  echo "获取变量失败,请勿胡乱修改compile.yml文件"
-  exit 1
-fi
-if [[ -n ${cpu1} ]] && [[ -n ${cpu2} ]]; then
-  sed -i "s?${cpu1}?${cpu2}?g" "${YML_PATH}"
-else
-  echo "获取变量失败,请勿胡乱修改定时启动编译时的数值设置"
-  exit 1
-fi
-cp -Rf ${HOME_PATH}/build_logo/config.txt ${FOLDER_NAME}/build/${FOLDER_NAME}/${CONFIG_FILE}
-
-restartsj="$(cat "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start" |awk '$0=NR" "$0' |awk 'END {print}' |awk '{print $(1)}')"
-if [[ "${restartsj}" -lt "3" ]]; then
-  echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" >> ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
-else
-  echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
-fi
-
-cd ${FOLDER_NAME}
-git add .
-git commit -m "${kaisbianyixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
-git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 }
 
 
@@ -1544,103 +1469,6 @@ echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
 }
 
 
-function CPU_Priority() {
-export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' build/${FOLDER_NAME}/${CONFIG_FILE})"
-export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' build/${FOLDER_NAME}/${CONFIG_FILE})"
-if [[ `grep -Eoc 'CONFIG_TARGET_x86_64=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
-  export TARGET_PROFILE="x86-64"
-elif [[ `grep -Eoc 'CONFIG_TARGET_x86=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
-  export TARGET_PROFILE="x86-32"
-elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64_Default=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
-  export TARGET_PROFILE="Armvirt_64"
-elif [[ `grep -Eoc "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
-  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/${CONFIG_FILE} | sed -r 's/.*DEVICE_(.*)=y/\1/')"
-else
-  export TARGET_PROFILE="$(cat "build/${FOLDER_NAME}/${CONFIG_FILE}" |grep "CONFIG_TARGET_.*=y" |awk 'END {print}'|sed "s/CONFIG_TARGET_//g"|sed "s/=y//g")"
-fi
-
-cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq -c  | sed 's/^ \+[0-9]\+ //g'`
-TIME y "正在使用CPU型号：${cpu_model}"
-
-if [[ -n "${CPU_SELECTIOY}" ]]; then
-  CPU_OPTIMIZATION="${CPU_SELECTIOY}"
-fi
-
-case "${CPU_OPTIMIZATION}" in
-E5|弃用E5系列|弃用E5)
-  if [[ `echo "${cpu_model}" |grep -Eoc "E5"` -eq '1' ]]; then
-    export chonglaixx="E5-重新编译"
-    export Continue_selecting="1"
-  else
-    TIME g " 恭喜,不是E5系列的CPU啦"
-    export Continue_selecting="0"
-  fi
-;;
-8370|8272|8171|8370C|8272CL|8171M)
-  if [[ `echo "${cpu_model}" |grep -Eoc "${CPU_OPTIMIZATION}"` -eq '0' ]]; then
-    export chonglaixx="非${CPU_OPTIMIZATION}-重新编译"
-    export Continue_selecting="1"
-  else
-    TIME g " 恭喜,正是您想要的${CPU_OPTIMIZATION}CPU"
-    export Continue_selecting="0"
-  fi
-;;
-*)
-  echo "${CPU_OPTIMIZATION},变量检测有错误"
-  export Continue_selecting="0"
-;;
-esac
-
-if [[ "${Continue_selecting}" == "1" ]]; then
-  cd ${GITHUB_WORKSPACE}
-  git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
-  if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" ]]; then
-    mkdir -p "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance"
-  fi
-  rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}
-  cp -Rf build/${FOLDER_NAME} ${FOLDER_NAME}/build/${FOLDER_NAME}
-  rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/*.sh
-  cp -Rf build/${FOLDER_NAME}/${DIY_PART_SH} ${FOLDER_NAME}/build/${FOLDER_NAME}/${DIY_PART_SH}
-  
-  rm -rf ${FOLDER_NAME}/.github/workflows
-  cp -Rf .github/workflows ${FOLDER_NAME}/.github/workflows
-  
-  if [[ -n "${CPU_SELECTIOY}" ]]; then
-    YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
-    rm -fr ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*.ini
-    cpu1="CPU_OPTIMIZATION=.*"
-    cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTIOY}\\\""
-    CPU_PASS1="CPU_PASSWORD=.*"
-    CPU_PASS2="CPU_PASSWORD\\=\\\"1234567\\\""
-    if [[ -n "${cpu1}" ]] && [[ -n "${cpu2}" ]]; then
-      sed -i "s?${cpu1}?${cpu2}?g" "${YML_PATH}"
-    else
-      echo "获取变量失败,请勿胡乱修改compile.yml文件"
-      exit 1
-    fi
-    if [[ -n "${CPU_PASS1}" ]] && [[ -n "${CPU_PASS2}" ]]; then
-      sed -i "s?${CPU_PASS1}?${CPU_PASS2}?g" "${YML_PATH}"
-    else
-      echo "获取变量失败,请勿胡乱修改compile.yml文件"
-      exit 1
-    fi
-  fi
-  
-  restarts="$(cat "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start" |awk '$0=NR" "$0' |awk 'END {print}' |awk '{print $(1)}')"
-  if [[ "${restarts}" -lt "3" ]]; then
-    echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" >> ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
-  else
-    echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
-  fi
-  
-  cd ${FOLDER_NAME}
-  git add .
-  git commit -m "${chonglaixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}"
-  git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
-  exit 1
-fi
-}
-
 function Diy_Publicarea2() {
 cd ${HOME_PATH}
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
@@ -2049,6 +1877,184 @@ Diy_upgrade3
 Diy_organize
 }
 
+
+function build_openwrt() {
+触发compile.yml文件启动
+cd ${GITHUB_WORKSPACE}
+if [[ `echo "${CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]] || [[ `echo "${CPU_SELECTION}" |grep -Eoc 'e5'` -eq '1' ]]; then
+  export CPU_SELECTIO="E5"
+  export kaisbianyixx="弃用E5-编译"
+elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
+  export CPU_SELECTIO="8370"
+  export kaisbianyixx="选择8370-编译"
+elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8272'` -eq '1' ]]; then
+  export CPU_SELECTIO="8272"
+  export kaisbianyixx="选择8272-编译"
+elif [[ `echo "${CPU_SELECTION}" |grep -Eoc '8171'` -eq '1' ]]; then
+  export CPU_SELECTIO="8171"
+  export kaisbianyixx="选择8171-编译"
+else
+  export kaisbianyixx="编译"
+fi
+git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
+if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" ]]; then
+  mkdir -p "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance"
+fi
+export YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
+cp -Rf ${GITHUB_WORKSPACE}/.github/workflows/compile.yml ${YML_PATH}
+export TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
+export TARGET2="target: \\[${FOLDER_NAME}\\]"
+export PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
+export PATHS2="- 'build/${FOLDER_NAME}/relevance/start'"
+export cpu1="CPU_OPTIMIZATION=.*"
+export cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTIO}\\\""
+export CPU_PASS1="CPU_PASSWORD=.*"
+if [[ "${t1}" == "1234567" ]]; then
+  export CPU_PASS2="CPU_PASSWORD\\=\\\"1234567\\\""
+else
+  if [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
+    rm -fr ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*.ini
+    mv "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/${t1}.ini
+  fi
+  export CPU_PASS2="CPU_PASSWORD\\=\\\"${t1}\\\""
+  echo "$CPU_PASS2"
+fi
+
+if [[ -n "${CPU_PASS1}" ]] && [[ -n "${CPU_PASS2}" ]]; then
+  sed -i "s?${CPU_PASS1}?${CPU_PASS2}?g" "${YML_PATH}"
+else
+  echo "获取变量失败,请勿胡乱修改compile.yml文件"
+  exit 1
+fi
+
+if [[ -n "${PATHS1}" ]] && [[ -n "${TARGET1}" ]]; then
+  sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
+  sed -i "s?${TARGET1}?${TARGET2}?g" "${YML_PATH}"
+else
+  echo "获取变量失败,请勿胡乱修改compile.yml文件"
+  exit 1
+fi
+if [[ -n ${cpu1} ]] && [[ -n ${cpu2} ]]; then
+  sed -i "s?${cpu1}?${cpu2}?g" "${YML_PATH}"
+else
+  echo "获取变量失败,请勿胡乱修改定时启动编译时的数值设置"
+  exit 1
+fi
+cp -Rf ${HOME_PATH}/build_logo/config.txt ${FOLDER_NAME}/build/${FOLDER_NAME}/${CONFIG_FILE}
+
+restartsj="$(cat "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start" |awk '$0=NR" "$0' |awk 'END {print}' |awk '{print $(1)}')"
+if [[ "${restartsj}" -lt "3" ]]; then
+  echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" >> ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
+else
+  echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
+fi
+
+cd ${FOLDER_NAME}
+git add .
+git commit -m "${kaisbianyixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
+git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
+}
+
+
+function CPU_Priority() {
+# 检测CPU型号,不是所选型号就重新触发启动
+export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' build/${FOLDER_NAME}/${CONFIG_FILE})"
+export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' build/${FOLDER_NAME}/${CONFIG_FILE})"
+if [[ `grep -Eoc 'CONFIG_TARGET_x86_64=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
+  export TARGET_PROFILE="x86-64"
+elif [[ `grep -Eoc 'CONFIG_TARGET_x86=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
+  export TARGET_PROFILE="x86-32"
+elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64_Default=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
+  export TARGET_PROFILE="Armvirt_64"
+elif [[ `grep -Eoc "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
+  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/${CONFIG_FILE} | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+else
+  export TARGET_PROFILE="$(cat "build/${FOLDER_NAME}/${CONFIG_FILE}" |grep "CONFIG_TARGET_.*=y" |awk 'END {print}'|sed "s/CONFIG_TARGET_//g"|sed "s/=y//g")"
+fi
+
+cpu_model=`cat /proc/cpuinfo  |grep 'model name' |gawk -F : '{print $2}' | uniq -c  | sed 's/^ \+[0-9]\+ //g'`
+TIME y "正在使用CPU型号：${cpu_model}"
+
+if [[ -n "${CPU_SELECTIOY}" ]]; then
+  CPU_OPTIMIZATION="${CPU_SELECTIOY}"
+fi
+
+case "${CPU_OPTIMIZATION}" in
+E5|弃用E5系列|弃用E5)
+  if [[ `echo "${cpu_model}" |grep -Eoc "E5"` -eq '1' ]]; then
+    export chonglaixx="E5-重新编译"
+    export Continue_selecting="1"
+  else
+    TIME g " 恭喜,不是E5系列的CPU啦"
+    export Continue_selecting="0"
+  fi
+;;
+8370|8272|8171|8370C|8272CL|8171M)
+  if [[ `echo "${cpu_model}" |grep -Eoc "${CPU_OPTIMIZATION}"` -eq '0' ]]; then
+    export chonglaixx="非${CPU_OPTIMIZATION}-重新编译"
+    export Continue_selecting="1"
+  else
+    TIME g " 恭喜,正是您想要的${CPU_OPTIMIZATION}CPU"
+    export Continue_selecting="0"
+  fi
+;;
+*)
+  echo "${CPU_OPTIMIZATION},变量检测有错误"
+  export Continue_selecting="0"
+;;
+esac
+
+if [[ "${Continue_selecting}" == "1" ]]; then
+  cd ${GITHUB_WORKSPACE}
+  git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME}
+  if [[ ! -d "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance" ]]; then
+    mkdir -p "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance"
+  fi
+  rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}
+  cp -Rf build/${FOLDER_NAME} ${FOLDER_NAME}/build/${FOLDER_NAME}
+  rm -rf ${FOLDER_NAME}/build/${FOLDER_NAME}/*.sh
+  cp -Rf build/${FOLDER_NAME}/${DIY_PART_SH} ${FOLDER_NAME}/build/${FOLDER_NAME}/${DIY_PART_SH}
+  
+  rm -rf ${FOLDER_NAME}/.github/workflows
+  cp -Rf .github/workflows ${FOLDER_NAME}/.github/workflows
+  
+  if [[ -n "${CPU_SELECTIOY}" ]]; then
+    YML_PATH="${FOLDER_NAME}/.github/workflows/compile.yml"
+    rm -fr ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/*.ini
+    cpu1="CPU_OPTIMIZATION=.*"
+    cpu2="CPU_OPTIMIZATION\\=\\\"${CPU_SELECTIOY}\\\""
+    CPU_PASS1="CPU_PASSWORD=.*"
+    CPU_PASS2="CPU_PASSWORD\\=\\\"1234567\\\""
+    if [[ -n "${cpu1}" ]] && [[ -n "${cpu2}" ]]; then
+      sed -i "s?${cpu1}?${cpu2}?g" "${YML_PATH}"
+    else
+      echo "获取变量失败,请勿胡乱修改compile.yml文件"
+      exit 1
+    fi
+    if [[ -n "${CPU_PASS1}" ]] && [[ -n "${CPU_PASS2}" ]]; then
+      sed -i "s?${CPU_PASS1}?${CPU_PASS2}?g" "${YML_PATH}"
+    else
+      echo "获取变量失败,请勿胡乱修改compile.yml文件"
+      exit 1
+    fi
+  fi
+  
+  restarts="$(cat "${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start" |awk '$0=NR" "$0' |awk 'END {print}' |awk '{print $(1)}')"
+  if [[ "${restarts}" -lt "3" ]]; then
+    echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" >> ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
+  else
+    echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > ${FOLDER_NAME}/build/${FOLDER_NAME}/relevance/start
+  fi
+  
+  cd ${FOLDER_NAME}
+  git add .
+  git commit -m "${chonglaixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}"
+  git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
+  exit 1
+fi
+}
+
+
 function Diy_xinxi1() {
 export KERNEL_PATCH="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
 export KERNEL_patc="kernel-${KERNEL_PATCH}"
@@ -2062,7 +2068,6 @@ fi
 
 echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 }
-
 
 function Diy_xinxi() {
 Diy_xinxi1
