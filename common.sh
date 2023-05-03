@@ -2071,7 +2071,7 @@ else
 fi
 echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 
-Plug_in1="$(grep -Eo "luci-app-.*=y|luci-theme-.*=y" .config |grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic' |sed 's/=y//')"
+Plug_in1="$(grep -Eo "luci-app-.*=y|luci-theme-.*=y" ${HOME_PATH}/build_logo/config.txt |grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic' |sed 's/=y//')"
 Plug_in2="$(echo "${Plug_in1}" |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
 echo "${Plug_in2}" >Plug-in
 
