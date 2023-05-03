@@ -2055,26 +2055,22 @@ fi
 }
 
 
-function Diy_xinxi1() {
-export KERNEL_PATCH="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
-export KERNEL_patc="kernel-${KERNEL_PATCH}"
-if [[ `ls -1 "${HOME_PATH}/include" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
-  export LINUX_KERNEL="$(grep "LINUX_KERNEL_HASH" "${HOME_PATH}/include/${KERNEL_patc}" |sed s/[[:space:]]//g |cut -d '-' -f2 |cut -d '=' -f1)"
+function Diy_xinxi() {
+# 信息
+export KERNEL_PATCH="$(grep -Eo "KERNEL_PATCHVER.*[0-9.]+" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
+export KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
+if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
+  export LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-[0-9.]+" "${HOME_PATH}/include/${KERNEL_VERSINO}"  |grep -Eo "[0-9.]+")"
   [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
 else
-  export LINUX_KERNEL="$(grep "LINUX_KERNEL_HASH" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "${KERNEL_PATCH}\.[0-9]+")"
+  export LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-${KERNEL_PATCH}.[0-9]+" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "[0-9.]+")"
   [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
 fi
-
 echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
-}
 
-function Diy_xinxi() {
-Diy_xinxi1
-Plug_in="$(grep 'CONFIG_PACKAGE_luci-app' ${HOME_PATH}/.config && grep 'CONFIG_PACKAGE_luci-theme' ${HOME_PATH}/.config)"
-Plug_in2="$(echo "${Plug_in}" | grep -v '^#' |sed '/INCLUDE/d' |sed '/=m/d' |sed '/_Transparent_Proxy/d' |sed '/qbittorrent_static/d' |sed 's/CONFIG_PACKAGE_//g' |sed 's/=y//g' |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
+Plug_in1="$(grep -Eo "luci-app-.*=y|luci-theme-.*=y" .config |grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic' |sed 's/=y//')"
+Plug_in2="$(echo "${Plug_in1}" |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
 echo "${Plug_in2}" >Plug-in
-sed -i '/luci-app-qbittorrent-simple_dynamic/d' Plug-in > /dev/null 2>&1
 
 if [[ `grep -c "CONFIG_GRUB_EFI_IMAGES=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   export EFI_NO="1"
