@@ -1882,7 +1882,7 @@ Diy_organize
 
 
 function build_openwrt() {
-触发compile.yml文件启动
+# 触发compile.yml文件启动
 cd ${GITHUB_WORKSPACE}
 if [[ `echo "${CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]] || [[ `echo "${CPU_SELECTION}" |grep -Eoc 'e5'` -eq '1' ]]; then
   export CPU_SELECTIO="E5"
