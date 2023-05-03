@@ -431,7 +431,7 @@ fi
 
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
 echo "1"
-if [[ -f "${ZZZ_PATH}" ]]; then
+if [[ -n "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
 
   [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
@@ -472,10 +472,14 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/utils/parted" ]]; then
 fi
 
 chinese="$(find "${HOME_PATH}/package" -type f -name "*-default-settings-chinese" |grep files)"
-if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]] && [[ -n "${chinese}" ]]; then
+if [[ -n "${chinese}" ]]; then
+  if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
-elif [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
+  fi
+else
+  if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
+  fi
 fi
 echo "3"
 case "${SOURCE_CODE}" in
