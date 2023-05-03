@@ -488,10 +488,12 @@ echo "正在执行：增加插件源,请耐心等待..."
 apptions="$(find . -type d -name "applications" |grep 'luci')"
 if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
   LUCI_BANBEN="2"
-  echo "LUCI_BANBEN=2" >> ${GITHUB_ENV}
+  luci_version="${LUCI_EDITION}"
+  luci_name="${SOURCE}"
 else
   LUCI_BANBEN="1"
-  echo "LUCI_BANBEN=1" >> ${GITHUB_ENV}
+  luci_version="${SOURCE}"
+  luci_name="- ${LUCI_EDITION}"
 fi
 
 settingss="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
@@ -500,6 +502,38 @@ if [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
   [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
 elif [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
   svn export https://github.com/281677160/common/trunk/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+fi
+
+ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
+if [[ -f "${ZZZ_PATH}" ]]; then
+  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+  sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+  sed -i '/exit 0/d' "${ZZZ_PATH}"
+
+  [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
+  [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
+  if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
+    cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
+  else
+    cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/LICENSES/doc/default-settings
+  fi
+
+  if [[ -f "${HOME_PATH}/LICENSES/doc/config_generates" ]]; then
+    cp -Rf ${HOME_PATH}/LICENSES/doc/config_generates "${GENE_PATH}"
+  else
+    cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
+  fi
+
+  if [[ -z "$(grep "version\.lua" ${ZZZ_PATH})" ]]; then
+cat >> "${ZZZ_PATH}" <<-EOF
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"${luci_version}\"" >> /usr/lib/lua/luci/version.lua
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"${luci_name}\"" >> /usr/lib/lua/luci/version.lua
+EOF
+  fi
 fi
 
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
@@ -580,12 +614,12 @@ echo -e "\nDISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}" &
 
 
 # 给固件保留配置更新固件的保留项目
-sed -i '/AdGuardHome/d' "${KEEPD_PATH}"
-sed -i '/background/d' "${KEEPD_PATH}"
+if [[ -z "$(grep "background" ${KEEPD_PATH})" ]]; then
 cat >>"${KEEPD_PATH}" <<-EOF
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background/
 EOF
+fi
 }
 
 
@@ -682,44 +716,6 @@ ttydjso="$({ find |grep -E "luci-app-ttyd\.json" |grep -v 'dir' |grep 'menu.d' |
 if [[ -n "${ttydjso}" ]]; then
   j="${HOME_PATH}/${ttydjso}"
   [[ -n "$(grep "title" "$j")" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${j}"
-fi
-
-[[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
-[[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
-if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
-  cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
-else
-  cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/LICENSES/doc/default-settings
-fi
-
-if [[ -f "${HOME_PATH}/LICENSES/doc/config_generates" ]]; then
-  cp -Rf ${HOME_PATH}/LICENSES/doc/config_generates "${GENE_PATH}"
-else
-  cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
-fi
-
-sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
-sed -i '/lib\/lua\/luci\/version.lua/d' "${ZZZ_PATH}"
-
-if [[ "${applica}" == "2" ]]; then
-cat >> "${ZZZ_PATH}" <<-EOF
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
-EOF
-else
-cat >> "${ZZZ_PATH}" <<-EOF
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"- ${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-EOF
 fi
 }
 
