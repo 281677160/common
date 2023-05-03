@@ -429,7 +429,7 @@ elif [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
   svn export https://github.com/281677160/common/trunk/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 fi
 
-if [[ -n "$(ls -1 "${settingss}" | gerp -Eo ".*default-settings-chn")" ]]; then
+if [[ -n "$(ls -1 "${settingss}" | gerp -E ".*default-settings-chn")" ]]; then
   if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
   fi
@@ -514,7 +514,7 @@ if [[ -n "${ttydjso}" ]]; then
   j="${HOME_PATH}/${ttydjso}"
   [[ -n "$(grep "title" "$j")" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${j}"
 fi
-echo "4"
+
 rm -rf "${DEFAULT_PATH}" && cp ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
 sed -i "s?112233?${SOURCE} - ${LUCI_EDITION}?g" "${DEFAULT_PATH}" > /dev/null 2>&1
