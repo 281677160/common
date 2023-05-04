@@ -416,7 +416,7 @@ else
   luci_version="${SOURCE}"
   luci_name="- ${LUCI_EDITION}"
 fi
-echo "1"
+
 settingss="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
 if [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
   svn export https://github.com/281677160/common/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
@@ -424,10 +424,8 @@ if [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
 elif [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
   svn export https://github.com/281677160/common/trunk/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 fi
-echo "2"
-settings_chn="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
-[[ -n "${settings_chn}" ]] && tl_settings="$(ls -1 "${settingss}" | grep -E ".*default-settings-chn")"
-if [[ -n "${tl_settings}" ]]; then
+
+if [[ -d "${HOME_PATH}/package/emortal" ]]; then
   if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
   fi
@@ -436,7 +434,7 @@ else
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
   fi
 fi
-echo "3"
+
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
 if [[ -n "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
@@ -466,7 +464,7 @@ sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"${luci_name}\"" >> /usr/lib/lua/luci/version.lua
 EOF
 fi
-echo "4"
+
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
 svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
 
@@ -506,13 +504,13 @@ XWRT|OFFICIAL)
   fi
 ;;
 esac
-echo "5"
+
 ttydjso="$({ find |grep -E "luci-app-ttyd\.json" |grep -v 'dir' |grep 'menu.d' |cut -d '/' -f2-; } 2>"/dev/null")"
 if [[ -n "${ttydjso}" ]]; then
   j="${HOME_PATH}/${ttydjso}"
   [[ -n "$(grep "title" "$j")" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${j}"
 fi
-echo "6"
+
 rm -rf "${DEFAULT_PATH}" && cp ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
 sed -i "s?112233?${SOURCE} - ${LUCI_EDITION}?g" "${DEFAULT_PATH}" > /dev/null 2>&1
