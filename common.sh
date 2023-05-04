@@ -425,7 +425,9 @@ elif [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
   svn export https://github.com/281677160/common/trunk/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
 fi
 echo "2"
-if [[ -n "$(ls -1 "${settingss}" | grep -E ".*default-settings-chn")" ]]; then
+settings_chn="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
+[[ -n "${settings_chn}" ]] && tl_settings="$(ls -1 "${settingss}" | grep -E ".*default-settings-chn")"
+if [[ -n "${tl_settings}" ]]; then
   if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
   fi
