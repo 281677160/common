@@ -487,13 +487,6 @@ XWRT|OFFICIAL)
   if [[ -z "$(grep "luci" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi luci-lib-fs ?g' "${HOME_PATH}/include/target.mk"
   fi
-  
-  if [[ "${COLLECTED_PACKAGES}" == "true" ]]; then
-    rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
-    svn export https://github.com/immortalwrt/packages/trunk/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev > /dev/null 2>&1
-    rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
-    svn export https://github.com/immortalwrt/packages/trunk/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun > /dev/null 2>&1
-  fi
 ;;
 esac
 
@@ -547,8 +540,6 @@ cd ${HOME_PATH}
 case "${GL_BRANCH}" in
 lede)
 if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
-  rm -rf ${HOME_PATH}/target/linux/ramips/patches-5.15
-  svn co https://github.com/lede-project/source/trunk/target/linux/ramips/patches-5.15 ${HOME_PATH}/target/linux/ramips/patches-5.15 > /dev/null 2>&1
   for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
     curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
   done
@@ -558,8 +549,6 @@ lede_ax1800)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
   if [[ -d "${HOME_PATH}/feeds/packages/utils/docker-ce" ]]; then
     find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
-    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/upx ${HOME_PATH}/package/upx > /dev/null 2>&1
-    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/ucl ${HOME_PATH}/package/ucl > /dev/null 2>&1
     svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8168 ${HOME_PATH}/package/r8168
     svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8101 ${HOME_PATH}/package/r8101
     svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8125 ${HOME_PATH}/package/r8125
