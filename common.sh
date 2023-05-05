@@ -419,10 +419,10 @@ fi
 
 settingss="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
 if [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
-  svn export https://github.com/281677160/common/trunk/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+  cp -Rf ${HOME_PATH}/build/common/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings
   [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
 elif [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
-  svn export https://github.com/281677160/common/trunk/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings > /dev/null 2>&1
+  cp -Rf ${HOME_PATH}/build/common/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings
 fi
 
 if [[ -d "${HOME_PATH}/package/emortal" ]]; then
@@ -467,14 +467,6 @@ fi
 
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
 svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
-
-if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
-  svn export https://github.com/coolsnowwolf/packages/trunk/devel/packr ${HOME_PATH}/feeds/packages/devel/packr > /dev/null 2>&1
-fi
-
-if [[ ! -d "${HOME_PATH}/feeds/packages/utils/parted" ]]; then
-  svn export https://github.com/coolsnowwolf/packages/trunk/utils/parted ${HOME_PATH}/feeds/packages/utils/parted > /dev/null 2>&1
-fi
 
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
