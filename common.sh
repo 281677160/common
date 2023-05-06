@@ -466,7 +466,7 @@ EOF
 fi
 
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-svn co https://github.com/coolsnowwolf/packages/trunk/lang/golang  ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
+svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
 if [[ $? -ne 0 ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang
   cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
