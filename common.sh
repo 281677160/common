@@ -419,10 +419,10 @@ fi
 
 settingss="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
 if [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/OFFICIAL/default-settings ${HOME_PATH}/package/default-settings
+  cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
   [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
 elif [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/COOLSNOWWOLF/default-settings ${HOME_PATH}/package/default-settings
+  cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
 fi
 
 if [[ -d "${HOME_PATH}/package/emortal" ]]; then
@@ -497,7 +497,7 @@ esac
 ttydjso="$({ find |grep -E "luci-app-ttyd\.json" |grep -v 'dir' |grep 'menu.d' |cut -d '/' -f2-; } 2>"/dev/null")"
 if [[ -n "${ttydjso}" ]]; then
   j="${HOME_PATH}/${ttydjso}"
-  [[ -n "$(grep "title" "$j")" ]] && curl -fsSL https://raw.githubusercontent.com/281677160/common/main/IMMORTALWRT/ttyd/luci-app-ttyd.json -o "${j}"
+  [[ -n "$(grep "title" "$j")" ]] && cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${j}"
 fi
 
 rm -rf "${DEFAULT_PATH}" && cp ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
@@ -550,7 +550,7 @@ if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
 fi
 ;;
 lede_ax1800)
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
   if [[ -d "${HOME_PATH}/feeds/packages/utils/docker-ce" ]]; then
     find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
     svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8168 ${HOME_PATH}/package/r8168
@@ -572,9 +572,8 @@ master)
   svn export https://github.com/coolsnowwolf/lede/trunk/package/lean/automount ${HOME_PATH}/feeds/other/lean/automount > /dev/null 2>&1
 ;;
 19.07|19.07-test)
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  rm -rf ${HOME_PATH}/package/libs/libpcap && cp -Rf ${HOME_PATH}/build/common/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
+  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
 ;;
 21.02)
   bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
@@ -602,12 +601,11 @@ function Diy_OFFICIAL() {
 cd ${HOME_PATH}
 case "${REPO_BRANCH}" in
 openwrt-21.02)
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 ;;
 openwrt-19.07)
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/LIENOL/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  rm -rf ${HOME_PATH}/package/libs/libpcap && cp -Rf ${HOME_PATH}/build/common/LIENOL/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
+  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
 ;;
 openwrt-22.03)
   rm -rf ${HOME_PATH}/feeds/packages/net/apinger
