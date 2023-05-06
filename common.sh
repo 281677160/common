@@ -469,7 +469,7 @@ rm -rf ${HOME_PATH}/feeds/packages/lang/golang
 svn export https://github.com/coolsnowwolf/packages/trunk/lang/golang  ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
 if [[ $? -ne 0 ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-  svn export https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
+  cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
 fi
 
 case "${SOURCE_CODE}" in
