@@ -466,7 +466,7 @@ EOF
 fi
 
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-svn export https://github.com/coolsnowwolf/packages/trunk/lang/golang  ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
+svn co https://github.com/coolsnowwolf/packages/trunk/lang/golang  ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
 if [[ $? -ne 0 ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang
   cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
@@ -573,7 +573,7 @@ master)
 ;;
 19.07|19.07-test)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/19.07/feeds/libcap ${HOME_PATH}/package/libcap
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn co https://github.com/coolsnowwolf/packages/branches/openwrt-19.07/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
 ;;
 21.02)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
@@ -605,8 +605,7 @@ openwrt-21.02)
 ;;
 openwrt-19.07)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  rm -rf ${HOME_PATH}/package/libs/libpcap && cp -Rf ${HOME_PATH}/build/common/Share/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn co https://github.com/coolsnowwolf/packages/branches/openwrt-19.07/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
 ;;
 openwrt-22.03)
   rm -rf ${HOME_PATH}/feeds/packages/net/apinger
