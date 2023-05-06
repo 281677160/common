@@ -53,4 +53,3 @@ if [[ `grep -c "kmod-netlink-diag" ${iproute1}` -eq '0' ]] && [[ `grep -c "Socke
   ax="$(grep -n "Socket statistics utility" -A 1 ${iproute1} |awk 'END {print}' |grep -Eo [0-9]+)"
   sed -i "${ax}s?.*?  DEPENDS:=+libnl-tiny +(PACKAGE_devlink||PACKAGE_rdma):libmnl +(PACKAGE_tc||PACKAGE_ip-full):libelf +PACKAGE_ip-full:libcap +kmod-netlink-diag?" ${iproute1}
 fi
-exit 0
