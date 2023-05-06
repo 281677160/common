@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ${HOME_PATH}
+
 if [[ `grep -c "KernelPackage/netlink-diag" package/kernel/linux/modules/netsupport.mk` -eq '0' ]]; then
 echo "
 define KernelPackage/netlink-diag
