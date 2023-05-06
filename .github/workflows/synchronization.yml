@@ -53,7 +53,7 @@ jobs:
         rm -rf repogx/Share/golang
         svn co https://github.com/coolsnowwolf/packages/trunk/lang/golang repogx/Share/golang
         rm -rf repogx/Share/19.07/feeds/packages/libs/libcap
-        rm -rf repogx/Share/feeds/libcap
+        rm -rf repogx/Share/feeds
         svn co https://github.com/coolsnowwolf/packages/branches/openwrt-19.07/libs/libcap repogx/Share/19.07/feeds/libcap
         rm -rf repogx/Share/19.07/package/libs/libpcap
         svn export https://github.com/coolsnowwolf/openwrt-gl-ax1800/trunk/package/libs/libpcap repogx/Share/19.07/package/libpcap
