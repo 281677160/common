@@ -45,6 +45,11 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE
         git clone https://github.com/${{github.repository}}.git repogx
+        rm -rf /repogx/COOLSNOWWOLF
+        rm -rf /repogx/IMMORTALWRT
+        rm -rf /repogx/XWRT
+        rm -rf /repogx/OFFICIAL
+        rm -rf /repogx/LIENOL
         
     - name: 同步上游仓库
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
