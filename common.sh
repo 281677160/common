@@ -573,8 +573,7 @@ master)
 ;;
 19.07|19.07-test)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn co https://github.com/281677160/common/trunk/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  rm -rf ${HOME_PATH}/package/libpcap && svn co https://github.com/281677160/common/trunk/Share/19.07/package/libpcap ${HOME_PATH}/package/libpcap
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
 ;;
 21.02)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
@@ -606,7 +605,7 @@ openwrt-21.02)
 ;;
 openwrt-19.07)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn co https://github.com/coolsnowwolf/packages/branches/openwrt-19.07/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
 ;;
 openwrt-22.03)
   rm -rf ${HOME_PATH}/feeds/packages/net/apinger
