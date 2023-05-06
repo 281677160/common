@@ -574,6 +574,7 @@ master)
 19.07|19.07-test)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
   rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  rm -rf ${HOME_PATH}/package/libs/libpcap && cp -Rf ${HOME_PATH}/build/common/Share/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
 ;;
 21.02)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
@@ -606,6 +607,7 @@ openwrt-21.02)
 openwrt-19.07)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
   rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  rm -rf ${HOME_PATH}/package/libs/libpcap && cp -Rf ${HOME_PATH}/build/common/Share/19.07/package/libs/libpcap ${HOME_PATH}/package/libs/libpcap
 ;;
 openwrt-22.03)
   rm -rf ${HOME_PATH}/feeds/packages/net/apinger
