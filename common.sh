@@ -576,7 +576,7 @@ master)
   rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/19.07/feeds/packages/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
 ;;
 21.02)
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/LIENOL/19.07/package/kernel/linux/modules/netsupport.sh)"
+  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 ;;
 esac
 
