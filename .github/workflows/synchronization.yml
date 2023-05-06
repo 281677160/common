@@ -50,6 +50,7 @@ jobs:
         rm -rf /repogx/XWRT
         rm -rf /repogx/OFFICIAL
         rm -rf /repogx/LIENOL
+        svn export https://github.com/coolsnowwolf/packages/trunk/lang/golang repogx/Share/golang
         
     - name: 同步上游仓库
       if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
