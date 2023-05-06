@@ -573,7 +573,7 @@ master)
 ;;
 19.07|19.07-test)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn co https://github.com/coolsnowwolf/packages/branches/openwrt-19.07/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && svn co https://github.com/coolsnowwolf/packages/trunk/libs/libcap-ng ${HOME_PATH}/feeds/packages/libs/libcap
 ;;
 21.02)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
