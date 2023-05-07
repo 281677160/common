@@ -543,6 +543,7 @@ function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
 case "${GL_BRANCH}" in
 lede)
+find . -type d -name "upx" -o -name "ucl" |grep '*danshui*' |xargs -i rm -rf {}
 if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
   for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
     curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
@@ -572,6 +573,7 @@ master)
   svn export https://github.com/coolsnowwolf/lede/trunk/package/lean/automount ${HOME_PATH}/feeds/other/lean/automount > /dev/null 2>&1
 ;;
 19.07|19.07-test)
+  find . -type d -name "luci-app-vssr" -o -name "lua-maxminddb" |grep '*danshui*' |xargs -i rm -rf {}
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
   rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
 ;;
