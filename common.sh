@@ -369,7 +369,7 @@ fi
 
 z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
 luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
-luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato, \
+luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
 luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
 luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
 luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,tcping,v2ray-core,v2ray-geodata, \
@@ -544,6 +544,7 @@ cd ${HOME_PATH}
 case "${GL_BRANCH}" in
 lede)
 find . -type d -name "upx" -o -name "ucl" -o -name "ddns-scripts_aliyun" -o -name "ddns-scripts_dnspod" |grep 'danshui' |xargs -i rm -rf {}
+find . -type d -name "r8168" -o -name "r8101" -o -name "r8125" |grep 'danshui' |xargs -i rm -rf {}
 if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
   for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
     curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
@@ -554,9 +555,6 @@ lede_ax1800)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
   if [[ -d "${HOME_PATH}/feeds/packages/utils/docker-ce" ]]; then
     find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
-    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8168 ${HOME_PATH}/package/r8168
-    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8101 ${HOME_PATH}/package/r8101
-    svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/r8125 ${HOME_PATH}/package/r8125
   fi
 ;;
 esac
@@ -566,12 +564,6 @@ esac
 function Diy_LIENOL() {
 cd ${HOME_PATH}
 case "${REPO_BRANCH}" in
-master)
-  rm -rf ${HOME_PATH}/feeds/other/lean/autosamba
-  svn export https://github.com/coolsnowwolf/lede/trunk/package/lean/autosamba ${HOME_PATH}/feeds/other/lean/autosamba > /dev/null 2>&1
-  rm -rf ${HOME_PATH}/feeds/other/lean/automount
-  svn export https://github.com/coolsnowwolf/lede/trunk/package/lean/automount ${HOME_PATH}/feeds/other/lean/automount > /dev/null 2>&1
-;;
 19.07|19.07-test)
   find . -type d -name "luci-app-vssr" -o -name "lua-maxminddb" |grep 'danshui' |xargs -i rm -rf {}
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
@@ -582,10 +574,7 @@ master)
 ;;
 esac
 
-rm -rf "${HOME_PATH}/feeds/other/lean/mt"
-svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/mt ${HOME_PATH}/feeds/other/lean/mt > /dev/null 2>&1
-rm -rf "${HOME_PATH}/feeds/other/lean/pdnsd-alt"
-svn co https://github.com/xiaorouji/openwrt-passwall/trunk/pdnsd-alt ${HOME_PATH}/feeds/other/lean/pdnsd-alt > /dev/null 2>&1
+find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" -o -name "automount" |grep 'other' |xargs -i rm -rf {}
 }
 
 
