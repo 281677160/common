@@ -564,17 +564,21 @@ esac
 function Diy_LIENOL() {
 cd ${HOME_PATH}
 case "${REPO_BRANCH}" in
+master)
+  find . -type d -name "automount" |grep 'other' |xargs -i rm -rf {}
+;;
 19.07|19.07-test)
-  find . -type d -name "luci-app-vssr" -o -name "lua-maxminddb" |grep 'danshui' |xargs -i rm -rf {}
+  find . -type d -name "luci-app-vssr" -o -name "lua-maxminddb" -o -name "automount" |grep 'danshui' |xargs -i rm -rf {}
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
   rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
 ;;
 21.02)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+  find . -type d -name "automount" |grep 'danshui' |xargs -i rm -rf {}
 ;;
 esac
 
-find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" -o -name "automount" |grep 'other' |xargs -i rm -rf {}
+find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" |grep 'other' |xargs -i rm -rf {}
 }
 
 
