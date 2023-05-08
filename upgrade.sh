@@ -25,7 +25,7 @@ function Diy_Part2() {
 	export Github_API1="https://download.fastgit.org/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
 	export Github_API2="https://ghproxy.com/https://github.com/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
 	export API_PATH="/tmp/Downloads/zzz_api"
-	export Release_download1="https://download.fastgit.org/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}"
+	export Release_download1="${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
 	export Release_download2="https://ghproxy.com/${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
 	export Github_Release="${GITHUB_LINK}/releases/tag/${TARGET_BOARD}"
 	
