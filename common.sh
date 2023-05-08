@@ -423,8 +423,8 @@ TIME r ""
 
 function Diy_wenjian() {
 cd ${HOME_PATH}
-echo "正在执行：增加插件源,请耐心等待..."
-# 拉取源码之后增加应用文件
+echo "正在执行：源码微调,请耐心等待..."
+# 拉取源码之后调整源码和增加中文LUCI
 
 apptions="$(find . -type d -name "applications" |grep 'luci')"
 if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
