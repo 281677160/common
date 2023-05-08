@@ -341,6 +341,11 @@ if [[ -d "feeds/passwall3" ]]; then
   done
 fi
 
+if [[ -d "feeds/danshui1" ]]; then
+  rm -rf ./feeds/packages/net/shadowsocks-libev
+  rm -rf ./feeds/packages/net/kcptun
+fi
+
 case "${COLLECTED_PACKAGES}" in
 true)
 if [[ "${SOURCE_CODE}" == "COOLSNOWWOLF" ]]; then
