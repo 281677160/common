@@ -428,7 +428,6 @@ echo "正在执行：源码微调,请耐心等待..."
 
 apptions="$(find . -type d -name "applications" |grep 'luci')"
 if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
-  echo "LUCI2"
   LUCI_BANBEN="2"
   luci_version="${LUCI_EDITION}"
   luci_name="${SOURCE}"
@@ -1067,7 +1066,6 @@ function Diy_Language() {
 cd ${HOME_PATH}
 apptions="$(find . -type d -name "applications" |grep 'luci')"
 if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
-  echo "LUCI2"
   curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh_Hans.sh -o zh_Hans.sh
   chmod +x zh_Hans.sh
   /bin/bash zh_Hans.sh
