@@ -429,12 +429,8 @@ echo "正在执行：源码微调,请耐心等待..."
 apptions="$(find . -type d -name "applications" |grep 'luci')"
 if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
   LUCI_BANBEN="2"
-  luci_version="${LUCI_EDITION}"
-  luci_name="${SOURCE}"
 else
   LUCI_BANBEN="1"
-  luci_version="${SOURCE}"
-  luci_name="${LUCI_EDITION}"
 fi
 
 settingss="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
@@ -472,16 +468,15 @@ if [[ -n "${ZZZ_PATH}" ]]; then
   else
     cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
   fi
-
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
   sed -i '/exit 0/d' "${ZZZ_PATH}"
 cat >> "${ZZZ_PATH}" <<-EOF
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
 sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"${luci_version}\"" >> /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"${luci_name}\"" >> /usr/lib/lua/luci/version.lua
+echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
 EOF
 fi
 
