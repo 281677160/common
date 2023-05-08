@@ -333,7 +333,13 @@ if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
   for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
 fi
 
-[[ -d "feeds/helloworld/ipt2socks" ]] && rm -rf feeds/helloworld/ipt2socks
+if [[ -d "feeds/helloworld" ]] && [[ -d "feeds/passwall3" ]]; then
+  w="$(ls -1 feeds/passwall3)" && r=`echo $w | sed 's/ /,/g'`
+  p=(${r//,/ })
+  for i in ${p[@]}; do \
+    find "feeds/helloworld" -type d -name "${i}" |xargs -i rm -rf {}; \
+  done
+fi
 
 case "${COLLECTED_PACKAGES}" in
 true)
