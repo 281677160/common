@@ -1065,8 +1065,8 @@ fi
 
 function Diy_Language() {
 cd ${HOME_PATH}
-apptions="$(find "${HOME_PATH}/feeds" -type d -name "applications")"
-if [[ -d "${apptions}" ]] && [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -ge '20' ]]; then
+apptions="$(find . -type d -name "applications" |grep 'luci')"
+if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
   echo "LUCI2"
   curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh_Hans.sh -o zh_Hans.sh
   chmod +x zh_Hans.sh
