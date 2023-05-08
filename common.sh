@@ -397,11 +397,11 @@ done
 ;;
 esac
 
-rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
-if [[ $? -ne 0 ]]; then
+git clone https://github.com/openwrt/packages lang_golang
+if [[ -d "lang_golang/lang/golang" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-  cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
+  cp -Rf lang_golang/lang/golang ${HOME_PATH}/feeds/packages/lang/golang
+  rm -rf lang_golang
 fi
 }
 
