@@ -344,7 +344,7 @@ if [[ -d "feeds/passwall3" ]]; then
   done
 fi
 
-if [[ -d "feeds/danshui1" ]]; then
+if [[ -d "feeds/danshui1/relevance/shadowsocks-libev" ]]; then
   rm -rf ./feeds/packages/net/shadowsocks-libev
   rm -rf ./feeds/packages/net/kcptun
 fi
