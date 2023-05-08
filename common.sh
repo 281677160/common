@@ -333,6 +333,9 @@ if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
   for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
 fi
 
+case "${COLLECTED_PACKAGES}" in
+true)
+
 if [[ -d "feeds/passwall3" ]]; then
   w="$(ls -1 feeds/passwall3)" && r=`echo $w | sed 's/ /,/g'`
   p=(${r//,/ })
@@ -346,8 +349,6 @@ if [[ -d "feeds/danshui1" ]]; then
   rm -rf ./feeds/packages/net/kcptun
 fi
 
-case "${COLLECTED_PACKAGES}" in
-true)
 if [[ "${SOURCE_CODE}" == "COOLSNOWWOLF" ]]; then
   s="luci-app-netdata,netdata,luci-app-diskman,mentohust"
   c=(${s//,/ })
@@ -395,6 +396,13 @@ done
   echo "没有启用作者收集的插件源包"
 ;;
 esac
+
+rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+  cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
+fi
 }
 
 
@@ -475,13 +483,6 @@ echo "luciversion    = \"${luci_version}\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"${luci_name}\"" >> /usr/lib/lua/luci/version.lua
 EOF
-fi
-
-rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-svn co https://github.com/openwrt/packages/branches/openwrt-22.03/lang/golang ${HOME_PATH}/feeds/packages/lang/golang > /dev/null 2>&1
-if [[ $? -ne 0 ]]; then
-  rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-  cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
 fi
 
 case "${SOURCE_CODE}" in
