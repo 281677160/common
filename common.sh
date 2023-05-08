@@ -434,7 +434,7 @@ if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]
 else
   LUCI_BANBEN="1"
   luci_version="${SOURCE}"
-  luci_name="- ${LUCI_EDITION}"
+  luci_name="${LUCI_EDITION}"
 fi
 
 settingss="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
