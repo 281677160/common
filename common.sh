@@ -596,6 +596,11 @@ cd ${HOME_PATH}
 
 function Diy_XWRT() {
 cd ${HOME_PATH}
+case "${REPO_BRANCH}" in
+21.10)
+  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+;;
+esac
 }
 
 
