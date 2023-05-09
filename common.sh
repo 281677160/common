@@ -560,6 +560,7 @@ fi
 ;;
 lede_ax1800)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+  find . -type d -name 'luci-app-unblockneteasemusic' | xargs -i rm -rf {}
   if [[ -d "${HOME_PATH}/feeds/packages/utils/docker-ce" ]]; then
     find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
   fi
