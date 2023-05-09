@@ -1839,7 +1839,6 @@ fi
 
 
 function Diy_organize() {
-Diy_xinxi1
 cd ${FIRMWARE_PATH}
 if [[ -d "${PACKAGED_OUTPUTPATH}" ]]; then
   sudo mv -f ${PACKAGED_OUTPUTPATH}/* ${FIRMWARE_PATH}/ && sync
