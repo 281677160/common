@@ -396,8 +396,7 @@ done
   echo "没有启用作者收集的插件源包"
 ;;
 esac
-
-git clone https://github.com/openwrt/packages lang_golang
+git clone --depth 1 https://github.com/openwrt/packages -b master lang_golang
 if [[ -d "lang_golang/lang/golang" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang
   cp -Rf lang_golang/lang/golang ${HOME_PATH}/feeds/packages/lang/golang
