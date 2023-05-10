@@ -2050,7 +2050,7 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   
   cd ${FOLDER_NAME}
   git add .
-  git commit -m "${chonglaixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}"
+  git commit -m "${chonglaixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
   git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
   exit 1
 fi
