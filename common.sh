@@ -1419,7 +1419,7 @@ cd ${HOME_PATH}
 make defconfig > /dev/null 2>&1
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p ${HOME_PATH}/build_logo
 ./scripts/diffconfig.sh > ${HOME_PATH}/build_logo/config.txt
-if [[ -n "$(grep "CONFIG_PACKAGE_runc=y" "${HOME_PATH}/build_logo/config.txt")" ]]; then
+
   d="CONFIG_CGROUPFS_MOUNT_KERNEL_CGROUPS=y,CONFIG_DOCKER_CGROUP_OPTIONS=y,CONFIG_DOCKER_NET_MACVLAN=y,CONFIG_DOCKER_STO_EXT4=y, \
   CONFIG_KERNEL_CGROUP_DEVICE=y,CONFIG_KERNEL_CGROUP_FREEZER=y,CONFIG_KERNEL_CGROUP_NET_PRIO=y,CONFIG_KERNEL_EXT4_FS_POSIX_ACL=y,CONFIG_KERNEL_EXT4_FS_SECURITY=y, \
   CONFIG_KERNEL_FS_POSIX_ACL=y,CONFIG_KERNEL_NET_CLS_CGROUP=y,CONFIG_PACKAGE_btrfs-progs=y,CONFIG_PACKAGE_cgroupfs-mount=y, \
@@ -1431,9 +1431,9 @@ if [[ -n "$(grep "CONFIG_PACKAGE_runc=y" "${HOME_PATH}/build_logo/config.txt")" 
   CONFIG_PACKAGE_luci-i18n-dockerman-zh-cn=y,CONFIG_PACKAGE_luci-lib-docker=y,CONFIG_PACKAGE_mount-utils=y,CONFIG_PACKAGE_runc=y,CONFIG_PACKAGE_tini=y"
   k=(${d//,/ })
   for x in ${k[@]}; do \
-    [[ -n "$(grep "${x}" "${HOME_PATH}/build_logo/config.txt")" ]] && sed -i "/${x}/d" "${HOME_PATH}/build_logo/config.txt"; \
+    sed -i "s#${x}##g" "${HOME_PATH}/build_logo/config.txt"; \
   done
-fi
+
 }
 
 
