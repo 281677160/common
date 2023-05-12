@@ -699,6 +699,7 @@ elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "2" ]]
   echo "OpenClash_Core=2" >> ${GITHUB_ENV}
 elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "0" ]]; then
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
+  [[ -d "${HOME_PATH}/files/etc/openclash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash
 elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "1" ]]; then
   [[ -d "${HOME_PATH}/files/etc/openclash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
@@ -707,28 +708,24 @@ elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "2" 
   [[ -d "${HOME_PATH}/files/etc/openclash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
   echo "TIME r \"因没开作者收集的插件包,没OpenClash插件,对openclash的分支选择无效\"" >> ${HOME_PATH}/CHONGTU
-elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
-  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
 else
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
   [[ -d "${HOME_PATH}/files/etc/openclash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash
 fi
 
 if [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_branch}" == "0" ]]; then
-  echo "OpenClash_branch=0" >> ${GITHUB_ENV}
   OpenClash_branch="0"
 elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ -z "${OpenClash_branch}" ]]; then
-  echo "OpenClash_branch=0" >> ${GITHUB_ENV}
   OpenClash_branch="0"
 elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
-  echo "OpenClash_branch=0" >> ${GITHUB_ENV}
   OpenClash_branch="0"
-elif [[ "${OpenClash_branch}" != "dev" && "${OpenClash_branch}" != "master" ]]; then
-  if [[ "${SOURCE_CODE}" =~ (OFFICIAL|Xwrt) ]]; then
-    OpenClash_branch="dev"
-  else
-    OpenClash_branch="master"
+elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_branch}" == "master" ]]; then
+  OpenClash_branch="master"
+  if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+    sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
   fi
+elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_branch}" == "dev" ]]; then
+  OpenClash_branch="dev"
   if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
     sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
   fi
