@@ -59,3 +59,8 @@ do
 done
 
 [[ -f "/www/luci-static/argon/css/master.txt" ]] && cp -Rf /www/luci-static/argon/css/master.txt /www/luci-static/argon/css/cascade.css
+
+if [[ -n "$(grep "downloads.openwrt.org" /etc/opkg/distfeeds.conf)" ]]; then
+	sed -i 's?downloads.openwrt.org?mirrors.cloud.tencent.com/openwrt?g' /etc/opkg/distfeeds.conf
+fi
+
