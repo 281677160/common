@@ -451,7 +451,7 @@ else
 fi
 
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
-if [[ -n "${ZZZ_PATH}" ]]; then
+if [[ -n "${ZZZ_PATH}" ]]; then  
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
 
   [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
@@ -468,7 +468,7 @@ if [[ -n "${ZZZ_PATH}" ]]; then
     cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
   fi
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-  sed -i '/exit 0/d' "${ZZZ_PATH}"
+
 cat >> "${ZZZ_PATH}" <<-EOF
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
@@ -1465,10 +1465,22 @@ else
   echo "PROMPT_TING=${LUCI_EDITION}-${TARGET_PROFILE}" >> ${GITHUB_ENV}
 fi
 
+export KERNEL_PATCH="$(grep -Eo "KERNEL_PATCHVER.*[0-9.]+" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
+export KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
+if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
+  export LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-[0-9.]+" "${HOME_PATH}/include/${KERNEL_VERSINO}"  |grep -Eo "[0-9.]+")"
+  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
+else
+  export LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-${KERNEL_PATCH}.[0-9]+" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "[0-9.]+")"
+  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
+fi
+
+
 echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
 echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
 echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
 echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
+echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 }
 
 
@@ -1676,8 +1688,10 @@ fi
 function Diy_upgrade2() {
 cd ${HOME_PATH}
 sed -i 's/^[ ]*//g' "${DEFAULT_PATH}"
+sed -i '/[exit 0]$/d' "${DEFAULT_PATH}"
 sed -i '$a\exit 0' "${DEFAULT_PATH}"
 sed -i 's/^[ ]*//g' "${ZZZ_PATH}"
+sed -i '/[exit 0]$/d' "${ZZZ_PATH}"
 sed -i '$a\exit 0' "${ZZZ_PATH}" 
 
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
@@ -2060,17 +2074,6 @@ fi
 
 function Diy_xinxi() {
 # 信息
-export KERNEL_PATCH="$(grep -Eo "KERNEL_PATCHVER.*[0-9.]+" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
-export KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
-if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
-  export LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-[0-9.]+" "${HOME_PATH}/include/${KERNEL_VERSINO}"  |grep -Eo "[0-9.]+")"
-  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
-else
-  export LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-${KERNEL_PATCH}.[0-9]+" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "[0-9.]+")"
-  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
-fi
-echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
-
 Plug_in1="$(grep -Eo "CONFIG_PACKAGE_luci-app-.*=y|CONFIG_PACKAGE_luci-theme-.*=y" .config |grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic' |sed 's/=y//' |sed 's/CONFIG_PACKAGE_//g')"
 Plug_in2="$(echo "${Plug_in1}" |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
 echo "${Plug_in2}" >Plug-in
