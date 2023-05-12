@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 touch /etc/crontabs/root
 
 uci set luci.main.lang=zh_cn
