@@ -34,4 +34,8 @@ echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
 rm -rf /tmp/luci-modulecache/
 rm -f /tmp/luci-indexcache
 
+if [[ -n "$(grep "downloads.openwrt.org" /etc/opkg/distfeeds.conf)" ]]; then
+  sed -i 's?downloads.openwrt.org?mirrors.cloud.tencent.com/openwrt?g' /etc/opkg/distfeeds.conf
+fi
+
 exit 0
