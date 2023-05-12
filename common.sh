@@ -1685,10 +1685,10 @@ fi
 function Diy_upgrade2() {
 cd ${HOME_PATH}
 sed -i 's/^[ ]*//g' "${DEFAULT_PATH}"
-sed -i '/[exit 0]$/d' "${DEFAULT_PATH}"
+sed -i '/exit 0$/d' "${DEFAULT_PATH}"
 sed -i '$a\exit 0' "${DEFAULT_PATH}"
 sed -i 's/^[ ]*//g' "${ZZZ_PATH}"
-sed -i '/[exit 0]$/d' "${ZZZ_PATH}"
+sed -i '/exit 0$/d' "${ZZZ_PATH}"
 sed -i '$a\exit 0' "${ZZZ_PATH}" 
 
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
