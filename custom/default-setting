@@ -58,3 +58,4 @@ do
 	[[ -f "$b" ]] && mv "$b" "${lmo_new_file}" 2>"/dev/null"
 done
 
+[[ -f "/www/luci-static/argon/css/master.txt" ]] && cp -Rf /www/luci-static/argon/css/master.txt /www/luci-static/argon/css/cascade.css
