@@ -41,8 +41,7 @@ if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'pushplus' ]]; then
     INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"PUSH\\\""
   fi
-        
-
+ 
   if [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]] || [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc 'e5'` -eq '1' ]]; then
     export INPUTS_CPU_SELECTION="E5"
   elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
