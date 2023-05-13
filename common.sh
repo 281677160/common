@@ -1715,6 +1715,7 @@ sed -i '$a\exit 0' "${DEFAULT_PATH}"
 sed -i 's/^[ ]*//g' "${ZZZ_PATH}"
 sed -i '/exit 0$/d' "${ZZZ_PATH}"
 sed -i '$a\exit 0' "${ZZZ_PATH}" 
+[[ -d "${HOME_PATH}/files" ]] && sudo chmod +x ${HOME_PATH}/files
 
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
   source ${BUILD_PATH}/upgrade.sh && Diy_Part2
