@@ -1155,20 +1155,48 @@ CONFIG_PACKAGE_6to4=y
 fi
 
 if [[ "${Enable_IPV4_function}" == "1" ]]; then
-sed -i '/CONFIG_PACKAGE_ipv6helper=y/d' "${HOME_PATH}/.config"
-sed -i '/CONFIG_PACKAGE_ip6tables=y/d' "${HOME_PATH}/.config"
-sed -i '/CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y/d' "${HOME_PATH}/.config"
-sed -i '/CONFIG_PACKAGE_odhcp6c=y/d' "${HOME_PATH}/.config"
-sed -i '/CONFIG_PACKAGE_odhcpd-ipv6only=y/d' "${HOME_PATH}/.config"
-sed -i '/CONFIG_IPV6=y/d' "${HOME_PATH}/.config"
-sed -i '/CONFIG_PACKAGE_6rd=y/d' "${HOME_PATH}/.config"
-sed -i '/CONFIG_PACKAGE_6to4=y/d' "${HOME_PATH}/.config"
+echo '
+# CONFIG_PACKAGE_ipv6helper is not set
+# CONFIG_PACKAGE_ip6tables is not set
+# CONFIG_PACKAGE_dnsmasq_full_dhcpv6 is not set
+# CONFIG_PACKAGE_odhcp6c is not set
+# CONFIG_PACKAGE_odhcpd-ipv6only is not set
+# CONFIG_IPV6 is not set
+# CONFIG_PACKAGE_6rd is not set
+# CONFIG_PACKAGE_6to4 is not set
+' >> ${HOME_PATH}/.config
 fi
 
 if [[ "${Disable_NaiveProxy}" == "1" ]]; then
-  sed -i 's/CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy=y/# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy is not set/g' ${HOME_PATH}/.config
-  sed -i 's/CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy=y/# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy is not set/g' ${HOME_PATH}/.config
-  sed -i 's/CONFIG_PACKAGE_naiveproxy=y/# CONFIG_PACKAGE_naiveproxy is not set/g' ${HOME_PATH}/.config
+echo '
+# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy is not set
+# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy is not set
+# CONFIG_PACKAGE_naiveproxy is not set
+' >> ${HOME_PATH}/.config
+fi
+
+if [[ "${Automatic_Mount_Settings}" == "1" ]]; then
+echo '
+CONFIG_PACKAGE_block-mount=y
+CONFIG_PACKAGE_fdisk=y
+CONFIG_PACKAGE_usbutils=y
+CONFIG_PACKAGE_badblocks=y
+CONFIG_PACKAGE_ntfs-3g=y
+CONFIG_PACKAGE_kmod-scsi-core=y
+CONFIG_PACKAGE_kmod-usb-core=y
+CONFIG_PACKAGE_kmod-usb-ohci=y
+CONFIG_PACKAGE_kmod-usb-uhci=y
+CONFIG_PACKAGE_kmod-usb-storage=y
+CONFIG_PACKAGE_kmod-usb-storage-extras=y
+CONFIG_PACKAGE_kmod-usb2=y
+CONFIG_PACKAGE_kmod-usb3=y
+CONFIG_PACKAGE_kmod-fs-ext4=y
+CONFIG_PACKAGE_kmod-fs-vfat=y
+CONFIG_PACKAGE_kmod-fuse=y
+# CONFIG_PACKAGE_kmod-fs-ntfs is not set
+' >> ${HOME_PATH}/.config
+mkdir -p ${HOME_PATH}/files/etc/hotplug.d/block
+curl -fsSL https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount -o ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
 fi
 }
 
@@ -1347,14 +1375,6 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-unblockneteasemusic=y" ${HOME_PATH}/.con
     sed -i 's/CONFIG_PACKAGE_luci-app-unblockmusic=y/# CONFIG_PACKAGE_luci-app-unblockmusic is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您选择了luci-app-unblockmusic，会和luci-app-unblockneteasemusic冲突导致编译错误，已删除luci-app-unblockmusic\"" >>CHONGTU
     echo "" >>CHONGTU
-  fi
-fi
-
-if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  mkdir -p ${HOME_PATH}/files/etc/hotplug.d/block && curl -fsSL https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount > ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
-  if [[ $? -ne 0 ]]; then
-    echo "拉取文件错误,请检测网络"
-    exit 1
   fi
 fi
 
