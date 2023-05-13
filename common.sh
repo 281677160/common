@@ -1196,7 +1196,7 @@ CONFIG_PACKAGE_kmod-fuse=y
 # CONFIG_PACKAGE_kmod-fs-ntfs is not set
 ' >> ${HOME_PATH}/.config
 mkdir -p ${HOME_PATH}/files/etc/hotplug.d/block
-curl -fsSL https://raw.githubusercontent.com/281677160/openwrt-package/usb/block/10-mount -o ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
+cp -Rf ${HOME_PATH}/build/common/custom/10-mount ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
 fi
 }
 
