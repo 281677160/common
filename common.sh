@@ -1164,6 +1164,12 @@ sed -i '/CONFIG_IPV6=y/d' "${HOME_PATH}/.config"
 sed -i '/CONFIG_PACKAGE_6rd=y/d' "${HOME_PATH}/.config"
 sed -i '/CONFIG_PACKAGE_6to4=y/d' "${HOME_PATH}/.config"
 fi
+
+if [[ "${Disable_NaiveProxy}" == "1" ]]; then
+  sed -i 's/CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy=y/# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy is not set/g' ${HOME_PATH}/.config
+  sed -i 's/CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy=y/# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy is not set/g' ${HOME_PATH}/.config
+  sed -i 's/CONFIG_PACKAGE_naiveproxy=y/# CONFIG_PACKAGE_naiveproxy is not set/g' ${HOME_PATH}/.config
+fi
 }
 
 
