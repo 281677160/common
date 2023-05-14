@@ -7,6 +7,9 @@ git clone -b 22.03 --depth 1 https://github.com/QiuSimons/YAOF YAOF
 git clone -b master --depth 1 https://github.com/immortalwrt/immortalwrt.git immortalwrt
 git clone -b openwrt-21.02 --depth 1 https://github.com/immortalwrt/immortalwrt.git immortalwrt_21
 git clone -b master --depth 1 https://github.com/Lienol/openwrt.git Lienol
+git clone -b master --depth 1 https://github.com/openwrt/openwrt.git openwrt_ma
+git clone -b master --depth 1 https://github.com/openwrt/luci.git openwrt_luci_ma
+git clone -b master --depth 1 https://github.com/nxhack/openwrt-node-packages.git openwrt-node
 cd ../
 
 ### Fullcone-NAT 部分 ###
@@ -41,5 +44,58 @@ popd
 mkdir -p package/new
 git clone --depth 1 https://github.com/fullcone-nat-nftables/nft-fullcone package/new/nft-fullcone
 cp -rf ./Fullconenat/Lienol/package/network/utils/fullconenat ./package/new/fullconenat
+
+# 更换 SSL
+rm -rf ./package/libs/mbedtls
+cp -rf ./Fullconenat/immortalwrt/package/libs/mbedtls ./package/libs/mbedtls
+rm -rf ./package/libs/openssl
+cp -rf ./Fullconenat/immortalwrt_21/package/libs/openssl ./package/libs/openssl
+# fstool
+wget -qO - https://github.com/coolsnowwolf/lede/commit/8a4db76.patch | patch -p1
+
+# Dnsmasq
+rm -rf ./package/network/services/dnsmasq
+cp -rf ./Fullconenat/openwrt_ma/package/network/services/dnsmasq ./package/network/services/dnsmasq
+cp -rf ./Fullconenat/openwrt_luci_ma/modules/luci-mod-network/htdocs/luci-static/resources/view/network/dhcp.js ./feeds/luci/modules/luci-mod-network/htdocs/luci-static/resources/view/network/
+
+# 更换 golang 版本
+rm -rf ./feeds/packages/lang/golang
+cp -rf ./Fullconenat/openwrt_pkg_ma/lang/golang ./feeds/packages/lang/golang
+
+# 更换 Nodejs 版本
+rm -rf ./feeds/packages/lang/node
+cp -rf ./Fullconenat/openwrt-node/node ./feeds/packages/lang/node
+rm -rf ./feeds/packages/lang/node-arduino-firmata
+cp -rf ./Fullconenat/openwrt-node/node-arduino-firmata ./feeds/packages/lang/node-arduino-firmata
+rm -rf ./feeds/packages/lang/node-cylon
+cp -rf ./Fullconenat/openwrt-node/node-cylon ./feeds/packages/lang/node-cylon
+rm -rf ./feeds/packages/lang/node-hid
+cp -rf ./Fullconenat/openwrt-node/node-hid ./feeds/packages/lang/node-hid
+rm -rf ./feeds/packages/lang/node-homebridge
+cp -rf ./Fullconenat/openwrt-node/node-homebridge ./feeds/packages/lang/node-homebridge
+rm -rf ./feeds/packages/lang/node-serialport
+cp -rf ./Fullconenat/openwrt-node/node-serialport ./feeds/packages/lang/node-serialport
+rm -rf ./feeds/packages/lang/node-serialport-bindings
+cp -rf ./Fullconenat/openwrt-node/node-serialport-bindings ./feeds/packages/lang/node-serialport-bindings
+rm -rf ./feeds/packages/lang/node-yarn
+cp -rf ./Fullconenat/openwrt-node/node-yarn ./feeds/packages/lang/node-yarn
+cp -rf ./Fullconenat/openwrt-node/node-serialport-bindings-cpp ./feeds/packages/lang/node-serialport-bindings-cpp# 更换 Nodejs 版本
+rm -rf ./feeds/packages/lang/node
+cp -rf ./Fullconenat/openwrt-node/node ./feeds/packages/lang/node
+rm -rf ./feeds/packages/lang/node-arduino-firmata
+cp -rf ./Fullconenat/openwrt-node/node-arduino-firmata ./feeds/packages/lang/node-arduino-firmata
+rm -rf ./feeds/packages/lang/node-cylon
+cp -rf ./Fullconenat/openwrt-node/node-cylon ./feeds/packages/lang/node-cylon
+rm -rf ./feeds/packages/lang/node-hid
+cp -rf ./Fullconenat/openwrt-node/node-hid ./feeds/packages/lang/node-hid
+rm -rf ./feeds/packages/lang/node-homebridge
+cp -rf ./Fullconenat/openwrt-node/node-homebridge ./feeds/packages/lang/node-homebridge
+rm -rf ./feeds/packages/lang/node-serialport
+cp -rf ./Fullconenat/openwrt-node/node-serialport ./feeds/packages/lang/node-serialport
+rm -rf ./feeds/packages/lang/node-serialport-bindings
+cp -rf ./Fullconenat/openwrt-node/node-serialport-bindings ./feeds/packages/lang/node-serialport-bindings
+rm -rf ./feeds/packages/lang/node-yarn
+cp -rf ./Fullconenat/openwrt-node/node-yarn ./feeds/packages/lang/node-yarn
+cp -rf ./Fullconenat/openwrt-node/node-serialport-bindings-cpp ./feeds/packages/lang/node-serialport-bindings-cpp
 
 rm -rf ./Fullconenat
