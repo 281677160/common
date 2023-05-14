@@ -79,23 +79,6 @@ rm -rf ./feeds/packages/lang/node-serialport-bindings
 cp -rf ./Fullconenat/openwrt-node/node-serialport-bindings ./feeds/packages/lang/node-serialport-bindings
 rm -rf ./feeds/packages/lang/node-yarn
 cp -rf ./Fullconenat/openwrt-node/node-yarn ./feeds/packages/lang/node-yarn
-cp -rf ./Fullconenat/openwrt-node/node-serialport-bindings-cpp ./feeds/packages/lang/node-serialport-bindings-cpp# 更换 Nodejs 版本
-rm -rf ./feeds/packages/lang/node
-cp -rf ./Fullconenat/openwrt-node/node ./feeds/packages/lang/node
-rm -rf ./feeds/packages/lang/node-arduino-firmata
-cp -rf ./Fullconenat/openwrt-node/node-arduino-firmata ./feeds/packages/lang/node-arduino-firmata
-rm -rf ./feeds/packages/lang/node-cylon
-cp -rf ./Fullconenat/openwrt-node/node-cylon ./feeds/packages/lang/node-cylon
-rm -rf ./feeds/packages/lang/node-hid
-cp -rf ./Fullconenat/openwrt-node/node-hid ./feeds/packages/lang/node-hid
-rm -rf ./feeds/packages/lang/node-homebridge
-cp -rf ./Fullconenat/openwrt-node/node-homebridge ./feeds/packages/lang/node-homebridge
-rm -rf ./feeds/packages/lang/node-serialport
-cp -rf ./Fullconenat/openwrt-node/node-serialport ./feeds/packages/lang/node-serialport
-rm -rf ./feeds/packages/lang/node-serialport-bindings
-cp -rf ./Fullconenat/openwrt-node/node-serialport-bindings ./feeds/packages/lang/node-serialport-bindings
-rm -rf ./feeds/packages/lang/node-yarn
-cp -rf ./Fullconenat/openwrt-node/node-yarn ./feeds/packages/lang/node-yarn
 cp -rf ./Fullconenat/openwrt-node/node-serialport-bindings-cpp ./feeds/packages/lang/node-serialport-bindings-cpp
 
 rm -rf ./Fullconenat
