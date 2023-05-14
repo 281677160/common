@@ -27,13 +27,13 @@ cp -rf ./Fullconenat/immortalwrt/package/libs/libnftnl ./package/libs/libnftnl
 rm -rf ./package/network/utils/nftables
 cp -rf ./Fullconenat/immortalwrt/package/network/utils/nftables ./package/network/utils/nftables
 # FW3
-rm -rf package/network/config/firewall
+rm -rf ./package/network/config/firewall
 cp -rf ./Fullconenat/openwrt_23/package/network/config/firewall ./package/network/config/firewall
 mkdir -p package/network/config/firewall/patches
 cp -rf ./Fullconenat/immortalwrt_21/package/network/config/firewall/patches/100-fullconenat.patch ./package/network/config/firewall/patches/100-fullconenat.patch
 cp -rf ./Fullconenat/lede/package/network/config/firewall/patches/101-bcm-fullconenat.patch ./package/network/config/firewall/patches/101-bcm-fullconenat.patch
 # iptables
-rm -rf package/network/utils/iptables
+rm -rf ./package/network/utils/iptables
 cp -rf ./Fullconenat/openwrt_23/package/network/utils/iptables ./package/network/utils/iptables
 cp -rf ./Fullconenat/lede/package/network/utils/iptables/patches/900-bcm-fullconenat.patch ./package/network/utils/iptables/patches/900-bcm-fullconenat.patch
 # network
@@ -47,4 +47,4 @@ mkdir -p package/new
 git clone --depth 1 https://github.com/fullcone-nat-nftables/nft-fullcone package/new/nft-fullcone
 cp -rf ./Fullconenat/Lienol/package/network/utils/fullconenat ./package/new/fullconenat
 
-rm -rf Fullconenat
+rm -rf ./Fullconenat
