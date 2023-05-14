@@ -612,7 +612,7 @@ openwrt-21.02)
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 ;;
 openwrt-19.07)
-  find . -type d -name "luci-app-natter" -o -name "natter" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
+  find . -type d -name "luci-app-natter" -o -name "natter" |grep 'danshui' |xargs -i rm -rf {}
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
   rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
 ;;
