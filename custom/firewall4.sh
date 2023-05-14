@@ -7,7 +7,7 @@ git clone -b 22.03 --depth 1 https://github.com/QiuSimons/YAOF YAOF
 git clone -b master --depth 1 https://github.com/immortalwrt/immortalwrt.git immortalwrt
 git clone -b openwrt-21.02 --depth 1 https://github.com/immortalwrt/immortalwrt.git immortalwrt_21
 git clone -b master --depth 1 https://github.com/Lienol/openwrt.git Lienol
-cd ..
+cd ../
 
 ### Fullcone-NAT 部分 ###
 # Patch Kernel 以解决 FullCone 冲突
