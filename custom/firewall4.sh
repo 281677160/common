@@ -9,6 +9,7 @@ git clone -b openwrt-21.02 --depth 1 https://github.com/immortalwrt/immortalwrt.
 git clone -b master --depth 1 https://github.com/Lienol/openwrt.git Lienol
 git clone -b master --depth 1 https://github.com/openwrt/openwrt.git openwrt_ma
 git clone -b master --depth 1 https://github.com/openwrt/packages.git openwrt_pkg_ma
+git clone -b master --depth 1 https://github.com/openwrt/luci.git openwrt_luci_ma
 git clone -b master --depth 1 https://github.com/nxhack/openwrt-node-packages.git openwrt-node
 cd ../
 
