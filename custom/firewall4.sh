@@ -17,6 +17,7 @@ if [[ -d "target/linux/generic/hack-5.10" ]]; then
 fi
 # Patch FireWall 以增添 FullCone 功能
 # FW4
+[[ ! -d "package/utils/ucode" ]] && cp -rf ./Fullconenat/immortalwrt/package/utils/ucode ./package/utils/ucode
 rm -rf ./package/network/config/firewall4
 cp -rf ./Fullconenat/immortalwrt/package/network/config/firewall4 ./package/network/config/firewall4
 cp -rf ./Fullconenat/YAOF/PATCH/firewall/990-unconditionally-allow-ct-status-dnat.patch ./package/network/config/firewall4/patches/990-unconditionally-allow-ct-status-dnat.patch
