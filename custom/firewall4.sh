@@ -13,6 +13,27 @@ git clone -b master --depth 1 https://github.com/openwrt/luci.git openwrt_luci_m
 git clone -b master --depth 1 https://github.com/nxhack/openwrt-node-packages.git openwrt-node
 cd ../
 
+
+# 默认开启 Irqbalance
+sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+# 移除 SNAPSHOT 标签
+sed -i 's,-SNAPSHOT,,g' include/version.mk
+sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
+# 维多利亚的秘密
+rm -rf ./scripts/download.pl
+rm -rf ./include/download.mk
+cp -rf ../immortalwrt/scripts/download.pl ./scripts/download.pl
+cp -rf ../immortalwrt/include/download.mk ./include/download.mk
+sed -i '/unshift/d' scripts/download.pl
+sed -i '/mirror02/d' scripts/download.pl
+echo "net.netfilter.nf_conntrack_helper = 1" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
+# Nginx
+sed -i "s/client_max_body_size 128M/client_max_body_size 2048M/g" feeds/packages/net/nginx-util/files/uci.conf.template
+sed -i '/client_max_body_size/a\\tclient_body_buffer_size 8192M;' feeds/packages/net/nginx-util/files/uci.conf.template
+sed -i '/ubus_parallel_req/a\        ubus_script_timeout 600;' feeds/packages/net/nginx/files-luci-support/60_nginx-luci-support
+sed -ri "/luci-webui.socket/i\ \t\tuwsgi_send_timeout 600\;\n\t\tuwsgi_connect_timeout 600\;\n\t\tuwsgi_read_timeout 600\;" feeds/packages/net/nginx/files-luci-support/luci.locations
+sed -ri "/luci-cgi_io.socket/i\ \t\tuwsgi_send_timeout 600\;\n\t\tuwsgi_connect_timeout 600\;\n\t\tuwsgi_read_timeout 600\;" feeds/packages/net/nginx/files-luci-support/luci.locations
+
 ### Fullcone-NAT 部分 ###
 # Patch Kernel 以解决 FullCone 冲突
 if [[ -d "target/linux/generic/hack-5.10" ]]; then
