@@ -22,8 +22,8 @@ sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
 # 维多利亚的秘密
 rm -rf ./scripts/download.pl
 rm -rf ./include/download.mk
-cp -rf ../immortalwrt/scripts/download.pl ./scripts/download.pl
-cp -rf ../immortalwrt/include/download.mk ./include/download.mk
+cp -rf ./Fullconenat/immortalwrt/scripts/download.pl ./scripts/download.pl
+cp -rf ./Fullconenat/immortalwrt/include/download.mk ./include/download.mk
 sed -i '/unshift/d' scripts/download.pl
 sed -i '/mirror02/d' scripts/download.pl
 echo "net.netfilter.nf_conntrack_helper = 1" >>./package/kernel/linux/files/sysctl-nf-conntrack.conf
