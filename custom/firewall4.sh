@@ -6,6 +6,7 @@ git clone -b master --depth 1 https://github.com/coolsnowwolf/lede.git lede
 git clone -b 22.03 --depth 1 https://github.com/QiuSimons/YAOF YAOF
 git clone -b master --depth 1 https://github.com/immortalwrt/immortalwrt.git immortalwrt
 git clone -b openwrt-21.02 --depth 1 https://github.com/immortalwrt/immortalwrt.git immortalwrt_21
+git clone -b openwrt-22.03 --depth 1 https://github.com/openwrt/openwrt openwrt_23
 git clone -b master --depth 1 https://github.com/Lienol/openwrt.git Lienol
 cd ../
 
@@ -26,6 +27,8 @@ cp -rf ./Fullconenat/immortalwrt/package/libs/libnftnl ./package/libs/libnftnl
 rm -rf ./package/network/utils/nftables
 cp -rf ./Fullconenat/immortalwrt/package/network/utils/nftables ./package/network/utils/nftables
 # FW3
+rm -rf package/network/config/firewall
+cp -rf ./Fullconenat/openwrt_23/package/network/config/firewall ./package/network/config/firewall
 mkdir -p package/network/config/firewall/patches
 cp -rf ./Fullconenat/immortalwrt_21/package/network/config/firewall/patches/100-fullconenat.patch ./package/network/config/firewall/patches/100-fullconenat.patch
 cp -rf ./Fullconenat/lede/package/network/config/firewall/patches/101-bcm-fullconenat.patch ./package/network/config/firewall/patches/101-bcm-fullconenat.patch
