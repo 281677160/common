@@ -75,11 +75,6 @@ cp -rf ./Fullconenat/immortalwrt_21/package/libs/openssl ./package/libs/openssl
 # fstool
 wget -qO - https://github.com/coolsnowwolf/lede/commit/8a4db76.patch | patch -p1
 
-# Dnsmasq
-rm -rf ./package/network/services/dnsmasq
-cp -rf ./Fullconenat/openwrt_ma/package/network/services/dnsmasq ./package/network/services/dnsmasq
-cp -rf ./Fullconenat/openwrt_luci_ma/modules/luci-mod-network/htdocs/luci-static/resources/view/network/dhcp.js ./feeds/luci/modules/luci-mod-network/htdocs/luci-static/resources/view/network/
-
 # 更换 golang 版本
 rm -rf ./feeds/packages/lang/golang
 cp -rf ./Fullconenat/openwrt_pkg_ma/lang/golang ./feeds/packages/lang/golang
