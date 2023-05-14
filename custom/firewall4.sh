@@ -11,8 +11,10 @@ cd ../
 
 ### Fullcone-NAT 部分 ###
 # Patch Kernel 以解决 FullCone 冲突
-cp -rf ./Fullconenat/lede/target/linux/generic/hack-5.10/952-net-conntrack-events-support-multiple-registrant.patch ./target/linux/generic/hack-5.10/952-net-conntrack-events-support-multiple-registrant.patch
-cp -rf ./Fullconenat/lede/target/linux/generic/hack-5.10/982-add-bcm-fullconenat-support.patch ./target/linux/generic/hack-5.10/982-add-bcm-fullconenat-support.patch
+if [[ -d "target/linux/generic/hack-5.10" ]]; then
+  cp -rf ./Fullconenat/lede/target/linux/generic/hack-5.10/952-net-conntrack-events-support-multiple-registrant.patch ./target/linux/generic/hack-5.10/952-net-conntrack-events-support-multiple-registrant.patch
+  cp -rf ./Fullconenat/lede/target/linux/generic/hack-5.10/982-add-bcm-fullconenat-support.patch ./target/linux/generic/hack-5.10/982-add-bcm-fullconenat-support.patch
+fi
 # Patch FireWall 以增添 FullCone 功能
 # FW4
 rm -rf ./package/network/config/firewall4
