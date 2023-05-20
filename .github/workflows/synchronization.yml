@@ -9,21 +9,19 @@
 
 name: 同步
 on:
+  repository_dispatch:
   workflow_dispatch:
-    inputs:
-      again-fork:
-        description: '[fork-actions]改成[fork],再按[Run workflow]按钮启动,开启同步上游仓库'
-        required: false
-        default: 'fork'
+  
+  schedule:
+   - cron: 25 14 * * *
 
 env:
-  BILDYML: synchronization.yml
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
   TZ: Asia/Shanghai
 
 jobs:
   del_runs:
-    runs-on: Ubuntu-20.04
+    runs-on: Ubuntu-22.04
     name: 同步上游仓库
     
     steps:
@@ -34,29 +32,26 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo -E apt-get -qq update > /dev/null 2>&1
-        sudo -E apt-get -qq install -y git subversion git-core wget curl grep > /dev/null 2>&1
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install -y git subversion git-core wget curl grep
         sudo timedatectl set-timezone "$TZ"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
           
     - name: 整理数据
-      if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
+      if: env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
         git clone https://github.com/${{github.repository}}.git repogx
-        rm -rf repogx/COOLSNOWWOLF
-        rm -rf repogx/IMMORTALWRT
-        rm -rf repogx/XWRT
-        rm -rf repogx/OFFICIAL
-        rm -rf repogx/LIENOL
-        rm -rf repogx/Share/golang
-        svn co https://github.com/coolsnowwolf/packages/trunk/lang/golang repogx/Share/golang
-        rm -rf repogx/Share/19.07/feeds/libcap
-        rm -rf repogx/Share/19.07/package/libpcap
+        git clone --depth 1 https://github.com/openwrt/packages -b master golang-version
+        if [[ -d "golang-version/lang/golang" ]]; then
+          rm -rf repogx/Share/golang
+          cp -Rf golang-version/lang/golang repogx/Share/golang
+          rm -rf golang-version
+        fi
         
     - name: 同步上游仓库
-      if: env.REPO_TOKEN && (github.event.inputs.again-fork == 'fork')
+      if: env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
         chmod -R 775 repogx
