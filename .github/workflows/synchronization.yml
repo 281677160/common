@@ -20,7 +20,7 @@ env:
   TZ: Asia/Shanghai
 
 jobs:
-  del_runs:
+  build:
     runs-on: Ubuntu-22.04
     name: 同步上游仓库
     
