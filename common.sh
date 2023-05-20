@@ -1455,7 +1455,7 @@ make defconfig > /dev/null 2>&1
   for x in ${k[@]}; do \
     sed -i "s#${x}##g" "${HOME_PATH}/build_logo/config.txt"; \
   done
-
+  sed -i '/^$/d' "${HOME_PATH}/build_logo/config.txt"
 }
 
 
