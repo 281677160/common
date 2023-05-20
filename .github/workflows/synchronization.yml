@@ -1,13 +1,5 @@
-#
-# 同步上游仓库或者清理发布都需要用REPO_TOKEN密匙
-#
-# 记住，同步上游是不会同步您任何自建文件夹的，所以同步后您要自己对比我现有的文件夹里面diy-part.sh和settings.ini文件有没有更新
-#
-# REPO_TOKEN密匙制作教程：https://git.io/jm.md
-#
 
-
-name: 同步
+name: Upload
 on:
   repository_dispatch:
   workflow_dispatch:
@@ -22,13 +14,13 @@ env:
 jobs:
   build:
     runs-on: Ubuntu-22.04
-    name: 同步上游仓库
+    name: Upload
     
     steps:
-    - name: 准备结束
+    - name: Checkout
       uses: actions/checkout@v3
       
-    - name: 部署环境
+    - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
@@ -38,7 +30,7 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
           
-    - name: 整理数据
+    - name: Organize data
       if: env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
@@ -50,7 +42,7 @@ jobs:
           rm -rf golang-version
         fi
         
-    - name: 同步上游仓库
+    - name: Upload
       continue-on-error: true
       if: env.REPO_TOKEN
       run: |
