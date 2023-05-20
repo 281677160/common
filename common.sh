@@ -1377,7 +1377,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-unblockneteasemusic=y" ${HOME_PATH}/.con
   fi
 fi
 
-if [[ `grep -c "CONFIG_TARGET_armvirt_64_Default=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+if [[ `grep -c "CONFIG_TARGET_armvirt_64=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   echo -e "\nCONFIG_TARGET_ROOTFS_TARGZ=y" >> "${HOME_PATH}/.config"
 fi
 
@@ -1469,7 +1469,7 @@ if [[ `grep -Eoc 'CONFIG_TARGET_x86_64=y' ${HOME_PATH}/.config` -eq '1' ]]; then
   export TARGET_PROFILE="x86-64"
 elif [[ `grep -Eoc 'CONFIG_TARGET_x86=y' ${HOME_PATH}/.config` -eq '1' ]]; then
   export TARGET_PROFILE="x86-32"
-elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64_Default=y' ${HOME_PATH}/.config` -eq '1' ]]; then
+elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64=y' ${HOME_PATH}/.config` -eq '1' ]]; then
   export TARGET_PROFILE="Armvirt_64"
 elif [[ `grep -Eoc "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
@@ -2003,7 +2003,7 @@ if [[ `grep -Eoc 'CONFIG_TARGET_x86_64=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -
   export TARGET_PROFILE="x86-64"
 elif [[ `grep -Eoc 'CONFIG_TARGET_x86=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
   export TARGET_PROFILE="x86-32"
-elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64_Default=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
+elif [[ `grep -Eoc 'CONFIG_TARGET_armvirt_64=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
   export TARGET_PROFILE="Armvirt_64"
 elif [[ `grep -Eoc "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
   export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/${CONFIG_FILE} | sed -r 's/.*DEVICE_(.*)=y/\1/')"
