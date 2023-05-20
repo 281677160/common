@@ -51,6 +51,7 @@ jobs:
         fi
         
     - name: 同步上游仓库
+      continue-on-error: true
       if: env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
