@@ -118,7 +118,7 @@ fi
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
   export SOURCE="Lede"
-  export SOURCE_OWNER="Lede's"
+  export SOURCE_OWNER="Lean's"
   export PACKAGE_BRANCH="lede"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export REPO_URL="https://github.com/coolsnowwolf/lede"
