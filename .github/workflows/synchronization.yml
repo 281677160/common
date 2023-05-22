@@ -42,12 +42,12 @@ jobs:
           rm -rf golang-version
         fi
         
-        git clone https://github.com/coolsnowwolf/lede Lede
-        git clone https://github.com/coolsnowwolf/openwrt-gl-ax1800 ax1800
-        git clone https://github.com/Lienol/openwrt Lienol
-        git clone https://github.com/immortalwrt/immortalwrt Immortalwrt
-        git clone https://github.com/openwrt/openwrt Official
-        git clone https://github.com/x-wrt/x-wrt Xwrt
+        git clone https://github.com/coolsnowwolf/lede $GITHUB_WORKSPACE/Lede
+        git clone https://github.com/coolsnowwolf/openwrt-gl-ax1800 $GITHUB_WORKSPACE/ax1800
+        git clone https://github.com/Lienol/openwrt $GITHUB_WORKSPACE/Lienol
+        git clone https://github.com/immortalwrt/immortalwrt $GITHUB_WORKSPACE/Immortalwrt
+        git clone https://github.com/openwrt/openwrt $GITHUB_WORKSPACE/Official
+        git clone https://github.com/x-wrt/x-wrt $GITHUB_WORKSPACE/Xwrt
         
         cd $GITHUB_WORKSPACE/Lede
         git branch -r |sed '/origin\/HEAD/d' |sed 's/master/18.06/g' |sed 's/$/-Lede\"/' |sed 's/origin\//=\"/g' |sed 's/openwrt-//g' >$GITHUB_WORKSPACE/123
