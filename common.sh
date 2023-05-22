@@ -182,6 +182,10 @@ IMMORTALWRT)
     export LUCI_EDITION="18.06.K5.4"
     export DIY_WORK="${FOLDER_NAME}K54"
     export PACKAGE_THEME="theme1"
+  elif [[ "${REPO_BRANCH}" == "openwrt-23.05" ]]; then
+    export LUCI_EDITION="23.05"
+    export PACKAGE_THEME="theme2"
+    export DIY_WORK="${FOLDER_NAME}23.05"
   fi
 ;;
 XWRT)
