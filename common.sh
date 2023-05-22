@@ -291,7 +291,7 @@ sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
 esac
 
 ./scripts/feeds clean
-./scripts/feeds update -a > /dev/null 2>&1
+./scripts/feeds update -a
 
 amba4="$(find . -type d -name 'luci-app-samba4')"
 autosam="$(find . -type d -name 'autosamba')"
