@@ -1036,14 +1036,10 @@ cd ${HOME_PATH}
 apptions="$(find . -type d -name "applications" |grep 'luci')"
 if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
   cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
-  chmod +x zh_Hans.sh
-  /bin/bash zh_Hans.sh
-  rm -rf zh_Hans.sh
+  /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
 else
   cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
-  chmod +x zh-cn.sh
-  /bin/bash zh-cn.sh
-  rm -rf zh-cn.sh
+  /bin/bash zh-cn.sh && rm -rf zh-cn.sh
 fi
 }
 
