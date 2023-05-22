@@ -119,7 +119,6 @@ case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
   export SOURCE="Lede"
   export SOURCE_OWNER="Lean's"
-  export PACKAGE_BRANCH="lede"
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export REPO_URL="https://github.com/coolsnowwolf/lede"
     export LUCI_EDITION="18.06"
@@ -142,7 +141,6 @@ LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
   export SOURCE="Lienol"
   export SOURCE_OWNER="Lienol's"
-  export PACKAGE_BRANCH="lienol"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
@@ -150,7 +148,6 @@ IMMORTALWRT)
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export SOURCE="Immortalwrt"
   export SOURCE_OWNER="ctcgfw's"
-  export PACKAGE_BRANCH="immortalwrt"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
@@ -158,7 +155,6 @@ XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="Xwrt"
   export SOURCE_OWNER="ptpt52's"
-  export PACKAGE_BRANCH="xwrt"
   export LUCI_EDITION="${REPO_BRANCH}"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
@@ -166,7 +162,6 @@ OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
   export SOURCE="Official"
   export SOURCE_OWNER="openwrt's"
-  export PACKAGE_BRANCH="official"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
@@ -278,7 +273,7 @@ sed -i '/helloworld/d' "feeds.conf.default"
 sed -i '/passwall/d' "feeds.conf.default"
 
 cat >>"feeds.conf.default" <<-EOF
-src-git danshui1 https://github.com/281677160/openwrt-package.git;${PACKAGE_BRANCH}
+src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
 src-git helloworld https://github.com/fw876/helloworld.git
 src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci
 src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
@@ -398,12 +393,12 @@ echo "正在执行：源码微调,请耐心等待..."
 apptions="$(find . -type d -name "applications" |grep 'luci')"
 if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
   if [[ -z "$(grep danshui2 ${HOME_PATH}/feeds.conf.default)" ]]; then
-    echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;theme2" >> "${HOME_PATH}/feeds.conf.default"
+    echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "${HOME_PATH}/feeds.conf.default"
   fi
   LUCI_BANBEN="2"
 else
   if [[ -z "$(grep danshui2 ${HOME_PATH}/feeds.conf.default)" ]]; then
-    echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;theme1" >> "${HOME_PATH}/feeds.conf.default"
+    echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "${HOME_PATH}/feeds.conf.default"
   fi
   LUCI_BANBEN="1"
 fi
