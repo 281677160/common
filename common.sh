@@ -369,7 +369,7 @@ if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
 fi
 
 if [[ -d "${HOME_PATH}/build/common/Share/packr" ]]; then
-  [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
+  cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
 fi
 }
 
