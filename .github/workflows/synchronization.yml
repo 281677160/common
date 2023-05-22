@@ -39,8 +39,13 @@ jobs:
         if [[ -d "golang-version/lang/golang" ]]; then
           rm -rf repogx/Share/golang
           cp -Rf golang-version/lang/golang repogx/Share/golang
-          rm -rf golang-version
         fi
+        
+        if [[ -d "golang-version/devel/packr" ]]; then
+          rm -rf repogx/Share/packr
+          cp -Rf golang-version/devel/packr repogx/Share/packr
+        fi
+        
         
         git clone https://github.com/coolsnowwolf/lede $GITHUB_WORKSPACE/Lede
         git clone https://github.com/coolsnowwolf/openwrt-gl-ax1800 $GITHUB_WORKSPACE/ax1800
