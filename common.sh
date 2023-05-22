@@ -157,7 +157,7 @@ IMMORTALWRT)
 XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="Xwrt"
-  export SOURCE_OWNER="ptpt52"
+  export SOURCE_OWNER="ptpt52's"
   export PACKAGE_BRANCH="xwrt"
   export LUCI_EDITION="${REPO_BRANCH}"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
@@ -165,7 +165,7 @@ XWRT)
 OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
   export SOURCE="Official"
-  export SOURCE_OWNER="openwrt"
+  export SOURCE_OWNER="openwrt's"
   export PACKAGE_BRANCH="official"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
