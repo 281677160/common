@@ -118,29 +118,9 @@ Github_Release="${Github_Release}"
 Release_download1="${Release_download1}"
 Release_download2="${Release_download2}"
 EOF
+
+	cat ${HOME_PATH}/build/common/autoupdate/replace >> ${In_Firmware_Info}
 	sudo chmod +x ${In_Firmware_Info}
-	
-	
-cat >"${In_Firmware_Replace}" <<-EOF
-GITHUB_LINK=${GITHUB_LINK}
-CURRENT_Version=${Openwrt_Version}
-SOURCE="${SOURCE}"
-LUCI_EDITION="${LUCI_EDITION}"
-DEFAULT_Device="${TARGET_PROFILE_ER}"
-Firmware_SFX="${Firmware_SFX}"
-TARGET_BOARD="${TARGET_BOARD}"
-CLOUD_CHAZHAO="${CLOUD_CHAZHAO}"
-Download_Path="/tmp/Downloads"
-Version="${AutoUpdate_Version}"
-API_PATH="${API_PATH}"
-Github_API1="${Github_API1}"
-Github_API2="${Github_API2}"
-Github_Release="${Github_Release}"
-Release_download1="${Release_download1}"
-Release_download2="${Release_download2}"
-EOF
-	bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replacebianliang.sh)
-	sudo chmod +x ${In_Firmware_Replace}
 }
 
 function Diy_Part3() {
