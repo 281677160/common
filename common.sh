@@ -370,7 +370,7 @@ else
 fi
 
 if [[ `grep -c "min-cache-ttl=" ${HOME_PATH}/package/network/services/dnsmasq/files/dnsmasq.conf` -eq '0' ]]; then
-  echo -e "#max-ttl=600\nneg-ttl=600\nmin-cache-ttl=3600" >> package/network/services/dnsmasq/files/dnsmasq.conf
+  echo -e "#max-ttl=600\nneg-ttl=600\nmin-cache-ttl=3600" >> ${HOME_PATH}/package/network/services/dnsmasq/files/dnsmasq.conf
 fi
 }
 
