@@ -1048,10 +1048,6 @@ if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
 fi
 
-if [[ -d "${HOME_PATH}/build/common/Share/packr" ]]; then
-  [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
-fi
-
 # 正在执行插件语言修改
 Diy_Language
 
