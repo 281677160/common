@@ -21,7 +21,6 @@ function Diy_Part1() {
 
 function Diy_Part2() {
 	export In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
-	export In_Firmware_Replace="$FILES_PATH/etc/openwrt_replace"
 	export Github_API1="https://download.fastgit.org/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
 	export Github_API2="https://ghproxy.com/https://github.com/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
 	export API_PATH="/tmp/Downloads/zzz_api"
