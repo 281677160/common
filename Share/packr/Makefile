@@ -32,8 +32,8 @@ GO_PKG_BUILD_PKG:=github.com/gobuffalo/packr/packr
 
 include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
-include ../../lang/golang/golang-host-build.mk
-include ../../lang/golang/golang-package.mk
+$(TOPDIR)/feeds/packages/lang/golang/golang-host-build.mk
+$(TOPDIR)/feeds/packages/lang/golang/golang-package.mk
 
 define Package/packr
   SECTION:=devel
