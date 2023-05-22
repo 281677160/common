@@ -362,15 +362,6 @@ done
   echo "没有启用作者收集的插件源包"
 ;;
 esac
-
-if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
-  rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-  cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
-fi
-
-if [[ -d "${HOME_PATH}/build/common/Share/packr" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
-fi
 }
 
 
@@ -1051,6 +1042,15 @@ function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
 ./scripts/feeds update -a
+
+if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+  cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
+fi
+
+if [[ -d "${HOME_PATH}/build/common/Share/packr" ]]; then
+  [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
+fi
 
 # 正在执行插件语言修改
 Diy_Language
