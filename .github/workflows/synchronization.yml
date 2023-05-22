@@ -42,6 +42,28 @@ jobs:
           rm -rf golang-version
         fi
         
+        git clone https://github.com/coolsnowwolf/lede Lede
+        git clone https://github.com/coolsnowwolf/openwrt-gl-ax1800 ax1800
+        git clone https://github.com/Lienol/openwrt Lienol
+        git clone https://github.com/immortalwrt/immortalwrt Immortalwrt
+        git clone https://github.com/openwrt/openwrt Official
+        git clone https://github.com/x-wrt/x-wrt Xwrt
+        
+        cd $GITHUB_WORKSPACE/lede
+        git branch -r |sed '/origin\/HEAD/d' |sed 's/master/18.06/g' |sed 's/$/-Lede\"/' |sed 's/origin\//=\"/g' |sed 's/openwrt-//g' >$GITHUB_WORKSPACE/123
+        cd $GITHUB_WORKSPACE/ax1800
+        git branch -r |sed '/origin\/HEAD/d' |sed 's/master/gl-ax1800/g' |sed 's/$/-Lede\"/' |sed 's/origin\//=\"/g' |sed 's/openwrt-//g' >>$GITHUB_WORKSPACE/123
+        cd $GITHUB_WORKSPACE/Lienol
+        git branch -r |sed '/origin\/HEAD/d' |sed 's/$/-Lienol\"/' |sed 's/origin\//=\"/g' |sed 's/openwrt-//g' >>$GITHUB_WORKSPACE/123
+        cd $GITHUB_WORKSPACE/Immortalwrt
+        git branch -r |sed '/origin\/HEAD/d' |sed 's/$/-Immortalwrt\"/' |sed 's/origin\//=\"/g' |sed 's/openwrt-//g' >>$GITHUB_WORKSPACE/123
+        cd $GITHUB_WORKSPACE/Official
+        git branch -r |sed '/origin\/HEAD/d' |sed 's/$/-Official\"/' |sed 's/origin\//=\"/g' |sed 's/openwrt-//g' >>$GITHUB_WORKSPACE/123
+        cd $GITHUB_WORKSPACE/Xwrt
+        git branch -r |sed '/origin\/HEAD/d' |sed 's/$/-Xwrt\"/' |sed 's/origin\//=\"/g' |sed 's/openwrt-//g' >>$GITHUB_WORKSPACE/123
+        cd ..
+        cat $GITHUB_WORKSPACE/123 |awk '$0=NR$0' |sed '/^$/d' |sed s/[[:space:]]//g >/home/danshui/456
+        
     - name: Upload
       continue-on-error: true
       if: env.REPO_TOKEN
