@@ -362,6 +362,16 @@ done
   echo "没有启用作者收集的插件源包"
 ;;
 esac
+
+if [[ `grep -c "net.netfilter.nf_conntrack_max" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
+  echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
+else
+  sed -i 's/net.netfilter.nf_conntrack_max=.*/net.netfilter.nf_conntrack_max=165535/g' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
+fi
+
+if [[ `grep -c "min-cache-ttl=" ${HOME_PATH}/package/network/services/dnsmasq/files/dnsmasq.conf` -eq '0' ]]; then
+  echo -e "#max-ttl=600\nneg-ttl=600\nmin-cache-ttl=3600" >> package/network/services/dnsmasq/files/dnsmasq.conf
+fi
 }
 
 
@@ -1008,16 +1018,6 @@ echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
 echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 }
-
-
-function Diy_shpart() {
-cd ${HOME_PATH}
-# 修正连接数
-if [[ `grep -c "net.netfilter.nf_conntrack_max" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
-  echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/base-files/files/etc/sysctl.conf
-fi
-}
-
 
 function Diy_upgrade1() {
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
@@ -2229,7 +2229,6 @@ Diy_upgrade2
 
 function Diy_menu4() {
 Diy_files
-Diy_shpart
 Diy_feeds
 Diy_IPv6helper
 }
