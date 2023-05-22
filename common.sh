@@ -123,7 +123,7 @@ COOLSNOWWOLF)
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     export REPO_URL="https://github.com/coolsnowwolf/lede"
     export LUCI_EDITION="18.06"
-    export DIY_WORK="${FOLDER_NAME}MASTER"
+    export DIY_WORK="${FOLDER_NAME}master"
     echo "GL_BRANCH=lede" >> ${GITHUB_ENV}
   elif [[ "${REPO_BRANCH}" == "gl-ax1800" ]]; then
     export REPO_URL="https://github.com/coolsnowwolf/openwrt-gl-ax1800"
