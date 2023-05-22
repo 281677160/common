@@ -1035,12 +1035,12 @@ function Diy_Language() {
 cd ${HOME_PATH}
 apptions="$(find . -type d -name "applications" |grep 'luci')"
 if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh_Hans.sh -o zh_Hans.sh
+  cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
   chmod +x zh_Hans.sh
   /bin/bash zh_Hans.sh
   rm -rf zh_Hans.sh
 else
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh-cn.sh -o zh-cn.sh
+  cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
   chmod +x zh-cn.sh
   /bin/bash zh-cn.sh
   rm -rf zh-cn.sh
@@ -1051,10 +1051,16 @@ function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
 ./scripts/feeds update -a
+
+# 正在执行插件语言修改
+Diy_Language
+
+# 正在执行插件菜单修改
 if [[ -f "${HOME_PATH}/diy_pa_sh" ]] && [[ ! "${ERCI}" == "1" ]]; then
   source ${HOME_PATH}/diy_pa_sh
   rm -rf ${HOME_PATH}/diy_pa_sh
 fi
+
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 
@@ -2224,7 +2230,6 @@ Diy_upgrade2
 function Diy_menu4() {
 Diy_files
 Diy_shpart
-Diy_Language
 Diy_feeds
 Diy_IPv6helper
 }
