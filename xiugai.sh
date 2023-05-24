@@ -198,24 +198,19 @@ echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
 echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
 echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
-}
 
 
-function Diy_settings() {
-echo "正在执行：判断是否缺少[${CONFIG_FILE}、${DIY_PART_SH}]文件"
 if [[ -n "${BENDI_VERSION}" ]]; then
   export GIT_BUILD=operates/${FOLDER_NAME}
 else
   export GIT_BUILD=build/${FOLDER_NAME}
-  export CONFIG_FILE=seed/${CONFIG_FILE}
 fi
 
-if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
-  aa="$(echo "${CONFIG_FILE}" |cut -d '/' -f2)"
-  TIME r "错误提示：编译脚本的[seed文件夹]缺少[${aa}]名称的配置文件,请在[${GIT_BUILD}/seed]文件夹内补齐"
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/seed/${CONFIG_FILE}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本的[seed文件夹内缺少${CONFIG_FILE}]名称的配置文件,请在[${GIT_BUILD}/seed]文件夹内补齐"
   exit 1
 else
-  echo "${GIT_BUILD}/${CONFIG_FILE}文件存在"
+  echo "${GIT_BUILD}/seed/${CONFIG_FILE}文件存在"
 fi
 if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART_SH}" 2>/dev/null)" ]; then
   TIME r "错误提示：编译脚本缺少[${DIY_PART_SH}]名称的自定义设置文件,请在[${GIT_BUILD}]文件夹内补齐"
