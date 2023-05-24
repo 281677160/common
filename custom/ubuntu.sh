@@ -6,7 +6,7 @@
 function install_mustrelyon(){
 # 安装依赖
 sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
-sudo apt-get install -y rename pigz libfuse-dev upx
+sudo apt-get install -y rename pigz libfuse-dev upx subversion
 sudo apt-get install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
 }
 
