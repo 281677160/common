@@ -1947,9 +1947,9 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   git clone -b main https://github.com/${GIT_REPOSITORY}.git UPLOADCPU
   mkdir -p "UPLOADCPU/build/${FOLDER_NAME}/relevance"
   rm -rf UPLOADCPU/build/${FOLDER_NAME}
-  cp -Rf build/${FOLDER_NAME} ${FOLDER_NAME}/build/${FOLDER_NAME}
+  cp -Rf build/${FOLDER_NAME} UPLOADCPU/build/${FOLDER_NAME}
   rm -rf UPLOADCPU/build/${FOLDER_NAME}/*.sh
-  cp -Rf build/${FOLDER_NAME}/${DIY_PART_SH} ${FOLDER_NAME}/build/${FOLDER_NAME}/${DIY_PART_SH}
+  cp -Rf build/${FOLDER_NAME}/${DIY_PART_SH} UPLOADCPU/build/${FOLDER_NAME}/${DIY_PART_SH}
   rm -rf UPLOADCPU/.github/workflows
   cp -Rf .github/workflows UPLOADCPU/.github/workflows
   echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > UPLOADCPU/build/${FOLDER_NAME}/relevance/start
