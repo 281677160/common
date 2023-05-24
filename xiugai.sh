@@ -207,7 +207,7 @@ else
 fi
 
 if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/seed/${CONFIG_FILE}" 2>/dev/null)" ]; then
-  TIME r "错误提示：编译脚本的[seed文件夹内缺少${CONFIG_FILE}]名称的配置文件,请在[${GIT_BUILD}/seed]文件夹内补齐"
+  TIME r "错误提示：编译脚本的[seed文件夹内缺少${CONFIG_FILE}名称]的配置文件,请在[${GIT_BUILD}/seed]文件夹内补齐"
   exit 1
 else
   echo "${GIT_BUILD}/seed/${CONFIG_FILE}文件存在"
