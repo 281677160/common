@@ -257,13 +257,14 @@ fi
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${GITHUB_WORKSPACE}/openwrt
-if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
-  export LUCI_CHECKUT="$(git tag| awk 'END {print}')"
+git pull
+
+LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
+if [[ -n "${LUCI_CHECKUT}" ]]; then
   git checkout ${LUCI_CHECKUT}
   git switch -c ${LUCI_CHECKUT}
-  export LUCI_CHECKUT="$(echo ${LUCI_CHECKUT} |sed 's/v//')"
-  echo "正在使用${LUCI_CHECKUT}版本源码进行编译"
 fi
+export LUCI_CHECKUT="$(echo ${LUCI_CHECKUT} |sed 's/v//')"
 
 case "${COLLECTED_PACKAGES}" in
 true)
