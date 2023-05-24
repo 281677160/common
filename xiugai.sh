@@ -76,6 +76,14 @@ else
   CPU_SELECTION="E5"
 fi
 
+if [[ "${INFORMATION_NOTICE}" =~ (关闭|false) ]]; then
+  INFORMATION_NOTICE="false"
+elif [[ "${INFORMATION_NOTICE}" =~ (TG|Telegram) ]]; then
+  INFORMATION_NOTICE="TG"
+elif [[ "${INFORMATION_NOTICE}" =~ (PUSH|pushplus) ]]; then
+  INFORMATION_NOTICE="PUSH"
+fi
+  
 cat >"${start_path}" <<-EOF
 SOURCE_CODE="${SOURCE_CODE}"
 REPO_BRANCH="${REPO_BRANCH}"
