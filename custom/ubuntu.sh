@@ -17,11 +17,6 @@ sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /
 # sudo -E apt-get -qq remove -y --purge azure-cli ghc* zulu* llvm* firefox google* powershell openjdk* msodbcsql17 mongodb* moby* snapd* mysql*
 }
 
-function ophub_amlogic-s9xxx(){
-# 安装打包N1需要用到的依赖
-sudo apt-get install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt) > /dev/null 2>&1
-}
-
 function update_apt_source(){
 node --version
 yarn --version
