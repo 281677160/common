@@ -22,98 +22,77 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
     }
 }
 
-function settings_variable() {
-# 手动启动变量转换
-if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
-  ymlpath="build/${FOLDER_NAME}/settings.ini"
-  if [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
-    mkdir -p build/${FOLDER_NAME}/relevance
-  else
-    rm -rf build/${FOLDER_NAME}/relevance/*.ini
-  fi
-  ymlsettings="build/${FOLDER_NAME}/relevance/settings.ini"
-  echo "ymlsettings=${ymlsettings}" >> ${GITHUB_ENV}
-  cp -Rf "${ymlpath}" "${ymlsettings}"
-  if [[ "${INPUTS_INFORMATION_NOTICE}" == '关闭' ]]; then
-    INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"false\\\""
-  elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'Telegram' ]]; then
-    INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"TG\\\""
-  elif [[ "${INPUTS_INFORMATION_NOTICE}" == 'pushplus' ]]; then
-    INFORMATION_NOTICE2="INFORMATION_NOTICE\\=\\\"PUSH\\\""
-  fi
- 
-  if [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc 'E5'` -eq '1' ]] || [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc 'e5'` -eq '1' ]]; then
-    export INPUTS_CPU_SELECTION="E5"
-  elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8370'` -eq '1' ]]; then
-    export INPUTS_CPU_SELECTION="8370"
-  elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8272'` -eq '1' ]]; then
-    export INPUTS_CPU_SELECTION="8272"
-  elif [[ `echo "${INPUTS_CPU_SELECTION}" |grep -Eoc '8171'` -eq '1' ]]; then
-    export INPUTS_CPU_SELECTION="8171"
-  else
-    export INPUTS_CPU_SELECTION="E5"
-  fi
-  REPO_BRANCH1="$(grep "REPO_BRANCH=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-  CONFIG_FILE1="$(grep "CONFIG_FILE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-  UPLOAD_FIRMWARE1="$(grep "UPLOAD_FIRMWARE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-  UPLOAD_RELEASE1="$(grep "UPLOAD_RELEASE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-  CACHEWRTBUILD_SWITCH1="$(grep "CACHEWRTBUILD_SWITCH=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-  UPDATE_FIRMWARE_ONLINE1="$(grep "UPDATE_FIRMWARE_ONLINE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-  COLLECTED_PACKAGES1="$(grep "COLLECTED_PACKAGES=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-  CPU_SELECTION1="$(grep "CPU_SELECTION=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-  INFORMATION_NOTICE1="$(grep "INFORMATION_NOTICE=" "${ymlpath}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-  
-  REPO_BRANCH2="REPO_BRANCH\\=\\\"${INPUTS_REPO_BRANCH}\\\""
-  CONFIG_FILE2="CONFIG_FILE\\=\\\"${INPUTS_CONFIG_FILE}\\\""
-  UPLOAD_FIRMWARE2="UPLOAD_FIRMWARE\\=\\\"${INPUTS_UPLOAD_FIRMWARE}\\\""
-  UPLOAD_RELEASE2="UPLOAD_RELEASE\\=\\\"${INPUTS_UPLOAD_RELEASE}\\\""
-  CACHEWRTBUILD_SWITCH2="CACHEWRTBUILD_SWITCH\\=\\\"${INPUTS_CACHEWRTBUILD_SWITCH}\\\""
-  UPDATE_FIRMWARE_ONLINE2="UPDATE_FIRMWARE_ONLINE\\=\\\"${INPUTS_UPDATE_FIRMWARE_ONLINE}\\\""
-  COLLECTED_PACKAGES2="COLLECTED_PACKAGES\\=\\\"${INPUTS_COLLECTED_PACKAGES}\\\""
-  CPU_SELECTION2="CPU_SELECTION\\=\\\"${INPUTS_CPU_SELECTION}\\\""
-
-  sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" "${ymlsettings}"
-  sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" "${ymlsettings}"
-  sed -i "s?${UPLOAD_FIRMWARE1}?${UPLOAD_FIRMWARE2}?g" "${ymlsettings}"
-  sed -i "s?${UPLOAD_RELEASE1}?${UPLOAD_RELEASE2}?g" "${ymlsettings}"
-  sed -i "s?${CACHEWRTBUILD_SWITCH1}?${CACHEWRTBUILD_SWITCH2}?g" "${ymlsettings}"
-  sed -i "s?${UPDATE_FIRMWARE_ONLINE1}?${UPDATE_FIRMWARE_ONLINE2}?g" "${ymlsettings}"
-  sed -i "s?${COLLECTED_PACKAGES1}?${COLLECTED_PACKAGES2}?g" "${ymlsettings}"
-  sed -i "s?${CPU_SELECTION1}?${CPU_SELECTION2}?g" "${ymlsettings}"
-  sed -i "s?${INFORMATION_NOTICE1}?${INFORMATION_NOTICE2}?g" "${ymlsettings}"
-  export t1=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
-  echo "t1=${t1}" >> ${GITHUB_ENV}
-  mv "${ymlsettings}" build/${FOLDER_NAME}/relevance/${t1}.ini
-else
-  export t1="1234567"
-  echo "t1=${t1}" >> ${GITHUB_ENV}
-fi
-}
 
 function Diy_variable() {
 # 读取变量
 export DIY_PART_SH="diy-part.sh"
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
-elif [[ "${Manually_Run}" == "1" ]]; then
-  source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
-  echo "t1=1234567" >> ${GITHUB_ENV}
-else
-  if [[ -z "${t1}" ]]; then
-    t1="$(grep "CPU_PASSWORD=" "${GITHUB_WORKSPACE}/.github/workflows/compile.yml" |grep -v '^#' |grep -Eo '[0-9]+')"
-    echo "${t1}"
-  fi
-  if [[ "${t1}" == "1234567" ]]; then
-    source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
-    echo "t1=1234567" >> ${GITHUB_ENV}
-  elif [[ -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini" ]]; then
-    source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/${t1}.ini"
-    echo "t1=${t1}" >> ${GITHUB_ENV}
-    echo "运行${t1}.ini"
-  else
-    source "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini"
-  fi
 fi
+start_path="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini"
+
+if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
+  SOURCE_CODE="${INPUTS_SOURCE_CODE}"
+  REPO_BRANCH="${INPUTS_REPO_BRANCH}"
+  CONFIG_FILE="${INPUTS_CONFIG_FILE}"
+  CPU_SELECTION="${INPUTS_CPU_SELECTION}"
+  INFORMATION_NOTICE="${INPUTS_INFORMATION_NOTICE}"
+  UPLOAD_FIRMWARE="${INPUTS_UPLOAD_FIRMWARE}"
+  UPLOAD_RELEASE="${INPUTS_UPLOAD_RELEASE}"
+  CACHEWRTBUILD_SWITCH="${INPUTS_CACHEWRTBUILD_SWITCH}"
+  UPDATE_FIRMWARE_ONLINE="${INPUTS_UPDATE_FIRMWARE_ONLINE}"
+  COLLECTED_PACKAGES="${INPUTS_COLLECTED_PACKAGES}"
+  UPLOAD_WETRANSFER="${INPUTS_UPLOAD_WETRANSFER}"
+  COMPILATION_INFORMATION="${INPUTS_COMPILATION_INFORMATION}"
+  RETAIN_DAYS="${RETAIN_DAYS}"
+  KEEP_LATEST="${KEEP_LATEST}"
+else
+  SOURCE_CODE="${SOURCE_CODE}"
+  REPO_BRANCH="${REPO_BRANCH}"
+  CONFIG_FILE="${CONFIG_FILE}"
+  CPU_SELECTION="${CPU_SELECTION}"
+  INFORMATION_NOTICE="${INFORMATION_NOTICE}"
+  UPLOAD_FIRMWARE="${UPLOAD_FIRMWARE}"
+  UPLOAD_RELEASE="${UPLOAD_RELEASE}"
+  CACHEWRTBUILD_SWITCH="${CACHEWRTBUILD_SWITCH}"
+  UPDATE_FIRMWARE_ONLINE="${UPDATE_FIRMWARE_ONLINE}"
+  COLLECTED_PACKAGES="${COLLECTED_PACKAGES}"
+  UPLOAD_WETRANSFER="${UPLOAD_WETRANSFER}"
+  COMPILATION_INFORMATION="${COMPILATION_INFORMATION}"
+  RETAIN_DAYS="${RETAIN_DAYS}"
+  KEEP_LATEST="${KEEP_LATEST}"
+fi
+
+if [[ `echo "${CPU_SELECTION}" |grep -c 'E5\|e5'` -eq '1' ]]; then
+  CPU_SELECTION="E5"
+elif [[ `echo "${CPU_SELECTION}" |grep -c '8370'` -eq '1' ]]; then
+  CPU_SELECTION="8370"
+elif [[ `echo "${CPU_SELECTION}" |grep -c '8272'` -eq '1' ]]; then
+  CPU_SELECTION="8272"
+elif [[ `echo "${CPU_SELECTION}" |grep -c '8171'` -eq '1' ]]; then
+  CPU_SELECTION="8171"
+else
+  CPU_SELECTION="E5"
+fi
+
+cat >"${start_path}" <<-EOF
+SOURCE_CODE=\"${SOURCE_CODE}\"
+REPO_BRANCH="${REPO_BRANCH}"
+CONFIG_FILE="${CONFIG_FILE}"
+CPU_SELECTION="${CPU_SELECTION}"
+INFORMATION_NOTICE="${INFORMATION_NOTICE}"
+UPLOAD_FIRMWARE="${UPLOAD_FIRMWARE}"
+UPLOAD_RELEASE="${UPLOAD_RELEASE}"
+CACHEWRTBUILD_SWITCH="${CACHEWRTBUILD_SWITCH}"
+UPDATE_FIRMWARE_ONLINE="${UPDATE_FIRMWARE_ONLINE}"
+COLLECTED_PACKAGES="${COLLECTED_PACKAGES}"
+UPLOAD_WETRANSFER="${UPLOAD_WETRANSFER}"
+COMPILATION_INFORMATION="${COMPILATION_INFORMATION}"
+RETAIN_DAYS="${RETAIN_DAYS}"
+KEEP_LATEST="${KEEP_LATEST}"
+EOF
+
+chmod -R +x ${start_path} && source ${start_path}
 
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
