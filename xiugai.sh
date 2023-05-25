@@ -268,6 +268,7 @@ fi
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
 if [[ -n "${ZZZ_PATH}" ]]; then  
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+  sed -i '/exit 0$/d' "${ZZZ_PATH}"
 
   [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
   [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
@@ -298,6 +299,7 @@ fi
 echo "增加一些应用"
 cp -Rf ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
+sed -i '/exit 0$/d' "${DEFAULT_PATH}"
 sed -i "s?112233?${SOURCE} - ${LUCI_EDITION}?g" "${DEFAULT_PATH}" > /dev/null 2>&1
 sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 if [[ `grep -Eoc "admin:.*" ${FILES_PATH}/etc/shadow` -eq '1' ]]; then
@@ -554,7 +556,6 @@ cd ${HOME_PATH}
 function Diy_files() {
 cd ${HOME_PATH}
 echo "正在执行：files大法，设置固件无烦恼"
-
 if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
   find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
@@ -566,8 +567,6 @@ fi
 if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
   cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
 fi
-sudo chmod -R 775 ${HOME_PATH}/files
-rm -rf ${HOME_PATH}/files/{LICENSE,.*README}
 }
 
 
@@ -1505,13 +1504,11 @@ fi
 function Diy_upgrade2() {
 cd ${HOME_PATH}
 sed -i 's/^[ ]*//g' "${DEFAULT_PATH}"
-sed -i '/exit 0$/d' "${DEFAULT_PATH}"
 sed -i '$a\exit 0' "${DEFAULT_PATH}"
 sed -i 's/^[ ]*//g' "${ZZZ_PATH}"
-sed -i '/exit 0$/d' "${ZZZ_PATH}"
 sed -i '$a\exit 0' "${ZZZ_PATH}" 
 [[ -d "${HOME_PATH}/files" ]] && sudo chmod +x ${HOME_PATH}/files
-
+rm -rf ${HOME_PATH}/files/{LICENSE,.*README}
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
   source ${BUILD_PATH}/upgrade.sh && Diy_Part2
 fi
