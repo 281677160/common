@@ -1955,7 +1955,7 @@ if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
 fi
 }
 
-function Diy_menu5() {
+function Diy_menu6() {
 Diy_prevent
 Make_defconfig
 Diy_Publicarea2
@@ -1963,15 +1963,20 @@ Diy_adguardhome
 Diy_upgrade2
 }
 
-function Diy_menu4() {
-Diy_files
+function Diy_menu5() {
 Diy_feeds
 Diy_IPv6helper
 }
 
-function Diy_menu3() {
-Diy_${SOURCE_CODE}
+function Diy_menu4() {
+Diy_Publicarea
 Diy_upgrade1
+}
+
+function Diy_menu3() {
+Diy_checkout
+Diy_${SOURCE_CODE}
+Diy_files
 }
 
 function Diy_menu2() {
@@ -1980,5 +1985,4 @@ Diy_Notice
 
 function Diy_menu1() {
 Diy_variable
-Diy_settings
 }
