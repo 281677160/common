@@ -82,6 +82,8 @@ elif [[ "${INFORMATION_NOTICE}" =~ (TG|Telegram) ]]; then
   INFORMATION_NOTICE="TG"
 elif [[ "${INFORMATION_NOTICE}" =~ (PUSH|pushplus) ]]; then
   INFORMATION_NOTICE="PUSH"
+else
+  INFORMATION_NOTICE="false"
 fi
   
 cat >"${start_path}" <<-EOF
