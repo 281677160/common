@@ -65,7 +65,7 @@ else
 fi
 
 if [[ `echo "${CPU_SELECTION}" |grep -ic 'E5\|默认\|false'` -eq '1' ]]; then
-  CPU_SELECTION="E5"
+  CPU_SELECTION="false"
 elif [[ `echo "${CPU_SELECTION}" |grep -c '8370'` -eq '1' ]]; then
   CPU_SELECTION="8370"
 elif [[ `echo "${CPU_SELECTION}" |grep -c '8272'` -eq '1' ]]; then
@@ -73,7 +73,7 @@ elif [[ `echo "${CPU_SELECTION}" |grep -c '8272'` -eq '1' ]]; then
 elif [[ `echo "${CPU_SELECTION}" |grep -c '8171'` -eq '1' ]]; then
   CPU_SELECTION="8171"
 else
-  CPU_SELECTION="E5"
+  CPU_SELECTION="false"
 fi
 
 if [[ "${INFORMATION_NOTICE}" =~ (关闭|false) ]]; then
@@ -1921,7 +1921,7 @@ start_path="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini"
 chmod -R +x ${start_path} && source ${start_path}
 
 case "${CPU_SELECTION}" in
-E5|弃用E5系列|弃用E5|e5)
+false)
   if [[ `echo "${cpu_model}" |grep -ic "E5"` -eq '1' ]]; then
     export chonglaixx="E5-重新编译"
     export Continue_selecting="1"
@@ -1930,7 +1930,7 @@ E5|弃用E5系列|弃用E5|e5)
     export Continue_selecting="0"
   fi
 ;;
-8370|8272|8171|8370C|8272CL|8171M)
+8370|8272|8171)
   if [[ `echo "${cpu_model}" |grep -ic "${CPU_SELECTION}"` -eq '0' ]]; then
     export chonglaixx="非${CPU_SELECTION}-重新编译"
     export Continue_selecting="1"
