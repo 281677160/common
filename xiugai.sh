@@ -78,9 +78,9 @@ fi
 
 if [[ "${INFORMATION_NOTICE}" =~ (关闭|false) ]]; then
   INFORMATION_NOTICE="false"
-elif [[ "${INFORMATION_NOTICE}" =~ (TG|Telegram) ]]; then
+elif [[ "${INFORMATION_NOTICE}" =~ (TG|Telegram|telegram) ]]; then
   INFORMATION_NOTICE="TG"
-elif [[ "${INFORMATION_NOTICE}" =~ (PUSH|pushplus) ]]; then
+elif [[ "${INFORMATION_NOTICE}" =~ (PUSH|Pushplus|pushplus) ]]; then
   INFORMATION_NOTICE="PUSH"
 else
   INFORMATION_NOTICE="false"
@@ -1718,6 +1718,11 @@ function build_openwrt() {
 cd ${GITHUB_WORKSPACE}
 start_path="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini"
 chmod -R +x ${start_path} && source ${start_path}
+if [[ "${CPU_SELECTION}" =~ (E5|false) ]]; then
+  kaisbianyixx="弃用E5-编译"
+else
+  kaisbianyixx="使用${CPU_SELECTION}-编译"
+fi
 git clone -b main https://github.com/${GIT_REPOSITORY}.git UPLOAD
 mkdir -p "UPLOAD/build/${FOLDER_NAME}/relevance"
 mv ${start_path} UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
@@ -1739,7 +1744,7 @@ echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%
 
 cd UPLOAD
 git add .
-git commit -m "使用${CPU_SELECTION}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
+git commit -m "${kaisbianyixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
 git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 }
 
