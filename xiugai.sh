@@ -244,7 +244,8 @@ if [[ -n "${LUCI_CHECKUT}" ]]; then
 fi
 
 ./scripts/feeds update luci > /dev/null 2>&1
-echo "1"
+
+echo "增加中文语言包"
 App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
 if [[ `find "${App_path}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
   LUCI_BANBEN="2"
@@ -255,7 +256,7 @@ else
   theme_pkg="Theme1"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
 fi
-echo "1"
+
 Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
 if [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
@@ -263,7 +264,7 @@ if [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
 elif [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
 fi
-echo "1"
+
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
 if [[ -n "${ZZZ_PATH}" ]]; then  
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
@@ -293,7 +294,8 @@ sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
 EOF
 fi
-echo "1"
+
+echo "增加一些应用"
 cp -Rf ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
 sed -i "s?112233?${SOURCE} - ${LUCI_EDITION}?g" "${DEFAULT_PATH}" > /dev/null 2>&1
@@ -326,7 +328,8 @@ cat >>"${KEEPD_PATH}" <<-EOF
 /www/luci-static/argon/background/
 EOF
 fi
-echo "1"
+
+# 修改一下依赖
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
   if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
@@ -359,17 +362,18 @@ XWRT|OFFICIAL)
   fi
 ;;
 esac
-echo "7"
+
+# 修正连接数
 if [[ `grep -c "net.netfilter.nf_conntrack_max" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
   echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 else
   sed -i 's/net.netfilter.nf_conntrack_max=.*/net.netfilter.nf_conntrack_max=165535/g' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 fi
-
 if [[ `grep -c "min-cache-ttl=" ${HOME_PATH}/package/network/services/dnsmasq/files/dnsmasq.conf` -eq '0' ]]; then
   echo -e "#max-ttl=600\nneg-ttl=600\nmin-cache-ttl=3600" >> ${HOME_PATH}/package/network/services/dnsmasq/files/dnsmasq.conf
 fi
-echo "1"
+
+echo "增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 sed -i '/danshui/d; /helloworld/d; /passwall/d' "feeds.conf.default"
 cat >>"feeds.conf.default" <<-EOF
@@ -382,7 +386,7 @@ src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
 EOF
 
 
-echo "2"
+echo "拉取feeds"
 ./scripts/feeds update -a
 
 ttydjso="$(find . -type f -name "luci-app-ttyd.json" |grep 'menu.d' |sed "s?.?${HOME_PATH}?")"
@@ -391,14 +395,14 @@ if [[ -n "${ttydjso}" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${ttydjso}"
 fi
 
-echo "8"
+# 更换golang版本
 if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang
   cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
 fi
 
+# 替换一些插件
 source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-echo "3"
 if [[ -d "feeds/passwall3" ]]; then
   w="$(ls -1 feeds/passwall3)" && r=`echo $w | sed 's/ /,/g'`
   p=(${r//,/ })
@@ -638,7 +642,6 @@ echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
   echo "固件加入IPV6功能"
-  echo "自动取消IPV4功能 和 爱快+OP双系统时,爱快接管IPV6功能"
   export Create_Ipv6_Lan="0"
   export Enable_IPV4_function="0"
   echo "Create_Ipv6_Lan=0" >> ${GITHUB_ENV}
@@ -743,8 +746,6 @@ CONFIG_PACKAGE_default-settings=y
 CONFIG_PACKAGE_default-settings-chn=y
 EOF
 
-echo "88"
-
 if [[ "${Mandatory_theme}" == "0" ]]; then
   echo "不进行,替换bootstrap主题设置"
 elif [[ -n "${Mandatory_theme}" ]]; then
@@ -762,7 +763,7 @@ elif [[ -n "${Mandatory_theme}" ]]; then
     zt2_theme="$(grep -E "luci-theme.*" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" |cut -d ' ' -f1)"
     [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
   fi
-  echo "替换bootstrap完成,您现在的必选主题为：${zt_theme}"
+  echo "替换必须主题完成,您现在的必选主题为：${zt_theme}"
 fi
 
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
@@ -776,6 +777,7 @@ elif [[ -n "${Replace_Kernel}" ]]; then
   Replace_nel="$(echo ${Replace_Kernel} |grep -Eo "[0-9]+\.[0-9]+")"
   if [[ -n "${Replace_nel}" ]]; then
     echo "Replace_Kernel=${Replace_Kernel}" >> ${GITHUB_ENV}
+    echo "修改源码默认内核为：${Replace_Kernel}"
   else
     echo "Replace_Kernel=0" >> ${GITHUB_ENV}
     echo "填写的内核格式错误,使用源码默认内核编译"
@@ -901,33 +903,29 @@ if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
 fi
 }
 
-function Diy_Language() {
+
+function Diy_feeds() {
+echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
-apptions="$(find . -type d -name "applications" |grep 'luci')"
-if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
+./scripts/feeds install -a > /dev/null 2>&1
+
+# 正在执行插件语言修改
+if [[ "${LUCI_BANBEN}" == "2" ]]; then
   cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
   /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
 else
   cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
   /bin/bash zh-cn.sh && rm -rf zh-cn.sh
 fi
-}
 
-function Diy_feeds() {
-echo "正在执行：更新feeds,请耐心等待..."
-cd ${HOME_PATH}
-
-# 正在执行插件语言修改
-Diy_Language
-
-./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 
-if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]] && [[ ! "${ERCI}" == "1" ]]; then
-  cp /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
-  cp /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
+if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
+  cp -Rf /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
+  cp -Rf /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
 fi
 
+# 使用自定义配置文件
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 }
 
@@ -1206,10 +1204,14 @@ if [[ `grep -c "CONFIG_PACKAGE_odhcp6c=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   sed -i '/CONFIG_PACKAGE_odhcpd_full_ext_cer_id=0/d' "${HOME_PATH}/.config"
 fi
 
-if [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_branch}" == "0" ]]; then
+if [[ "${OpenClash_branch}" == "0" ]]; then
   sed -i 's/CONFIG_PACKAGE_luci-app-openclash=y/# CONFIG_PACKAGE_luci-app-openclash is not set/g' ${HOME_PATH}/.config
-elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_branch}" != "0" ]]; then
+elif [[ "${OpenClash_branch}" != "0" ]]; then
   echo -e "\nCONFIG_PACKAGE_luci-app-openclash=y" >> ${HOME_PATH}/.config
+fi
+
+if [[ "${AdGuardHome_Core}" == "1" ]]; then
+  echo -e "\nCONFIG_PACKAGE_luci-app-adguardhome=y" >> ${HOME_PATH}/.config
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan_Plus=y" ${HOME_PATH}/.config` -eq '1' ]]; then
@@ -1236,20 +1238,20 @@ make defconfig > /dev/null 2>&1
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p ${HOME_PATH}/build_logo
 ./scripts/diffconfig.sh > ${HOME_PATH}/build_logo/config.txt
 
-  d="CONFIG_CGROUPFS_MOUNT_KERNEL_CGROUPS=y,CONFIG_DOCKER_CGROUP_OPTIONS=y,CONFIG_DOCKER_NET_MACVLAN=y,CONFIG_DOCKER_STO_EXT4=y, \
-  CONFIG_KERNEL_CGROUP_DEVICE=y,CONFIG_KERNEL_CGROUP_FREEZER=y,CONFIG_KERNEL_CGROUP_NET_PRIO=y,CONFIG_KERNEL_EXT4_FS_POSIX_ACL=y,CONFIG_KERNEL_EXT4_FS_SECURITY=y, \
-  CONFIG_KERNEL_FS_POSIX_ACL=y,CONFIG_KERNEL_NET_CLS_CGROUP=y,CONFIG_PACKAGE_btrfs-progs=y,CONFIG_PACKAGE_cgroupfs-mount=y, \
-  CONFIG_PACKAGE_containerd=y,CONFIG_PACKAGE_docker=y,CONFIG_PACKAGE_dockerd=y,CONFIG_PACKAGE_fdisk=y,CONFIG_PACKAGE_kmod-asn1-encoder=y,CONFIG_PACKAGE_kmod-br-netfilter=y, \
-  CONFIG_PACKAGE_kmod-crypto-rng=y,CONFIG_PACKAGE_kmod-crypto-sha256=y,CONFIG_PACKAGE_kmod-dax=y,CONFIG_PACKAGE_kmod-dm=y,CONFIG_PACKAGE_kmod-dummy=y,CONFIG_PACKAGE_kmod-fs-btrfs=y, \
-  CONFIG_PACKAGE_kmod-ikconfig=y,CONFIG_PACKAGE_kmod-keys-encrypted=y,CONFIG_PACKAGE_kmod-keys-trusted=y,CONFIG_PACKAGE_kmod-lib-raid6=y,CONFIG_PACKAGE_kmod-lib-xor=y, \
-  CONFIG_PACKAGE_kmod-lib-zstd=y,CONFIG_PACKAGE_kmod-nf-ipvs=y,CONFIG_PACKAGE_kmod-oid-registry=y,CONFIG_PACKAGE_kmod-random-core=y,CONFIG_PACKAGE_kmod-tpm=y, \
-  CONFIG_PACKAGE_kmod-veth=y,CONFIG_PACKAGE_libdevmapper=y,CONFIG_PACKAGE_liblzo=y,CONFIG_PACKAGE_libnetwork=y,CONFIG_PACKAGE_libseccomp=y,CONFIG_PACKAGE_luci-i18n-docker-zh-cn=y, \
-  CONFIG_PACKAGE_luci-i18n-dockerman-zh-cn=y,CONFIG_PACKAGE_luci-lib-docker=y,CONFIG_PACKAGE_mount-utils=y,CONFIG_PACKAGE_runc=y,CONFIG_PACKAGE_tini=y,CONFIG_PACKAGE_naiveproxy=y"
-  k=(${d//,/ })
-  for x in ${k[@]}; do \
-    sed -i "s#${x}##g" "${HOME_PATH}/build_logo/config.txt"; \
-  done
-  sed -i '/^$/d' "${HOME_PATH}/build_logo/config.txt"
+d="CONFIG_CGROUPFS_MOUNT_KERNEL_CGROUPS=y,CONFIG_DOCKER_CGROUP_OPTIONS=y,CONFIG_DOCKER_NET_MACVLAN=y,CONFIG_DOCKER_STO_EXT4=y, \
+CONFIG_KERNEL_CGROUP_DEVICE=y,CONFIG_KERNEL_CGROUP_FREEZER=y,CONFIG_KERNEL_CGROUP_NET_PRIO=y,CONFIG_KERNEL_EXT4_FS_POSIX_ACL=y,CONFIG_KERNEL_EXT4_FS_SECURITY=y, \
+CONFIG_KERNEL_FS_POSIX_ACL=y,CONFIG_KERNEL_NET_CLS_CGROUP=y,CONFIG_PACKAGE_btrfs-progs=y,CONFIG_PACKAGE_cgroupfs-mount=y, \
+CONFIG_PACKAGE_containerd=y,CONFIG_PACKAGE_docker=y,CONFIG_PACKAGE_dockerd=y,CONFIG_PACKAGE_fdisk=y,CONFIG_PACKAGE_kmod-asn1-encoder=y,CONFIG_PACKAGE_kmod-br-netfilter=y, \
+CONFIG_PACKAGE_kmod-crypto-rng=y,CONFIG_PACKAGE_kmod-crypto-sha256=y,CONFIG_PACKAGE_kmod-dax=y,CONFIG_PACKAGE_kmod-dm=y,CONFIG_PACKAGE_kmod-dummy=y,CONFIG_PACKAGE_kmod-fs-btrfs=y, \
+CONFIG_PACKAGE_kmod-ikconfig=y,CONFIG_PACKAGE_kmod-keys-encrypted=y,CONFIG_PACKAGE_kmod-keys-trusted=y,CONFIG_PACKAGE_kmod-lib-raid6=y,CONFIG_PACKAGE_kmod-lib-xor=y, \
+CONFIG_PACKAGE_kmod-lib-zstd=y,CONFIG_PACKAGE_kmod-nf-ipvs=y,CONFIG_PACKAGE_kmod-oid-registry=y,CONFIG_PACKAGE_kmod-random-core=y,CONFIG_PACKAGE_kmod-tpm=y, \
+CONFIG_PACKAGE_kmod-veth=y,CONFIG_PACKAGE_libdevmapper=y,CONFIG_PACKAGE_liblzo=y,CONFIG_PACKAGE_libnetwork=y,CONFIG_PACKAGE_libseccomp=y,CONFIG_PACKAGE_luci-i18n-docker-zh-cn=y, \
+CONFIG_PACKAGE_luci-i18n-dockerman-zh-cn=y,CONFIG_PACKAGE_luci-lib-docker=y,CONFIG_PACKAGE_mount-utils=y,CONFIG_PACKAGE_runc=y,CONFIG_PACKAGE_tini=y,CONFIG_PACKAGE_naiveproxy=y"
+k=(${d//,/ })
+for x in ${k[@]}; do \
+  sed -i "s#${x}##g" "${HOME_PATH}/build_logo/config.txt"; \
+done
+sed -i '/^$/d' "${HOME_PATH}/build_logo/config.txt"
 }
 
 
