@@ -567,9 +567,18 @@ rm -rf ${HOME_PATH}/files/{LICENSE,.*README}
 }
 
 
+function Diy_zdypartsh() {
+source $BUILD_PATH/$DIY_PART_SH
+cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
+mv -f uniq.conf feeds.conf.default
+sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
+./scripts/feeds update -a
+}
+
+
 function Diy_Publicarea() {
 cd ${HOME_PATH}
-# diy-part.sh文件的延伸
+# Diy_zdypartsh的延伸
 rm -rf ${HOME_PATH}/CHONGTU && touch ${HOME_PATH}/CHONGTU
 lan="/set network.\$1.netmask/a"
 ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |grep -v 'addr_offset' |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
@@ -880,15 +889,7 @@ echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
 echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
 echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
-}
 
-function Diy_zdypartsh() {
-source $BUILD_PATH/$DIY_PART_SH
-cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
-mv -f uniq.conf feeds.conf.default
-sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
-./scripts/feeds update -a
-Diy_Publicarea
 ./scripts/feeds update -a > /dev/null 2>&1
 sed -i 's/^#\(danshui.*\)/\1/' "feeds.conf.default"
 }
@@ -1969,6 +1970,7 @@ Diy_IPv6helper
 }
 
 function Diy_menu4() {
+Diy_zdypartsh
 Diy_Publicarea
 Diy_upgrade1
 }
