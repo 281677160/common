@@ -751,6 +751,7 @@ if [[ "${Mandatory_theme}" == "0" ]]; then
 elif [[ -n "${Mandatory_theme}" ]]; then
   zt_theme="luci-theme-${Mandatory_theme}"
   theme_name="$(find . -type d -name "${zt_theme}" |grep -v 'dir')"
+  echo "${theme_name}"
   if [[ -f "${HOME_PATH}/extra/luci/collections/luci/Makefile" ]] && [[ -n "${theme_name}" ]]; then
     zt2_theme="$(grep -E "luci-theme.*" "${HOME_PATH}/extra/luci/collections/luci/Makefile" |cut -d ' ' -f1)"
     [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/extra/luci/collections/luci/Makefile"
@@ -764,6 +765,7 @@ elif [[ -n "${Mandatory_theme}" ]]; then
     [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
   fi
   echo "替换必须主题完成,您现在的必选主题为：${zt_theme}"
+  echo "${zt2_theme}"
 fi
 
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
