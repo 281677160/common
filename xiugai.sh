@@ -235,7 +235,6 @@ fi
 
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
-cp -Rf `find ./ -maxdepth 1 -type d ! -path './openwrt' ! -path './'` openwrt
 cd ${HOME_PATH}
 
 LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
