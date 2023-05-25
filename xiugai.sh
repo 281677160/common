@@ -386,15 +386,16 @@ src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
 src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
 EOF
 
+echo "1"
 if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang
   cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
 fi
-
+echo "2"
 ./scripts/feeds update -a
 
 source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-
+echo "3"
 if [[ -d "feeds/passwall3" ]]; then
   w="$(ls -1 feeds/passwall3)" && r=`echo $w | sed 's/ /,/g'`
   p=(${r//,/ })
@@ -494,7 +495,7 @@ if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
   for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
 fi
 
-./scripts/feeds update danshui1 danshui2
+./scripts/feeds update -a
 }
 
 
