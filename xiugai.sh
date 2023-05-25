@@ -393,7 +393,6 @@ echo "拉取插件"
 ./scripts/feeds update -a
 
 ttydjso="$(find . -type f -name "luci-app-ttyd.json" |grep 'menu.d' |sed "s?.?${HOME_PATH}?")"
-echo "${ttydjso}"
 if [[ -n "${ttydjso}" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${ttydjso}"
 fi
@@ -746,33 +745,6 @@ CONFIG_PACKAGE_default-settings=y
 CONFIG_PACKAGE_default-settings-chn=y
 EOF
 
-if [[ "${Mandatory_theme}" == "0" ]]; then
-  echo "不进行必选主题修改"
-elif [[ -n "${Mandatory_theme}" ]]; then
-  if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
-    collections="${HOME_PATH}/extra/luci/collections/luci/Makefile"
-  else
-    collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
-  fi
-  luci_light="${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
-  if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
-    ybtheme="$(grep -Eo "luci-theme-.*" "${luci_light}" 2>&1 |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
-  else
-    ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" 2>&1 |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
-  fi
-  yhtheme="luci-theme-${Mandatory_theme}"
-  if [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
-    if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
-      sed -i "s/${ybtheme}/${yhtheme}/g" "${luci_light}"
-    else
-      sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
-    fi
-    echo "必选主题修改完成，必选主题为：${yhtheme}"
-  else
-    echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${ybtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
-  fi
-fi
-
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
    echo "Delete_unnecessary_items=${Delete_unnecessary_items}" >> ${GITHUB_ENV}
 fi
@@ -915,6 +887,33 @@ function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
 ./scripts/feeds install -a > /dev/null 2>&1
+
+if [[ "${Mandatory_theme}" == "0" ]]; then
+  echo "不进行必选主题修改"
+elif [[ -n "${Mandatory_theme}" ]]; then
+  if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
+    collections="${HOME_PATH}/extra/luci/collections/luci/Makefile"
+  else
+    collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+  fi
+  luci_light="${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
+  if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
+    ybtheme="$(grep -Eo "luci-theme-.*" "${luci_light}" 2>&1 |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
+  else
+    ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" 2>&1 |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
+  fi
+  yhtheme="luci-theme-${Mandatory_theme}"
+  if [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
+    if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
+      sed -i "s/${ybtheme}/${yhtheme}/g" "${luci_light}"
+    else
+      sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
+    fi
+    echo "必选主题修改完成，必选主题为：${yhtheme}"
+  else
+    echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${ybtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
+  fi
+fi
 
 # 正在执行插件语言修改
 if [[ "${LUCI_BANBEN}" == "2" ]]; then
