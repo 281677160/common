@@ -718,18 +718,45 @@ elif [[ -n "${Customized_Information}" ]]; then
   echo "个性签名[${Customized_Information}]增加完成"
 fi
 
-if [[ "${Kernel_partition_size}" == "0" ]] || [[ -z "${Kernel_partition_size}" ]]; then
-  echo "Kernel_partition_size=0" >> ${GITHUB_ENV}
+if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
+  echo "CONFIG_TARGET_KERNEL_PARTSIZE=${Kernel_partition_size}" >> "${BUILD_PATH}/${CONFIG_FILE}"
+  echo "内核分区设置完成，大小为：${Kernel_partition_size}MB"
+else
   echo "不进行,内核分区大小设置"
-elif [[ -n "${Kernel_partition_size}" ]]; then
-  echo "Kernel_partition_size=${Kernel_partition_size}" >> ${GITHUB_ENV}
 fi
 
-if [[ "${Root_partition_size}" == "0" ]] || [[ -z "${Root_partition_size}" ]]; then
-  echo "Root_partition_size=0" >> ${GITHUB_ENV}
+if [[ -n "${Root_partition_size}" ]] && [[ "${Root_partition_size}" != "0" ]]; then
+  echo "CONFIG_TARGET_ROOTFS_PARTSIZE=${Root_partition_size}" >> "${BUILD_PATH}/${CONFIG_FILE}"
+  echo "系统分区设置完成，大小为：${Root_partition_size}MB"
+else
   echo "不进行,系统分区大小设置"
-elif [[ -n "${Root_partition_size}" ]]; then
-  echo "Root_partition_size=${Root_partition_size}" >> ${GITHUB_ENV}
+fi
+
+cat >> "${BUILD_PATH}/${CONFIG_FILE}" <<-EOF
+CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_default-settings=y
+CONFIG_PACKAGE_default-settings-chn=y
+EOF
+
+echo "88"
+
+if [[ "${Mandatory_theme}" == "0" ]]; then
+  echo "不进行必选主题修改"
+elif [[ -n "${Mandatory_theme}" ]]; then
+  zt_theme="luci-theme-${Mandatory_theme}"
+  theme_name="$(find . -type d -name "luci-theme-${zt_theme}")"
+  if [[ -f "${HOME_PATH}/extra/luci/collections/luci/Makefile" ]] && [[ -n "${theme_name}" ]]; then
+    zt2_theme="$(grep -E "luci-theme.*" "${HOME_PATH}/extra/luci/collections/luci/Makefile" |cut -d ' ' -f1)"
+    [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/extra/luci/collections/luci/Makefile"
+  fi
+  if [[ -f "${HOME_PATH}/feeds/luci/collections/luci/Makefile" ]] && [[ -n "${theme_name}" ]]; then
+    zt2_theme="$(grep -E "luci-theme.*" "${HOME_PATH}/feeds/luci/collections/luci/Makefile" |cut -d ' ' -f1)"
+    [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+  fi
+  if [[ -f "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" ]] && [[ -n "${theme_name}" ]]; then
+    zt2_theme="$(grep -E "luci-theme.*" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" |cut -d ' ' -f1)"
+    [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
+  fi
 fi
 
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
@@ -895,7 +922,7 @@ cd ${HOME_PATH}
 # 正在执行插件语言修改
 Diy_Language
 
-./scripts/feeds install -a
+./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 
 if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]] && [[ ! "${ERCI}" == "1" ]]; then
@@ -904,50 +931,6 @@ if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]] && [[ ! "${ERCI}" == "1" ]
 fi
 
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
-
-
-cat >> "${HOME_PATH}/.config" <<-EOF
-CONFIG_PACKAGE_luci=y
-CONFIG_PACKAGE_default-settings=y
-CONFIG_PACKAGE_default-settings-chn=y
-EOF
-
-if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
-  echo "CONFIG_TARGET_KERNEL_PARTSIZE=${Kernel_partition_size}" >> ${HOME_PATH}/.config
-  echo "内核分区设置完成，大小为：${Kernel_partition_size}MB"
-fi
-
-if [[ -n "${Root_partition_size}" ]] && [[ "${Root_partition_size}" != "0" ]]; then
-  echo "CONFIG_TARGET_ROOTFS_PARTSIZE=${Root_partition_size}" >> ${HOME_PATH}/.config
-  echo "系统分区设置完成，大小为：${Root_partition_size}MB"
-fi
-
-if [[ "${Mandatory_theme}" == "0" ]]; then
-  echo "不进行必选主题修改"
-elif [[ -n "${Mandatory_theme}" ]]; then
-  if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
-    collections="${HOME_PATH}/extra/luci/collections/luci/Makefile"
-  else
-    collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
-  fi
-  luci_light="${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
-  if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
-    ybtheme="$(grep -Eo "luci-theme-.*" "${luci_light}" 2>&1 |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
-  else
-    ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" 2>&1 |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
-  fi
-  yhtheme="luci-theme-${Mandatory_theme}"
-  if [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
-    if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
-      sed -i "s/${ybtheme}/${yhtheme}/g" "${luci_light}"
-    else
-      sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
-    fi
-    echo "必选主题修改完成，必选主题为：${yhtheme}"
-  else
-    echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${ybtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
-  fi
-fi
 }
 
 
