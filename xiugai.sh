@@ -632,6 +632,7 @@ if [[ "${Enable_IPV6_function}" == "1" ]]; then
   echo "自动取消IPV4功能 和 爱快+OP双系统时,爱快接管IPV6功能"
   export Create_Ipv6_Lan="0"
   export Enable_IPV4_function="0"
+  echo "Create_Ipv6_Lan=0" >> ${GITHUB_ENV}
   echo "Enable_IPV4_function=0" >> ${GITHUB_ENV}
   echo "Enable_IPV6_function=1" >> ${GITHUB_ENV}
   echo "
@@ -650,8 +651,10 @@ fi
 
 if [[ "${Create_Ipv6_Lan}" == "1" ]]; then
   echo "爱快+OP双系统时,爱快接管IPV6,在OP创建IPV6的lan口接收IPV6信息"
-  echo "Create_Ipv6_Lan=1" >> ${GITHUB_ENV}
   export Enable_IPV4_function="0"
+  echo "Create_Ipv6_Lan=1" >> ${GITHUB_ENV}
+  echo "Enable_IPV4_function=0" >> ${GITHUB_ENV}
+  echo "Enable_IPV6_function=0" >> ${GITHUB_ENV}
   echo "
     uci delete network.lan.ip6assign
     uci set network.lan.delegate='0'
@@ -696,13 +699,6 @@ if [[ "${Enable_IPV4_function}" == "1" ]]; then
   " >> "${DEFAULT_PATH}"
 fi
 
-if [[ "${Mandatory_theme}" == "0" ]] || [[ -z "${Mandatory_theme}" ]]; then
-  echo "Mandatory_theme=0" >> ${GITHUB_ENV}
-  echo "不进行,替换bootstrap主题设置"
-elif [[ -n "${Mandatory_theme}" ]]; then
-  echo "Mandatory_theme=${Mandatory_theme}" >> ${GITHUB_ENV}
-fi
-
 if [[ "${Default_theme}" == "0" ]] || [[ -z "${Default_theme}" ]]; then
   echo "Default_theme=0" >> ${GITHUB_ENV}
   echo "不进行,默认主题设置"
@@ -741,7 +737,7 @@ EOF
 echo "88"
 
 if [[ "${Mandatory_theme}" == "0" ]]; then
-  echo "不进行必选主题修改"
+  echo "不进行,替换bootstrap主题设置"
 elif [[ -n "${Mandatory_theme}" ]]; then
   zt_theme="luci-theme-${Mandatory_theme}"
   theme_name="$(find . -type d -name "luci-theme-${zt_theme}")"
@@ -757,6 +753,7 @@ elif [[ -n "${Mandatory_theme}" ]]; then
     zt2_theme="$(grep -E "luci-theme.*" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" |cut -d ' ' -f1)"
     [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
   fi
+  echo "替换bootstrap完成,您现在的必选主题为：${zt_theme}"
 fi
 
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
