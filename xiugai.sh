@@ -747,25 +747,30 @@ CONFIG_PACKAGE_default-settings-chn=y
 EOF
 
 if [[ "${Mandatory_theme}" == "0" ]]; then
-  echo "不进行,替换bootstrap主题设置"
+  echo "不进行必选主题修改"
 elif [[ -n "${Mandatory_theme}" ]]; then
-  zt_theme="luci-theme-${Mandatory_theme}"
-  theme_name="$(find . -type d -name "${zt_theme}" |grep -v 'dir')"
-  echo "${theme_name}"
-  if [[ -f "${HOME_PATH}/extra/luci/collections/luci/Makefile" ]] && [[ -n "${theme_name}" ]]; then
-    zt2_theme="$(grep -Eo "luci-theme-.*" "${HOME_PATH}/extra/luci/collections/luci/Makefile" |cut -d ' ' -f1)"
-    [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/extra/luci/collections/luci/Makefile"
+  if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
+    collections="${HOME_PATH}/extra/luci/collections/luci/Makefile"
+  else
+    collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   fi
-  if [[ -f "${HOME_PATH}/feeds/luci/collections/luci/Makefile" ]] && [[ -n "${theme_name}" ]]; then
-    zt2_theme="$(grep -Eo "luci-theme-.*" "${HOME_PATH}/feeds/luci/collections/luci/Makefile" |cut -d ' ' -f1)"
-    [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+  luci_light="${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
+  if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
+    ybtheme="$(grep -Eo "luci-theme-.*" "${luci_light}" 2>&1 |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
+  else
+    ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" 2>&1 |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
   fi
-  if [[ -f "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" ]] && [[ -n "${theme_name}" ]]; then
-    zt2_theme="$(grep -Eo "luci-theme-.*" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" |cut -d ' ' -f1)"
-    [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
+  yhtheme="luci-theme-${Mandatory_theme}"
+  if [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
+    if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
+      sed -i "s/${ybtheme}/${yhtheme}/g" "${luci_light}"
+    else
+      sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
+    fi
+    echo "必选主题修改完成，必选主题为：${yhtheme}"
+  else
+    echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${ybtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
   fi
-  echo "替换必须主题完成,您现在的必选主题为：${zt_theme}"
-  echo "${zt2_theme}"
 fi
 
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
