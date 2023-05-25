@@ -386,6 +386,11 @@ src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
 src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
 EOF
 
+if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+  cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
+fi
+
 ./scripts/feeds update -a
 
 source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
@@ -977,11 +982,6 @@ fi
 function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
-
-if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
-  rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-  cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
-fi
 
 # 正在执行插件语言修改
 Diy_Language
