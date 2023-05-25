@@ -386,13 +386,15 @@ src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
 src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
 EOF
 
-echo "1"
+
+echo "2"
+./scripts/feeds update -a
+
+echo "8"
 if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang
   cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
 fi
-echo "2"
-./scripts/feeds update -a
 
 source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 echo "3"
