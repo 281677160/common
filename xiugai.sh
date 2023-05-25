@@ -282,6 +282,7 @@ if [[ -n "${ZZZ_PATH}" ]]; then
     cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
   fi
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+  sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 
 cat >> "${ZZZ_PATH}" <<-EOF
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
@@ -358,12 +359,6 @@ XWRT|OFFICIAL)
   fi
 ;;
 esac
-echo "6"
-ttydjso="$(find . -type f -name "luci-app-ttyd.json" |grep 'menu.d' |sed "s?.?${HOME_PATH}?")"
-echo "${ttydjso}"
-if [[ -n "${ttydjso}" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${ttydjso}"
-fi
 echo "7"
 if [[ `grep -c "net.netfilter.nf_conntrack_max" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
   echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
@@ -390,6 +385,12 @@ EOF
 echo "2"
 ./scripts/feeds update -a
 
+ttydjso="$(find . -type f -name "luci-app-ttyd.json" |grep 'menu.d' |sed "s?.?${HOME_PATH}?")"
+echo "${ttydjso}"
+if [[ -n "${ttydjso}" ]]; then
+  cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${ttydjso}"
+fi
+
 echo "8"
 if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang
@@ -406,9 +407,13 @@ if [[ -d "feeds/passwall3" ]]; then
   done
 fi
 
-if [[ -d "feeds/danshui1/relevance/shadowsocks-libev" ]]; then
-  rm -rf ./feeds/packages/net/shadowsocks-libev
-  rm -rf ./feeds/packages/net/kcptun
+if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/shadowsocks-libev" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+  mv -f feeds/danshui1/relevance/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+fi
+if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/kcptun" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
+  mv -f ${HOME_PATH}/feeds/danshui1/relevance/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
 fi
 
 z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
@@ -545,10 +550,6 @@ cd ${HOME_PATH}
 function Diy_files() {
 cd ${HOME_PATH}
 echo "正在执行：files大法，设置固件无烦恼"
-if [[ -n "${BENDI_VERSION}" ]]; then
-  cp -Rf ${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/* ${BUILD_PATH}/
-  sudo chmod -R +x ${BUILD_PATH}
-fi
 
 if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
   find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
@@ -574,7 +575,7 @@ lan="/set network.\$1.netmask/a"
 ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |grep -v 'addr_offset' |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 netmas="$(grep "netmask:-" "${GENE_PATH}" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
 opname="$(grep "hostname=" "${GENE_PATH}" |grep -v '\$hostname' |cut -d "'" -f2)"
-if [[ `grep -c 'set network.${1}6.device' "${GENE_PATH}"` -ge '1' ]]; then
+if [[ -n "$(grep "set network.\${1}6.device" "${GENE_PATH}")" ]]; then
   ifnamee="uci set network.ipv6.device='@lan'"
   set_add="uci add_list firewall.@zone[0].network='ipv6'"
 else
@@ -587,130 +588,44 @@ if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07
 fi
 
 # AdGuardHome内核
-if [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
+if [[ "${AdGuardHome_Core}" == "1" ]]; then
   echo "AdGuardHome_Core=1" >> ${GITHUB_ENV}
-elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${AdGuardHome_Core}" == "0" ]]; then
-  [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
-  echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
-elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
-  [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
-  echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
 else
   [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
   echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
 fi
 
 # openclash内核
-if [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "1" ]]; then
+if [[ "${OpenClash_Core}" == "1" ]]; then
   echo "OpenClash_Core=1" >> ${GITHUB_ENV}
-elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "2" ]]; then
+elif [[ "${OpenClash_Core}" == "2" ]]; then
   echo "OpenClash_Core=2" >> ${GITHUB_ENV}
-elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "0" ]]; then
-  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
-  [[ -d "${HOME_PATH}/files/etc/openclash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash
-elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "1" ]]; then
-  [[ -d "${HOME_PATH}/files/etc/openclash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash
-  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
-  echo "TIME r \"因没开作者收集的插件包,没OpenClash插件,对openclash的分支选择无效\"" >> ${HOME_PATH}/CHONGTU
-elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_Core}" == "2" ]]; then
-  [[ -d "${HOME_PATH}/files/etc/openclash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash
-  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
-  echo "TIME r \"因没开作者收集的插件包,没OpenClash插件,对openclash的分支选择无效\"" >> ${HOME_PATH}/CHONGTU
 else
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
   [[ -d "${HOME_PATH}/files/etc/openclash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash
 fi
 
-if [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_branch}" == "0" ]]; then
-  OpenClash_branch="0"
-elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ -z "${OpenClash_branch}" ]]; then
-  OpenClash_branch="0"
-elif [[ ! "${COLLECTED_PACKAGES}" == "true" ]]; then
-  OpenClash_branch="0"
-elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_branch}" == "master" ]]; then
-  OpenClash_branch="master"
+# openclash
+if [[ "${OpenClash_branch}" == "master" ]]; then
+  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
   if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
     sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
   fi
-elif [[ "${COLLECTED_PACKAGES}" == "true" ]] && [[ "${OpenClash_branch}" == "dev" ]]; then
-  OpenClash_branch="dev"
+elif [[ "${OpenClash_branch}" == "dev" ]]; then
+  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
   if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
     sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
   fi
-fi
-
-uci_openclash="0"
-sj_clash=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
-if [[ -f "${HOME_PATH}/package/luci-app-openclash/sj_clash" ]]; then
-  t1="$(cat ${HOME_PATH}/package/luci-app-openclash/sj_clash)"
 else
-  t1="1679053605"
-fi
-
-t2=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
-SECONDS=$((t2-t1))
-HOUR=$(( $SECONDS/3600 ))
-if [[ "${HOUR}" -lt "12" ]] && [[ -f "${HOME_PATH}/files/etc/openclash/core/clash" ]]; then
-  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
-  wuxuxiazai="1"
-else
-  echo "OpenClash_Core=${OpenClash_Core}" >> ${GITHUB_ENV}
-  wuxuxiazai="0"
-fi
-
-if [[ -f "${HOME_PATH}/package/luci-app-openclash/sj_branch" ]]; then
-  clash_branch="$(cat ${HOME_PATH}/package/luci-app-openclash/sj_branch)"
-else
-  clash_branch="${OpenClash_branch}"
-fi
-
-if [[ "${OpenClash_branch}" == "0" ]]; then
-  find . -type d -name 'luci-app-openclash' | xargs -i rm -rf {}
-  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
-  if [[ -n "$(grep "luci-app-openclash" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's/luci-app-openclash //' ${HOME_PATH}/include/target.mk
-  fi
-  echo "不需要OpenClash插件"
-elif [[ "${wuxuxiazai}" == "1" ]] && [[ -f "${HOME_PATH}/package/luci-app-openclash/sj_branch" ]]; then
-  if [[ -z "$(grep "luci-app-openclash" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g' "${HOME_PATH}/include/target.mk"
-  fi
-else
-  find . -type d -name 'luci-app-openclash' | xargs -i rm -rf {}
-  if [[ -z "$(grep "luci-app-openclash" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g' "${HOME_PATH}/include/target.mk"
-  fi
-  git clone -b "${OpenClash_branch}" --depth 1 https://github.com/vernesong/OpenClash ${HOME_PATH}/package/luci-app-openclash
-  if [[ $? -ne 0 ]]; then
-    echo
-    echo "luci-app-openclash下载失败"
-  else
-    echo "${OpenClash_branch}" > "${HOME_PATH}/package/luci-app-openclash/sj_branch"
-    echo "${sj_clash}" > "${HOME_PATH}/package/luci-app-openclash/sj_clash"
-    uci_openclash="1"
-    echo
-    echo "正在使用"${OpenClash_branch}"分支的openclash"
+  sed -i '/OpenClash/d' "feeds.conf.default"
+  sed -i '/luci-app-openclash/d' "${BUILD_PATH}/${CONFIG_FILE}"
+  find . -type d -name 'luci-app-openclash' -o -name 'OpenClash' | xargs -i rm -rf {}
+  if [[ -n "$(grep "luci-app-openclash" "${HOME_PATH}/include/target.mk")" ]]; then
+    sed -i "s?luci-app-openclash??g" "include/target.mk"
   fi
 fi
-
 echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 
-if [[ "${uci_openclash}" == "1" ]]; then
-  uci_path="${HOME_PATH}/package/luci-app-openclash/luci-app-openclash/root/etc/uci-defaults/luci-openclash"
-  if [[ `grep -c "uci get openclash.config.enable" "${uci_path}"` -eq '0' ]]; then
-    sed -i '/exit 0/d' "${uci_path}"
-    sed -i '/uci -q set openclash.config.enable/d' "${uci_path}"
-    sed -i '/uci -q commit openclash/d' "${uci_path}"
-
-cat >>"${uci_path}" <<-EOF
-if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then
-  uci -q set openclash.config.enable=0
-  uci -q commit openclash
-fi
-exit 0
-EOF
-  fi
-fi
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
   echo "固件加入IPV6功能"
@@ -730,8 +645,6 @@ if [[ "${Enable_IPV6_function}" == "1" ]]; then
     uci set dhcp.@dnsmasq[0].nonwildcard=0
     uci set dhcp.@dnsmasq[0].filter_aaaa='0'
     uci commit dhcp
-    /etc/init.d/dnsmasq restart
-    /etc/init.d/odhcpd restart
   " >> "${DEFAULT_PATH}"
 fi
 
@@ -759,9 +672,6 @@ if [[ "${Create_Ipv6_Lan}" == "1" ]]; then
     uci commit network
     ${set_add}
     uci commit firewall
-    /etc/init.d/network restart
-    /etc/init.d/dnsmasq restart
-    /etc/init.d/odhcpd restart
   " >> "${DEFAULT_PATH}"
 fi
 
@@ -783,9 +693,6 @@ if [[ "${Enable_IPV4_function}" == "1" ]]; then
     uci delete dhcp.lan.ndp
     uci set dhcp.@dnsmasq[0].filter_aaaa='1'
     uci commit dhcp
-    /etc/init.d/network restart
-    /etc/init.d/dnsmasq restart
-    /etc/init.d/odhcpd restart
   " >> "${DEFAULT_PATH}"
 fi
 
@@ -953,12 +860,11 @@ echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 
 function Diy_zdypartsh() {
 source $BUILD_PATH/$DIY_PART_SH
-
-Diy_Publicarea
-
 cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
 mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
+./scripts/feeds update -a
+Diy_Publicarea
 ./scripts/feeds update -a
 sed -i 's/^#\(danshui.*\)/\1/' "feeds.conf.default"
 }
@@ -999,7 +905,7 @@ fi
 
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 
-sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
+
 cat >> "${HOME_PATH}/.config" <<-EOF
 CONFIG_PACKAGE_luci=y
 CONFIG_PACKAGE_default-settings=y
