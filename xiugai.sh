@@ -236,169 +236,32 @@ fi
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${GITHUB_WORKSPACE}/openwrt
-git pull
 
 LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
 if [[ -n "${LUCI_CHECKUT}" ]]; then
   git checkout ${LUCI_CHECKUT}
   git switch -c ${LUCI_CHECKUT}
 fi
-export LUCI_CHECKUT="$(echo ${LUCI_CHECKUT} |sed 's/v//')"
 
-case "${COLLECTED_PACKAGES}" in
-true)
-# 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
-sed -i '/danshui/d' "feeds.conf.default"
-sed -i '/helloworld/d' "feeds.conf.default"
-sed -i '/passwall/d' "feeds.conf.default"
+./scripts/feeds update luci
 
-cat >>"feeds.conf.default" <<-EOF
-src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
-src-git helloworld https://github.com/fw876/helloworld.git
-src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci
-src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
-src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
-EOF
-
-sed -i '/^#/d' "${HOME_PATH}/feeds.conf.default"
-sed -i '/^$/d' "${HOME_PATH}/feeds.conf.default"
-;;
-esac
-
-./scripts/feeds clean
-./scripts/feeds update -a
-
-amba4="$(find . -type d -name 'luci-app-samba4')"
-autosam="$(find . -type d -name 'autosamba')"
-if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
-  for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
-fi
-
-case "${COLLECTED_PACKAGES}" in
-true)
-
-if [[ -d "feeds/passwall3" ]]; then
-  w="$(ls -1 feeds/passwall3)" && r=`echo $w | sed 's/ /,/g'`
-  p=(${r//,/ })
-  for i in ${p[@]}; do \
-    find . -type d -name "${i}" |grep -v 'passwall' |xargs -i rm -rf {}; \
-  done
-fi
-
-if [[ -d "feeds/danshui1/relevance/shadowsocks-libev" ]]; then
-  rm -rf ./feeds/packages/net/shadowsocks-libev
-  rm -rf ./feeds/packages/net/kcptun
-fi
-
-if [[ "${SOURCE_CODE}" == "COOLSNOWWOLF" ]]; then
-  s="luci-app-netdata,netdata,luci-app-diskman,mentohust"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
-  done
-elif [[ "${SOURCE_CODE}" == "LIENOL" ]]; then
-  s="luci-app-dockerman"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
-  done
-elif [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
-  s="luci-app-cifs"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
-  done
-elif [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
-  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
-  done
- elif [[ "${SOURCE_CODE}" == "XWRT" ]]; then
-  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
-  done
-fi
-
-z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
-luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
-luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
-luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
-luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
-luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb"
-t=(${z//,/ })
-for x in ${t[@]}; do \
-  find . -type d -name "${x}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
-done
-;;
-*)
-  echo "没有启用作者收集的插件源包"
-;;
-esac
-
-if [[ `grep -c "net.netfilter.nf_conntrack_max" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
-  echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
-else
-  sed -i 's/net.netfilter.nf_conntrack_max=.*/net.netfilter.nf_conntrack_max=165535/g' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
-fi
-
-if [[ `grep -c "min-cache-ttl=" ${HOME_PATH}/package/network/services/dnsmasq/files/dnsmasq.conf` -eq '0' ]]; then
-  echo -e "#max-ttl=600\nneg-ttl=600\nmin-cache-ttl=3600" >> ${HOME_PATH}/package/network/services/dnsmasq/files/dnsmasq.conf
-fi
-}
-
-
-function Diy_Notice() {
-TIME r ""
-TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
-TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
-if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP、清空密码、还原出厂设置和在线更新固件操作"
-else
-  TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作"
-fi
-TIME r ""
-TIME g "CPU性能：8370C > 8272CL > 8171M > E5系列"
-TIME r ""
-}
-
-
-function Diy_wenjian() {
-cd ${HOME_PATH}
-echo "正在执行：源码微调,请耐心等待..."
-# 拉取源码之后调整源码和增加中文LUCI
-
-apptions="$(find . -type d -name "applications" |grep 'luci')"
-if [[ `find "${apptions}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
-  if [[ -z "$(grep danshui2 ${HOME_PATH}/feeds.conf.default)" ]]; then
-    echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "${HOME_PATH}/feeds.conf.default"
-  fi
+App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
+if [[ `find "${App_path}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
   LUCI_BANBEN="2"
+  theme_pkg="Theme2"
+  echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
 else
-  if [[ -z "$(grep danshui2 ${HOME_PATH}/feeds.conf.default)" ]]; then
-    echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "${HOME_PATH}/feeds.conf.default"
-  fi
   LUCI_BANBEN="1"
+  theme_pkg="Theme1"
+  echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
 fi
 
-settingss="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
-if [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
+Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
+if [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
   [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
-elif [[ ! -d "${settingss}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
+elif [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
-fi
-
-if [[ -d "${HOME_PATH}/package/emortal" ]]; then
-  if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
-  fi
-else
-  if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
-  fi
 fi
 
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
@@ -430,6 +293,39 @@ echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
 EOF
 fi
 
+cp -Rf ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
+sudo chmod +x "${DEFAULT_PATH}"
+sed -i "s?112233?${SOURCE} - ${LUCI_EDITION}?g" "${DEFAULT_PATH}" > /dev/null 2>&1
+sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
+if [[ `grep -Eoc "admin:.*" ${FILES_PATH}/etc/shadow` -eq '1' ]]; then
+  sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
+fi
+
+cp -Rf ${HOME_PATH}/build/common/custom/Postapplication "${FILES_PATH}/etc/init.d/Postapplication"
+sudo chmod +x "${FILES_PATH}/etc/init.d/Postapplication"
+
+cp -Rf ${HOME_PATH}/build/common/custom/networkdetection "${FILES_PATH}/etc/networkdetection"
+sudo chmod +x "${FILES_PATH}/etc/networkdetection"
+
+[[ ! -d "${FILES_PATH}/usr/bin" ]] && mkdir -p ${FILES_PATH}/usr/bin
+cp -Rf ${HOME_PATH}/build/common/custom/openwrt.sh "${FILES_PATH}/usr/bin/openwrt"
+sudo chmod +x "${FILES_PATH}/usr/bin/openwrt"
+
+echo '#!/bin/bash' > "${DELETE}"
+sudo chmod +x "${DELETE}"
+
+sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${HOME_PATH}/target/linux/armvirt/Makefile"
+sed -i '/DISTRIB_SOURCECODE/d' "${REPAIR_PATH}"
+echo -e "\nDISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+
+# 给固件保留配置更新固件的保留项目
+if [[ -z "$(grep "background" ${KEEPD_PATH})" ]]; then
+cat >>"${KEEPD_PATH}" <<-EOF
+/etc/config/AdGuardHome.yaml
+/www/luci-static/argon/background/
+EOF
+fi
+
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
   if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
@@ -450,95 +346,176 @@ XWRT|OFFICIAL)
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi luci-lib-fs ?g' "${HOME_PATH}/include/target.mk"
   fi
 ;;
+*)
+  if [[ -d "${HOME_PATH}/package/emortal" ]]; then
+    if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
+      sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
+    fi
+  else
+    if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
+      sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
+    fi
+  fi
+;;
 esac
 
-ttydjso="$({ find |grep -E "luci-app-ttyd\.json" |grep -v 'dir' |grep 'menu.d' |cut -d '/' -f2-; } 2>"/dev/null")"
+ttydjso="$({ find "${App_path}" -type f -name "luci-app-ttyd.json" |grep 'menu.d'; } 2>"/dev/null")"
+echo "${ttydjso}"
 if [[ -n "${ttydjso}" ]]; then
-  j="${HOME_PATH}/${ttydjso}"
-  [[ -n "$(grep "title" "$j")" ]] && cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${j}"
+  cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${ttydjso}"
 fi
 
-rm -rf "${DEFAULT_PATH}" && cp ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
-sudo chmod +x "${DEFAULT_PATH}"
-sed -i "s?112233?${SOURCE} - ${LUCI_EDITION}?g" "${DEFAULT_PATH}" > /dev/null 2>&1
-sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
-if [[ `grep -Eoc "admin:.*" ${FILES_PATH}/etc/shadow` -eq '1' ]]; then
-  sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
+if [[ `grep -c "net.netfilter.nf_conntrack_max" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
+  echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
+else
+  sed -i 's/net.netfilter.nf_conntrack_max=.*/net.netfilter.nf_conntrack_max=165535/g' ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 fi
 
-rm -rf "${FILES_PATH}/etc/init.d/Postapplication"
-cp ${HOME_PATH}/build/common/custom/Postapplication "${FILES_PATH}/etc/init.d/Postapplication"
-sudo chmod +x "${FILES_PATH}/etc/init.d/Postapplication"
+if [[ `grep -c "min-cache-ttl=" ${HOME_PATH}/package/network/services/dnsmasq/files/dnsmasq.conf` -eq '0' ]]; then
+  echo -e "#max-ttl=600\nneg-ttl=600\nmin-cache-ttl=3600" >> ${HOME_PATH}/package/network/services/dnsmasq/files/dnsmasq.conf
+fi
 
-rm -rf "${FILES_PATH}/etc/networkdetection"
-cp ${HOME_PATH}/build/common/custom/networkdetection "${FILES_PATH}/etc/networkdetection"
-sudo chmod +x "${FILES_PATH}/etc/networkdetection"
-
-[[ ! -d "${FILES_PATH}/usr/bin" ]] && mkdir -p ${FILES_PATH}/usr/bin
-cp ${HOME_PATH}/build/common/custom/openwrt.sh "${FILES_PATH}/usr/bin/openwrt"
-sudo chmod +x "${FILES_PATH}/usr/bin/openwrt"
-
-rm -rf "${DELETE}"
-touch "${DELETE}"
-sudo chmod +x "${DELETE}"
-
-sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${HOME_PATH}/target/linux/armvirt/Makefile"
-sed -i '/DISTRIB_SOURCECODE/d' "${REPAIR_PATH}"
-echo -e "\nDISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-
-
-# 给固件保留配置更新固件的保留项目
-if [[ -z "$(grep "background" ${KEEPD_PATH})" ]]; then
-cat >>"${KEEPD_PATH}" <<-EOF
-/etc/config/AdGuardHome.yaml
-/www/luci-static/argon/background/
+# 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
+sed -i '/danshui/d; /helloworld/d; /passwall/d' "feeds.conf.default"
+cat >>"feeds.conf.default" <<-EOF
+src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
+src-git danshui2 https://github.com/281677160/openwrt-package.git;${theme_pkg}
+src-git helloworld https://github.com/fw876/helloworld.git
+src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci
+src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
+src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
 EOF
+
+./scripts/feeds update -a
+
+source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+
+if [[ -d "feeds/passwall3" ]]; then
+  w="$(ls -1 feeds/passwall3)" && r=`echo $w | sed 's/ /,/g'`
+  p=(${r//,/ })
+  for i in ${p[@]}; do \
+    find . -type d -name "${i}" |grep -v 'passwall' |xargs -i rm -rf {}; \
+  done
 fi
+
+if [[ -d "feeds/danshui1/relevance/shadowsocks-libev" ]]; then
+  rm -rf ./feeds/packages/net/shadowsocks-libev
+  rm -rf ./feeds/packages/net/kcptun
+fi
+
+z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
+luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
+luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
+luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
+luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
+luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb"
+t=(${z//,/ })
+for x in ${t[@]}; do \
+  find . -type d -name "${x}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+done
+
+case "${SOURCE_CODE}" in
+COOLSNOWWOLF)
+  s="luci-app-netdata,netdata,luci-app-diskman,mentohust"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+  done
+  
+  if [[ "${GL_BRANCH}" == "lede" ]]; then
+    find . -type d -name "upx" -o -name "ucl" -o -name "ddns-scripts_aliyun" -o -name "ddns-scripts_dnspod" |grep 'danshui' |xargs -i rm -rf {}
+    find . -type d -name "r8168" -o -name "r8101" -o -name "r8125" |grep 'danshui' |xargs -i rm -rf {}
+    if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
+      for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
+        curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
+      done
+    fi
+  elif [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
+    find . -type d -name 'luci-app-unblockneteasemusic' | xargs -i rm -rf {}
+    if [[ -d "${HOME_PATH}/feeds/packages/utils/docker-ce" ]]; then
+      find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
+    fi
+    sed -i "s?DISTRIB_REVISION=.*?DISTRIB_REVISION='\ \/ ${SOURCE} - ${LUCI_EDITION}'?g" "${REPAIR_PATH}"
+  fi
+;;
+LIENOL)
+  s="luci-app-dockerman"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+  done
+  
+  find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" |grep 'other' |xargs -i rm -rf {}
+  if [[ "${REPO_BRANCH}" == "master" ]]; then
+    find . -type d -name "automount" |grep 'other' |xargs -i rm -rf {}
+  elif [[ "${REPO_BRANCH}" =~ (19.07|19.07-test) ]]; then
+    find . -type d -name "luci-app-vssr" -o -name "lua-maxminddb" -o -name "automount" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
+    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
+    find . -type d -name "automount" |grep 'danshui' |xargs -i rm -rf {}
+  fi
+;;
+IMMORTALWRT)
+  s="luci-app-cifs"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+  done
+;;
+OFFICIAL)
+  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+  done
+  
+  if [[ "${REPO_BRANCH}" == "19.07" ]]; then
+    find . -type d -name "luci-app-natter" -o -name "natter" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
+    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  fi
+;;
+XWRT)
+  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
+  done
+;;
+esac
+
+amba4="$(find . -type d -name 'luci-app-samba4')"
+autosam="$(find . -type d -name 'autosamba')"
+if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
+  for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
+fi
+
+./scripts/feeds update danshui1 danshui2
+}
+
+
+function Diy_Notice() {
+TIME r ""
+TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
+TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
+if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
+  TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP、清空密码、还原出厂设置和在线更新固件操作"
+else
+  TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作"
+fi
+TIME r ""
+TIME g "CPU性能：8370C > 8272CL > 8171M > E5系列"
+TIME r ""
 }
 
 
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
-case "${GL_BRANCH}" in
-lede)
-find . -type d -name "upx" -o -name "ucl" -o -name "ddns-scripts_aliyun" -o -name "ddns-scripts_dnspod" |grep 'danshui' |xargs -i rm -rf {}
-find . -type d -name "r8168" -o -name "r8101" -o -name "r8125" |grep 'danshui' |xargs -i rm -rf {}
-if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
-  for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
-    curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
-  done
-fi
-;;
-lede_ax1800)
-  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-  find . -type d -name 'luci-app-unblockneteasemusic' | xargs -i rm -rf {}
-  if [[ -d "${HOME_PATH}/feeds/packages/utils/docker-ce" ]]; then
-    find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
-  fi
-  sed -i "s?DISTRIB_REVISION=.*?DISTRIB_REVISION='\ \/ ${SOURCE} - ${LUCI_EDITION}'?g" "${REPAIR_PATH}"
-;;
-esac
 }
 
 
 function Diy_LIENOL() {
 cd ${HOME_PATH}
-case "${REPO_BRANCH}" in
-master)
-  find . -type d -name "automount" |grep 'other' |xargs -i rm -rf {}
-;;
-19.07|19.07-test)
-  find . -type d -name "luci-app-vssr" -o -name "lua-maxminddb" -o -name "automount" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
-  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-;;
-21.02)
-  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-  find . -type d -name "automount" |grep 'danshui' |xargs -i rm -rf {}
-;;
-esac
 
-find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" |grep 'other' |xargs -i rm -rf {}
 }
 
 
@@ -549,31 +526,13 @@ cd ${HOME_PATH}
 
 function Diy_XWRT() {
 cd ${HOME_PATH}
-case "${REPO_BRANCH}" in
-21.10)
-  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-;;
-esac
 }
 
 
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
-case "${REPO_BRANCH}" in
-openwrt-21.02)
-  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-;;
-openwrt-19.07)
-  find . -type d -name "luci-app-natter" -o -name "natter" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
-  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-  rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-;;
-openwrt-22.03)
-  rm -rf ${HOME_PATH}/feeds/packages/net/apinger
-  svn export https://github.com/openwrt/packages/trunk/net/apinger ${HOME_PATH}/feeds/packages/net/apinger
-;;
-esac
 }
+
 
 function Diy_files() {
 cd ${HOME_PATH}
@@ -596,16 +555,6 @@ if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
 fi
 sudo chmod -R 775 ${HOME_PATH}/files
 rm -rf ${HOME_PATH}/files/{LICENSE,.*README}
-}
-
-
-function Diy_zdypartsh() {
-cat >"${HOME_PATH}/diy_pa_sh" <<-EOF
-$(cat "$BUILD_PATH/$DIY_PART_SH" |grep '\egrep' |grep '\-rl')
-EOF
-sudo chmod -R 775 ${HOME_PATH}/diy_pa_sh
-sed -i '/egrep ".*" -rl .\//d' $BUILD_PATH/$DIY_PART_SH
-source $BUILD_PATH/$DIY_PART_SH
 }
 
 
@@ -994,6 +943,18 @@ echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 }
 
+function Diy_zdypartsh() {
+source $BUILD_PATH/$DIY_PART_SH
+
+Diy_Publicarea
+
+cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
+mv -f uniq.conf feeds.conf.default
+sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
+./scripts/feeds update -a
+sed -i 's/^#\(danshui.*\)/\1/' "feeds.conf.default"
+}
+
 function Diy_upgrade1() {
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
   cd ${HOME_PATH}
@@ -1016,7 +977,6 @@ fi
 function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
-./scripts/feeds update -a
 
 if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/golang
@@ -1025,12 +985,6 @@ fi
 
 # 正在执行插件语言修改
 Diy_Language
-
-# 正在执行插件菜单修改
-if [[ -f "${HOME_PATH}/diy_pa_sh" ]] && [[ ! "${ERCI}" == "1" ]]; then
-  source ${HOME_PATH}/diy_pa_sh
-  rm -rf ${HOME_PATH}/diy_pa_sh
-fi
 
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
