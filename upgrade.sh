@@ -6,13 +6,12 @@
 
 function Diy_Part1() {
 	find . -type d -name 'luci-app-autoupdate' | xargs -i rm -rf {}
-	echo "正在执行：给源码增加定时更新固件插件和设置插件和ttyd成默认自选"
-	git clone -b main https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate
+	git clone -b main https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate 2>/dev/null
 	if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
 		sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
 	fi
 	if [[ -d "${HOME_PATH}/package/luci-app-autoupdate" ]]; then
-		echo "增加定时更新固件的插件成功"
+		echo "增加定时更新固件的插件完成"
 	else
 		echo "插件源码下载失败"
 	fi
