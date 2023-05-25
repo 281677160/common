@@ -386,7 +386,7 @@ src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
 EOF
 
 
-echo "拉取feeds"
+echo "拉取插件"
 ./scripts/feeds update -a
 
 ttydjso="$(find . -type f -name "luci-app-ttyd.json" |grep 'menu.d' |sed "s?.?${HOME_PATH}?")"
