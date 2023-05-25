@@ -181,12 +181,8 @@ echo "KEEP_LATEST=${KEEP_LATEST}" >> ${GITHUB_ENV}
 echo "WAREHOUSE_MAN=${GIT_REPOSITORY##*/}" >> ${GITHUB_ENV}
 echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
+echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
 echo "DIY_WORK=${DIY_WORK}" >> ${GITHUB_ENV}
-if [[ -n "${BENDI_VERSION}" ]]; then
-  echo "SOURCE_OWNER=\"${SOURCE_OWNER}\"" >> ${GITHUB_ENV}
-else
-  echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
-fi
 echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}" >> ${GITHUB_ENV}
 echo "FILES_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
 echo "REPAIR_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
@@ -203,9 +199,11 @@ echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 
 
 if [[ -n "${BENDI_VERSION}" ]]; then
-  export GIT_BUILD=operates/${FOLDER_NAME}
+  GIT_BUILD=operates/${FOLDER_NAME}
+  sed -i 's?=?=\"?g' ${GITHUB_ENV}
+  sed -i '/=/ s/$/&\"/' ${GITHUB_ENV}
 else
-  export GIT_BUILD=build/${FOLDER_NAME}
+  GIT_BUILD=build/${FOLDER_NAME}
 fi
 
 if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/seed/${CONFIG_FILE}" 2>/dev/null)" ]; then
