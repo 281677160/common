@@ -64,7 +64,7 @@ else
   KEEP_LATEST="${KEEP_LATEST}"
 fi
 
-if [[ `echo "${CPU_SELECTION}" |grep -ic 'E5'` -eq '1' ]]; then
+if [[ `echo "${CPU_SELECTION}" |grep -ic 'E5\|默认\|false'` -eq '1' ]]; then
   CPU_SELECTION="E5"
 elif [[ `echo "${CPU_SELECTION}" |grep -c '8370'` -eq '1' ]]; then
   CPU_SELECTION="8370"
