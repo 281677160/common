@@ -895,7 +895,7 @@ cd ${HOME_PATH}
 # 正在执行插件语言修改
 Diy_Language
 
-./scripts/feeds install -a > /dev/null 2>&1
+./scripts/feeds install -a
 ./scripts/feeds install -a
 
 if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]] && [[ ! "${ERCI}" == "1" ]]; then
