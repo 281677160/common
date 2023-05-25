@@ -243,7 +243,7 @@ if [[ -n "${LUCI_CHECKUT}" ]]; then
   git switch -c ${LUCI_CHECKUT}
 fi
 
-./scripts/feeds update luci
+./scripts/feeds update luci > /dev/null 2>&1
 echo "1"
 App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
 if [[ `find "${App_path}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
@@ -282,7 +282,7 @@ if [[ -n "${ZZZ_PATH}" ]]; then
     cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
   fi
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-  sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
+  [[ -n "$(grep "openwrt_banner" "${ZZZ_PATH}")" ]] && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 
 cat >> "${ZZZ_PATH}" <<-EOF
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
@@ -502,7 +502,7 @@ if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
   for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
 fi
 
-./scripts/feeds update -a
+./scripts/feeds update -a > /dev/null 2>&1
 }
 
 
@@ -889,7 +889,7 @@ mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
 ./scripts/feeds update -a
 Diy_Publicarea
-./scripts/feeds update -a
+./scripts/feeds update -a > /dev/null 2>&1
 sed -i 's/^#\(danshui.*\)/\1/' "feeds.conf.default"
 }
 
