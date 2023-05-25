@@ -236,6 +236,7 @@ fi
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${GITHUB_WORKSPACE}/openwrt
+cp -Rf ${GITHUB_WORKSPACE}/build 
 
 LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
 if [[ -n "${LUCI_CHECKUT}" ]]; then
@@ -2081,7 +2082,6 @@ Diy_IPv6helper
 }
 
 function Diy_menu3() {
-Diy_wenjian
 Diy_${SOURCE_CODE}
 Diy_upgrade1
 }
