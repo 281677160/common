@@ -235,8 +235,7 @@ fi
 
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
-cd ${GITHUB_WORKSPACE}/openwrt
-cp -Rf ${GITHUB_WORKSPACE}/build 
+cd ${HOME_PATH}
 
 LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
 if [[ -n "${LUCI_CHECKUT}" ]]; then
