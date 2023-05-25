@@ -358,13 +358,13 @@ XWRT|OFFICIAL)
   fi
 ;;
 esac
-echo "1"
-ttydjso="$({ find "${App_path}" -type f -name "luci-app-ttyd.json" |grep 'menu.d'; } 2>"/dev/null")"
+echo "6"
+ttydjso="$(find . -type f -name "luci-app-ttyd.json" |grep 'menu.d' |sed "s?.?${HOME_PATH}?")"
 echo "${ttydjso}"
 if [[ -n "${ttydjso}" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${ttydjso}"
 fi
-echo "1"
+echo "7"
 if [[ `grep -c "net.netfilter.nf_conntrack_max" ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf` -eq '0' ]]; then
   echo -e "\nnet.netfilter.nf_conntrack_max=165535" >> ${HOME_PATH}/package/kernel/linux/files/sysctl-nf-conntrack.conf
 else
