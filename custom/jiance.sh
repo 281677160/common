@@ -10,26 +10,26 @@ ACTIONS_VERSION="${ACTIONS_VERSION}"
 echo "${ACTIONS_VERSION}"
 
 if [[ ! -d "build" ]]; then
-  echo "根目录缺少build文件夹存在,进行同步上游仓库操作"
+  echo -e "\033[31m 根目录缺少build文件夹存在,进行同步上游仓库操作 \033[0m"
   export SYNCHRONISE="2"
 elif [[ ! -d "build/${FOLDER_NAME}" ]]; then
-  echo "build文件夹内缺少${FOLDER_NAME}文件夹存在"
+  echo -e "\033[31m build文件夹内缺少${FOLDER_NAME}文件夹存在 \033[0m"
   exit 1
 elif [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
-  echo "build文件夹内的${FOLDER_NAME}缺少relevance文件夹存在,进行同步上游仓库操作"
+  echo -e "\033[31m build文件夹内的${FOLDER_NAME}缺少relevance文件夹存在,进行同步上游仓库操作 \033[0m"
   export SYNCHRONISE="2"
 elif [[ ! -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
-  echo "缺少build/${FOLDER_NAME}/relevance/actions_version文件,进行同步上游仓库操作"
+  echo -e "\033[31m 缺少build/${FOLDER_NAME}/relevance/actions_version文件,进行同步上游仓库操作 \033[0m"
   export SYNCHRONISE="2"
 elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   A="$(grep -E "a=.*" GITHUB_ENV |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
   B="$(echo "${A}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   C="$(echo "${ACTIONS_VERSION}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   if [[ "${B}" != "${C}" ]]; then
-    echo "版本号不对等,进行同步上游仓库操作"
+    echo -e "\033[31m 版本号不对等,进行同步上游仓库操作 \033[0m"
     export SYNCHRONISE="2"
   elif [[ "${A}" != "${ACTIONS_VERSION}" ]]; then
-    echo "版本号不对等,进行同步上游仓库操作"
+    echo -e "\033[31m 版本号不对等,进行同步上游仓库操作 \033[0m"
     export SYNCHRONISE="1"
   else
     export SYNCHRONISE="0"
