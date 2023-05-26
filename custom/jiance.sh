@@ -32,8 +32,7 @@ exit 1
 }
 
 git clone -b main --depth 1 https://github.com/281677160/common upcommon
-sudo chmod -R +x upcommon && source upcommon/xiugai.sh
-ACTIONS_VERSION="${ACTIONS_VERSION}"
+ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "upcommon/xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 echo "${ACTIONS_VERSION}"
 
 if [[ ! -d "build" ]]; then
