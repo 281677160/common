@@ -32,6 +32,10 @@ else
     cp -Rf shangyou/build operates
   fi
 fi
+if [[ ! -d "upcommon" ]]; then
+  git clone -b main --depth 1 https://github.com/281677160/common upcommon
+fi
+ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "upcommon/xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 }
 
 function tongbu_1() {
@@ -39,6 +43,7 @@ function tongbu_1() {
 rm -rf shangyou/build/*/{diy,files,patches,seed}
 for X in $(find "operates" -name "diy-part.sh" |sed 's/\/diy-part.sh//g'); do mv "${X}"/diy-part.sh "${X}"/diy-part.sh.bak; done
 for X in $(find "operates" -name "settings.ini" |sed 's/\/settings.ini//g'); do mv "${X}"/settings.ini "${X}"/settings.ini.bak; done
+for X in $(find "operates" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version; done
 
 for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do rm -rf "${X}"; done
 
@@ -162,8 +167,8 @@ sudo rm -rf repogx/*
 cp -Rf shangyou/* repogx/
 sudo rm -rf repogx/.github/workflows/*
 cp -Rf shangyou/.github/workflows/* repogx/.github/workflows/
-xx="$(find repogx/ -type d -name "relevance" |awk 'NR==1')"
-echo "$(date +%Y%m%d%H%M%S)" > ${xx}/1678864096.ini
+for X in $(find "repogx" -type d -name "relevance"); do echo "$(date +%Y%m%d%H%M%S)" > ${X}/1678864096.ini; done
+for X in $(find "repogx" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version; done
 sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 }
 
