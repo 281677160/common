@@ -16,7 +16,6 @@ if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   else
     cp -Rf shangyou/build operates
   fi
-  sudo rm -rf shangyou
 elif [[ -n "${BENDI_VERSION}" ]]; then
   sudo rm -rf shangyou
   git clone -b main https://github.com/${GITHUD_REPOSITORY} shangyou
