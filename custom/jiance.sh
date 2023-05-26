@@ -22,10 +22,10 @@ elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   A="$(grep -E "a=.*" GITHUB_ENV |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
   B="$(echo "${A}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   C="$(echo "${ACTIONS_VERSION}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
-  if [[ "${B}" != "${C}"]]; then
+  if [[ "${B}" != "${C}" ]]; then
     echo "版本号不对等,进行同步上游仓库操作"
     export SYNCHRONISE="2"
-  elif [[ "${A}" != "${ACTIONS_VERSION}"]]; then
+  elif [[ "${A}" != "${ACTIONS_VERSION}" ]]; then
     echo "版本号不对等,进行同步上游仓库操作"
     export SYNCHRONISE="1"
   else
