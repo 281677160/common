@@ -505,7 +505,7 @@ if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
   for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
 fi
 
-# files大法，设置固件无烦恼"
+# files大法，设置固件无烦恼
 if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
   find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
@@ -515,6 +515,18 @@ fi
 if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
   cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
 fi
+
+# 定时更新固件的插件包
+if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
+  source ${BUILD_PATH}/upgrade.sh && Diy_Part1
+else
+  find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
+  if [[ -n "$(grep "luci-app-autoupdate" ${HOME_PATH}/include/target.mk)" ]]; then
+    sed -i 's?luci-app-autoupdate??g' ${HOME_PATH}/include/target.mk
+  fi
+fi
+
+./scripts/feeds update -a 2>/dev/null
 }
 
 
@@ -899,18 +911,11 @@ else
 fi
 }
 
-function Diy_upgrade1() {
-if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  cd ${HOME_PATH}
-  source ${BUILD_PATH}/upgrade.sh && Diy_Part1
-fi
-}
-
 
 function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
-./scripts/feeds install -a
+./scripts/feeds install -a 2>/dev/null
 ./scripts/feeds install -a
 
 if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
@@ -1969,7 +1974,6 @@ Diy_IPv6helper
 function Diy_menu4() {
 Diy_zdypartsh
 Diy_Publicarea
-Diy_upgrade1
 }
 
 function Diy_menu3() {
