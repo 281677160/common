@@ -5,16 +5,16 @@
 cd ${GITHUB_WORKSPACE}
 
 if [[ ! -d "build" ]]; then
-  echo "根目录缺少build文件夹存在"
+  echo "根目录缺少build文件夹存在,进行同步上游仓库操作"
   export SYNCHRONISE="2"
 elif [[ ! -d "build/${FOLDER_NAME}" ]]; then
   echo "build文件夹内缺少${FOLDER_NAME}文件夹存在"
   exit 1
 elif [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
-  echo "build文件夹内的${FOLDER_NAME}缺少relevance文件夹存在"
+  echo "build文件夹内的${FOLDER_NAME}缺少relevance文件夹存在,进行同步上游仓库操作"
   export SYNCHRONISE="2"
 elif [[ ! -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
-  echo "缺少build/${FOLDER_NAME}/relevance/actions_version文件"
+  echo "缺少build/${FOLDER_NAME}/relevance/actions_version文件,进行同步上游仓库操作"
   export SYNCHRONISE="2"
 elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/xiugai.sh)
@@ -23,8 +23,10 @@ elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   B="$(echo "${A}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   C="$(echo "${ACTIONS_VERSION}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   if [[ "${B}" != "${C}"]]; then
+    echo "版本号不对称文件,进行同步上游仓库操作"
     export SYNCHRONISE="2"
   elif [[ "${A}" != "${ACTIONS_VERSION}"]]; then
+    echo "版本号不对称文件,进行同步上游仓库操作"
     export SYNCHRONISE="1"
   else
     export SYNCHRONISE="0"
