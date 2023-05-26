@@ -10,6 +10,12 @@ if [[ ! -d "build" ]]; then
 elif [[ ! -d "build/${FOLDER_NAME}" ]]; then
   echo "build文件夹内缺少${FOLDER_NAME}文件夹存在"
   exit 1
+elif [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
+  echo "build文件夹内的${FOLDER_NAME}缺少relevance文件夹存在"
+  exit 1
+elif [[ ! -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
+  echo "缺少build/${FOLDER_NAME}/relevance/actions_version文件"
+  exit 1
 fi
 
 git clone -b main --depth 1 https://github.com/281677160/common build/common
