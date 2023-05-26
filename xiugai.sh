@@ -729,14 +729,16 @@ elif [[ -n "${Customized_Information}" ]]; then
 fi
 
 if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
-  echo "CONFIG_TARGET_KERNEL_PARTSIZE=${Kernel_partition_size}" >> "${BUILD_PATH}/${CONFIG_FILE}"
+  [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && sed -i '/CONFIG_TARGET_KERNEL_PARTSIZE/d' "${BUILD_PATH}/$CONFIG_FILE"
+  echo "CONFIG_TARGET_KERNEL_PARTSIZE=${Kernel_partition_size}" >> "${BUILD_PATH}/$CONFIG_FILE"
   echo "内核分区设置完成，大小为：${Kernel_partition_size}MB"
 else
   echo "不进行,内核分区大小设置"
 fi
 
 if [[ -n "${Root_partition_size}" ]] && [[ "${Root_partition_size}" != "0" ]]; then
-  echo "CONFIG_TARGET_ROOTFS_PARTSIZE=${Root_partition_size}" >> "${BUILD_PATH}/${CONFIG_FILE}"
+  [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' "${BUILD_PATH}/$CONFIG_FILE"
+  echo "CONFIG_TARGET_ROOTFS_PARTSIZE=${Root_partition_size}" >> "${BUILD_PATH}/$CONFIG_FILE"
   echo "系统分区设置完成，大小为：${Root_partition_size}MB"
 else
   echo "不进行,系统分区大小设置"
