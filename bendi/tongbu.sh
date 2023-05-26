@@ -167,8 +167,8 @@ sudo rm -rf repogx/*
 cp -Rf shangyou/* repogx/
 sudo rm -rf repogx/.github/workflows/*
 cp -Rf shangyou/.github/workflows/* repogx/.github/workflows/
-for X in $(find "repogx" -type d -name "relevance"); do echo "$(date +%Y%m%d%H%M%S)" > ${X}/1678864096.ini; done
-for X in $(find "repogx" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version; done
+for X in $(find "repogx" -type d -name "relevance" |grep -v 'backups'); do echo "$(date +%Y%m%d%H%M%S)" > ${X}/1678864096.ini; done
+for X in $(find "repogx" -type d -name "relevance" |grep -v 'backups'); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version; done
 sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 }
 
