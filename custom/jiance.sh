@@ -59,6 +59,7 @@ elif [[ "${SYNCHRONISE}" == "2" ]]; then
   source ${GITHUB_WORKSPACE}/tongbu.sh && menu4
 fi
 cd ${GITHUB_WORKSPACE}/repogx
+for X in $(find "build" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > "${X}"; done
 git add .
 git commit -m "强制同步上游仓库 $(date +%Y-%m%d-%H%M%S)"
 git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
