@@ -910,7 +910,7 @@ fi
 
 
 function Diy_feeds() {
-echo "正在执行：更新feeds,请耐心等待..."
+echo "正在执行：安装feeds,请耐心等待..."
 cd ${HOME_PATH}
 ./scripts/feeds install -a
 
@@ -1246,7 +1246,7 @@ CONFIG_PACKAGE_kmod-veth=y,CONFIG_PACKAGE_libdevmapper=y,CONFIG_PACKAGE_liblzo=y
 CONFIG_PACKAGE_luci-i18n-dockerman-zh-cn=y,CONFIG_PACKAGE_luci-lib-docker=y,CONFIG_PACKAGE_mount-utils=y,CONFIG_PACKAGE_runc=y,CONFIG_PACKAGE_tini=y,CONFIG_PACKAGE_naiveproxy=y"
 k=(${d//,/ })
 for x in ${k[@]}; do \
-  sed -i "s#${x}##g" "${HOME_PATH}/build_logo/config.txt"; \
+  sed -i "/${x}/d" "${HOME_PATH}/build_logo/config.txt"; \
 done
 sed -i '/^$/d' "${HOME_PATH}/build_logo/config.txt"
 }
