@@ -118,6 +118,8 @@ exit 1
 function Diy_memu() {
 git clone -b main --depth 1 https://github.com/281677160/common upcommon
 ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "upcommon/xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
+GIT_REPOSITORY="${GIT_REPOSITORY}"
+REPO_TOKEN="${REPO_TOKEN}"
 
 if [[ ! -d "build" ]]; then
   echo -e "\033[31m 根目录缺少build文件夹存在,进行同步上游仓库操作 \033[0m"
@@ -149,12 +151,18 @@ else
   export SYNCHRONISE="0"
 fi
 
-export TONGBU_CANGKU="1"
-export GIT_REPOSITORY="${GIT_REPOSITORY}"
-export REPO_TOKEN="${REPO_TOKEN}"
+
 if [[ "${SYNCHRONISE}" == "1" ]]; then
-  source ${GITHUB_WORKSPACE}/tongbu.sh && menu2
+  tongbu_1
+  tongbu_2
+  tongbu_4
 elif [[ "${SYNCHRONISE}" == "2" ]]; then
-  source ${GITHUB_WORKSPACE}/tongbu.sh && menu4
+  tongbu_1
+  tongbu_3
+  tongbu_4
+else
+  Diy_continue
 fi
 }
+
+Diy_memu "$@"
