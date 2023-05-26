@@ -23,10 +23,10 @@ elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   B="$(echo "${A}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   C="$(echo "${ACTIONS_VERSION}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   if [[ "${B}" != "${C}"]]; then
-    echo "版本号不对称文件,进行同步上游仓库操作"
+    echo "版本号不对等,进行同步上游仓库操作"
     export SYNCHRONISE="2"
   elif [[ "${A}" != "${ACTIONS_VERSION}"]]; then
-    echo "版本号不对称文件,进行同步上游仓库操作"
+    echo "版本号不对等,进行同步上游仓库操作"
     export SYNCHRONISE="1"
   else
     export SYNCHRONISE="0"
@@ -35,7 +35,11 @@ else
   export SYNCHRONISE="0"
 fi
 
-
+if [[ "${SYNCHRONISE}" =~ (1|2) ]]; then
+  Diy_synchronise
+else
+  Diy_continue
+fi
 
 function Diy_continue() {
 git clone -b main --depth 1 https://github.com/281677160/common build/common
@@ -48,7 +52,6 @@ function Diy_synchronise() {
 export TONGBU_CANGKU="1"
 export GIT_REPOSITORY="${GIT_REPOSITORY}"
 export REPO_TOKEN="${REPO_TOKEN}"
-
 cp -Rf ${GITHUB_WORKSPACE}/build/common/bendi/tongbu.sh ${GITHUB_WORKSPACE}/tongbu.sh
 source ${GITHUB_WORKSPACE}/tongbu.sh && menu2
 cd ${GITHUB_WORKSPACE}/repogx
