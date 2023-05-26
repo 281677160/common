@@ -4,6 +4,10 @@
 # matrix.target=${FOLDER_NAME}
 cd ${GITHUB_WORKSPACE}
 
+bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/xiugai.sh)
+ACTIONS_VERSION="${ACTIONS_VERSION}"
+echo "${ACTIONS_VERSION}"
+
 if [[ ! -d "build" ]]; then
   echo "根目录缺少build文件夹存在,进行同步上游仓库操作"
   export SYNCHRONISE="2"
@@ -17,8 +21,6 @@ elif [[ ! -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   echo "缺少build/${FOLDER_NAME}/relevance/actions_version文件,进行同步上游仓库操作"
   export SYNCHRONISE="2"
 elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
-  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/xiugai.sh)
-  ACTIONS_VERSION="${ACTIONS_VERSION}"
   A="$(grep -E "a=.*" GITHUB_ENV |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
   B="$(echo "${A}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   C="$(echo "${ACTIONS_VERSION}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
