@@ -32,7 +32,6 @@ else
   else
     cp -Rf shangyou/build operates
   fi
-  sudo rm -rf shangyou
 fi
 }
 
