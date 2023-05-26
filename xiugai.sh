@@ -23,7 +23,8 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 }
 
 function Diy_synchronise() {
-source ${GITHUB_WORKSPACE}/build/common/bendi/tongbu.sh && menu2
+cp -Rf ${GITHUB_WORKSPACE}/build/common/bendi/tongbu.sh ${GITHUB_WORKSPACE}/tongbu.sh
+source ${GITHUB_WORKSPACE}/tongbu.sh && menu2
 cd ${GITHUB_WORKSPACE}/repogx
 git add .
 git commit -m "强制同步上游仓库 $(date +%Y-%m%d-%H%M%S)"
