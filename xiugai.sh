@@ -569,8 +569,6 @@ cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.
 mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
 ./scripts/feeds update -a
-./scripts/feeds install -a > /dev/null 2>&1
-sed -i 's/^#\(danshui.*\)/\1/' "feeds.conf.default"
 }
 
 
@@ -857,6 +855,32 @@ if [[ "${Cancel_running}" == "1" ]]; then
    echo "删除每天跑分任务完成"
 fi
 
+# 晶晨CPU机型自定义机型,内核,分区
+echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
+echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
+echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
+echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
+echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
+[[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
+
+./scripts/feeds update -a > /dev/null 2>&1
+sed -i 's/^#\(danshui.*\)/\1/' "feeds.conf.default"
+}
+
+function Diy_upgrade1() {
+if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
+  cd ${HOME_PATH}
+  source ${BUILD_PATH}/upgrade.sh && Diy_Part1
+fi
+}
+
+
+function Diy_feeds() {
+echo "正在执行：更新feeds,请耐心等待..."
+cd ${HOME_PATH}
+./scripts/feeds install -a > /dev/null 2>&1
+
 if [[ "${Mandatory_theme}" == "0" ]]; then
   echo "不进行必选主题修改"
 elif [[ -n "${Mandatory_theme}" ]]; then
@@ -893,36 +917,15 @@ else
   /bin/bash zh-cn.sh && rm -rf zh-cn.sh
 fi
 
+./scripts/feeds install -a
+
 if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
   cp -Rf /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
   cp -Rf /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
 fi
 
-./scripts/feeds install -a
 # 使用自定义配置文件
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
-
-# 晶晨CPU机型自定义机型,内核,分区
-echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
-echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
-echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
-echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
-echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
-echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
-[[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
-}
-
-function Diy_upgrade1() {
-if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  cd ${HOME_PATH}
-  source ${BUILD_PATH}/upgrade.sh && Diy_Part1
-fi
-}
-
-
-function Diy_feeds() {
-echo "正在执行：更新feeds,请耐心等待..."
-cd ${HOME_PATH}
 }
 
 
