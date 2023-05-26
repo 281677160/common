@@ -47,7 +47,7 @@ elif [[ ! -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   echo -e "\033[31m 缺少build/${FOLDER_NAME}/relevance/actions_version文件,进行同步上游仓库操作 \033[0m"
   export SYNCHRONISE="2"
 elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
-  A="$(grep -E "a=.*" GITHUB_ENV |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
+  A="$(grep -E "a=.*" build/${FOLDER_NAME}/relevance/actions_version |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
   B="$(echo "${A}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   C="$(echo "${ACTIONS_VERSION}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   if [[ "${B}" != "${C}" ]]; then
