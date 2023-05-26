@@ -501,7 +501,7 @@ if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
   for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
 fi
 
-./scripts/feeds update -a > /dev/null 2>&1
+./scripts/feeds update danshui1 danshui2 > /dev/null 2>&1
 }
 
 
@@ -569,6 +569,8 @@ cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.
 mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
 ./scripts/feeds update -a
+./scripts/feeds install -a > /dev/null 2>&1
+sed -i 's/^#\(danshui.*\)/\1/' "feeds.conf.default"
 }
 
 
@@ -864,22 +866,6 @@ echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
 echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 
-./scripts/feeds update -a > /dev/null 2>&1
-sed -i 's/^#\(danshui.*\)/\1/' "feeds.conf.default"
-}
-
-function Diy_upgrade1() {
-if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  cd ${HOME_PATH}
-  source ${BUILD_PATH}/upgrade.sh && Diy_Part1
-fi
-}
-
-
-function Diy_feeds() {
-echo "正在执行：更新feeds,请耐心等待..."
-cd ${HOME_PATH}
-./scripts/feeds install -a > /dev/null 2>&1
 
 if [[ "${Mandatory_theme}" == "0" ]]; then
   echo "不进行必选主题修改"
@@ -917,15 +903,27 @@ else
   /bin/bash zh-cn.sh && rm -rf zh-cn.sh
 fi
 
-./scripts/feeds install -a
-
 if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
   cp -Rf /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
   cp -Rf /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
 fi
 
+./scripts/feeds install -a
 # 使用自定义配置文件
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
+}
+
+function Diy_upgrade1() {
+if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
+  cd ${HOME_PATH}
+  source ${BUILD_PATH}/upgrade.sh && Diy_Part1
+fi
+}
+
+
+function Diy_feeds() {
+echo "正在执行：更新feeds,请耐心等待..."
+cd ${HOME_PATH}
 }
 
 
