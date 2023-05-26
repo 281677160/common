@@ -237,17 +237,29 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
 
-./scripts/feeds update luci > /dev/null 2>&1
+echo "增加插件源"
+# 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
+sed -i '/danshui/d; /helloworld/d; /passwall/d' "feeds.conf.default"
+cat >>"feeds.conf.default" <<-EOF
+src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
+src-git helloworld https://github.com/fw876/helloworld.git
+src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci
+src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
+src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
+EOF
+
+echo "拉取插件"
+./scripts/feeds update -a
 
 echo "增加中文语言包"
 App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
 if [[ `find "${App_path}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
   LUCI_BANBEN="2"
-  theme_pkg="Theme2"
+  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
 else
   LUCI_BANBEN="1"
-  theme_pkg="Theme1"
+  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "feeds.conf.default"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
 fi
 
@@ -369,22 +381,6 @@ if [[ `grep -c "min-cache-ttl=" ${HOME_PATH}/package/network/services/dnsmasq/fi
   echo -e "#max-ttl=600\nneg-ttl=600\nmin-cache-ttl=3600" >> ${HOME_PATH}/package/network/services/dnsmasq/files/dnsmasq.conf
 fi
 
-echo "增加插件源"
-# 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
-sed -i '/danshui/d; /helloworld/d; /passwall/d' "feeds.conf.default"
-cat >>"feeds.conf.default" <<-EOF
-src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
-src-git danshui2 https://github.com/281677160/openwrt-package.git;${theme_pkg}
-src-git helloworld https://github.com/fw876/helloworld.git
-src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci
-src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
-src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
-EOF
-
-
-echo "拉取插件"
-./scripts/feeds update -a
-
 ttydjso="$(find . -type f -name "luci-app-ttyd.json" |grep 'menu.d' |sed "s?.?${HOME_PATH}?")"
 if [[ -n "${ttydjso}" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${ttydjso}"
@@ -501,7 +497,7 @@ if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
   for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
 fi
 
-./scripts/feeds update danshui1 danshui2 > /dev/null 2>&1
+./scripts/feeds update -a > /dev/null 2>&1
 }
 
 
@@ -569,8 +565,8 @@ cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.
 mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
 ./scripts/feeds update -a
-./scripts/feeds install -a > /dev/null 2>&1
 sed -i 's/^#\(danshui.*\)/\1/' "feeds.conf.default"
+./scripts/feeds install -a
 }
 
 
@@ -894,23 +890,10 @@ elif [[ -n "${Mandatory_theme}" ]]; then
   fi
 fi
 
-# 正在执行插件语言修改
-if [[ "${LUCI_BANBEN}" == "2" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
-  /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
-else
-  cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
-  /bin/bash zh-cn.sh && rm -rf zh-cn.sh
-fi
-
 if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
   cp -Rf /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
   cp -Rf /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
 fi
-
-./scripts/feeds install -a
-# 使用自定义配置文件
-[[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 }
 
 function Diy_upgrade1() {
@@ -924,6 +907,17 @@ fi
 function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
+# 正在执行插件语言修改
+if [[ "${LUCI_BANBEN}" == "2" ]]; then
+  cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
+  /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
+else
+  cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
+  /bin/bash zh-cn.sh && rm -rf zh-cn.sh
+fi
+./scripts/feeds install -a
+# 使用自定义配置文件
+[[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 }
 
 
