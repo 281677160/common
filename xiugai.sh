@@ -628,7 +628,7 @@ elif [[ "${OpenClash_Core}" == "2" ]]; then
   echo "OpenClash_Core=2" >> ${GITHUB_ENV}
 else
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
-  [[ -d "${HOME_PATH}/files/etc/openclash" ]] && rm -rf ${HOME_PATH}/files/etc/openclash
+  [[ -d "${HOME_PATH}/files/etc/openclash/core" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core
 fi
 
 # openclash
@@ -648,7 +648,7 @@ elif [[ "${OpenClash_branch}" == "dev" ]]; then
   fi
 else
   sed -i '/OpenClash/d' "feeds.conf.default"
-  sed -i '/luci-app-openclash/d' "${BUILD_PATH}/${CONFIG_FILE}"
+  sed -i '/luci-app-openclash/d' "${HOME_PATH}/.config"
   find . -type d -name 'luci-app-openclash' -o -name 'OpenClash' | xargs -i rm -rf {}
   if [[ -n "$(grep "luci-app-openclash" "${HOME_PATH}/include/target.mk")" ]]; then
     sed -i "s?luci-app-openclash??g" "include/target.mk"
