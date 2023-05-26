@@ -200,7 +200,7 @@ echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
 echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
 echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 
-
+# 修改本地文件变量
 if [[ -n "${BENDI_VERSION}" ]]; then
   GIT_BUILD=operates/${FOLDER_NAME}
   sed -i 's?=?=\"?g' ${GITHUB_ENV}
