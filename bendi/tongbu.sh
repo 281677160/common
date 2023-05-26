@@ -13,12 +13,18 @@ if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   mv -f repogx/build operates
   sudo rm -rf shangyou
   git clone -b main https://github.com/${GITHUD_REPOSITORY} shangyou
-else
+elif [[ -n "${BENDI_VERSION}" ]]; then
   sudo rm -rf shangyou
   git clone -b main https://github.com/${GITHUD_REPOSITORY} shangyou
   if [[ ! -d "operates" ]]; then
     cp -Rf shangyou/build operates
   fi
+else
+  sudo rm -rf repogx
+  git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
+  mv -f repogx/build operates
+  sudo rm -rf shangyou
+  git clone -b main https://github.com/${GITHUD_REPOSITORY} shangyou
 fi
 }
 
@@ -86,7 +92,7 @@ case "${TONGBU_CANGKU}" in
 esac
 
 # 修改本地文件
-if [[ ! "${TONGBU_CANGKU}" == "1" ]]; then
+if [[ -n "${BENDI_VERSION}" ]]; then
   for X in $(grep "\"AMLOGIC\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do rm -rf "${X}"; done
   
   rm -rf operates/*/relevance
