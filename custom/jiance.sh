@@ -53,7 +53,11 @@ export TONGBU_CANGKU="1"
 export GIT_REPOSITORY="${GIT_REPOSITORY}"
 export REPO_TOKEN="${REPO_TOKEN}"
 cp -Rf ${GITHUB_WORKSPACE}/build/common/bendi/tongbu.sh ${GITHUB_WORKSPACE}/tongbu.sh
-source ${GITHUB_WORKSPACE}/tongbu.sh && menu2
+if [[ "${SYNCHRONISE}" == "1" ]]; then
+  source ${GITHUB_WORKSPACE}/tongbu.sh && menu2
+elif [[ "${SYNCHRONISE}" == "2" ]]; then
+  source ${GITHUB_WORKSPACE}/tongbu.sh && menu4
+fi
 cd ${GITHUB_WORKSPACE}/repogx
 git add .
 git commit -m "强制同步上游仓库 $(date +%Y-%m%d-%H%M%S)"
