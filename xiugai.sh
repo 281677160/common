@@ -30,6 +30,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
 fi
 start_path="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini"
+rm -rf ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/{*.ini,*start}
 
 if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
   SOURCE_CODE="${SOURCE_CODE}"
@@ -1709,6 +1710,7 @@ function build_openwrt() {
 cd ${GITHUB_WORKSPACE}
 start_path="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini"
 chmod -R +x ${start_path} && source ${start_path}
+CONFIG_FILE="seed/${CONFIG_FILE}"
 if [[ "${CPU_SELECTION}" =~ (E5|false) ]]; then
   kaisbianyixx="弃用E5-编译"
 else
@@ -1761,6 +1763,7 @@ TIME y "正在使用CPU型号：${cpu_model}"
 
 start_path="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini"
 chmod -R +x ${start_path} && source ${start_path}
+CONFIG_FILE="seed/${CONFIG_FILE}"
 
 case "${CPU_SELECTION}" in
 false)
