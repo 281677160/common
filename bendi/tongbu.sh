@@ -8,11 +8,15 @@ function tongbu_0() {
 GITHUD_REPOSITORY="281677160/build-actions"
 
 if [[ "${TONGBU_CANGKU}" == "1" ]]; then
-  sudo rm -rf repogx
+  sudo rm -rf repogx shangyou
   git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
-  mv -f repogx/build operates
-  sudo rm -rf shangyou
   git clone -b main https://github.com/${GITHUD_REPOSITORY} shangyou
+  if [[ -d "repogx/build" ]]; then
+    mv -f repogx/build operates
+  else
+    mv -f shangyou/build operates
+  fi
+  sudo rm -rf shangyou
 elif [[ -n "${BENDI_VERSION}" ]]; then
   sudo rm -rf shangyou
   git clone -b main https://github.com/${GITHUD_REPOSITORY} shangyou
@@ -20,11 +24,15 @@ elif [[ -n "${BENDI_VERSION}" ]]; then
     cp -Rf shangyou/build operates
   fi
 else
-  sudo rm -rf repogx
+  sudo rm -rf repogx shangyou
   git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
-  mv -f repogx/build operates
-  sudo rm -rf shangyou
   git clone -b main https://github.com/${GITHUD_REPOSITORY} shangyou
+  if [[ -d "repogx/build" ]]; then
+    mv -f repogx/build operates
+  else
+    mv -f shangyou/build operates
+  fi
+  sudo rm -rf shangyou
 fi
 }
 
