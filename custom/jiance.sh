@@ -43,8 +43,6 @@ for X in $(find "operates" -type d -name "relevance"); do echo "ACTIONS_VERSION=
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md repogx/README.md
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE repogx/LICENSE
   
-for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v '.bak'); do cp -Rf "${X}" "${X}.bak"; done
-  
 for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v 'synchronise.yml\|compile.yml\|packaging.yml\|.bak'); do
   aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
   if [[ ! -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
@@ -82,6 +80,11 @@ cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/compile.yml ${GITHUB_WORKS
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/packaging.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/packaging.yml
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/synchronise.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/synchronise.yml
 mv -f operates repogx/build
+
+for X in $(find "operates" -name "*.bak"); do rm -rf "${X}"; done
+if [[ -d "repogx/.github/workflows" ]]; then
+  for X in $(find "repogx/.github/workflows" -name "*.bak"); do rm -rf "${X}"; done
+fi
 
 if [[ "${SYNCHRONISE}" == "1" ]]; then
   cd backupstwo
