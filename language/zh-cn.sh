@@ -64,8 +64,7 @@ do
 		sed -i "s/LUCI_LANG_zh_Hans/LUCI_LANG_zh-cn/g" "$f"
 	elif [ -z "$(grep "LUCI_LANG_zh-cn" "$f")" ]; then
 		sed -i "s?DEPENDS:=?DEPENDS:=\+\@LUCI_LANG_zh-cn ?g" "$f"
-	else
-		echo "LUCI_LANG_zh-cn"
 	fi
 done
+echo "LUCI_LANG_zh-cn"
 exit 0
