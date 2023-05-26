@@ -14,7 +14,7 @@ if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   if [[ -d "repogx/build" ]]; then
     mv -f repogx/build operates
   else
-    mv -f shangyou/build operates
+    cp -Rf shangyou/build operates
   fi
   sudo rm -rf shangyou
 elif [[ -n "${BENDI_VERSION}" ]]; then
@@ -30,7 +30,7 @@ else
   if [[ -d "repogx/build" ]]; then
     mv -f repogx/build operates
   else
-    mv -f shangyou/build operates
+    cp -Rf shangyou/build operates
   fi
   sudo rm -rf shangyou
 fi
