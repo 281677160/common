@@ -23,6 +23,9 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 }
 
 function Diy_synchronise() {
+export GIT_REPOSITORY="${GIT_REPOSITORY}"
+export REPO_TOKEN="${REPO_TOKEN}"
+
 cp -Rf ${GITHUB_WORKSPACE}/build/common/bendi/tongbu.sh ${GITHUB_WORKSPACE}/tongbu.sh
 source ${GITHUB_WORKSPACE}/tongbu.sh && menu2
 cd ${GITHUB_WORKSPACE}/repogx
