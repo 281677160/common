@@ -4,7 +4,8 @@
 # matrix.target=${FOLDER_NAME}
 cd ${GITHUB_WORKSPACE}
 
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/xiugai.sh)
+git clone -b main --depth 1 https://github.com/281677160/common common
+sudo chmod -R +x common && source common/xiugai.sh
 ACTIONS_VERSION="${ACTIONS_VERSION}"
 echo "${ACTIONS_VERSION}"
 
@@ -44,6 +45,7 @@ else
 fi
 
 function Diy_continue() {
+rm -rf common
 git clone -b main --depth 1 https://github.com/281677160/common build/common
 mv -f build/common/upgrade.sh build/${FOLDER_NAME}/upgrade.sh
 mv -f build/common/xiugai.sh build/${FOLDER_NAME}/common.sh
@@ -54,12 +56,13 @@ function Diy_synchronise() {
 export TONGBU_CANGKU="1"
 export GIT_REPOSITORY="${GIT_REPOSITORY}"
 export REPO_TOKEN="${REPO_TOKEN}"
-cp -Rf ${GITHUB_WORKSPACE}/build/common/bendi/tongbu.sh ${GITHUB_WORKSPACE}/tongbu.sh
+cp -Rf ${GITHUB_WORKSPACE}/common/bendi/tongbu.sh ${GITHUB_WORKSPACE}/tongbu.sh
 if [[ "${SYNCHRONISE}" == "1" ]]; then
   source ${GITHUB_WORKSPACE}/tongbu.sh && menu2
 elif [[ "${SYNCHRONISE}" == "2" ]]; then
   source ${GITHUB_WORKSPACE}/tongbu.sh && menu4
 fi
+rm -rf common
 cd ${GITHUB_WORKSPACE}/repogx
 for X in $(find "build" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > "${X}"; done
 git add .
