@@ -524,7 +524,7 @@ else
   fi
 fi
 
-./scripts/feeds update -a 2>/dev/null
+./scripts/feeds update -a > /dev/null 2>&1
 }
 
 
@@ -583,7 +583,7 @@ else
   cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
   /bin/bash zh-cn.sh && rm -rf zh-cn.sh
 fi
-./scripts/feeds install -a 2>/dev/null
+./scripts/feeds install -a > /dev/null 2>&1
 # 使用自定义配置文件
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 }
@@ -861,7 +861,7 @@ if [[ "${Password_free_login}" == "1" ]]; then
 fi
 
 if [[ "${Disable_53_redirection}" == "1" ]]; then
-   [ -n "$(grep "to-ports 53" "${ZZZ_PATH}")" ] && sed -i '/to-ports 53/d' "${ZZZ_PATH}"
+   sed -i '/to-ports 53/d' "${ZZZ_PATH}"
    echo "删除DNS重定向53端口完成"
 fi
 
@@ -884,7 +884,7 @@ if [[ "${Mandatory_theme}" == "0" ]] || [[ -z "${Mandatory_theme}" ]]; then
   echo "不进行,替换bootstrap主题设置"
 elif [[ -n "${Mandatory_theme}" ]]; then
   zt_theme="luci-theme-${Mandatory_theme}"
-  theme_name="$({ find |grep ${zt_theme} |grep -v "dir"; } 2>"/dev/null")"
+  theme_name="$({ find . -type d -name "${zt_theme}" |grep -v "dir"; } 2>"/dev/null")"
   echo "${theme_name}"
   if [[ -n "${theme_name}" ]]; then
     if [[ -f "${HOME_PATH}/extra/luci/collections/luci/Makefile" ]]; then
