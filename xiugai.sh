@@ -209,7 +209,7 @@ else
   GIT_BUILD=build/${FOLDER_NAME}
 fi
 
-# 检测自定义文件是否存在
+# 检查自定义文件是否存在
 if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
   TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${CONFIG_FILE}名称的配置文件],请在[${FOLDER_NAME}/seed]文件夹内补齐"
   exit 1
