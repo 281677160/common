@@ -3,6 +3,8 @@
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
 
+export ACTIONS_VERSION="1.0.1"
+
 function TIME() {
 Compte=$(date +%Y年%m月%d号%H时%M分)
   [[ -z "$1" ]] && {
