@@ -23,6 +23,7 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 }
 
 function Diy_synchronise() {
+export TONGBU_CANGKU="1"
 export GIT_REPOSITORY="${GIT_REPOSITORY}"
 export REPO_TOKEN="${REPO_TOKEN}"
 
