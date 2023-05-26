@@ -144,8 +144,10 @@ function tongbu_3() {
 # 上游仓库用完，删除了
 if [[ "${TONGBU_CANGKU}" == "1" ]]; then
   mv -f operates repogx/build
-else
+elif [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf shangyou
+else
+  mv -f operates repogx/build
 fi
 }
 
