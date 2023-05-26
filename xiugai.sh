@@ -611,11 +611,15 @@ fi
 # openclash
 if [[ "${OpenClash_branch}" == "master" ]]; then
   echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
+  ./scripts/feeds update OpenClash
+  ./scripts/feeds install -a -p OpenClash
   if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
     sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
   fi
 elif [[ "${OpenClash_branch}" == "dev" ]]; then
   echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
+  ./scripts/feeds update OpenClash
+  ./scripts/feeds install -a -p OpenClash
   if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
     sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
   fi
