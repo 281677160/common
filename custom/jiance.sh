@@ -16,3 +16,18 @@ git clone -b main --depth 1 https://github.com/281677160/common build/common
 mv -f build/common/upgrade.sh build/${FOLDER_NAME}/upgrade.sh
 mv -f build/common/xiugai.sh build/${FOLDER_NAME}/common.sh
 sudo chmod -R +x build
+
+
+function Diy_synchronise() {
+export TONGBU_CANGKU="1"
+export GIT_REPOSITORY="${GIT_REPOSITORY}"
+export REPO_TOKEN="${REPO_TOKEN}"
+
+cp -Rf ${GITHUB_WORKSPACE}/build/common/bendi/tongbu.sh ${GITHUB_WORKSPACE}/tongbu.sh
+source ${GITHUB_WORKSPACE}/tongbu.sh && menu2
+cd ${GITHUB_WORKSPACE}/repogx
+git add .
+git commit -m "强制同步上游仓库 $(date +%Y-%m%d-%H%M%S)"
+git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
+exit 1
+}
