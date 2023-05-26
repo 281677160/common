@@ -154,9 +154,9 @@ fi
 function tongbu_4() {
 if [[ "${SYNCHRONISE}" == "2" ]]; then
   mkdir -p backups
-  cp -Rf repogx/* backups/
+  cp -Rf operates backups/build
   cp -Rf repogx/.github/workflows/* backups/
-  cp -Rf backups shangyou/backups
+  cp -Rf backups shangyou/build/backups
 fi
 sudo rm -rf repogx/*
 cp -Rf shangyou/* repogx/
