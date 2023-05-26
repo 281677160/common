@@ -498,8 +498,6 @@ if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
 fi
 
 ./scripts/feeds update -a > /dev/null 2>&1
-./scripts/feeds install -a -p danshui1 > /dev/null 2>&1
-./scripts/feeds install -a -p danshui2 > /dev/null 2>&1
 }
 
 
@@ -567,7 +565,7 @@ cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.
 mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
 ./scripts/feeds update -a
-sed -i 's/^#\(danshui.*\)/\1/' "feeds.conf.default"
+sed -i 's/^#\(.*danshui\)/\1/' "feeds.conf.default"
 ./scripts/feeds install -a
 }
 
