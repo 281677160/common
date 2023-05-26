@@ -22,8 +22,17 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
     }
 }
 
+function Diy_synchronise() {
+source ${GITHUB_WORKSPACE}/build/common/bendi/tongbu.sh && menu2
+cd UPLOAD
+git add .
+git commit -m "${kaisbianyixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
+git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
+}
+
 
 function Diy_variable() {
+Diy_synchronise
 # 读取变量
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
