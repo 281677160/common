@@ -575,6 +575,17 @@ mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
 ./scripts/feeds update -a
 sed -i 's/^#\(.*danshui\)/\1/' "feeds.conf.default"
+# 正在执行插件语言修改
+if [[ "${LUCI_BANBEN}" == "2" ]]; then
+  cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
+  /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
+else
+  cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
+  /bin/bash zh-cn.sh && rm -rf zh-cn.sh
+fi
+./scripts/feeds install -a 2>/dev/null
+# 使用自定义配置文件
+[[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 }
 
 
@@ -729,26 +740,18 @@ elif [[ -n "${Customized_Information}" ]]; then
 fi
 
 if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
-  [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && sed -i '/CONFIG_TARGET_KERNEL_PARTSIZE/d' "${BUILD_PATH}/$CONFIG_FILE"
-  echo "CONFIG_TARGET_KERNEL_PARTSIZE=${Kernel_partition_size}" >> "${BUILD_PATH}/$CONFIG_FILE"
+  echo "CONFIG_TARGET_KERNEL_PARTSIZE=${Kernel_partition_size}" >> ${HOME_PATH}/.config
   echo "内核分区设置完成，大小为：${Kernel_partition_size}MB"
 else
   echo "不进行,内核分区大小设置"
 fi
 
 if [[ -n "${Root_partition_size}" ]] && [[ "${Root_partition_size}" != "0" ]]; then
-  [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' "${BUILD_PATH}/$CONFIG_FILE"
-  echo "CONFIG_TARGET_ROOTFS_PARTSIZE=${Root_partition_size}" >> "${BUILD_PATH}/$CONFIG_FILE"
+  echo "CONFIG_TARGET_ROOTFS_PARTSIZE=${Root_partition_size}" >> ${HOME_PATH}/.config
   echo "系统分区设置完成，大小为：${Root_partition_size}MB"
 else
   echo "不进行,系统分区大小设置"
 fi
-
-cat >> "${BUILD_PATH}/${CONFIG_FILE}" <<-EOF
-CONFIG_PACKAGE_luci=y
-CONFIG_PACKAGE_default-settings=y
-CONFIG_PACKAGE_default-settings-chn=y
-EOF
 
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
    echo "Delete_unnecessary_items=${Delete_unnecessary_items}" >> ${GITHUB_ENV}
@@ -900,30 +903,18 @@ elif [[ -n "${Mandatory_theme}" ]]; then
     echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${ybtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
-
-# 正在执行插件语言修改
-if [[ "${LUCI_BANBEN}" == "2" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
-  /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
-else
-  cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
-  /bin/bash zh-cn.sh && rm -rf zh-cn.sh
-fi
 }
 
 
 function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
-./scripts/feeds install -a 2>/dev/null
 ./scripts/feeds install -a
 
 if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
   cp -Rf /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
   cp -Rf /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
 fi
-# 使用自定义配置文件
-[[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 }
 
 
@@ -986,6 +977,12 @@ CONFIG_PACKAGE_kmod-fuse=y
 mkdir -p ${HOME_PATH}/files/etc/hotplug.d/block
 cp -Rf ${HOME_PATH}/build/common/custom/10-mount ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
 fi
+
+cat >> "${HOME_PATH}/.config" <<-EOF
+CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_default-settings=y
+CONFIG_PACKAGE_default-settings-chn=y
+EOF
 }
 
 
