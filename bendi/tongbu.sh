@@ -152,7 +152,12 @@ fi
 }
 
 function tongbu_4() {
-echo "d" > repogx/README.md
+if [[ "${SYNCHRONISE}" == "2" ]]; then
+  mkdir -p backups
+  cp -Rf repogx/* backups/
+  cp -Rf repogx/.github/workflows/* backups/
+  cp -Rf backups shangyou/backups
+fi
 sudo rm -rf repogx/*
 cp -Rf shangyou/* repogx/
 sudo rm -rf repogx/.github/workflows/*
