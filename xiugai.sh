@@ -884,7 +884,8 @@ if [[ "${Mandatory_theme}" == "0" ]] || [[ -z "${Mandatory_theme}" ]]; then
   echo "不进行,替换bootstrap主题设置"
 elif [[ -n "${Mandatory_theme}" ]]; then
   zt_theme="luci-theme-${Mandatory_theme}"
-  theme_name="$(find . -type d -name "luci-theme-${zt_theme}" |grep -v 'dir')"
+  theme_name="$({ find |grep ${zt_theme} |grep -v "dir"; } 2>"/dev/null")"
+  echo "${theme_name}"
   if [[ -n "${theme_name}" ]]; then
     if [[ -f "${HOME_PATH}/extra/luci/collections/luci/Makefile" ]]; then
       zt2_theme="$(grep -Eo "luci-theme.*" "${HOME_PATH}/extra/luci/collections/luci/Makefile" |cut -d ' ' -f1)"
