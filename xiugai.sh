@@ -237,6 +237,12 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
 
+LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
+if [[ -n "${LUCI_CHECKUT}" ]]; then
+  git checkout ${LUCI_CHECKUT}
+  git switch -c ${LUCI_CHECKUT}
+fi
+
 echo "增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 sed -i '/danshui/d; /helloworld/d; /passwall/d' "feeds.conf.default"
@@ -251,15 +257,17 @@ EOF
 echo "拉取插件"
 ./scripts/feeds update -a
 
-echo "增加中文语言包"
+# 增加中文语言包
 App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
 if [[ `find "${App_path}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
   LUCI_BANBEN="2"
   echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
+  ./scripts/feeds update danshui2
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
 else
   LUCI_BANBEN="1"
   echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "feeds.conf.default"
+  ./scripts/feeds update danshui2
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
 fi
 
@@ -302,7 +310,7 @@ echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
 EOF
 fi
 
-echo "增加一些应用"
+# 增加一些应用
 cp -Rf ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
 sed -i '/exit 0$/d' "${DEFAULT_PATH}"
@@ -337,7 +345,7 @@ cat >>"${KEEPD_PATH}" <<-EOF
 EOF
 fi
 
-# 修改一下依赖
+# 修改一些依赖
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
   if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
@@ -497,7 +505,16 @@ if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
   for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
 fi
 
-./scripts/feeds update -a > /dev/null 2>&1
+# files大法，设置固件无烦恼"
+if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
+  find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
+fi
+if [ -n "$(ls -A "${BUILD_PATH}/diy" 2>/dev/null)" ]; then
+  cp -Rf ${BUILD_PATH}/diy/* ${HOME_PATH}
+fi
+if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
+  cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
+fi
 }
 
 
@@ -523,7 +540,6 @@ cd ${HOME_PATH}
 
 function Diy_LIENOL() {
 cd ${HOME_PATH}
-
 }
 
 
@@ -542,23 +558,6 @@ cd ${HOME_PATH}
 }
 
 
-function Diy_files() {
-cd ${HOME_PATH}
-echo "正在执行：files大法，设置固件无烦恼"
-if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
-  find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
-fi
-
-if [ -n "$(ls -A "${BUILD_PATH}/diy" 2>/dev/null)" ]; then
-  cp -Rf ${BUILD_PATH}/diy/* ${HOME_PATH}
-fi
-
-if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
-  cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
-fi
-}
-
-
 function Diy_zdypartsh() {
 source $BUILD_PATH/$DIY_PART_SH
 cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
@@ -566,7 +565,6 @@ mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
 ./scripts/feeds update -a
 sed -i 's/^#\(.*danshui\)/\1/' "feeds.conf.default"
-./scripts/feeds install -a
 }
 
 
@@ -867,36 +865,37 @@ echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 
 
-if [[ "${Mandatory_theme}" == "0" ]]; then
-  echo "不进行必选主题修改"
+if [[ "${Mandatory_theme}" == "0" ]] || [[ -z "${Mandatory_theme}" ]]; then
+  echo "不进行,替换bootstrap主题设置"
 elif [[ -n "${Mandatory_theme}" ]]; then
-  if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
-    collections="${HOME_PATH}/extra/luci/collections/luci/Makefile"
-  else
-    collections="${HOME_PATH}/feeds/luci/collections/luci/Makefile"
-  fi
-  luci_light="${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
-  if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
-    ybtheme="$(grep -Eo "luci-theme-.*" "${luci_light}" 2>&1 |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
-  else
-    ybtheme="$(grep -Eo "luci-theme-.*" "${collections}" 2>&1 |sed -r 's/.*theme-(.*)=y/\1/' |awk '{print $(1)}')"
-  fi
-  yhtheme="luci-theme-${Mandatory_theme}"
-  if [[ `find . -type d -name "${yhtheme}" |grep -v 'dir' |grep -c "${yhtheme}"` -ge "1" ]]; then
-    if [[ `grep -Eoc "luci-theme" "${collections}"` -eq "0" ]]; then
-      sed -i "s/${ybtheme}/${yhtheme}/g" "${luci_light}"
-    else
-      sed -i "s/${ybtheme}/${yhtheme}/g" "${collections}"
+  zt_theme="luci-theme-${Mandatory_theme}"
+  theme_name="$(find . -type d -name "luci-theme-${zt_theme}" |grep -v 'dir')"
+  if [[ -n "${theme_name}" ]]; then
+    if [[ -f "${HOME_PATH}/extra/luci/collections/luci/Makefile" ]]; then
+      zt2_theme="$(grep -Eo "luci-theme.*" "${HOME_PATH}/extra/luci/collections/luci/Makefile" |cut -d ' ' -f1)"
+      [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/extra/luci/collections/luci/Makefile"
     fi
-    echo "必选主题修改完成，必选主题为：${yhtheme}"
+    if [[ -f "${HOME_PATH}/feeds/luci/collections/luci/Makefile" ]]; then
+      zt2_theme="$(grep -Eo "luci-theme.*" "${HOME_PATH}/feeds/luci/collections/luci/Makefile" |cut -d ' ' -f1)"
+      [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+    fi
+    if [[ -f "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" ]]; then
+      zt2_theme="$(grep -Eo "luci-theme.*" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" |cut -d ' ' -f1)"
+      [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
+    fi
+    echo "替换必须主题完成,您现在的必选主题为：${zt_theme}"
   else
     echo "TIME r \"没有${yhtheme}此主题存在,不进行替换${ybtheme}主题操作\"" >> ${HOME_PATH}/CHONGTU
   fi
 fi
 
-if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
-  cp -Rf /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
-  cp -Rf /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
+# 正在执行插件语言修改
+if [[ "${LUCI_BANBEN}" == "2" ]]; then
+  cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
+  /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
+else
+  cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
+  /bin/bash zh-cn.sh && rm -rf zh-cn.sh
 fi
 }
 
@@ -911,15 +910,13 @@ fi
 function Diy_feeds() {
 echo "正在执行：更新feeds,请耐心等待..."
 cd ${HOME_PATH}
-# 正在执行插件语言修改
-if [[ "${LUCI_BANBEN}" == "2" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
-  /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
-else
-  cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
-  /bin/bash zh-cn.sh && rm -rf zh-cn.sh
-fi
 ./scripts/feeds install -a
+./scripts/feeds install -a
+
+if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
+  cp -Rf /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
+  cp -Rf /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
+fi
 # 使用自定义配置文件
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 }
@@ -1978,7 +1975,6 @@ Diy_upgrade1
 function Diy_menu3() {
 Diy_checkout
 Diy_${SOURCE_CODE}
-Diy_files
 }
 
 function Diy_menu2() {
