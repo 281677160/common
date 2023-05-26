@@ -21,6 +21,7 @@ if [[ -d "repogx/build" ]]; then
 else
   cp -Rf shangyou/build operates
 fi
+sudo rm -rf operates/backups
 if [[ "${SYNCHRONISE}" == "1" ]]; then
   mkdir -p backupstwo/b123
   cp -Rf operates backupstwo/operates
