@@ -390,9 +390,7 @@ if [[ `grep -c "min-cache-ttl=" ${HOME_PATH}/package/network/services/dnsmasq/fi
 fi
 
 ttydjso="$(find . -type f -name "luci-app-ttyd.json" |grep 'menu.d' |sed "s?.?${HOME_PATH}?")"
-if [[ -n "${ttydjso}" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${ttydjso}"
-fi
+[[ -n "${ttydjso}" ]] && cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${ttydjso}"
 
 # 更换golang版本
 if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
