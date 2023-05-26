@@ -25,7 +25,6 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 function Diy_variable() {
 # 读取变量
-export DIY_PART_SH="diy-part.sh"
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
 fi
@@ -164,8 +163,9 @@ OFFICIAL)
 ;;
 esac
 
-echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
+export DIY_PART_SH="diy-part.sh"
 echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
+echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
 echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
 echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
 echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
