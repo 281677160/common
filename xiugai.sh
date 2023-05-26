@@ -858,7 +858,7 @@ if [[ "${Password_free_login}" == "1" ]]; then
 fi
 
 if [[ "${Disable_53_redirection}" == "1" ]]; then
-   sed -i '/to-ports 53/d' "${ZZZ_PATH}"
+   [ -n "$(grep "to-ports 53" "${ZZZ_PATH}")" ] && sed -i '/to-ports 53/d' "${ZZZ_PATH}"
    echo "删除DNS重定向53端口完成"
 fi
 
