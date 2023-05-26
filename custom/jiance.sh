@@ -4,6 +4,33 @@
 # matrix.target=${FOLDER_NAME}
 cd ${GITHUB_WORKSPACE}
 
+function Diy_continue() {
+rm -rf upcommon
+git clone -b main --depth 1 https://github.com/281677160/common build/common
+mv -f build/common/upgrade.sh build/${FOLDER_NAME}/upgrade.sh
+mv -f build/common/xiugai.sh build/${FOLDER_NAME}/common.sh
+sudo chmod -R +x build
+}
+
+function Diy_synchronise() {
+export TONGBU_CANGKU="1"
+export GIT_REPOSITORY="${GIT_REPOSITORY}"
+export REPO_TOKEN="${REPO_TOKEN}"
+cp -Rf ${GITHUB_WORKSPACE}/upcommon/bendi/tongbu.sh ${GITHUB_WORKSPACE}/tongbu.sh
+if [[ "${SYNCHRONISE}" == "1" ]]; then
+  source ${GITHUB_WORKSPACE}/tongbu.sh && menu2
+elif [[ "${SYNCHRONISE}" == "2" ]]; then
+  source ${GITHUB_WORKSPACE}/tongbu.sh && menu4
+fi
+rm -rf upcommon
+cd ${GITHUB_WORKSPACE}/repogx
+for X in $(find "build" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > "${X}"; done
+git add .
+git commit -m "强制同步上游仓库 $(date +%Y-%m%d-%H%M%S)"
+git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
+exit 1
+}
+
 git clone -b main --depth 1 https://github.com/281677160/common upcommon
 sudo chmod -R +x upcommon && source upcommon/xiugai.sh
 ACTIONS_VERSION="${ACTIONS_VERSION}"
@@ -43,30 +70,3 @@ if [[ "${SYNCHRONISE}" =~ (1|2) ]]; then
 else
   Diy_continue
 fi
-
-function Diy_continue() {
-rm -rf upcommon
-git clone -b main --depth 1 https://github.com/281677160/common build/common
-mv -f build/common/upgrade.sh build/${FOLDER_NAME}/upgrade.sh
-mv -f build/common/xiugai.sh build/${FOLDER_NAME}/common.sh
-sudo chmod -R +x build
-}
-
-function Diy_synchronise() {
-export TONGBU_CANGKU="1"
-export GIT_REPOSITORY="${GIT_REPOSITORY}"
-export REPO_TOKEN="${REPO_TOKEN}"
-cp -Rf ${GITHUB_WORKSPACE}/upcommon/bendi/tongbu.sh ${GITHUB_WORKSPACE}/tongbu.sh
-if [[ "${SYNCHRONISE}" == "1" ]]; then
-  source ${GITHUB_WORKSPACE}/tongbu.sh && menu2
-elif [[ "${SYNCHRONISE}" == "2" ]]; then
-  source ${GITHUB_WORKSPACE}/tongbu.sh && menu4
-fi
-rm -rf upcommon
-cd ${GITHUB_WORKSPACE}/repogx
-for X in $(find "build" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > "${X}"; done
-git add .
-git commit -m "强制同步上游仓库 $(date +%Y-%m%d-%H%M%S)"
-git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
-exit 1
-}
