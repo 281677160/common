@@ -26,11 +26,11 @@ elif [[ ! -d "shangyou" ]]; then
 fi
 
 if [[ -d "repogx/build" ]]; then
-  mv -f repogx/build operates
+  mv -f repogx/build ${GITHUB_WORKSPACE}/operates
 else
-  cp -Rf shangyou/build operates
+  cp -Rf shangyou/build ${GITHUB_WORKSPACE}/operates
 fi
-sudo rm -rf operates/backups
+[[ -d "operates/backups" ]] && sudo rm -rf operates/backups
 if [[ "${SYNCHRONISE}" == "1" ]]; then
   mkdir -p backupstwo/b123
   cp -Rf operates backupstwo/operates
@@ -53,7 +53,7 @@ do
   [ -n "$(grep 'SOURCE_CODE="OFFICIAL"' "$f")" ] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Official/* "${X}"
 done
 
-yml_file="$({ find ${GITHUB_WORKSPACE}/operates |grep .yml |grep -v 'synchronise.yml\|compile.yml\|packaging.yml'; } 2>"/dev/null")"
+yml_file="$({ find ${GITHUB_WORKSPACE}/repogx |grep .yml |grep -v 'synchronise.yml\|compile.yml\|packaging.yml'; } 2>"/dev/null")"
 for f in ${yml_file}
 do
   a="$(grep 'target: \[.*\]' "${f}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
