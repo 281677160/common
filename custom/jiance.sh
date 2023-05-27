@@ -29,7 +29,7 @@ if [[ -d "repogx/build" ]]; then
   mv -f repogx/build ${GITHUB_WORKSPACE}/operates
   mkdir -p backupstwo/b123
   cp -Rf operates backupstwo/operates
-  cp -Rf repogx/.github/workflows/* backupstwo/b123/
+  cp -Rf repogx/.github/workflows backupstwo/b123/workflows
 fi
 [[ -d "repogx/backups" ]] && sudo rm -rf repogx/backups
 [[ -d "operates/backups" ]] && sudo rm -rf operates/backups
@@ -95,7 +95,7 @@ if [[ -d "backupstwo" ]]; then
   cd backupstwo
   mkdir -p backups
   cp -Rf operates backups/build
-  cp -Rf b123/* backups/
+  cp -Rf b123/workflows backups/workflows
   cp -Rf backups ${GITHUB_WORKSPACE}/repogx/backups
   cd ${GITHUB_WORKSPACE}
 fi
@@ -106,7 +106,7 @@ if [[ -d "backupstwo" ]]; then
   cd backupstwo
   mkdir -p backups
   cp -Rf operates backups/build
-  cp -Rf b123/* backups/
+  cp -Rf b123/workflows backups/workflows
   cp -Rf backups ${GITHUB_WORKSPACE}/shangyou/backups
   cd ${GITHUB_WORKSPACE}
 fi
