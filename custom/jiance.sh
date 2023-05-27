@@ -17,7 +17,10 @@ sudo rm -rf repogx shangyou
 git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 git clone -b main https://github.com/281677160/build-actions shangyou
 
-if [[ ! -d "repogx" ]] && [[ ! -d "repogx" ]]; then
+if [[ ! -d "repogx" ]]; then
+  echo "本地仓库下载错误"
+  exit 1
+elif [[ ! -d "shangyou" ]]; then
   echo "上游仓库下载错误"
   exit 1
 fi
@@ -38,10 +41,6 @@ fi
 function tongbu_2() {
 # 从上游仓库覆盖文件到本地仓库
 rm -rf shangyou/build/*/{diy,files,patches,seed}
-if [[ ! -d "repogx" ]] && [[ ! -d "repogx" ]]; then
-  echo "上游仓库下载错误"
-  exit 1
-fi
 
 settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep settings.ini; } 2>"/dev/null")"
 for f in ${settings_file}
