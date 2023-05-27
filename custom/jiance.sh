@@ -59,6 +59,7 @@ do
   TARGE1="target: \\[.*\\]"
   TARGE2="target: \\[${a}\\]"
   yml_name2="$(grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
+  schedule_name1="$(grep -E 'schedule:' "${f}" |awk 'NR==1')"
   cron_name1="$(grep -E '\- cron:.*' "${f}" |awk 'NR==1')"
   SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${a}/settings.ini" |grep -v '^#' |cut -d '"' -f2)"
   if [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
@@ -73,10 +74,20 @@ do
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml ${f}
   fi
   yml_name1="$(grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
+  schedule_name1="$(grep -E 'schedule:' "${f}" |awk 'NR==1')"
   cron_name2="$(grep -E '\- cron:.*' "${f}" |awk 'NR==1')"
-  sed -i "s?${TARGE1}?${TARGE2}?g" ${f}
-  sed -i "s?${yml_name1}?${yml_name2}?g" ${f}
-  sed -i "s?${cron_name1}?${cron_name2}?g" ${f}
+  if [[ -n "${TARGE1}" ]] && [[ -n "${TARGE2}" ]]; then
+    sed -i "s?${TARGE1}?${TARGE2}?g" ${f}
+  fi
+  if [[ -n "${yml_name1}" ]] && [[ -n "${yml_name2}" ]]; then
+    sed -i "s?${yml_name1}?${yml_name2}?g" ${f}
+  fi
+  if [[ -n "${schedule_name1}" ]] && [[ -n "${schedule_name2}" ]]; then
+    sed -i "s?${schedule_name1}?${schedule_name2}?g" ${f}
+  fi
+  if [[ -n "${cron_name1}" ]] && [[ -n "${cron_name2}" ]]; then
+    sed -i "s?${cron_name1}?${cron_name2}?g" ${f}
+  fi
 done
 
 for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance"); do
