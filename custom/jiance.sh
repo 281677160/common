@@ -161,9 +161,7 @@ elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   C="$(echo "${ACTIONS_VERSION}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   echo "本地版本：${A}"
   echo "上游版本：${ACTIONS_VERSION}"
-  if [[ "${B}" -eq "${C}" ]]; then
-    echo -e "\033[32m 版本一致,继续编译固件... \033[0m"
-  elif [[ "${B}" != "${C}" ]]; then
+  if [[ "${B}" != "${C}" ]]; then
     echo -e "\033[31m 版本号不对等,进行同步上游仓库操作 \033[0m"
     export SYNCHRONISE="2"
   elif [[ "${A}" != "${ACTIONS_VERSION}" ]]; then
@@ -171,6 +169,7 @@ elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
     export SYNCHRONISE="1"
   else
     export SYNCHRONISE="0"
+    echo -e "\033[32m 版本一致,继续编译固件... \033[0m"
   fi
 else
   export SYNCHRONISE="0"
