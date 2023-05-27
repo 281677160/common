@@ -39,7 +39,7 @@ fi
 
 function tongbu_2() {
 # 从上游仓库覆盖文件到本地仓库
-BANBEN_SHUOMING="小版本更新于 $(date +%Y-%m%d-%H%M%S)"
+BANBEN_SHUOMING="小版本更新于 $(date +%Y.%m%d.%H%M.%S)"
 rm -rf shangyou/build/*/{diy,files,patches,seed}
 
 settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep settings.ini; } 2>"/dev/null")"
@@ -108,7 +108,7 @@ fi
 }
 
 function tongbu_3() {
-BANBEN_SHUOMING="大版本覆盖于 $(date +%Y-%m%d-%H%M%S)"
+BANBEN_SHUOMING="大版本覆盖于 $(date +%Y.%m%d.%H%M.%S)"
 if [[ -d "backupstwo" ]]; then
   cd backupstwo
   mkdir -p backups
