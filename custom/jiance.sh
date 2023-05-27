@@ -78,7 +78,7 @@ do
   sed -i "s?${yml_name1}?${yml_name2}?g" ${f}
 done
 
-for X in $(find "operates" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version; done
+for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version; done
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md ${GITHUB_WORKSPACE}/repogx/README.md
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE ${GITHUB_WORKSPACE}/repogx/LICENSE
   
@@ -87,10 +87,7 @@ cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/packaging.yml ${GITHUB_WOR
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/synchronise.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/synchronise.yml
 mv -f operates repogx/build
 
-for X in $(find "${GITHUB_WORKSPACE}/operates" -name "*.bak"); do rm -rf "${X}"; done
-if [[ -d "${GITHUB_WORKSPACE}/repogx/.github/workflows" ]]; then
-  for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.bak"); do rm -rf "${X}"; done
-fi
+for X in $({ find ${GITHUB_WORKSPACE}/repogx |grep .bak; } 2>"/dev/null"); do rm -rf "${X}"; done
 
 if [[ "${SYNCHRONISE}" == "1" ]]; then
   cd backupstwo
