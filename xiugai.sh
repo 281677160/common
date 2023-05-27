@@ -25,7 +25,7 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 }
 
 function settings_variable() {
-${GITHUB_WORKSPACE}
+cd ${GITHUB_WORKSPACE}
 }
 
 function Diy_variable() {
