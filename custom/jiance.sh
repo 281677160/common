@@ -204,6 +204,11 @@ cd ${GITHUB_WORKSPACE}/repogx
 git add .
 git commit -m "${BANBEN_SHUOMING}"
 git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
+if [[ $? -ne 0 ]]; then
+  echo -e "\033[31m 同步上游仓库失败 \033[0m"
+else
+  echo -e "\033[33m 同步上游仓库完成,请设置好文件再继续编译 \033[0m"
+fi
 exit 1
 }
 
