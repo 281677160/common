@@ -56,9 +56,9 @@ do
     if [[ -n "${CONFIG_FILE1}" ]] && [[ -n "${CONFIG_FILE2}" ]]; then
       sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" ${Y}
     fi
-    cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Lienol/* "${X}"
+    cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Lede/* "${X}"
   elif [ -n "$(grep 'SOURCE_CODE="LIENOL"' "$f")" ]; then
-    Y="${GITHUB_WORKSPACE}/shangyou/build/Lede/settings.ini"
+    Y="${GITHUB_WORKSPACE}/shangyou/build/Lienol/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "$f" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
