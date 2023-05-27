@@ -159,7 +159,8 @@ elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   A="$(grep -E "ACTIONS_VERSION=.*" build/${FOLDER_NAME}/relevance/actions_version |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
   B="$(echo "${A}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   C="$(echo "${ACTIONS_VERSION}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
-  echo "${A}-${B}-${C}-${ACTIONS_VERSION}"
+  echo "本地版本：${A}"
+  echo "上游版本：${ACTIONS_VERSION}"
   if [[ "${B}" != "${C}" ]]; then
     echo -e "\033[31m 版本号不对等,进行同步上游仓库操作 \033[0m"
     export SYNCHRONISE="2"
