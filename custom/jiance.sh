@@ -94,7 +94,7 @@ if [[ "${SYNCHRONISE}" == "1" ]]; then
   mkdir -p backups
   cp -Rf operates backups/build
   cp -Rf b123/* backups/
-  cp -Rf backups ${GITHUB_WORKSPACE}/repogx/build/backups
+  cp -Rf backups ${GITHUB_WORKSPACE}/repogx/backups
 fi
 }
 
@@ -103,7 +103,7 @@ if [[ "${SYNCHRONISE}" == "2" ]]; then
   mkdir -p backups
   cp -Rf operates backups/build
   cp -Rf repogx/.github/workflows/* backups/
-  cp -Rf backups shangyou/build/backups
+  cp -Rf backups shangyou/backups
 fi
 sudo rm -rf repogx/*
 cp -Rf shangyou/* repogx/
