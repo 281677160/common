@@ -24,7 +24,7 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
     }
 }
 
-function Diy_variable() {
+function settings_variable() {
 ${GITHUB_WORKSPACE}
 }
 
