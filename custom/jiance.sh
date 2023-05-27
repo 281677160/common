@@ -15,7 +15,7 @@ sudo chmod -R +x build
 function tongbu_1() {
 sudo rm -rf repogx shangyou
 git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
-git clone -b main https://github.com/${GITHUD_REPOSITORY} shangyou
+git clone -b main https://github.com/281677160/build-actions shangyou
 
 if [[ ! -d "repogx" ]] && [[ ! -d "repogx" ]]; then
   echo "上游仓库下载错误"
