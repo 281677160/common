@@ -13,6 +13,8 @@ sudo chmod -R +x build
 }
 
 function tongbu_1() {
+git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+git config --global user.name "github-actions[bot]"
 sudo rm -rf repogx shangyou
 git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 git clone -b main https://github.com/281677160/build-actions shangyou
