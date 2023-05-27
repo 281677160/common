@@ -30,7 +30,7 @@ if [[ -d "repogx/build" ]]; then
 else
   cp -Rf shangyou/build ${GITHUB_WORKSPACE}/operates
 fi
-[[ -d "operates/backups" ]] && sudo rm -rf operates/backups
+[[ -d "repogx/backups" ]] && sudo rm -rf repogx/backups
 if [[ "${SYNCHRONISE}" == "1" ]]; then
   mkdir -p backupstwo/b123
   cp -Rf operates backupstwo/operates
