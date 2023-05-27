@@ -78,7 +78,8 @@ do
   sed -i "s?${yml_name1}?${yml_name2}?g" ${f}
 done
 
-for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance"); do 
+for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance"); do
+  rm -rf ${X}/{*.ini,*start}
   echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
 done
@@ -114,6 +115,7 @@ cp -Rf shangyou/* repogx/
 sudo rm -rf repogx/.github/workflows/*
 cp -Rf shangyou/.github/workflows/* repogx/.github/workflows/
 for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance"); do 
+  rm -rf ${X}/{*.ini,*start}
   echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
 done
