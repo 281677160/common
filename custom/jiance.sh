@@ -65,6 +65,7 @@ do
   if [[ -n "${CONFIG_FILE1}" ]] && [[ -n "${CONFIG_FILE2}" ]]; then
     sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" ${f}
   fi
+  echo "${CONFIG_FILE1}-${CONFIG_FILE2}"
 done
 
 yml_file="$({ find ${GITHUB_WORKSPACE}/repogx |grep .yml |grep -v 'synchronise.yml\|compile.yml\|packaging.yml'; } 2>"/dev/null")"
