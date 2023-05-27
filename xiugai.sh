@@ -24,6 +24,9 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
     }
 }
 
+function Diy_variable() {
+${GITHUB_WORKSPACE}
+}
 
 function Diy_variable() {
 git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
