@@ -37,6 +37,7 @@ fi
 
 function tongbu_2() {
 # 从上游仓库覆盖文件到本地仓库
+BANBEN_SHUOMING="小版本更新于 $(date +%Y-%m%d-%H%M%S)"
 rm -rf shangyou/build/*/{diy,files,patches,seed}
 
 settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep settings.ini; } 2>"/dev/null")"
@@ -58,7 +59,7 @@ do
   TARGE1="target: \\[.*\\]"
   TARGE2="target: \\[${a}\\]"
   yml_name2="$(grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
-  cron_name1="$(grep -E '\- cron:.*' "${f} |awk 'NR==1')"
+  cron_name1="$(grep -E '\- cron:.*' "${f}" |awk 'NR==1')"
   SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${a}/settings.ini" |grep -v '^#' |cut -d '"' -f2)"
   if [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml ${f}
@@ -72,7 +73,7 @@ do
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml ${f}
   fi
   yml_name1="$(grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
-  cron_name2="$(grep -E '\- cron:.*' "${f} |awk 'NR==1')"
+  cron_name2="$(grep -E '\- cron:.*' "${f}" |awk 'NR==1')"
   sed -i "s?${TARGE1}?${TARGE2}?g" ${f}
   sed -i "s?${yml_name1}?${yml_name2}?g" ${f}
   sed -i "s?${cron_name1}?${cron_name2}?g" ${f}
@@ -105,6 +106,7 @@ fi
 }
 
 function tongbu_3() {
+BANBEN_SHUOMING="大版本覆盖于 $(date +%Y-%m%d-%H%M%S)"
 if [[ -d "backupstwo" ]]; then
   cd backupstwo
   mkdir -p backups
@@ -128,7 +130,7 @@ sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 function tongbu_4() {
 cd ${GITHUB_WORKSPACE}/repogx
 git add .
-git commit -m "同步上游仓库 $(date +%Y-%m%d-%H%M%S)"
+git commit -m "${BANBEN_SHUOMING}"
 git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 exit 1
 }
