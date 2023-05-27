@@ -29,8 +29,6 @@ cd ${GITHUB_WORKSPACE}
 }
 
 function Diy_variable() {
-git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-git config --global user.name "github-actions[bot]"
 bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/jiance.sh)
 # 读取变量
 if [[ -n "${BENDI_VERSION}" ]]; then
