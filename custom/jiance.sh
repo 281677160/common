@@ -78,7 +78,11 @@ do
   sed -i "s?${yml_name1}?${yml_name2}?g" ${f}
 done
 
-for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version; done
+for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance"); do 
+  echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
+  echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
+done
+
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md ${GITHUB_WORKSPACE}/repogx/README.md
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE ${GITHUB_WORKSPACE}/repogx/LICENSE
   
@@ -109,8 +113,10 @@ sudo rm -rf repogx/*
 cp -Rf shangyou/* repogx/
 sudo rm -rf repogx/.github/workflows/*
 cp -Rf shangyou/.github/workflows/* repogx/.github/workflows/
-for X in $(find "repogx" -type d -name "relevance" |grep -v 'backups'); do echo "$(date +%Y%m%d%H%M%S)" > ${X}/1678864096.ini; done
-for X in $(find "repogx" -type d -name "relevance" |grep -v 'backups'); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version; done
+for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance"); do 
+  echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
+  echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
+done
 sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 }
 
