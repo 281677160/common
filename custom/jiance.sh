@@ -16,6 +16,12 @@ function tongbu_1() {
 sudo rm -rf repogx shangyou
 git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 git clone -b main https://github.com/${GITHUD_REPOSITORY} shangyou
+
+if [[ ! -d "repogx" ]] && [[ ! -d "repogx" ]]; then
+  上游仓库下载错误
+  exit 1
+fi
+
 if [[ -d "repogx/build" ]]; then
   mv -f repogx/build operates
 else
