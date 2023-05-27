@@ -120,7 +120,7 @@ sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 function tongbu_4() {
 cd ${GITHUB_WORKSPACE}/repogx
 git add .
-git commit -m "强制同步上游仓库 $(date +%Y-%m%d-%H%M%S)"
+git commit -m "同步上游仓库 $(date +%Y-%m%d-%H%M%S)"
 git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 exit 1
 }
