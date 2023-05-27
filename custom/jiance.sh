@@ -44,11 +44,21 @@ settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep settings.ini; } 2>"/d
 for f in ${settings_file}
 do
   X="$(echo "$f" |sed "s/settings.ini//g")"
+  REPO_BRANCH1="$(grep "REPO_BRANCH=" "$f" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  CONFIG_FILE1="$(grep "CONFIG_FILE=" "$f" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
   [ -n "$(grep 'SOURCE_CODE="COOLSNOWWOLF"' "$f")" ] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Lede/* "${X}"
   [ -n "$(grep 'SOURCE_CODE="LIENOL"' "$f")" ] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Lienol/* "${X}"
   [ -n "$(grep 'SOURCE_CODE="IMMORTALWRT"' "$f")" ] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Immortalwrt/* "${X}"
   [ -n "$(grep 'SOURCE_CODE="XWRT"' "$f")" ] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Xwrt/* "${X}"
   [ -n "$(grep 'SOURCE_CODE="OFFICIAL"' "$f")" ] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Official/* "${X}"
+  REPO_BRANCH2="$(grep "REPO_BRANCH=" "$f" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  CONFIG_FILE2="$(grep "CONFIG_FILE=" "$f" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+  if [[ -n "${REPO_BRANCH1}" ]] && [[ -n "${REPO_BRANCH2}" ]]; then
+    sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" ${f}
+  fi
+  if [[ -n "${CONFIG_FILE1}" ]] && [[ -n "${CONFIG_FILE2}" ]]; then
+    sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" ${f}
+  fi
 done
 
 yml_file="$({ find ${GITHUB_WORKSPACE}/repogx |grep .yml |grep -v 'synchronise.yml\|compile.yml\|packaging.yml'; } 2>"/dev/null")"
