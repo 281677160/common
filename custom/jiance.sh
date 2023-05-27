@@ -6,9 +6,7 @@ cd ${GITHUB_WORKSPACE}
 
 function Diy_continue() {
 rm -rf upcommon
-if [[ ! -d "build/common" ]] || [[ ! -f "build/common/common.sh" ]]; then
-  rm -rf build/common && git clone -b main --depth 1 https://github.com/281677160/common build/common
-fi
+sudo rm -rf build/common && git clone -b main --depth 1 https://github.com/281677160/common build/common
 cp -Rf build/common/*.sh build/${FOLDER_NAME}/
 cp -Rf build/common/xiugai.sh build/${FOLDER_NAME}/common.sh
 sudo chmod -R +x build
