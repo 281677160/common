@@ -33,57 +33,53 @@ function tongbu_2() {
 # 从上游仓库覆盖文件到本地仓库
 rm -rf shangyou/build/*/{diy,files,patches,seed}
 
-for X in $(grep "\"COOLSNOWWOLF\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lede/* "${X}"; done
-for X in $(grep "\"LIENOL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Lienol/* "${X}"; done
-for X in $(grep "\"IMMORTALWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Immortalwrt/* "${X}"; done
-for X in $(grep "\"XWRT\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Xwrt/* "${X}"; done
-for X in $(grep "\"OFFICIAL\"" -rl "operates" |grep "settings.ini" |sed 's/\/settings.*//g' |uniq); do cp -Rf shangyou/build/Official/* "${X}"; done
-for X in $(find "operates" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version; done
+settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep settings.ini; } 2>"/dev/null")"
+for f in ${settings_file}
+do
+	[ -n "$(grep 'SOURCE_CODE="COOLSNOWWOLF"' "$f")" ] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Lede/* "${X}"
+	[ -n "$(grep 'SOURCE_CODE="LIENOL"' "$f")" ] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Lienol/* "${X}"
+	[ -n "$(grep 'SOURCE_CODE="IMMORTALWRT"' "$f")" ] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Immortalwrt/* "${X}"
+	[ -n "$(grep 'SOURCE_CODE="XWRT"' "$f")" ] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Xwrt/* "${X}"
+	[ -n "$(grep 'SOURCE_CODE="OFFICIAL"' "$f")" ] && cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Official/* "${X}"
+done
 
-cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md repogx/README.md
-cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE repogx/LICENSE
-  
-for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v 'synchronise.yml\|compile.yml\|packaging.yml\|.bak'); do
-  aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
-  if [[ ! -d "${GITHUB_WORKSPACE}/operates/${aa}" ]]; then
-    rm -rf "${X}"
-    rm -rf "${X}".bak
-    echo -e "\033[31m build文件夹里面没发现有${SOURCE_CODE1}此文件夹存在,删除${X}文件 \033[0m"
-  fi
-done
-    
-for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.yml" |grep -v 'synchronise.yml\|compile.yml\|packaging.yml\|.bak'); do
-  aa="$(grep 'target: \[.*\]' "${X}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
+yml_file="$({ find ${GITHUB_WORKSPACE}/operates |grep .yml |grep -v 'synchronise.yml\|compile.yml\|packaging.yml'; } 2>"/dev/null")"
+for f in ${yml_file}
+do
+	a="$(grep 'target: \[.*\]' "${f}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
+	[ ! -d "${GITHUB_WORKSPACE}/operates/${aa}" ] && rm -rf "${f}"
   TARGE1="target: \\[.*\\]"
-  TARGE2="target: \\[${aa}\\]"
-  yml_name2="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
-  SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${aa}/settings.ini" | cut -d '"' -f2)"
+  TARGE2="target: \\[${a}\\]"
+  yml_name2="$(grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
+  SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${a}/settings.ini" | cut -d '"' -f2)"
   if [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
-    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml ${X}
+    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml ${f}
   elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]]; then
-    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lede.yml ${X}
+    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lede.yml ${f}
   elif [[ "${SOURCE_CODE1}" == "LIENOL" ]]; then 
-    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lienol.yml ${X}
+    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Lienol.yml ${f}
   elif [[ "${SOURCE_CODE1}" == "OFFICIAL" ]]; then
-    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Official.yml ${X}
+    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Official.yml ${f}
   elif [[ "${SOURCE_CODE1}" == "XWRT" ]]; then 
-    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml ${X}
-  else
-    echo ""
+    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml ${f}
   fi
-  yml_name1="$(grep 'name:' "${X}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
-  sed -i "s?${TARGE1}?${TARGE2}?g" ${X}
-  sed -i "s?${yml_name1}?${yml_name2}?g" "${X}"
+  yml_name1="$(grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
+  sed -i "s?${TARGE1}?${TARGE2}?g" ${f}
+  sed -i "s?${yml_name1}?${yml_name2}?g" ${f}
 done
+
+for X in $(find "operates" -type d -name "relevance"); do echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version; done
+cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md ${GITHUB_WORKSPACE}/repogx/README.md
+cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE ${GITHUB_WORKSPACE}/repogx/LICENSE
   
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/compile.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/compile.yml
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/packaging.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/packaging.yml
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/synchronise.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/synchronise.yml
 mv -f operates repogx/build
 
-for X in $(find "operates" -name "*.bak"); do rm -rf "${X}"; done
-if [[ -d "repogx/.github/workflows" ]]; then
-  for X in $(find "repogx/.github/workflows" -name "*.bak"); do rm -rf "${X}"; done
+for X in $(find "${GITHUB_WORKSPACE}/operates" -name "*.bak"); do rm -rf "${X}"; done
+if [[ -d "${GITHUB_WORKSPACE}/repogx/.github/workflows" ]]; then
+  for X in $(find "${GITHUB_WORKSPACE}/repogx/.github/workflows" -name "*.bak"); do rm -rf "${X}"; done
 fi
 
 if [[ "${SYNCHRONISE}" == "1" ]]; then
