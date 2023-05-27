@@ -54,7 +54,7 @@ yml_file="$({ find ${GITHUB_WORKSPACE}/operates |grep .yml |grep -v 'synchronise
 for f in ${yml_file}
 do
   a="$(grep 'target: \[.*\]' "${f}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/')"
-  [ ! -d "${GITHUB_WORKSPACE}/operates/${aa}" ] && rm -rf "${f}"
+  [ ! -d "${GITHUB_WORKSPACE}/operates/${a}" ] && rm -rf "${f}"
   TARGE1="target: \\[.*\\]"
   TARGE2="target: \\[${a}\\]"
   yml_name2="$(grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
