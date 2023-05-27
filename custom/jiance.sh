@@ -13,8 +13,6 @@ sudo chmod -R +x build
 }
 
 function tongbu_1() {
-git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-git config --global user.name "github-actions[bot]"
 sudo rm -rf repogx shangyou
 git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 git clone -b main https://github.com/281677160/build-actions shangyou
@@ -142,6 +140,8 @@ git clone -b main --depth 1 https://github.com/281677160/common upcommon
 ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "upcommon/xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 GIT_REPOSITORY="${GIT_REPOSITORY}"
 REPO_TOKEN="${REPO_TOKEN}"
+git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+git config --global user.name "github-actions[bot]"
 
 if [[ ! -d "build" ]]; then
   echo -e "\033[31m 根目录缺少build文件夹存在,进行同步上游仓库操作 \033[0m"
