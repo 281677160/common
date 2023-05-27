@@ -27,13 +27,9 @@ fi
 
 if [[ -d "repogx/build" ]]; then
   mv -f repogx/build ${GITHUB_WORKSPACE}/operates
-  if [[ "${SYNCHRONISE}" == "1" ]]; then
-    mkdir -p backupstwo/b123
-    cp -Rf operates backupstwo/operates
-    cp -Rf repogx/.github/workflows/* backupstwo/b123/
-  fi
-else
-  cp -Rf shangyou/build ${GITHUB_WORKSPACE}/operates
+  mkdir -p backupstwo/b123
+  cp -Rf operates backupstwo/operates
+  cp -Rf repogx/.github/workflows/* backupstwo/b123/
 fi
 [[ -d "repogx/backups" ]] && sudo rm -rf repogx/backups
 [[ -d "operates/backups" ]] && sudo rm -rf operates/backups
@@ -95,21 +91,24 @@ mv -f operates repogx/build
 
 for X in $({ find ${GITHUB_WORKSPACE}/repogx |grep .bak; } 2>"/dev/null"); do rm -rf "${X}"; done
 
-if [[ "${SYNCHRONISE}" == "1" ]]; then
+if [[ -d "backupstwo" ]]; then
   cd backupstwo
   mkdir -p backups
   cp -Rf operates backups/build
   cp -Rf b123/* backups/
   cp -Rf backups ${GITHUB_WORKSPACE}/repogx/backups
+  cd ${GITHUB_WORKSPACE}
 fi
 }
 
 function tongbu_3() {
-if [[ "${SYNCHRONISE}" == "2" ]]; then
+if [[ -d "backupstwo" ]]; then
+  cd backupstwo
   mkdir -p backups
   cp -Rf operates backups/build
-  cp -Rf repogx/.github/workflows/* backups/
-  cp -Rf backups shangyou/backups
+  cp -Rf b123/* backups/
+  cp -Rf backups ${GITHUB_WORKSPACE}/shangyou/backups
+  cd ${GITHUB_WORKSPACE}
 fi
 sudo rm -rf repogx/*
 cp -Rf shangyou/* repogx/
