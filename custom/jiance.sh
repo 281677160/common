@@ -152,7 +152,7 @@ elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
     echo -e "\033[31m 版本号不对等,进行同步上游仓库操作 \033[0m"
     export SYNCHRONISE="2"
   elif [[ "${A}" != "${ACTIONS_VERSION}" ]]; then
-    echo -e "\033[31m 版本号不对等,进行同步上游仓库操作 \033[0m"
+    echo -e "\033[31m 此仓库版本号跟上游仓库不对等,进行小版本更新 \033[0m"
     export SYNCHRONISE="1"
   else
     export SYNCHRONISE="0"
