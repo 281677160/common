@@ -259,7 +259,7 @@ for X in $(find "operates" -name "settings.ini"); do
   fi
 done
 echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
-BENDI_TONGBU="1"
+export BENDI_TONGBU="1"
 sleep 30
 exit 1
 }
