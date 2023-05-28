@@ -183,7 +183,7 @@ if [[ -d "backupstwo" ]]; then
     cp -Rf backupstwo/operates/* backupstwo/backups/
     cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/operates/backups
     sudo chmod -R +x operates
-    sudo rm -rf backupstwo repogx shangyou upcommon
+    sudo rm -rf backupstwo repogx shangyou build
   else
     mv -f backupstwo/operates backupstwo/backups/build
     mv -f backupstwo/b123/workflows backupstwo/backups/workflows
@@ -192,6 +192,7 @@ if [[ -d "backupstwo" ]]; then
 fi
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]]; then
+  echo "大版本" > ${GITHUB_WORKSPACE}/xiaobanben
   tongbu_5
 else
   tongbu_4
@@ -227,6 +228,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf build operates
   cp -Rf ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
   rm -rf shangyou repogx backupstwo
+  echo "大版本" > ${GITHUB_WORKSPACE}/dabanben
   tongbu_5
 else
   cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/repogx/backups
@@ -271,8 +273,7 @@ for X in $(find "operates" -name "settings.ini"); do
   fi
 done
 echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
-export TONGBU_BENDI="1"
-sleep 30
+exit 0
 }
 
 function Diy_memu() {
@@ -282,11 +283,12 @@ if [[ $? -ne 0 ]]; then
 fi
 ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 if [[ -n "${BENDI_VERSION}" ]]; then
+  rm -rf ${GITHUB_WORKSPACE}/xiaobanben ${GITHUB_WORKSPACE}/dabanben
   GIT_REPOSITORY="281677160/build-actions"
   export TONGBU_BENDI="0"
   rm -rf build
   cp -Rf operates build
-  rm -rf upcommon
+  rm -rf common.sh
 else
   GIT_REPOSITORY="${GIT_REPOSITORY}"
   REPO_TOKEN="${REPO_TOKEN}"
