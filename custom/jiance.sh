@@ -218,7 +218,7 @@ done
 sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
   mv -f ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
-  rm -rf shangyou repogx upcommon build
+  rm -rf shangyou repogx upcommon
   tongbu_5
 else
   tongbu_4
