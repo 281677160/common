@@ -319,7 +319,7 @@ elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
 else
   export SYNCHRONISE="0"
 fi
-
+sleep 5
 
 if [[ "${SYNCHRONISE}" == "1" ]]; then
   tongbu_1
