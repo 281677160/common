@@ -243,7 +243,11 @@ git clone -b main --depth 1 https://github.com/281677160/common upcommon
 ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "upcommon/xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 if [[ -n "${BENDI_VERSION}" ]]; then
   GIT_REPOSITORY="281677160/build-actions"
-  if [[ -d "operates" ]]; then
+  if [[ ! -d "operates" ]]; then
+    git clone -b main --depth 1 https://github.com/281677160/build-actions shangyou
+    mv -f shangyou/build operates
+    rm -rf shangyou upcommon
+  elif [[ -d "operates" ]]; then
     rm -rf build
     cp -Rf operates build
   fi
