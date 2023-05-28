@@ -200,7 +200,6 @@ if [[ -d "backupstwo" ]]; then
   mkdir -p backupstwo/backups
   mv -f backupstwo/operates backupstwo/backups/build
   mv -f backupstwo/b123/workflows backupstwo/backups/workflows
-  cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/shangyou/backups
 fi
 sudo rm -rf ${GITHUB_WORKSPACE}/repogx/*
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/* ${GITHUB_WORKSPACE}/repogx/
@@ -214,10 +213,13 @@ for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance"); do
 done
 chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
+  rm -rf backupstwo/backups/workflows
+  cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/repogx/build/backups
   cp -Rf ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
   rm -rf shangyou repogx backupstwo
   tongbu_5
 else
+  cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/repogx/backups
   tongbu_4
 fi
 }
