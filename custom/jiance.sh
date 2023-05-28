@@ -242,7 +242,10 @@ git clone -b main --depth 1 https://github.com/281677160/common upcommon
 ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "upcommon/xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 if [[ -n "${BENDI_VERSION}" ]]; then
   GIT_REPOSITORY="281677160/build-actions"
-  [[ -d "operates" ]] && cp -Rf operates build
+  if [[ -d "operates" ]]; then
+    rm -rf build
+    cp -Rf operates build
+  fi
 else
   GIT_REPOSITORY="${GIT_REPOSITORY}"
   REPO_TOKEN="${REPO_TOKEN}"
