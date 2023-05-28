@@ -34,7 +34,7 @@ fi
 [[ -d "repogx/backups" ]] && sudo rm -rf repogx/backups
 [[ -d "operates/backups" ]] && sudo rm -rf operates/backups
 
-mkdir -p backupstwo/b123
+rm -rf backupstwo && mkdir -p backupstwo/b123
 cp -Rf operates backupstwo/operates
 cp -Rf repogx/.github/workflows backupstwo/b123/workflows
 }
