@@ -237,14 +237,12 @@ fi
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
-
 LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
 if [[ -n "${LUCI_CHECKUT}" ]]; then
   git checkout ${LUCI_CHECKUT}
   git switch -c ${LUCI_CHECKUT}
-  git pull
 fi
-
+git pull > /dev/null 2>&1
 echo "增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 sed -i '/danshui/d; /helloworld/d; /passwall/d' "feeds.conf.default"
