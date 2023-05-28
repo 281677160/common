@@ -5,10 +5,14 @@
 cd ${GITHUB_WORKSPACE}
 
 function Diy_continue() {
-sudo rm -rf build/common && git clone -b main --depth 1 https://github.com/281677160/common build/common
-cp -Rf build/common/*.sh build/${FOLDER_NAME}/
-cp -Rf build/common/xiugai.sh build/${FOLDER_NAME}/common.sh
-chmod -R +x build
+if [[ -n "${BENDI_VERSION}" ]]; then
+  sudo rm -rf build
+else
+  sudo rm -rf build/common && git clone -b main --depth 1 https://github.com/281677160/common build/common
+  cp -Rf build/common/*.sh build/${FOLDER_NAME}/
+  cp -Rf build/common/xiugai.sh build/${FOLDER_NAME}/common.sh
+  chmod -R +x build
+fi
 }
 
 function tongbu_1() {
