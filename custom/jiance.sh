@@ -215,6 +215,7 @@ chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf backupstwo/backups/workflows
   cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/repogx/build/backups
+  rm -rf build operates
   cp -Rf ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
   rm -rf shangyou repogx backupstwo
   tongbu_5
