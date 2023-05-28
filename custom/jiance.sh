@@ -16,6 +16,10 @@ function tongbu_1() {
 sudo rm -rf repogx shangyou
 git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 git clone -b main https://github.com/281677160/build-actions shangyou
+if [[ -n "${BENDI_VERSION}" ]] && [[ -d "operates" ]]; then
+  rm -rf repogx/build
+  mv -f operates repogx/build
+fi
 
 if [[ ! -d "repogx" ]]; then
   echo "本地仓库下载错误"
@@ -25,15 +29,10 @@ elif [[ ! -d "shangyou" ]]; then
   exit 1
 fi
 
-if [[ -n "${BENDI_VERSION}" ]]; then
-  rm -rf backupstwo && mkdir -p backupstwo
-  cp -Rf operates backupstwo/operates
-else
-  mv -f repogx/build ${GITHUB_WORKSPACE}/operates
-  mkdir -p backupstwo/b123
-  cp -Rf operates backupstwo/operates
-  cp -Rf repogx/.github/workflows backupstwo/b123/workflows
-fi
+mv -f repogx/build ${GITHUB_WORKSPACE}/operates
+mkdir -p backupstwo/b123
+cp -Rf operates backupstwo/operates
+cp -Rf repogx/.github/workflows backupstwo/b123/workflows
 [[ -d "repogx/backups" ]] && sudo rm -rf repogx/backups
 [[ -d "operates/backups" ]] && sudo rm -rf operates/backups
 }
@@ -175,10 +174,11 @@ if [[ -d "backupstwo" ]]; then
   cd backupstwo
   mkdir -p backups
   if [[ -n "${BENDI_VERSION}" ]]; then
-    cp -Rf operates operates/backups
+    cp -Rf operates ${GITHUB_WORKSPACE}/repogx/build/backups
     cd ${GITHUB_WORKSPACE}
-    sudo rm -rf backupstwo repogx shangyou upcommon
+    mv -f ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
     sudo chmod -R +x operates
+    sudo rm -rf backupstwo repogx shangyou upcommon
     echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
     exit 1
   else
@@ -212,8 +212,8 @@ for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance"); do
 done
 sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
-  rm -rf operates shangyou upcommon
-  mv -f ${GITHUB_WORKSPACE}/repogx operates
+  mv -f ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
+  rm -rf operates shangyou upcommon repogx
   echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
   exit 1
 else
