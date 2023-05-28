@@ -186,6 +186,7 @@ if [[ -d "backupstwo" ]]; then
     cp -Rf b123/workflows backups/workflows
     cp -Rf backups ${GITHUB_WORKSPACE}/repogx/backups
     cd ${GITHUB_WORKSPACE}
+    tongbu_4
   fi
 fi
 }
@@ -215,6 +216,8 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   mv -f ${GITHUB_WORKSPACE}/repogx operates
   echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
   exit 1
+else
+  tongbu_4
 fi
 }
 
@@ -282,11 +285,9 @@ fi
 if [[ "${SYNCHRONISE}" == "1" ]]; then
   tongbu_1
   tongbu_2
-  tongbu_4
 elif [[ "${SYNCHRONISE}" == "2" ]]; then
   tongbu_1
   tongbu_3
-  tongbu_4
 else
   Diy_continue
 fi
