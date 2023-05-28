@@ -539,8 +539,7 @@ else
   fi
 fi
 
-./scripts/feeds install -a -p danshui1 > /dev/null 2>&1
-./scripts/feeds install -a -p danshui2 > /dev/null 2>&1
+./scripts/feeds update danshui1 danshui2 > /dev/null 2>&1
 }
 
 
