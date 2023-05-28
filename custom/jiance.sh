@@ -175,7 +175,7 @@ cp -Rf operates repogx/build
 if [[ -d "backupstwo" ]]; then
   cd ${GITHUB_WORKSPACE}
   mkdir -p backupstwo/backups
-  mv -f backupstwo/operates backups/build
+  mv -f backupstwo/operates backupstwo/backups/build
   if [[ -n "${BENDI_VERSION}" ]]; then
     cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/operates/backups
     sudo chmod -R +x operates
@@ -198,7 +198,7 @@ BANBEN_SHUOMING="大版本覆盖于 $(date +%Y.%m%d.%H%M.%S)"
 cd ${GITHUB_WORKSPACE}
 if [[ -d "backupstwo" ]]; then
   mkdir -p backupstwo/backups
-  mv -f backupstwo/operates backups/build
+  mv -f backupstwo/operates backupstwo/backups/build
   mv -f backupstwo/b123/workflows backupstwo/backups/workflows
   cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/shangyou/backups
 fi
@@ -212,7 +212,7 @@ for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance"); do
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
   echo ${X}
 done
-sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
+chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
   cp -Rf ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
   rm -rf shangyou repogx backupstwo
@@ -244,7 +244,7 @@ for X in $(find "operates" -name "settings.ini"); do
   sed -i '/SSH_ACTIONS/d' "${X}"
   sed -i '/UPLOAD_FIRMWARE/d' "${X}"
   sed -i '/UPLOAD_WETRANSFER/d' "${X}"
-   ed -i '/UPLOAD_RELEASE/d' "${X}"
+  sed -i '/UPLOAD_RELEASE/d' "${X}"
   sed -i '/INFORMATION_NOTICE/d' "${X}"
   sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
   sed -i '/COMPILATION_INFORMATION/d' "${X}"
