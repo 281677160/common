@@ -1421,16 +1421,12 @@ else
   weizhicpu="1"
 fi
 
-if [[ ! "${weizhicpu}" == "1" ]] && [[ -n "${OpenClash_Core}" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-openclash=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  if [[ "${wuxuxiazai}" == "1" ]]; then
-    echo "已有核心"
-  else
-    echo "正在执行：给openclash下载核心"
-    rm -rf ${HOME_PATH}/files/etc/openclash/core
-    rm -rf ${HOME_PATH}/clash-neihe && mkdir -p ${HOME_PATH}/clash-neihe
-    mkdir -p ${HOME_PATH}/files/etc/openclash/core
-    cd ${HOME_PATH}/clash-neihe
-  fi
+if [[ ! "${weizhicpu}" == "1" ]] && [[ -n "${OpenClash_Core}" ]] && [[ "${OpenClash_branch}" =~ (master|dev) ]]; then
+  echo "正在执行：给openclash下载核心"
+  rm -rf ${HOME_PATH}/files/etc/openclash/core
+  rm -rf ${HOME_PATH}/clash-neihe && mkdir -p ${HOME_PATH}/clash-neihe
+  mkdir -p ${HOME_PATH}/files/etc/openclash/core
+  cd ${HOME_PATH}/clash-neihe
   if [[ "${OpenClash_Core}" == "2" ]]; then
     wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/meta/clash-${Archclash}.tar.gz -O meta.tar.gz
     wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/dev/clash-${Archclash}.tar.gz -O clash.tar.gz
@@ -1485,7 +1481,7 @@ if [[ ! "${weizhicpu}" == "1" ]] && [[ -n "${OpenClash_Core}" ]] && [[ `grep -c 
   rm -rf ${HOME_PATH}/clash-neihe
 fi
 
-if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]] && [[ `grep -c "CONFIG_PACKAGE_luci-app-adguardhome=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   echo "正在执行：给adguardhome下载核心"
   rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
   downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
