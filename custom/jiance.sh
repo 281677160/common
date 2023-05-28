@@ -179,12 +179,13 @@ cp -Rf operates repogx/build
 if [[ -d "backupstwo" ]]; then
   cd ${GITHUB_WORKSPACE}
   mkdir -p backupstwo/backups
-  mv -f backupstwo/operates backupstwo/backups/build
   if [[ -n "${BENDI_VERSION}" ]]; then
+    cp -Rf backupstwo/operates/* backupstwo/backups/
     cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/operates/backups
     sudo chmod -R +x operates
     sudo rm -rf backupstwo repogx shangyou upcommon
   else
+    mv -f backupstwo/operates backupstwo/backups/build
     mv -f backupstwo/b123/workflows backupstwo/backups/workflows
     cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/repogx/backups
   fi
@@ -202,8 +203,12 @@ BANBEN_SHUOMING="大版本覆盖于 $(date +%Y.%m%d.%H%M.%S)"
 cd ${GITHUB_WORKSPACE}
 if [[ -d "backupstwo" ]]; then
   mkdir -p backupstwo/backups
-  mv -f backupstwo/operates backupstwo/backups/build
-  mv -f backupstwo/b123/workflows backupstwo/backups/workflows
+  if [[ -n "${BENDI_VERSION}" ]]; then
+    cp -Rf backupstwo/operates/* backupstwo/backups/
+  else
+    mv -f backupstwo/operates backupstwo/backups/build
+    mv -f backupstwo/b123/workflows backupstwo/backups/workflows
+  fi
 fi
 sudo rm -rf ${GITHUB_WORKSPACE}/repogx/*
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/* ${GITHUB_WORKSPACE}/repogx/
@@ -268,7 +273,6 @@ done
 echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
 export TONGBU_BENDI="1"
 sleep 30
-exit 1
 }
 
 function Diy_memu() {
