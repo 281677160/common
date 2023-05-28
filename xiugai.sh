@@ -217,15 +217,19 @@ fi
 # 检查自定义文件是否存在
 if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
   TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${CONFIG_FILE}名称的配置文件],请在[${FOLDER_NAME}/seed]文件夹内补齐"
+  echo
   exit 1
 else
   TIME g "${GIT_BUILD}/${CONFIG_FILE}文件存在"
+  echo
 fi
 if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART_SH}" 2>/dev/null)" ]; then
   TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${DIY_PART_SH}名称的自定义设置文件],请在[${FOLDER_NAME}]文件夹内补齐"
+  echo
   exit 1
 else
   TIME g "${GIT_BUILD}/${DIY_PART_SH}文件存在"
+  echo
 fi
 }
 
