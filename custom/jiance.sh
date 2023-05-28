@@ -14,6 +14,7 @@ chmod -R +x build
 
 function tongbu_1() {
 sudo rm -rf repogx shangyou
+echo "${BENDI_VERSION}222"
 git clone -b main --depth 1 https://github.com/${GIT_REPOSITORY}.git repogx
 git clone -b main --depth 1 https://github.com/281677160/build-actions shangyou
 if [[ -n "${BENDI_VERSION}" ]] && [[ -d "operates" ]]; then
