@@ -177,7 +177,7 @@ if [[ -d "backupstwo" ]]; then
   if [[ -n "${BENDI_VERSION}" ]]; then
     cp -Rf operates operates/backups
     cd ${GITHUB_WORKSPACE}
-    sudo rm -rf backupstwo repogx shangyou
+    sudo rm -rf backupstwo repogx shangyou upcommon
     sudo chmod -R +x operates
     echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
     exit 1
@@ -212,7 +212,7 @@ for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance"); do
 done
 sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
-  rm -rf operates shangyou
+  rm -rf operates shangyou upcommon
   mv -f ${GITHUB_WORKSPACE}/repogx operates
   echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
   exit 1
@@ -239,6 +239,7 @@ git clone -b main --depth 1 https://github.com/281677160/common upcommon
 ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "upcommon/xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 if [[ -n "${BENDI_VERSION}" ]]; then
   GIT_REPOSITORY="281677160/build-actions"
+  [[ -d "operates" ]] && cp -Rf operates build
 else
   GIT_REPOSITORY="${GIT_REPOSITORY}"
   REPO_TOKEN="${REPO_TOKEN}"
