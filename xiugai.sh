@@ -31,9 +31,6 @@ bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom
 
 function Diy_variable() {
 # 读取变量
-if [[ -n "${BENDI_VERSION}" ]]; then
-  source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
-fi
 start_path="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini"
 rm -rf ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/{*.ini,*start}
 
@@ -204,21 +201,19 @@ echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 
 # 修改本地文件变量
 if [[ -n "${BENDI_VERSION}" ]]; then
-  GIT_BUILD=operates/${FOLDER_NAME}
-  sed -i 's?=?=\"?g' ${GITHUB_ENV}
-  sed -i '/=/ s/$/&\"/' ${GITHUB_ENV}
-else
-  GIT_BUILD=build/${FOLDER_NAME}
+  sed -i 's?=?=\"?g' "${GITHUB_ENV}"
+  sed -i '/=/ s/$/&\"/' "${GITHUB_ENV}"
+  source ${GITHUB_ENV}
 fi
 
 # 检查自定义文件是否存在
-if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/${CONFIG_FILE}" 2>/dev/null)" ]; then
   TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${CONFIG_FILE}名称的配置文件],请在[${FOLDER_NAME}/seed]文件夹内补齐"
   exit 1
 else
   echo "build/${FOLDER_NAME}/${CONFIG_FILE}文件存在"
 fi
-if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART_SH}" 2>/dev/null)" ]; then
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/${DIY_PART_SH}" 2>/dev/null)" ]; then
   TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${DIY_PART_SH}名称的自定义设置文件],请在[${FOLDER_NAME}]文件夹内补齐"
   exit 1
 else
