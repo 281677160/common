@@ -259,7 +259,7 @@ for X in $(find "operates" -name "settings.ini"); do
   fi
 done
 echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
-export BENDI_TONGBU="1"
+export TONGBU_BENDI="1"
 sleep 30
 exit 1
 }
@@ -272,6 +272,7 @@ fi
 ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 if [[ -n "${BENDI_VERSION}" ]]; then
   GIT_REPOSITORY="281677160/build-actions"
+  export TONGBU_BENDI="0"
   rm -rf build
   cp -Rf operates build
   rm -rf upcommon
