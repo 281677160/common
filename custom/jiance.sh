@@ -223,6 +223,9 @@ fi
 
 function tongbu_4() {
 cd ${GITHUB_WORKSPACE}/repogx
+if [[ GIT_REPOSITORY =~ (281677160/build-actions|281677160/autobuild) ]]; then
+  rm -rf backups
+fi
 git add .
 git commit -m "${BANBEN_SHUOMING}"
 git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
