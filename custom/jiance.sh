@@ -25,7 +25,10 @@ elif [[ ! -d "shangyou" ]]; then
   exit 1
 fi
 
-if [[ -d "repogx/build" ]]; then
+if [[ -n "${BENDI_VERSION}" ]]; then
+  rm -rf backupstwo && mkdir -p backupstwo
+  cp -Rf operates backupstwo/operates
+else
   mv -f repogx/build ${GITHUB_WORKSPACE}/operates
   mkdir -p backupstwo/b123
   cp -Rf operates backupstwo/operates
@@ -163,17 +166,27 @@ cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE ${GITHUB_WORKSPACE}/repogx/LICENSE
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/compile.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/compile.yml
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/packaging.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/packaging.yml
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/synchronise.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/synchronise.yml
-mv -f operates repogx/build
 
-for X in $({ find ${GITHUB_WORKSPACE}/repogx |grep .bak; } 2>"/dev/null"); do rm -rf "${X}"; done
+for X in $({ find ${GITHUB_WORKSPACE}/operates |grep .bak; } 2>"/dev/null"); do rm -rf "${X}"; done
+
+cp -Rf operates repogx/build
 
 if [[ -d "backupstwo" ]]; then
   cd backupstwo
   mkdir -p backups
-  cp -Rf operates backups/build
-  cp -Rf b123/workflows backups/workflows
-  cp -Rf backups ${GITHUB_WORKSPACE}/repogx/backups
-  cd ${GITHUB_WORKSPACE}
+  if [[ -n "${BENDI_VERSION}" ]]; then
+    cp -Rf operates operates/backups
+    cd ${GITHUB_WORKSPACE}
+    sudo rm -rf backupstwo repogx shangyou
+    sudo chmod -R +x operates
+    echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
+    exit 1
+  else
+    cp -Rf operates backups/build
+    cp -Rf b123/workflows backups/workflows
+    cp -Rf backups ${GITHUB_WORKSPACE}/repogx/backups
+    cd ${GITHUB_WORKSPACE}
+  fi
 fi
 }
 
@@ -183,7 +196,7 @@ if [[ -d "backupstwo" ]]; then
   cd backupstwo
   mkdir -p backups
   cp -Rf operates backups/build
-  cp -Rf b123/workflows backups/workflows
+  [[ -d "b123/workflows" ]] && cp -Rf b123/workflows backups/workflows
   cp -Rf backups ${GITHUB_WORKSPACE}/shangyou/backups
   cd ${GITHUB_WORKSPACE}
 fi
@@ -197,6 +210,12 @@ for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance"); do
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
 done
 sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
+if [[ -n "${BENDI_VERSION}" ]]; then
+  rm -rf operates shangyou
+  mv -f ${GITHUB_WORKSPACE}/repogx operates
+  echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
+  exit 1
+fi
 }
 
 function tongbu_4() {
@@ -215,10 +234,14 @@ exit 1
 function Diy_memu() {
 git clone -b main --depth 1 https://github.com/281677160/common upcommon
 ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "upcommon/xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
-GIT_REPOSITORY="${GIT_REPOSITORY}"
-REPO_TOKEN="${REPO_TOKEN}"
-git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-git config --global user.name "github-actions[bot]"
+if [[ -n "${BENDI_VERSION}" ]]; then
+  GIT_REPOSITORY="281677160/build-actions"
+else
+  GIT_REPOSITORY="${GIT_REPOSITORY}"
+  REPO_TOKEN="${REPO_TOKEN}"
+  git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+  git config --global user.name "github-actions[bot]"
+fi
 
 if [[ ! -d "build" ]]; then
   echo -e "\033[31m 根目录缺少build文件夹存在,进行同步上游仓库操作 \033[0m"
