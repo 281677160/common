@@ -223,7 +223,7 @@ fi
 
 function tongbu_4() {
 cd ${GITHUB_WORKSPACE}/repogx
-if [[ GIT_REPOSITORY =~ (281677160/build-actions|281677160/autobuild) ]]; then
+if [[ "${GIT_REPOSITORY}" =~ (281677160/build-actions|281677160/autobuild) ]]; then
   rm -rf backups
 fi
 git add .
