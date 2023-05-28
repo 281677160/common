@@ -31,11 +31,12 @@ else
   mv -f repogx/build ${GITHUB_WORKSPACE}/operates
 fi
 
+[[ -d "repogx/backups" ]] && sudo rm -rf repogx/backups
+[[ -d "operates/backups" ]] && sudo rm -rf operates/backups
+
 mkdir -p backupstwo/b123
 cp -Rf operates backupstwo/operates
 cp -Rf repogx/.github/workflows backupstwo/b123/workflows
-[[ -d "repogx/backups" ]] && sudo rm -rf repogx/backups
-[[ -d "operates/backups" ]] && sudo rm -rf operates/backups
 }
 
 function tongbu_2() {
@@ -213,8 +214,8 @@ for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance"); do
 done
 sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
-  mv -f ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
-  rm -rf shangyou repogx upcommon
+  cp -Rf ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
+  rm -rf shangyou repogx backupstwo
   tongbu_5
 else
   tongbu_4
