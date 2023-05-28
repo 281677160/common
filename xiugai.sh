@@ -539,7 +539,7 @@ else
   fi
 fi
 
-./scripts/feeds update danshui1 danshui2 > /dev/null 2>&1
+./scripts/feeds update danshui1 danshui2
 }
 
 
