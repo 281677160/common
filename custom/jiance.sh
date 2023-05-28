@@ -226,6 +226,9 @@ if [[ ! -d "build" ]]; then
 elif [[ ! -d "build/${FOLDER_NAME}" ]]; then
   echo -e "\033[31m build文件夹内缺少${FOLDER_NAME}文件夹存在 \033[0m"
   exit 1
+elif [[ ! -f "${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/settings.ini" ]]; then
+  echo -e "\033[31m ${FOLDER_NAME}文件夹内缺少[settings.ini]存在 \033[0m"
+  exit 1
 elif [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
   echo -e "\033[31m build文件夹内的${FOLDER_NAME}缺少relevance文件夹存在,进行同步上游仓库操作 \033[0m"
   export SYNCHRONISE="2"
