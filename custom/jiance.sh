@@ -17,10 +17,6 @@ sudo rm -rf repogx shangyou
 echo "${BENDI_VERSION}222"
 git clone -b main --depth 1 https://github.com/${GIT_REPOSITORY}.git repogx
 git clone -b main --depth 1 https://github.com/281677160/build-actions shangyou
-if [[ -n "${BENDI_VERSION}" ]] && [[ -d "operates" ]]; then
-  rm -rf repogx/build
-  mv -f operates repogx/build
-fi
 
 if [[ ! -d "repogx" ]]; then
   echo "本地仓库下载错误"
@@ -30,7 +26,12 @@ elif [[ ! -d "shangyou" ]]; then
   exit 1
 fi
 
-mv -f repogx/build ${GITHUB_WORKSPACE}/operates
+if [[ -n "${BENDI_VERSION}" ]]; then
+  rm -rf repogx/build
+else
+  mv -f repogx/build ${GITHUB_WORKSPACE}/operates
+fi
+
 mkdir -p backupstwo/b123
 cp -Rf operates backupstwo/operates
 cp -Rf repogx/.github/workflows backupstwo/b123/workflows
@@ -214,7 +215,7 @@ done
 sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
   mv -f ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
-  rm -rf operates shangyou upcommon repogx
+  rm -rf shangyou repogx upcommon
   echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
   exit 1
 else
