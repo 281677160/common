@@ -6,7 +6,7 @@ cd ${GITHUB_WORKSPACE}
 
 function Diy_continue() {
 if [[ -n "${BENDI_VERSION}" ]]; then
-  sudo rm -rf build
+  sudo rm -rf build dabanben_x xiaobanben_d
 else
   sudo rm -rf build/common && git clone -b main --depth 1 https://github.com/281677160/common build/common
   cp -Rf build/common/*.sh build/${FOLDER_NAME}/
@@ -191,7 +191,7 @@ if [[ -d "backupstwo" ]]; then
 fi
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]]; then
-  echo "大版本" > ${GITHUB_WORKSPACE}/xiaobanben
+  echo "大版本" > ${GITHUB_WORKSPACE}/xiaobanben_d
   tongbu_5
 else
   tongbu_4
@@ -227,7 +227,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf build operates
   cp -Rf ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
   rm -rf shangyou repogx backupstwo
-  echo "大版本" > ${GITHUB_WORKSPACE}/dabanben
+  echo "大版本" > ${GITHUB_WORKSPACE}/dabanben_x
   tongbu_5
 else
   cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/repogx/backups
@@ -280,7 +280,6 @@ if [[ $? -ne 0 ]]; then
 fi
 ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 if [[ -n "${BENDI_VERSION}" ]]; then
-  rm -rf ${GITHUB_WORKSPACE}/xiaobanben ${GITHUB_WORKSPACE}/dabanben
   GIT_REPOSITORY="281677160/build-actions"
   export TONGBU_BENDI="0"
   rm -rf build
