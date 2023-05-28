@@ -202,18 +202,15 @@ if [[ -d "backupstwo" ]]; then
   mv -f backupstwo/b123/workflows backupstwo/backups/workflows
   cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/shangyou/backups
 fi
-sudo rm -rf repogx/*
-cp -Rf shangyou/* repogx/
-sudo rm -rf repogx/.github/workflows/*
-cp -Rf shangyou/.github/workflows/* repogx/.github/workflows/
-if [[ -n "${BENDI_VERSION}" ]]; then
-  rm -rf repogx/build
-  mv -f ${GITHUB_WORKSPACE}/operates repogx/build
-fi
+sudo rm -rf ${GITHUB_WORKSPACE}/repogx/*
+cp -Rf ${GITHUB_WORKSPACE}/shangyou/* ${GITHUB_WORKSPACE}/repogx/
+sudo rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/*
+cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/* ${GITHUB_WORKSPACE}/repogx/.github/workflows/
 for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance"); do 
   rm -rf ${X}/{*.ini,*start}
   echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
+  echo ${X}
 done
 sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
