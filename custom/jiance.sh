@@ -242,6 +242,7 @@ exit 1
 }
 
 function tongbu_5() {
+cd ${GITHUB_WORKSPACE}
   for X in $(find "operates" -name "settings.ini"); do
     sed -i '/SSH_ACTIONS/d' "${X}"
     sed -i '/UPLOAD_FIRMWARE/d' "${X}"
