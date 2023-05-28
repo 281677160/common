@@ -226,7 +226,7 @@ if [[ ! -d "build" ]]; then
 elif [[ ! -d "build/${FOLDER_NAME}" ]]; then
   echo -e "\033[31m build文件夹内缺少${FOLDER_NAME}文件夹存在 \033[0m"
   exit 1
-elif [[ ! -f "${GITHUB_WORKSPACE}/build/${{ env.FOLDER_NAME }}/settings.ini" ]]; then
+elif [[ ! -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini" ]]; then
   echo -e "\033[31m ${FOLDER_NAME}文件夹内缺少[settings.ini]存在 \033[0m"
   exit 1
 elif [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
