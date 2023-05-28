@@ -263,21 +263,16 @@ exit 1
 }
 
 function Diy_memu() {
-git clone -b main --depth 1 https://github.com/281677160/common upcommon
-ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "upcommon/xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/xiugai.sh -o xiugai.sh
+if [[ $? -ne 0 ]]; then
+  wget -q https://raw.githubusercontent.com/281677160/common/main/common.sh -O common.sh
+fi
+ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 if [[ -n "${BENDI_VERSION}" ]]; then
   GIT_REPOSITORY="281677160/build-actions"
-  if [[ ! -d "operates" ]]; then
-    git clone -b main --depth 1 https://github.com/281677160/build-actions shangyou
-    mv -f shangyou/build operates
-    rm -rf build
-    cp -Rf operates build
-    rm -rf shangyou upcommon
-  elif [[ -d "operates" ]]; then
-    rm -rf build
-    cp -Rf operates build
-    rm -rf shangyou upcommon
-  fi
+  rm -rf build
+  cp -Rf operates build
+  rm -rf upcommon
 else
   GIT_REPOSITORY="${GIT_REPOSITORY}"
   REPO_TOKEN="${REPO_TOKEN}"
