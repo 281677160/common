@@ -26,10 +26,10 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 function settings_variable() {
 cd ${GITHUB_WORKSPACE}
+bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/jiance.sh)
 }
 
 function Diy_variable() {
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/jiance.sh)
 # 读取变量
 if [[ -n "${BENDI_VERSION}" ]]; then
   source "${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/settings.ini"
