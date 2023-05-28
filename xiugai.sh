@@ -253,7 +253,7 @@ fi
 git pull > /dev/null 2>&1
 echo "增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
-sed -i '/danshui/d; /helloworld/d; /passwall/d' "feeds.conf.default"
+sed -i '/danshui/d; /helloworld/d; /passwall/d; /OpenClash/d' "feeds.conf.default"
 cat >>"feeds.conf.default" <<-EOF
 src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
 src-git helloworld https://github.com/fw876/helloworld.git
@@ -269,7 +269,6 @@ echo "拉取插件"
 
 # 增加中文语言包
 App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
-sed -i '/danshui2/d' "feeds.conf.default"
 if [[ `find "${App_path}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
   LUCI_BANBEN="2"
   echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
@@ -640,7 +639,6 @@ fi
 
 # openclash
 if [[ "${OpenClash_branch}" == "master" ]]; then
-  sed -i '/OpenClash/d' "feeds.conf.default"
   echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
   ./scripts/feeds update OpenClash
   ./scripts/feeds install -a -p OpenClash
@@ -648,7 +646,6 @@ if [[ "${OpenClash_branch}" == "master" ]]; then
     sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
   fi
 elif [[ "${OpenClash_branch}" == "dev" ]]; then
-  sed -i '/OpenClash/d' "feeds.conf.default"
   echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
   ./scripts/feeds update OpenClash
   ./scripts/feeds install -a -p OpenClash
