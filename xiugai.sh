@@ -300,6 +300,7 @@ if [[ -n "${ZZZ_PATH}" ]]; then
 
   [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
   [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
+  [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
   if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
     cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
   else
