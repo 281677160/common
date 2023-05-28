@@ -270,10 +270,13 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   if [[ ! -d "operates" ]]; then
     git clone -b main --depth 1 https://github.com/281677160/build-actions shangyou
     mv -f shangyou/build operates
+    rm -rf build
+    cp -Rf operates build
     rm -rf shangyou upcommon
   elif [[ -d "operates" ]]; then
     rm -rf build
     cp -Rf operates build
+    rm -rf shangyou upcommon
   fi
 else
   GIT_REPOSITORY="${GIT_REPOSITORY}"
