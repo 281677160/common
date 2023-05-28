@@ -209,7 +209,6 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   GIT_BUILD="operates/${FOLDER_NAME}"
   sed -i 's?=?=\"?g' "${GITHUB_ENV}"
   sed -i '/=/ s/$/&\"/' "${GITHUB_ENV}"
-  source ${GITHUB_ENV}
 else
   GIT_BUILD="build/${FOLDER_NAME}"
 fi
