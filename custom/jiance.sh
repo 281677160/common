@@ -28,7 +28,7 @@ fi
 if [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf repogx/build
 else
-  mv -f repogx/build ${GITHUB_WORKSPACE}/operates
+  rm -rf operates && mv -f repogx/build operates
 fi
 
 [[ -d "repogx/backups" ]] && sudo rm -rf repogx/backups
