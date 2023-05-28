@@ -181,6 +181,7 @@ if [[ -d "backupstwo" ]]; then
     mv -f ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
     sudo chmod -R +x operates
     sudo rm -rf backupstwo repogx shangyou upcommon
+    tongbu_5
     echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
     exit 1
   else
@@ -216,6 +217,7 @@ sudo chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
   mv -f ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
   rm -rf shangyou repogx upcommon
+  tongbu_5
   echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
   exit 1
 else
@@ -237,6 +239,27 @@ else
   echo -e "\033[33m 同步上游仓库完成,请重新设置好文件再继续编译 \033[0m"
 fi
 exit 1
+}
+
+function tongbu_5() {
+  for X in $(find "operates" -name "settings.ini"); do
+    sed -i '/SSH_ACTIONS/d' "${X}"
+    sed -i '/UPLOAD_FIRMWARE/d' "${X}"
+    sed -i '/UPLOAD_WETRANSFER/d' "${X}"
+    sed -i '/UPLOAD_RELEASE/d' "${X}"
+    sed -i '/INFORMATION_NOTICE/d' "${X}"
+    sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
+    sed -i '/COMPILATION_INFORMATION/d' "${X}"
+    sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
+    sed -i '/CPU_SELECTION/d' "${X}"
+    sed -i '/RETAIN_DAYS/d' "${X}"
+    sed -i '/KEEP_LATEST/d' "${X}"
+    echo 'PACKAGING_FIRMWARE="true"           # N1和晶晨系列固件自动打包成 .img 固件（true=开启）（false=关闭）' >> "${X}"
+    echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
+    if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
+      echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
+    fi
+  done
 }
 
 function Diy_memu() {
