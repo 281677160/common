@@ -272,6 +272,7 @@ for X in $(find "operates" -name "settings.ini"); do
     echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
   fi
 done
+exit 0
 }
 
 function Diy_memu() {
