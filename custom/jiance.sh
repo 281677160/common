@@ -17,7 +17,6 @@ fi
 
 function tongbu_1() {
 sudo rm -rf repogx shangyou
-echo "${BENDI_VERSION}"
 git clone -b main --depth 1 https://github.com/${GIT_REPOSITORY}.git repogx
 git clone -b main --depth 1 https://github.com/281677160/build-actions shangyou
 
@@ -272,8 +271,6 @@ for X in $(find "operates" -name "settings.ini"); do
     echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
   fi
 done
-echo -e "\033[33m 同步上游仓库完成,请重新设置好配置文件再编译 \033[0m"
-exit 0
 }
 
 function Diy_memu() {
