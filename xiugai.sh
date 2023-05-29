@@ -450,7 +450,6 @@ COOLSNOWWOLF)
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
   done
-  
   if [[ "${GL_BRANCH}" == "lede" ]]; then
     find . -type d -name "upx" -o -name "ucl" -o -name "ddns-scripts_aliyun" -o -name "ddns-scripts_dnspod" |grep 'danshui' |xargs -i rm -rf {}
     find . -type d -name "r8168" -o -name "r8101" -o -name "r8125" |grep 'danshui' |xargs -i rm -rf {}
@@ -473,7 +472,6 @@ LIENOL)
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
   done
-  
   find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" |grep 'other' |xargs -i rm -rf {}
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     find . -type d -name "automount" |grep 'other' |xargs -i rm -rf {}
@@ -497,8 +495,7 @@ OFFICIAL)
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld' |xargs -i rm -rf {}; \
   done
-  
-  if [[ "${REPO_BRANCH}" == "19.07" ]]; then
+  if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
     find . -type d -name "luci-app-natter" -o -name "natter" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
     rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
   fi
