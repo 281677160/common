@@ -254,7 +254,6 @@ if [[ -n "${LUCI_CHECKUT}" ]]; then
   git checkout ${LUCI_CHECKUT}
   git switch -c ${LUCI_CHECKUT}
 fi
-git pull > /dev/null 2>&1
 echo "增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 sed -i '/danshui/d; /helloworld/d; /passwall/d; /OpenClash/d' "feeds.conf.default"
