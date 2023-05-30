@@ -408,11 +408,9 @@ ttydjso="$(find . -type f -name "luci-app-ttyd.json" |grep 'menu.d' |sed "s?.?${
 [[ -n "${ttydjso}" ]] && cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${ttydjso}"
 
 # 更换golang版本
-if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
-  if [[ ! -d "${HOME_PATH}/feeds/packages/lang/golang/.svn" ]]; then
-    rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-    cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
-  fi
+if [[ -d "${HOME_PATH}/build/common/Share/golang" ]] && [[ -z "${BENDI_VERSION}" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+  cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
 fi
 
 # 替换一些插件
