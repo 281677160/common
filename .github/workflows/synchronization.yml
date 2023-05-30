@@ -41,7 +41,7 @@ jobs:
           rm -rf repogx/Share/golang && cp -Rf golang repogx/Share/golang
         else
           git clone --depth 1 https://github.com/openwrt/packages -b openwrt-22.03 golang-version
-          if [[ -d "repogx/Share/golang" ]]; then
+          if [[ -d "golang-version" ]]; then
             rm -rf repogx/Share/golang
             cp -Rf golang-version/lang/golang repogx/Share/golang
           fi
