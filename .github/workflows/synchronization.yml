@@ -34,19 +34,18 @@ jobs:
       if: env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
-        git clone https://github.com/${{github.repository}}.git repogx
+        git clone https://github.com/${{github.repository}}.git $GITHUB_WORKSPACE/repogx
       
-        svn co https://github.com/openwrt/packages/trunk/lang/golang golang
+        svn co https://github.com/openwrt/packages/trunk/lang/golang $GITHUB_WORKSPACE/golang
         if [[ $? -eq 0 ]]; then
-          rm -rf repogx/Share/golang && cp -Rf golang repogx/Share/golang
+          rm -rf $GITHUB_WORKSPACE/repogx/Share/golang && cp -Rf $GITHUB_WORKSPACE/golang $GITHUB_WORKSPACE/repogx/Share/golang
         else
-          git clone --depth 1 https://github.com/openwrt/packages -b openwrt-22.03 golang-version
+          git clone --depth 1 https://github.com/openwrt/packages -b openwrt-22.03 $GITHUB_WORKSPACE/golang-version
           if [[ -d "golang-version" ]]; then
-            rm -rf repogx/Share/golang
-            cp -Rf golang-version/lang/golang repogx/Share/golang
+            rm -rf $GITHUB_WORKSPACE/repogx/Share/golang
+            cp -Rf $GITHUB_WORKSPACE/golang-version/lang/golang $GITHUB_WORKSPACE/repogx/Share/golang
           fi
         fi
-        
         
         git clone https://github.com/coolsnowwolf/lede $GITHUB_WORKSPACE/Lede
         git clone https://github.com/coolsnowwolf/openwrt-gl-ax1800 $GITHUB_WORKSPACE/ax1800
