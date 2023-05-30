@@ -35,15 +35,16 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE
         git clone https://github.com/${{github.repository}}.git repogx
-        git clone --depth 1 https://github.com/openwrt/packages -b master golang-version
-        if [[ -d "golang-version/lang/golang" ]]; then
-          rm -rf repogx/Share/golang
-          cp -Rf golang-version/lang/golang repogx/Share/golang
-        fi
-        
-        if [[ -d "golang-version/devel/packr" ]]; then
-          rm -rf repogx/Share/packr
-          cp -Rf golang-version/devel/packr repogx/Share/packr
+      
+        svn co https://github.com/openwrt/packages/trunk/lang/golang golang
+        if [[ $? -eq 0 ]]; then
+          rm -rf repogx/Share/golang && cp -Rf golang repogx/Share/golang
+        else
+          git clone --depth 1 https://github.com/openwrt/packages -b openwrt-22.03 golang-version
+          if [[ -d "repogx/Share/golang" ]]; then
+            rm -rf repogx/Share/golang
+            cp -Rf golang-version/lang/golang repogx/Share/golang
+          fi
         fi
         
         
