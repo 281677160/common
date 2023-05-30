@@ -250,7 +250,7 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
 LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
-if [[ -n "${LUCI_CHECKUT}" ]]; then
+if [[ -n "${LUCI_CHECKUT}" ]] && [[ -z "${GTI_TAG_LV}" ]]; then
   git checkout ${LUCI_CHECKUT}
   git switch -c ${LUCI_CHECKUT}
   git pull
