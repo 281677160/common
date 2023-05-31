@@ -383,8 +383,7 @@ if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/kcptun" ]]; then
   mv -f ${HOME_PATH}/feeds/danshui1/relevance/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
 fi
 
-rm -rf feeds/danshui1/relevance/packr
-[[ ! -d "feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr feeds/packages/devel/packr
+[[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
 ./scripts/feeds update danshui1 danshui2
 
 cp -Rf ${HOME_PATH}/feeds.conf.default ${HOME_PATH}/LICENSES/doc/uniq.conf
