@@ -418,7 +418,7 @@ if [[ -d "${HOME_PATH}/build/common/Share/golang" ]] && [[ ! -d "${HOME_PATH}/fe
 fi
 
 rm -rf feeds/danshui1/relevance/packr
-svn co https://github.com/openwrt/packages/branches/openwrt-21.02/devel/packr feeds/packages/devel/packr
+[[ ! d "feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr feeds/packages/devel/packr
 
 # files大法，设置固件无烦恼
 if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
