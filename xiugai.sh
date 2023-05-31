@@ -1505,8 +1505,12 @@ fi
 if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   echo "正在执行：给adguardhome下载核心"
   rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
-  downloader="curl -L -k --retry 2 --connect-timeout 20 -o"
-  latest_ver="$($downloader - https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest 2>/dev/null|grep -E 'tag_name' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
+  wget -q https://github.com/281677160/common/releases/download/API/AdGuardHome.api -O AdGuardHome.api
+  if [[ $? -ne 0 ]];then
+    curl -fsSL https://github.com/281677160/common/releases/download/API/AdGuardHome.api -o AdGuardHome.api
+  fi
+  latest_ver="$(grep -E 'tag_name' 'AdGuardHome.api' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
+  rm -rf AdGuardHome.api
   wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_${Arch}.tar.gz
   if [[ -f "AdGuardHome_${Arch}.tar.gz" ]]; then
     tar -zxvf AdGuardHome_${Arch}.tar.gz -C ${HOME_PATH}
