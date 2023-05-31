@@ -307,7 +307,7 @@ if [[ -d "${HOME_PATH}/build/common/Share/golang" ]] && [[ ! -d "${HOME_PATH}/fe
 fi
 
 rm -rf feeds/danshui1/relevance/packr
-[[ ! d "feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr feeds/packages/devel/packr
+[[ ! -d "feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr feeds/packages/devel/packr
 
 # 替换一些插件
 source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
