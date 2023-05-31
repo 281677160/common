@@ -291,7 +291,7 @@ luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,
 luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb"
 t=(${z//,/ })
 for x in ${t[@]}; do \
-  find . -type d -name "${x}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+  find . -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
 done
 
 case "${SOURCE_CODE}" in
