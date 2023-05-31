@@ -690,21 +690,12 @@ echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 
 if [[ "${uci_openclash}" == "1" ]]; then
   uci_path="${HOME_PATH}/feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/luci-openclash"
-  if [[ `grep -c "\$(uci get openclash.config.enable)" "${uci_path}"` -eq '0' ]]; then
-    sed -i '/exit 0/d' "${uci_path}"
-    sed -i '/uci -q set openclash.config.enable/d' "${uci_path}"
-    sed -i '/uci -q commit openclash/d' "${uci_path}"
-
-    cat >>"${uci_path}" <<-EOF
-      if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then
-      uci -q set openclash.config.enable=0
-      uci -q commit openclash
-      fi
-      exit 0
-EOF
+  if [[ `grep -c "uci get openclash.config.enable" "${uci_path}"` -eq '0' ]]; then
+    sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' \
+    feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/luci-openclash
+    sed -i '/uci -q commit openclash/a\fi' feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/luci-openclash
   fi
 fi
-
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
   echo "固件加入IPV6功能"
