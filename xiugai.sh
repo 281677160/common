@@ -267,13 +267,14 @@ mv -f uniq.conf feeds.conf.default
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 cat >>"feeds.conf.default" <<-EOF
 src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
+EOF
+./scripts/feeds update -a
+cat >>"feeds.conf.default" <<-EOF
 src-git helloworld https://github.com/fw876/helloworld.git
 src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci
 src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
 src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
 EOF
-
-./scripts/feeds update packages luci danshui1
 
 App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
 if [[ `find "${App_path}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
@@ -319,7 +320,6 @@ COOLSNOWWOLF)
   fi
 ;;
 LIENOL)
-  ./scripts/feeds update other
   s="luci-app-dockerman"
   c=(${s//,/ })
   for i in ${c[@]}; do \
