@@ -410,6 +410,8 @@ if [[ `grep -c "min-cache-ttl=" ${HOME_PATH}/package/network/services/dnsmasq/fi
   echo -e "#max-ttl=600\nneg-ttl=600\nmin-cache-ttl=3600" >> ${HOME_PATH}/package/network/services/dnsmasq/files/dnsmasq.conf
 fi
 
+source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+
 ttydjso="$(find . -type f -name "luci-app-ttyd.json" |grep 'menu.d' |sed "s?.?${HOME_PATH}?")"
 [[ -n "${ttydjso}" ]] && cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd.json "${ttydjso}"
 
