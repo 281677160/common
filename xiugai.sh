@@ -2004,6 +2004,11 @@ Diy_Wenjian
 Diy_${SOURCE_CODE}
 }
 
+function Diy_bendi3() {
+Diy_Wenjian
+Diy_${SOURCE_CODE}
+}
+
 function Diy_menu2() {
 Diy_Notice
 }
