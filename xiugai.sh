@@ -314,7 +314,6 @@ COOLSNOWWOLF)
     if [[ -d "${HOME_PATH}/feeds/packages/utils/docker-ce" ]]; then
       find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
     fi
-    sed -i "s?DISTRIB_REVISION=.*?DISTRIB_REVISION='\ \/ ${SOURCE} - ${LUCI_EDITION}'?g" "${REPAIR_PATH}"
   fi
 ;;
 LIENOL)
@@ -575,6 +574,9 @@ TIME r ""
 
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
+if [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
+  sed -i "s?DISTRIB_REVISION=.*?DISTRIB_REVISION='\ \/ ${SOURCE} - ${LUCI_EDITION}'?g" "${REPAIR_PATH}"
+fi
 }
 
 
