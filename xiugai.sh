@@ -660,6 +660,7 @@ fi
 
 # openclash
 if [[ "${OpenClash_branch}" == "master" ]]; then
+  luci_openclash="1"
   sed -i '/OpenClash/d' "feeds.conf.default"
   echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
   ./scripts/feeds update OpenClash
@@ -667,8 +668,8 @@ if [[ "${OpenClash_branch}" == "master" ]]; then
   if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
     sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
   fi
-  uci_openclash="1"
 elif [[ "${OpenClash_branch}" == "dev" ]]; then
+  luci_openclash="1"
   sed -i '/OpenClash/d' "feeds.conf.default"
   echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
   ./scripts/feeds update OpenClash
@@ -676,24 +677,22 @@ elif [[ "${OpenClash_branch}" == "dev" ]]; then
   if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
     sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
   fi
-  uci_openclash="1"
 else
+  luci_openclash="0"
   sed -i '/OpenClash/d' "feeds.conf.default"
   sed -i '/luci-app-openclash/d' "${HOME_PATH}/.config"
   find . -type d -name 'luci-app-openclash' -o -name 'OpenClash' | xargs -i rm -rf {}
   if [[ -n "$(grep "luci-app-openclash" "${HOME_PATH}/include/target.mk")" ]]; then
     sed -i "s?luci-app-openclash??g" "include/target.mk"
   fi
-  uci_openclash="0"
 fi
 echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 
-if [[ "${uci_openclash}" == "1" ]]; then
-  uci_path="${HOME_PATH}/feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/luci-openclash"
-  if [[ `grep -c "uci get openclash.config.enable" "${uci_path}"` -eq '0' ]]; then
-    sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' \
-    feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/luci-openclash
-    sed -i '/uci -q commit openclash/a\fi' feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/luci-openclash
+if [[ "${luci_openclash}" == "1" ]]; then
+  luci_path="${HOME_PATH}/feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/luci-openclash"
+  if [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
+    sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' "${luci_path}"
+    sed -i '/uci -q commit openclash/a\fi' "${luci_path}"
   fi
 fi
 
