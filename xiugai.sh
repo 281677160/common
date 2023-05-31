@@ -249,6 +249,9 @@ fi
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
+[[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
+[[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
+[[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
 
 LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
 if [[ -n "${LUCI_CHECKUT}" ]]; then
@@ -256,6 +259,9 @@ if [[ -n "${LUCI_CHECKUT}" ]]; then
   git switch -c ${LUCI_CHECKUT}
   git pull
 fi
+
+sed -i '/281677160/d; /helloworld/d; /passwall/d; /OpenClash/d' "feeds.conf.default"
+cp -Rf ${HOME_PATH}/feeds.conf.default ${HOME_PATH}/LICENSES/doc/uniq.conf
 
 echo "增加插件源"
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
@@ -300,9 +306,6 @@ if [[ -n "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   sed -i '/exit 0$/d' "${ZZZ_PATH}"
 
-  [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
-  [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
-  [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
   if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
     cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
   else
@@ -313,12 +316,6 @@ if [[ -n "${ZZZ_PATH}" ]]; then
     cp -Rf ${HOME_PATH}/LICENSES/doc/config_generates "${GENE_PATH}"
   else
     cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
-  fi
-  
-  if [[ -f "${HOME_PATH}/LICENSES/doc/uniq.conf" ]]; then
-    cp -Rf ${HOME_PATH}/LICENSES/doc/uniq.conf ${HOME_PATH}/feeds.conf.default
-  else
-    cp -Rf ${HOME_PATH}/feeds.conf.default ${HOME_PATH}/LICENSES/doc/uniq.conf
   fi
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
   [[ -n "$(grep "openwrt_banner" "${ZZZ_PATH}")" ]] && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
