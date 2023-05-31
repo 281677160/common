@@ -429,13 +429,6 @@ rm -rf feeds/danshui1/relevance/packr
 
 # 替换一些插件
 source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-if [[ -d "feeds/passwall3" ]]; then
-  w="$(ls -1 feeds/passwall3)" && r=`echo $w | sed 's/ /,/g'`
-  p=(${r//,/ })
-  for i in ${p[@]}; do \
-    find . -type d -name "${i}" |grep -v 'passwall' |xargs -i rm -rf {}; \
-  done
-fi
 
 if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/shadowsocks-libev" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
@@ -445,83 +438,6 @@ if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/kcptun" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
   mv -f ${HOME_PATH}/feeds/danshui1/relevance/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
 fi
-
-z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
-luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
-luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
-luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
-luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
-luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb"
-t=(${z//,/ })
-for x in ${t[@]}; do \
-  find . -type d -name "${x}" |grep -v 'danshui\|passwall\|helloworld\|dir\|tmp' |xargs -i rm -rf {}; \
-done
-
-case "${SOURCE_CODE}" in
-COOLSNOWWOLF)
-  s="luci-app-netdata,netdata,luci-app-diskman,mentohust"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld\|dir\|tmp' |xargs -i rm -rf {}; \
-  done
-  if [[ "${GL_BRANCH}" == "lede" ]]; then
-    find . -type d -name "upx" -o -name "ucl" -o -name "ddns-scripts_aliyun" -o -name "ddns-scripts_dnspod" |grep 'danshui' |xargs -i rm -rf {}
-    find . -type d -name "r8168" -o -name "r8101" -o -name "r8125" |grep 'danshui' |xargs -i rm -rf {}
-    if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
-      for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
-        curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
-      done
-    fi
-  elif [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
-    find . -type d -name 'luci-app-unblockneteasemusic' | xargs -i rm -rf {}
-    if [[ -d "${HOME_PATH}/feeds/packages/utils/docker-ce" ]]; then
-      find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
-    fi
-    sed -i "s?DISTRIB_REVISION=.*?DISTRIB_REVISION='\ \/ ${SOURCE} - ${LUCI_EDITION}'?g" "${REPAIR_PATH}"
-  fi
-;;
-LIENOL)
-  s="luci-app-dockerman"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld\|dir\|tmp' |xargs -i rm -rf {}; \
-  done
-  find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" |grep 'other' |xargs -i rm -rf {}
-  if [[ "${REPO_BRANCH}" == "master" ]]; then
-    find . -type d -name "automount" |grep 'other' |xargs -i rm -rf {}
-  elif [[ "${REPO_BRANCH}" =~ (19.07|19.07-test) ]]; then
-    find . -type d -name "luci-app-vssr" -o -name "lua-maxminddb" -o -name "automount" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
-    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
-    find . -type d -name "automount" |grep 'danshui' |xargs -i rm -rf {}
-  fi
-;;
-IMMORTALWRT)
-  s="luci-app-cifs"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld\|dir\|tmp' |xargs -i rm -rf {}; \
-  done
-;;
-OFFICIAL)
-  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld\|dir\|tmp' |xargs -i rm -rf {}; \
-  done
-  if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-    find . -type d -name "luci-app-natter" -o -name "natter" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
-    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  fi
-;;
-XWRT)
-  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld\|dir\|tmp' |xargs -i rm -rf {}; \
-  done
-;;
-esac
 
 amba4="$(find . -type d -name 'luci-app-samba4')"
 autosam="$(find . -type d -name 'autosamba')"
