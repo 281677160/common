@@ -50,6 +50,11 @@ jobs:
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/ophub/kernel/releases/tags/kernel_dev > dev.api
         fi
         
+        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest -o AdGuardHome.api
+        if [[ $? -ne 0 ]]; then
+          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
+        fi
+        
     - name: API
       uses: ncipollo/release-action@main
       with:
