@@ -425,7 +425,8 @@ if [ -n "$(ls -A "${BUILD_PATH}/diy" 2>/dev/null)" ]; then
   cp -Rf ${BUILD_PATH}/diy/* ${HOME_PATH}
 fi
 if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
-  cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
+  [[ -d "${HOME_PATH}/files" ]] && rm -rf ${HOME_PATH}/files
+  cp -Rf ${BUILD_PATH}/files ${HOME_PATH}/files
 fi
 
 # 定时更新固件的插件包
