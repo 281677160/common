@@ -414,6 +414,8 @@ else
     sed -i 's?luci-app-autoupdate??g' ${HOME_PATH}/include/target.mk
   fi
 fi
+
+./scripts/feeds update danshui1 danshui2
 }
 
 
