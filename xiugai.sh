@@ -1675,7 +1675,7 @@ if [[ 0 -eq $? ]]; then
   sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
   sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
   echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
-  TIME g "固件打包完成,已将固件存入${FIRMWARE_PATH}文件夹内"
+  TIME l "[OK] 固件打包完成,已将固件存入${FIRMWARE_PATH}文件夹内"
 else
   TIME r "固件打包失败"
 fi
