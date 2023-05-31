@@ -35,7 +35,17 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE
         git clone https://github.com/${{github.repository}}.git $GITHUB_WORKSPACE/repogx
-      
+        
+        rm -rf $GITHUB_WORKSPACE/repogx/Share/packr
+        svn co https://github.com/openwrt/packages/branches/openwrt-21.02/devel/packr $GITHUB_WORKSPACE/repogx/Share/packr
+        if [[ $? -ne 0 ]]; then
+          git clone --depth 1 https://github.com/openwrt/packages -b openwrt-21.02 $GITHUB_WORKSPACE/golang-version
+          if [[ -d "golang-version" ]]; then
+            rm -rf $GITHUB_WORKSPACE/repogx/Share/packr
+            cp -Rf $GITHUB_WORKSPACE/golang-version/devel/packr $GITHUB_WORKSPACE/repogx/Share/packr
+          fi
+        fi
+        
         svn co https://github.com/openwrt/packages/trunk/lang/golang $GITHUB_WORKSPACE/golang
         if [[ $? -eq 0 ]]; then
           rm -rf $GITHUB_WORKSPACE/repogx/Share/golang && cp -Rf $GITHUB_WORKSPACE/golang $GITHUB_WORKSPACE/repogx/Share/golang
@@ -46,6 +56,11 @@ jobs:
             cp -Rf $GITHUB_WORKSPACE/golang-version/lang/golang $GITHUB_WORKSPACE/repogx/Share/golang
           fi
         fi
+        
+        
+        
+
+        
         
         git clone https://github.com/coolsnowwolf/lede $GITHUB_WORKSPACE/Lede
         git clone https://github.com/coolsnowwolf/openwrt-gl-ax1800 $GITHUB_WORKSPACE/ax1800
