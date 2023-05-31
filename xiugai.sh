@@ -321,6 +321,7 @@ COOLSNOWWOLF)
   fi
 ;;
 LIENOL)
+  ./scripts/feeds update other
   s="luci-app-dockerman"
   c=(${s//,/ })
   for i in ${c[@]}; do \
