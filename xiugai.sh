@@ -439,6 +439,27 @@ if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/kcptun" ]]; then
   mv -f ${HOME_PATH}/feeds/danshui1/relevance/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
 fi
 
+
+if [[ -d "feeds/passwall3" ]]; then
+  w="$(ls -1 feeds/passwall3)" && r=`echo $w | sed 's/ /,/g'`
+  p=(${r//,/ })
+  for i in ${p[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|passwall\|helloworld\|dir\|tmp' |xargs -i rm -rf {}; \
+  done
+fi
+
+z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
+luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
+luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
+luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
+luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
+luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb"
+t=(${z//,/ })
+for x in ${t[@]}; do \
+  find . -type d -name "${x}" |grep -v 'danshui\|passwall\|helloworld\|dir\|tmp' |xargs -i rm -rf {}; \
+done
+
+
 amba4="$(find . -type d -name 'luci-app-samba4')"
 autosam="$(find . -type d -name 'autosamba')"
 if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
