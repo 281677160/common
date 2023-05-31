@@ -277,18 +277,14 @@ echo "拉取插件"
 App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
 if [[ `find "${App_path}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
   LUCI_BANBEN="2"
-  if [[ -z "$(grep "Theme2" "feeds.conf.default")" ]]; then
-    echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
-    ./scripts/feeds update danshui2
-  fi
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
+  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
+  ./scripts/feeds update danshui2
 else
   LUCI_BANBEN="1"
-  if [[ -z "$(grep "Theme1" "feeds.conf.default")" ]]; then
-    echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "feeds.conf.default"
-    ./scripts/feeds update danshui2
-  fi
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
+  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "feeds.conf.default"
+  ./scripts/feeds update danshui2
 fi
 
 Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
