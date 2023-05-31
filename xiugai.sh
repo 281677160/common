@@ -273,7 +273,7 @@ src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
 src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
 EOF
 
-./scripts/feeds update packages luci
+./scripts/feeds update packages luci danshui1
 
 App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
 if [[ `find "${App_path}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
