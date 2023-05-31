@@ -1597,7 +1597,7 @@ fi
 }
 
 function Package_amlogic() {
-echo "正在执行：打包N1和景晨系列固件"
+echo "正在执行：打包Amlogic_Rockchip系列固件"
 # 下载上游仓库
 cd ${GITHUB_WORKSPACE}
 [[ -d "${GITHUB_WORKSPACE}/amlogic" ]] && sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
