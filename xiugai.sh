@@ -980,11 +980,7 @@ echo '
 fi
 
 if [[ "${Disable_NaiveProxy}" == "1" ]]; then
-echo '
-# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_NaiveProxy is not set
-# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy is not set
-# CONFIG_PACKAGE_naiveproxy is not set
-' >> ${HOME_PATH}/.config
+sed -i '/NaiveProxy/d; /naiveproxy/d' ${HOME_PATH}/.config
 fi
 
 if [[ "${Automatic_Mount_Settings}" == "1" ]]; then
