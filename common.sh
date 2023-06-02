@@ -618,11 +618,6 @@ else
   echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
   echo "OpenClash_branch=master" >> ${GITHUB_ENV}
 fi
-luci_path="$(find "${HOME_PATH}/feeds" |grep luci-openclash)"
-if [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
-  sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' "${luci_path}"
-  sed -i '/uci -q commit openclash/a\fi' "${luci_path}"
-fi
 
 cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
 mv -f uniq.conf feeds.conf.default
@@ -679,6 +674,11 @@ elif [[ "${OpenClash_Core}" == "2" ]]; then
 else
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
   [[ -d "${HOME_PATH}/files/etc/openclash/core" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core
+fi
+luci_path="$(find "${HOME_PATH}/feeds" |grep luci-openclash)"
+if [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
+  sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' "${luci_path}"
+  sed -i '/uci -q commit openclash/a\fi' "${luci_path}"
 fi
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
