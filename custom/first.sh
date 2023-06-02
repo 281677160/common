@@ -145,16 +145,16 @@ do
   yml_name1="$({ grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1'; } 2>"/dev/null")"
   schedule_name1="$({ grep -E 'schedule:' "${f}" |sed 's/\*/\\&/g' |sed 's/\:/\\&/g' |awk 'NR==1'; } 2>"/dev/null")"
   cron_name1="$({ grep -E '\- cron:.*' "${f}" |sed 's/\*/\\&/g' |sed 's/\,/\\&/g' |awk 'NR==1'; } 2>"/dev/null")"
-  if [[ -n "${TARGE1}" ]] && [[ -n "${TARGE2}" ]]; then
+  if [[ -n "${TARGE1}" ]] && [[ -n "${TARGE2}" ]] && [[ -f "${f}" ]]; then
     sed -i "s?${TARGE1}?${TARGE2}?g" ${f}
   fi
-  if [[ -n "${yml_name1}" ]] && [[ -n "${yml_name2}" ]]; then
+  if [[ -n "${yml_name1}" ]] && [[ -n "${yml_name2}" ]] && [[ -f "${f}" ]]; then
     sed -i "s?${yml_name1}?${yml_name2}?g" ${f}
   fi
-  if [[ -n "${schedule_name1}" ]] && [[ -n "${schedule_name2}" ]]; then
+  if [[ -n "${schedule_name1}" ]] && [[ -n "${schedule_name2}" ]] && [[ -f "${f}" ]]; then
     sed -i "s?${schedule_name1}?${schedule_name2}?g" ${f}
   fi
-  if [[ -n "${cron_name1}" ]] && [[ -n "${cron_name2}" ]]; then
+  if [[ -n "${cron_name1}" ]] && [[ -n "${cron_name2}" ]] && [[ -f "${f}" ]]; then
     sed -i "s?${cron_name1}?${cron_name2}?g" ${f}
   fi
 done
