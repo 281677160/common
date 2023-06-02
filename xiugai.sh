@@ -1007,7 +1007,7 @@ cp -Rf ${HOME_PATH}/build/common/custom/10-mount ${HOME_PATH}/files/etc/hotplug.
 fi
 
 if [[ "${Disable_autosamba}" == "1" ]]; then
-sed -i '/luci-i18n-samba/d; /PACKAGE_samba/d; /SAMBA_MAX/d; /SAMBA4_SERVER/d' "feeds.conf.default"
+sed -i '/luci-i18n-samba/d; /PACKAGE_samba/d; /SAMBA_MAX/d; /SAMBA4_SERVER/d' "${HOME_PATH}/.config"
 echo '
 # CONFIG_PACKAGE_autosamba is not set
 # CONFIG_PACKAGE_luci-app-samba is not set
