@@ -122,6 +122,8 @@ do
   fi
 done
 
+echo "$(grep -rl "target: \[$cc\]" "repogx/.github/workflows" |sed 's/^[ ]*//g' |grep -v '^#\|institution.yml\|compile.yml\|packaging.yml')"
+
 yml_file="$({ find ${GITHUB_WORKSPACE}/repogx |grep .yml |grep -v 'institution.yml\|compile.yml\|packaging.yml'; } 2>"/dev/null")"
 for f in ${yml_file}
 do
