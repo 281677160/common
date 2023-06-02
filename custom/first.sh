@@ -52,6 +52,8 @@ settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep settings.ini; } 2>"/d
 for f in ${settings_file}
 do
   X="$(echo "$f" |sed "s/settings.ini//g")"
+  echo "$f"
+  echo "${X}"
   if [ -n "$(grep 'SOURCE_CODE="COOLSNOWWOLF"' "$f")" ]; then
     Y="${GITHUB_WORKSPACE}/shangyou/build/Lede/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
@@ -291,6 +293,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   sed -i '/TONGBU_BENDI/d' ${GITHUB_WORKSPACE}/GITHUB_ENV
 else
   GIT_REPOSITORY="${GIT_REPOSITORY}"
+  echo "${GIT_REPOSITORY}"
   REPO_TOKEN="${REPO_TOKEN}"
   git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
   git config --global user.name "github-actions[bot]"
