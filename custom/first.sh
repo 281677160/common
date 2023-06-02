@@ -194,7 +194,8 @@ if [[ -d "backupstwo" ]]; then
 fi
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]]; then
-  echo "小版本" > ${GITHUB_WORKSPACE}/xiaobanben_d
+  sed -i '/TONGBU_BENDI/d' ${GITHUB_WORKSPACE}/GITHUB_ENV
+  echo "TONGBU_BENDI=1" >> ${GITHUB_WORKSPACE}/GITHUB_ENV
   tongbu_5
 else
   tongbu_4
@@ -231,7 +232,8 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf build operates
   cp -Rf ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
   rm -rf shangyou repogx backupstwo
-  echo "大版本" > ${GITHUB_WORKSPACE}/dabanben_x
+  sed -i '/TONGBU_BENDI/d' ${GITHUB_WORKSPACE}/GITHUB_ENV
+  echo "TONGBU_BENDI=2" >> ${GITHUB_WORKSPACE}/GITHUB_ENV
   tongbu_5
 else
   cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/repogx/backups
