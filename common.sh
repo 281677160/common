@@ -1011,6 +1011,9 @@ echo '
 # CONFIG_PACKAGE_samba4-libs is not set
 # CONFIG_PACKAGE_samba4-server is not set
 ' >> ${HOME_PATH}/.config
+else
+sed -i '/luci-app-samba/d; /CONFIG_PACKAGE_samba/d' "${HOME_PATH}/.config"
+echo "CONFIG_PACKAGE_autosamba=y" >> ${HOME_PATH}/.config
 fi
 
 cat >> "${HOME_PATH}/.config" <<-EOF
