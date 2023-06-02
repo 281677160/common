@@ -47,10 +47,9 @@ function tongbu_2() {
 # 从上游仓库覆盖文件到本地仓库
 cd ${GITHUB_WORKSPACE}
 BANBEN_SHUOMING="更新小版本于 $(date +%Y.%m%d.%H%M.%S)"
-rm -rf shangyou/build/*/{diy,files,patches,seed,relevance}
+rm -rf shangyou/build/*/{diy,files,patches,seed}
 
 for i in $({ find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance" |grep -v 'backups'; } 2>"/dev/null"); do sudo rm -rf "${i}"; done
-for u in $({ find "${GITHUB_WORKSPACE}/operates" |grep -v 'backups' |grep settings.ini |sed "s/\/settings.ini//g"; } 2>"/dev/null"); do mkdir -p ${u}/relevance; done
 
 settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep -v 'backups' |grep settings.ini; } 2>"/dev/null")"
 for a in ${settings_file}
@@ -164,6 +163,7 @@ do
 done
 
 for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance" |grep -v 'backups'); do
+  rm -rf ${X}/{*.ini,*start}
   echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
 done
