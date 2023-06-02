@@ -49,15 +49,15 @@ BANBEN_SHUOMING="更新小版本于 $(date +%Y.%m%d.%H%M.%S)"
 rm -rf shangyou/build/*/{diy,files,patches,seed}
 
 settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep settings.ini; } 2>"/dev/null")"
-for f in ${settings_file}
+for a in ${settings_file}
 do
   X="$(echo "$f" |sed "s/settings.ini//g")"
   if [ -n "$(grep 'SOURCE_CODE="COOLSNOWWOLF"' "$f")" ]; then
     Y="${GITHUB_WORKSPACE}/shangyou/build/Lede/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-    REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "${f}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-    CONFIG_FILE2="$(grep -E "CONFIG_FILE=" "${f}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+    REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "${a}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+    CONFIG_FILE2="$(grep -E "CONFIG_FILE=" "${a}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     if [[ -n "${REPO_BRANCH1}" ]] && [[ -n "${REPO_BRANCH2}" ]]; then
       sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" ${Y}
     fi
@@ -69,8 +69,8 @@ do
     Y="${GITHUB_WORKSPACE}/shangyou/build/Lienol/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-    REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "${f}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-    CONFIG_FILE2="$(grep -E "CONFIG_FILE=" "${f}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+    REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "${a}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+    CONFIG_FILE2="$(grep -E "CONFIG_FILE=" "${a}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     if [[ -n "${REPO_BRANCH1}" ]] && [[ -n "${REPO_BRANCH2}" ]]; then
       sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" ${Y}
     fi
@@ -82,8 +82,8 @@ do
     Y="${GITHUB_WORKSPACE}/shangyou/build/Immortalwrt/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-    REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "${f}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-    CONFIG_FILE2="$(grep -E "CONFIG_FILE=" "${f}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+    REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "${a}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+    CONFIG_FILE2="$(grep -E "CONFIG_FILE=" "${a}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     if [[ -n "${REPO_BRANCH1}" ]] && [[ -n "${REPO_BRANCH2}" ]]; then
       sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" ${Y}
     fi
@@ -95,8 +95,8 @@ do
     Y="${GITHUB_WORKSPACE}/shangyou/build/Xwrt/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-    REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "${f}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-    CONFIG_FILE2="$(grep -E "CONFIG_FILE=" "${f}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+    REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "${a}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+    CONFIG_FILE2="$(grep -E "CONFIG_FILE=" "${a}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     if [[ -n "${REPO_BRANCH1}" ]] && [[ -n "${REPO_BRANCH2}" ]]; then
       sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" ${Y}
     fi
@@ -108,8 +108,8 @@ do
     Y="${GITHUB_WORKSPACE}/shangyou/build/Official/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-    REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "${f}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
-    CONFIG_FILE2="$(grep -E "CONFIG_FILE=" "${f}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+    REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "${a}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
+    CONFIG_FILE2="$(grep -E "CONFIG_FILE=" "${a}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     if [[ -n "${REPO_BRANCH1}" ]] && [[ -n "${REPO_BRANCH2}" ]]; then
       sed -i "s?${REPO_BRANCH1}?${REPO_BRANCH2}?g" ${Y}
     fi
