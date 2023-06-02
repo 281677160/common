@@ -9,7 +9,8 @@ cd ${GITHUB_WORKSPACE}
 if [[ -z "${BENDI_VERSION}" ]]; then
   sudo rm -rf build/common && git clone -b main --depth 1 https://github.com/281677160/common build/common
   cp -Rf build/common/*.sh build/${FOLDER_NAME}/
-  cp -Rf build/common/xiugai.sh build/${FOLDER_NAME}/common.sh
+  cp -Rf build/common/common.sh build/${FOLDER_NAME}/common.sh
+  cp -Rf build/common/upgrade.sh build/${FOLDER_NAME}/upgrade.sh
   chmod -R +x build
 fi
 }
@@ -280,7 +281,7 @@ exit 0
 
 function Diy_memu() {
 cd ${GITHUB_WORKSPACE}
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/xiugai.sh -o common.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o common.sh
 if [[ $? -ne 0 ]]; then
   wget -q https://raw.githubusercontent.com/281677160/common/main/common.sh -O common.sh
 fi
