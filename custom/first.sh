@@ -239,14 +239,14 @@ fi
 
 function tongbu_4() {
 cd ${GITHUB_WORKSPACE}/repogx
-if [[ "${GIT_REPOSITORY}" =~ (281677160/build-actions|281677160/autobuild1) ]]; then
+if [[ "${GIT_REPOSITORY}" =~ (281677160/build-actions|281677160/autobuild) ]]; then
   rm -rf backups
 fi
 git add .
 git commit -m "${BANBEN_SHUOMING}"
 git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 if [[ $? -ne 0 ]]; then
-  echo -e "\033[31m 同步上游仓库失败 \033[0m"
+  echo -e "\033[31m 同步上游仓库失败,请注意密匙是否正确 \033[0m"
 else
   echo -e "\033[33m 同步上游仓库完成,请重新设置好文件再继续编译 \033[0m"
 fi
