@@ -288,7 +288,6 @@ fi
 ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "common.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 if [[ -n "${BENDI_VERSION}" ]]; then
   GIT_REPOSITORY="281677160/build-actions"
-  export TONGBU_BENDI="0"
   rm -rf build
   cp -Rf operates build
   rm -rf common.sh
