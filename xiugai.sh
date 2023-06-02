@@ -271,8 +271,6 @@ EOF
 ./scripts/feeds update -a
 cat >>"feeds.conf.default" <<-EOF
 src-git helloworld https://github.com/fw876/helloworld.git
-src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci
-src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main
 src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
 EOF
 
@@ -599,7 +597,45 @@ cd ${HOME_PATH}
 
 
 function Diy_zdypartsh() {
+cd ${HOME_PATH}
 source $BUILD_PATH/$DIY_PART_SH
+cd ${HOME_PATH}
+
+# passwall
+find . -type d -name '*luci-app-passwall*' -o -name 'passwall1' -o -name 'passwall2' | xargs -i rm -rf {}
+sed -i '/passwall.git\;luci/d; /passwall2/d' "feeds.conf.default"
+if [[ "${PassWall_luci_branch}" == "1" ]]; then
+  echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci-smartdns-new-version" >> "feeds.conf.default"
+  echo "src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main" >> "feeds.conf.default"
+else
+  echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci" >> "feeds.conf.default"
+  echo "src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main" >> "feeds.conf.default"
+fi
+
+# openclash
+find . -type d -name '*luci-app-openclash*' -o -name '*OpenClash*' | xargs -i rm -rf {}
+sed -i '/OpenClash/d' "feeds.conf.default"
+if [[ "${OpenClash_branch}" == "master" ]]; then
+  export luci_openclash="1"
+  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
+  if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+    sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
+  fi
+elif [[ "${OpenClash_branch}" == "dev" ]]; then
+  sed -i '/OpenClash/d' "feeds.conf.default"
+  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
+  if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
+    sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
+  fi
+else
+  export luci_openclash="0"
+  find . -type d -name 'luci-app-openclash' -o -name 'OpenClash' | xargs -i rm -rf {}
+  if [[ -n "$(grep "luci-app-openclash" "${HOME_PATH}/include/target.mk")" ]]; then
+    sed -i "s?luci-app-openclash??g" "include/target.mk"
+  fi
+fi
+echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+
 cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
 mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
@@ -657,37 +693,9 @@ else
   [[ -d "${HOME_PATH}/files/etc/openclash/core" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core
 fi
 
-# openclash
-if [[ "${OpenClash_branch}" == "master" ]]; then
-  luci_openclash="1"
-  sed -i '/OpenClash/d' "feeds.conf.default"
-  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
-  ./scripts/feeds update OpenClash
-  ./scripts/feeds install -a -p OpenClash
-  if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-    sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
-  fi
-elif [[ "${OpenClash_branch}" == "dev" ]]; then
-  luci_openclash="1"
-  sed -i '/OpenClash/d' "feeds.conf.default"
-  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
-  ./scripts/feeds update OpenClash
-  ./scripts/feeds install -a -p OpenClash
-  if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-    sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
-  fi
-else
-  luci_openclash="0"
-  sed -i '/OpenClash/d' "feeds.conf.default"
+if [[ "${luci_openclash}" == "0" ]]; then
   sed -i '/luci-app-openclash/d' "${HOME_PATH}/.config"
-  find . -type d -name 'luci-app-openclash' -o -name 'OpenClash' | xargs -i rm -rf {}
-  if [[ -n "$(grep "luci-app-openclash" "${HOME_PATH}/include/target.mk")" ]]; then
-    sed -i "s?luci-app-openclash??g" "include/target.mk"
-  fi
-fi
-echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
-
-if [[ "${luci_openclash}" == "1" ]]; then
+elif [[ "${luci_openclash}" == "1" ]]; then
   luci_path="${HOME_PATH}/feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/luci-openclash"
   if [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
     sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' "${luci_path}"
