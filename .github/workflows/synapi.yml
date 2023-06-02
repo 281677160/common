@@ -26,7 +26,7 @@ jobs:
         sudo -E apt-get -qq install -y git git-core wget curl
         sudo timedatectl set-timezone "$TZ"
         
-    - name: API
+    - name: 下载API
       run: |
         mkdir -p Github_Api
         cd Github_Api
@@ -55,7 +55,7 @@ jobs:
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
         fi
         
-    - name: API
+    - name: 发布API
       uses: ncipollo/release-action@main
       with:
         name: API
