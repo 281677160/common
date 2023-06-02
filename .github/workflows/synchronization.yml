@@ -56,12 +56,7 @@ jobs:
             cp -Rf $GITHUB_WORKSPACE/golang-version/lang/golang $GITHUB_WORKSPACE/repogx/Share/golang
           fi
         fi
-        
-        
-        
 
-        
-        
         git clone https://github.com/coolsnowwolf/lede $GITHUB_WORKSPACE/Lede
         git clone https://github.com/coolsnowwolf/openwrt-gl-ax1800 $GITHUB_WORKSPACE/ax1800
         git clone https://github.com/Lienol/openwrt $GITHUB_WORKSPACE/Lienol
