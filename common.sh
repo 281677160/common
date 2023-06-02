@@ -3,7 +3,7 @@
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
 
-ACTIONS_VERSION="1.0.1"
+ACTIONS_VERSION="2.0.1"
 
 function TIME() {
 Compte=$(date +%Y年%m月%d号%H时%M分)
