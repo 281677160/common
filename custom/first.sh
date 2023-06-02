@@ -47,7 +47,7 @@ cp -Rf repogx/.github/workflows backupstwo/b123/workflows
 function tongbu_2() {
 # 从上游仓库覆盖文件到本地仓库
 cd ${GITHUB_WORKSPACE}
-BANBEN_SHUOMING="小版本更新于 $(date +%Y.%m%d.%H%M.%S)"
+BANBEN_SHUOMING="更新小版本于 $(date +%Y.%m%d.%H%M.%S)"
 rm -rf shangyou/build/*/{diy,files,patches,seed}
 
 settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep settings.ini; } 2>"/dev/null")"
