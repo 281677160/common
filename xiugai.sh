@@ -615,26 +615,19 @@ fi
 # openclash
 find . -type d -name '*luci-app-openclash*' -o -name '*OpenClash*' | xargs -i rm -rf {}
 sed -i '/OpenClash/d' "feeds.conf.default"
-if [[ "${OpenClash_branch}" == "master" ]]; then
+if [[ "${OpenClash_branch}" == "1" ]]; then
+  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
+  echo "OpenClash_branch=dev" >> ${GITHUB_ENV}
+else
   export luci_openclash="1"
   echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
-  if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-    sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
-  fi
-elif [[ "${OpenClash_branch}" == "dev" ]]; then
-  sed -i '/OpenClash/d' "feeds.conf.default"
-  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
-  if [[ `grep -c 'luci-app-openclash' "${HOME_PATH}/include/target.mk"` -eq '0' ]]; then
-    sed -i "s?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-openclash ?g" "include/target.mk"
-  fi
-else
-  export luci_openclash="0"
-  find . -type d -name 'luci-app-openclash' -o -name 'OpenClash' | xargs -i rm -rf {}
-  if [[ -n "$(grep "luci-app-openclash" "${HOME_PATH}/include/target.mk")" ]]; then
-    sed -i "s?luci-app-openclash??g" "include/target.mk"
-  fi
+  echo "OpenClash_branch=master" >> ${GITHUB_ENV}
 fi
-echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+luci_path="${HOME_PATH}/feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/luci-openclash"
+if [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
+  sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' "${luci_path}"
+  sed -i '/uci -q commit openclash/a\fi' "${luci_path}"
+fi
 
 cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
 mv -f uniq.conf feeds.conf.default
@@ -691,16 +684,6 @@ elif [[ "${OpenClash_Core}" == "2" ]]; then
 else
   echo "OpenClash_Core=0" >> ${GITHUB_ENV}
   [[ -d "${HOME_PATH}/files/etc/openclash/core" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core
-fi
-
-if [[ "${luci_openclash}" == "0" ]]; then
-  sed -i '/luci-app-openclash/d' "${HOME_PATH}/.config"
-elif [[ "${luci_openclash}" == "1" ]]; then
-  luci_path="${HOME_PATH}/feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/luci-openclash"
-  if [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
-    sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' "${luci_path}"
-    sed -i '/uci -q commit openclash/a\fi' "${luci_path}"
-  fi
 fi
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
