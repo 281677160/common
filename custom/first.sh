@@ -194,7 +194,6 @@ if [[ -d "backupstwo" ]]; then
 fi
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]]; then
-  sed -i '/TONGBU_BENDI/d' ${GITHUB_WORKSPACE}/GITHUB_ENV
   echo "TONGBU_BENDI=1" >> ${GITHUB_WORKSPACE}/GITHUB_ENV
   tongbu_5
 else
@@ -232,7 +231,6 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf build operates
   cp -Rf ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
   rm -rf shangyou repogx backupstwo
-  sed -i '/TONGBU_BENDI/d' ${GITHUB_WORKSPACE}/GITHUB_ENV
   echo "TONGBU_BENDI=2" >> ${GITHUB_WORKSPACE}/GITHUB_ENV
   tongbu_5
 else
@@ -290,9 +288,9 @@ fi
 ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "common.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 if [[ -n "${BENDI_VERSION}" ]]; then
   GIT_REPOSITORY="281677160/build-actions"
-  rm -rf build
+  rm -rf build common.sh
   cp -Rf operates build
-  rm -rf common.sh
+  sed -i '/TONGBU_BENDI/d' ${GITHUB_WORKSPACE}/GITHUB_ENV
 else
   GIT_REPOSITORY="${GIT_REPOSITORY}"
   REPO_TOKEN="${REPO_TOKEN}"
