@@ -40,6 +40,9 @@ fi
 rm -rf backupstwo && mkdir -p backupstwo
 cp -Rf operates backupstwo/operates
 cp -Rf repogx/.github/workflows backupstwo/workflows
+
+for i in $({ find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance" |grep -v 'backups'; } 2>"/dev/null"); do sudo rm -rf "${i}"; done
+for u in $({ find "${GITHUB_WORKSPACE}/operates" |grep -v 'backups' |grep settings.ini |sed "s/\/settings.ini//g"; } 2>"/dev/null"); do mkdir -p ${u}/relevance; done
 }
 
 function tongbu_2() {
@@ -48,10 +51,7 @@ cd ${GITHUB_WORKSPACE}
 BANBEN_SHUOMING="更新小版本于 $(date +%Y.%m%d.%H%M.%S)"
 rm -rf shangyou/build/*/{diy,files,patches,seed}
 
-for i in $({ find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance" |grep -v 'backups'; } 2>"/dev/null"); do sudo rm -rf "${i}"; done
-for u in $({ find "${GITHUB_WORKSPACE}/operates" |grep -v 'backups' |grep settings.ini |sed "s/\/settings.ini//g"; } 2>"/dev/null"); do mkdir -p ${u}/relevance; done
-
-settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep settings.ini; } 2>"/dev/null")"
+settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep -v 'backups' |grep settings.ini; } 2>"/dev/null")"
 for a in ${settings_file}
 do
   X="$(echo "${a}" |sed "s/settings.ini//g")"
@@ -123,7 +123,7 @@ do
   fi
 done
 
-yml_file="$({ find ${GITHUB_WORKSPACE}/repogx |grep .yml |grep -v 'institution.yml\|compile.yml\|packaging.yml'; } 2>"/dev/null")"
+yml_file="$({ find ${GITHUB_WORKSPACE}/repogx |grep .yml |grep -v 'institution.yml\|compile.yml\|packaging.yml\|backups'; } 2>"/dev/null")"
 for f in ${yml_file}
 do
   a="$({ grep 'target: \[.*\]' "${f}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/'; } 2>"/dev/null")"
@@ -162,8 +162,7 @@ do
   fi
 done
 
-for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance"); do
-  rm -rf ${X}/{*.ini,*start}
+for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance" |grep -v 'backups'); do
   echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
 done
@@ -175,7 +174,7 @@ cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/compile.yml ${GITHUB_WORKS
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/packaging.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/packaging.yml
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/institution.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/institution.yml
 
-for X in $({ find ${GITHUB_WORKSPACE}/operates |grep .bak; } 2>"/dev/null"); do rm -rf "${X}"; done
+for X in $({ find ${GITHUB_WORKSPACE}/operates |grep -v 'backups' |grep .bak; } 2>"/dev/null"); do rm -rf "${X}"; done
 
 cp -Rf operates repogx/build
 
@@ -219,8 +218,7 @@ sudo rm -rf ${GITHUB_WORKSPACE}/repogx/*
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/* ${GITHUB_WORKSPACE}/repogx/
 sudo rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/*
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/* ${GITHUB_WORKSPACE}/repogx/.github/workflows/
-for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance"); do 
-  rm -rf ${X}/{*.ini,*start}
+for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance" |grep -v 'backups'); do 
   echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
   echo ${X}
