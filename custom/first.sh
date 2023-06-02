@@ -204,7 +204,7 @@ fi
 
 function tongbu_3() {
 cd ${GITHUB_WORKSPACE}
-BANBEN_SHUOMING="大版本覆盖于 $(date +%Y.%m%d.%H%M.%S)"
+BANBEN_SHUOMING="Update $(date +%Y.%m%d.%H%M.%S)"
 cd ${GITHUB_WORKSPACE}
 if [[ -d "backupstwo" ]]; then
   mkdir -p backupstwo/backups
