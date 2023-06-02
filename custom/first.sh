@@ -37,9 +37,9 @@ fi
 [[ -d "repogx/backups" ]] && sudo rm -rf repogx/backups
 [[ -d "operates/backups" ]] && sudo rm -rf operates/backups
 
-rm -rf backupstwo && mkdir -p backupstwo/b123
+rm -rf backupstwo && mkdir -p backupstwo
 cp -Rf operates backupstwo/operates
-cp -Rf repogx/.github/workflows backupstwo/b123/workflows
+cp -Rf repogx/.github/workflows backupstwo/workflows
 }
 
 function tongbu_2() {
@@ -189,8 +189,8 @@ if [[ -d "backupstwo" ]]; then
     sudo chmod -R +x operates
     sudo rm -rf backupstwo repogx shangyou build
   else
-    mv -f backupstwo/operates backupstwo/backups/build
-    mv -f backupstwo/b123/workflows backupstwo/backups/workflows
+    cp -Rf backupstwo/operates/* backupstwo/backups/
+    cp -Rf backupstwo/workflows backupstwo/backups/workflows
     cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/repogx/backups
   fi
 fi
@@ -212,8 +212,8 @@ if [[ -d "backupstwo" ]]; then
   if [[ -n "${BENDI_VERSION}" ]]; then
     cp -Rf backupstwo/operates/* backupstwo/backups/
   else
-    mv -f backupstwo/operates backupstwo/backups/build
-    mv -f backupstwo/b123/workflows backupstwo/backups/workflows
+    cp -Rf backupstwo/operates/* backupstwo/backups/
+    cp -Rf backupstwo/workflows backupstwo/backups/workflows
   fi
 fi
 sudo rm -rf ${GITHUB_WORKSPACE}/repogx/*
@@ -243,7 +243,7 @@ fi
 
 function tongbu_4() {
 cd ${GITHUB_WORKSPACE}/repogx
-if [[ "${GIT_REPOSITORY}" =~ (281677160/build-actions|281677160/autobuild) ]]; then
+if [[ "${GIT_REPOSITORY}" =~ (281677160/build-actions|281677160/autobuild1) ]]; then
   rm -rf backups
 fi
 git add .
