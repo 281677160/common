@@ -129,10 +129,10 @@ do
   [ ! -d "${GITHUB_WORKSPACE}/operates/${a}" ] && rm -rf "${f}"
   TARGE1="target: \\[.*\\]"
   TARGE2="target: \\[${a}\\]"
-  yml_name2="$(grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
-  schedule_name2="$(grep -E 'schedule:' "${f}" |sed 's/\*/\\&/g' |sed 's/\:/\\&/' |awk 'NR==1')"
-  cron_name2="$(grep -E '\- cron:.*' "${f}" |sed 's/\*/\\&/g' |sed 's/\,/\\&/' |awk 'NR==1')"
-  SOURCE_CODE1="$(grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${a}/settings.ini" |grep -v '^#' |cut -d '"' -f2)"
+  yml_name2="$({ grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1'; } 2>"/dev/null")"
+  schedule_name2="$({ grep -E 'schedule:' "${f}" |sed 's/\*/\\&/g' |sed 's/\:/\\&/' |awk 'NR==1'; } 2>"/dev/null")"
+  cron_name2="$({ grep -E '\- cron:.*' "${f}" |sed 's/\*/\\&/g' |sed 's/\,/\\&/' |awk 'NR==1'; } 2>"/dev/null")"
+  SOURCE_CODE1="$({ grep 'SOURCE_CODE=' "${GITHUB_WORKSPACE}/operates/${a}/settings.ini" |grep -v '^#' |cut -d '"' -f2; } 2>"/dev/null")"
   if [[ "${SOURCE_CODE1}" == "IMMORTALWRT" ]]; then
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Immortalwrt.yml ${f}
   elif [[ "${SOURCE_CODE1}" == "COOLSNOWWOLF" ]]; then
@@ -144,9 +144,9 @@ do
   elif [[ "${SOURCE_CODE1}" == "XWRT" ]]; then 
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml ${f}
   fi
-  yml_name1="$(grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1')"
-  schedule_name1="$(grep -E 'schedule:' "${f}" |sed 's/\*/\\&/g' |sed 's/\:/\\&/g' |awk 'NR==1')"
-  cron_name1="$(grep -E '\- cron:.*' "${f}" |sed 's/\*/\\&/g' |sed 's/\,/\\&/g' |awk 'NR==1')"
+  yml_name1="$({ grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1'; } 2>"/dev/null")"
+  schedule_name1="$({ grep -E 'schedule:' "${f}" |sed 's/\*/\\&/g' |sed 's/\:/\\&/g' |awk 'NR==1'; } 2>"/dev/null")"
+  cron_name1="$({ grep -E '\- cron:.*' "${f}" |sed 's/\*/\\&/g' |sed 's/\,/\\&/g' |awk 'NR==1'; } 2>"/dev/null")"
   if [[ -n "${TARGE1}" ]] && [[ -n "${TARGE2}" ]]; then
     sed -i "s?${TARGE1}?${TARGE2}?g" ${f}
   fi
