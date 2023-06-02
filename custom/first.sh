@@ -243,6 +243,7 @@ function tongbu_4() {
 cd ${GITHUB_WORKSPACE}/repogx
 if [[ "${GIT_REPOSITORY}" =~ (281677160/build-actions|281677160/autobuild) ]]; then
   rm -rf backups
+  BANBEN_SHUOMING="Update $(date +%Y.%m%d.%H%M.%S)"
 fi
 git add .
 git commit -m "${BANBEN_SHUOMING}"
