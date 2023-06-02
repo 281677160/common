@@ -124,7 +124,6 @@ yml_file="$({ find ${GITHUB_WORKSPACE}/repogx |grep .yml |grep -v 'institution.y
 for f in ${yml_file}
 do
   a="$({ grep 'target: \[.*\]' "${f}" |sed 's/^[ ]*//g' |grep -v '^#' | sed -r 's/target: \[(.*)\]/\1/'; } 2>"/dev/null")"
-  [ ! -d "${GITHUB_WORKSPACE}/operates/${a}" ] && rm -rf "${f}"
   TARGE1="target: \\[.*\\]"
   TARGE2="target: \\[${a}\\]"
   yml_name2="$({ grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1'; } 2>"/dev/null")"
@@ -142,6 +141,7 @@ do
   elif [[ "${SOURCE_CODE1}" == "XWRT" ]]; then 
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml ${f}
   fi
+  [ ! -d "${GITHUB_WORKSPACE}/operates/${a}" ] && rm -rf "${f}"
   yml_name1="$({ grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1'; } 2>"/dev/null")"
   schedule_name1="$({ grep -E 'schedule:' "${f}" |sed 's/\*/\\&/g' |sed 's/\:/\\&/g' |awk 'NR==1'; } 2>"/dev/null")"
   cron_name1="$({ grep -E '\- cron:.*' "${f}" |sed 's/\*/\\&/g' |sed 's/\,/\\&/g' |awk 'NR==1'; } 2>"/dev/null")"
