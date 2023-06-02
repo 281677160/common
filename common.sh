@@ -618,7 +618,7 @@ else
   echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
   echo "OpenClash_branch=master" >> ${GITHUB_ENV}
 fi
-luci_path="${HOME_PATH}/feeds/OpenClash/luci-app-openclash/root/etc/uci-defaults/luci-openclash"
+luci_path="$(find "${HOME_PATH}/feeds" |grep luci-openclash)"
 if [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
   sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' "${luci_path}"
   sed -i '/uci -q commit openclash/a\fi' "${luci_path}"
