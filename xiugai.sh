@@ -257,8 +257,8 @@ LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
 if [[ -n "${LUCI_CHECKUT}" ]]; then
   git checkout ${LUCI_CHECKUT}
   git switch -c ${LUCI_CHECKUT}
-  git pull
 fi
+git pull
 
 sed -i '/281677160/d; /helloworld/d; /passwall/d; /OpenClash/d' "feeds.conf.default"
 cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
