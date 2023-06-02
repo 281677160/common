@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
         
   schedule:
-   - cron: 58 */7 * * *
+   - cron: 1 */8 * * *
 
 env:
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
