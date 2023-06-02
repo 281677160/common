@@ -1744,8 +1744,6 @@ Diy_organize
 function build_openwrt() {
 # 触发compile.yml文件启动
 cd ${GITHUB_WORKSPACE}
-git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-git config --global user.name "github-actions[bot]"
 start_path="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini"
 chmod -R +x ${start_path} && source ${start_path}
 if [[ "${CPU_SELECTION}" =~ (E5|false) ]]; then
@@ -1781,8 +1779,6 @@ git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
 
 function CPU_Priority() {
 # 检测CPU型号,不是所选型号就重新触发启动
-git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-git config --global user.name "github-actions[bot]"
 export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' build/${FOLDER_NAME}/${CONFIG_FILE})"
 export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' build/${FOLDER_NAME}/${CONFIG_FILE})"
 if [[ `grep -Eoc 'CONFIG_TARGET_x86_64=y' build/${FOLDER_NAME}/${CONFIG_FILE}` -eq '1' ]]; then
