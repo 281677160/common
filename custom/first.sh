@@ -40,9 +40,6 @@ fi
 rm -rf backupstwo && mkdir -p backupstwo
 cp -Rf operates backupstwo/operates
 cp -Rf repogx/.github/workflows backupstwo/workflows
-
-for i in $({ find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance" |grep -v 'backups'; } 2>"/dev/null"); do sudo rm -rf "${i}"; done
-for u in $({ find "${GITHUB_WORKSPACE}/operates" |grep -v 'backups' |grep settings.ini |sed "s/\/settings.ini//g"; } 2>"/dev/null"); do mkdir -p ${u}/relevance; done
 }
 
 function tongbu_2() {
@@ -50,6 +47,9 @@ function tongbu_2() {
 cd ${GITHUB_WORKSPACE}
 BANBEN_SHUOMING="更新小版本于 $(date +%Y.%m%d.%H%M.%S)"
 rm -rf shangyou/build/*/{diy,files,patches,seed}
+
+for i in $({ find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance" |grep -v 'backups'; } 2>"/dev/null"); do sudo rm -rf "${i}"; done
+for u in $({ find "${GITHUB_WORKSPACE}/operates" |grep -v 'backups' |grep settings.ini |sed "s/\/settings.ini//g"; } 2>"/dev/null"); do mkdir -p ${u}/relevance; done
 
 settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep -v 'backups' |grep settings.ini; } 2>"/dev/null")"
 for a in ${settings_file}
