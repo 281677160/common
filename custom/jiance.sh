@@ -5,6 +5,7 @@
 cd ${GITHUB_WORKSPACE}
 
 function Diy_continue() {
+cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]]; then
   sudo rm -rf build dabanben_x xiaobanben_d
 else
@@ -16,6 +17,7 @@ fi
 }
 
 function tongbu_1() {
+cd ${GITHUB_WORKSPACE}
 sudo rm -rf repogx shangyou
 git clone -b main --depth 1 https://github.com/${GIT_REPOSITORY}.git repogx
 git clone -b main --depth 1 https://github.com/281677160/build-actions shangyou
@@ -44,6 +46,7 @@ cp -Rf repogx/.github/workflows backupstwo/b123/workflows
 
 function tongbu_2() {
 # 从上游仓库覆盖文件到本地仓库
+cd ${GITHUB_WORKSPACE}
 BANBEN_SHUOMING="小版本更新于 $(date +%Y.%m%d.%H%M.%S)"
 rm -rf shangyou/build/*/{diy,files,patches,seed}
 
@@ -169,7 +172,7 @@ cp -Rf ${GITHUB_WORKSPACE}/shangyou/LICENSE ${GITHUB_WORKSPACE}/repogx/LICENSE
   
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/compile.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/compile.yml
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/packaging.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/packaging.yml
-cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/synchronise.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/synchronise.yml
+cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/institution.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/institution.yml
 
 for X in $({ find ${GITHUB_WORKSPACE}/operates |grep .bak; } 2>"/dev/null"); do rm -rf "${X}"; done
 
@@ -199,6 +202,7 @@ fi
 }
 
 function tongbu_3() {
+cd ${GITHUB_WORKSPACE}
 BANBEN_SHUOMING="大版本覆盖于 $(date +%Y.%m%d.%H%M.%S)"
 cd ${GITHUB_WORKSPACE}
 if [[ -d "backupstwo" ]]; then
@@ -276,6 +280,7 @@ exit 0
 }
 
 function Diy_memu() {
+cd ${GITHUB_WORKSPACE}
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/xiugai.sh -o xiugai.sh
 if [[ $? -ne 0 ]]; then
   wget -q https://raw.githubusercontent.com/281677160/common/main/common.sh -O common.sh
