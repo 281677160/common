@@ -281,11 +281,11 @@ exit 0
 
 function Diy_memu() {
 cd ${GITHUB_WORKSPACE}
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/xiugai.sh -o xiugai.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/xiugai.sh -o common.sh
 if [[ $? -ne 0 ]]; then
   wget -q https://raw.githubusercontent.com/281677160/common/main/common.sh -O common.sh
 fi
-ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "xiugai.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
+ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "common.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 if [[ -n "${BENDI_VERSION}" ]]; then
   GIT_REPOSITORY="281677160/build-actions"
   export TONGBU_BENDI="0"
