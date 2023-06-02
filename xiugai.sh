@@ -779,9 +779,9 @@ else
   echo "不进行,内核分区大小设置"
 fi
 
-if [[ -n "${Root_partition_size}" ]] && [[ "${Root_partition_size}" != "0" ]]; then
-  echo "CONFIG_TARGET_ROOTFS_PARTSIZE=${Root_partition_size}" >> ${HOME_PATH}/.config
-  echo "系统分区设置完成，大小为：${Root_partition_size}MB"
+if [[ -n "${Rootfs_partition_size}" ]] && [[ "${Rootfs_partition_size}" != "0" ]]; then
+  echo "CONFIG_TARGET_ROOTFS_PARTSIZE=${Rootfs_partition_size}" >> ${HOME_PATH}/.config
+  echo "系统分区设置完成，大小为：${Rootfs_partition_size}MB"
 else
   echo "不进行,系统分区大小设置"
 fi
