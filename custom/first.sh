@@ -51,8 +51,8 @@ rm -rf shangyou/build/*/{diy,files,patches,seed}
 settings_file="$({ find ${GITHUB_WORKSPACE}/operates |grep settings.ini; } 2>"/dev/null")"
 for a in ${settings_file}
 do
-  X="$(echo "$f" |sed "s/settings.ini//g")"
-  if [ -n "$(grep 'SOURCE_CODE="COOLSNOWWOLF"' "$f")" ]; then
+  X="$(echo "${a}" |sed "s/settings.ini//g")"
+  if [ -n "$(grep 'SOURCE_CODE="COOLSNOWWOLF"' "${a}")" ]; then
     Y="${GITHUB_WORKSPACE}/shangyou/build/Lede/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
@@ -65,7 +65,7 @@ do
       sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" ${Y}
     fi
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Lede/* "${X}"
-  elif [ -n "$(grep 'SOURCE_CODE="LIENOL"' "$f")" ]; then
+  elif [ -n "$(grep 'SOURCE_CODE="LIENOL"' "${a}")" ]; then
     Y="${GITHUB_WORKSPACE}/shangyou/build/Lienol/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
@@ -78,7 +78,7 @@ do
       sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" ${Y}
     fi
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Lienol/* "${X}"
-  elif [ -n "$(grep 'SOURCE_CODE="IMMORTALWRT"' "$f")" ]; then
+  elif [ -n "$(grep 'SOURCE_CODE="IMMORTALWRT"' "${a}")" ]; then
     Y="${GITHUB_WORKSPACE}/shangyou/build/Immortalwrt/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
@@ -91,7 +91,7 @@ do
       sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" ${Y}
     fi
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Immortalwrt/* "${X}"
-  elif [ -n "$(grep 'SOURCE_CODE="XWRT"' "$f")" ]; then
+  elif [ -n "$(grep 'SOURCE_CODE="XWRT"' "${a}")" ]; then
     Y="${GITHUB_WORKSPACE}/shangyou/build/Xwrt/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
@@ -104,7 +104,7 @@ do
       sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" ${Y}
     fi
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Xwrt/* "${X}"
-  elif [ -n "$(grep 'SOURCE_CODE="OFFICIAL"' "$f")" ]; then
+  elif [ -n "$(grep 'SOURCE_CODE="OFFICIAL"' "${a}")" ]; then
     Y="${GITHUB_WORKSPACE}/shangyou/build/Official/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
