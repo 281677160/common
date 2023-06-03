@@ -22,7 +22,6 @@ node --version
 yarn --version
 sudo apt-get autoremove -y --purge
 sudo apt-get clean
-[[ -n "${BENDI_VERSION}" ]] && sudo rm -rf po2lmo
 }
 
 function main(){
