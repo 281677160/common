@@ -24,6 +24,10 @@ sudo apt-get autoremove -y --purge
 sudo apt-get clean
 }
 
+function update_apt_source(){
+sudo rm -rf 
+}
+
 function main(){
 	if [[ -n "${BENDI_VERSION}" ]]; then
 		BENDI_VERSION="1"
