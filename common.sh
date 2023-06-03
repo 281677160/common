@@ -107,6 +107,12 @@ RETAIN_DAYS="${RETAIN_DAYS}"
 KEEP_LATEST="${KEEP_LATEST}"
 EOF
 
+if [[ -n "${BENDI_VERSION}" ]]; then
+  echo "PACKAGING_FIRMWARE_BENDI=${PACKAGING_FIRMWARE}" >> "${start_path}"
+  echo "MODIFY_CONFIGURATION=${MODIFY_CONFIGURATION}" >> "${start_path}"
+  echo "WSL_ROUTEPATH=${WSL_ROUTEPATH}" >> "${start_path}"
+fi
+
 chmod -R +x ${start_path} && source ${start_path}
 
 case "${SOURCE_CODE}" in
@@ -199,6 +205,11 @@ echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
 echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
 echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
+if [[ -n "${BENDI_VERSION}" ]]; then
+  echo "PACKAGING_FIRMWARE_BENDI=${PACKAGING_FIRMWARE}" >> ${GITHUB_ENV}
+  echo "MODIFY_CONFIGURATION=${MODIFY_CONFIGURATION}" >> ${GITHUB_ENV}
+  echo "WSL_ROUTEPATH=${WSL_ROUTEPATH}" >> ${GITHUB_ENV}
+fi
 
 # 修改本地文件变量
 if [[ -n "${BENDI_VERSION}" ]]; then
