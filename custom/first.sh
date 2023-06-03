@@ -12,6 +12,8 @@ if [[ -z "${BENDI_VERSION}" ]]; then
   cp -Rf build/common/common.sh build/${FOLDER_NAME}/common.sh
   cp -Rf build/common/upgrade.sh build/${FOLDER_NAME}/upgrade.sh
   chmod -R +x build
+else
+  sudo rm -rf build
 fi
 }
 
