@@ -304,7 +304,7 @@ fi
 if [[ ! -d "build" ]]; then
   echo -e "\033[31m 根目录缺少build文件夹存在,进行同步上游仓库操作 \033[0m"
   export SYNCHRONISE="2"
-  sleep 5
+  sleep 2
 elif [[ ! -d "build/${FOLDER_NAME}" ]]; then
   echo -e "\033[31m build文件夹内缺少${FOLDER_NAME}文件夹存在 \033[0m"
   exit 1
@@ -314,11 +314,11 @@ elif [[ ! -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini" ]]; then
 elif [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
   echo -e "\033[31m build文件夹内的${FOLDER_NAME}缺少relevance文件夹存在,进行同步上游仓库操作 \033[0m"
   export SYNCHRONISE="2"
-  sleep 5
+  sleep 2
 elif [[ ! -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   echo -e "\033[31m 缺少build/${FOLDER_NAME}/relevance/actions_version文件,进行同步上游仓库操作 \033[0m"
   export SYNCHRONISE="2"
-  sleep 5
+  sleep 2
 elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   A="$(grep -E "ACTIONS_VERSION=.*" build/${FOLDER_NAME}/relevance/actions_version |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
   B="$(echo "${A}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
@@ -328,11 +328,11 @@ elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   if [[ "${B}" != "${C}" ]]; then
     echo -e "\033[31m 版本号不对等,进行同步上游仓库操作 \033[0m"
     export SYNCHRONISE="2"
-    sleep 5
+    sleep 2
   elif [[ "${A}" != "${ACTIONS_VERSION}" ]]; then
     echo -e "\033[31m 此仓库版本号跟上游仓库不对等,进行小版本更新 \033[0m"
     export SYNCHRONISE="1"
-    sleep 5
+    sleep 2
   else
     export SYNCHRONISE="0"
     echo -e "\033[32m 版本一致,继续编译固件... \033[0m"
