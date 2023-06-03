@@ -303,7 +303,6 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   export GIT_REPOSITORY="281677160/build-actions"
   sudo rm -rf build common.sh
   [[ -d "operates" ]] && cp -Rf operates build
-  [[ -d "build" ]] && echo "123" > build/123
   sed -i '/TONGBU_BENDI/d' ${GITHUB_ENV}
 else
   export GIT_REPOSITORY="${GIT_REPOSITORY}"
