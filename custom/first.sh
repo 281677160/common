@@ -6,14 +6,14 @@ cd ${GITHUB_WORKSPACE}
 
 function Diy_continue() {
 cd ${GITHUB_WORKSPACE}
-if [[ -z "${BENDI_VERSION}" ]]; then
+if [[ -n "${BENDI_VERSION}" ]]; then
+  sudo rm -rf build
+else
   sudo rm -rf build/common && git clone -b main --depth 1 https://github.com/281677160/common build/common
   cp -Rf build/common/*.sh build/${FOLDER_NAME}/
   cp -Rf build/common/common.sh build/${FOLDER_NAME}/common.sh
   cp -Rf build/common/upgrade.sh build/${FOLDER_NAME}/upgrade.sh
-  chmod -R +x build
-else
-  sudo rm -rf build
+  chmod -R +x build 
 fi
 }
 
