@@ -7,7 +7,7 @@ cd ${GITHUB_WORKSPACE}
 function Diy_continue() {
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]]; then
-  sudo rm -rf build
+  sudo rm -rf build common.sh
 else
   sudo rm -rf build/common && git clone -b main --depth 1 https://github.com/281677160/common build/common
   cp -Rf build/common/*.sh build/${FOLDER_NAME}/
