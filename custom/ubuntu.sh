@@ -22,11 +22,12 @@ node --version
 yarn --version
 sudo apt-get autoremove -y --purge
 sudo apt-get clean
-sudo rm -rf po2lmo
+[[ -n "${BENDI_VERSION}" ]] && sudo rm -rf po2lmo
 }
 
 function main(){
 	if [[ -n "${BENDI_VERSION}" ]]; then
+		BENDI_VERSION="1"
 		INS="sudo apt-get"
 		echo "开始升级ubuntu插件和安装依赖....."
 		install_mustrelyon
