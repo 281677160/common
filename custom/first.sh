@@ -195,7 +195,7 @@ if [[ -d "backupstwo" ]]; then
 fi
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]]; then
-  echo "TONGBU_BENDI=1" >> ${GITHUB_WORKSPACE}/GITHUB_ENV
+  echo "TONGBU_BENDI=1" >> ${GITHUB_ENV}
   tongbu_5
 else
   tongbu_4
@@ -231,7 +231,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf build operates
   cp -Rf ${GITHUB_WORKSPACE}/repogx/build ${GITHUB_WORKSPACE}/operates
   rm -rf shangyou repogx backupstwo
-  echo "TONGBU_BENDI=2" >> ${GITHUB_WORKSPACE}/GITHUB_ENV
+  echo "TONGBU_BENDI=2" >> ${GITHUB_ENV}
   tongbu_5
 else
   cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/repogx/backups
@@ -292,7 +292,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   GIT_REPOSITORY="281677160/build-actions"
   rm -rf build common.sh
   cp -Rf operates build
-  sed -i '/TONGBU_BENDI/d' ${GITHUB_WORKSPACE}/GITHUB_ENV
+  sed -i '/TONGBU_BENDI/d' ${GITHUB_ENV}
 else
   GIT_REPOSITORY="${GIT_REPOSITORY}"
   echo "${GIT_REPOSITORY}"
