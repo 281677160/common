@@ -335,9 +335,9 @@ elif [[ ! -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   export SYNCHRONISE="2"
   sleep 2
 elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
-  A="$(grep -E "ACTIONS_VERSION=.*" build/${FOLDER_NAME}/relevance/actions_version |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
-  B="$(echo "${A}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
-  C="$(echo "${ACTIONS_VERSION}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
+  export A="$(grep -E "ACTIONS_VERSION=.*" build/${FOLDER_NAME}/relevance/actions_version |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
+  export B="$(echo "${A}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
+  export C="$(echo "${ACTIONS_VERSION}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
   echo " 本地版本：${A}"
   echo " 上游版本：${ACTIONS_VERSION}"
   if [[ "${B}" != "${C}" ]]; then
