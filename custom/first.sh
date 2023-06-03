@@ -241,6 +241,9 @@ fi
 
 function tongbu_4() {
 cd ${GITHUB_WORKSPACE}/repogx
+if [[ "${OPERATES_BUILD}" == "1" ]]; then
+  rm -rf backups
+fi
 if [[ "${GIT_REPOSITORY}" =~ (281677160/build-actions|281677160/autobuild) ]]; then
   rm -rf backups
   BANBEN_SHUOMING="Update $(date +%Y.%m%d.%H%M.%S)"
@@ -258,6 +261,9 @@ exit 1
 
 function tongbu_5() {
 cd ${GITHUB_WORKSPACE}
+if [[ "${OPERATES_BUILD}" == "1" ]]; then
+  rm -rf operates/backups
+fi
 for X in $(find "operates" -name "settings.ini"); do
   sed -i '/SSH_ACTIONS/d' "${X}"
   sed -i '/UPLOAD_FIRMWARE/d' "${X}"
@@ -282,6 +288,7 @@ exit 0
 
 function Diy_memu() {
 cd ${GITHUB_WORKSPACE}
+OPERATES_BUILD="0"
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o common.sh
 if [[ $? -ne 0 ]]; then
   wget -q https://raw.githubusercontent.com/281677160/common/main/common.sh -O common.sh
@@ -302,8 +309,9 @@ else
 fi
 
 if [[ ! -d "build" ]]; then
-  echo -e "\033[31m 根目录缺少build文件夹存在,进行同步上游仓库操作 \033[0m"
+  echo -e "\033[31m 根目录缺少编译必要文件夹存在,进行同步上游仓库操作 \033[0m"
   export SYNCHRONISE="2"
+  export OPERATES_BUILD="1"
   sleep 2
 elif [[ ! -d "build/${FOLDER_NAME}" ]]; then
   echo -e "\033[31m build文件夹内缺少${FOLDER_NAME}文件夹存在 \033[0m"
