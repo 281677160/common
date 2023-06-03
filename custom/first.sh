@@ -290,7 +290,7 @@ exit 0
 
 function Diy_memu() {
 cd ${GITHUB_WORKSPACE}
-OPERATES_BUILD="0"
+export OPERATES_BUILD="0"
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o common.sh
 if [[ $? -ne 0 ]]; then
   wget -q https://raw.githubusercontent.com/281677160/common/main/common.sh -O common.sh
@@ -299,15 +299,15 @@ export ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "common.sh" |grep -Eo [0-
 export DIY_PART_SH="$(grep -Eo "DIY_PART_SH=.*" "common.sh" |grep '.sh' |awk 'NR==1' |cut -d'"' -f2)"
 echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
 if [[ -n "${BENDI_VERSION}" ]]; then
-  GIT_REPOSITORY="281677160/build-actions"
+  export BENDI_VERSION="1"
+  export GIT_REPOSITORY="281677160/build-actions"
   sudo rm -rf build common.sh
   [[ -d "operates" ]] && cp -Rf operates build
   [[ -d "build" ]] && echo "123" > build/123
   sed -i '/TONGBU_BENDI/d' ${GITHUB_ENV}
 else
-  GIT_REPOSITORY="${GIT_REPOSITORY}"
-  echo "${GIT_REPOSITORY}"
-  REPO_TOKEN="${REPO_TOKEN}"
+  export GIT_REPOSITORY="${GIT_REPOSITORY}"
+  export REPO_TOKEN="${REPO_TOKEN}"
   git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
   git config --global user.name "github-actions[bot]"
 fi
