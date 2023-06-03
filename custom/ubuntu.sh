@@ -24,8 +24,8 @@ sudo apt-get autoremove -y --purge
 sudo apt-get clean
 }
 
-function update_apt_source(){
-sudo rm -rf 
+function Delete_po2lmo(){
+sudo rm -rf po2lmo
 }
 
 function main(){
@@ -35,6 +35,7 @@ function main(){
 		echo "开始升级ubuntu插件和安装依赖....."
 		install_mustrelyon
 		update_apt_source
+		Delete_po2lmo
 	else
 		INS="sudo -E apt-get -qq"
 		install_mustrelyon
