@@ -905,11 +905,7 @@ if [[ "${Cancel_running}" == "1" ]]; then
 fi
 
 if [[ "${Disable_autosamba}" == "1" ]]; then
-  Ble_autosamba="$({ find |grep 'Makefile' |grep 'autosamba' |sed "/Makefile./d"; } 2>"/dev/null")"
-  if [[ -n "${Ble_autosamba}" ]]; then
-    [ -n "$(grep "luci-app-samba" "${Ble_autosamba}")" ] && sed -i "s/+luci-app-samba //g" ${Ble_autosamba}
-    [ -n "$(grep "luci-app-samba4" "${Ble_autosamba}")" ] && sed -i "s/+luci-app-samba4 //g" ${Ble_autosamba}
-  fi
+  echo "Disable_autosamba=1" >> ${GITHUB_ENV}
 fi
 
 # 晶晨CPU机型自定义机型,内核,分区
@@ -1018,9 +1014,6 @@ fi
 if [[ "${Disable_autosamba}" == "1" ]]; then
 echo '
 CONFIG_PACKAGE_autosamba=n
-' >> ${HOME_PATH}/.config
-make defconfig > /dev/null 2>&1
-echo '
 # CONFIG_PACKAGE_luci-app-samba is not set
 CONFIG_PACKAGE_luci-app-samba4=n
 # CONFIG_PACKAGE_samba36-server is not set
