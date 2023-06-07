@@ -904,6 +904,14 @@ if [[ "${Cancel_running}" == "1" ]]; then
    echo "删除每天跑分任务完成"
 fi
 
+if [[ "${Disable_autosamba}" == "1" ]]; then
+  Ble_autosamba="$({ find ${HOME_PATH} |grep 'Makefile\|autosamba' |sed "/Makefile./d"; } 2>"/dev/null")"
+  if [[ -n "${Ble_autosamba}" ]]; then
+    sed "s/luci-app-samba //g" ${Ble_autosamba}
+    sed "s/luci-app-samba4 //g" ${Ble_autosamba}
+  fi
+fi
+
 # 晶晨CPU机型自定义机型,内核,分区
 echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
 echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
