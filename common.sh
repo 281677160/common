@@ -1010,6 +1010,9 @@ fi
 if [[ "${Disable_autosamba}" == "1" ]]; then
 echo '
 CONFIG_PACKAGE_autosamba=n
+' >> ${HOME_PATH}/.config
+make defconfig > /dev/null 2>&1
+echo '
 # CONFIG_PACKAGE_luci-app-samba is not set
 CONFIG_PACKAGE_luci-app-samba4=n
 # CONFIG_PACKAGE_samba36-server is not set
