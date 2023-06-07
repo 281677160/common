@@ -905,10 +905,10 @@ if [[ "${Cancel_running}" == "1" ]]; then
 fi
 
 if [[ "${Disable_autosamba}" == "1" ]]; then
-  Ble_autosamba="$({ find ${HOME_PATH} |grep 'Makefile' |grep 'autosamba' |sed "/Makefile./d"; } 2>"/dev/null")"
+  Ble_autosamba="$({ find |grep 'Makefile' |grep 'autosamba' |sed "/Makefile./d"; } 2>"/dev/null")"
   if [[ -n "${Ble_autosamba}" ]]; then
-    sed -i "s/luci-app-samba //g" ${Ble_autosamba}
-    sed -i "s/luci-app-samba4 //g" ${Ble_autosamba}
+    [ -n "$(grep "luci-app-samba" "${Ble_autosamba}")" ] && sed -i "s/+luci-app-samba //g" ${Ble_autosamba}
+    [ -n "$(grep "luci-app-samba4" "${Ble_autosamba}")" ] && sed -i "s/+luci-app-samba4 //g" ${Ble_autosamba}
   fi
 fi
 
