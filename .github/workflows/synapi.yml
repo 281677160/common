@@ -55,6 +55,8 @@ jobs:
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
         fi
         
+        curl -s -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${repo}/actions/runs -o runs.api
+        
     - name: 发布API
       uses: ncipollo/release-action@main
       with:
