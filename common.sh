@@ -1810,7 +1810,7 @@ case "${CPU_SELECTION}" in
 false)
   if [[ `echo "${cpu_model}" |grep -ic "E5"` -eq '1' ]]; then
     export chonglaixx="E5-重新编译"
-    export chonglaiss="是E5的CPU，重新选择服务器再继续编译"
+    export chonglaiss="是E5的CPU"
     export Continue_selecting="1"
   else
     TIME g " 恭喜,不是E5系列的CPU啦"
@@ -1820,7 +1820,7 @@ false)
 8370|8272|8171)
   if [[ `echo "${cpu_model}" |grep -ic "${CPU_SELECTION}"` -eq '0' ]]; then
     export chonglaixx="非${CPU_SELECTION}-重新编译"
-    export chonglaiss="并非是您选择的${CPU_SELECTION}CPU，重新选择服务器再继续编译"
+    export chonglaiss="并非是您选择的${CPU_SELECTION}CPU"
     export Continue_selecting="1"
   else
     TIME g " 恭喜,正是您想要的${CPU_SELECTION}CPU"
@@ -1883,7 +1883,7 @@ function Diy_delruns() {
         https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs/${run_id}
       }
     done
-    echo "已删除编号${DEVICE_NUMBER}的工作流程，因为这${chonglaiss}"
+    echo "已清理因筛选服务器CPU而停止的工作流程(编号${DEVICE_NUMBER})，因为这${chonglaiss}"
   fi
 }
 
