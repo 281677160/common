@@ -1850,7 +1850,11 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   git add .
   git commit -m "${chonglaixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
   git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${BRANCH_HEAD}
-  
+  exit 1
+fi
+}
+
+function CPU_Pri() {
   cd ${GITHUB_WORKSPACE}
   sudo apt-get -qq update && sudo apt-get -qq install -y jq curl
   all_workflows_list="josn_api_workflows"
@@ -1877,8 +1881,6 @@ if [[ "${Continue_selecting}" == "1" ]]; then
     done
     echo "已删除编号${RUN_NUMBER}的工作流程，因为这${chonglaiss}"
   fi
-  exit 1
-fi
 }
 
 
