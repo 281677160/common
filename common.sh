@@ -84,9 +84,9 @@ fi
 
 if [[ "${INFORMATION_NOTICE}" =~ (关闭|false) ]]; then
   INFORMATION_NOTICE="false"
-elif [[ "${INFORMATION_NOTICE}" =~ (TG|Telegram|telegram) ]]; then
+elif [[ -n "$(echo "${INFORMATION_NOTICE}" |grep -i 'TG\|telegram')" ]]; then
   INFORMATION_NOTICE="TG"
-elif [[ "${INFORMATION_NOTICE}" =~ (PUSH|Pushplus|pushplus) ]]; then
+elif [[ -n "$(echo "${INFORMATION_NOTICE}" |grep -i 'PUSH\|pushplus')" ]]; then
   INFORMATION_NOTICE="PUSH"
 else
   INFORMATION_NOTICE="false"
