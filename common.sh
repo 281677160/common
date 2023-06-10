@@ -1857,34 +1857,34 @@ fi
 }
 
 function Diy_delruns() {
-  cd ${GITHUB_WORKSPACE}
-  sudo apt-get -qq update && sudo apt-get -qq install -y jq curl
-  if [[ -f "build/${FOLDER_NAME}/relevance/run_number" ]]; then
-    DEVICE_NUMBER="$(grep "DEVICE_NUMBER" build/${FOLDER_NAME}/relevance/run_number |cut -d"=" -f2)"
-    chonglaiss="$(grep "chonglaiss" build/${FOLDER_NAME}/relevance/run_number |cut -d"=" -f2)"
-  fi
-  all_workflows_list="josn_api_workflows"
-  curl -s \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer ${REPO_TOKEN}" \
-  https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs |
-  jq -c '.workflow_runs[] | select(.conclusion == "failure") | {date: .updated_at, id: .id, name: .name, run_number: .run_number}' \
-  >${all_workflows_list}
-  if [[ -n "$(cat "${all_workflows_list}" |grep "${DEVICE_NUMBER}")" ]]; then
-    cat ${all_workflows_list} |grep "${DEVICE_NUMBER}" > josn_api
-  fi
-  if [[ -f "josn_api" && -n "$(cat josn_api | jq -r .id)" ]]; then
-    cat josn_api | jq -r .id | while read run_id; do
-      {
-        curl -s \
-        -X DELETE \
-        -H "Accept: application/vnd.github+json" \
-        -H "Authorization: Bearer ${REPO_TOKEN}" \
-        https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs/${run_id}
-      }
-    done
-    echo "已清理因筛选服务器CPU而停止的工作流程(编号${DEVICE_NUMBER})，因为这${chonglaiss}"
-  fi
+cd ${GITHUB_WORKSPACE}
+sudo apt-get -qq update && sudo apt-get -qq install -y jq curl
+if [[ -f "build/${FOLDER_NAME}/relevance/run_number" ]]; then
+  DEVICE_NUMBER="$(grep "DEVICE_NUMBER" build/${FOLDER_NAME}/relevance/run_number |cut -d"=" -f2)"
+  chonglaiss="$(grep "chonglaiss" build/${FOLDER_NAME}/relevance/run_number |cut -d"=" -f2)"
+fi
+all_workflows_list="josn_api_workflows"
+curl -s \
+-H "Accept: application/vnd.github+json" \
+-H "Authorization: Bearer ${REPO_TOKEN}" \
+https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs |
+jq -c '.workflow_runs[] | select(.conclusion == "failure") | {date: .updated_at, id: .id, name: .name, run_number: .run_number}' \
+>${all_workflows_list}
+if [[ -n "$(cat "${all_workflows_list}" |grep "${DEVICE_NUMBER}")" ]]; then
+  cat ${all_workflows_list} |grep "${DEVICE_NUMBER}" > josn_api
+fi
+if [[ -f "josn_api" && -n "$(cat josn_api | jq -r .id)" ]]; then
+  cat josn_api | jq -r .id | while read run_id; do
+    {
+      curl -s \
+      -X DELETE \
+      -H "Accept: application/vnd.github+json" \
+      -H "Authorization: Bearer ${REPO_TOKEN}" \
+      https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs/${run_id}
+    }
+  done
+  TIME y "已清理因筛选服务器CPU而停止的工作流程(编号:${DEVICE_NUMBER})，因为这${chonglaiss}"
+fi
 }
 
 
