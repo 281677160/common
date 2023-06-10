@@ -1856,7 +1856,7 @@ if [[ "${Continue_selecting}" == "1" ]]; then
 fi
 }
 
-function CPU_Pri() {
+function Diy_delruns() {
   cd ${GITHUB_WORKSPACE}
   sudo apt-get -qq update && sudo apt-get -qq install -y jq curl
   if [[ -f "build/${FOLDER_NAME}/relevance/run_number" ]]; then
@@ -1873,7 +1873,6 @@ function CPU_Pri() {
   if [[ -n "$(cat "${all_workflows_list}" |grep "${DEVICE_NUMBER}")" ]]; then
     cat ${all_workflows_list} |grep "${DEVICE_NUMBER}" > josn_api
   fi
-
   if [[ -f "josn_api" && -n "$(cat josn_api | jq -r .id)" ]]; then
     cat josn_api | jq -r .id | while read run_id; do
       {
