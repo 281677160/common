@@ -1850,7 +1850,6 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   git add .
   git commit -m "${chonglaixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
   git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${BRANCH_HEAD}
-  exit 0
   
   cd ${GITHUB_WORKSPACE}
   sudo apt-get -qq update && sudo apt-get -qq install -y jq curl
@@ -1859,7 +1858,7 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer ${REPO_TOKEN}" \
   https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs |
-  jq -c '.workflow_runs[] | select(.conclusion == "failure") | {date: .updated_at, id: .id, name: .name, run_number: .run_number}' \
+  jq -c '.workflow_runs[]| select(.status == "in_progress") | {date: .updated_at, id: .id, name: .name, run_number: .run_number}' \
   >${all_workflows_list}
   cat ${all_workflows_list}
   cat ${all_workflows_list} |grep "${RUN_NUMBER}" > josn_api
