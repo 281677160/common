@@ -57,7 +57,7 @@ jobs:
         
         curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/281677160/autobuild/actions/runs -o runs.api
         
-        curl -s -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/281677160/autobuild/actions/runs |jq -c '.workflow_runs[] | select(.run_number == "1220") | {date: .updated_at, id: .id, name: .name}' > 2runs.api
+        curl -s -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/281677160/autobuild/actions/runs |jq -c '.workflow_runs[] | select(.run_number == 1220) | {date: .updated_at, id: .id, name: .name}' > 2runs.api
         
     - name: 发布API
       uses: ncipollo/release-action@main
