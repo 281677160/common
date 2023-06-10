@@ -1850,6 +1850,7 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   git add .
   git commit -m "${chonglaixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
   git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${BRANCH_HEAD}
+  exit 0
   
   cd ${GITHUB_WORKSPACE}
   sudo apt-get -qq update && sudo apt-get -qq install -y jq curl
