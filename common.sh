@@ -1856,11 +1856,12 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer ${REPO_TOKEN}" \
   https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs |
-  jq -c '.workflow_runs[] | select(.conclusion == "failure") | select(.run_number == ${RUN_NUMBER}) | {date: .updated_at, id: .id, name: .name}' \
+  jq -c '.workflow_runs[] | select(.conclusion == "failure") | {date: .updated_at, id: .id, name: .name}' \
   >${all_workflows_list}
+  cat ${all_workflows_list} |grep "${RUN_NUMBER}" > josn_api
 
-  if [[ -s "${all_workflows_list}" && -n "$(cat ${all_workflows_list} | jq -r .id)" ]]; then
-    cat ${all_workflows_list} | jq -r .id | while read run_id; do
+  if [[ -s "josn_api" && -n "$(cat josn_api | jq -r .id)" ]]; then
+    cat josn_api | jq -r .id | while read run_id; do
       {
         curl -s \
         -X DELETE \
