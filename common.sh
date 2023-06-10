@@ -1850,6 +1850,7 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${BRANCH_HEAD}
   
   cd ${GITHUB_WORKSPACE}
+  sudo apt-get -qq update && sudo apt-get -qq install -y jq curl
   all_workflows_list="josn_api_workflows"
   curl -s \
   -H "Accept: application/vnd.github+json" \
