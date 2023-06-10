@@ -55,7 +55,7 @@ jobs:
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
         fi
         
-        curl --request GET --url "https://api.github.com/repos/281677160/autobuild/actions/runs" --header "Accept: application/vnd.github+json" --header "Authorization: Bearer ${REPO_TOKEN}" > 123
+        curl -s -X CANCEL -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/281677160/autobuild/actions/runs/5229021062
         
         curl -s -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/281677160/autobuild/actions/runs |jq -c '.workflow_runs[]| select(.status == "in_progress") | {date: .updated_at, id: .id, name: .name, run_number: .run_number}' > 2runs.api
         
