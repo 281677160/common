@@ -243,7 +243,7 @@ fi
 
 function tongbu_4() {
 cd ${GITHUB_WORKSPACE}/repogx
-BRANCH_HEAD="${git rev-parse --abbrev-ref HEAD}"
+BRANCH_HEAD="$(git rev-parse --abbrev-ref HEAD)"
 if [[ "${OPERATES_BUILD}" == "1" ]]; then
   rm -rf backups
 fi
