@@ -23,7 +23,7 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq install -y git subversion git-core wget curl grep
+        sudo -E apt-get -qq install -y git subversion git-core wget curl grep jq
         sudo timedatectl set-timezone "$TZ"
         
     - name: 下载API
@@ -56,6 +56,8 @@ jobs:
         fi
         
         curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/281677160/autobuild/actions/runs -o runs.api
+        
+        curl -s -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/281677160/autobuild/actions/runs |jq -c '.workflow_runs[] | select(.conclusion == "failure") | {date: .updated_at, id: .id, name: .name}' -o 2runs.api
         
     - name: 发布API
       uses: ncipollo/release-action@main
