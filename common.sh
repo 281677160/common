@@ -1867,11 +1867,11 @@ function CPU_Pri() {
   https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs |
   jq -c '.workflow_runs[] | select(.conclusion == "failure") | {date: .updated_at, id: .id, name: .name, run_number: .run_number}' \
   >${all_workflows_list}
-  cat ${all_workflows_list}
-  cat ${all_workflows_list} |grep "${DEVICE_NUMBER}" > josn_api
-  cat josn_api
+  if [[ -n "$(cat "${all_workflows_list}" |grep "${DEVICE_NUMBER}")" ]]; then
+    cat ${all_workflows_list} |grep "${DEVICE_NUMBER}" > josn_api
+  fi
 
-  if [[ -s "josn_api" && -n "$(cat josn_api | jq -r .id)" ]]; then
+  if [[ -f "josn_api" && -n "$(cat josn_api | jq -r .id)" ]]; then
     cat josn_api | jq -r .id | while read run_id; do
       {
         curl -s \
