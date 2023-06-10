@@ -23,11 +23,12 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq install -y git subversion git-core wget curl grep jq
+        sudo -E apt-get -qq install -y git subversion git-core wget curl grep
         sudo timedatectl set-timezone "$TZ"
         
     - name: 下载API
       run: |
+        wget -P /usr/bin https://raw.githubusercontent.com/281677160/agent/main/xray/jq && chmod +x /usr/bin/jq
         mkdir -p Github_Api
         cd Github_Api
         curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/ophub/kernel/releases/tags/kernel_stable -o stable.api
