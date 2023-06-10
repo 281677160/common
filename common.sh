@@ -70,7 +70,7 @@ else
   WAREHOUSE_MAN="${GIT_REPOSITORY##*/}"
 fi
 
-if [[ -n "$(echo "${CPU_SELECTION}" |grep -ic 'E5\|默认\|false')" ]]; then
+if [[ -n "$(echo "${CPU_SELECTION}" |grep -i 'E5\|默认\|false')" ]]; then
   CPU_SELECTION="false"
 elif [[ `echo "${CPU_SELECTION}" |grep -c '8370'` -eq '1' ]]; then
   CPU_SELECTION="8370"
