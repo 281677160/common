@@ -1848,6 +1848,27 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   git add .
   git commit -m "${chonglaixx}-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
   git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${BRANCH_HEAD}
+  
+  cd ${GITHUB_WORKSPACE}
+  all_workflows_list="josn_api_workflows"
+  curl -s \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer ${gh_token}" \
+  https://api.github.com/repos/${repo}/actions/runs |
+  jq -c '.workflow_runs[] | select(.conclusion == "failure") | select(.run_number == ${RUN_NUMBER}) | {date: .updated_at, id: .id, name: .name}' \
+  >${all_workflows_list}
+
+  if [[ -s "${all_workflows_list}" && -n "$(cat ${all_workflows_list} | jq -r .id)" ]]; then
+    cat ${all_workflows_list} | jq -r .id | while read run_id; do
+      {
+        curl -s \
+        -X DELETE \
+        -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer ${gh_token}" \
+        https://api.github.com/repos/${repo}/actions/runs/${run_id}
+      }
+    done
+  fi
   exit 1
 fi
 }
