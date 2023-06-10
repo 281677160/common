@@ -1853,8 +1853,8 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   all_workflows_list="josn_api_workflows"
   curl -s \
   -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer ${gh_token}" \
-  https://api.github.com/repos/${repo}/actions/runs |
+  -H "Authorization: Bearer ${REPO_TOKEN}" \
+  https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs |
   jq -c '.workflow_runs[] | select(.conclusion == "failure") | select(.run_number == ${RUN_NUMBER}) | {date: .updated_at, id: .id, name: .name}' \
   >${all_workflows_list}
 
@@ -1864,8 +1864,8 @@ if [[ "${Continue_selecting}" == "1" ]]; then
         curl -s \
         -X DELETE \
         -H "Accept: application/vnd.github+json" \
-        -H "Authorization: Bearer ${gh_token}" \
-        https://api.github.com/repos/${repo}/actions/runs/${run_id}
+        -H "Authorization: Bearer ${REPO_TOKEN}" \
+        https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs/${run_id}
       }
     done
   fi
