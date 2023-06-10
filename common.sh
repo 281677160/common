@@ -1858,15 +1858,16 @@ fi
 function CPU_Pri() {
   cd ${GITHUB_WORKSPACE}
   sudo apt-get -qq update && sudo apt-get -qq install -y jq curl
-  [ -s "build/${FOLDER_NAME}/relevance/run_number" ] && DEVICE_NUMBER=$(cat build/${FOLDER_NAME}/relevance/run_number)"
+  [ -s "build/${FOLDER_NAME}/relevance/run_number" ] && DEVICE_NUMBER="$(cat build/${FOLDER_NAME}/relevance/run_number)"
   echo "${DEVICE_NUMBER}"
   all_workflows_list="josn_api_workflows"
   curl -s \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer ${REPO_TOKEN}" \
   https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs |
-  jq -c '.workflow_runs[]| select(.conclusion == "failure") | {date: .updated_at, id: .id, name: .name, run_number: .run_number}' \
+  jq -c '.workflow_runs[] | select(.conclusion == "failure") | {date: .updated_at, id: .id, name: .name, run_number: .run_number}' \
   >${all_workflows_list}
+  cat ${all_workflows_list}
   cat ${all_workflows_list} |grep "${DEVICE_NUMBER}" > josn_api
   cat josn_api
 
