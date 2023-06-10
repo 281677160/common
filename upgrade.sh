@@ -19,13 +19,14 @@ function Diy_Part1() {
 
 
 function Diy_Part2() {
+	export Update_tag="Update-${TARGET_BOARD}"
 	export In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
-	export Github_API1="https://download.fastgit.org/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
-	export Github_API2="https://ghproxy.com/https://github.com/${GIT_REPOSITORY}/releases/download/${TARGET_BOARD}/zzz_api"
+	export Github_API1="https://download.fastgit.org/${GIT_REPOSITORY}/releases/download/${Update_tag}/zzz_api"
+	export Github_API2="https://ghproxy.com/https://github.com/${GIT_REPOSITORY}/releases/download/${Update_tag}/zzz_api"
 	export API_PATH="/tmp/Downloads/zzz_api"
-	export Release_download1="${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
-	export Release_download2="https://ghproxy.com/${GITHUB_LINK}/releases/download/${TARGET_BOARD}"
-	export Github_Release="${GITHUB_LINK}/releases/tag/${TARGET_BOARD}"
+	export Release_download1="${GITHUB_LINK}/releases/download/${Update_tag}"
+	export Release_download2="https://ghproxy.com/${GITHUB_LINK}/releases/download/${Update_tag}"
+	export Github_Release="${GITHUB_LINK}/releases/tag/${Update_tag}"
 	
 	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 		export TARGET_PROFILE_ER="phicomm-k3"
@@ -92,6 +93,7 @@ function Diy_Part2() {
 		echo "AutoBuild_Firmware=${AutoBuild_Firmware}" >> ${GITHUB_ENV}
 	fi
 	
+	echo "Update_tag=${Update_tag}" >> ${GITHUB_ENV}
 	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
 	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
 	echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
