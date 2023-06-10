@@ -1810,6 +1810,7 @@ case "${CPU_SELECTION}" in
 false)
   if [[ `echo "${cpu_model}" |grep -ic "E5"` -eq '1' ]]; then
     export chonglaixx="E5-重新编译"
+    export chonglaiss="是E5的CPU，重新选择服务器再继续编译"
     export Continue_selecting="1"
   else
     TIME g " 恭喜,不是E5系列的CPU啦"
@@ -1819,6 +1820,7 @@ false)
 8370|8272|8171)
   if [[ `echo "${cpu_model}" |grep -ic "${CPU_SELECTION}"` -eq '0' ]]; then
     export chonglaixx="非${CPU_SELECTION}-重新编译"
+    export chonglaiss="并非是您选择的${CPU_SELECTION}CPU，重新选择服务器再继续编译"
     export Continue_selecting="1"
   else
     TIME g " 恭喜,正是您想要的${CPU_SELECTION}CPU"
@@ -1856,7 +1858,7 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer ${REPO_TOKEN}" \
   https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs |
-  jq -c '.workflow_runs[] | select(.conclusion == "failure") | {date: .updated_at, id: .id, name: .name}' \
+  jq -c '.workflow_runs[] | select(.conclusion == "failure") | {date: .updated_at, id: .id, name: .name, run_number: .run_number}' \
   >${all_workflows_list}
   cat ${all_workflows_list} |grep "${RUN_NUMBER}" > josn_api
 
@@ -1870,6 +1872,7 @@ if [[ "${Continue_selecting}" == "1" ]]; then
         https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs/${run_id}
       }
     done
+    echo "已删除编号${RUN_NUMBER}的工作流程，因为这${chonglaiss}"
   fi
   exit 1
 fi
