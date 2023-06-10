@@ -20,7 +20,7 @@ fi
 function tongbu_1() {
 cd ${GITHUB_WORKSPACE}
 sudo rm -rf repogx shangyou
-git clone -b main --depth 1 https://github.com/${GIT_REPOSITORY}.git repogx
+git clone https://github.com/${GIT_REPOSITORY}.git repogx
 git clone -b main --depth 1 https://github.com/281677160/build-actions shangyou
 
 if [[ ! -d "repogx" ]]; then
@@ -243,6 +243,7 @@ fi
 
 function tongbu_4() {
 cd ${GITHUB_WORKSPACE}/repogx
+BRANCH_HEAD="${git rev-parse --abbrev-ref HEAD}"
 if [[ "${OPERATES_BUILD}" == "1" ]]; then
   rm -rf backups
 fi
@@ -252,7 +253,7 @@ if [[ "${GIT_REPOSITORY}" =~ (281677160/build-actions|281677160/autobuild) ]]; t
 fi
 git add .
 git commit -m "${BANBEN_SHUOMING}"
-git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:main
+git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${BRANCH_HEAD}
 if [[ $? -ne 0 ]]; then
   echo -e "\033[31m 同步上游仓库失败,请注意密匙是否正确 \033[0m"
 else
