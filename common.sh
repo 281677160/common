@@ -1844,7 +1844,8 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   rm -rf UPLOADCPU/.github/workflows
   cp -Rf .github/workflows UPLOADCPU/.github/workflows
   echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > UPLOADCPU/build/${FOLDER_NAME}/relevance/start
-  echo "${RUN_NUMBER}" > UPLOADCPU/build/${FOLDER_NAME}/relevance/run_number
+  echo "DEVICE_NUMBER=${RUN_NUMBER}" > UPLOADCPU/build/${FOLDER_NAME}/relevance/run_number
+  echo "chonglaiss=${chonglaiss}" >> UPLOADCPU/build/${FOLDER_NAME}/relevance/run_number
   
   cd UPLOADCPU
   BRANCH_HEAD="$(git rev-parse --abbrev-ref HEAD)"
@@ -1858,8 +1859,10 @@ fi
 function CPU_Pri() {
   cd ${GITHUB_WORKSPACE}
   sudo apt-get -qq update && sudo apt-get -qq install -y jq curl
-  [ -s "build/${FOLDER_NAME}/relevance/run_number" ] && DEVICE_NUMBER="$(cat build/${FOLDER_NAME}/relevance/run_number)"
-  echo "${DEVICE_NUMBER}"
+  if [[ -f "build/${FOLDER_NAME}/relevance/run_number" ]]; then
+    DEVICE_NUMBER="$(grep "DEVICE_NUMBER" build/${FOLDER_NAME}/relevance/run_number |cut -d"=" -f2)"
+    chonglaiss="$(grep "chonglaiss" build/${FOLDER_NAME}/relevance/run_number |cut -d"=" -f2)"
+  fi
   all_workflows_list="josn_api_workflows"
   curl -s \
   -H "Accept: application/vnd.github+json" \
@@ -1881,7 +1884,7 @@ function CPU_Pri() {
         https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs/${run_id}
       }
     done
-    echo "已删除编号${RUN_NUMBER}的工作流程，因为这${chonglaiss}"
+    echo "已删除编号${DEVICE_NUMBER}的工作流程，因为这${chonglaiss}"
   fi
 }
 
