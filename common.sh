@@ -72,11 +72,11 @@ fi
 
 if [[ -n "$(echo "${CPU_SELECTION}" |grep -i 'E5\|默认\|false')" ]]; then
   CPU_SELECTION="false"
-elif [[ `echo "${CPU_SELECTION}" |grep -c '8370'` -eq '1' ]]; then
+elif [[ -n "$(echo "${CPU_SELECTION}" |grep '8370')" ]]; then
   CPU_SELECTION="8370"
-elif [[ `echo "${CPU_SELECTION}" |grep -c '8272'` -eq '1' ]]; then
+elif [[ -n "$(echo "${CPU_SELECTION}" |grep '8272')" ]]; then
   CPU_SELECTION="8272"
-elif [[ `echo "${CPU_SELECTION}" |grep -c '8171'` -eq '1' ]]; then
+elif [[ -n "$(echo "${CPU_SELECTION}" |grep '8171')" ]]; then
   CPU_SELECTION="8171"
 else
   CPU_SELECTION="false"
