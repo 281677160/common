@@ -1860,7 +1860,10 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   https://api.github.com/repos/${GIT_REPOSITORY}/actions/runs |
   jq -c '.workflow_runs[] | select(.conclusion == "failure") | {date: .updated_at, id: .id, name: .name, run_number: .run_number}' \
   >${all_workflows_list}
+  cat ${all_workflows_list}
   cat ${all_workflows_list} |grep "${RUN_NUMBER}" > josn_api
+  echo "${RUN_NUMBER}"
+  cat josn_api
 
   if [[ -s "josn_api" && -n "$(cat josn_api | jq -r .id)" ]]; then
     cat josn_api | jq -r .id | while read run_id; do
