@@ -10,18 +10,7 @@
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${REPO_TOKEN}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/stupidloud/nanopi-openwrt/actions/runs?&page=1&per_page=100")
-            
-        response2=$(curl -s -L \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${REPO_TOKEN}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/stupidloud/nanopi-openwrt/actions/runs?&page=2&per_page=100")
-            
-        echo "${response1}" > 123
-        echo "${response2}" >> 123
-        
-        response="$(cat 123)"
+            "https://api.github.com/repos/stupidloud/nanopi-openwrt/actions/runs?per_page=${github_per_page}&page=${github_page}")
 
         # Check if the response is empty or an error occurred
         if [ -z "${response}" ] || [[ "${response}" == *"Not Found"* ]]; then
