@@ -6,11 +6,22 @@
 
     # Get the release list
     while true; do
-        response=$(curl -s -L \
+        response1=$(curl -s -L \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${REPO_TOKEN}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/stupidloud/nanopi-openwrt/actions/runs?&page=1&per_page=1000")
+            "https://api.github.com/repos/stupidloud/nanopi-openwrt/actions/runs?&page=1&per_page=100")
+            
+        response2=$(curl -s -L \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${REPO_TOKEN}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/stupidloud/nanopi-openwrt/actions/runs?&page=2&per_page=100")
+            
+        echo "${response1}" > 123
+        echo "${response2}" >> 123
+        
+        response="$(cat 123)"
 
         # Check if the response is empty or an error occurred
         if [ -z "${response}" ] || [[ "${response}" == *"Not Found"* ]]; then
@@ -36,7 +47,7 @@
 
         # Sort the results
         echo "${all_results[*]}" |
-            jq -c '.workflow_runs[] | select(.status != "in_progress") | {date: .updated_at, id: .id, name: .name}' \
+            jq -c '.workflow_runs[] | select(.status != "in_progress") | {date: .updated_at, id: .id, run_number: .run_number}' \
                 >${all_workflows_list}
         cp -Rf ${all_workflows_list} ${GITHUB_WORKSPACE}/Github_Api/xinapi
     fi
