@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
+    echo -e "${STEPS} Start querying the workflows list..."
 
+    # Set github API default value
     github_page="1"
     github_per_page="100"
     github_workflows_results=()
 
     # Get the release list
     while true; do
-        response1=$(curl -s -L \
+        response=$(curl -s -L \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${REPO_TOKEN}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -38,5 +40,5 @@
         echo "${all_results[*]}" |
             jq -c '.workflow_runs[] | select(.status != "in_progress") | {date: .updated_at, id: .id, run_number: .run_number}' \
                 >${all_workflows_list}
-        cp -Rf ${all_workflows_list} ${GITHUB_WORKSPACE}/Github_Api/xinapi
+        cp -Rf ${all_workflows_list} ${GITHUB_WORKSPACE}/Github_Api/xinapi1
     fi
