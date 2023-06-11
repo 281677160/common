@@ -38,7 +38,7 @@
         echo "${all_results[*]}" |
             jq -c '.workflow_runs[] | select(.status != "in_progress") | {date: .updated_at, id: .id, name: .name}' \
                 >${all_workflows_list}
-        cp -Rf ${all_workflows_list} ${GITHUB_WORKSPACE}/Github_Api
+        cp -Rf ${all_workflows_list} ${GITHUB_WORKSPACE}/Github_Api/xinapi
         [[ "${?}" -eq "0" && -s "${all_workflows_list}" ]] || error_msg "(2.1.1) The api.github.com for workflows query failed."
         echo -e "${INFO} (2.1.1) The api.github.com for workflows request successfully."
         [[ "${out_log}" == "true" ]] && echo -e "${INFO} (2.1.1) All workflows runs list:\n$(cat ${all_workflows_list})"
