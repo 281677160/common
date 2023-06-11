@@ -55,7 +55,7 @@ jobs:
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
         fi
         
-        curl -s -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/281677160/autobuild/actions/runs |jq -c '.workflow_runs[]| select(.status != "in_progress") | {path: .path, id: .id, run_number: .run_number}' > 2runs.api
+        curl --request GET --url "https://api.github.com/repos/stupidloud/nanopi-openwrt/actions/runs" --header "Accept: application/vnd.github+json" --header "Authorization: Bearer ${REPO_TOKEN}" > 123
         
     - name: 发布API
       uses: ncipollo/release-action@main
