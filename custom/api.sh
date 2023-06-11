@@ -2,7 +2,7 @@
     echo -e "${STEPS} Start querying the workflows list..."
 
     # Set github API default value
-    github_page="1"
+    github_page="2"
     github_per_page="100"
     github_workflows_results=()
 
