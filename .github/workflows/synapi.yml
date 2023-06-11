@@ -55,7 +55,7 @@ jobs:
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
         fi
         
-        curl --request GET --url "https://api.github.com/repos/stupidloud/nanopi-openwrt/actions/runs" --header "Accept: application/vnd.github+json" --header "Authorization: Bearer ${REPO_TOKEN}" > 123
+        curl --request GET --url "https://api.github.com/repos/stupidloud/nanopi-openwrt/releases" --header "Accept: application/vnd.github+json" --header "Authorization: Bearer ${REPO_TOKEN}" > 123
         
     - name: 发布API
       uses: ncipollo/release-action@main
