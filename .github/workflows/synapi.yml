@@ -28,6 +28,7 @@ jobs:
         
     - name: 下载API
       run: |
+        cd ${GITHUB_WORKSPACE}
         mkdir -p Github_Api
         cd Github_Api
         curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/ophub/kernel/releases/tags/kernel_stable -o stable.api
@@ -55,7 +56,8 @@ jobs:
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
         fi
         
-        curl --request GET --url "https://api.github.com/repos/stupidloud/nanopi-openwrt/releases" --header "Accept: application/vnd.github+json" --header "Authorization: Bearer ${REPO_TOKEN}" > 123
+        chmod -R +x ${GITHUB_WORKSPACE}/custom/api.sh
+        source ${GITHUB_WORKSPACE}/custom/api.sh
         
     - name: 发布API
       uses: ncipollo/release-action@main
