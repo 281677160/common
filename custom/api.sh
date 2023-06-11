@@ -10,7 +10,7 @@
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${REPO_TOKEN}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/stupidloud/nanopi-openwrt/actions/runs?page=10&per_page=100")
+            "https://api.github.com/repos/stupidloud/nanopi-openwrt/actions/runs?&page=1&per_page=100")
 
         # Check if the response is empty or an error occurred
         if [ -z "${response}" ] || [[ "${response}" == *"Not Found"* ]]; then
