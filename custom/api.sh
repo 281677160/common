@@ -10,7 +10,7 @@
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${REPO_TOKEN}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/${repo}/actions/runs?per_page=${github_per_page}&page=${github_page}")
+            "https://api.github.com/repos/stupidloud/nanopi-openwrt/actions/runs?per_page=${github_per_page}&page=${github_page}")
 
         # Check if the response is empty or an error occurred
         if [ -z "${response}" ] || [[ "${response}" == *"Not Found"* ]]; then
@@ -38,6 +38,7 @@
         echo "${all_results[*]}" |
             jq -c '.workflow_runs[] | select(.status != "in_progress") | {date: .updated_at, id: .id, name: .name}' \
                 >${all_workflows_list}
+        cp -Rf ${all_workflows_list} ${GITHUB_WORKSPACE}/Github_Api
         [[ "${?}" -eq "0" && -s "${all_workflows_list}" ]] || error_msg "(2.1.1) The api.github.com for workflows query failed."
         echo -e "${INFO} (2.1.1) The api.github.com for workflows request successfully."
         [[ "${out_log}" == "true" ]] && echo -e "${INFO} (2.1.1) All workflows runs list:\n$(cat ${all_workflows_list})"
