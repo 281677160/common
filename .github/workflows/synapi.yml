@@ -56,9 +56,6 @@ jobs:
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
         fi
         
-        chmod -R +x ${GITHUB_WORKSPACE}/custom/api.sh
-        source ${GITHUB_WORKSPACE}/custom/api.sh
-        
     - name: 发布API
       uses: ncipollo/release-action@main
       with:
