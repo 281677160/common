@@ -456,7 +456,11 @@ sudo chmod +x "${FILES_PATH}/usr/bin/openwrt"
 echo '#!/bin/bash' > "${DELETE}"
 sudo chmod +x "${DELETE}"
 
-features_file="$({ find "${HOME_PATH}/target/linux/armvirt" |grep "Makefile" |grep -v "image" |sed "/Makefile./d"; } 2>"/dev/null")"
+if [[ -d "${HOME_PATH}/target/linux/armsr" ]]; then
+  features_file="${HOME_PATH}/target/linux/armsr/Makefile"
+elif [[ -d "${HOME_PATH}/target/linux/armvirt" ]]; then
+  features_file="${HOME_PATH}/target/linux/armvirt/Makefile"
+fi
 [[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
 sed -i '/DISTRIB_SOURCECODE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
