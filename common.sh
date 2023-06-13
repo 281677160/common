@@ -359,13 +359,6 @@ XWRT)
 esac
 
 ./scripts/feeds update passwall3 helloworld
-if [[ -d "feeds/passwall3" ]]; then
-  w="$(ls -1 feeds/passwall3)" && r=`echo $w | sed 's/ /,/g'`
-  p=(${r//,/ })
-  for i in ${p[@]}; do \
-    find . -type d -name "${i}" |grep -v 'passwall' |xargs -i rm -rf {}; \
-  done
-fi
 
 # 更换golang版本
 if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
@@ -463,7 +456,8 @@ sudo chmod +x "${FILES_PATH}/usr/bin/openwrt"
 echo '#!/bin/bash' > "${DELETE}"
 sudo chmod +x "${DELETE}"
 
-sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${HOME_PATH}/target/linux/armvirt/Makefile"
+features_file="$({ find "${HOME_PATH}/target/linux/armvirt" |grep "Makefile" |grep -v "image" |sed "/Makefile./d"; } 2>"/dev/null")"
+[[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
 sed -i '/DISTRIB_SOURCECODE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
