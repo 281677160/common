@@ -1382,6 +1382,7 @@ if [[ "${TARGET_PROFILE}" == "Armvirt_64" ]]; then
   echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
   echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
   # 修改cpufreq代码适配amlogic"
+  echo "修改cpufreq代码适配amlogic"
   for X in $(find . -type d -name "luci-app-cpufreq"); do \
     [[ -d "$X" ]] && \
     sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' "$X/Makefile"; \
