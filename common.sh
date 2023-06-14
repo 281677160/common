@@ -1563,7 +1563,7 @@ fi
 export YML_PATH="${FOLDER_NAME2}/.github/workflows/packaging.yml"
 cp -Rf ${GITHUB_WORKSPACE}/.github/workflows/packaging.yml ${YML_PATH}
 export PATHS1="$(grep -A 5 'paths:' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |grep -Eo "\- '.*'" |cut -d"'" -f2 |awk 'NR==1')"
-export PATHS2="build/${FOLDER_NAME}/relevance/${SOURCE}start"
+export PATHS2="build/${FOLDER_NAME}/relevance/armsrstart"
 export SOURCE_NAME1="$(grep 'SOURCE:' "${YML_PATH}"|sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
 export SOURCE_NAME2="SOURCE: ${SOURCE}"
 export ER_NAME1="$(grep 'FOLDER_NAME:' "${YML_PATH}"|sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
@@ -1579,7 +1579,7 @@ else
   exit 1
 fi
 
-cat >"${RELEVANCE}/${SOURCE}start" <<-EOF
+cat >"${RELEVANCE}/armsrstart" <<-EOF
 Trigger packaging ${FOLDER_NAME} program-$(date +%Y%m%d%H%M%S)
 EOF
 
