@@ -168,6 +168,8 @@ for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance" |grep -
   rm -rf ${X}/{*.ini,*start}
   echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
+  echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
+  echo "$(date +%Y%m%d%H%M%S)" > ${X}/armsrstart
 done
 
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/README.md ${GITHUB_WORKSPACE}/repogx/README.md
@@ -225,6 +227,8 @@ for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance" |grep -v 
   rm -rf ${X}/{*.ini,*start}
   echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
+  echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
+  echo "$(date +%Y%m%d%H%M%S)" > ${X}/armsrstart
 done
 chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
