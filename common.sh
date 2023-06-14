@@ -33,10 +33,8 @@ function Diy_variable() {
 # 读取变量
 if [[ -n "${BENDI_VERSION}" ]]; then
   export start_path="${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/relevance/settings.ini"
-  rm -rf ${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/relevance/{*.ini,*start}
 else
   export start_path="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini"
-  rm -rf ${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/{*.ini,*start}
 fi
 
 if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
