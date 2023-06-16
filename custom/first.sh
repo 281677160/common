@@ -230,7 +230,6 @@ for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance" |grep -v 
   echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
   echo "$(date +%Y%m%d%H%M%S)" > ${X}/armsrstart
 done
-chmod -R +x ${GITHUB_WORKSPACE}/repogx
 if [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf backupstwo/backups/workflows
   cp -Rf backupstwo/backups ${GITHUB_WORKSPACE}/repogx/build/backups
@@ -246,6 +245,7 @@ fi
 }
 
 function tongbu_4() {
+chmod -R +x ${GITHUB_WORKSPACE}/repogx
 cd ${GITHUB_WORKSPACE}/repogx
 BRANCH_HEAD="$(git rev-parse --abbrev-ref HEAD)"
 if [[ "${OPERATES_BUILD}" == "1" ]]; then
@@ -290,6 +290,7 @@ for X in $(find "operates" -name "settings.ini"); do
     echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
   fi
 done
+chmod -R +x ${GITHUB_WORKSPACE}/operates
 exit 0
 }
 
