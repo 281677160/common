@@ -1955,11 +1955,6 @@ if [[ ${CACHEWRTBUILD_SWITCH} == "true" ]]; then
 else
   TIME r "是否开启缓存加速: 关闭"
 fi
-if [[ ${COLLECTED_PACKAGES} == "true" ]]; then
-  TIME y "是否加入作者收集的插件包: 开启"
-else
-  TIME r "是否加入作者收集的插件包: 关闭"
-fi
 if [[ ${UPLOAD_WETRANSFER} == "true" ]]; then
   TIME y "上传固件至【WETRANSFER】: 开启"
 else
