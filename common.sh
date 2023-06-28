@@ -1955,11 +1955,6 @@ if [[ ${CACHEWRTBUILD_SWITCH} == "true" ]]; then
 else
   TIME r "是否开启缓存加速: 关闭"
 fi
-if [[ ${UPLOAD_WETRANSFER} == "true" ]]; then
-  TIME y "上传固件至【WETRANSFER】: 开启"
-else
-  TIME r "上传固件至【WETRANSFER】: 关闭"
-fi
 if [[ ${COMPILATION_INFORMATION} == "true" ]]; then
   TIME y "编译信息显示: 开启"
 fi
