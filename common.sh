@@ -1455,9 +1455,13 @@ if [[ ! "${weizhicpu}" == "1" ]] && [[ -n "${OpenClash_Core}" ]] && [[ "${OpenCl
   if [[ "${OpenClash_Core}" == "2" ]]; then
     wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/meta/clash-${Archclash}.tar.gz -O meta.tar.gz
     wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/dev/clash-${Archclash}.tar.gz -O clash.tar.gz
-    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/master/core_version -O core_version
+    echo "1"
+    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/core_version -O core_version
+    echo "3"
     TUN="$(cat core_version |grep -v "^v\|^V|^a" |grep -Eo "[0-9]+.[0-9]+.[0-9]+-[a-zA-Z0-9]+-[a-zA-Z0-9]+")"
+    echo "4"
     wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/premium/clash-${Archclash}-${TUN}.gz -O clash_tun.gz
+    echo "5"
     
     tar -zxvf clash.tar.gz -O > clash
     if [[ $? -eq 0 ]];then
