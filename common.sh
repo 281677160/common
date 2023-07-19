@@ -468,6 +468,7 @@ if [[ -z "$(grep "background" ${KEEPD_PATH})" ]]; then
 cat >>"${KEEPD_PATH}" <<-EOF
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background/
+/etc/smartdns/custom.conf
 EOF
 fi
 
