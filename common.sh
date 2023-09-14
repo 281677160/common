@@ -270,7 +270,7 @@ EOF
 ./scripts/feeds update -a
 cat >>"feeds.conf.default" <<-EOF
 src-git helloworld https://github.com/fw876/helloworld.git
-src-git passwall3 https://github.com/xiaorouji/openwrt-passwall.git;packages
+src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages;main
 EOF
 
 App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
@@ -605,10 +605,10 @@ cd ${HOME_PATH}
 find . -type d -name '*luci-app-passwall*' -o -name 'passwall1' -o -name 'passwall2' | xargs -i rm -rf {}
 sed -i '/passwall.git\;luci/d; /passwall2/d' "feeds.conf.default"
 if [[ "${PassWall_luci_branch}" == "1" ]]; then
-  echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci-smartdns-new-version" >> "feeds.conf.default"
+  echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci-smartdns-dev" >> "feeds.conf.default"
   echo "src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main" >> "feeds.conf.default"
 else
-  echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci" >> "feeds.conf.default"
+  echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;main" >> "feeds.conf.default"
   echo "src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main" >> "feeds.conf.default"
 fi
 
