@@ -322,11 +322,13 @@ LIENOL)
   find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" |grep 'other' |xargs -i rm -rf {}
   if [[ "${REPO_BRANCH}" == "master" ]]; then
     find . -type d -name "automount" |grep 'other' |xargs -i rm -rf {}
-  elif [[ "${REPO_BRANCH}" =~ (19.07|19.07-test) ]]; then
+  elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
     find . -type d -name "luci-app-vssr" -o -name "lua-maxminddb" -o -name "automount" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
     rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
     find . -type d -name "automount" |grep 'danshui' |xargs -i rm -rf {}
+  elif [[ "${REPO_BRANCH}" == "23.05" ]]; then
+    sed -i 's/CONFIG_WERROR=y/# CONFIG_WERROR is not set/g' ${HOME_PATH}/target/linux/generic/config-5.15
   fi
 ;;
 IMMORTALWRT)
