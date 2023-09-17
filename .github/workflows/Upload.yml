@@ -45,8 +45,7 @@ jobs:
             cp -Rf $GITHUB_WORKSPACE/golang-version/devel/packr $GITHUB_WORKSPACE/repogx/Share/packr
           fi
         fi
-        
-        svn co https://github.com/openwrt/packages/trunk/lang/golang $GITHUB_WORKSPACE/golang
+        svn co https://github.com/coolsnowwolf/packages/trunk/lang/golang $GITHUB_WORKSPACE/golang
         if [[ $? -eq 0 ]]; then
           rm -rf $GITHUB_WORKSPACE/repogx/Share/golang && cp -Rf $GITHUB_WORKSPACE/golang $GITHUB_WORKSPACE/repogx/Share/golang
         else
