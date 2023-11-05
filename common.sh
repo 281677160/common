@@ -269,7 +269,7 @@ src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
 EOF
 ./scripts/feeds update -a
 cat >>"feeds.conf.default" <<-EOF
-src-git helloworld https://github.com/fw876/helloworld.git
+src-git helloworld https://github.com/fw876/helloworld.git;main
 src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages;main
 EOF
 
