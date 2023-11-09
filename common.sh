@@ -629,6 +629,8 @@ cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.
 mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
 ./scripts/feeds update -a
+rm -rf ${HOME_PATH}/feeds/packages/net/xray-core
+rm -rf ${HOME_PATH}/feeds/packages/net/xray-plugin
 sed -i 's/^#\(.*danshui\)/\1/' "feeds.conf.default"
 # 正在执行插件语言修改
 if [[ "${LUCI_BANBEN}" == "2" ]]; then
