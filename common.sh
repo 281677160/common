@@ -337,7 +337,6 @@ IMMORTALWRT)
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
   done
-  feeds\passwall3\xray-core
 ;;
 OFFICIAL)
   s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
