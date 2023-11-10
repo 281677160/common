@@ -337,6 +337,7 @@ IMMORTALWRT)
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
   done
+  feeds\passwall3\xray-core
 ;;
 OFFICIAL)
   s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
@@ -362,6 +363,10 @@ esac
 
 rm -rf ${HOME_PATH}/feeds/helloworld/{v2ray-core,v2ray-geodata,v2ray-plugin,xray-core,xray-plugin}
 
+if [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
+  rm -rf ${HOME_PATH}/feeds/passwall3/xray-core
+  rm -rf ${HOME_PATH}/feeds/passwall3/xray-plugin
+fi
 
 # 更换golang版本
 if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
