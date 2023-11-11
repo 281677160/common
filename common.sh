@@ -368,9 +368,11 @@ if [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
 fi
 
 # 更换golang版本
-if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
-  rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-  cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
+if [[ ! "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
+  if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
+    rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+    cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
+  fi
 fi
 
 if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/shadowsocks-libev" ]]; then
