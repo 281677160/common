@@ -1566,7 +1566,7 @@ cd ${GITHUB_WORKSPACE}
 export FOLDER_NAME2="${GITHUB_WORKSPACE}/REPOSITORY"
 export RELEVANCE="${FOLDER_NAME2}/build/${FOLDER_NAME}/relevance"
 
-git clone -b main https://github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME2}
+git clone -b main https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git ${FOLDER_NAME2}
 if [[ ! -d "${RELEVANCE}" ]]; then
   mkdir -p "${RELEVANCE}"
 fi
@@ -1767,7 +1767,7 @@ if [[ "${CPU_SELECTION}" =~ (E5|false) ]]; then
 else
   kaisbianyixx="使用${CPU_SELECTION}-编译"
 fi
-git clone https://github.com/${GIT_REPOSITORY}.git UPLOAD
+git clone https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git UPLOAD
 mkdir -p "UPLOAD/build/${FOLDER_NAME}/relevance"
 mv ${start_path} UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
 export YML_PATH="UPLOAD/.github/workflows/compile.yml"
@@ -1847,7 +1847,7 @@ esac
 
 if [[ "${Continue_selecting}" == "1" ]]; then
   cd ${GITHUB_WORKSPACE}
-  git clone https://github.com/${GIT_REPOSITORY}.git UPLOADCPU
+  git clone https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git UPLOADCPU
   mkdir -p "UPLOADCPU/build/${FOLDER_NAME}/relevance"
   rm -rf UPLOADCPU/build/${FOLDER_NAME}
   cp -Rf build/${FOLDER_NAME} UPLOADCPU/build/${FOLDER_NAME}
