@@ -362,11 +362,6 @@ esac
 
 rm -rf ${HOME_PATH}/feeds/helloworld/{v2ray-core,v2ray-geodata,v2ray-plugin,xray-core,xray-plugin}
 
-if [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
-  rm -rf ${HOME_PATH}/feeds/packages/net/xray-core
-  rm -rf ${HOME_PATH}/feeds/packages/net/xray-plugin
-fi
-
 # 更换golang版本
 #if [[ ! "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
 #  if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
