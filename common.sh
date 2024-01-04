@@ -285,7 +285,7 @@ luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-desi
 luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
 luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
 luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
-luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb"
+luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb,v2ray-core,v2ray-geodata,v2ray-plugin,xray-core,xray-plugin,v2raya,trojan-go,trojan-plus,trojan"
 t=(${z//,/ })
 for x in ${t[@]}; do \
   find . -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
