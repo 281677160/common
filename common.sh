@@ -347,6 +347,9 @@ OFFICIAL)
   if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
     find . -type d -name "luci-app-natter" -o -name "natter" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
     rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+    find . -type d -name 'luci-app-samba4' -o -name 'samba4' | xargs -i rm -rf {}
+    svn co https://github.com/Lienol/openwrt-luci/branches/21.02/applications/luci-app-samba4 ${HOME_PATH}/package/luci-app-samba4
+    svn co https://github.com/Lienol/openwrt-packages/branches/21.02/net/samba4 ${HOME_PATH}/package/samba4
   fi
 ;;
 XWRT)
