@@ -350,6 +350,8 @@ OFFICIAL)
     find . -type d -name 'luci-app-samba4' -o -name 'samba4' | xargs -i rm -rf {}
     svn co https://github.com/Lienol/openwrt-luci/branches/21.02/applications/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
     svn co https://github.com/Lienol/openwrt-packages/branches/21.02/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
+    svn co https://github.com/Lienol/openwrt-packages/branches/21.02/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
+    svn co https://github.com/Lienol/openwrt-packages/branches/21.02/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
   fi
 ;;
 XWRT)
