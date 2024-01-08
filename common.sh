@@ -348,13 +348,18 @@ OFFICIAL)
     find . -type d -name "luci-app-natter" -o -name "natter" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
     rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
     find . -type d -name 'luci-app-samba4' -o -name 'samba4' | xargs -i rm -rf {}
-    svn co https://github.com/Lienol/openwrt-luci/branches/21.02/applications/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
-    svn co https://github.com/Lienol/openwrt-packages/branches/21.02/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
-    svn co https://github.com/Lienol/openwrt-packages/branches/21.02/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
-    svn co https://github.com/Lienol/openwrt-packages/branches/21.02/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
+    git clone -b 21.02 https://github.com/Lienol/openwrt-luci ${HOME_PATH}/ssamba
+    cp -Rf ${HOME_PATH}/ssamba/applications/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
+    git clone -b 21.02 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
+    cp -Rf ${HOME_PATH}/ssamba4/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
+    cp -Rf ${HOME_PATH}/ssamba4/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
+    cp -Rf ${HOME_PATH}/ssamba4/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
+    rm -rf ${HOME_PATH}/ssamba && rm -rf ${HOME_PATH}/ssamba4
   fi
   rm -rf ${HOME_PATH}/feeds/packages/net/tailscale
-  svn co https://github.com/openwrt/packages/branches/openwrt-23.05/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
+  git clone -b openwrt-23.05 https://github.com/openwrt/packages ${HOME_PATH}/packagesp
+  cp -Rf ${HOME_PATH}/packagesp/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
+  rm -rf ${HOME_PATH}/packagesp
 ;;
 XWRT)
   s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
