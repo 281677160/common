@@ -353,6 +353,8 @@ OFFICIAL)
     svn co https://github.com/Lienol/openwrt-packages/branches/21.02/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
     svn co https://github.com/Lienol/openwrt-packages/branches/21.02/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
   fi
+  rm -rf ${HOME_PATH}/feeds/packages/net/tailscale
+  svn co https://github.com/openwrt/packages/branches/openwrt-23.05/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
 ;;
 XWRT)
   s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
