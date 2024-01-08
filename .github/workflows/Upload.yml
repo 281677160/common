@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   
   schedule:
-   - cron: 40 3 */7 * *
+   - cron: 40 3 * * 6
 
 env:
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
@@ -36,11 +36,10 @@ jobs:
         cd $GITHUB_WORKSPACE
         git clone https://github.com/${{github.repository}}.git $GITHUB_WORKSPACE/repogx
         
-        rm -rf $GITHUB_WORKSPACE/repogx/Share/packr
-        git clone --depth 1 https://github.com/openwrt/packages -b openwrt-21.02 $GITHUB_WORKSPACE/golang-version
-        if [[ -d "golang-version" ]]; then
+        git clone --depth 1 https://github.com/openwrt/packages -b openwrt-21.02 $GITHUB_WORKSPACE/packr-version
+        if [[ -d "packr-version" ]]; then
           rm -rf $GITHUB_WORKSPACE/repogx/Share/packr
-          cp -Rf $GITHUB_WORKSPACE/golang-version/devel/packr $GITHUB_WORKSPACE/repogx/Share/packr
+          cp -Rf $GITHUB_WORKSPACE/packr-version/devel/packr $GITHUB_WORKSPACE/repogx/Share/packr
         fi
         git clone --depth 1 https://github.com/openwrt/packages -b master $GITHUB_WORKSPACE/golang-version
         if [[ -d "golang-version" ]]; then
@@ -49,7 +48,6 @@ jobs:
         fi
 
         git clone https://github.com/coolsnowwolf/lede $GITHUB_WORKSPACE/Lede
-        git clone https://github.com/coolsnowwolf/openwrt-gl-ax1800 $GITHUB_WORKSPACE/ax1800
         git clone https://github.com/Lienol/openwrt $GITHUB_WORKSPACE/Lienol
         git clone https://github.com/immortalwrt/immortalwrt $GITHUB_WORKSPACE/Immortalwrt
         git clone https://github.com/openwrt/openwrt $GITHUB_WORKSPACE/Official
