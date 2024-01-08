@@ -394,6 +394,12 @@ if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/kcptun" ]]; then
   mv -f ${HOME_PATH}/feeds/danshui1/relevance/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
 fi
 
+if [[ ! -d "${HOME_PATH}/feeds/packages/libs/pcre2" ]]; then
+  git clone -b 21.02 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
+  cp -Rf ${HOME_PATH}/ssamba4/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+  rm -rf ${HOME_PATH}/ssamba4
+fi
+
 [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
 ./scripts/feeds update danshui1 danshui2
 
