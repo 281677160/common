@@ -66,8 +66,6 @@ jobs:
         
         cd $GITHUB_WORKSPACE/Lede
         git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/master/18.06/g' |sed 's/$/-Lede\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
-        cd $GITHUB_WORKSPACE/ax1800
-        git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/master/gl-ax1800/g' |sed 's/$/-Lede\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
         cd $GITHUB_WORKSPACE/Lienol
         git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/$/-Lienol\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
         cd $GITHUB_WORKSPACE/Immortalwrt
