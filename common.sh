@@ -280,96 +280,6 @@ else
   echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "feeds.conf.default"
 fi
 
-z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
-luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
-luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
-luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
-luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
-luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb,v2ray-core,v2ray-geodata,v2ray-plugin,xray-core,xray-plugin,v2raya,trojan-go,trojan-plus,trojan"
-t=(${z//,/ })
-for x in ${t[@]}; do \
-  find . -type d -name "${x}" |grep -v 'danshui\|freifunk\|passwall3' |xargs -i rm -rf {}; \
-done
-
-case "${SOURCE_CODE}" in
-COOLSNOWWOLF)
-  s="luci-app-netdata,netdata,luci-app-diskman,mentohust"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
-  done
-  if [[ "${GL_BRANCH}" == "lede" ]]; then
-    find . -type d -name "upx" -o -name "ucl" |grep 'danshui' |xargs -i rm -rf {}
-    find . -type d -name "r8168" -o -name "r8101" -o -name "r8125" |grep 'danshui' |xargs -i rm -rf {}
-    if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
-      for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
-        curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
-      done
-    fi
-  elif [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
-    find . -type d -name 'luci-app-unblockneteasemusic' | xargs -i rm -rf {}
-    if [[ -d "${HOME_PATH}/feeds/packages/utils/docker-ce" ]]; then
-      find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
-    fi
-  fi
-;;
-LIENOL)
-  s="luci-app-dockerman"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
-  done
-  find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" |grep 'other' |xargs -i rm -rf {}
-  if [[ "${REPO_BRANCH}" == "master" ]]; then
-    find . -type d -name "automount" |grep 'other' |xargs -i rm -rf {}
-  elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
-    find . -type d -name "luci-app-vssr" -o -name "lua-maxminddb" -o -name "automount" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
-    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-  elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
-    find . -type d -name "automount" |grep 'danshui' |xargs -i rm -rf {}
-  elif [[ "${REPO_BRANCH}" == "23.05" ]]; then
-    sed -i 's/CONFIG_WERROR=y/# CONFIG_WERROR is not set/g' ${HOME_PATH}/target/linux/generic/config-5.15
-  fi
-;;
-IMMORTALWRT)
-  s="luci-app-cifs"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
-  done
-;;
-OFFICIAL)
-  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
-  done
-  if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-    find . -type d -name "luci-app-natter" -o -name "natter" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
-    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-    find . -type d -name 'luci-app-samba4' -o -name 'samba4' | xargs -i rm -rf {}
-    git clone -b 21.02 https://github.com/Lienol/openwrt-luci ${HOME_PATH}/ssamba
-    cp -Rf ${HOME_PATH}/ssamba/applications/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
-    git clone -b 21.02 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
-    cp -Rf ${HOME_PATH}/ssamba4/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
-    cp -Rf ${HOME_PATH}/ssamba4/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
-    cp -Rf ${HOME_PATH}/ssamba4/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
-    rm -rf ${HOME_PATH}/ssamba && rm -rf ${HOME_PATH}/ssamba4
-  fi
-  rm -rf ${HOME_PATH}/feeds/packages/net/tailscale
-  git clone -b openwrt-23.05 https://github.com/openwrt/packages ${HOME_PATH}/packagesp
-  cp -Rf ${HOME_PATH}/packagesp/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
-  rm -rf ${HOME_PATH}/packagesp
-;;
-XWRT)
-  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
-  done
-;;
-esac
-
 ./scripts/feeds update passwall3 helloworld
 
 rm -rf ${HOME_PATH}/feeds/helloworld/{v2ray-core,v2ray-geodata,v2ray-plugin,xray-core,xray-plugin}
@@ -652,6 +562,102 @@ cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.
 mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
 ./scripts/feeds update -a
+
+
+
+
+z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
+luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
+luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
+luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
+luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
+luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb,v2ray-core,v2ray-geodata,v2ray-plugin,xray-core,xray-plugin,v2raya,trojan-go,trojan-plus,trojan"
+t=(${z//,/ })
+for x in ${t[@]}; do \
+  find . -type d -name "${x}" |grep -v 'danshui\|freifunk\|passwall3' |xargs -i rm -rf {}; \
+done
+
+case "${SOURCE_CODE}" in
+COOLSNOWWOLF)
+  s="luci-app-netdata,netdata,luci-app-diskman,mentohust"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+  done
+  if [[ "${GL_BRANCH}" == "lede" ]]; then
+    find . -type d -name "upx" -o -name "ucl" |grep 'danshui' |xargs -i rm -rf {}
+    find . -type d -name "r8168" -o -name "r8101" -o -name "r8125" |grep 'danshui' |xargs -i rm -rf {}
+    if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
+      for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
+        curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
+      done
+    fi
+  elif [[ "${GL_BRANCH}" == "lede_ax1800" ]]; then
+    find . -type d -name 'luci-app-unblockneteasemusic' | xargs -i rm -rf {}
+    if [[ -d "${HOME_PATH}/feeds/packages/utils/docker-ce" ]]; then
+      find . -type d -name 'luci-app-dockerman' -o -name 'docker' -o -name 'dockerd' -o -name 'docker-ce' | xargs -i rm -rf {}
+    fi
+  fi
+;;
+LIENOL)
+  s="luci-app-dockerman"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+  done
+  find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" |grep 'other' |xargs -i rm -rf {}
+  if [[ "${REPO_BRANCH}" == "master" ]]; then
+    find . -type d -name "automount" |grep 'other' |xargs -i rm -rf {}
+  elif [[ "${REPO_BRANCH}" == "19.07" ]]; then
+    find . -type d -name "luci-app-vssr" -o -name "lua-maxminddb" -o -name "automount" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
+    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
+    find . -type d -name "automount" |grep 'danshui' |xargs -i rm -rf {}
+  elif [[ "${REPO_BRANCH}" == "23.05" ]]; then
+    sed -i 's/CONFIG_WERROR=y/# CONFIG_WERROR is not set/g' ${HOME_PATH}/target/linux/generic/config-5.15
+  fi
+;;
+IMMORTALWRT)
+  s="luci-app-cifs"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+  done
+;;
+OFFICIAL)
+  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+  done
+  if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
+    find . -type d -name "luci-app-natter" -o -name "natter" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
+    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+    find . -type d -name 'luci-app-samba4' -o -name 'samba4' | xargs -i rm -rf {}
+    git clone -b 21.02 https://github.com/Lienol/openwrt-luci ${HOME_PATH}/ssamba
+    cp -Rf ${HOME_PATH}/ssamba/applications/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
+    git clone -b 21.02 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
+    cp -Rf ${HOME_PATH}/ssamba4/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
+    cp -Rf ${HOME_PATH}/ssamba4/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
+    cp -Rf ${HOME_PATH}/ssamba4/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
+    rm -rf ${HOME_PATH}/ssamba && rm -rf ${HOME_PATH}/ssamba4
+  fi
+  rm -rf ${HOME_PATH}/feeds/packages/net/tailscale
+  git clone -b openwrt-23.05 https://github.com/openwrt/packages ${HOME_PATH}/packagesp
+  cp -Rf ${HOME_PATH}/packagesp/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
+  rm -rf ${HOME_PATH}/packagesp
+;;
+XWRT)
+  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+  done
+;;
+esac
+
+
+
 
 sed -i 's/^#\(.*danshui\)/\1/' "feeds.conf.default"
 # 正在执行插件语言修改
