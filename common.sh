@@ -349,7 +349,11 @@ OFFICIAL)
     find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
   done
   if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-    find . -type d -name "luci-app-natter" -o -name "natter" -o -name 'luci-app-unblockneteasemusic' |grep 'danshui' |xargs -i rm -rf {}
+    s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
+    c=(${s//,/ })
+    for i in ${c[@]}; do \
+      find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+    done
     rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
     find . -type d -name 'luci-app-samba4' -o -name 'samba4' | xargs -i rm -rf {}
     git clone -b 21.02 https://github.com/Lienol/openwrt-luci ${HOME_PATH}/ssamba
