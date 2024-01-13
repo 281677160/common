@@ -1791,7 +1791,7 @@ if [[ "${CPU_SELECTION}" =~ (E5|false) ]]; then
 else
   kaisbianyixx="使用${CPU_SELECTION}-编译"
 fi
-git clone https://github.com/${GIT_REPOSITORY}.git UPLOAD
+git clone https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git UPLOAD
 mkdir -p "UPLOAD/build/${FOLDER_NAME}/relevance"
 mv ${start_path} UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
 export YML_PATH="UPLOAD/.github/workflows/compile.yml"
