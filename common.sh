@@ -306,8 +306,8 @@ COOLSNOWWOLF)
     done
   fi
   git clone https://github.com/openwrt/packages ${HOME_PATH}/btrfsprogs
-  rm -rf ${HOME_PATH}/utils/btrfs-progs
-  cp -Rf ${HOME_PATH}/btrfsprogs/utils/btrfs-progs ${HOME_PATH}/utils/btrfs-progs
+  rm -rf ${HOME_PATH}/feeds/packages/utils/btrfs-progs
+  cp -Rf ${HOME_PATH}/btrfsprogs/utils/btrfs-progs ${HOME_PATH}/feeds/packages/utils/btrfs-progs
   rm -rf ${HOME_PATH}/btrfsprogs
 ;;
 LIENOL)
