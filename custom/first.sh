@@ -20,7 +20,7 @@ fi
 function tongbu_1() {
 cd ${GITHUB_WORKSPACE}
 sudo rm -rf repogx shangyou
-git clone https://github.com/${GIT_REPOSITORY}.git repogx
+git clone -b main https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
 git clone -b main --depth 1 https://github.com/281677160/build-actions shangyou
 
 if [[ ! -d "repogx" ]]; then
