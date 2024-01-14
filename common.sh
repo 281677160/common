@@ -1,5 +1,5 @@
 #!/bin/bash
-# https://github.com/281677160/build-actions
+# https://github.com/ShmilyStar/build-actions
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
 
@@ -26,7 +26,7 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 function settings_variable() {
 cd ${GITHUB_WORKSPACE}
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/ShmilyStar/common/main/custom/first.sh)
 }
 
 function Diy_variable() {
@@ -234,7 +234,7 @@ fi
 
 
 function Diy_update() {
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/ubuntu.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/ShmilyStar/common/main/custom/ubuntu.sh)
 if [[ $? -ne 0 ]];then
   TIME r "依赖安装失败，请检测网络后再次尝试!"
   exit 1
@@ -259,13 +259,13 @@ if [[ -n "${LUCI_CHECKUT}" ]]; then
 fi
 git pull
 
-sed -i '/281677160/d; /helloworld/d; /passwall/d; /OpenClash/d' "feeds.conf.default"
+sed -i '/ShmilyStar/d; /helloworld/d; /passwall/d; /OpenClash/d' "feeds.conf.default"
 cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
 mv -f uniq.conf feeds.conf.default
 
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 cat >>"feeds.conf.default" <<-EOF
-src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
+src-git danshui1 https://github.com/ShmilyStar/openwrt-package.git;${SOURCE}
 EOF
 ./scripts/feeds update -a
 cat >>"feeds.conf.default" <<-EOF
@@ -275,9 +275,9 @@ EOF
 
 App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
 if [[ `find "${App_path}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
+  echo "src-git danshui2 https://github.com/ShmilyStar/openwrt-package.git;Theme2" >> "feeds.conf.default"
 else
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "feeds.conf.default"
+  echo "src-git danshui2 https://github.com/ShmilyStar/openwrt-package.git;Theme1" >> "feeds.conf.default"
 fi
 
 z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
@@ -1191,7 +1191,7 @@ fi
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   pmg="$(echo "$(date +%d)" | sed 's/^.//g')"
   mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
-  curl -fsSL https://raw.githubusercontent.com/281677160/openwrt-package/usb/argon/jpg/${pmg}.jpg -o ${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg
+  curl -fsSL https://raw.githubusercontent.com/ShmilyStar/openwrt-package/usb/argon/jpg/${pmg}.jpg -o ${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg
   if [[ $? -ne 0 ]]; then
     echo "拉取文件错误,请检测网络"
     exit 1
@@ -1542,9 +1542,9 @@ fi
 if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   echo "正在执行：给adguardhome下载核心"
   rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
-  wget -q https://github.com/281677160/common/releases/download/API/AdGuardHome.api -O AdGuardHome.api
+  wget -q https://github.com/ShmilyStar/common/releases/download/API/AdGuardHome.api -O AdGuardHome.api
   if [[ $? -ne 0 ]];then
-    curl -fsSL https://github.com/281677160/common/releases/download/API/AdGuardHome.api -o AdGuardHome.api
+    curl -fsSL https://github.com/ShmilyStar/common/releases/download/API/AdGuardHome.api -o AdGuardHome.api
   fi
   latest_ver="$(grep -E 'tag_name' 'AdGuardHome.api' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
   rm -rf AdGuardHome.api
@@ -1660,7 +1660,7 @@ export kernel_repo="ophub/kernel"
 [[ -z "${kernel_usage}" ]] && export kernel_usage="stable"
 [[ -z "${UPLOAD_WETRANSFER}" ]] && export UPLOAD_WETRANSFER="true"
 if [[ -z "${amlogic_kernel}" ]]; then
-  curl -fsSL https://github.com/281677160/common/releases/download/API/${kernel_usage}.api -o ${HOME_PATH}/${kernel_usage}.api
+  curl -fsSL https://github.com/ShmilyStar/common/releases/download/API/${kernel_usage}.api -o ${HOME_PATH}/${kernel_usage}.api
   export amlogic_kernel="$(grep -Eo '"name": "[0-9]+\.[0-9]+\.[0-9]+\.tar.gz"' ${HOME_PATH}/${kernel_usage}.api |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+" |awk 'END {print}' |sed s/[[:space:]]//g)"
   [[ -z "${amlogic_kernel}" ]] && export amlogic_kernel="5.10.170"
 fi
