@@ -21,7 +21,7 @@ function tongbu_1() {
 cd ${GITHUB_WORKSPACE}
 sudo rm -rf repogx shangyou
 if [[ -n "${BENDI_VERSION}" ]]; then
-  git clone -b main https://github.com/github.com/${GIT_REPOSITORY}.git repogx
+  git clone -b main https://github.com/${GIT_REPOSITORY}.git repogx
 else
   git clone -b main https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
 fi
