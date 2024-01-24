@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
         
   schedule:
-   - cron: 1 */8 * * *
+   - cron: 40 3 * * *
 
 env:
   REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
@@ -54,6 +54,11 @@ jobs:
         curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest -o AdGuardHome.api
         if [[ $? -ne 0 ]]; then
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
+        fi
+
+        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/tindy2013/subconverter/releases/latest -o tindy2013.api
+        if [[ $? -ne 0 ]]; then
+          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/tindy2013/subconverter/releases/latest > tindy2013.api
         fi
         
     - name: 发布API
