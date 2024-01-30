@@ -377,7 +377,8 @@ esac
 
 ./scripts/feeds update passwall3 helloworld
 
-rm -rf ${HOME_PATH}/feeds/helloworld/{v2ray-core,v2ray-geodata,v2ray-plugin,xray-core,xray-plugin}
+rm -rf ${HOME_PATH}/feeds/helloworld/{v2ray-core,v2ray-plugin,xray-core,xray-plugin}
+sed -i 's/ +libopenssl-legacy//g' ${HOME_PATH}/feeds/helloworld/shadowsocksr-libev/Makefile
 
 # 更换golang版本
 #if [[ ! "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
