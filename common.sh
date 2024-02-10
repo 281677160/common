@@ -318,11 +318,12 @@ LIENOL)
   done
   find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" |grep 'other' |xargs -i rm -rf {}
   if [[ "${REPO_BRANCH}" == "19.07" ]]; then
-    s="mentohust,luci-app-unblockneteasemusic,luci-app-vssr,lua-maxminddb"
+    s="luci-app-unblockneteasemusic,luci-app-vssr,lua-maxminddb"
     c=(${s//,/ })
     for i in ${c[@]}; do \
       find . -type d -name "${i}" |xargs -i rm -rf {}; \
     done
+    find . -type d -name "mentohust" |grep -v 'danshui' |xargs -i rm -rf {}
     rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
     find . -type d -name "luci-app-unblockneteasemusic" |xargs -i rm -rf {}
