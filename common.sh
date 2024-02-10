@@ -360,6 +360,14 @@ OFFICIAL)
     cp -Rf ${HOME_PATH}/ssamba4/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
     rm -rf ${HOME_PATH}/ssamba && rm -rf ${HOME_PATH}/ssamba4
   fi
+  if [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
+    git clone -b master https://github.com/openwrt/packages ${HOME_PATH}/packagesp
+    rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
+    rm -rf ${HOME_PATH}/feeds/packages/libs/pcre
+    cp -Rf ${HOME_PATH}/packagesp/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+    cp -Rf ${HOME_PATH}/packagesp/libs/pcre ${HOME_PATH}/feeds/packages/libs/pcre
+    rm -rf ${HOME_PATH}/packagesp
+  fi
   rm -rf ${HOME_PATH}/feeds/packages/net/tailscale
   git clone -b openwrt-23.05 https://github.com/openwrt/packages ${HOME_PATH}/packagesp
   cp -Rf ${HOME_PATH}/packagesp/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
