@@ -616,6 +616,9 @@ fi
 
 function Diy_LIENOL() {
 cd ${HOME_PATH}
+if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
+  sed -i '/+kmod-nft-tproxy/d' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
+fi
 }
 
 
