@@ -404,6 +404,12 @@ if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/kcptun" ]]; then
   mv -f ${HOME_PATH}/feeds/danshui1/relevance/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
 fi
 
+if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
+  git clone https://github.com/coolsnowwolf/packages ${HOME_PATH}/ddpackages
+  cp -Rf ${HOME_PATH}/ddpackages/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+  rm -rf ${HOME_PATH}/ddpackages
+fi
+
 [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
 ./scripts/feeds update danshui1 danshui2
 
