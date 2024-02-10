@@ -345,7 +345,7 @@ OFFICIAL)
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
   done
-  if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
+  if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
     s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
     c=(${s//,/ })
     for i in ${c[@]}; do \
