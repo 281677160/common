@@ -361,11 +361,11 @@ OFFICIAL)
     rm -rf ${HOME_PATH}/ssamba && rm -rf ${HOME_PATH}/ssamba4
   fi
   if [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
-    git clone -b master https://github.com/openwrt/packages ${HOME_PATH}/packagesp
+    git clone -b master https://github.com/coolsnowwolf/packages ${HOME_PATH}/packagesp
     rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
-    rm -rf ${HOME_PATH}/feeds/packages/libs/pcre
+    rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
     cp -Rf ${HOME_PATH}/packagesp/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
-    cp -Rf ${HOME_PATH}/packagesp/libs/pcre ${HOME_PATH}/feeds/packages/libs/pcre
+    cp -Rf ${HOME_PATH}/packagesp/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
     rm -rf ${HOME_PATH}/packagesp
   fi
   rm -rf ${HOME_PATH}/feeds/packages/net/tailscale
