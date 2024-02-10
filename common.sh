@@ -396,14 +396,6 @@ rm -rf ${HOME_PATH}/feeds/helloworld/{v2ray-core,v2ray-plugin,xray-core,xray-plu
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 21.x ${HOME_PATH}/feeds/packages/lang/golang
 
-# 更换openssl3
-git clone https://github.com/coolsnowwolf/lede ${HOME_PATH}/openss
-if [[ -d "${HOME_PATH}/openss/package/libs/openssl" ]]; then
-  rm -rf ${HOME_PATH}/package/libs/openssl
-  cp -Rf ${HOME_PATH}/openss/package/libs/openssl ${HOME_PATH}/package/libs/openssl
-fi
-rm -rf ${HOME_PATH}/openss
-
 if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/shadowsocks-libev" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
   mv -f feeds/danshui1/relevance/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
