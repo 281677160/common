@@ -631,6 +631,9 @@ cd ${HOME_PATH}
 
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
+if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
+  sed -i '/+kmod-nft-tproxy/d' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
+fi
 }
 
 
