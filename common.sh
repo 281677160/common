@@ -1907,6 +1907,9 @@ sudo apt-get -qq update && sudo apt-get -qq install -y jq curl
 if [[ -f "build/${FOLDER_NAME}/relevance/run_number" ]]; then
   DEVICE_NUMBER="$(grep "DEVICE_NUMBER" build/${FOLDER_NAME}/relevance/run_number |cut -d"=" -f2)"
   chonglaiss="$(grep "chonglaiss" build/${FOLDER_NAME}/relevance/run_number |cut -d"=" -f2)"
+  echo "1-${DEVICE_NUMBER}"
+else
+  echo "no"
 fi
 all_workflows_list="josn_api_workflows"
 curl -s \
