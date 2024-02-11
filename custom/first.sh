@@ -251,7 +251,7 @@ fi
 function tongbu_4() {
 chmod -R +x ${GITHUB_WORKSPACE}/repogx
 cd ${GITHUB_WORKSPACE}/repogx
-sed -i 's/checkout@v3/checkout@v4/g' `egrep "checkout@v3" -rl ./`
+sed -i 's/artifact@v3/artifact@main/g' `egrep "artifact@v3" -rl ./`
 BRANCH_HEAD="$(git rev-parse --abbrev-ref HEAD)"
 if [[ "${OPERATES_BUILD}" == "1" ]]; then
   rm -rf backups
