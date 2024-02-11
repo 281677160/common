@@ -394,7 +394,7 @@ esac
 
 rm -rf ${HOME_PATH}/feeds/helloworld/{v2ray-core,v2ray-plugin,xray-core,xray-plugin,gn}
 rm -rf ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
-curl -o ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile https://raw.githubusercontent.com/fw876/helloworld/b6a810065733f85b272b15ec39edd36dd0cf65b1/shadowsocks-rust/Makefile
+curl -o ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile https://raw.githubusercontent.com/fw876/helloworld/28504024db649b7542347771704abc33c3b1ddc8/shadowsocks-rust/Makefile
 
 
 # 更换golang版本
