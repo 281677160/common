@@ -627,7 +627,7 @@ cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
   sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
 fi
-if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
+if [[ "${REPO_BRANCH}" =~ (19.07|21.02|22.03) ]]; then
   sed -i 's/ +libopenssl-legacy//g' ${HOME_PATH}/feeds/helloworld/shadowsocksr-libev/Makefile
 fi
 }
