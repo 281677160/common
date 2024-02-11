@@ -338,6 +338,7 @@ LIENOL)
   elif [[ "${REPO_BRANCH}" == "23.05" ]]; then
     sed -i 's/CONFIG_WERROR=y/# CONFIG_WERROR is not set/g' ${HOME_PATH}/target/linux/generic/config-5.15
   fi
+  find . -type d -name "aliyundrive-webdav" |grep -v 'danshui' |xargs -i rm -rf {}
 ;;
 IMMORTALWRT)
   s="luci-app-cifs"
