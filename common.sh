@@ -243,8 +243,8 @@ else
   TIME b "全部依赖安装完毕"
   sudo add-apt-repository ppa:ubuntu-toolchain-r/test
   sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
-  sudo apt install -y gcc-13
-  sudo apt install -y g++-13
+  sudo apt-get install -y gcc-13
+  sudo apt-get install -y g++-13
   sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
   gcc -v
   g++ -v
