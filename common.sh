@@ -395,7 +395,6 @@ esac
 
 rm -rf ${HOME_PATH}/feeds/helloworld/{v2ray-core,v2ray-plugin,xray-core,xray-plugin,gn}
 rm -rf ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
-curl -o ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile https://raw.githubusercontent.com/fw876/helloworld/28504024db649b7542347771704abc33c3b1ddc8/shadowsocks-rust/Makefile
 
 
 # 更换golang版本
@@ -629,6 +628,7 @@ if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
 fi
 if [[ "${REPO_BRANCH}" =~ (19.07|21.02|22.03) ]]; then
   sed -i 's/ +libopenssl-legacy//g' ${HOME_PATH}/feeds/helloworld/shadowsocksr-libev/Makefile
+  curl -o ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile https://raw.githubusercontent.com/fw876/helloworld/28504024db649b7542347771704abc33c3b1ddc8/shadowsocks-rust/Makefile
 fi
 }
 
@@ -637,6 +637,7 @@ function Diy_IMMORTALWRT() {
 cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4|openwrt-21.02) ]]; then
   sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
+  curl -o ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile https://raw.githubusercontent.com/fw876/helloworld/28504024db649b7542347771704abc33c3b1ddc8/shadowsocks-rust/Makefile
 fi
 }
 
@@ -653,6 +654,7 @@ if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
 fi
 if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
   sed -i 's/ +libopenssl-legacy//g' ${HOME_PATH}/feeds/helloworld/shadowsocksr-libev/Makefile
+  curl -o ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile https://raw.githubusercontent.com/fw876/helloworld/28504024db649b7542347771704abc33c3b1ddc8/shadowsocks-rust/Makefile
 fi
 }
 
