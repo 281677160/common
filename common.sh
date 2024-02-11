@@ -241,6 +241,8 @@ if [[ $? -ne 0 ]];then
 else
   sudo sh -c 'echo openwrt > /etc/oprelyon'
   TIME b "全部依赖安装完毕"
+  gcc -v
+  g++ -v
   sudo add-apt-repository ppa:ubuntu-toolchain-r/test
   sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
   sudo apt-get install -y gcc-13
