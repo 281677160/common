@@ -293,7 +293,7 @@ luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-desi
 luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
 luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
 luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
-luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb,v2ray-core,v2ray-geodata,v2ray-plugin,xray-core,xray-plugin,v2raya,trojan-go,trojan-plus,trojan,hysteria,naiveproxy"
+luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb,v2ray-core,v2ray-geodata,v2ray-plugin,xray-core,xray-plugin,v2raya,trojan-go,trojan-plus,trojan,hysteria,naiveproxy,shadowsocks-rust"
 t=(${z//,/ })
 for x in ${t[@]}; do \
   find . -type d -name "${x}" |grep -v 'danshui\|freifunk\|passwall3' |xargs -i rm -rf {}; \
@@ -393,6 +393,9 @@ esac
 ./scripts/feeds update passwall3 helloworld
 
 rm -rf ${HOME_PATH}/feeds/helloworld/{v2ray-core,v2ray-plugin,xray-core,xray-plugin,gn}
+rm -rf ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
+curl -o ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile https://raw.githubusercontent.com/fw876/helloworld/b6a810065733f85b272b15ec39edd36dd0cf65b1/shadowsocks-rust/Makefile
+
 
 # 更换golang版本
 #if [[ ! "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
