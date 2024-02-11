@@ -1919,10 +1919,12 @@ sudo apt-get -qq update && sudo apt-get -qq install -y jq curl
 if [[ -f "build/${FOLDER_NAME}/relevance/run_number" ]]; then
   DEVICE_NUMBER="$(grep "DEVICE_NUMBER" build/${FOLDER_NAME}/relevance/run_number |cut -d"=" -f2)"
   chonglaiss="$(grep "chonglaiss" build/${FOLDER_NAME}/relevance/run_number |cut -d"=" -f2)"
-  echo "1-${DEVICE_NUMBER}"
+  DIY_DELRUN="YES"
 else
-  echo "no"
+  DIY_DELRUN="NO"
 fi
+case "${DIY_DELRUN}" in
+YES)
 all_workflows_list="josn_api_workflows"
 curl -s \
 -H "Accept: application/vnd.github+json" \
@@ -1945,6 +1947,14 @@ if [[ -f "josn_api" && -n "$(cat josn_api | jq -r .id)" ]]; then
   done
   TIME y "已清理因筛选服务器CPU而停止的工作流程(编号:${DEVICE_NUMBER})，因为这${chonglaiss}"
 fi
+;;
+NO)
+  echo
+;;
+*)
+  echo
+;;
+esac
 }
 
 
