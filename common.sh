@@ -618,6 +618,7 @@ TIME r ""
 
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
+# 降低aliyundrive-webdav版本,新版本编译不成功
 if [[ -f "${HOME_PATH}/feeds/packages/multimedia/aliyundrive-webdav/Makefile" ]]; then
   curl -o ./feeds/packages/multimedia/aliyundrive-webdav/Makefile https://raw.githubusercontent.com/coolsnowwolf/packages/aea60b5432fad984c0a4013bad0f0c5e00dcd115/multimedia/aliyundrive-webdav/Makefile
 fi
@@ -626,15 +627,18 @@ fi
 
 function Diy_LIENOL() {
 cd ${HOME_PATH}
+# 修改v2raya的kmod-nft-tproxy依赖
 if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
   if [[ -f "${HOME_PATH}/feeds/helloworld/v2raya/Makefile" ]]; then
     sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
   fi
 fi
+# 取消shadowsocksr-libev的libopenssl-legacy依赖
 if [[ "${REPO_BRANCH}" =~ (19.07|21.02|22.03) ]]; then
   if [[ -f "${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile" ]]; then
     sed -i 's/ +libopenssl-legacy//g' ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile
   fi
+  # 降低shadowsocks-rust版本,最新版本编译不成功
   if [[ -f "${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile" ]]; then
     curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/fw876/helloworld/28504024db649b7542347771704abc33c3b1ddc8/shadowsocks-rust/Makefile
   fi
@@ -654,8 +658,10 @@ if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4|openwrt-21.02) ]]; t
 fi
 
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
+  # 升级node版本
   rm -rf ${HOME_PATH}/feeds/packages/lang/node
   git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-22.03 ${HOME_PATH}/feeds/packages/lang/node
+  # 增加缺少的bmx6
   if [[ ! -d "${HOME_PATH}/feeds/routing/bmx6" ]]; then
     git clone -b openwrt-21.02 https://github.com/openwrt/routing ${HOME_PATH}/routin
     cp -Rf ${HOME_PATH}/routin/bmx6 ${HOME_PATH}/feeds/routing/bmx6
