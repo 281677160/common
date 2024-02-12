@@ -656,9 +656,11 @@ fi
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/node
   git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-22.03 ${HOME_PATH}/feeds/packages/lang/node
-  git clone -b openwrt-21.02 https://github.com/openwrt/routing ${HOME_PATH}/routin
-  cp -Rf ${HOME_PATH}/routin/bmx6 ${HOME_PATH}/package/bmx6
-  rm -rf ${HOME_PATH}/routin
+  if [[ ! -d "${HOME_PATH}/feeds/routing/bmx6" ]]; then
+    git clone -b openwrt-21.02 https://github.com/openwrt/routing ${HOME_PATH}/routin
+    cp -Rf ${HOME_PATH}/routin/bmx6 ${HOME_PATH}/feeds/routing/bmx6
+    rm -rf ${HOME_PATH}/routin
+  fi
 fi
 }
 
