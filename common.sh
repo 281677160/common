@@ -379,7 +379,7 @@ OFFICIAL)
     cp -Rf ${HOME_PATH}/ssamba4/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
     rm -rf ${HOME_PATH}/ssamba && rm -rf ${HOME_PATH}/ssamba4
 
-    git clone -b 21.02 https://github.com/Lienol/openwrt ${HOME_PATH}/cdmake
+    git clone -b master https://github.com/openwrt/openwrt ${HOME_PATH}/cdmake
     rm -rf ${HOME_PATH}/tools/cmake
     cp -Rf ${HOME_PATH}/cdmake/tools/cmake ${HOME_PATH}/tools/cmake
     rm -rf ${HOME_PATH}/cdmake
