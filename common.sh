@@ -377,8 +377,13 @@ OFFICIAL)
     cp -Rf ${HOME_PATH}/ssamba4/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
     cp -Rf ${HOME_PATH}/ssamba4/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
     cp -Rf ${HOME_PATH}/ssamba4/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
+
+    rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
+    cp -Rf ${HOME_PATH}/ssamba4/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
+    
     rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
     cp -Rf ${HOME_PATH}/ssamba4/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
+    
     rm -rf ${HOME_PATH}/ssamba && rm -rf ${HOME_PATH}/ssamba4
     git clone -b openwrt-22.03 https://github.com/openwrt/openwrt ${HOME_PATH}/cdmake
     rm -rf ${HOME_PATH}/tools/cmake
