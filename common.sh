@@ -627,7 +627,9 @@ fi
 function Diy_LIENOL() {
 cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
-  sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
+  if [[ -f "${HOME_PATH}/feeds/helloworld/v2raya/Makefile" ]]; then
+    sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
+  fi
 fi
 if [[ "${REPO_BRANCH}" =~ (19.07|21.02|22.03) ]]; then
   if [[ -f "${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile" ]]; then
@@ -643,7 +645,9 @@ fi
 function Diy_IMMORTALWRT() {
 cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4|openwrt-21.02) ]]; then
-  sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
+  if [[ -f "${HOME_PATH}/feeds/helloworld/v2raya/Makefile" ]]; then
+    sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
+  fi
   if [[ -f "${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile" ]]; then
     curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/fw876/helloworld/28504024db649b7542347771704abc33c3b1ddc8/shadowsocks-rust/Makefile
   fi
@@ -652,6 +656,9 @@ fi
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/lang/node
   git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-22.03 ${HOME_PATH}/feeds/packages/lang/node
+  git clone -b openwrt-21.02 https://github.com/openwrt/routing ${HOME_PATH}/routin
+  cp -Rf ${HOME_PATH}/routin/bmx6 ${HOME_PATH}/package/bmx6
+  rm -rf ${HOME_PATH}/routin
 fi
 }
 
