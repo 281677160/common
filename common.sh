@@ -215,20 +215,19 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   sed -i 's?=?=\"?g' "${GITHUB_ENV}"
   sed -i '/=/ s/$/&\"/' "${GITHUB_ENV}"
   source ${GITHUB_ENV}
+  # 升级gcc
+  if [[ `gcc --version |grep -c "buntu 13"` -eq '0' ]]; then
+    echo "安装使用gcc13版本,如若提示enter,请按回车键继续"
+    sleep 5
+    sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
+    sudo apt-get install -y gcc-13
+    sudo apt-get install -y g++-13
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
+    gcc --version
+  fi
 else
   GIT_BUILD="build/${FOLDER_NAME}"
-fi
-
-# 升级gcc
-if [[ `gcc --version |grep -c "buntu 13"` -eq '0' ]]; then
-  sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-  sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
-  sudo apt-get install -y gcc-13
-  sudo apt-get install -y g++-13
-  sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
-  gcc --version
-else
-  gcc --version
 fi
 
 # 检查自定义文件是否存在
