@@ -378,6 +378,11 @@ OFFICIAL)
     cp -Rf ${HOME_PATH}/ssamba4/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
     cp -Rf ${HOME_PATH}/ssamba4/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
     rm -rf ${HOME_PATH}/ssamba && rm -rf ${HOME_PATH}/ssamba4
+
+    git clone -b 21.02 https://github.com/Lienol/openwrt ${HOME_PATH}/cdmake
+    rm -rf ${HOME_PATH}/tools/cmake
+    cp -Rf ${HOME_PATH}/cdmake/tools/cmake ${HOME_PATH}/tools/cmake
+    rm -rf ${HOME_PATH}/cdmake
   fi
   if [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
     git clone -b master https://github.com/coolsnowwolf/packages ${HOME_PATH}/packagesp
