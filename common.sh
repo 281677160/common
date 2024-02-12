@@ -371,9 +371,9 @@ OFFICIAL)
     done
     rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
     find . -type d -name 'luci-app-samba4' -o -name 'samba4' | xargs -i rm -rf {}
-    git clone -b 23.05 https://github.com/Lienol/openwrt-luci ${HOME_PATH}/ssamba
+    git clone -b 21.02 https://github.com/Lienol/openwrt-luci ${HOME_PATH}/ssamba
     cp -Rf ${HOME_PATH}/ssamba/applications/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
-    git clone -b 23.05 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
+    git clone -b 21.02 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
     cp -Rf ${HOME_PATH}/ssamba4/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
     cp -Rf ${HOME_PATH}/ssamba4/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
     cp -Rf ${HOME_PATH}/ssamba4/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
