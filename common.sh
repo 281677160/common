@@ -329,7 +329,7 @@ COOLSNOWWOLF)
   rm -rf ${HOME_PATH}/btrfsprogs
 ;;
 LIENOL)
-  s="luci-app-dockerman"
+  s="luci-app-dockerman,mentohust,aliyundrive-webdav"
   c=(${s//,/ })
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
@@ -341,14 +341,32 @@ LIENOL)
     for i in ${c[@]}; do \
       find . -type d -name "${i}" |xargs -i rm -rf {}; \
     done
-    find . -type d -name "mentohust" |grep -v 'danshui' |xargs -i rm -rf {}
     rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+    git clone -b 23.05 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
+    rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
+    cp -Rf ${HOME_PATH}/ssamba4/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
+    rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
+    cp -Rf ${HOME_PATH}/ssamba4/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
+    rm -rf ${HOME_PATH}/ssamba4
+    git clone -b openwrt-23.05 https://github.com/openwrt/openwrt ${HOME_PATH}/cdmake
+    rm -rf ${HOME_PATH}/tools/cmake
+    cp -Rf ${HOME_PATH}/cdmake/tools/cmake ${HOME_PATH}/tools/cmake
+    rm -rf ${HOME_PATH}/cdmake
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
     find . -type d -name "luci-app-unblockneteasemusic" |xargs -i rm -rf {}
+    git clone -b 23.05 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
+    rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
+    cp -Rf ${HOME_PATH}/ssamba4/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
+    rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
+    cp -Rf ${HOME_PATH}/ssamba4/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
+    rm -rf ${HOME_PATH}/ssamba4
+    git clone -b openwrt-23.05 https://github.com/openwrt/openwrt ${HOME_PATH}/cdmake
+    rm -rf ${HOME_PATH}/tools/cmake
+    cp -Rf ${HOME_PATH}/cdmake/tools/cmake ${HOME_PATH}/tools/cmake
+    rm -rf ${HOME_PATH}/cdmake
   elif [[ "${REPO_BRANCH}" == "23.05" ]]; then
     sed -i 's/CONFIG_WERROR=y/# CONFIG_WERROR is not set/g' ${HOME_PATH}/target/linux/generic/config-5.15
   fi
-  find . -type d -name "aliyundrive-webdav" |grep -v 'danshui' |xargs -i rm -rf {}
 ;;
 IMMORTALWRT)
   s="luci-app-cifs"
@@ -363,13 +381,16 @@ OFFICIAL)
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
   done
+  if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
+    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  fi
+  
   if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
     s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
     c=(${s//,/ })
     for i in ${c[@]}; do \
       find . -type d -name "${i}" |xargs -i rm -rf {}; \
     done
-    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
     find . -type d -name 'luci-app-samba4' -o -name 'samba4' | xargs -i rm -rf {}
     git clone -b 23.05 https://github.com/Lienol/openwrt-luci ${HOME_PATH}/ssamba
     cp -Rf ${HOME_PATH}/ssamba/applications/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
@@ -377,13 +398,10 @@ OFFICIAL)
     cp -Rf ${HOME_PATH}/ssamba4/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
     cp -Rf ${HOME_PATH}/ssamba4/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
     cp -Rf ${HOME_PATH}/ssamba4/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
-
     rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
     cp -Rf ${HOME_PATH}/ssamba4/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
-    
     rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
     cp -Rf ${HOME_PATH}/ssamba4/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
-    
     rm -rf ${HOME_PATH}/ssamba && rm -rf ${HOME_PATH}/ssamba4
     git clone -b openwrt-23.05 https://github.com/openwrt/openwrt ${HOME_PATH}/cdmake
     rm -rf ${HOME_PATH}/tools/cmake
