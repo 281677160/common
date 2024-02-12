@@ -371,12 +371,19 @@ OFFICIAL)
     done
     rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
     find . -type d -name 'luci-app-samba4' -o -name 'samba4' | xargs -i rm -rf {}
-    git clone -b 21.02 https://github.com/Lienol/openwrt-luci ${HOME_PATH}/ssamba
+    git clone -b 23.05 https://github.com/Lienol/openwrt-luci ${HOME_PATH}/ssamba
     cp -Rf ${HOME_PATH}/ssamba/applications/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
-    git clone -b 21.02 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
+    git clone -b 23.05 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
     cp -Rf ${HOME_PATH}/ssamba4/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
     cp -Rf ${HOME_PATH}/ssamba4/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
     cp -Rf ${HOME_PATH}/ssamba4/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
+
+    rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
+    cp -Rf ${HOME_PATH}/ssamba4/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
+    
+    rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
+    cp -Rf ${HOME_PATH}/ssamba4/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
+    
     rm -rf ${HOME_PATH}/ssamba && rm -rf ${HOME_PATH}/ssamba4
     git clone -b openwrt-22.03 https://github.com/openwrt/openwrt ${HOME_PATH}/cdmake
     rm -rf ${HOME_PATH}/tools/cmake
