@@ -219,6 +219,16 @@ else
   GIT_BUILD="build/${FOLDER_NAME}"
 fi
 
+# 升级gcc
+if [[ `gcc --version |grep -c "buntu 13"` -eq '0' ]]; then
+  sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+  sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
+  sudo apt-get install -y gcc-13
+  sudo apt-get install -y g++-13
+  sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
+  gcc --version
+fi
+
 # 检查自定义文件是否存在
 if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
   TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${CONFIG_FILE}名称的配置文件],请在[${FOLDER_NAME}/seed]文件夹内补齐"
@@ -241,6 +251,8 @@ if [[ $? -ne 0 ]];then
 else
   sudo sh -c 'echo openwrt > /etc/oprelyon'
   TIME b "全部依赖安装完毕"
+fi
+if [[ `gcc --version |grep -c "buntu 13"` -eq '0' ]]; then
   sudo add-apt-repository ppa:ubuntu-toolchain-r/test
   sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
   sudo apt-get install -y gcc-13
