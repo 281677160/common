@@ -227,6 +227,8 @@ if [[ `gcc --version |grep -c "buntu 13"` -eq '0' ]]; then
   sudo apt-get install -y g++-13
   sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
   gcc --version
+else
+  gcc --version
 fi
 
 # 检查自定义文件是否存在
