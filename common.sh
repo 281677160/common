@@ -393,8 +393,9 @@ esac
 
 ./scripts/feeds update passwall3 helloworld
 
-rm -rf ${HOME_PATH}/feeds/helloworld/{v2ray-core,v2ray-plugin,xray-core,xray-plugin,gn}
-rm -rf ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
+for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
+  find . -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
+done
 
 
 # 更换golang版本
