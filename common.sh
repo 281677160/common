@@ -975,6 +975,10 @@ if [[ "${Cancel_running}" == "1" ]]; then
    echo "删除每天跑分任务完成"
 fi
 
+if [[ "${Disable_NaiveProxy}" == "1" ]]; then
+  echo "Disable_NaiveProxy=1" >> ${GITHUB_ENV}
+fi
+
 if [[ "${Disable_autosamba}" == "1" ]]; then
   echo "Disable_autosamba=1" >> ${GITHUB_ENV}
 fi
