@@ -385,7 +385,10 @@ OFFICIAL)
     find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
   done
   if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+    if [[ -d "${HOME_PATH}/build/common/Share/libcap" ]]; then
+      rm -rf ${HOME_PATH}/feeds/packages/libs/libcap
+      cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+    fi
     if [[ -d "${HOME_PATH}/build/common/Share/luci-app-ttyd" ]]; then
       find . -type d -name 'luci-app-ttyd' -o -name 'ttyd' | xargs -i rm -rf {}
       rm -rf ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
@@ -394,7 +397,6 @@ OFFICIAL)
       cp -Rf ${HOME_PATH}/build/common/Share/ttyd ${HOME_PATH}/feeds/packages/utils/ttyd
     fi
   fi
-  
   if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
     s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
     c=(${s//,/ })
