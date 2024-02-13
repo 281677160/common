@@ -355,10 +355,6 @@ LIENOL)
     if [[ -d "${HOME_PATH}/build/common/Share/cmake" ]]; then
       rm -rf ${HOME_PATH}/tools/cmake
       cp -Rf ${HOME_PATH}/build/common/Share/cmake ${HOME_PATH}/tools/cmake
-      rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
-      cp -Rf ${HOME_PATH}/build/common/Share/ruby ${HOME_PATH}/feeds/packages/lang/ruby
-      rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
-      cp -Rf ${HOME_PATH}/build/common/Share/yaml ${HOME_PATH}/feeds/packages/libs/yaml
     fi
   elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
     if [[ -d "${HOME_PATH}/build/common/Share/glib2" ]]; then
@@ -393,8 +389,8 @@ OFFICIAL)
       find . -type d -name 'luci-app-ttyd' -o -name 'ttyd' |grep -v 'Share' | xargs -i rm -rf {}
       rm -rf ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
       cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
-      rm -rf ${HOME_PATH}/feeds/packages/utils/ttyd
-      cp -Rf ${HOME_PATH}/build/common/Share/ttyd ${HOME_PATH}/feeds/packages/utils/ttyd
+      # rm -rf ${HOME_PATH}/feeds/packages/utils/ttyd
+      # cp -Rf ${HOME_PATH}/build/common/Share/ttyd ${HOME_PATH}/feeds/packages/utils/ttyd
     fi
   fi
   if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
@@ -414,7 +410,6 @@ OFFICIAL)
       rm -rf ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
       cp -Rf ${HOME_PATH}/build/common/Share/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
     fi
-    
     if [[ -d "${HOME_PATH}/build/common/Share/cmake" ]]; then
       rm -rf ${HOME_PATH}/tools/cmake
       cp -Rf ${HOME_PATH}/build/common/Share/cmake ${HOME_PATH}/tools/cmake
