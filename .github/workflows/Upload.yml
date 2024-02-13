@@ -52,12 +52,21 @@ jobs:
           cp -Rf $GITHUB_WORKSPACE/golang-version/net/tailscale $GITHUB_WORKSPACE/repogx/Share/tailscale
           rm -rf $GITHUB_WORKSPACE/repogx/Share/ttyd
           cp -Rf $GITHUB_WORKSPACE/golang-version/utils/ttyd $GITHUB_WORKSPACE/repogx/Share/ttyd
+
+          rm -rf $GITHUB_WORKSPACE/repogx/Share/samba4
+          cp -Rf $GITHUB_WORKSPACE/golang-version/net/samba4 $GITHUB_WORKSPACE/repogx/Share/samba4
+          rm -rf $GITHUB_WORKSPACE/repogx/Share/perl-parse-yapp
+          cp -Rf $GITHUB_WORKSPACE/golang-version/lang/perl-parse-yapp $GITHUB_WORKSPACE/repogx/Share/perl-parse-yapp
+          rm -rf $GITHUB_WORKSPACE/repogx/Share/liburing
+          cp -Rf $GITHUB_WORKSPACE/golang-version/libs/liburing $GITHUB_WORKSPACE/repogx/Share/liburing
         fi
 
         git clone --depth 1 https://github.com/openwrt/luci -b master $GITHUB_WORKSPACE/ttyd-version
         if [[ -d "$GITHUB_WORKSPACE/ttyd-version/applications/luci-app-ttyd" ]]; then
           rm -rf $GITHUB_WORKSPACE/repogx/Share/luci-app-ttyd
           cp -Rf $GITHUB_WORKSPACE/ttyd-version/applications/luci-app-ttyd $GITHUB_WORKSPACE/repogx/Share/luci-app-ttyd
+          rm -rf $GITHUB_WORKSPACE/repogx/Share/luci-app-samba4
+          cp -Rf $GITHUB_WORKSPACE/ttyd-version/applications/luci-app-samba4 $GITHUB_WORKSPACE/repogx/Share/luci-app-samba4
         fi
 
         git clone --depth 1 https://github.com/coolsnowwolf/packages -b master $GITHUB_WORKSPACE/pcre-version
