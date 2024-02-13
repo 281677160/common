@@ -321,10 +321,10 @@ COOLSNOWWOLF)
       curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
     done
   fi
-  git clone https://github.com/openwrt/packages ${HOME_PATH}/btrfsprogs
-  rm -rf ${HOME_PATH}/feeds/packages/utils/btrfs-progs
-  cp -Rf ${HOME_PATH}/btrfsprogs/utils/btrfs-progs ${HOME_PATH}/feeds/packages/utils/btrfs-progs
-  rm -rf ${HOME_PATH}/btrfsprogs
+  if [[ -d "${HOME_PATH}/build/common/Share/btrfs-progs" ]]; then
+    rm -rf ${HOME_PATH}/feeds/packages/utils/btrfs-progs
+    cp -Rf ${HOME_PATH}/build/common/Share/btrfs-progs ${HOME_PATH}/feeds/packages/utils/btrfs-progs
+  fi
 ;;
 LIENOL)
   s="mentohust,aliyundrive-webdav,pdnsd-alt,mt"
