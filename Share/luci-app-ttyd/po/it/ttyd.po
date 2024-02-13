@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-10-16 16:56+0000\n"
-"Last-Translator: Frankie McEyes <mceyes@protonmail.com>\n"
+"PO-Revision-Date: 2023-01-29 11:24+0000\n"
+"Last-Translator: Dex94 <Dasvaresu@dr.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/openwrt/"
 "luciapplicationsttyd/it/>\n"
 "Language: it\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.1\n"
+"X-Generator: Weblate 4.16-dev\n"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:55
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:56
 msgid "Accept only one client and exit on disconnection"
 msgstr "Accetta solo un client ed esci alla disconnessione"
 
@@ -18,11 +18,11 @@ msgstr "Accetta solo un client ed esci alla disconnessione"
 msgid "Add instance"
 msgstr "Aggiungi istanza"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:39
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:40
 msgid "Allow URL args"
 msgstr "Consenti parametri URL"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:39
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:40
 msgid ""
 "Allow client to send command line arguments in URL (eg: http://"
 "localhost:7681?arg=foo&arg=bar)"
@@ -30,113 +30,111 @@ msgstr ""
 "Consenti al client di inviare argomenti della riga di comando nell'URL (ad "
 "esempio: http://localhost:7681?arg=foo&arg=bar)"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:49
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:50
 msgid "Check origin"
-msgstr "Controlla l'origine"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:43
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:44
 msgid "Client option"
-msgstr "Opzione client"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:79
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:80
 msgid "Command"
 msgstr "Comando"
 
 #: applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json:23
 msgid "Config"
-msgstr "Configurazione"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:27
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:28
 msgid "Credential"
-msgstr "Credenziale"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:27
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:28
 msgid "Credential for Basic Authentication"
-msgstr "Credenziale per l'autenticazione di base"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:57
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:58
 msgid "Custom index.html path"
-msgstr "Percorso personalizzato di index.html"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:72
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:73
 msgid "Debug"
 msgstr "Debug"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:41
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:42
 msgid "Do not allow clients to write to the TTY"
-msgstr "Non consentire ai clienti di scrivere sul TTY"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:49
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:50
 msgid "Do not allow websocket connection from different origin"
-msgstr "Non consentire connessioni WebSocket da origini diverse"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:17
 msgid "Enable"
-msgstr "Attiva"
+msgstr "Abilita"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:59
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:60
 msgid "Enable IPv6 support"
-msgstr "Abilita il supporto IPv6"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:61
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:62
 msgid "Enable SSL"
-msgstr "Abilita SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:73
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:74
 msgid "Error"
 msgstr "Errore"
 
 #: applications/luci-app-ttyd/root/usr/share/rpcd/acl.d/luci-app-ttyd.json:3
 msgid "Grant UCI access for luci-app-ttyd"
-msgstr "Concedi accesso UCI per luci-app-ttyd"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:33
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:34
 msgid "Group ID"
-msgstr "ID del gruppo"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:33
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:34
 msgid "Group id to run with"
-msgstr "ID del gruppo con cui eseguire"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:59
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:60
 msgid "IPv6"
 msgstr "IPv6"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:57
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:58
 msgid "Index"
-msgstr "Indice"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:76
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:77
 msgid "Info"
-msgstr "Info"
+msgstr "Informazioni"
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:24
 msgid "Interface"
 msgstr "Interfaccia"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:51
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:52
 msgid "Max clients"
-msgstr "Numero massimo di client"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:51
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:52
 msgid "Maximum clients to support (default: 0, no limit)"
-msgstr "Numero massimo di clienti supportati (predefinito: 0, nessun limite)"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:24
 msgid ""
 "Network interface to bind (eg: eth0), or UNIX domain socket path (eg: /var/"
 "run/ttyd.sock)"
 msgstr ""
-"Interfaccia di rete a cui associarsi (es: eth0), o percorso della socket del "
-"dominio UNIX (es: /var/run/ttyd.sock)"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:75
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:76
 msgid "Notice"
 msgstr "Avviso"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:55
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:56
 msgid "Once"
-msgstr "Una volta"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:20
 msgid "Port"
@@ -144,89 +142,87 @@ msgstr "Porta"
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:20
 msgid "Port to listen (default: 7681, use `0` for random port)"
-msgstr "Porta di ascolto (predefinito: 7681, usa `0` per una porta casuale)"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/term.js:14
 msgid ""
-"Random ttyd port (port=0) is not supported.<br />Change to a fixed port and "
+"Random ttyd port (port=0) is not supported.<br>Change to a fixed port and "
 "try again."
 msgstr ""
-"La porta casuale per ttyd (port=0) non è supportata.<br />Cambia a una porta "
-"fissa e riprova."
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:41
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:42
 msgid "Read-only"
 msgstr "Sola lettura"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:61
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:62
 msgid "SSL"
-msgstr "SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:69
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:70
 msgid "SSL CA file path for client certificate verification"
-msgstr "Percorso del file CA SSL per la verifica del certificato del client"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:69
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:70
 msgid "SSL ca"
-msgstr "CA SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:63
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:64
 msgid "SSL cert"
-msgstr "Certificato SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:63
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:64
 msgid "SSL certificate file path"
-msgstr "Percorso del file del certificato SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:66
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:67
 msgid "SSL key"
-msgstr "Chiave SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:66
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:67
 msgid "SSL key file path"
-msgstr "Percorso del file della chiave SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:43
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:44
 msgid "Send option to client"
-msgstr "Invia opzioni al client"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:72
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:73
 msgid "Set log level (default: 7)"
-msgstr "Imposta il livello di registro (predefinito: 7)"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:36
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:37
 msgid "Signal"
 msgstr "Segnale"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:36
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:37
 msgid "Signal to send to the command when exit it (default: 1, SIGHUP)"
-msgstr "Segnale da inviare al comando quando termina (predefinito: 1, SIGHUP)"
+msgstr ""
 
 #: applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json:3
 #: applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json:14
 msgid "Terminal"
-msgstr "Terminale"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:46
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:47
 msgid "Terminal type"
-msgstr "Tipo di terminale"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:46
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:47
 msgid "Terminal type to report (default: xterm-256color)"
-msgstr "Tipo di terminale da riportare (predefinito: xterm-256color)"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:30
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:31
 msgid "User ID"
-msgstr "ID utente"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:30
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:31
 msgid "User id to run with"
-msgstr "ID utente con cui eseguire"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:74
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:75
 msgid "Warning"
-msgstr "Avviso"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:12
 msgid "ttyd Instance"
-msgstr "Istanza di ttyd"
+msgstr ""

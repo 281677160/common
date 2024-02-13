@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-06-20 13:52+0000\n"
-"Last-Translator: Quy <haonguyen93056@gmail.com>\n"
+"PO-Revision-Date: 2023-03-26 16:40+0000\n"
+"Last-Translator: Nguyễn văn tuyên <admin@tuyen.vn>\n"
 "Language-Team: Vietnamese <https://hosted.weblate.org/projects/openwrt/"
 "luciapplicationsttyd/vi/>\n"
 "Language: vi\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.18.1\n"
+"X-Generator: Weblate 4.17-dev\n"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:55
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:56
 msgid "Accept only one client and exit on disconnection"
 msgstr "Chỉ chấp nhận một khách hàng và thoát khi ngắt kết nối"
 
@@ -18,215 +18,209 @@ msgstr "Chỉ chấp nhận một khách hàng và thoát khi ngắt kết nối
 msgid "Add instance"
 msgstr "Thêm phiên bản"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:39
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:40
 msgid "Allow URL args"
-msgstr "Cho phép đối số URL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:39
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:40
 msgid ""
 "Allow client to send command line arguments in URL (eg: http://"
 "localhost:7681?arg=foo&arg=bar)"
 msgstr ""
-"Cho phép khách hàng gửi đối số dòng lệnh trong URL (ví dụ: http://"
-"localhost:7681?arg=foo&arg=bar)"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:49
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:50
 msgid "Check origin"
-msgstr "Check origin"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:43
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:44
 msgid "Client option"
-msgstr "Client option"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:79
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:80
 msgid "Command"
-msgstr "Lệnh"
+msgstr ""
 
 #: applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json:23
 msgid "Config"
-msgstr "Cấu hình"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:27
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:28
 msgid "Credential"
-msgstr "Chứng chỉ"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:27
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:28
 msgid "Credential for Basic Authentication"
-msgstr "Chứng chỉ xác thực cơ bản"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:57
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:58
 msgid "Custom index.html path"
-msgstr "Đường dẫn index.html tùy chỉnh"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:72
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:73
 msgid "Debug"
-msgstr "Debug"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:41
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:42
 msgid "Do not allow clients to write to the TTY"
-msgstr "Không cho phép khách hàng ghi vào TTY"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:49
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:50
 msgid "Do not allow websocket connection from different origin"
-msgstr "Không cho phép kết nối websocket từ nguồn gốc khác nhau"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:17
 msgid "Enable"
-msgstr "Bật lên"
+msgstr "Kích hoạt"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:59
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:60
 msgid "Enable IPv6 support"
-msgstr "Kích hoạt hỗ trợ IPv6"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:61
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:62
 msgid "Enable SSL"
-msgstr "Kích hoạt SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:73
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:74
 msgid "Error"
-msgstr "Lỗi"
+msgstr ""
 
 #: applications/luci-app-ttyd/root/usr/share/rpcd/acl.d/luci-app-ttyd.json:3
 msgid "Grant UCI access for luci-app-ttyd"
-msgstr "Cấp quyền truy cập UCI cho luci-app-ttyd"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:33
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:34
 msgid "Group ID"
-msgstr "Group ID"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:33
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:34
 msgid "Group id to run with"
-msgstr "Group ID để chạy với"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:59
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:60
 msgid "IPv6"
-msgstr "IPv6"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:57
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:58
 msgid "Index"
-msgstr "Index"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:76
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:77
 msgid "Info"
-msgstr "Thông tin"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:24
 msgid "Interface"
-msgstr "Giao diện"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:51
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:52
 msgid "Max clients"
-msgstr "Số lượng tối đa máy khách"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:51
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:52
 msgid "Maximum clients to support (default: 0, no limit)"
-msgstr "Hỗ trợ khách hàng tối đa (mặc định: 0, không giới hạn)"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:24
 msgid ""
 "Network interface to bind (eg: eth0), or UNIX domain socket path (eg: /var/"
 "run/ttyd.sock)"
 msgstr ""
-"Giao diện mạng để liên kết (ví dụ: eth0) hoặc đường dẫn ổ cắm miền UNIX (ví "
-"dụ: /var/run/ttyd.sock)"
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:75
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:76
 msgid "Notice"
-msgstr "Lưu ý"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:55
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:56
 msgid "Once"
-msgstr "1 lần"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:20
 msgid "Port"
-msgstr "Cổng"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:20
 msgid "Port to listen (default: 7681, use `0` for random port)"
-msgstr "Cổng để nghe (mặc định: 7681, sử dụng `0` cho cổng ngẫu nhiên)"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/term.js:14
 msgid ""
-"Random ttyd port (port=0) is not supported.<br />Change to a fixed port and "
+"Random ttyd port (port=0) is not supported.<br>Change to a fixed port and "
 "try again."
 msgstr ""
-"Cổng ttyd ngẫu nhiên (cổng=0) không được hỗ trợ.<br />Đổi sang một cổng cố "
-"định và thử lại."
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:41
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:42
 msgid "Read-only"
-msgstr "Chỉ đọc"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:61
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:62
 msgid "SSL"
-msgstr "SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:69
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:70
 msgid "SSL CA file path for client certificate verification"
-msgstr "Đường dẫn tệp SSL CA để xác minh chứng chỉ ứng dụng khách"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:69
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:70
 msgid "SSL ca"
-msgstr "SSL ca"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:63
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:64
 msgid "SSL cert"
-msgstr "Chứng chỉ SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:63
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:64
 msgid "SSL certificate file path"
-msgstr "Đường dẫn tệp chứng chỉ SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:66
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:67
 msgid "SSL key"
-msgstr "SSL key"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:66
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:67
 msgid "SSL key file path"
-msgstr "Đường dẫn tệp khóa SSL"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:43
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:44
 msgid "Send option to client"
-msgstr "Gửi tùy chọn cho khách hàng"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:72
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:73
 msgid "Set log level (default: 7)"
-msgstr "Đặt mức nhật ký (mặc định: 7)"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:36
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:37
 msgid "Signal"
-msgstr "Tín hiệu"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:36
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:37
 msgid "Signal to send to the command when exit it (default: 1, SIGHUP)"
-msgstr "Tín hiệu gửi đến lệnh khi thoát lệnh (mặc định: 1, SIGHUP)"
+msgstr ""
 
 #: applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json:3
 #: applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json:14
 msgid "Terminal"
-msgstr "Terminal"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:46
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:47
 msgid "Terminal type"
-msgstr "Terminal type"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:46
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:47
 msgid "Terminal type to report (default: xterm-256color)"
-msgstr "Terminal type to report (default: xterm-256color)"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:30
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:31
 msgid "User ID"
-msgstr "User ID"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:30
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:31
 msgid "User id to run with"
-msgstr "User id để chạy với"
+msgstr ""
 
-#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:74
+#: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:75
 msgid "Warning"
-msgstr "Cảnh báo"
+msgstr ""
 
 #: applications/luci-app-ttyd/htdocs/luci-static/resources/view/ttyd/config.js:12
 msgid "ttyd Instance"
-msgstr "ttyd Instance"
+msgstr ""
