@@ -390,7 +390,7 @@ OFFICIAL)
       cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
     fi
     if [[ -d "${HOME_PATH}/build/common/Share/luci-app-ttyd" ]]; then
-      find . -type d -name 'luci-app-ttyd' -o -name 'ttyd' | xargs -i rm -rf {}
+      find . -type d -name 'luci-app-ttyd' -o -name 'ttyd' |grep -v 'Share' | xargs -i rm -rf {}
       rm -rf ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
       cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
       rm -rf ${HOME_PATH}/feeds/packages/utils/ttyd
@@ -404,7 +404,7 @@ OFFICIAL)
       find . -type d -name "${i}" |xargs -i rm -rf {}; \
     done
     if [[ -d "${HOME_PATH}/build/common/Share/luci-app-samba4" ]]; then
-      find . -type d -name 'luci-app-samba4' -o -name 'samba4' | xargs -i rm -rf {}
+      find . -type d -name 'luci-app-samba4' -o -name 'samba4' |grep -v 'Share' | xargs -i rm -rf {}
       rm -rf ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
       cp -Rf ${HOME_PATH}/build/common/Share/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
       rm -rf ${HOME_PATH}/feeds/packages/net/samba4
