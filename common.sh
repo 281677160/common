@@ -338,32 +338,35 @@ LIENOL)
     for i in ${c[@]}; do \
       find . -type d -name "${i}" |xargs -i rm -rf {}; \
     done
-    rm -rf ${HOME_PATH}/feeds/packages/libs/libcap && cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-    git clone -b 21.02 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
-    rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
-    cp -Rf ${HOME_PATH}/ssamba4/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
-    rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
-    cp -Rf ${HOME_PATH}/ssamba4/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
-    rm -rf ${HOME_PATH}/ssamba4
+    if [[ -d "${HOME_PATH}/build/common/Share/libcap" ]]; then
+      rm -rf ${HOME_PATH}/feeds/packages/libs/libcap
+      cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+    fi
+    if [[ -d "${HOME_PATH}/build/common/Share/cmake" ]]; then
+      rm -rf ${HOME_PATH}/tools/cmake
+      cp -Rf ${HOME_PATH}/build/common/Share/cmake ${HOME_PATH}/tools/cmake
+      rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
+      cp -Rf ${HOME_PATH}/build/common/Share/ruby ${HOME_PATH}/feeds/packages/lang/ruby
+      rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
+      cp -Rf ${HOME_PATH}/build/common/Share/yaml ${HOME_PATH}/feeds/packages/libs/yaml
+    fi
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
     find . -type d -name "luci-app-unblockneteasemusic" |xargs -i rm -rf {}
-    git clone -b 23.05 https://github.com/Lienol/openwrt-packages ${HOME_PATH}/ssamba4
-    rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
-    cp -Rf ${HOME_PATH}/ssamba4/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
-    rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
-    cp -Rf ${HOME_PATH}/ssamba4/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
-    rm -rf ${HOME_PATH}/ssamba4
-    git clone -b openwrt-23.05 https://github.com/openwrt/openwrt ${HOME_PATH}/cdmake
-    rm -rf ${HOME_PATH}/tools/cmake
-    cp -Rf ${HOME_PATH}/cdmake/tools/cmake ${HOME_PATH}/tools/cmake
-    rm -rf ${HOME_PATH}/cdmake
+    if [[ -d "${HOME_PATH}/build/common/Share/cmake" ]]; then
+      rm -rf ${HOME_PATH}/tools/cmake
+      cp -Rf ${HOME_PATH}/build/common/Share/cmake ${HOME_PATH}/tools/cmake
+      rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
+      cp -Rf ${HOME_PATH}/build/common/Share/ruby ${HOME_PATH}/feeds/packages/lang/ruby
+      rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
+      cp -Rf ${HOME_PATH}/build/common/Share/yaml ${HOME_PATH}/feeds/packages/libs/yaml
+    fi
   elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
-    git clone -b master https://github.com/coolsnowwolf/packages ${HOME_PATH}/packagesp
-    rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
-    rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
-    cp -Rf ${HOME_PATH}/packagesp/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
-    cp -Rf ${HOME_PATH}/packagesp/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
-    rm -rf ${HOME_PATH}/packagesp
+    if [[ -d "${HOME_PATH}/build/common/Share/glib2" ]]; then
+      rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
+      cp -Rf ${HOME_PATH}/build/common/Share/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+      rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
+      cp -Rf ${HOME_PATH}/build/common/Share/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+    fi
   elif [[ "${REPO_BRANCH}" == "23.05" ]]; then
     sed -i 's/CONFIG_WERROR=y/# CONFIG_WERROR is not set/g' ${HOME_PATH}/target/linux/generic/config-5.15
   fi
@@ -398,28 +401,28 @@ OFFICIAL)
     cp -Rf ${HOME_PATH}/ssamba4/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
     cp -Rf ${HOME_PATH}/ssamba4/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
     cp -Rf ${HOME_PATH}/ssamba4/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
-    rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
-    cp -Rf ${HOME_PATH}/ssamba4/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
-    rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
-    cp -Rf ${HOME_PATH}/ssamba4/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
-    rm -rf ${HOME_PATH}/ssamba && rm -rf ${HOME_PATH}/ssamba4
-    git clone -b openwrt-23.05 https://github.com/openwrt/openwrt ${HOME_PATH}/cdmake
-    rm -rf ${HOME_PATH}/tools/cmake
-    cp -Rf ${HOME_PATH}/cdmake/tools/cmake ${HOME_PATH}/tools/cmake
-    rm -rf ${HOME_PATH}/cdmake
+    
+    if [[ -d "${HOME_PATH}/build/common/Share/cmake" ]]; then
+      rm -rf ${HOME_PATH}/tools/cmake
+      cp -Rf ${HOME_PATH}/build/common/Share/cmake ${HOME_PATH}/tools/cmake
+      rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
+      cp -Rf ${HOME_PATH}/build/common/Share/ruby ${HOME_PATH}/feeds/packages/lang/ruby
+      rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
+      cp -Rf ${HOME_PATH}/build/common/Share/yaml ${HOME_PATH}/feeds/packages/libs/yaml
+    fi
   fi
   if [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
-    git clone -b master https://github.com/coolsnowwolf/packages ${HOME_PATH}/packagesp
-    rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
-    rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
-    cp -Rf ${HOME_PATH}/packagesp/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
-    cp -Rf ${HOME_PATH}/packagesp/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
-    rm -rf ${HOME_PATH}/packagesp
+    if [[ -d "${HOME_PATH}/build/common/Share/glib2" ]]; then
+      rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
+      cp -Rf ${HOME_PATH}/build/common/Share/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+      rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
+      cp -Rf ${HOME_PATH}/build/common/Share/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+    fi
   fi
-  rm -rf ${HOME_PATH}/feeds/packages/net/tailscale
-  git clone -b openwrt-23.05 https://github.com/openwrt/packages ${HOME_PATH}/packagesp
-  cp -Rf ${HOME_PATH}/packagesp/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
-  rm -rf ${HOME_PATH}/packagesp
+  if [[ -d "${HOME_PATH}/build/common/Share/tailscale" ]]; then
+    rm -rf ${HOME_PATH}/feeds/packages/net/tailscale
+    cp -Rf ${HOME_PATH}/build/common/Share/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
+  fi
 ;;
 XWRT)
   s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
@@ -450,9 +453,7 @@ if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/kcptun" ]]; then
 fi
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
-  git clone https://github.com/coolsnowwolf/packages ${HOME_PATH}/ddpackages
-  cp -Rf ${HOME_PATH}/ddpackages/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
-  rm -rf ${HOME_PATH}/ddpackages
+  cp -Rf ${HOME_PATH}/build/common/Share/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 
 [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
