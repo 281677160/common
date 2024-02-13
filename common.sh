@@ -662,7 +662,7 @@ cd ${HOME_PATH}
 # 修改v2raya的kmod-nft-tproxy依赖
 if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
   if [[ -f "${HOME_PATH}/feeds/helloworld/v2raya/Makefile" ]]; then
-    sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6 +iptables-mod-socket +iptables-mod-filter?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
+    sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6 +iptables-mod-filter?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
   fi
 fi
 # 取消shadowsocksr-libev的libopenssl-legacy依赖
@@ -682,7 +682,7 @@ function Diy_IMMORTALWRT() {
 cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4|openwrt-21.02) ]]; then
   if [[ -f "${HOME_PATH}/feeds/helloworld/v2raya/Makefile" ]]; then
-    sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6 +iptables-mod-socket +iptables-mod-filter?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
+    sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6 +iptables-mod-filter?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
   fi
   if [[ -f "${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile" ]]; then
     curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/fw876/helloworld/28504024db649b7542347771704abc33c3b1ddc8/shadowsocks-rust/Makefile
@@ -711,7 +711,7 @@ cd ${HOME_PATH}
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
-  sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6 +iptables-mod-socket +iptables-mod-filter?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
+  sed -i 's?+kmod-nft-tproxy?+kmod-ipt-nat6 +iptables-mod-filter?g' ${HOME_PATH}/feeds/helloworld/v2raya/Makefile
 fi
 if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
   if [[ -f "${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile" ]]; then
