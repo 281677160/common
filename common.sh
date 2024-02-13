@@ -143,7 +143,7 @@ LIENOL)
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
 IMMORTALWRT)
-  export REPO_URL="https://github.com/immortalwrt/immortalwrt"
+  export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x"
   export SOURCE="Immortalwrt"
   export SOURCE_OWNER="ctcgfw's"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
