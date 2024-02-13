@@ -311,13 +311,11 @@ done
 
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
-  s="luci-app-netdata,netdata,luci-app-diskman,mentohust"
+  s="mentohust"
   c=(${s//,/ })
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
   done
-  find . -type d -name "upx" -o -name "ucl" |grep 'danshui' |xargs -i rm -rf {}
-  find . -type d -name "r8168" -o -name "r8101" -o -name "r8125" |grep 'danshui' |xargs -i rm -rf {}
   if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
     for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
       curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
