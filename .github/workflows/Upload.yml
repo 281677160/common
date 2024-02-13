@@ -45,7 +45,7 @@ jobs:
           rm -rf $GITHUB_WORKSPACE/repogx/Share/ruby
           cp -Rf $GITHUB_WORKSPACE/packr-version/lang/ruby $GITHUB_WORKSPACE/repogx/Share/ruby
           rm -rf $GITHUB_WORKSPACE/repogx/Share/ttyd
-          cp -Rf $GITHUB_WORKSPACE/golang-version/utils/ttyd $GITHUB_WORKSPACE/repogx/Share/ttyd
+          cp -Rf $GITHUB_WORKSPACE/packr-version/utils/ttyd $GITHUB_WORKSPACE/repogx/Share/ttyd
         fi
         
         git clone --depth 1 https://github.com/openwrt/packages -b master $GITHUB_WORKSPACE/golang-version
