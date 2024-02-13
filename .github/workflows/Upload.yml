@@ -84,11 +84,17 @@ jobs:
           cp -Rf $GITHUB_WORKSPACE/pcre-version/lang/rust $GITHUB_WORKSPACE/repogx/Share/rust
         fi
 
-        git clone --depth 1 https://github.com/openwrt/openwrt -b openwrt-23.05  $GITHUB_WORKSPACE/cdmake
+        git clone --depth 1 https://github.com/openwrt/openwrt -b openwrt-23.05 $GITHUB_WORKSPACE/cdmake
         if [[ -d "$GITHUB_WORKSPACE/cdmake/tools/cmake" ]]; then
           rm -rf $GITHUB_WORKSPACE/repogx/Share/cmake
           cp -Rf $GITHUB_WORKSPACE/cdmake/tools/cmake $GITHUB_WORKSPACE/repogx/Share/cmake
         fi
+
+        git clone --depth 1 https://github.com/openwrt/routing -b openwrt-21.02 $GITHUB_WORKSPACE/routing
+        if [[ -d "$GITHUB_WORKSPACE/routing/bmx6" ]]; then
+          rm -rf $GITHUB_WORKSPACE/repogx/Share/bmx6
+          cp -Rf $GITHUB_WORKSPACE/routing/bmx6 $GITHUB_WORKSPACE/repogx/Share/bmx6
+        fi 
 
         git clone https://github.com/coolsnowwolf/lede $GITHUB_WORKSPACE/Lede
         git clone https://github.com/Lienol/openwrt $GITHUB_WORKSPACE/Lienol
