@@ -327,7 +327,7 @@ COOLSNOWWOLF)
   rm -rf ${HOME_PATH}/btrfsprogs
 ;;
 LIENOL)
-  s="mentohust,aliyundrive-webdav,pdnsd-alt,mt,luci-app-dockerman"
+  s="mentohust,aliyundrive-webdav,pdnsd-alt,mt"
   c=(${s//,/ })
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
@@ -357,6 +357,13 @@ LIENOL)
     rm -rf ${HOME_PATH}/tools/cmake
     cp -Rf ${HOME_PATH}/cdmake/tools/cmake ${HOME_PATH}/tools/cmake
     rm -rf ${HOME_PATH}/cdmake
+  elif [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
+    git clone -b master https://github.com/coolsnowwolf/packages ${HOME_PATH}/packagesp
+    rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
+    rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
+    cp -Rf ${HOME_PATH}/packagesp/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+    cp -Rf ${HOME_PATH}/packagesp/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+    rm -rf ${HOME_PATH}/packagesp
   elif [[ "${REPO_BRANCH}" == "23.05" ]]; then
     sed -i 's/CONFIG_WERROR=y/# CONFIG_WERROR is not set/g' ${HOME_PATH}/target/linux/generic/config-5.15
   fi
@@ -429,14 +436,7 @@ for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
   find . -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
 done
 
-
 # 更换golang版本
-#if [[ ! "${SOURCE_CODE}" == "IMMORTALWRT" ]]; then
-#  if [[ -d "${HOME_PATH}/build/common/Share/golang" ]]; then
-#    rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-#    cp -Rf ${HOME_PATH}/build/common/Share/golang ${HOME_PATH}/feeds/packages/lang/golang
-#  fi
-#fi
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 21.x ${HOME_PATH}/feeds/packages/lang/golang
 
