@@ -329,7 +329,7 @@ COOLSNOWWOLF)
   rm -rf ${HOME_PATH}/btrfsprogs
 ;;
 LIENOL)
-  s="mentohust,aliyundrive-webdav,autosamba,pdnsd-alt,mt"
+  s="mentohust,aliyundrive-webdav,luci-app-dockerman,pdnsd-alt,mt"
   c=(${s//,/ })
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
