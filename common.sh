@@ -1669,8 +1669,8 @@ if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   fi
   mkdir -p ${HOME_PATH}/files/usr/bin
   if [[ -f "${HOME_PATH}/AdGuardHome/AdGuardHome" ]]; then
-    mv -f ${HOME_PATH}/AdGuardHome/AdGuardHome ${HOME_PATH}/files/usr/bin/
-    sudo chmod +x ${HOME_PATH}/files/usr/bin/AdGuardHome
+    mv -f ${HOME_PATH}/AdGuardHome ${HOME_PATH}/files/usr/bin/
+    sudo chmod +x ${HOME_PATH}/files/usr/bin/AdGuardHome/AdGuardHome
     echo "增加AdGuardHome核心完成"
   else
     echo "增加AdGuardHome核心失败"
