@@ -329,12 +329,11 @@ COOLSNOWWOLF)
   rm -rf ${HOME_PATH}/btrfsprogs
 ;;
 LIENOL)
-  s="luci-app-dockerman,mentohust,aliyundrive-webdav"
+  s="mentohust,aliyundrive-webdav,autosamba,pdnsd-alt,mt"
   c=(${s//,/ })
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
   done
-  find . -type d -name "mt" -o -name "pdnsd-alt" -o -name "autosamba" |grep 'other' |xargs -i rm -rf {}
   if [[ "${REPO_BRANCH}" == "19.07" ]]; then
     s="luci-app-unblockneteasemusic,luci-app-vssr,lua-maxminddb"
     c=(${s//,/ })
