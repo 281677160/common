@@ -387,10 +387,8 @@ OFFICIAL)
     fi
     if [[ -d "${HOME_PATH}/build/common/Share/luci-app-ttyd" ]]; then
       find . -type d -name 'luci-app-ttyd' -o -name 'ttyd' |grep -v 'Share' | xargs -i rm -rf {}
-      rm -rf ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
       cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
-      # rm -rf ${HOME_PATH}/feeds/packages/utils/ttyd
-      # cp -Rf ${HOME_PATH}/build/common/Share/ttyd ${HOME_PATH}/feeds/packages/utils/ttyd
+      cp -Rf ${HOME_PATH}/build/common/Share/ttyd ${HOME_PATH}/feeds/packages/utils/ttyd
     fi
   fi
   if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
@@ -401,9 +399,7 @@ OFFICIAL)
     done
     if [[ -d "${HOME_PATH}/build/common/Share/luci-app-samba4" ]]; then
       find . -type d -name 'luci-app-samba4' -o -name 'samba4' |grep -v 'Share' | xargs -i rm -rf {}
-      rm -rf ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
       cp -Rf ${HOME_PATH}/build/common/Share/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
-      rm -rf ${HOME_PATH}/feeds/packages/net/samba4
       cp -Rf ${HOME_PATH}/build/common/Share/samba4 ${HOME_PATH}/feeds/packages/net/samba4
       rm -rf ${HOME_PATH}/feeds/packages/libs/liburing
       cp -Rf ${HOME_PATH}/build/common/Share/liburing ${HOME_PATH}/feeds/packages/libs/liburing
