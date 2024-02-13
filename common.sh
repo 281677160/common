@@ -406,8 +406,6 @@ OFFICIAL)
     git clone -b openwrt-23.05 https://github.com/openwrt/openwrt ${HOME_PATH}/cdmake
     rm -rf ${HOME_PATH}/tools/cmake
     cp -Rf ${HOME_PATH}/cdmake/tools/cmake ${HOME_PATH}/tools/cmake
-    rm -rf ${HOME_PATH}/package/network/utils/iptables
-    cp -Rf ${HOME_PATH}/cdmake/package/network/utils/iptables ${HOME_PATH}/package/network/utils/iptables
     rm -rf ${HOME_PATH}/cdmake
   fi
   if [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
