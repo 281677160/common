@@ -150,7 +150,7 @@ IMMORTALWRT)
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
 XWRT)
-  export REPO_URL="https://github.com/x-wrt/x-wrt"
+  export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x"
   export SOURCE="Xwrt"
   export SOURCE_OWNER="ptpt52's"
   export LUCI_EDITION="${REPO_BRANCH}"
