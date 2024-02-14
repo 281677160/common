@@ -666,14 +666,12 @@ if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
 fi
 # 取消shadowsocksr-libev的libopenssl-legacy依赖
 if [[ "${REPO_BRANCH}" =~ (19.07|21.02|22.03) ]]; then
-  if [[ -d "${HOME_PATH}/build/common/Share/shadowsocksr-libev" ]]; then
-    rm -rf ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev
-    cp -Rf ${HOME_PATH}/build/common/Share/shadowsocksr-libev ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev
+  if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocksr-libev" ]]; then
+    curl -o ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocksr-libev/Makefile
   fi
   # 降低shadowsocks-rust版本,最新版本编译不成功
-  if [[ -d "${HOME_PATH}/build/common/Share/shadowsocks-rust" ]]; then
-    rm -rf ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
-    cp -Rf ${HOME_PATH}/build/common/Share/shadowsocks-rust ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
+  if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
+    curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
   fi
 fi
 }
@@ -686,9 +684,9 @@ if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4|openwrt-21.02) ]]; t
     rm -rf ${HOME_PATH}/feeds/helloworld/v2raya
     cp -Rf ${HOME_PATH}/build/common/Share/v2raya ${HOME_PATH}/feeds/helloworld/v2raya
   fi
-  if [[ -d "${HOME_PATH}/build/common/Share/shadowsocks-rust" ]]; then
-    rm -rf ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
-    cp -Rf ${HOME_PATH}/build/common/Share/shadowsocks-rust ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
+  # 降低shadowsocks-rust版本,最新版本编译不成功
+  if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
+    curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
   fi
 fi
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
@@ -718,17 +716,12 @@ if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
   fi
 fi
 if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
-  if [[ -d "${HOME_PATH}/build/common/Share/shadowsocksr-libev" ]]; then
-    rm -rf ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev
-    cp -Rf ${HOME_PATH}/build/common/Share/shadowsocksr-libev ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev
-    echo "替换shadowsocksr-libev"
+  if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocksr-libev" ]]; then
+    curl -o ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocksr-libev/Makefile
   fi
-  if [[ -d "${HOME_PATH}/build/common/Share/shadowsocks-rust" ]]; then
-    echo "替换shadowsocks-rust"
-    rm -rf ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
-    cp -Rf ${HOME_PATH}/build/common/Share/shadowsocks-rust ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
-  else
-    echo "替换shadowsocks-rust失败"
+  # 降低shadowsocks-rust版本,最新版本编译不成功
+  if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
+    curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
   fi
 fi
 }
