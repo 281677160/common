@@ -94,8 +94,16 @@ jobs:
         if [[ -d "$GITHUB_WORKSPACE/routing/bmx6" ]]; then
           rm -rf $GITHUB_WORKSPACE/repogx/Share/bmx6
           cp -Rf $GITHUB_WORKSPACE/routing/bmx6 $GITHUB_WORKSPACE/repogx/Share/bmx6
-        fi 
+        fi
 
+        git clone helloworld https://github.com/fw876/helloworld.git
+        rm -rf $GITHUB_WORKSPACE/repogx/Share/shadowsocks-rust
+        rm -rf $GITHUB_WORKSPACE/repogx/Share/shadowsocksr-libev
+        cp -Rf $GITHUB_WORKSPACE/helloworld/shadowsocks-rust $GITHUB_WORKSPACE/repogx/Share/shadowsocks-rust
+        cp -Rf $GITHUB_WORKSPACE/helloworld/shadowsocksr-libev $GITHUB_WORKSPACE/repogx/Share/shadowsocksr-libev
+        curl -o $GITHUB_WORKSPACE/repogx/Share/shadowsocks-rust/Makefile https://raw.githubusercontent.com/fw876/helloworld/28504024db649b7542347771704abc33c3b1ddc8/shadowsocks-rust/Makefile
+        sed -i 's/ +libopenssl-legacy//g' $GITHUB_WORKSPACE/repogx/Share/shadowsocksr-libev/Makefile
+        
         git clone https://github.com/coolsnowwolf/lede $GITHUB_WORKSPACE/Lede
         git clone https://github.com/Lienol/openwrt $GITHUB_WORKSPACE/Lienol
         git clone https://github.com/immortalwrt/immortalwrt $GITHUB_WORKSPACE/Immortalwrt
