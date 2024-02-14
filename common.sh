@@ -285,12 +285,10 @@ mv -f uniq.conf feeds.conf.default
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 cat >>"feeds.conf.default" <<-EOF
 src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
-EOF
-./scripts/feeds update -a
-cat >>"feeds.conf.default" <<-EOF
 src-git helloworld https://github.com/fw876/helloworld.git
 src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages;main
 EOF
+./scripts/feeds update -a
 
 App_path="$(find . -type d -name "applications" |grep 'luci' |sed "s?.?${HOME_PATH}?" |awk 'END {print}')"
 if [[ `find "${App_path}" -type d -name "zh_Hans" |grep -c "zh_Hans"` -gt '20' ]]; then
@@ -306,7 +304,7 @@ luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,
 luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb"
 t=(${z//,/ })
 for x in ${t[@]}; do \
-  find . -type d -name "${x}" |grep -v 'danshui\|freifunk\|passwall3' |xargs -i rm -rf {}; \
+  find . -type d -name "${x}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
 done
 
 case "${SOURCE_CODE}" in
@@ -314,7 +312,7 @@ COOLSNOWWOLF)
   s="mentohust"
   c=(${s//,/ })
   for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
   done
   if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
     for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
@@ -330,13 +328,13 @@ LIENOL)
   s="mentohust,aliyundrive-webdav,pdnsd-alt,mt"
   c=(${s//,/ })
   for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
   done
   if [[ "${REPO_BRANCH}" == "19.07" ]]; then
     s="luci-app-unblockneteasemusic,luci-app-vssr,lua-maxminddb"
     c=(${s//,/ })
     for i in ${c[@]}; do \
-      find . -type d -name "${i}" |xargs -i rm -rf {}; \
+      find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
     done
     if [[ -d "${HOME_PATH}/build/common/Share/libcap" ]]; then
       rm -rf ${HOME_PATH}/feeds/packages/libs/libcap
@@ -371,14 +369,14 @@ IMMORTALWRT)
   s="luci-app-cifs"
   c=(${s//,/ })
   for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
   done
 ;;
 OFFICIAL)
   s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
   c=(${s//,/ })
   for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
   done
   if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
     if [[ -d "${HOME_PATH}/build/common/Share/libcap" ]]; then
@@ -395,10 +393,10 @@ OFFICIAL)
     s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
     c=(${s//,/ })
     for i in ${c[@]}; do \
-      find . -type d -name "${i}" |xargs -i rm -rf {}; \
+      find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
     done
     if [[ -d "${HOME_PATH}/build/common/Share/luci-app-samba4" ]]; then
-      find . -type d -name 'luci-app-samba4' -o -name 'samba4' |grep -v 'Share' | xargs -i rm -rf {}
+      find . -type d -name 'luci-app-samba4' -o -name 'samba4' |grep -v 'Share\|freifunk\|helloworld\|passwall3' | xargs -i rm -rf {}
       cp -Rf ${HOME_PATH}/build/common/Share/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
       cp -Rf ${HOME_PATH}/build/common/Share/samba4 ${HOME_PATH}/feeds/packages/net/samba4
       rm -rf ${HOME_PATH}/feeds/packages/libs/liburing
@@ -432,12 +430,10 @@ XWRT)
   s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland"
   c=(${s//,/ })
   for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
   done
 ;;
 esac
-
-./scripts/feeds update passwall3 helloworld
 
 for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
   find . -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
@@ -461,7 +457,7 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
 fi
 
 [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
-./scripts/feeds update danshui1 danshui2
+./scripts/feeds update danshui2
 
 cp -Rf ${HOME_PATH}/feeds.conf.default ${HOME_PATH}/LICENSES/doc/uniq.conf
 }
