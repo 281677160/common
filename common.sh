@@ -721,10 +721,14 @@ if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
   if [[ -d "${HOME_PATH}/build/common/Share/shadowsocksr-libev" ]]; then
     rm -rf ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev
     cp -Rf ${HOME_PATH}/build/common/Share/shadowsocksr-libev ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev
+    echo "替换shadowsocksr-libev"
   fi
   if [[ -d "${HOME_PATH}/build/common/Share/shadowsocks-rust" ]]; then
+    echo "替换shadowsocks-rust"
     rm -rf ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
     cp -Rf ${HOME_PATH}/build/common/Share/shadowsocks-rust ${HOME_PATH}/feeds/passwall3/shadowsocks-rust
+  else
+    echo "替换shadowsocks-rust失败"
   fi
 fi
 }
