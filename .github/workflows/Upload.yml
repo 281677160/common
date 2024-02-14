@@ -96,7 +96,7 @@ jobs:
           cp -Rf $GITHUB_WORKSPACE/routing/bmx6 $GITHUB_WORKSPACE/repogx/Share/bmx6
         fi
 
-        git clone helloworld https://github.com/fw876/helloworld.git
+        git clone https://github.com/fw876/helloworld.git helloworld
         rm -rf $GITHUB_WORKSPACE/repogx/Share/shadowsocks-rust
         rm -rf $GITHUB_WORKSPACE/repogx/Share/shadowsocksr-libev
         cp -Rf $GITHUB_WORKSPACE/helloworld/shadowsocks-rust $GITHUB_WORKSPACE/repogx/Share/shadowsocks-rust
