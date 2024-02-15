@@ -366,7 +366,7 @@ LIENOL)
   fi
 ;;
 IMMORTALWRT)
-  s="luci-app-cifs"
+  s="luci-app-cifs,luci-app-aliyundrive-webdav,aliyundrive-webdav,aliyundrive-fuse"
   c=(${s//,/ })
   for i in ${c[@]}; do \
     find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
