@@ -115,25 +115,11 @@ chmod -R +x ${start_path} && source ${start_path}
 
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
+  export REPO_URL="https://github.com/coolsnowwolf/lede"
   export SOURCE="Lede"
   export SOURCE_OWNER="Lean's"
-  if [[ "${REPO_BRANCH}" == "master" ]]; then
-    export REPO_URL="https://github.com/coolsnowwolf/lede"
-    export LUCI_EDITION="18.06"
-    export DIY_WORK="${FOLDER_NAME}master"
-    echo "GL_BRANCH=lede" >> ${GITHUB_ENV}
-  elif [[ "${REPO_BRANCH}" == "gl-ax1800" ]]; then
-    export REPO_URL="https://github.com/coolsnowwolf/openwrt-gl-ax1800"
-    export LUCI_EDITION="gl-ax1800"
-    export REPO_BRANCH="master"
-    export DIY_WORK="${FOLDER_NAME}ax1800"
-    echo "GL_BRANCH=lede_ax1800" >> ${GITHUB_ENV}
-  else
-    export REPO_URL="https://github.com/coolsnowwolf/lede"
-    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-    export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
-    echo "GL_BRANCH=lede" >> ${GITHUB_ENV}
-  fi
+  export LUCI_EDITION="18.06"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
@@ -648,7 +634,7 @@ function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
 # 降低aliyundrive-webdav版本,新版本编译不成功
 if [[ -f "${HOME_PATH}/feeds/packages/multimedia/aliyundrive-webdav/Makefile" ]]; then
-  curl -o ./feeds/packages/multimedia/aliyundrive-webdav/Makefile https://raw.githubusercontent.com/coolsnowwolf/packages/aea60b5432fad984c0a4013bad0f0c5e00dcd115/multimedia/aliyundrive-webdav/Makefile
+  curl -fsSL https://raw.githubusercontent.com/coolsnowwolf/packages/aea60b5432fad984c0a4013bad0f0c5e00dcd115/multimedia/aliyundrive-webdav/Makefile  -o ${HOME_PATH}/feeds/packages/multimedia/aliyundrive-webdav/Makefile 
 fi
 }
 
