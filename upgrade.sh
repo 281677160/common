@@ -126,6 +126,7 @@ EOF
 function Diy_Part3() {
 	BIN_PATH="${HOME_PATH}/bin/Firmware"
 	echo "BIN_PATH=${BIN_PATH}" >> ${GITHUB_ENV}
+ 	[[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 	[[ ! -d "${BIN_PATH}" ]] && mkdir -p "${BIN_PATH}" || rm -rf "${BIN_PATH}"/*
 	
 	cd "${FIRMWARE_PATH}"
