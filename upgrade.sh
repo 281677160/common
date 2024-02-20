@@ -161,15 +161,17 @@ function Diy_Part3() {
 	;;
 	*)
 		if [[ `ls -1 | grep -c "sysupgrade"` -ge '1' ]]; then
-			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*sysupgrade.*${Firmware_SFX}" |grep -v "rootfs\|ext4\|factory")"
-		else
-			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX}" |grep -v "rootfs\|ext4\|factory")"
+			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*sysupgrade.*${Firmware_SFX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
+		elif [[ `ls -1 | grep -c "squashfs"` -ge '1' ]]; then
+			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
+   		else
+     			UP_ZHONGZHUAN="NO"
 		fi
-		if [[ -f "${UP_ZHONGZHUAN}" ]]; then
-			MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
-			cp -Rf "${UP_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}"
-		else
+		if [[ "${UP_ZHONGZHUAN}" == "NO" ]]; then
 			echo "没找到在线升级可用的${Firmware_SFX}格式固件，或者没适配该机型"
+		else
+   			MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
+			cp -Rf "${UP_ZHONGZHUAN}" "${BIN_PATH}/${AutoBuild_Firmware}-${MD5}${Firmware_SFX}"
 		fi
 	;;
 	esac
