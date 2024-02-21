@@ -588,9 +588,9 @@ source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 amba4="$(find . -type d -name 'luci-app-samba4')"
 autosam="$(find . -type d -name 'autosamba')"
 if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
-  for X in ${autosam}; do sed -i "s?+luci-app-samba4?+luci-app-samba?g" "$X"; done
+  for X in ${autosam}/Makefile; do sed -i "s?+luci-app-samba4?+luci-app-samba?g" "$X"; done
 elif [[ -n "${amba4}" ]] && [[ -n "${autosam}" ]]; then
-  for X in ${autosam}; do sed -i "s?+luci-app-samba[0-9]?+luci-app-samba4?g" "$X"; done
+  for X in ${autosam}/Makefile; do sed -i "s?+luci-app-samba[0-9]?+luci-app-samba4?g" "$X"; done
 fi
 
 # files大法，设置固件无烦恼
