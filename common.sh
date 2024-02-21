@@ -589,6 +589,8 @@ amba4="$(find . -type d -name 'luci-app-samba4')"
 autosam="$(find . -type d -name 'autosamba')"
 if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
   for X in ${autosam}; do sed -i "s?luci-app-samba4?luci-app-samba?g" "$X"; done
+else
+  for X in ${autosam}; do sed -i "s?luci-app-samba?luci-app-samba4?g" "$X"; done
 fi
 
 # files大法，设置固件无烦恼
