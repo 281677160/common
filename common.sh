@@ -585,12 +585,17 @@ fi
 
 source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 
-amba4="$(find . -type d -name 'luci-app-samba4' |grep -v 'common')"
-autosam="$(find . -type d -name 'autosamba' |grep -v 'common')"
+[[ -d "${HOME_PATH}/build/common/Share/luci-app-samba4" ]] && rm -rf ${HOME_PATH}/build/common/Share/luci-app-samba4
+amba4="$(find . -type d -name 'luci-app-samba4')"
+autosam="$(find . -type d -name 'autosamba')"
 if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
-  for X in "$(find . -type d -name 'luci-app-samba4' |grep -v 'common')/Makefile"; do sed -i "s?+luci-app-samba4?+luci-app-samba?g" "$X"; done
-elif [[ -n "${amba4}" ]] && [[ -n "${autosam}" ]]; then
-  for X in "$(find . -type d -name 'luci-app-samba4' |grep -v 'common')/Makefile"; do sed -i "s?+luci-app-samba[0-9]?+luci-app-samba4?g" "$X"; done
+  for X in "$(find . -type d -name 'autosamba')/Makefile"; do sed -i "s?+luci-app-samba4?+luci-app-samba?g" "$X"; done
+else
+  for X in "$(find . -type d -name 'autosamba')/Makefile"; do
+    if [[ `grep -c "+luci-app-samba4" $X` -eq '0' ]]; then
+      sed -i "s?+luci-app-samba?+luci-app-samba4?g" "$X"
+    fi
+  done
 fi
 
 # files大法，设置固件无烦恼
