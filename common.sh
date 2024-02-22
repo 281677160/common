@@ -263,7 +263,7 @@ packages="${tmpdir}/localpackages"
 [ -d "${localdir}" ] || mkdir -p "${localdir}"
 tmpdir="$(mktemp -d)" || exit 1
 git clone -b "${branch}" --depth 1 --filter=blob:none --sparse "${curl}" "${tmpdir}"
-[[ $? -ne 0 ]] && echo "文件下载失败,请检查网络" && exit 1
+[[ $? -ne 0 ]] && echo "文件下载失败,请检查网络,或查看仓库链接或者分支的正确性"
 cd "${tmpdir}" && mkdir -p "${packages}"
 git sparse-checkout init --cone
 git sparse-checkout set "$@"
