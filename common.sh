@@ -250,6 +250,34 @@ fi
 }
 
 
+function svn_co() {
+if [[ $# -lt 2 ]]; then
+  echo "Syntax error: [$#] [$*]" >&2
+  return 1
+fi
+trap 'rm -rf "${tmpdir}"' EXIT
+branch="$1" curl="$2" && shift 2
+rootdir="${HOME_PATH}"
+localdir="${HOME_PATH}/package/danshui"
+packages="${tmpdir}/localpackages"
+[ -d "${localdir}" ] || mkdir -p "${localdir}"
+tmpdir="$(mktemp -d)" || exit 1
+git clone -b "${branch}" --depth 1 --filter=blob:none --sparse "${curl}" "${tmpdir}"
+[[ $? -ne 0 ]] && echo "文件下载失败,请检查网络" && exit 1
+cd "${tmpdir}" && mkdir -p "${packages}"
+git sparse-checkout init --cone
+git sparse-checkout set "$@"
+for i in "$@"; do
+  cp -Rf "${i}" "${packages}"
+done
+for X in $(ls -1 ${packages}); do
+  find "${localdir}" -type d -name "${X}" |xargs -i rm -rf {}
+  cp -Rf "${packages}/${X}" "${localdir}"
+done
+cd "${rootdir}" && sudo rm -rf "${tmpdir}"
+}
+
+
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
