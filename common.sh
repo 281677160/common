@@ -414,7 +414,7 @@ OFFICIAL)
       rm -rf ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
       cp -Rf ${HOME_PATH}/build/common/Share/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
     fi
-    svn_co 19.07 https://github.com/Lienol/openwrt tools/cmake tools/cmake
+    svn_co 21.02 https://github.com/Lienol/openwrt tools/cmake tools/cmake
   fi
   if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
     s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
