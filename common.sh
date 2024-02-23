@@ -1862,7 +1862,7 @@ else
   sudo ./make -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size} -r ${kernel_repo} -u ${kernel_usage}
 fi
 if [[ 0 -eq $? ]]; then
-  sudo mv -f ${GITHUB_WORKSPACE}/amlogic/out/* ${FIRMWARE_PATH}/ && sync
+  sudo mv -f ${GITHUB_WORKSPACE}/amlogic/openwrt/out/* ${FIRMWARE_PATH}/ && sync
   sudo rm -rf ${GITHUB_WORKSPACE}/amlogic
   echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
   echo
