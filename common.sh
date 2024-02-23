@@ -251,17 +251,16 @@ fi
 
 
 function svn_co() {
-if [[ $# -lt 2 ]]; then
-  echo "Syntax error: [$#] [$*]" >&2
-  return 1
+if [[ $# -lt 3 ]]; then
+  echo "Syntax error: [$#] [$*]"
+  return 0
 fi
-trap 'rm -rf "${tmpdir}"' EXIT
-branch="$1" curl="$2" && shift 2
-rootdir="${HOME_PATH}"
-localdir="${HOME_PATH}/package/danshui"
-packages="${tmpdir}/localpackages"
+branch="$1" curl="$2" target_dir="$3" && shift 3
+localdir="${HOME_PATH}/${target_dir}"
 [ -d "${localdir}" ] || mkdir -p "${localdir}"
 tmpdir="$(mktemp -d)" || exit 1
+trap 'rm -rf "${tmpdir}"' EXIT
+packages="${tmpdir}/localpackages"
 git clone -b "${branch}" --depth 1 --filter=blob:none --sparse "${curl}" "${tmpdir}"
 [[ $? -ne 0 ]] && echo "文件下载失败,请检查网络,或查看仓库链接或者分支的正确性"
 cd "${tmpdir}" && mkdir -p "${packages}"
@@ -274,7 +273,7 @@ for X in $(ls -1 ${packages}); do
   find "${localdir}" -type d -name "${X}" |xargs -i rm -rf {}
   cp -Rf "${packages}/${X}" "${localdir}"
 done
-cd "${rootdir}" && sudo rm -rf "${tmpdir}"
+cd "${HOME_PATH}" && sudo rm -rf "${tmpdir}"
 }
 
 
@@ -401,8 +400,18 @@ OFFICIAL)
       cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
       cp -Rf ${HOME_PATH}/build/common/Share/ttyd ${HOME_PATH}/feeds/packages/utils/ttyd
     fi
+    if [[ -d "${HOME_PATH}/build/common/Share/luci-app-samba4" ]]; then
+      find . -type d -name 'luci-app-samba4' -o -name 'samba4' |grep -v 'Share\|freifunk\|helloworld\|passwall3' | xargs -i rm -rf {}
+      cp -Rf ${HOME_PATH}/build/common/Share/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
+      cp -Rf ${HOME_PATH}/build/common/Share/samba4 ${HOME_PATH}/feeds/packages/net/samba4
+      rm -rf ${HOME_PATH}/feeds/packages/libs/liburing
+      cp -Rf ${HOME_PATH}/build/common/Share/liburing ${HOME_PATH}/feeds/packages/libs/liburing
+      rm -rf ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
+      cp -Rf ${HOME_PATH}/build/common/Share/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
+    fi
+    svn_co https://github.com/Lienol/openwrt tools/cmake tools/cmake
   fi
-  if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
+  if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
     s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
     c=(${s//,/ })
     for i in ${c[@]}; do \
