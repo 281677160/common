@@ -251,29 +251,33 @@ fi
 
 
 function svn_co() {
-if [[ $# -lt 3 ]]; then
+if [[ $# -lt 2 ]]; then
   echo "Syntax error: [$#] [$*]"
   return 0
 fi
-branch="$1" curl="$2" target_dir="$3" && shift 3
-localdir="${HOME_PATH}/${target_dir}"
-[ -d "${localdir}" ] || mkdir -p "${localdir}"
-tmpdir="$(mktemp -d)" || exit 1
-trap 'rm -rf "${tmpdir}"' EXIT
-packages="${tmpdir}/localpackages"
-git clone -b "${branch}" --depth 1 --filter=blob:none --sparse "${curl}" "${tmpdir}"
-[[ $? -ne 0 ]] && echo "文件下载失败,请检查网络,或查看仓库链接或者分支的正确性"
-cd "${tmpdir}" && mkdir -p "${packages}"
-git sparse-checkout init --cone
-git sparse-checkout set "$@"
-for i in "$@"; do
-  cp -Rf "${i}" "${packages}"
-done
-for X in $(ls -1 ${packages}); do
-  find "${localdir}" -type d -name "${X}" |xargs -i rm -rf {}
-  cp -Rf "${packages}/${X}" "${localdir}"
-done
-cd "${HOME_PATH}" && sudo rm -rf "${tmpdir}"
+A="$1" B="$2" && shift 2
+fssl="$(echo "${A}" |cut -d"/" -f4-5)"
+curl="$(echo "${A}" |cut -d"/" -f1-5)"
+blob="$(echo "${A}" |cut -d"/" -f6)"
+branch="$(echo "${A}" |cut -d"/" -f7)"
+test="$(echo "${A}" |cut -d"/" -f8-)"
+localdir="${HOME_PATH}/${B}"
+if [[ "${blob}" == "blob" ]]; then
+  curl -fsSL https://raw.githubusercontent.com/${fssl}/${branch}/${test} -o "${localdir}"
+  [[ $? -ne 0 ]] && echo "文件下载失败,请检查网络,或查看链接正确性"
+elif [[ "${blob}" == "tree" ]]; then
+  tmpdir="$(mktemp -d)" || exit 1
+  trap 'rm -rf "${tmpdir}"' EXIT
+  git clone -b "${branch}" --depth 1 --filter=blob:none --sparse "${curl}" "${tmpdir}"
+  [[ $? -ne 0 ]] && echo "文件下载失败,请检查网络,或查看链接正确性"
+  cd "${tmpdir}"
+  git sparse-checkout init --cone
+  git sparse-checkout set "${test}"
+  sudo rm -rf "${localdir}" && cp -Rf "${test}" "${localdir}"
+  cd "${HOME_PATH}" && sudo rm -rf "${tmpdir}"
+else
+  echo "替换文件操作失败,请保证链接正确性"
+fi
 }
 
 
@@ -414,7 +418,7 @@ OFFICIAL)
       rm -rf ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
       cp -Rf ${HOME_PATH}/build/common/Share/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
     fi
-    svn_co 21.02 https://github.com/Lienol/openwrt tools/cmake tools/cmake
+    svn_co https://github.com/Lienol/openwrt/tree/21.02/tools/cmake tools/cmake
   fi
   if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
     s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
