@@ -251,7 +251,6 @@ fi
 
 
 function svn_co() {
-HOME_PATH="/home/danshui/openwrt"
 if [[ $# -lt 2 ]]; then
   echo "格式错误,正确格式为: [svn_co] [文件夹或文件链接] [需要替换的文件夹或文件的对应路径],分别以空格分隔"
   return 1
