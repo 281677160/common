@@ -16,7 +16,8 @@ crutch="$(echo "${A}" |cut -d"/" -f6)"
 branch="$(echo "${A}" |cut -d"/" -f7)"
 test="$(echo "${A}" |cut -d"/" -f8-)"
 fssl_link="https://raw.githubusercontent.com/${curl_link}/${branch}/${test}"
-if [[ "${crutch}" == "blob" ]]; then
+case "${crutch}" in
+blob)
   curl -L "${fssl_link}" -o "${localdir}"
   if [[ $? -ne 0 ]]; then
     echo "${rootdir}文件下载失败,请检查网络,或查看链接正确性"
@@ -24,7 +25,8 @@ if [[ "${crutch}" == "blob" ]]; then
   else
     echo "${rootdir}文件替换成功"
   fi
-elif [[ "${crutch}" == "tree" ]]; then
+;;
+tree)
   tmpdir="$(mktemp -d)" || exit 1
   trap 'rm -rf "${tmpdir}"' EXIT
   git clone -b "${branch}" --depth 1 --filter=blob:none --sparse "${house_link}" "${tmpdir}"
@@ -34,11 +36,13 @@ elif [[ "${crutch}" == "tree" ]]; then
   if [[ $? -ne 0 ]]; then
     echo "${rootdir}文件夹下载失败,请检查网络,或查看链接正确性"
     return 1
-  else
+   else
     echo "${rootdir}文件夹替换成功"
   fi
   sudo rm -rf "${localdir}" && cp -Rf "${test}" "${localdir}"
   cd "${HOME_PATH}" && sudo rm -rf "${tmpdir}"
-else
+;;
+*)
   echo "${rootdir}替换文件操作失败,请保证链接正确性"
-fi
+;;
+esac
