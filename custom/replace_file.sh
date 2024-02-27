@@ -10,14 +10,14 @@ A="$1" B="$2" && shift 2
 cd "${HOME_PATH}" && r="$PWD/"
 rootdir="$(echo "${B}"|sed "s?${r}??g"|sed 's/^.\///')"
 localdir="${HOME_PATH}/${rootdir}"
-fssl="$(echo "${A}" |cut -d"/" -f4-5)"
-curl="$(echo "${A}" |cut -d"/" -f1-5)"
+curl_link="$(echo "${A}" |cut -d"/" -f4-5)"
+house_link="$(echo "${A}" |cut -d"/" -f1-5)"
 crutch="$(echo "${A}" |cut -d"/" -f6)"
 branch="$(echo "${A}" |cut -d"/" -f7)"
 test="$(echo "${A}" |cut -d"/" -f8-)"
-link="https://raw.githubusercontent.com/${fssl}/${branch}/${test}"
+fssl_link="https://raw.githubusercontent.com/${curl_link}/${branch}/${test}"
 if [[ "${crutch}" == "blob" ]]; then
-  curl -L "${link}" -o "${localdir}"
+  curl -L "${fssl_link}" -o "${localdir}"
   if [[ $? -ne 0 ]]; then
     echo "${rootdir}文件下载失败,请检查网络,或查看链接正确性"
     return 1
@@ -27,7 +27,7 @@ if [[ "${crutch}" == "blob" ]]; then
 elif [[ "${crutch}" == "tree" ]]; then
   tmpdir="$(mktemp -d)" || exit 1
   trap 'rm -rf "${tmpdir}"' EXIT
-  git clone -b "${branch}" --depth 1 --filter=blob:none --sparse "${curl}" "${tmpdir}"
+  git clone -b "${branch}" --depth 1 --filter=blob:none --sparse "${house_link}" "${tmpdir}"
   cd "${tmpdir}"
   git sparse-checkout init --cone
   git sparse-checkout set "${test}"
