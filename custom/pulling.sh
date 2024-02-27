@@ -16,6 +16,7 @@ crutch="$(echo "${A}" |cut -d"/" -f6)"
 branch="$(echo "${A}" |cut -d"/" -f7)"
 test="$(echo "${A}" |cut -d"/" -f8-)"
 fssl_link="https://raw.githubusercontent.com/${curl_link}/${branch}/${test}"
+[ -d "$rootdir" ] || mkdir -p "$rootdir"
 case "${crutch}" in
 blob)
   curl -L "${fssl_link}" -o "${localdir}"
