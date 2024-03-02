@@ -31,6 +31,13 @@ if [[ `grep -c "openwrt_x" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
 	sed -i '/openwrt_x/d' /etc/opkg/distfeeds.conf
 fi
 
+if [[ `grep -c "dns_redirect" /etc/config/dhcp` -ge '1' ]]; then
+	service dnsmasq stop
+	uci set dhcp.@dnsmasq[0].dns_redirect='0'
+	uci commit dhcp
+	service dnsmasq start
+fi
+
 if [[ -f "/usr/share/ucode/luci/version.uc" ]]; then
 	sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
 	echo "export const revision = '112233', branch = '';" >> "/usr/share/ucode/luci/version.uc"
