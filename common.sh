@@ -338,7 +338,7 @@ fi
 for X in $(ls -1 "${HOME_PATH}/feeds/danshui1"); do
   find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
 done
-for X in $(ls -1 "${HOME_PATH}/feeds/feeds/danshui1/relevance"); do
+for X in $(ls -1 "${HOME_PATH}/feeds/danshui1/relevance"); do
   find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
 done
 for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
