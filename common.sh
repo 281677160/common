@@ -293,9 +293,8 @@ esac
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
-[[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
-[[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
-[[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
+[[ ! -d "${HOME_PATH}/doc" ]] && mkdir -p "${HOME_PATH}/doc"
+[[ ! -d "${HOME_PATH}/LICENSES/build_logo" ]] && mkdir -p "${HOME_PATH}/LICENSES/build_logo"
 
 LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
 if [[ -n "${LUCI_CHECKUT}" ]]; then
@@ -304,57 +303,66 @@ if [[ -n "${LUCI_CHECKUT}" ]]; then
 fi
 git pull
 
-sed -i '/281677160/d; /helloworld/d; /passwall/d; /OpenClash/d' "feeds.conf.default"
-cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
-mv -f uniq.conf feeds.conf.default
+if [[ -f "${HOME_PATH}/doc/feeds.conf.default.bak" ]]; then
+  cp -Rf ${HOME_PATH}/doc/feeds.conf.default.bak ${HOME_PATH}/feeds.conf.default
+else
+  cp -Rf ${HOME_PATH}/feeds.conf.default ${HOME_PATH}/doc/feeds.conf.default.bak
+fi
 
 # 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
 cat >>"feeds.conf.default" <<-EOF
 src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
+src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1
+src-git danshui3 https://github.com/281677160/openwrt-package.git;Theme2
+src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;main
+src-git passwall2 https://github.com/xiaorouji/openwrt-passwall.git;luci-smartdns-dev
+src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages.git;main
+src-git passwall4 https://github.com/xiaorouji/openwrt-passwall2.git;main
 src-git helloworld https://github.com/fw876/helloworld.git
-src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages;main
+src-git OpenClash1 https://github.com/vernesong/OpenClash.git;dev
+src-git OpenClash2 https://github.com/vernesong/OpenClash.git;mester
 EOF
 ./scripts/feeds update -a
 
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
+  rm -rf ${HOME_PATH}/feeds/danshui2*
+  for X in $(ls -1 "${HOME_PATH}/feeds/danshui3"); do
+    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}
+  done
 else
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "feeds.conf.default"
+  rm -rf ${HOME_PATH}/feeds/danshui3*
+  for X in $(ls -1 "${HOME_PATH}/feeds/danshui2"); do
+    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}
+  done
 fi
-z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
-luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
-luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
-luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
-luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
-luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb,v2dat,v2ray-geodata"
-t=(${z//,/ })
-for x in ${t[@]}; do \
-  find . -type d -name "${x}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
+for X in $(ls -1 "${HOME_PATH}/feeds/danshui1"); do
+  find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
 done
+for X in $(ls -1 "${HOME_PATH}/feeds/feeds/danshui1/relevance"); do
+  find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
+done
+for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
+  find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
+done
+if [[ -d "${HOME_PATH}/package/lean" ]]; then
+  for X in $(ls -1 "${HOME_PATH}/feeds/danshui1"); do
+    find ${HOME_PATH}/package/lean -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
+  done
+  for X in $(ls -1 "${HOME_PATH}/feeds/feeds/danshui1/relevance"); do
+    find ${HOME_PATH}/package/lean -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
+  done
+fi
 
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
-  s="mentohust"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-  done
   if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
     for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
       curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
     done
   fi
-  if [[ -d "${HOME_PATH}/build/common/Share/btrfs-progs" ]]; then
-    rm -rf ${HOME_PATH}/feeds/packages/utils/btrfs-progs
-    cp -Rf ${HOME_PATH}/build/common/Share/btrfs-progs ${HOME_PATH}/feeds/packages/utils/btrfs-progs
-  fi
+  svn_co https://github.com/openwrt/packages/tree/master/utils/btrfs-progs ${HOME_PATH}/feeds/packages/utils/btrfs-progs
 ;;
 LIENOL)
-  s="mentohust,aliyundrive-webdav,pdnsd-alt,mt"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-  done
   if [[ "${REPO_BRANCH}" == "19.07" ]]; then
     s="luci-app-unblockneteasemusic,luci-app-vssr,lua-maxminddb"
     c=(${s//,/ })
