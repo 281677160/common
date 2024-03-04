@@ -325,11 +325,13 @@ EOF
 ./scripts/feeds update -a
 
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
+  sed -i '/danshui2/d' "${HOME_PATH}/feeds.conf.default"
   rm -rf ${HOME_PATH}/feeds/danshui2*
   for X in $(ls -1 "${HOME_PATH}/feeds/danshui3"); do
     find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}
   done
 else
+  sed -i '/danshui3/d' "${HOME_PATH}/feeds.conf.default"
   rm -rf ${HOME_PATH}/feeds/danshui3*
   for X in $(ls -1 "${HOME_PATH}/feeds/danshui2"); do
     find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}
@@ -466,16 +468,16 @@ if [[ -n "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   sed -i '/exit 0$/d' "${ZZZ_PATH}"
 
-  if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
-    cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
+  if [[ -f "${HOME_PATH}/doc/default-settings" ]]; then
+    cp -Rf ${HOME_PATH}/doc/default-settings "${ZZZ_PATH}"
   else
-    cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/LICENSES/doc/default-settings
+    cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/doc/default-settings
   fi
 
-  if [[ -f "${HOME_PATH}/LICENSES/doc/config_generates" ]]; then
-    cp -Rf ${HOME_PATH}/LICENSES/doc/config_generates "${GENE_PATH}"
+  if [[ -f "${HOME_PATH}/doc/config_generates" ]]; then
+    cp -Rf ${HOME_PATH}/doc/config_generates "${GENE_PATH}"
   else
-    cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
+    cp -Rf "${GENE_PATH}" ${HOME_PATH}/doc/config_generates
   fi
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
   [[ -n "$(grep "openwrt_banner" "${ZZZ_PATH}")" ]] && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
@@ -716,39 +718,24 @@ fi
 function Diy_zdypartsh() {
 cd ${HOME_PATH}
 source $BUILD_PATH/$DIY_PART_SH
+./scripts/feeds update -a
 cd ${HOME_PATH}
 
 # passwall
-find . -type d -name '*luci-app-passwall*' -o -name 'passwall1' -o -name 'passwall2' | xargs -i rm -rf {}
-sed -i '/passwall.git\;luci/d; /passwall2/d' "feeds.conf.default"
 if [[ "${PassWall_luci_branch}" == "1" ]]; then
-  echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci-smartdns-dev" >> "feeds.conf.default"
-  echo "src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main" >> "feeds.conf.default"
+  rm -rf ${HOME_PATH}/feeds/passwall1*
 else
-  echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;main" >> "feeds.conf.default"
-  echo "src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main" >> "feeds.conf.default"
+  rm -rf ${HOME_PATH}/feeds/passwall2*
 fi
 
 # openclash
-find . -type d -name '*luci-app-openclash*' -o -name '*OpenClash*' | xargs -i rm -rf {}
-sed -i '/OpenClash/d' "feeds.conf.default"
 if [[ "${OpenClash_branch}" == "1" ]]; then
-  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
+  rm -rf ${HOME_PATH}/feeds/OpenClash2*
   echo "OpenClash_branch=dev" >> ${GITHUB_ENV}
 else
-  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
+  rm -rf ${HOME_PATH}/feeds/OpenClash1*
   echo "OpenClash_branch=master" >> ${GITHUB_ENV}
 fi
-
-cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
-mv -f uniq.conf feeds.conf.default
-sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
-sed -i 's@.*src-git lienol*@#&@g' "feeds.conf.default"
-sed -i 's@.*src-git other*@#&@g' "feeds.conf.default"
-./scripts/feeds update -a
-sed -i 's/^#\(.*danshui\)/\1/' "feeds.conf.default"
-sed -i 's/^#\(.*src-git lienol\)/\1/' "feeds.conf.default"
-sed -i 's/^#\(.*src-git other\)/\1/' "feeds.conf.default"
 
 # 正在执行插件语言修改
 if [[ "${LUCI_BANBEN}" == "2" ]]; then
