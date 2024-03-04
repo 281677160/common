@@ -320,7 +320,7 @@ src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages.git;mai
 src-git passwall4 https://github.com/xiaorouji/openwrt-passwall2.git;main
 src-git helloworld https://github.com/fw876/helloworld.git
 src-git OpenClash1 https://github.com/vernesong/OpenClash.git;dev
-src-git OpenClash2 https://github.com/vernesong/OpenClash.git;mester
+src-git OpenClash2 https://github.com/vernesong/OpenClash.git;master
 EOF
 ./scripts/feeds update -a
 
