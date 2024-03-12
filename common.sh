@@ -1902,7 +1902,8 @@ if [[ "${Continue_selecting}" == "1" ]]; then
   rm -rf UPLOADCPU/build/${FOLDER_NAME}
   cp -Rf build/${FOLDER_NAME} UPLOADCPU/build/${FOLDER_NAME}
   rm -rf UPLOADCPU/build/${FOLDER_NAME}/*.sh
-  cp -Rf build/${FOLDER_NAME}/${DIY_PART_SH} UPLOADCPU/build/${FOLDER_NAME}/${DIY_PART_SH}
+  cp -Rf build/${FOLDER_NAME}/${DIY_PART1_SH} UPLOADCPU/build/${FOLDER_NAME}/${DIY_PART1_SH}
+  cp -Rf build/${FOLDER_NAME}/${DIY_PART2_SH} UPLOADCPU/build/${FOLDER_NAME}/${DIY_PART2_SH}
   rm -rf UPLOADCPU/.github/workflows
   cp -Rf .github/workflows UPLOADCPU/.github/workflows
   echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > UPLOADCPU/build/${FOLDER_NAME}/relevance/start
