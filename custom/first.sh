@@ -310,7 +310,7 @@ export DIY_PART_SH="$(grep -Eo "DIY_PART_SH=.*" "common.sh" |grep '.sh' |awk 'NR
 echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
 if [[ -n "${BENDI_VERSION}" ]]; then
   export BENDI_VERSION="1"
-  export GIT_REPOSITORY="281677160/build-actions"
+  export GIT_REPOSITORY="281677160/autobuild"
   sudo rm -rf build common.sh
   [[ -d "operates" ]] && cp -Rf operates build
   sed -i '/TONGBU_BENDI/d' ${GITHUB_ENV}
@@ -332,8 +332,11 @@ elif [[ ! -d "build/${FOLDER_NAME}" ]]; then
 elif [[ ! -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/settings.ini" ]]; then
   echo -e "\033[31m ${FOLDER_NAME}文件夹内缺少[settings.ini]存在 \033[0m"
   exit 1
-elif [[ ! -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/${DIY_PART_SH}" ]]; then
-  echo -e "\033[31m ${FOLDER_NAME}文件夹内缺少[${DIY_PART_SH}]存在 \033[0m"
+elif [[ ! -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/${DIY_PART1_SH}" ]]; then
+  echo -e "\033[31m ${FOLDER_NAME}文件夹内缺少[${DIY_PART1_SH}]存在 \033[0m"
+  exit 1
+elif [[ ! -f "${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/${DIY_PART2_SH}" ]]; then
+  echo -e "\033[31m ${FOLDER_NAME}文件夹内缺少[${DIY_PART2_SH}]存在 \033[0m"
   exit 1
 elif [[ ! -d "build/${FOLDER_NAME}/relevance" ]]; then
   echo -e "\033[31m build文件夹内的${FOLDER_NAME}缺少relevance文件夹存在,进行同步上游仓库操作 \033[0m"
