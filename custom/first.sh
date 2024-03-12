@@ -306,8 +306,10 @@ if [[ $? -ne 0 ]]; then
   wget -q https://raw.githubusercontent.com/281677160/common/cheshi/common.sh -O common.sh
 fi
 export ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "common.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
-export DIY_PART_SH="$(grep -Eo "DIY_PART_SH=.*" "common.sh" |grep '.sh' |awk 'NR==1' |cut -d'"' -f2)"
-echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
+export DIY_PART1_SH="$(grep -Eo "DIY_PART1_SH=.*" "common.sh" |grep '.sh' |awk 'NR==1' |cut -d'"' -f2)"
+export DIY_PART2_SH="$(grep -Eo "DIY_PART2_SH=.*" "common.sh" |grep '.sh' |awk 'NR==1' |cut -d'"' -f2)"
+echo "DIY_PART1_SH=${DIY_PART1_SH}" >> ${GITHUB_ENV}
+echo "DIY_PART2_SH=${DIY_PART2_SH}" >> ${GITHUB_ENV}
 if [[ -n "${BENDI_VERSION}" ]]; then
   export BENDI_VERSION="1"
   export GIT_REPOSITORY="281677160/autobuild"
