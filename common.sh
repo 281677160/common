@@ -455,11 +455,13 @@ fi
 ./scripts/feeds update luci
 # 增加中文语言包
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
+  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
   if [[ `find "${HOME_PATH}/package" -type d -name "default-settings" |grep -c "default-settings"` -eq '0' ]]; then
     cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
     [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
   fi
 else
+  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "feeds.conf.default"
   if [[ `find "${HOME_PATH}/package" -type d -name "default-settings" |grep -c "default-settings"` -eq '0' ]]; then
     cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
   fi
@@ -508,6 +510,19 @@ TIME r ""
 function Diy_zdypartsh() {
 cd ${HOME_PATH}
 ./scripts/feeds update -a
+source $BUILD_PATH/$DIY_PART2_SH
+
+# 正在执行插件语言修改
+if [[ "${LUCI_BANBEN}" == "2" ]]; then
+  cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
+  /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
+else
+  cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
+  /bin/bash zh-cn.sh && rm -rf zh-cn.sh
+fi
+
+# 使用自定义配置文件
+[[ -f "${BUILD_PATH}/$CONFIG_FILE" ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 
 luci_path="$({ find "${HOME_PATH}/feeds" |grep 'luci-openclash' |grep 'root'; } 2>"/dev/null")"
 if [[ -f "${luci_path}" ]] && [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
@@ -526,6 +541,19 @@ svn_co https://github.com/coolsnowwolf/packages/tree/master/net/shadowsocks-libe
 svn_co https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
 svn_co https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 svn_co https://github.com/openwrt/packages/tree/openwrt-21.02/devel/packr ${HOME_PATH}/feeds/packages/devel/packr
+
+if [[ -d "${HOME_PATH}/feeds/passwall3" ]]; then
+  for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
+    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
+  done
+fi
+
+if [[ -d "${HOME_PATH}/feeds/danshui2" ]]; then
+  for X in $(ls -1 "${HOME_PATH}/feeds/danshui2"); do
+    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}
+  done
+fi
+
 
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
@@ -708,20 +736,6 @@ else
     sed -i 's?luci-app-autoupdate??g' ${HOME_PATH}/include/target.mk
   fi
 fi
-
-source $BUILD_PATH/$DIY_PART2_SH
-
-# 正在执行插件语言修改
-if [[ "${LUCI_BANBEN}" == "2" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
-  /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
-else
-  cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
-  /bin/bash zh-cn.sh && rm -rf zh-cn.sh
-fi
-
-# 使用自定义配置文件
-[[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 
 
 # Diy_zdypartsh的延伸
