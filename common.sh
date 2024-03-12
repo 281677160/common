@@ -155,8 +155,10 @@ OFFICIAL)
 ;;
 esac
 
-export DIY_PART_SH="diy-part.sh"
-echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
+export DIY_PART1_SH="diy-part1.sh"
+export DIY_PART2_SH="diy-part2.sh"
+echo "DIY_PART1_SH=${DIY_PART1_SH}" >> ${GITHUB_ENV}
+echo "DIY_PART2_SH=${DIY_PART2_SH}" >> ${GITHUB_ENV}
 echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
 echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
 echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
@@ -223,8 +225,13 @@ if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)"
   echo
   exit 1
 fi
-if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART_SH}" 2>/dev/null)" ]; then
-  TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${DIY_PART_SH}名称的自定义设置文件],请在[${FOLDER_NAME}]文件夹内补齐"
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART1_SH}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${DIY_PART1_SH}名称的自定义设置文件],请在[${FOLDER_NAME}]文件夹内补齐"
+  echo
+  exit 1
+fi
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART2_SH}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${DIY_PART2_SH}名称的自定义设置文件],请在[${FOLDER_NAME}]文件夹内补齐"
   echo
   exit 1
 fi
@@ -290,18 +297,12 @@ esac
 }
 
 
-function Diy_checkout() {
+function Diy_Wenjian() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
 [[ ! -d "${HOME_PATH}/doc" ]] && mkdir -p "${HOME_PATH}/doc"
 [[ ! -d "${HOME_PATH}/LICENSES/build_logo" ]] && mkdir -p "${HOME_PATH}/LICENSES/build_logo"
 
-LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
-if [[ -n "${LUCI_CHECKUT}" ]]; then
-  git checkout ${LUCI_CHECKUT}
-  git switch -c ${LUCI_CHECKUT}
-fi
-git pull
 
 if [[ -f "${HOME_PATH}/doc/feeds.conf.default.bak" ]]; then
   cp -Rf ${HOME_PATH}/doc/feeds.conf.default.bak ${HOME_PATH}/feeds.conf.default
@@ -309,187 +310,22 @@ else
   cp -Rf ${HOME_PATH}/feeds.conf.default ${HOME_PATH}/doc/feeds.conf.default.bak
 fi
 
-# 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
-cat >>"feeds.conf.default" <<-EOF
-src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
-src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1
-src-git danshui3 https://github.com/281677160/openwrt-package.git;Theme2
-src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;main
-src-git passwall2 https://github.com/xiaorouji/openwrt-passwall.git;luci-smartdns-dev
-src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages.git;main
-src-git passwall4 https://github.com/xiaorouji/openwrt-passwall2.git;main
-src-git helloworld https://github.com/fw876/helloworld.git
-src-git OpenClash1 https://github.com/vernesong/OpenClash.git;dev
-src-git OpenClash2 https://github.com/vernesong/OpenClash.git;master
-EOF
-./scripts/feeds update -a
-
-if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
-  sed -i '/danshui2/d' "${HOME_PATH}/feeds.conf.default"
-  rm -rf ${HOME_PATH}/feeds/danshui2*
-  for X in $(ls -1 "${HOME_PATH}/feeds/danshui3"); do
-    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}
-  done
+if [[ -f "${HOME_PATH}/doc/base-files-essential.bak" ]]; then
+  cp -Rf ${HOME_PATH}/doc/base-files-essential.bak ${HOME_PATH}/feeds.conf.default
 else
-  sed -i '/danshui3/d' "${HOME_PATH}/feeds.conf.default"
-  rm -rf ${HOME_PATH}/feeds/danshui3*
-  for X in $(ls -1 "${HOME_PATH}/feeds/danshui2"); do
-    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}
-  done
-fi
-for X in $(ls -1 "${HOME_PATH}/feeds/danshui1"); do
-  find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
-done
-for X in $(ls -1 "${HOME_PATH}/feeds/danshui1/relevance"); do
-  find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
-done
-for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
-  find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
-done
-if [[ -d "${HOME_PATH}/package/lean" ]]; then
-  for X in $(ls -1 "${HOME_PATH}/feeds/danshui1"); do
-    find ${HOME_PATH}/package/lean -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
-  done
-  for X in $(ls -1 "${HOME_PATH}/feeds/danshui1/relevance"); do
-    find ${HOME_PATH}/package/lean -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
-  done
+  cp -Rf ${KEEPD_PATH} ${HOME_PATH}/doc/base-files-essential.bak
 fi
 
-# 更换golang版本
-rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang -b 22.x ${HOME_PATH}/feeds/packages/lang/golang
-# 升级node版本
-rm -rf ${HOME_PATH}/feeds/packages/lang/node
-git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-23.05 ${HOME_PATH}/feeds/packages/lang/node
-
-svn_co https://github.com/coolsnowwolf/packages/tree/master/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
-svn_co https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
-svn_co https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
-svn_co https://github.com/openwrt/packages/tree/openwrt-21.02/devel/packr ${HOME_PATH}/feeds/packages/devel/packr
-
-case "${SOURCE_CODE}" in
-COOLSNOWWOLF)
-  if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
-    for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
-      curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
-    done
-  fi
-  svn_co https://github.com/openwrt/packages/tree/master/utils/btrfs-progs ${HOME_PATH}/feeds/packages/utils/btrfs-progs
-;;
-LIENOL)
-  if [[ "${REPO_BRANCH}" == "19.07" ]]; then
-    s="luci-app-unblockneteasemusic,luci-app-vssr,lua-maxminddb"
-    c=(${s//,/ })
-    for i in ${c[@]}; do \
-      find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-    done
-    if [[ -d "${HOME_PATH}/build/common/Share/libcap" ]]; then
-      rm -rf ${HOME_PATH}/feeds/packages/libs/libcap
-      cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-    fi
-    svn_co https://github.com/Lienol/openwrt/tree/21.02/tools/cmake ${HOME_PATH}/tools/cmake
-  elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
-    find ${HOME_PATH}/feeds -type d -name "luci-app-unblockneteasemusic" |xargs -i rm -rf {}
-  elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
-    svn_co https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
-    svn_co https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
-  elif [[ "${REPO_BRANCH}" == "23.05" ]]; then
-    sed -i 's/CONFIG_WERROR=y/# CONFIG_WERROR is not set/g' ${HOME_PATH}/target/linux/generic/config-5.15
-  fi
-;;
-IMMORTALWRT)
-  s="luci-app-cifs,luci-app-aliyundrive-webdav,aliyundrive-webdav,aliyundrive-fuse"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-  done
-;;
-OFFICIAL)
-  if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-    s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
-    c=(${s//,/ })
-    for i in ${c[@]}; do \
-      find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-    done
-    if [[ -d "${HOME_PATH}/build/common/Share/libcap" ]]; then
-      rm -rf ${HOME_PATH}/feeds/packages/libs/libcap
-      cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-    fi
-    find . -type d -name 'luci-app-ttyd' -o -name 'ttyd' |grep -v 'Share' | xargs -i rm -rf {}
-    svn_co https://github.com/openwrt/luci/tree/openwrt-21.02/applications/luci-app-ttyd ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
-    svn_co https://github.com/openwrt/packages/tree/openwrt-21.02/utils/ttyd ${HOME_PATH}/feeds/packages/utils/ttyd
-    find . -type d -name 'luci-app-samba4' -o -name 'samba4' |grep -v 'Share\|freifunk\|helloworld\|passwall3' | xargs -i rm -rf {}
-    svn_co https://github.com/openwrt/luci/tree/openwrt-23.05/applications/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
-    svn_co https://github.com/openwrt/packages/tree/openwrt-23.05/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
-    svn_co https://github.com/openwrt/packages/tree/openwrt-23.05/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
-    svn_co https://github.com/openwrt/packages/tree/openwrt-23.05/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
-    svn_co https://github.com/Lienol/openwrt/tree/21.02/tools/cmake ${HOME_PATH}/tools/cmake
-  fi
-  if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-    s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
-    c=(${s//,/ })
-    for i in ${c[@]}; do \
-      find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-    done
-  fi
-  if [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
-    svn_co https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
-    svn_co https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
-  fi
-  svn_co https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
-;;
-XWRT)
-  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland,luci-app-aliyundrive-webdav,aliyundrive-webdav,aliyundrive-fuse"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-  done
-;;
-esac
-}
-
-
-
-function Diy_Wenjian() {
-# 增加中文语言包
-if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
-  if [[ `find "${HOME_PATH}/package" -type d -name "default-settings" |grep -c "default-settings"` -eq '0' ]]; then
-    cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
-    [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
-  fi
+if [[ -f "${HOME_PATH}/doc/target.mk.bak" ]]; then
+  cp -Rf ${HOME_PATH}/doc/target.mk.bak ${HOME_PATH}/include/target.mk
 else
-  if [[ `find "${HOME_PATH}/package" -type d -name "default-settings" |grep -c "default-settings"` -eq '0' ]]; then
-    cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
-  fi
+  cp -Rf ${HOME_PATH}/include/target.mk ${HOME_PATH}/doc/target.mk.bak
 fi
 
-ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
-if [[ -n "${ZZZ_PATH}" ]]; then  
-  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
-  sed -i '/exit 0$/d' "${ZZZ_PATH}"
-
-  if [[ -f "${HOME_PATH}/doc/default-settings" ]]; then
-    cp -Rf ${HOME_PATH}/doc/default-settings "${ZZZ_PATH}"
-  else
-    cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/doc/default-settings
-  fi
-
-  if [[ -f "${HOME_PATH}/doc/config_generates" ]]; then
-    cp -Rf ${HOME_PATH}/doc/config_generates "${GENE_PATH}"
-  else
-    cp -Rf "${GENE_PATH}" ${HOME_PATH}/doc/config_generates
-  fi
-  sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-  [[ -n "$(grep "openwrt_banner" "${ZZZ_PATH}")" ]] && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
-
-cat >> "${ZZZ_PATH}" <<-EOF
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
-EOF
+if [[ -f "${HOME_PATH}/doc/config_generates.bak" ]]; then
+  cp -Rf ${HOME_PATH}/doc/config_generates.bak "${GENE_PATH}"
+else
+  cp -Rf "${GENE_PATH}" ${HOME_PATH}/doc/config_generates.bak
 fi
 
 # 增加一些应用
@@ -515,23 +351,21 @@ sudo chmod +x "${FILES_PATH}/usr/bin/openwrt"
 echo '#!/bin/bash' > "${DELETE}"
 sudo chmod +x "${DELETE}"
 
-if [[ -d "${HOME_PATH}/target/linux/armsr" ]]; then
-  features_file="${HOME_PATH}/target/linux/armsr/Makefile"
-elif [[ -d "${HOME_PATH}/target/linux/armvirt" ]]; then
-  features_file="${HOME_PATH}/target/linux/armvirt/Makefile"
+if [[ -f "${HOME_PATH}/target/linux/armsr/Makefile" ]]; then
+  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" ${HOME_PATH}/target/linux/armsr/Makefile
+elif [[ -f "${HOME_PATH}/target/linux/armvirt/Makefile" ]]; then
+  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" ${HOME_PATH}/target/linux/armvirt/Makefile
 fi
-[[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
+
 sed -i '/DISTRIB_SOURCECODE/d' "${REPAIR_PATH}"
 echo -e "\nDISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
-# 给固件保留配置更新固件的保留项目
-if [[ -z "$(grep "background" ${KEEPD_PATH})" ]]; then
+# 保留配置更新固件的保留项目
 cat >>"${KEEPD_PATH}" <<-EOF
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background/
 /etc/smartdns/custom.conf
 EOF
-fi
 
 # 修改一些依赖
 case "${SOURCE_CODE}" in
@@ -566,6 +400,278 @@ XWRT|OFFICIAL)
   fi
 ;;
 esac
+
+git pull
+
+# 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
+cat >>"feeds.conf.default" <<-EOF
+src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
+src-git helloworld https://github.com/fw876/helloworld.git
+src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages;main
+src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main"
+EOF
+
+source $BUILD_PATH/$DIY_PART1_SH
+
+# passwall
+find . -type d -name '*luci-app-passwall*' -o -name 'passwall1' -o -name 'passwall2' | xargs -i rm -rf {}
+sed -i '/passwall.git\;luci/d; /passwall2/d' "feeds.conf.default"
+if [[ "${PassWall_luci_branch}" == "1" ]]; then
+  echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;luci-smartdns-dev" >> "feeds.conf.default"
+  
+else
+  echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;main" >> "feeds.conf.default"
+fi
+
+# openclash
+find . -type d -name '*luci-app-openclash*' -o -name '*OpenClash*' | xargs -i rm -rf {}
+sed -i '/OpenClash/d' "feeds.conf.default"
+if [[ "${OpenClash_branch}" == "1" ]]; then
+  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
+  echo "OpenClash_branch=dev" >> ${GITHUB_ENV}
+else
+  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
+  echo "OpenClash_branch=master" >> ${GITHUB_ENV}
+fi
+
+# AdGuardHome内核
+if [[ "${AdGuardHome_Core}" == "1" ]]; then
+  echo "AdGuardHome_Core=1" >> ${GITHUB_ENV}
+else
+  [[ -d "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
+  echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
+fi
+
+# openclash内核
+if [[ "${OpenClash_Core}" == "1" ]]; then
+  echo "OpenClash_Core=1" >> ${GITHUB_ENV}
+elif [[ "${OpenClash_Core}" == "2" ]]; then
+  echo "OpenClash_Core=2" >> ${GITHUB_ENV}
+else
+  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
+  [[ -d "${HOME_PATH}/files/etc/openclash/core" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core
+fi
+
+./scripts/feeds update luci
+# 增加中文语言包
+if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
+  if [[ `find "${HOME_PATH}/package" -type d -name "default-settings" |grep -c "default-settings"` -eq '0' ]]; then
+    cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
+    [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
+  fi
+else
+  if [[ `find "${HOME_PATH}/package" -type d -name "default-settings" |grep -c "default-settings"` -eq '0' ]]; then
+    cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
+  fi
+fi
+
+ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
+if [[ -n "${ZZZ_PATH}" ]]; then  
+  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+  sed -i '/exit 0$/d' "${ZZZ_PATH}"
+
+  if [[ -f "${HOME_PATH}/doc/default-settings" ]]; then
+    cp -Rf ${HOME_PATH}/doc/default-settings "${ZZZ_PATH}"
+  else
+    cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/doc/default-settings
+  fi
+  sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+  [[ -n "$(grep "openwrt_banner" "${ZZZ_PATH}")" ]] && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
+
+cat >> "${ZZZ_PATH}" <<-EOF
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
+EOF
+fi
+}
+
+
+function Diy_Notice() {
+TIME r ""
+TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
+TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
+if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
+  TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP、清空密码、还原出厂设置和在线更新固件操作"
+else
+  TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作"
+fi
+TIME r ""
+TIME g "CPU性能：8370C > 8272CL > 8171M > E5系列"
+TIME r ""
+}
+
+
+function Diy_zdypartsh() {
+cd ${HOME_PATH}
+./scripts/feeds update -a
+
+luci_path="$({ find "${HOME_PATH}/feeds" |grep 'luci-openclash' |grep 'root'; } 2>"/dev/null")"
+if [[ -f "${luci_path}" ]] && [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
+  sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' "${luci_path}"
+  sed -i '/uci -q commit openclash/a\fi' "${luci_path}"
+fi
+
+# 更换golang版本
+rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 22.x ${HOME_PATH}/feeds/packages/lang/golang
+# 升级node版本
+rm -rf ${HOME_PATH}/feeds/packages/lang/node
+git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-23.05 ${HOME_PATH}/feeds/packages/lang/node
+# 替换几个文件
+svn_co https://github.com/coolsnowwolf/packages/tree/master/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+svn_co https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
+svn_co https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+svn_co https://github.com/openwrt/packages/tree/openwrt-21.02/devel/packr ${HOME_PATH}/feeds/packages/devel/packr
+
+case "${SOURCE_CODE}" in
+COOLSNOWWOLF)
+  if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
+    for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
+      curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
+    done
+  fi
+  svn_co https://github.com/openwrt/packages/tree/master/utils/btrfs-progs ${HOME_PATH}/feeds/packages/utils/btrfs-progs
+  # 降低aliyundrive-webdav版本,新版本编译不成功
+  if [[ -f "${HOME_PATH}/feeds/packages/multimedia/aliyundrive-webdav/Makefile" ]]; then
+    curl -fsSL https://raw.githubusercontent.com/coolsnowwolf/packages/aea60b5432fad984c0a4013bad0f0c5e00dcd115/multimedia/aliyundrive-webdav/Makefile  -o ${HOME_PATH}/feeds/packages/multimedia/aliyundrive-webdav/Makefile 
+  fi
+;;
+LIENOL)
+  if [[ "${REPO_BRANCH}" == "19.07" ]]; then
+    s="luci-app-unblockneteasemusic,luci-app-vssr,lua-maxminddb"
+    c=(${s//,/ })
+    for i in ${c[@]}; do \
+      find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
+    done
+    if [[ -d "${HOME_PATH}/build/common/Share/libcap" ]]; then
+      rm -rf ${HOME_PATH}/feeds/packages/libs/libcap
+      cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+    fi
+    svn_co https://github.com/Lienol/openwrt/tree/21.02/tools/cmake ${HOME_PATH}/tools/cmake
+    if [[ -d "${HOME_PATH}/build/common/Share/v2raya" ]]; then
+      rm -rf ${HOME_PATH}/feeds/helloworld/v2raya
+      cp -Rf ${HOME_PATH}/build/common/Share/v2raya ${HOME_PATH}/feeds/helloworld/v2raya
+    fi
+    if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocksr-libev" ]]; then
+      curl -o ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocksr-libev/Makefile
+    fi
+    # 降低shadowsocks-rust版本,最新版本编译不成功
+    if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
+      curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
+    fi
+  elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
+    find ${HOME_PATH}/feeds -type d -name "luci-app-unblockneteasemusic" |xargs -i rm -rf {}
+    if [[ -d "${HOME_PATH}/build/common/Share/v2raya" ]]; then
+      rm -rf ${HOME_PATH}/feeds/helloworld/v2raya
+      cp -Rf ${HOME_PATH}/build/common/Share/v2raya ${HOME_PATH}/feeds/helloworld/v2raya
+    fi
+    if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocksr-libev" ]]; then
+      curl -o ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocksr-libev/Makefile
+    fi
+    # 降低shadowsocks-rust版本,最新版本编译不成功
+    if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
+      curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
+    fi
+  elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
+    svn_co https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+    svn_co https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+    if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocksr-libev" ]]; then
+      curl -o ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocksr-libev/Makefile
+    fi
+    # 降低shadowsocks-rust版本,最新版本编译不成功
+    if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
+      curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
+    fi
+  elif [[ "${REPO_BRANCH}" == "23.05" ]]; then
+    sed -i 's/CONFIG_WERROR=y/# CONFIG_WERROR is not set/g' ${HOME_PATH}/target/linux/generic/config-5.15
+  fi
+;;
+IMMORTALWRT)
+  s="luci-app-cifs,luci-app-aliyundrive-webdav,aliyundrive-webdav,aliyundrive-fuse"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
+  done
+  if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4|openwrt-21.02) ]]; then
+    if [[ -d "${HOME_PATH}/build/common/Share/v2raya" ]]; then
+      rm -rf ${HOME_PATH}/feeds/helloworld/v2raya
+      cp -Rf ${HOME_PATH}/build/common/Share/v2raya ${HOME_PATH}/feeds/helloworld/v2raya
+    fi
+    # 降低shadowsocks-rust版本,最新版本编译不成功
+    if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
+      curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
+    fi
+  fi
+  if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
+    # 增加缺少的bmx6
+    if [[ -d "${HOME_PATH}/build/common/Share/bmx6" ]]; then
+      rm -rf ${HOME_PATH}/feeds/routing/bmx6
+      cp -Rf ${HOME_PATH}/build/common/Share/bmx6 ${HOME_PATH}/feeds/routing/bmx6
+    fi
+  fi
+;;
+OFFICIAL)
+  if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
+    s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
+    c=(${s//,/ })
+    for i in ${c[@]}; do \
+      find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
+    done
+    if [[ -d "${HOME_PATH}/build/common/Share/libcap" ]]; then
+      rm -rf ${HOME_PATH}/feeds/packages/libs/libcap
+      cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+    fi
+    find . -type d -name 'luci-app-ttyd' -o -name 'ttyd' |grep -v 'Share' | xargs -i rm -rf {}
+    svn_co https://github.com/openwrt/luci/tree/openwrt-21.02/applications/luci-app-ttyd ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
+    svn_co https://github.com/openwrt/packages/tree/openwrt-21.02/utils/ttyd ${HOME_PATH}/feeds/packages/utils/ttyd
+    find . -type d -name 'luci-app-samba4' -o -name 'samba4' |grep -v 'Share\|freifunk\|helloworld\|passwall3' | xargs -i rm -rf {}
+    svn_co https://github.com/openwrt/luci/tree/openwrt-23.05/applications/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
+    svn_co https://github.com/openwrt/packages/tree/openwrt-23.05/net/samba4 ${HOME_PATH}/feeds/packages/net/samba4
+    svn_co https://github.com/openwrt/packages/tree/openwrt-23.05/libs/liburing ${HOME_PATH}/feeds/packages/libs/liburing
+    svn_co https://github.com/openwrt/packages/tree/openwrt-23.05/lang/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
+    svn_co https://github.com/Lienol/openwrt/tree/21.02/tools/cmake ${HOME_PATH}/tools/cmake
+    if [[ -d "${HOME_PATH}/build/common/Share/v2raya" ]]; then
+      rm -rf ${HOME_PATH}/feeds/helloworld/v2raya
+      cp -Rf ${HOME_PATH}/build/common/Share/v2raya ${HOME_PATH}/feeds/helloworld/v2raya
+    fi
+  elif [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
+    s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
+    c=(${s//,/ })
+    for i in ${c[@]}; do \
+      find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
+    done
+    if [[ -d "${HOME_PATH}/build/common/Share/v2raya" ]]; then
+      rm -rf ${HOME_PATH}/feeds/helloworld/v2raya
+      cp -Rf ${HOME_PATH}/build/common/Share/v2raya ${HOME_PATH}/feeds/helloworld/v2raya
+    fi
+  elif [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
+    svn_co https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+    svn_co https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+  fi
+  svn_co https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
+  if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
+    if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocksr-libev" ]]; then
+      curl -o ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocksr-libev/Makefile
+    fi
+    # 降低shadowsocks-rust版本,最新版本编译不成功
+    if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
+      curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
+    fi
+  fi
+;;
+XWRT)
+  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland,luci-app-aliyundrive-webdav,aliyundrive-webdav,aliyundrive-fuse"
+  c=(${s//,/ })
+  for i in ${c[@]}; do \
+    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
+  done
+;;
+esac
+}
 
 source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 
@@ -603,129 +709,8 @@ else
     sed -i 's?luci-app-autoupdate??g' ${HOME_PATH}/include/target.mk
   fi
 fi
-}
 
-
-function Diy_Notice() {
-TIME r ""
-TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
-TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
-if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP、清空密码、还原出厂设置和在线更新固件操作"
-else
-  TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作"
-fi
-TIME r ""
-TIME g "CPU性能：8370C > 8272CL > 8171M > E5系列"
-TIME r ""
-}
-
-
-function Diy_COOLSNOWWOLF() {
-cd ${HOME_PATH}
-# 升级node版本
-rm -rf ${HOME_PATH}/feeds/packages/lang/node
-git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-23.05 ${HOME_PATH}/feeds/packages/lang/node
-# 降低aliyundrive-webdav版本,新版本编译不成功
-if [[ -f "${HOME_PATH}/feeds/packages/multimedia/aliyundrive-webdav/Makefile" ]]; then
-  curl -fsSL https://raw.githubusercontent.com/coolsnowwolf/packages/aea60b5432fad984c0a4013bad0f0c5e00dcd115/multimedia/aliyundrive-webdav/Makefile  -o ${HOME_PATH}/feeds/packages/multimedia/aliyundrive-webdav/Makefile 
-fi
-}
-
-
-function Diy_LIENOL() {
-cd ${HOME_PATH}
-# 修改v2raya的kmod-nft-tproxy依赖
-if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
-  if [[ -d "${HOME_PATH}/build/common/Share/v2raya" ]]; then
-    rm -rf ${HOME_PATH}/feeds/helloworld/v2raya
-    cp -Rf ${HOME_PATH}/build/common/Share/v2raya ${HOME_PATH}/feeds/helloworld/v2raya
-  fi
-fi
-# 取消shadowsocksr-libev的libopenssl-legacy依赖
-if [[ "${REPO_BRANCH}" =~ (19.07|21.02|22.03) ]]; then
-  if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocksr-libev" ]]; then
-    curl -o ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocksr-libev/Makefile
-  fi
-  # 降低shadowsocks-rust版本,最新版本编译不成功
-  if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
-    curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
-  fi
-fi
-}
-
-
-function Diy_IMMORTALWRT() {
-cd ${HOME_PATH}
-if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4|openwrt-21.02) ]]; then
-  if [[ -d "${HOME_PATH}/build/common/Share/v2raya" ]]; then
-    rm -rf ${HOME_PATH}/feeds/helloworld/v2raya
-    cp -Rf ${HOME_PATH}/build/common/Share/v2raya ${HOME_PATH}/feeds/helloworld/v2raya
-  fi
-  # 降低shadowsocks-rust版本,最新版本编译不成功
-  if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
-    curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
-  fi
-fi
-if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
-  # 升级node版本
-  rm -rf ${HOME_PATH}/feeds/packages/lang/node
-  git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-22.03 ${HOME_PATH}/feeds/packages/lang/node
-  # 增加缺少的bmx6
-  if [[ -d "${HOME_PATH}/build/common/Share/bmx6" ]]; then
-    rm -rf ${HOME_PATH}/feeds/routing/bmx6
-    cp -Rf ${HOME_PATH}/build/common/Share/bmx6 ${HOME_PATH}/feeds/routing/bmx6
-  fi
-fi
-}
-
-
-function Diy_XWRT() {
-cd ${HOME_PATH}
-}
-
-
-function Diy_OFFICIAL() {
-cd ${HOME_PATH}
-if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
-  if [[ -d "${HOME_PATH}/build/common/Share/v2raya" ]]; then
-    rm -rf ${HOME_PATH}/feeds/helloworld/v2raya
-    cp -Rf ${HOME_PATH}/build/common/Share/v2raya ${HOME_PATH}/feeds/helloworld/v2raya
-  fi
-fi
-if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02|openwrt-22.03) ]]; then
-  if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocksr-libev" ]]; then
-    curl -o ${HOME_PATH}/feeds/passwall3/shadowsocksr-libev/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocksr-libev/Makefile
-  fi
-  # 降低shadowsocks-rust版本,最新版本编译不成功
-  if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
-    curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
-  fi
-fi
-}
-
-
-function Diy_zdypartsh() {
-cd ${HOME_PATH}
-source $BUILD_PATH/$DIY_PART_SH
-./scripts/feeds update -a
-cd ${HOME_PATH}
-
-# passwall
-if [[ "${PassWall_luci_branch}" == "1" ]]; then
-  rm -rf ${HOME_PATH}/feeds/passwall1*
-else
-  rm -rf ${HOME_PATH}/feeds/passwall2*
-fi
-
-# openclash
-if [[ "${OpenClash_branch}" == "1" ]]; then
-  rm -rf ${HOME_PATH}/feeds/OpenClash2*
-  echo "OpenClash_branch=dev" >> ${GITHUB_ENV}
-else
-  rm -rf ${HOME_PATH}/feeds/OpenClash1*
-  echo "OpenClash_branch=master" >> ${GITHUB_ENV}
-fi
+source $BUILD_PATH/$DIY_PART2_SH
 
 # 正在执行插件语言修改
 if [[ "${LUCI_BANBEN}" == "2" ]]; then
@@ -735,14 +720,11 @@ else
   cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
   /bin/bash zh-cn.sh && rm -rf zh-cn.sh
 fi
-./scripts/feeds install -a > /dev/null 2>&1
+
 # 使用自定义配置文件
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
-}
 
 
-function Diy_Publicarea() {
-cd ${HOME_PATH}
 # Diy_zdypartsh的延伸
 rm -rf ${HOME_PATH}/CHONGTU && touch ${HOME_PATH}/CHONGTU
 lan="/set network.\$1.netmask/a"
@@ -759,29 +741,6 @@ fi
 
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
   devicee="uci set network.ipv6.device='@lan'"
-fi
-
-# AdGuardHome内核
-if [[ "${AdGuardHome_Core}" == "1" ]]; then
-  echo "AdGuardHome_Core=1" >> ${GITHUB_ENV}
-else
-  [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
-  echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
-fi
-
-# openclash内核
-if [[ "${OpenClash_Core}" == "1" ]]; then
-  echo "OpenClash_Core=1" >> ${GITHUB_ENV}
-elif [[ "${OpenClash_Core}" == "2" ]]; then
-  echo "OpenClash_Core=2" >> ${GITHUB_ENV}
-else
-  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
-  [[ -d "${HOME_PATH}/files/etc/openclash/core" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core
-fi
-luci_path="$({ find "${HOME_PATH}/feeds" |grep 'luci-openclash' |grep 'root'; } 2>"/dev/null")"
-if [[ -f "${luci_path}" ]] && [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
-  sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' "${luci_path}"
-  sed -i '/uci -q commit openclash/a\fi' "${luci_path}"
 fi
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
@@ -1048,7 +1007,7 @@ function Diy_feeds() {
 echo "正在执行：安装feeds,请耐心等待..."
 cd ${HOME_PATH}
 ./scripts/feeds install -a
-
+./scripts/feeds install -a
 if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
   cp -Rf /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
   cp -Rf /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
@@ -2159,9 +2118,7 @@ Diy_Publicarea
 }
 
 function Diy_menu3() {
-Diy_checkout
 Diy_Wenjian
-Diy_${SOURCE_CODE}
 }
 
 function Diy_menu2() {
