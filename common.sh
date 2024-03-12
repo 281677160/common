@@ -671,7 +671,6 @@ XWRT)
   done
 ;;
 esac
-}
 
 source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 
