@@ -2114,7 +2114,6 @@ Diy_IPv6helper
 
 function Diy_menu4() {
 Diy_zdypartsh
-Diy_Publicarea
 }
 
 function Diy_menu3() {
