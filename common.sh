@@ -260,7 +260,7 @@ fi
 
 function svn_co() {
 if [[ $# -lt 2 ]]; then
-  echo "格式错误,正确格式为: [\$svn] [文件夹或文件的链接] [需要替换的文件夹或文件的对应路径],分别以空格分隔"
+  echo "格式错误,正确格式为: [svn_co] [文件夹或文件的链接] [需要替换的文件夹或文件的对应路径],分别以空格分隔"
   return 1
 fi
 A="$1" B="$2" && shift 2
@@ -328,7 +328,7 @@ else
   cp -Rf "${GENE_PATH}" ${HOME_PATH}/doc/config_generates.bak
 fi
 
-# 增加一些应用
+# 修改一些源码文件和增加一些自定义文件
 cp -Rf ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
 sed -i '/exit 0$/d' "${DEFAULT_PATH}"
@@ -411,6 +411,7 @@ src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages;main
 src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main"
 EOF
 
+# 运行第一个自定义文件,拉取插件的
 source $BUILD_PATH/$DIY_PART1_SH
 
 # passwall
@@ -453,7 +454,7 @@ else
 fi
 
 ./scripts/feeds update luci
-# 增加中文语言包
+# 增加中文语言包和主题文件
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
   echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
   if [[ `find "${HOME_PATH}/package" -type d -name "default-settings" |grep -c "default-settings"` -eq '0' ]]; then
@@ -509,10 +510,11 @@ TIME r ""
 
 function Diy_zdypartsh() {
 cd ${HOME_PATH}
+# 运行第二个自定义文件
 ./scripts/feeds update -a
 source $BUILD_PATH/$DIY_PART2_SH
 
-# 正在执行插件语言修改
+# 修改插件语言为默认中文
 if [[ "${LUCI_BANBEN}" == "2" ]]; then
   cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
   /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
@@ -521,7 +523,7 @@ else
   /bin/bash zh-cn.sh && rm -rf zh-cn.sh
 fi
 
-# 使用自定义配置文件
+# 使用自定义配置文件.config
 [[ -f "${BUILD_PATH}/$CONFIG_FILE" ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
 
 luci_path="$({ find "${HOME_PATH}/feeds" |grep 'luci-openclash' |grep 'root'; } 2>"/dev/null")"
@@ -544,13 +546,13 @@ svn_co https://github.com/openwrt/packages/tree/openwrt-21.02/devel/packr ${HOME
 
 if [[ -d "${HOME_PATH}/feeds/passwall3" ]]; then
   for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
-    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
+    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall' |xargs -i rm -rf {}
   done
 fi
 
 if [[ -d "${HOME_PATH}/feeds/danshui2" ]]; then
   for X in $(ls -1 "${HOME_PATH}/feeds/danshui2"); do
-    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}
+    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|freifunk\|passwall' |xargs -i rm -rf {}
   done
 fi
 
