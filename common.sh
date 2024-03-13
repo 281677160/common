@@ -512,6 +512,18 @@ function Diy_zdypartsh() {
 cd ${HOME_PATH}
 # 运行第二个自定义文件
 ./scripts/feeds update -a
+if [[ -d "${HOME_PATH}/feeds/passwall3" ]]; then
+  for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
+    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall' |xargs -i rm -rf {}
+  done
+fi
+
+if [[ -d "${HOME_PATH}/feeds/danshui2" ]]; then
+  for X in $(ls -1 "${HOME_PATH}/feeds/danshui2"); do
+    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|freifunk\|passwall' |xargs -i rm -rf {}
+  done
+fi
+./scripts/feeds update -a
 source $BUILD_PATH/$DIY_PART2_SH
 
 # 修改插件语言为默认中文
@@ -543,18 +555,6 @@ svn_co https://github.com/coolsnowwolf/packages/tree/master/net/shadowsocks-libe
 svn_co https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
 svn_co https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 svn_co https://github.com/openwrt/packages/tree/openwrt-21.02/devel/packr ${HOME_PATH}/feeds/packages/devel/packr
-
-if [[ -d "${HOME_PATH}/feeds/passwall3" ]]; then
-  for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
-    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|passwall' |xargs -i rm -rf {}
-  done
-fi
-
-if [[ -d "${HOME_PATH}/feeds/danshui2" ]]; then
-  for X in $(ls -1 "${HOME_PATH}/feeds/danshui2"); do
-    find ${HOME_PATH}/feeds -type d -name "${X}" |grep -v 'danshui\|freifunk\|passwall' |xargs -i rm -rf {}
-  done
-fi
 
 
 case "${SOURCE_CODE}" in
