@@ -483,7 +483,7 @@ esac
 for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
   find . -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
 done
-
+echo "1"
 # 更换golang版本
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
 git clone https://github.com/sbwml/packages_lang_golang -b 22.x ${HOME_PATH}/feeds/packages/lang/golang
@@ -696,6 +696,7 @@ git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages
 if [[ -f "${HOME_PATH}/feeds/packages/multimedia/aliyundrive-webdav/Makefile" ]]; then
   curl -fsSL https://raw.githubusercontent.com/coolsnowwolf/packages/aea60b5432fad984c0a4013bad0f0c5e00dcd115/multimedia/aliyundrive-webdav/Makefile  -o ${HOME_PATH}/feeds/packages/multimedia/aliyundrive-webdav/Makefile 
 fi
+echo "2"
 }
 
 
