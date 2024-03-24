@@ -302,11 +302,6 @@ cd ${HOME_PATH}
 [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
 
-LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
-if [[ -n "${LUCI_CHECKUT}" ]]; then
-  git checkout ${LUCI_CHECKUT}
-  git switch -c ${LUCI_CHECKUT}
-fi
 git pull
 
 sed -i '/281677160/d; /helloworld/d; /passwall/d; /OpenClash/d' "feeds.conf.default"
