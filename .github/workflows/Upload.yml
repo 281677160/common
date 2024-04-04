@@ -109,7 +109,7 @@ jobs:
         git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/$/-Lienol\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
         cd $GITHUB_WORKSPACE/Immortalwrt
         git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/$/-Immortalwrt\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
-        echo "mt798x-Immortalwrt" >>$GITHUB_WORKSPACE/123
+        echo '=\"mt798x-Immortalwrt\"' >>$GITHUB_WORKSPACE/123
         cd $GITHUB_WORKSPACE/Official
         git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/$/-Official\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
         cd $GITHUB_WORKSPACE/Xwrt
