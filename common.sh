@@ -133,7 +133,7 @@ IMMORTALWRT)
     export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
     export SOURCE="Immortalwrt"
     export SOURCE_OWNER="hanwckf's"
-    export LUCI_EDITION="mt798x-21.02"
+    export LUCI_EDITION="mt798x"
     export DIY_WORK="hanwckf2102"
     export REPO_BRANCH="openwrt-21.02"
   else
