@@ -9,7 +9,7 @@ R8="18.06-Immortalwrt"
 R9="18.06-k5.4-Immortalwrt"
 R10="21.02-Immortalwrt"
 R11="23.05-Immortalwrt"
-R12mt798x-Immortalwrt
+R12=\"mt798x-Immortalwrt\"
 R13="lede-17.01-Official"
 R14="main-Official"
 R15="master-Official"
