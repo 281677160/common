@@ -129,11 +129,19 @@ LIENOL)
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
 IMMORTALWRT)
-  export REPO_URL="https://github.com/immortalwrt/immortalwrt"
-  export SOURCE="Immortalwrt"
-  export SOURCE_OWNER="ctcgfw's"
-  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  if [[ "${REPO_BRANCH}" == "mt798x" ]]; then
+    export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
+    export SOURCE="Immortalwrt"
+    export SOURCE_OWNER="hanwckf's"
+    export LUCI_EDITION="openwrt-21.02"
+    export DIY_WORK="hanwckf2102"
+  else
+    export REPO_URL="https://github.com/immortalwrt/immortalwrt"
+    export SOURCE="Immortalwrt"
+    export SOURCE_OWNER="ctcgfw's"
+    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  fi
 ;;
 XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
