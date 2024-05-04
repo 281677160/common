@@ -559,11 +559,6 @@ svn_co https://github.com/openwrt/packages/tree/openwrt-21.02/devel/packr ${HOME
 
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
-  if [[ ! -f "${HOME_PATH}/target/linux/ramips/mt7621/config-5.15" ]]; then
-    for i in "mt7620" "mt7621" "mt76x8" "rt288x" "rt305x" "rt3883"; do \
-      curl -fsSL https://raw.githubusercontent.com/lede-project/source/master/target/linux/ramips/$i/config-5.15 -o ${HOME_PATH}/target/linux/ramips/$i/config-5.15; \
-    done
-  fi
   svn_co https://github.com/openwrt/packages/tree/master/utils/btrfs-progs ${HOME_PATH}/feeds/packages/utils/btrfs-progs
   # 降低aliyundrive-webdav版本,新版本编译不成功
   if [[ -f "${HOME_PATH}/feeds/packages/multimedia/aliyundrive-webdav/Makefile" ]]; then
