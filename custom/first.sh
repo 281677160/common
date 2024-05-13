@@ -9,7 +9,7 @@ cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]]; then
   sudo rm -rf build common.sh
 else
-  sudo rm -rf build/common && git clone -b main --depth 1 https://github.com/281677160/common build/common
+  sudo rm -rf build/common && git clone -b main --depth 1 https://github.com/clion007/openwrt-common build/common
   cp -Rf build/common/*.sh build/${FOLDER_NAME}/
   cp -Rf build/common/common.sh build/${FOLDER_NAME}/common.sh
   cp -Rf build/common/upgrade.sh build/${FOLDER_NAME}/upgrade.sh
@@ -301,9 +301,9 @@ exit 0
 function Diy_memu() {
 cd ${GITHUB_WORKSPACE}
 export OPERATES_BUILD="0"
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o common.sh
+curl -fsSL https://raw.githubusercontent.com/clion007/openwrt-common/main/common.sh -o common.sh
 if [[ $? -ne 0 ]]; then
-  wget -q https://raw.githubusercontent.com/281677160/common/main/common.sh -O common.sh
+  wget -q https://raw.githubusercontent.com/clion007/openwrt-common/main/common.sh -O common.sh
 fi
 export ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "common.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 export DIY_PART_SH="$(grep -Eo "DIY_PART_SH=.*" "common.sh" |grep '.sh' |awk 'NR==1' |cut -d'"' -f2)"
