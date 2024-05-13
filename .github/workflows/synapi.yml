@@ -70,7 +70,7 @@ jobs:
         allowUpdates: true
         
     - name: Delete workflow runs
-      uses: small-5/delete-workflow-runs@main
+      uses: Mattraks/delete-workflow-runs@main
       with: 
         retain_days: 0.1
         keep_minimum_runs: 0
