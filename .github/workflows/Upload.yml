@@ -8,7 +8,7 @@ on:
    - cron: 40 3 * * 6
 
 env:
-  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  REPO_TOKEN: ${{ github.token }}
   TZ: Asia/Shanghai
 
 jobs:
@@ -126,4 +126,4 @@ jobs:
         cd repogx
         git add .
         git commit -m "up"
-        git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{github.repository}}" HEAD:main
+        git push --quiet "https://${{ github.token }}@github.com/${{github.repository}}" HEAD:main
