@@ -6,7 +6,7 @@ on:
    - cron: 40 3 * * *
 
 env:
-  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  REPO_TOKEN: ${{ github.token }}
   TZ: Asia/Shanghai
 
 jobs:
@@ -66,14 +66,14 @@ jobs:
       with:
         name: API
         tag: API
-        token: ${{ secrets.REPO_TOKEN }}
+        token: ${{ github.token }}
         artifacts: "Github_Api/*"
         allowUpdates: true
         
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       with:
-        token: ${{ secrets.REPO_TOKEN }}
+        token: ${{ github.token }}
         repository: ${{ github.repository }}       
         retain_days: 0.1
         keep_minimum_runs: 0
