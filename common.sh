@@ -1400,9 +1400,9 @@ if [[ `grep -c "CONFIG_TARGET_x86=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `gre
   echo -e "\nCONFIG_GRUB_IMAGES=y" >> "${HOME_PATH}/.config"
   if [[ `grep -c "CONFIG_TARGET_ROOTFS_PARTSIZE=" ${HOME_PATH}/.config` -eq '1' ]]; then
     PARTSIZE="$(grep -Eo "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
-    if [[ "${PARTSIZE}" -lt "400" ]];then
+    if [[ "${PARTSIZE}" -lt "180" ]];then
       sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${HOME_PATH}/.config
-      echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=400" >> ${HOME_PATH}/.config
+      echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=180" >> ${HOME_PATH}/.config
     fi
   fi
 fi
@@ -1412,9 +1412,9 @@ if [[ `grep -c "CONFIG_TARGET_mxs=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `gre
   echo -e "\nCONFIG_GRUB_IMAGES=y" >> "${HOME_PATH}/.config"
   if [[ `grep -c "CONFIG_TARGET_ROOTFS_PARTSIZE=" ${HOME_PATH}/.config` -eq '1' ]]; then
     PARTSIZE="$(grep -Eo "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
-    if [[ "${PARTSIZE}" -lt "400" ]];then
+    if [[ "${PARTSIZE}" -lt "180" ]];then
       sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${HOME_PATH}/.config
-      echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=400" >> ${HOME_PATH}/.config
+      echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=180" >> ${HOME_PATH}/.config
     fi
   fi
 fi
