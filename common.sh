@@ -1343,12 +1343,13 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1'
   # pmg="$(echo "$(date +%M)" | sed 's/^.//g')"
   mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
   # curl -fsSL https://raw.githubusercontent.com/281677160/openwrt-package/usb/argon/jpg/${pmg}.jpg -o ${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg
+  
   curl -fsLO https://raw.githubusercontent.com/clion007/openwrt-builder/main/source/img/[0-9].png ${HOME_PATH}/files/www/luci-static/argon/background/
   curl -fsLO https://raw.githubusercontent.com/clion007/openwrt-builder/main/source/img/[0-9].jpg ${HOME_PATH}/files/www/luci-static/argon/background/
-  if [[ $? -ne 0 ]]; then
-    echo "拉取文件错误,请检测网络"
-    exit 1
-  fi
+  # if [[ $? -ne 0 ]]; then
+  #   echo "拉取文件错误,请检测网络"
+  #   exit 1
+  # fi
   if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon_new=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-theme-argon_new=y/# CONFIG_PACKAGE_luci-theme-argon_new is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-theme-argon和luci-theme-argon_new，插件有冲突，相同功能插件只能二选一，已删除luci-theme-argon_new\"" >>CHONGTU
