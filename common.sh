@@ -1343,8 +1343,8 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1'
   # pmg="$(echo "$(date +%M)" | sed 's/^.//g')"
   mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
   # curl -fsSL https://raw.githubusercontent.com/281677160/openwrt-package/usb/argon/jpg/${pmg}.jpg -o ${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg
-  curl -fsSLO https://raw.githubusercontent.com/clion007/openwrt-builder/main/source/img/[0-9].png ${HOME_PATH}/files/www/luci-static/argon/background/
-  curl -fsSLO https://raw.githubusercontent.com/clion007/openwrt-builder/main/source/img/[0-9].jpg ${HOME_PATH}/files/www/luci-static/argon/background/
+  curl -fsLO https://raw.githubusercontent.com/clion007/openwrt-builder/main/source/img/[0-9].png ${HOME_PATH}/files/www/luci-static/argon/background/
+  curl -fsLO https://raw.githubusercontent.com/clion007/openwrt-builder/main/source/img/[0-9].jpg ${HOME_PATH}/files/www/luci-static/argon/background/
   if [[ $? -ne 0 ]]; then
     echo "拉取文件错误,请检测网络"
     exit 1
