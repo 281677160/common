@@ -594,6 +594,7 @@ cat >>"${KEEPD_PATH}" <<-EOF
 /etc/config/AdGuardHome.yaml
 /www/luci-static/argon/background/
 /etc/smartdns/custom.conf
+/etc/dnsmasq.d/
 /usr/share/adss/
 /etc/init.d/adss
 /etc/rc.d/S90adss
