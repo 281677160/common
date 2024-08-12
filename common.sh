@@ -598,6 +598,7 @@ cat >>"${KEEPD_PATH}" <<-EOF
 /usr/share/adss/
 /etc/init.d/adss
 /etc/rc.d/S90adss
+/usr/bin/chinadns-ng
 EOF
 fi
 
