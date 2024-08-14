@@ -599,6 +599,8 @@ cat >>"${KEEPD_PATH}" <<-EOF
 /etc/init.d/adss
 /etc/rc.d/S90adss
 /usr/bin/chinadns-ng
+/etc/puship/
+/etc/hotplug.d/iface/99-puship
 EOF
 fi
 
