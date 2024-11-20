@@ -255,7 +255,7 @@ BRANCH_HEAD="$(git rev-parse --abbrev-ref HEAD)"
 if [[ "${OPERATES_BUILD}" == "1" ]]; then
   rm -rf backups
 fi
-if [[ "${GIT_REPOSITORY}" =~ (Namia-R/OpenWrt-X|281677160/autobuild) ]]; then
+if [[ "${GIT_REPOSITORY}" =~ (Namia-R/OpenWrt-X|Namia-R/autobuild) ]]; then
   rm -rf backups
   BANBEN_SHUOMING="Update $(date +%Y.%m%d.%H%M.%S)"
 fi
