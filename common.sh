@@ -771,7 +771,7 @@ function Diy_Publicarea() {
 cd ${HOME_PATH}
 # 修改golang版本
 rm -rf feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 21.x feeds/packages/lang/golang
 
 # Diy_zdypartsh的延伸
 rm -rf ${HOME_PATH}/CHONGTU && touch ${HOME_PATH}/CHONGTU
