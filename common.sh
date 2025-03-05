@@ -482,7 +482,7 @@ esac
 for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
   find . -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
 done
-# 更换golang版本
+# 更换最新 golang 版本
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
 $goversion=$(wget -qO- -t1 -T2 https://go.dev/doc/devel/release | grep "released" | awk 'NR==1 {print}' | awk '{printf $2}'| awk -F "." '{printf $2}')
 git clone https://github.com/sbwml/packages_lang_golang -b ${goversion}.x ${HOME_PATH}/feeds/packages/lang/golang
