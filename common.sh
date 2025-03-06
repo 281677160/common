@@ -335,6 +335,14 @@ EOF
 [[ -d "${HOME_PATH}/feeds/helloworld/xray-core" ]] && cp -rf ${HOME_PATH}/feeds/helloworld/xray-core ${HOME_PATH}/feeds/passwall3/xray-core
 [[ -d "${HOME_PATH}/feeds/helloworld/xray-plugin" ]] && cp -rf ${HOME_PATH}/feeds/helloworld/xray-plugin ${HOME_PATH}/feeds/passwall3/xray-plugin
 
+# 更换golang版本
+rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
+
+# 更换node版本
+rm -rf ${HOME_PATH}/feeds/packages/lang/node
+git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
+
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
   echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
 else
@@ -489,14 +497,10 @@ for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
   find . -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
 done
 
-# 更换golang版本
-rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
-
-# 升级node版本
-rm -rf ${HOME_PATH}/feeds/packages/lang/node
-git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
-
+if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/shadowsocks-libev" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+  mv -f feeds/danshui1/relevance/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+fi
 
 if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/kcptun" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
