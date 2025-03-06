@@ -321,16 +321,9 @@ mv -f uniq.conf feeds.conf.default
 cat >>"feeds.conf.default" <<-EOF
 src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
 src-git helloworld https://github.com/fw876/helloworld.git
-#src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages;main
+src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages;main
 EOF
 ./scripts/feeds update -a
-
-#rm -rf ${HOME_PATH}/feeds/packages/lang/node
-#git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-24.10 ${HOME_PATH}/feeds/packages/lang/node
-
-# 更换golang版本
-#rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-#git clone https://github.com/sbwml/packages_lang_golang -b 24.x ${HOME_PATH}/feeds/packages/lang/golang
 
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
   echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
@@ -382,6 +375,17 @@ LIENOL)
     fi
   elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
     find . -type d -name "luci-app-unblockneteasemusic" |xargs -i rm -rf {}
+    if [[ -d "${HOME_PATH}/build/common/Share/cmake" ]]; then
+      rm -rf ${HOME_PATH}/tools/cmake
+      cp -Rf ${HOME_PATH}/build/common/Share/cmake ${HOME_PATH}/tools/cmake
+    fi
+  elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
+    if [[ -d "${HOME_PATH}/build/common/Share/glib2" ]]; then
+      rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
+      cp -Rf ${HOME_PATH}/build/common/Share/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+      rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
+      cp -Rf ${HOME_PATH}/build/common/Share/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+    fi
   elif [[ "${REPO_BRANCH}" == "23.05" ]]; then
     sed -i 's/CONFIG_WERROR=y/# CONFIG_WERROR is not set/g' ${HOME_PATH}/target/linux/generic/config-5.15
   fi
@@ -440,6 +444,27 @@ OFFICIAL)
       rm -rf ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
       cp -Rf ${HOME_PATH}/build/common/Share/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
     fi
+    if [[ -d "${HOME_PATH}/build/common/Share/cmake" ]]; then
+      rm -rf ${HOME_PATH}/tools/cmake
+      cp -Rf ${HOME_PATH}/build/common/Share/cmake ${HOME_PATH}/tools/cmake
+      rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
+      cp -Rf ${HOME_PATH}/build/common/Share/ruby ${HOME_PATH}/feeds/packages/lang/ruby
+      rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
+      cp -Rf ${HOME_PATH}/build/common/Share/yaml ${HOME_PATH}/feeds/packages/libs/yaml
+    fi
+  fi
+  if [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
+    if [[ -d "${HOME_PATH}/build/common/Share/glib2" ]]; then
+      rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
+      cp -Rf ${HOME_PATH}/build/common/Share/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+      rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
+      cp -Rf ${HOME_PATH}/build/common/Share/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+    fi
+  fi
+  if [[ -d "${HOME_PATH}/build/common/Share/tailscale" ]]; then
+    rm -rf ${HOME_PATH}/feeds/packages/net/tailscale
+    cp -Rf ${HOME_PATH}/build/common/Share/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
+  fi
 ;;
 XWRT)
   s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland,luci-app-aliyundrive-webdav,aliyundrive-webdav,aliyundrive-fuse"
@@ -453,10 +478,21 @@ esac
 for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
   find . -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
 done
+# 更换golang版本
+rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 24.x ${HOME_PATH}/feeds/packages/lang/golang
 
+if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/shadowsocks-libev" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+  mv -f feeds/danshui1/relevance/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+fi
 if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/kcptun" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/net/kcptun
   mv -f ${HOME_PATH}/feeds/danshui1/relevance/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
+fi
+
+if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
+  cp -Rf ${HOME_PATH}/build/common/Share/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 
 [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
@@ -647,16 +683,30 @@ TIME r ""
 
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
+# 升级node版本
+rm -rf ${HOME_PATH}/feeds/packages/lang/node
+git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-24.10 ${HOME_PATH}/feeds/packages/lang/node
 }
 
 
 function Diy_LIENOL() {
 cd ${HOME_PATH}
+# 修改v2raya的kmod-nft-tproxy依赖
+if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
+  if [[ -d "${HOME_PATH}/build/common/Share/v2raya" ]]; then
+    rm -rf ${HOME_PATH}/feeds/helloworld/v2raya
+    cp -Rf ${HOME_PATH}/build/common/Share/v2raya ${HOME_PATH}/feeds/helloworld/v2raya
+  fi
+fi
 }
 
 
 function Diy_IMMORTALWRT() {
 cd ${HOME_PATH}
+if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
+  # 升级node版本
+  rm -rf ${HOME_PATH}/feeds/packages/lang/node
+  git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-24.10 ${HOME_PATH}/feeds/packages/lang/node
   # 增加缺少的bmx6
   if [[ -d "${HOME_PATH}/build/common/Share/bmx6" ]]; then
     rm -rf ${HOME_PATH}/feeds/routing/bmx6
@@ -673,6 +723,12 @@ cd ${HOME_PATH}
 
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
+if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
+  if [[ -d "${HOME_PATH}/build/common/Share/v2raya" ]]; then
+    rm -rf ${HOME_PATH}/feeds/helloworld/v2raya
+    cp -Rf ${HOME_PATH}/build/common/Share/v2raya ${HOME_PATH}/feeds/helloworld/v2raya
+  fi
+fi
 }
 
 
@@ -680,11 +736,12 @@ function Diy_zdypartsh() {
 cd ${HOME_PATH}
 source $BUILD_PATH/$DIY_PART_SH
 cd ${HOME_PATH}
+
 # passwall
-#find . -type d -name '*luci-app-passwall*' -o -name 'passwall1' -o -name 'passwall2' | xargs -i rm -rf {}
-#sed -i '/passwall.git\;luci/d; /passwall2/d' "feeds.conf.default"
-#echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;main" >> "feeds.conf.default"
-#echo "src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main" >> "feeds.conf.default"
+find . -type d -name '*luci-app-passwall*' -o -name 'passwall1' -o -name 'passwall2' | xargs -i rm -rf {}
+sed -i '/passwall.git\;luci/d; /passwall2/d' "feeds.conf.default"
+echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;main" >> "feeds.conf.default"
+echo "src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main" >> "feeds.conf.default"
 
 # openclash
 find . -type d -name '*luci-app-openclash*' -o -name '*OpenClash*' | xargs -i rm -rf {}
@@ -718,12 +775,6 @@ fi
 ./scripts/feeds install -a > /dev/null 2>&1
 # 使用自定义配置文件
 [[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
-if [[ -d "${HOME_PATH}/feeds/passwall3" ]]; then
-  rm -rf ${HOME_PATH}/feeds/passwall3/v2ray-core
-  rm -rf ${HOME_PATH}/feeds/passwall3/v2ray-plugin
-  rm -rf ${HOME_PATH}/feeds/passwall3/xray-core
-  rm -rf ${HOME_PATH}/feeds/passwall3/xray-plugin
-fi
 }
 
 
