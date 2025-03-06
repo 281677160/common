@@ -26,8 +26,8 @@ go version
 sudo rm -rf /usr/local/go
 sudo apt-get -y remove golang
 sudo apt-get -y remove golang-go
-sudo wget https://golang.google.cn/dl/go1.18.5.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.18.5.linux-amd64.tar.gz
+sudo wget https://golang.google.cn/dl/go1.24.1.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.24.1.linux-amd64.tar.gz
 
 cat >>"~/.bashrc" <<-EOF
 export GOROOT=/usr/local/go
