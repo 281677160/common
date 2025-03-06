@@ -484,7 +484,7 @@ for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
 done
 # 更换最新 golang 版本
 rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-$goversion=$(wget -qO- -t1 -T2 https://go.dev/doc/devel/release | grep "released" | awk 'NR==1 {print}' | awk '{printf $2}'| awk -F "." '{printf $2}')
+goversion=$(wget -qO- -t1 -T2 https://go.dev/doc/devel/release | grep "released" | awk 'NR==1 {print}' | awk '{printf $2}'| awk -F "." '{printf $2}')
 git clone https://github.com/sbwml/packages_lang_golang -b ${goversion}.x ${HOME_PATH}/feeds/packages/lang/golang
 
 if [[ -d "${HOME_PATH}/feeds/danshui1/relevance/shadowsocks-libev" ]]; then
