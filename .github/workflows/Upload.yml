@@ -104,7 +104,7 @@ jobs:
         echo "" >$GITHUB_WORKSPACE/123
         
         cd $GITHUB_WORKSPACE/Lede
-        git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/master/18.06/g' |sed 's/$/-Lede\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
+        git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/master/23.05/g' |sed 's/$/-Lede\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
         cd $GITHUB_WORKSPACE/Lienol
         git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/$/-Lienol\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
         cd $GITHUB_WORKSPACE/Immortalwrt
