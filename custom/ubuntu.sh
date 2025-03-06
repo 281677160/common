@@ -28,14 +28,7 @@ sudo apt-get -y remove golang
 sudo apt-get -y remove golang-go
 sudo wget https://golang.google.cn/dl/go1.24.1.linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go1.24.1.linux-amd64.tar.gz
-
-sudo tee -a /etc/profile << EOF > /dev/null
-export GOROOT=/usr/local/go
-export GOPATH=$HOME/gowork
-export GOBIN=$GOPATH/bin
-export PATH=$GOPATH:$GOBIN:$GOROOT/bin:$PATH
-EOF
-sudo source /etc/profile
+export PATH=$PATH:/usr/local/go/bin
 go version
 
 }
