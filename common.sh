@@ -523,19 +523,23 @@ function Diy_Wenjian() {
 cp -Rf ${HOME_PATH}/LICENSES/doc/uniq.conf ${HOME_PATH}/feeds.conf.default
 
 # 增加中文语言包
-for dir in ${HOME_PATH}/package/*; do
-  if [ -d "$dir" ] && [ ! -d "$dir/default-settings" ]; then
-    if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
-      cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
-      [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
-      echo "177777"
-    else
-      cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
-    fi
-  fi
-done
+if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
+  LUCI_BANBEN="2"
+  echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
+else
+  LUCI_BANBEN="1"
+  echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
+fi
 
-echo "1"
+Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
+if [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
+  cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
+  [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
+elif [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
+  cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
+fi
+
+
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
 if [[ -n "${ZZZ_PATH}" ]]; then  
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
@@ -747,7 +751,7 @@ else
   echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
   echo "OpenClash_branch=master" >> ${GITHUB_ENV}
 fi
-
+echo "11"
 cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
 mv -f uniq.conf feeds.conf.default
 sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
@@ -757,7 +761,7 @@ sed -i 's@.*src-git other*@#&@g' "feeds.conf.default"
 sed -i 's/^#\(.*danshui\)/\1/' "feeds.conf.default"
 sed -i 's/^#\(.*src-git lienol\)/\1/' "feeds.conf.default"
 sed -i 's/^#\(.*src-git other\)/\1/' "feeds.conf.default"
-
+echo "22"
 # 正在执行插件语言修改
 if [[ "${LUCI_BANBEN}" == "2" ]]; then
   cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
