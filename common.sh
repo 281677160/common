@@ -688,6 +688,7 @@ TIME r ""
 
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
+echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/luci2/bin/config_generate" >> ${GITHUB_ENV}
 }
 
 
