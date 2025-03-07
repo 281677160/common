@@ -523,22 +523,18 @@ function Diy_Wenjian() {
 cp -Rf ${HOME_PATH}/LICENSES/doc/uniq.conf ${HOME_PATH}/feeds.conf.default
 
 # 增加中文语言包
-if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
-  LUCI_BANBEN="2"
-  echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
-else
-  LUCI_BANBEN="1"
-  echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
-fi
+for dir in ${HOME_PATH}/package/*; do
+  if [ -d "$dir" ] && [ ! -d "$dir/files" ]; then
+    if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
+      cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
+      [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
+    else
+      cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
+    fi
+  fi
+done
 
-Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
-if [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
-  [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
-elif [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
-fi
-
+echo "1"
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
 if [[ -n "${ZZZ_PATH}" ]]; then  
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
@@ -567,7 +563,7 @@ sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
 EOF
 fi
-
+echo "2"
 # 增加一些应用
 cp -Rf ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
