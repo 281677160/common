@@ -445,6 +445,14 @@ OFFICIAL)
       find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
     done
   fi
+  if [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
+     if [[ -d "${HOME_PATH}/build/common/Share/glib2" ]]; then
+       rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
+       cp -Rf ${HOME_PATH}/build/common/Share/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+       rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
+       cp -Rf ${HOME_PATH}/build/common/Share/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+     fi
+   fi
 ;;
 XWRT)
   s="luci-app-wrtbwmon,wrtbwmon,bcm27xx-userland,luci-app-aliyundrive-webdav,aliyundrive-webdav,aliyundrive-fuse"
