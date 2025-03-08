@@ -349,6 +349,22 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
 else
   rm -rf ${HOME_PATH}/feeds/packages/lang/rust
   cp -Rf ${HOME_PATH}/build/common/Share/rust ${HOME_PATH}/feeds/packages/lang/rust
+  echo "rust"
+fi
+
+if [[ -d "${HOME_PATH}/feeds/packages/net/shadowsocks-rust" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-rust
+    echo "shadowsocks-rust"
+fi
+
+if [[ -d "${HOME_PATH}/feeds/packages/net/shadowsocks-libev" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+    echo "shadowsocks-libev"
+fi
+
+if [[ -d "${HOME_PATH}/feeds/packages/net/shadowsocksr-libev" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocksr-libev
+    echo "shadowsocksr-libev"
 fi
 
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
