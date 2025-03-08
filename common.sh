@@ -346,6 +346,9 @@ git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH
 # 增加rust文件
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/rust ${HOME_PATH}/feeds/packages/lang/rust
+else
+  rm -rf ${HOME_PATH}/feeds/packages/lang/rust
+  cp -Rf ${HOME_PATH}/build/common/Share/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
