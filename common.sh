@@ -352,6 +352,14 @@ else
   echo "rust"
 fi
 
+if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
+  curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
+fi
+
+if [[ -d "${HOME_PATH}/feeds/helloworld/shadowsocks-rust" ]]; then
+  curl -o ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
+fi
+
 if [[ -d "${HOME_PATH}/feeds/packages/net/shadowsocks-rust" ]]; then
   rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-rust
     echo "shadowsocks-rust"
