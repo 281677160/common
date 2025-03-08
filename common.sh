@@ -436,15 +436,6 @@ OFFICIAL)
       cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
       cp -Rf ${HOME_PATH}/build/common/Share/ttyd ${HOME_PATH}/feeds/packages/utils/ttyd
     fi
-    if [[ -d "${HOME_PATH}/build/common/Share/luci-app-samba4" ]]; then
-      find . -type d -name 'luci-app-samba4' -o -name 'samba4' |grep -v 'Share\|freifunk\|helloworld\|passwall3' | xargs -i rm -rf {}
-      cp -Rf ${HOME_PATH}/build/common/Share/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
-      cp -Rf ${HOME_PATH}/build/common/Share/samba4 ${HOME_PATH}/feeds/packages/net/samba4
-      rm -rf ${HOME_PATH}/feeds/packages/libs/liburing
-      cp -Rf ${HOME_PATH}/build/common/Share/liburing ${HOME_PATH}/feeds/packages/libs/liburing
-      rm -rf ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
-      cp -Rf ${HOME_PATH}/build/common/Share/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
-    fi
     $svn https://github.com/Lienol/openwrt/tree/21.02/tools/cmake ${HOME_PATH}/tools/cmake
   fi
   if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
@@ -453,35 +444,6 @@ OFFICIAL)
     for i in ${c[@]}; do \
       find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
     done
-    if [[ -d "${HOME_PATH}/build/common/Share/luci-app-samba4" ]]; then
-      find . -type d -name 'luci-app-samba4' -o -name 'samba4' |grep -v 'Share\|freifunk\|helloworld\|passwall3' | xargs -i rm -rf {}
-      cp -Rf ${HOME_PATH}/build/common/Share/luci-app-samba4 ${HOME_PATH}/feeds/luci/applications/luci-app-samba4
-      cp -Rf ${HOME_PATH}/build/common/Share/samba4 ${HOME_PATH}/feeds/packages/net/samba4
-      rm -rf ${HOME_PATH}/feeds/packages/libs/liburing
-      cp -Rf ${HOME_PATH}/build/common/Share/liburing ${HOME_PATH}/feeds/packages/libs/liburing
-      rm -rf ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
-      cp -Rf ${HOME_PATH}/build/common/Share/perl-parse-yapp ${HOME_PATH}/feeds/packages/lang/perl-parse-yapp
-    fi
-    if [[ -d "${HOME_PATH}/build/common/Share/cmake" ]]; then
-      rm -rf ${HOME_PATH}/tools/cmake
-      cp -Rf ${HOME_PATH}/build/common/Share/cmake ${HOME_PATH}/tools/cmake
-      rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
-      cp -Rf ${HOME_PATH}/build/common/Share/ruby ${HOME_PATH}/feeds/packages/lang/ruby
-      rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
-      cp -Rf ${HOME_PATH}/build/common/Share/yaml ${HOME_PATH}/feeds/packages/libs/yaml
-    fi
-  fi
-  if [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
-    if [[ -d "${HOME_PATH}/build/common/Share/glib2" ]]; then
-      rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
-      cp -Rf ${HOME_PATH}/build/common/Share/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
-      rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
-      cp -Rf ${HOME_PATH}/build/common/Share/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
-    fi
-  fi
-  if [[ -d "${HOME_PATH}/build/common/Share/tailscale" ]]; then
-    rm -rf ${HOME_PATH}/feeds/packages/net/tailscale
-    cp -Rf ${HOME_PATH}/build/common/Share/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
   fi
 ;;
 XWRT)
