@@ -343,6 +343,11 @@ git clone https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packa
 rm -rf ${HOME_PATH}/feeds/packages/lang/node
 git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
+# 增加rust文件
+if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
+  cp -Rf ${HOME_PATH}/build/common/Share/rust ${HOME_PATH}/feeds/packages/lang/rust
+fi
+
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
   echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
 else
