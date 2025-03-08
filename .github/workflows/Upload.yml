@@ -84,6 +84,10 @@ jobs:
           cp -Rf $GITHUB_WORKSPACE/pcre-version/lang/rust $GITHUB_WORKSPACE/repogx/Share/rust
         fi
 
+        git clone --depth 1 https://github.com/immortalwrt/packages -b master $GITHUB_WORKSPACE/rust-version
+        rm -rf $GITHUB_WORKSPACE/repogx/Share/rust
+        cp -Rf $GITHUB_WORKSPACE/rust-version/lang/rust $GITHUB_WORKSPACE/repogx/Share/rust
+
         git clone --depth 1 https://github.com/openwrt/openwrt -b openwrt-23.05 $GITHUB_WORKSPACE/cdmake
         if [[ -d "$GITHUB_WORKSPACE/cdmake/tools/cmake" ]]; then
           rm -rf $GITHUB_WORKSPACE/repogx/Share/cmake
