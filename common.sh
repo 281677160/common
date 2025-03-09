@@ -292,12 +292,10 @@ EOF
 [[ -d "${HOME_PATH}/feeds/helloworld/xray-plugin" ]] && cp -rf ${HOME_PATH}/feeds/helloworld/xray-plugin ${HOME_PATH}/feeds/passwall3/xray-plugin
 
 # 更换golang版本
-rm -rf ${HOME_PATH}/feeds/packages/lang/golang
-git clone https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
+gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
 
 # 更换node版本
-rm -rf ${HOME_PATH}/feeds/packages/lang/node
-git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
+gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
 # 增加rust文件
 gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
@@ -2179,6 +2177,66 @@ if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
     fi
     cd "${HOME_PATH}"
     sudo rm -rf "${C}"
+    sudo rm -rf "${tmpdir}"
+else
+    echo "未找到有效链接"
+fi
+}
+
+function gitcon() {
+cd "${HOME_PATH}"
+tmpdir="$(mktemp -d)" && C="${tmpdir#*.}"
+A="$1" B="$2" && shift 2
+if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
+    branch_name="${BASH_REMATCH[1]}"
+    url="${A%%/tree/*}"
+    file_name="$(echo "${A}" |cut -d"/" -f5)"
+    giturl="git clone -b $branch_name --single-branch $url"
+elif [[ $A =~ blob/([^/]+)(/(.*))? ]]; then
+    branch_name="${BASH_REMATCH[1]}"
+    url="${A%%/blob/*}"
+    file_name="$(echo "${A}" |cut -d"/" -f5)"
+    giturl="git clone -b $branch_name --single-branch $url"
+elif [[ "$A" == *"github"* ]]; then
+    url="${A}"
+    file_name="$(echo "${A}" |cut -d"/" -f5)"
+    giturl="git clone --depth 1 $url"
+else
+    echo "未找到有效链接"
+fi
+    
+if [[ -n "${giturl}" ]]; then
+    if [[ -z "$B" ]]; then
+        content="$HOME_PATH/package/${file_name}"
+    elif [[ "$B" == *"/"* ]]; then
+        if [[ "$B" == *"openwrt"* ]]; then
+            content="$HOME_PATH/${B#*openwrt/}"
+        elif [[ "$B" == *"./"* ]]; then
+            content="$HOME_PATH/${B#*./}"
+        else
+            content="$HOME_PATH/$B"
+        fi
+    else
+        content="$HOME_PATH/package/$B"
+    fi
+    
+    echo "${giturl}"
+    echo "${content}"
+    sudo rm -rf "${C}"
+    "${giturl}" "${C}"
+    if [[ $? -ne 0 ]]; then
+        echo "${A}文件夹下载失败,请检查网络,或查看链接正确性"
+    else
+        if [[ -d "${content}" ]]; then
+            rm -rf "${content}"
+            mv "${C}" "${content}"
+        else
+            mkdir -p "${content}"
+            rm -rf "${content}"
+            mv "${C}" "${content}"
+        fi
+        echo "${file_name}下载完成"
+    fi
     sudo rm -rf "${tmpdir}"
 else
     echo "未找到有效链接"
