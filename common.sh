@@ -292,36 +292,18 @@ EOF
 [[ -d "${HOME_PATH}/feeds/helloworld/xray-plugin" ]] && cp -rf ${HOME_PATH}/feeds/helloworld/xray-plugin ${HOME_PATH}/feeds/passwall3/xray-plugin
 
 # 更换golang版本
-gitcon https://github.com/sbwml/packages_lang_golang/tree/24.x ${HOME_PATH}/feeds/packages/lang/golang
+gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
 
 # 更换node版本
-gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt/blob/packages-24.10/Makefile ${HOME_PATH}/feeds/packages/lang/node
+gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
 # 增加rust文件
 gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 
-if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
-  curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
-fi
+giturl https://github.com/281677160/common/blob/cf4f1f54d40ba82dfe15c456a451bb77ac0aaf54/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile
 
-if [[ -d "${HOME_PATH}/feeds/helloworld/shadowsocks-rust" ]]; then
-  curl -o ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
-fi
+giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile
 
-if [[ -d "${HOME_PATH}/feeds/packages/net/shadowsocks-rust" ]]; then
-  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-rust
-    echo "shadowsocks-rust"
-fi
-
-if [[ -d "${HOME_PATH}/feeds/packages/net/shadowsocks-libev" ]]; then
-  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
-    echo "shadowsocks-libev"
-fi
-
-if [[ -d "${HOME_PATH}/feeds/packages/net/shadowsocksr-libev" ]]; then
-  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocksr-libev
-    echo "shadowsocksr-libev"
-fi
 
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
   echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
@@ -2172,7 +2154,7 @@ if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
             rm -rf "${content}"
         fi
         cp -fr "${path_part}" "${content}"
-        echo "${file_name}下载完成"
+        echo "${file_name}文件下载完成"
     fi
     cd "${HOME_PATH}"
     sudo rm -rf "${C}"
@@ -2236,9 +2218,66 @@ if [[ -n "${url}" ]]; then
             rm -rf "${content}"
             mv "${C}" "${content}"
         fi
-        echo "${file_name}下载完成"
+        echo "${file_name}文件下载完成"
     fi
     sudo rm -rf "${tmpdir}"
+else
+    echo "未找到有效链接"
+fi
+}
+
+function giturl() {
+cd "${HOME_PATH}"
+C="$PWD"
+A="$1" B="$2" && shift 2
+if [[ "$A" == *"github"* ]] && [[ "$A" == *"blob"* ]]; then
+    file_name="$(echo "${A}" |cut -d"/" -f4-5)"
+    branch_name="$(echo "$A" | sed -n 's#.*/blob/\([^/]*\).*#\1#p')"
+    link="${A%%/blob/*}"
+    url="https://raw.githubusercontent.com/${file_name}/${branch_name}/${link}"
+elif [[ "$A" == *"github"* ]]; then
+    url=""
+    echo "链接格式错误,链接里面带【blob】为正确链接"
+else
+    url=""
+    echo "未找到有效链接"
+fi
+    
+if [[ -n "${url}" ]]; then
+    if [[ -z "$B" ]]; then
+        content="$C"
+        new_path="$content"
+    elif [[ "$B" == *"openwrt/"* ]]; then
+        content="$HOME_PATH/${B#*openwrt/}"
+        new_path="${B%/*}"
+    elif [[ "$B" == *"./"* ]]; then
+        content="$HOME_PATH/${B#*./}"
+        new_path="${B%/*}"
+    else
+        content="$HOME_PATH/$B"
+        new_path="${B%/*}"
+    fi
+
+    if [[ ! -d "${new_path}" ]]; then
+        mkdir -p "${new_path}"
+    else
+        rm -rf "${content}"
+    fi
+    
+    echo "${url}"
+    curl -# -L "${url}" -o "${content}"
+    if [[ $? -ne 0 ]]; then
+        wget -q --show-progress "${url}" -O "${content}"
+        if [[ $? -ne 0 ]]; then
+            echo "${A}文件下载失败,请检查网络,或查看链接正确性"
+        else
+            sudo chmod +x "${content}"
+            echo "${file_name}文件下载完成"
+        fi
+    else
+        sudo chmod +x "${content}"
+        echo "${file_name}文件下载完成"
+    fi
 else
     echo "未找到有效链接"
 fi
