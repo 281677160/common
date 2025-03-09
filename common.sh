@@ -300,13 +300,7 @@ rm -rf ${HOME_PATH}/feeds/packages/lang/node
 git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
 # 增加rust文件
-if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/Share/rust ${HOME_PATH}/feeds/packages/lang/rust
-else
-  rm -rf ${HOME_PATH}/feeds/packages/lang/rust
-  cp -Rf ${HOME_PATH}/build/common/Share/rust ${HOME_PATH}/feeds/packages/lang/rust
-  echo "rust"
-fi
+gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 
 if [[ -d "${HOME_PATH}/feeds/passwall3/shadowsocks-rust" ]]; then
   curl -o ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile https://raw.githubusercontent.com/281677160/common/main/Share/shadowsocks-rust/Makefile
@@ -2170,14 +2164,19 @@ if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
         mkdir -p "${content}"
         rm -rf "${content}"
     fi
-    
+    echo "${url}"
+    echo "${content}"
     git clone --no-checkout "${url}" "${C}"
     cd "${C}"
     git sparse-checkout init --cone
     git sparse-checkout set "${path_part}"
     git checkout "${branch_name}"
     cp -fr "${path_part}" "${content}"
-    rm -rf ../${C}
+    cd "${HOME_PATH}"
+    sudo rm -rf "${C}"
+    if [[ -d "${content}" ]]; then
+        echo "下载完成"
+    fi
 else
     echo "未找到有效链接"
 fi
