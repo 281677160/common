@@ -260,50 +260,6 @@ fi
 }
 
 
-function svn_co() {
-if [[ $# -lt 2 ]]; then
-  echo "格式错误,正确格式为: [svn_co] [文件夹或文件链接] [需要替换的文件夹或文件的对应路径],分别以空格分隔"
-  return 1
-fi
-A="$1" B="$2" && shift 2
-cd "${HOME_PATH}" && r="$PWD/"
-rootdir="$(echo "${B}"|sed "s?${r}??g"|sed 's/^.\///')"
-localdir="${HOME_PATH}/${rootdir}"
-fssl="$(echo "${A}" |cut -d"/" -f4-5)"
-curl="$(echo "${A}" |cut -d"/" -f1-5)"
-crutch="$(echo "${A}" |cut -d"/" -f6)"
-branch="$(echo "${A}" |cut -d"/" -f7)"
-test="$(echo "${A}" |cut -d"/" -f8-)"
-link="https://raw.githubusercontent.com/${fssl}/${branch}/${test}"
-if [[ "${crutch}" == "blob" ]]; then
-  curl -L "${link}" -o "${localdir}"
-  if [[ $? -ne 0 ]]; then
-    echo "${rootdir}文件下载失败,请检查网络,或查看链接正确性"
-    return 1
-  else
-    echo "${rootdir}文件替换成功"
-  fi
-elif [[ "${crutch}" == "tree" ]]; then
-  tmpdir="$(mktemp -d)" || exit 1
-  trap 'rm -rf "${tmpdir}"' EXIT
-  git clone -b "${branch}" --depth 1 --filter=blob:none --sparse "${curl}" "${tmpdir}"
-  cd "${tmpdir}"
-  git sparse-checkout init --cone
-  git sparse-checkout set "${test}"
-  if [[ $? -ne 0 ]]; then
-    echo "${rootdir}文件夹下载失败,请检查网络,或查看链接正确性"
-    return 1
-  else
-    echo "${rootdir}文件夹替换成功"
-  fi
-  sudo rm -rf "${localdir}" && cp -Rf "${test}" "${localdir}"
-  cd "${HOME_PATH}" && sudo rm -rf "${tmpdir}"
-else
-  echo "${rootdir}替换文件操作失败,请保证链接正确性"
-fi
-}
-
-
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
@@ -2183,4 +2139,46 @@ Diy_Notice
 
 function Diy_menu1() {
 Diy_variable
+}
+
+function gitsvn() {
+tmpdir="$(mktemp -d)" && C="${tmpdir#*.}"
+A="$1" B="$2" && shift 2
+if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
+    branch_name="${BASH_REMATCH[1]}"
+    path_part="${BASH_REMATCH[3]:-}"
+    url="${A%%/tree/*}"
+    file_name="${A##*/}"
+
+    if [[ -z "$B" ]]; then
+        content="$HOME_PATH/package/${file_name}"
+    elif [[ "$B" == *"/"* ]]; then
+        if [[ "$B" == *"openwrt"* ]]; then
+            content="$HOME_PATH/${path#*openwrt/}"
+        elif [[ "$B" == *"./"* ]]; then
+            content="$HOME_PATH/${path#*./}"
+        else
+            content="$HOME_PATH/$B"
+        fi
+    else
+        content="$HOME_PATH/package/$B"
+    fi
+
+    if [[ -d "${content}" ]]; then
+        rm -rf "${content}"
+    else
+        mkdir -p "${content}"
+        rm -rf "${content}"
+    fi
+    
+    git clone --no-checkout "${url}" "${C}"
+    cd "${C}"
+    git sparse-checkout init --cone
+    git sparse-checkout set "${path_part}"
+    git checkout "${branch_name}"
+    cp -fr "${path_part}" "${content}"
+    rm -rf ../${C}
+else
+    echo "未找到有效链接"
+fi
 }
