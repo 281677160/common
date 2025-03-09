@@ -2269,14 +2269,14 @@ if [[ -n "${url}" ]]; then
     if [[ ! -s "${content}" ]]; then
         wget -q --show-progress "${url}" -O "${content}"
         if [[ ! -s "${content}" ]]; then
-            echo "${file_name}文件下载失败,请检查网络,或查看链接正确性"
+            echo "${A}文件下载失败,请检查网络,或查看链接正确性"
         else
             sudo chmod +x "${content}"
-            echo "${file_name}文件下载完成"
+            echo "${A}文件下载完成"
         fi
     else
         sudo chmod +x "${content}"
-        echo "${file_name}文件下载完成"
+        echo "${A}文件下载完成"
     fi
 else
     echo "未找到有效链接"
