@@ -2266,9 +2266,9 @@ if [[ -n "${url}" ]]; then
     echo "${url}"
     echo "${content}"
     curl -# -L "${url}" -o "${content}"
-    if [[ $? -ne 0 ]]; then
+    if [[ ! -s "${content}" ]]; then
         wget -q --show-progress "${url}" -O "${content}"
-        if [[ $? -ne 0 ]]; then
+        if [[ ! -s "${content}" ]]; then
             echo "${file_name}文件下载失败,请检查网络,或查看链接正确性"
         else
             sudo chmod +x "${content}"
