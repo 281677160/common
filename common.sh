@@ -2191,21 +2191,20 @@ if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
     branch_name="${BASH_REMATCH[1]}"
     url="${A%%/tree/*}"
     file_name="$(echo "${A}" |cut -d"/" -f5)"
-    giturl="git clone -b $branch_name --single-branch $url"
 elif [[ $A =~ blob/([^/]+)(/(.*))? ]]; then
     branch_name="${BASH_REMATCH[1]}"
     url="${A%%/blob/*}"
     file_name="$(echo "${A}" |cut -d"/" -f5)"
-    giturl="git clone -b $branch_name --single-branch $url"
 elif [[ "$A" == *"github"* ]]; then
+    branch_name=""
     url="${A}"
     file_name="$(echo "${A}" |cut -d"/" -f5)"
-    giturl="git clone --depth 1 $url"
 else
+    url=""
     echo "未找到有效链接"
 fi
     
-if [[ -n "${giturl}" ]]; then
+if [[ -n "${url}" ]]; then
     if [[ -z "$B" ]]; then
         content="$HOME_PATH/package/${file_name}"
     elif [[ "$B" == *"/"* ]]; then
@@ -2220,10 +2219,15 @@ if [[ -n "${giturl}" ]]; then
         content="$HOME_PATH/package/$B"
     fi
     
-    echo "${giturl}"
+    echo "${url}"
     echo "${content}"
     sudo rm -rf "${C}"
-    "${giturl}" "${C}"
+    echo "${C}"
+    if [[ -n "${branch_name}" ]]; then
+        git clone -b ${branch_name} --single-branch ${url} ${C}
+    else
+        git clone ${url} ${C}
+    fi
     if [[ $? -ne 0 ]]; then
         echo "${A}文件夹下载失败,请检查网络,或查看链接正确性"
     else
