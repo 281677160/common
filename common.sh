@@ -2148,9 +2148,9 @@ if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
         content="$HOME_PATH/package/${file_name}"
     elif [[ "$B" == *"/"* ]]; then
         if [[ "$B" == *"openwrt"* ]]; then
-            content="$HOME_PATH/${path#*openwrt/}"
+            content="$HOME_PATH/${B#*openwrt/}"
         elif [[ "$B" == *"./"* ]]; then
-            content="$HOME_PATH/${path#*./}"
+            content="$HOME_PATH/${B#*./}"
         else
             content="$HOME_PATH/$B"
         fi
