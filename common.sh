@@ -2136,6 +2136,7 @@ Diy_variable
 }
 
 function gitsvn() {
+cd "${HOME_PATH}"
 tmpdir="$(mktemp -d)" && C="${tmpdir#*.}"
 A="$1" B="$2" && shift 2
 if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
@@ -2157,26 +2158,28 @@ if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
     else
         content="$HOME_PATH/package/$B"
     fi
-
-    if [[ -d "${content}" ]]; then
-        rm -rf "${content}"
-    else
-        mkdir -p "${content}"
-        rm -rf "${content}"
-    fi
+    
     echo "${url}"
     echo "${content}"
-    git clone --no-checkout "${url}" "${C}"
+    git clone -b "${branch_name}" --depth 1 --filter=blob:none --sparse  "${url}" "${C}"
     cd "${C}"
     git sparse-checkout init --cone
     git sparse-checkout set "${path_part}"
-    git checkout "${branch_name}"
-    cp -fr "${path_part}" "${content}"
+    if [[ $? -ne 0 ]]; then
+        echo "${A}文件夹下载失败,请检查网络,或查看链接正确性"
+    else
+        if [[ -d "${content}" ]]; then
+            rm -rf "${content}"
+        else
+            mkdir -p "${content}"
+            rm -rf "${content}"
+        fi
+        cp -fr "${path_part}" "${content}"
+        echo "${file_name}下载完成"
+    fi
     cd "${HOME_PATH}"
     sudo rm -rf "${C}"
-    if [[ -d "${content}" ]]; then
-        echo "下载完成"
-    fi
+    sudo rm -rf "${tmpdir}"
 else
     echo "未找到有效链接"
 fi
