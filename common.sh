@@ -2231,7 +2231,7 @@ cd "${HOME_PATH}"
 C="$PWD"
 A="$1" B="$2" && shift 2
 if [[ "$A" == *"github"* ]] && [[ "$A" == *"blob"* ]]; then
-    link_name="${A%%/blob/*}"
+    link_name="$(echo "${A}" |cut -d"/" -f4-5)"
     file_name="${A#*blob/}"
     url="https://raw.githubusercontent.com/${link_name}/${file_name}"
 elif [[ "$A" == *"github"* ]]; then
