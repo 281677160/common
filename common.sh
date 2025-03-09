@@ -2231,10 +2231,9 @@ cd "${HOME_PATH}"
 C="$PWD"
 A="$1" B="$2" && shift 2
 if [[ "$A" == *"github"* ]] && [[ "$A" == *"blob"* ]]; then
-    file_name="$(echo "${A}" |cut -d"/" -f4-5)"
-    branch_name="$(echo "$A" | sed -n 's#.*/blob/\([^/]*\).*#\1#p')"
-    link="${A%%/blob/*}"
-    url="https://raw.githubusercontent.com/${file_name}/${branch_name}/${link}"
+    link_name="${A%%/blob/*}"
+    file_name="${A#*blob/}"
+    url="https://raw.githubusercontent.com/${link_name}/${file_name}"
 elif [[ "$A" == *"github"* ]]; then
     url=""
     echo "链接格式错误,链接里面带【blob】为正确链接"
@@ -2265,11 +2264,12 @@ if [[ -n "${url}" ]]; then
     fi
     
     echo "${url}"
+    echo "${content}"
     curl -# -L "${url}" -o "${content}"
     if [[ $? -ne 0 ]]; then
         wget -q --show-progress "${url}" -O "${content}"
         if [[ $? -ne 0 ]]; then
-            echo "${A}文件下载失败,请检查网络,或查看链接正确性"
+            echo "${file_name}文件下载失败,请检查网络,或查看链接正确性"
         else
             sudo chmod +x "${content}"
             echo "${file_name}文件下载完成"
