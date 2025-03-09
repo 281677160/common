@@ -2158,13 +2158,12 @@ if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
     fi
     
     echo "${url}"
-    echo "${content}"
     git clone -b "${branch_name}" --depth 1 --filter=blob:none --sparse  "${url}" "${C}"
     cd "${C}"
     git sparse-checkout init --cone
     git sparse-checkout set "${path_part}"
     if [[ $? -ne 0 ]]; then
-        echo "${A}文件夹下载失败,请检查网络,或查看链接正确性"
+        echo "${A}文件下载失败,请检查网络,或查看链接正确性"
     else
         if [[ -d "${content}" ]]; then
             rm -rf "${content}"
@@ -2206,7 +2205,7 @@ fi
     
 if [[ -n "${url}" ]]; then
     if [[ -z "$B" ]]; then
-        content="$HOME_PATH/package/${file_name}"
+        content="$HOME_PATH/package/$file_name"
     elif [[ "$B" == *"/"* ]]; then
         if [[ "$B" == *"openwrt"* ]]; then
             content="$HOME_PATH/${B#*openwrt/}"
@@ -2220,16 +2219,14 @@ if [[ -n "${url}" ]]; then
     fi
     
     echo "${url}"
-    echo "${content}"
     sudo rm -rf "${C}"
-    echo "${C}"
     if [[ -n "${branch_name}" ]]; then
-        git clone -b ${branch_name} --single-branch ${url} ${C}
+        git clone -b "${branch_name}" --single-branch "${url}" "${C}"
     else
-        git clone ${url} ${C}
+        git clone "${url}" "${C}"
     fi
     if [[ $? -ne 0 ]]; then
-        echo "${A}文件夹下载失败,请检查网络,或查看链接正确性"
+        echo "${A}文件下载失败,请检查网络,或查看链接正确性"
     else
         if [[ -d "${content}" ]]; then
             rm -rf "${content}"
