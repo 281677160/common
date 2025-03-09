@@ -292,10 +292,10 @@ EOF
 [[ -d "${HOME_PATH}/feeds/helloworld/xray-plugin" ]] && cp -rf ${HOME_PATH}/feeds/helloworld/xray-plugin ${HOME_PATH}/feeds/passwall3/xray-plugin
 
 # 更换golang版本
-gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
+gitcon https://github.com/sbwml/packages_lang_golang/tree/24.x ${HOME_PATH}/feeds/packages/lang/golang
 
 # 更换node版本
-gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
+gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt/blob/packages-24.10/Makefile ${HOME_PATH}/feeds/packages/lang/node
 
 # 增加rust文件
 gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
