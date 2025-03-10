@@ -286,7 +286,7 @@ if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] ||
   gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/relevance/openwrt-passwall-packages/shadowsocks-rust
 fi
 
-[[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
+gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
 }
 
 
