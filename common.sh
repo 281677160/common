@@ -269,27 +269,9 @@ cd ${HOME_PATH}
 
 git pull
 
-sed -i '/281677160/d; /helloworld/d; /passwall/d; /OpenClash/d' "feeds.conf.default"
-cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
-mv -f uniq.conf feeds.conf.default
+sed -i "1isrc-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" feeds.conf.default
 
-# 这里增加了源,要对应的删除/etc/opkg/distfeeds.conf插件源
-cat >>"feeds.conf.default" <<-EOF
-src-git danshui1 https://github.com/281677160/openwrt-package.git;${SOURCE}
-src-git helloworld https://github.com/fw876/helloworld.git
-src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages;main
-EOF
 ./scripts/feeds update -a
-
-[[ -d "${HOME_PATH}/feeds/passwall3/v2ray-core" ]] && rm -rf ${HOME_PATH}/feeds/passwall3/v2ray-core
-[[ -d "${HOME_PATH}/feeds/passwall3/v2ray-plugin" ]] && rm -rf ${HOME_PATH}/feeds/passwall3/v2ray-plugin
-[[ -d "${HOME_PATH}/feeds/passwall3/xray-core" ]] && rm -rf ${HOME_PATH}/feeds/passwall3/xray-core
-[[ -d "${HOME_PATH}/feeds/passwall3/xray-plugin" ]] && rm -rf ${HOME_PATH}/feeds/passwall3/xray-plugin
-
-[[ -d "${HOME_PATH}/feeds/helloworld/v2ray-core" ]] && cp -rf ${HOME_PATH}/feeds/helloworld/v2ray-core ${HOME_PATH}/feeds/passwall3/v2ray-core
-[[ -d "${HOME_PATH}/feeds/helloworld/v2ray-plugin" ]] && cp -rf ${HOME_PATH}/feeds/helloworld/v2ray-plugin ${HOME_PATH}/feeds/passwall3/v2ray-plugin
-[[ -d "${HOME_PATH}/feeds/helloworld/xray-core" ]] && cp -rf ${HOME_PATH}/feeds/helloworld/xray-core ${HOME_PATH}/feeds/passwall3/xray-core
-[[ -d "${HOME_PATH}/feeds/helloworld/xray-plugin" ]] && cp -rf ${HOME_PATH}/feeds/helloworld/xray-plugin ${HOME_PATH}/feeds/passwall3/xray-plugin
 
 # 更换golang版本
 gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
@@ -300,138 +282,12 @@ gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/f
 # 增加rust文件
 gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 
-giturl https://github.com/281677160/common/blob/cf4f1f54d40ba82dfe15c456a451bb77ac0aaf54/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile
-
-giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile
-
-
-if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
-else
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "feeds.conf.default"
-fi
-z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
-luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
-luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
-luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
-luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
-luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb,v2dat,v2ray-geodata"
-t=(${z//,/ })
-for x in ${t[@]}; do \
-  find . -type d -name "${x}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-done
-
-case "${SOURCE_CODE}" in
-COOLSNOWWOLF)
-  s="mentohust"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-  done
-;;
-LIENOL)
-  s="mentohust,aliyundrive-webdav,pdnsd-alt,mt"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-  done
-  if [[ "${REPO_BRANCH}" == "19.07" ]]; then
-    s="luci-app-unblockneteasemusic,luci-app-vssr,lua-maxminddb"
-    c=(${s//,/ })
-    for i in ${c[@]}; do \
-      find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-    done
-    if [[ -d "${HOME_PATH}/build/common/Share/libcap" ]]; then
-      rm -rf ${HOME_PATH}/feeds/packages/libs/libcap
-      cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-    fi
-    if [[ -d "${HOME_PATH}/build/common/Share/cmake" ]]; then
-      rm -rf ${HOME_PATH}/tools/cmake
-      cp -Rf ${HOME_PATH}/build/common/Share/cmake ${HOME_PATH}/tools/cmake
-      rm -rf ${HOME_PATH}/feeds/packages/lang/ruby
-      cp -Rf ${HOME_PATH}/build/common/Share/ruby ${HOME_PATH}/feeds/packages/lang/ruby
-      rm -rf ${HOME_PATH}/feeds/packages/libs/yaml
-      cp -Rf ${HOME_PATH}/build/common/Share/yaml ${HOME_PATH}/feeds/packages/libs/yaml
-    fi
-  elif [[ "${REPO_BRANCH}" == "21.02" ]]; then
-    find . -type d -name "luci-app-unblockneteasemusic" |xargs -i rm -rf {}
-    if [[ -d "${HOME_PATH}/build/common/Share/cmake" ]]; then
-      rm -rf ${HOME_PATH}/tools/cmake
-      cp -Rf ${HOME_PATH}/build/common/Share/cmake ${HOME_PATH}/tools/cmake
-    fi
-  elif [[ "${REPO_BRANCH}" == "22.03" ]]; then
-    if [[ -d "${HOME_PATH}/build/common/Share/glib2" ]]; then
-      rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
-      cp -Rf ${HOME_PATH}/build/common/Share/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
-      rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
-      cp -Rf ${HOME_PATH}/build/common/Share/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
-    fi
-  elif [[ "${REPO_BRANCH}" == "23.05" ]]; then
-    sed -i 's/CONFIG_WERROR=y/# CONFIG_WERROR is not set/g' ${HOME_PATH}/target/linux/generic/config-5.15
-  fi
-;;
-IMMORTALWRT)
-  s="luci-app-cifs,luci-app-aliyundrive-webdav,aliyundrive-webdav,aliyundrive-fuse"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-  done
-;;
-OFFICIAL)
-  s="luci-app-wrtbwmon,wrtbwmon,luci-app-dockerman,docker,dockerd,bcm27xx-userland,luci-app-aliyundrive-webdav,aliyundrive-webdav,aliyundrive-fuse"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-  done
-  if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-    s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
-    c=(${s//,/ })
-    for i in ${c[@]}; do \
-      find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-    done
-    if [[ -d "${HOME_PATH}/build/common/Share/libcap" ]]; then
-      rm -rf ${HOME_PATH}/feeds/packages/libs/libcap
-      cp -Rf ${HOME_PATH}/build/common/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
-    fi
-    if [[ -d "${HOME_PATH}/build/common/Share/luci-app-ttyd" ]]; then
-      find . -type d -name 'luci-app-ttyd' -o -name 'ttyd' |grep -v 'Share' | xargs -i rm -rf {}
-      cp -Rf ${HOME_PATH}/build/common/Share/luci-app-ttyd ${HOME_PATH}/feeds/luci/applications/luci-app-ttyd
-      cp -Rf ${HOME_PATH}/build/common/Share/ttyd ${HOME_PATH}/feeds/packages/utils/ttyd
-    fi
-    $svn https://github.com/Lienol/openwrt/tree/21.02/tools/cmake ${HOME_PATH}/tools/cmake
-  fi
-  if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-    s="luci-app-vssr,lua-maxminddb,luci-app-natter,natter,luci-app-unblockneteasemusic"
-    c=(${s//,/ })
-    for i in ${c[@]}; do \
-      find . -type d -name "${i}" |grep -v 'freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-    done
-  fi
-  if [[ "${REPO_BRANCH}" == "openwrt-22.03" ]]; then
-     if [[ -d "${HOME_PATH}/build/common/Share/glib2" ]]; then
-       rm -rf ${HOME_PATH}/feeds/packages/libs/glib2
-       cp -Rf ${HOME_PATH}/build/common/Share/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
-       rm -rf ${HOME_PATH}/feeds/packages/libs/pcre2
-       cp -Rf ${HOME_PATH}/build/common/Share/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
-     fi
-   fi
-;;
-XWRT)
-  s="luci-app-wrtbwmon,wrtbwmon,bcm27xx-userland,luci-app-aliyundrive-webdav,aliyundrive-webdav,aliyundrive-fuse"
-  c=(${s//,/ })
-  for i in ${c[@]}; do \
-    find . -type d -name "${i}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
-  done
-;;
-esac
-
-for X in $(ls -1 "${HOME_PATH}/feeds/passwall3"); do
-  find . -type d -name "${X}" |grep -v 'danshui\|passwall3' |xargs -i rm -rf {}
-done
+#if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
+#  giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile
+#  giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile
+#fi
 
 [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
-./scripts/feeds update danshui2
-
 cp -Rf ${HOME_PATH}/feeds.conf.default ${HOME_PATH}/LICENSES/doc/uniq.conf
 }
 
@@ -643,12 +499,6 @@ cd ${HOME_PATH}
 source $BUILD_PATH/$DIY_PART_SH
 cd ${HOME_PATH}
 
-# passwall
-find . -type d -name '*luci-app-passwall*' -o -name 'passwall1' -o -name 'passwall2' | xargs -i rm -rf {}
-sed -i '/passwall.git\;luci/d; /passwall2/d' "feeds.conf.default"
-echo "src-git passwall1 https://github.com/xiaorouji/openwrt-passwall.git;main" >> "feeds.conf.default"
-echo "src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git;main" >> "feeds.conf.default"
-
 # openclash
 find . -type d -name '*luci-app-openclash*' -o -name '*OpenClash*' | xargs -i rm -rf {}
 sed -i '/OpenClash/d' "feeds.conf.default"
@@ -660,15 +510,7 @@ else
   echo "OpenClash_branch=master" >> ${GITHUB_ENV}
 fi
 
-cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
-mv -f uniq.conf feeds.conf.default
-sed -i 's@.*danshui*@#&@g' "feeds.conf.default"
-sed -i 's@.*src-git lienol*@#&@g' "feeds.conf.default"
-sed -i 's@.*src-git other*@#&@g' "feeds.conf.default"
 ./scripts/feeds update -a
-sed -i 's/^#\(.*danshui\)/\1/' "feeds.conf.default"
-sed -i 's/^#\(.*src-git lienol\)/\1/' "feeds.conf.default"
-sed -i 's/^#\(.*src-git other\)/\1/' "feeds.conf.default"
 
 # 正在执行插件语言修改
 if [[ "${LUCI_BANBEN}" == "2" ]]; then
