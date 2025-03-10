@@ -119,7 +119,7 @@ COOLSNOWWOLF)
   export SOURCE="Lede"
   export SOURCE_OWNER="Lean's"
   export LUCI_EDITION="23.05"
-  export DIY_WORK="${FOLDER_NAME}master"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
