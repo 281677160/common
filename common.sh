@@ -276,9 +276,9 @@ gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/f
 # 增加rust文件
 gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 
-gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
-gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 
+echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
@@ -301,8 +301,6 @@ else
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
 fi
 
-echo "1"
-
 Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
 if [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
@@ -310,7 +308,6 @@ if [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
 elif [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
 fi
-echo "2"
 
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
 if [[ -n "${ZZZ_PATH}" ]]; then  
@@ -347,13 +344,12 @@ fi
 # 修改一些依赖
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
-  echo "11"
   if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
   elif [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=libustream-openssl ?g' "${HOME_PATH}/include/target.mk"
   fi
-  echo "22"
+
   if [[ -n "$(grep "dnsmasq" ${HOME_PATH}/include/target.mk)" ]] && [[ -z "$(grep "dnsmasq-full" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?dnsmasq?dnsmasq-full luci luci-newapi luci-lib-fs?g' "${HOME_PATH}/include/target.mk"
   fi
@@ -425,6 +421,9 @@ cd ${HOME_PATH}
 
 function Diy_LIENOL() {
 cd ${HOME_PATH}
+if [[ "${REPO_BRANCH}" == "19.07" ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+fi
 }
 
 
@@ -442,12 +441,18 @@ fi
 
 function Diy_XWRT() {
 cd ${HOME_PATH}
-  echo "44"
 }
 
 
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
+if [[ "${REPO_BRANCH}" == "22.03" ]]; then
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+fi
+if [[ "${REPO_BRANCH}" == "19.07" ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+fi
 }
 
 
@@ -455,17 +460,6 @@ function Diy_zdypartsh() {
 cd ${HOME_PATH}
 source $BUILD_PATH/$DIY_PART_SH
 cd ${HOME_PATH}
-
-# openclash
-find . -type d -name '*luci-app-openclash*' -o -name '*OpenClash*' | xargs -i rm -rf {}
-sed -i '/OpenClash/d' "feeds.conf.default"
-if [[ "${OpenClash_branch}" == "1" ]]; then
-  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
-  echo "OpenClash_branch=dev" >> ${GITHUB_ENV}
-else
-  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
-  echo "OpenClash_branch=master" >> ${GITHUB_ENV}
-fi
 
 ./scripts/feeds update -a
 
@@ -509,21 +503,6 @@ if [[ "${AdGuardHome_Core}" == "1" ]]; then
 else
   [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
   echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
-fi
-
-# openclash内核
-if [[ "${OpenClash_Core}" == "1" ]]; then
-  echo "OpenClash_Core=1" >> ${GITHUB_ENV}
-elif [[ "${OpenClash_Core}" == "2" ]]; then
-  echo "OpenClash_Core=2" >> ${GITHUB_ENV}
-else
-  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
-  [[ -d "${HOME_PATH}/files/etc/openclash/core" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core
-fi
-luci_path="$({ find "${HOME_PATH}/feeds" |grep 'luci-openclash' |grep 'root'; } 2>"/dev/null")"
-if [[ -f "${luci_path}" ]] && [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
-  sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' "${luci_path}"
-  sed -i '/uci -q commit openclash/a\fi' "${luci_path}"
 fi
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
@@ -1289,66 +1268,6 @@ elif [[ `grep -c "CONFIG_ARCH=\"mips64el\"" ${HOME_PATH}/.config` -eq '1' ]]; th
 else
   echo "不了解您的CPU为何架构"
   weizhicpu="1"
-fi
-
-if [[ ! "${weizhicpu}" == "1" ]] && [[ -n "${OpenClash_Core}" ]] && [[ "${OpenClash_branch}" =~ (master|dev) ]]; then
-  echo "正在执行：给openclash下载核心"
-  rm -rf ${HOME_PATH}/files/etc/openclash/core
-  rm -rf ${HOME_PATH}/clash-neihe && mkdir -p ${HOME_PATH}/clash-neihe
-  mkdir -p ${HOME_PATH}/files/etc/openclash/core
-  cd ${HOME_PATH}/clash-neihe
-  if [[ "${OpenClash_Core}" == "2" ]]; then
-    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/meta/clash-${Archclash}.tar.gz -O meta.tar.gz
-    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/dev/clash-${Archclash}.tar.gz -O clash.tar.gz
-    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/core_version -O core_version
-    TUN="$(cat core_version |grep -v "^v\|^V\|^a" |grep -E "[0-9]+.[0-9]+.[0-9]+")"
-    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/premium/clash-${Archclash}-${TUN}.gz -O clash_tun.gz
-    
-    tar -zxvf clash.tar.gz -O > clash
-    if [[ $? -eq 0 ]];then
-      mv -f ${HOME_PATH}/clash-neihe/clash ${HOME_PATH}/files/etc/openclash/core/clash
-      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
-      echo "OpenClash增加dev内核成功"
-    else
-      echo "OpenClash增加dev内核失败"
-    fi
-    tar -zxvf meta.tar.gz -O > clash_meta
-    if [[ $? -eq 0 ]];then
-      mv -f ${HOME_PATH}/clash-neihe/clash_meta ${HOME_PATH}/files/etc/openclash/core/clash_meta
-      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash_meta
-      echo "OpenClash增加meta内核成功"
-    else
-      echo "OpenClash增加meta内核失败"
-    fi
-    gzip -d clash_tun.gz
-    if [[ $? -eq 0 ]];then
-      mv -f ${HOME_PATH}/clash-neihe/clash_tun ${HOME_PATH}/files/etc/openclash/core/clash_tun
-      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash_tun
-      echo "clash"
-      echo "OpenClash增加tun内核成功"
-    else
-      echo "OpenClash增加tun内核失败"
-    fi
-  elif [[ "${OpenClash_Core}" == "1" ]]; then
-    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/dev/clash-${Archclash}.tar.gz
-    if [[ $? -ne 0 ]];then
-      wget -q https://github.com/vernesong/OpenClash/releases/download/Clash/clash-${Archclash}.tar.gz
-    else
-      echo "OpenClash内核下载成功"
-    fi
-    tar -zxvf clash-${Archclash}.tar.gz
-    if [[ -f "${HOME_PATH}/clash-neihe/clash" ]]; then
-      mv -f ${HOME_PATH}/clash-neihe/clash ${HOME_PATH}/files/etc/openclash/core/clash
-      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
-      echo "OpenClash增加内核成功"
-    else
-      echo "OpenClash增加内核失败"
-    fi
-  else
-    echo "无需内核"
-  fi
-  cd ${HOME_PATH}
-  rm -rf ${HOME_PATH}/clash-neihe
 fi
 
 if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
