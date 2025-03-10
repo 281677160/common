@@ -288,8 +288,8 @@ gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PA
 
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-  giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
-  giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/relevance/openwrt-passwall-packages/shadowsocks-rust/Makefile
+  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust
+  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/relevance/openwrt-passwall-packages/shadowsocks-rust
 fi
 
 [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
