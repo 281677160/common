@@ -192,13 +192,17 @@ echo "REPAIR_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/openw
 echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
 echo "DEFAULT_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/default-setting" >> ${GITHUB_ENV}
 echo "KEEPD_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
-echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/bin/config_generate" >> ${GITHUB_ENV}
 echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
 echo "Upgrade_Date=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`" >> ${GITHUB_ENV}
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
 echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
 echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
+if [[ ${SOURCE_CODE} == "COOLSNOWWOLF" ]]; then
+  echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/luci2/bin/config_generate" >> ${GITHUB_ENV}
+else
+  echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/bin/config_generate" >> ${GITHUB_ENV}
+fi
 if [[ -n "${BENDI_VERSION}" ]]; then
   echo "PACKAGING_FIRMWARE_BENDI=${PACKAGING_FIRMWARE}" >> ${GITHUB_ENV}
   echo "MODIFY_CONFIGURATION=${MODIFY_CONFIGURATION}" >> ${GITHUB_ENV}
@@ -415,7 +419,6 @@ TIME r ""
 
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
-echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/luci2/bin/config_generate" >> ${GITHUB_ENV}
 }
 
 
