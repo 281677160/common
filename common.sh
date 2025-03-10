@@ -301,6 +301,8 @@ else
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
 fi
 
+echo "1"
+
 Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
 if [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
@@ -308,7 +310,7 @@ if [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
 elif [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
   cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
 fi
-
+echo "2"
 
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
 if [[ -n "${ZZZ_PATH}" ]]; then  
@@ -317,7 +319,7 @@ if [[ -n "${ZZZ_PATH}" ]]; then
 
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 fi
-
+echo "3"
 # 增加一些应用
 cp -Rf ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
