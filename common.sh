@@ -269,7 +269,7 @@ cd ${HOME_PATH}
 
 git pull
 
-sed -i "1isrc-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" feeds.conf.default
+sed -i "2isrc-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" feeds.conf.default
 
 ./scripts/feeds update -a
 
