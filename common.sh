@@ -249,23 +249,13 @@ else
   sudo sh -c 'echo openwrt > /etc/oprelyon'
   TIME b "全部依赖安装完毕"
 fi
-if [[ `gcc --version |grep -c "buntu 13"` -eq '0' ]]; then
-  sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-  sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
-  sudo apt-get install -y gcc-13
-  sudo apt-get install -y g++-13
-  sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
   gcc --version
-fi
 }
 
 
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
-[[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
-[[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
-[[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
 
 git pull
 
@@ -292,15 +282,13 @@ if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] ||
   gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/relevance/openwrt-passwall-packages/shadowsocks-rust
 fi
 
-[[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && cp -Rf ${HOME_PATH}/build/common/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
+[[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]] && gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
 cp -Rf ${HOME_PATH}/feeds.conf.default ${HOME_PATH}/LICENSES/doc/uniq.conf
 }
 
 
 
 function Diy_Wenjian() {
-cp -Rf ${HOME_PATH}/LICENSES/doc/uniq.conf ${HOME_PATH}/feeds.conf.default
-
 # 增加中文语言包
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
   LUCI_BANBEN="2"
@@ -324,28 +312,7 @@ if [[ -n "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   sed -i '/exit 0$/d' "${ZZZ_PATH}"
 
-  if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
-    cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
-  else
-    cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/LICENSES/doc/default-settings
-  fi
-
-  if [[ -f "${HOME_PATH}/LICENSES/doc/config_generates" ]]; then
-    cp -Rf ${HOME_PATH}/LICENSES/doc/config_generates "${GENE_PATH}"
-  else
-    cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
-  fi
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-  [[ -n "$(grep "openwrt_banner" "${ZZZ_PATH}")" ]] && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
-
-cat >> "${ZZZ_PATH}" <<-EOF
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
-EOF
 fi
 
 # 增加一些应用
@@ -358,27 +325,10 @@ if [[ `grep -Eoc "admin:.*" ${FILES_PATH}/etc/shadow` -eq '1' ]]; then
   sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 fi
 
-cp -Rf ${HOME_PATH}/build/common/custom/Postapplication "${FILES_PATH}/etc/init.d/Postapplication"
-sudo chmod +x "${FILES_PATH}/etc/init.d/Postapplication"
+giturl https://github.com/281677160/common/blob/main/custom/Postapplication "${FILES_PATH}/etc/init.d/Postapplication"
+giturl https://github.com/281677160/common/blob/main/custom/networkdetection "${FILES_PATH}/etc/init.d/networkdetection"
+giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh "${FILES_PATH}/usr/bin/openwrt"
 
-cp -Rf ${HOME_PATH}/build/common/custom/networkdetection "${FILES_PATH}/etc/networkdetection"
-sudo chmod +x "${FILES_PATH}/etc/networkdetection"
-
-[[ ! -d "${FILES_PATH}/usr/bin" ]] && mkdir -p ${FILES_PATH}/usr/bin
-cp -Rf ${HOME_PATH}/build/common/custom/openwrt.sh "${FILES_PATH}/usr/bin/openwrt"
-sudo chmod +x "${FILES_PATH}/usr/bin/openwrt"
-
-echo '#!/bin/bash' > "${DELETE}"
-sudo chmod +x "${DELETE}"
-
-if [[ -d "${HOME_PATH}/target/linux/armsr" ]]; then
-  features_file="${HOME_PATH}/target/linux/armsr/Makefile"
-elif [[ -d "${HOME_PATH}/target/linux/armvirt" ]]; then
-  features_file="${HOME_PATH}/target/linux/armvirt/Makefile"
-fi
-[[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
-sed -i '/DISTRIB_SOURCECODE/d' "${REPAIR_PATH}"
-echo -e "\nDISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
 
 # 给固件保留配置更新固件的保留项目
 if [[ -z "$(grep "background" ${KEEPD_PATH})" ]]; then
@@ -423,8 +373,6 @@ XWRT|OFFICIAL)
   fi
 ;;
 esac
-  echo "33"
-source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 
 # files大法，设置固件无烦恼
 if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
@@ -2128,4 +2076,5 @@ if [[ -n "${url}" ]]; then
 else
     echo "未找到有效链接"
 fi
+[[ -f "${DELETE}" ]] && sudo chmod +x "${DELETE}"
 }
