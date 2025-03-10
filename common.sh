@@ -2080,5 +2080,4 @@ if [[ -n "${url}" ]]; then
 else
     echo "未找到有效链接"
 fi
-[[ -f "${DELETE}" ]] && sudo chmod +x "${DELETE}"
 }
