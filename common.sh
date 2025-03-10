@@ -283,7 +283,7 @@ echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust
-  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/relevance/openwrt-passwall-packages/shadowsocks-rust
+  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/relevance/passwall-packages/shadowsocks-rust
 fi
 
 gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
@@ -462,6 +462,12 @@ source $BUILD_PATH/$DIY_PART_SH
 cd ${HOME_PATH}
 
 ./scripts/feeds update -a
+
+if [[ "${OpenClash_branch}" == "1" ]]; then
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/OpenClashmaster
+else
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/OpenClashdev
+fi
 
 # 正在执行插件语言修改
 if [[ "${LUCI_BANBEN}" == "2" ]]; then
