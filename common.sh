@@ -267,6 +267,12 @@ sed -i "2isrc-git danshui https://github.com/281677160/openwrt-package.git;$SOUR
 
 ./scripts/feeds update -a > /dev/null 2>&1
 
+z="v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin"
+t=(${z//,/ })
+for x in ${t[@]}; do \
+  find . -type d -name "${x}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+done
+
 # 更换golang版本
 gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
 
