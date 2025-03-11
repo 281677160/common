@@ -261,7 +261,7 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
 
-git pull
+#git pull
 
 sed -i "2isrc-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" feeds.conf.default
 
@@ -289,12 +289,12 @@ gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH
 
 echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
-
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust
 fi
-
-gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
+if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
+fi
 }
 
 
@@ -1111,7 +1111,7 @@ if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]];
     echo "" >> ${HOME_PATH}/CHONGTU
   fi
 fi
-
+echo "999"
 cd ${HOME_PATH}
 make defconfig > /dev/null 2>&1
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p ${HOME_PATH}/build_logo
