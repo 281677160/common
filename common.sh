@@ -379,6 +379,17 @@ giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FI
 giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
 giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh ${FILES_PATH}/usr/bin/openwrt
 
+amba4="$(find . -type d -name 'luci-app-samba4')"
+autosam="$(find . -type d -name 'autosamba')"
+if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
+  for X in "$(find . -type d -name 'autosamba')/Makefile"; do sed -i "s?+luci-app-samba4?+luci-app-samba?g" "$X"; done
+else
+  for X in "$(find . -type d -name 'autosamba')/Makefile"; do
+    if [[ `grep -c "+luci-app-samba4" $X` -eq '0' ]]; then
+      sed -i "s?+luci-app-samba?+luci-app-samba4?g" "$X"
+    fi
+  done
+fi
 
 # 给固件保留配置更新固件的保留项目
 if [[ -z "$(grep "background" ${KEEPD_PATH})" ]]; then
@@ -471,6 +482,16 @@ function Diy_LIENOL() {
 cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+fi
+gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
+if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+  rm -rf ${HOME_PATH}/feeds/luci/luci-app-ntpc
+fi
+if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/nikki
 fi
 }
 
