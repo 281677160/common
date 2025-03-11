@@ -274,6 +274,7 @@ for x in ${t[@]}; do \
 done
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
   gitsvn https://github.com/281677160/common/tree/main/Share/v2raya ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/v2raya
 fi
 
@@ -285,8 +286,6 @@ gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/f
 
 # 增加rust文件
 gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
-
-source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 
 echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
