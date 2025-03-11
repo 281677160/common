@@ -276,6 +276,7 @@ sed -i '/danshui/d' "feeds.conf.default"
 sed -i "2isrc-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" feeds.conf.default
 
 ./scripts/feeds update -a > /dev/null 2>&1
+source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 
 z="v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,v2ray-geodata,luci-theme-argon,luci-theme-design,luci-theme-kucat"
 t=(${z//,/ })
@@ -284,7 +285,6 @@ for x in ${t[@]}; do \
 done
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
-  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
   gitsvn https://github.com/281677160/common/tree/main/Share/v2raya ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/v2raya
 fi
 
@@ -314,9 +314,11 @@ function Diy_Wenjian() {
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
   LUCI_BANBEN="2"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
+  gitcon https://github.com/281677160/openwrt-package/tree/Theme2 ${HOME_PATH}/package/Theme-package
 else
   LUCI_BANBEN="1"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
+  gitcon https://github.com/281677160/openwrt-package/tree/Theme1 ${HOME_PATH}/package/Theme-package
 fi
 
 Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
