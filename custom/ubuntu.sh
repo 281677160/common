@@ -9,7 +9,7 @@ sudo mount -o remount,rw /
 fsck -f /
 sudo dpkg --configure -a
 sudo apt-get install -f
-#sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
+sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
 sudo apt update -y
 sudo apt full-upgrade -y
 sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
@@ -20,7 +20,6 @@ libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full
 python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion \
 swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 sudo apt-get install -y rename pigz libfuse-dev upx subversion clang
-sudo apt-get install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
 sudo apt-get install -y gcc-13
