@@ -502,7 +502,9 @@ if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
 fi
 if [[ "${REPO_BRANCH}" == *"main"* ]]; then
   gitsvn https://github.com/openwrt/packages/tree/master/utils/fatresize ${HOME_PATH}/feeds/packages/utils/fatresize
-  gitsvn https://github.com/immortalwrt/packages/tree/master/net/vlmcsd ${HOME_PATH}/feeds/other/vlmcsd
+  gitsvn https://github.com/bcl/parted/tree/master/libparted ${HOME_PATH}/feeds/packages/utils/libparted
+  rm -fr ${HOME_PATH}/feeds/other/vlmcsd
+  rm -fr ${HOME_PATH}/feeds/other/luci-app-vlmcsd
 fi
 if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
