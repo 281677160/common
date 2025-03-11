@@ -498,6 +498,7 @@ if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/ustream-ssl ${HOME_PATH}/package/libs/ustream-ssl
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/uclient ${HOME_PATH}/package/libs/uclient
   gitsvn https://github.com/openwrt/openwrt/tree/master/package/utils/ucode ${HOME_PATH}/package/utils/ucode
+  gitsvn https://github.com/openwrt/packages/tree/master/utils/owut ${HOME_PATH}/feeds/packages/utils/owut
 fi
 if [[ "${REPO_BRANCH}" == *"main"* ]]; then
   gitsvn https://github.com/openwrt/packages/tree/master/utils/fatresize ${HOME_PATH}/feeds/packages/utils/fatresize
