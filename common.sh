@@ -493,6 +493,13 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
   rm -rf ${HOME_PATH}/feeds/luci/luci-app-ntpc
 fi
+if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocksr-libev ${HOME_PATH}/feeds/packages/net/shadowsocksr-libev
+fi
+if [[ "${REPO_BRANCH}" == *"main"* ]]; then
+  gitsvn https://github.com/Lienol/openwrt-packages/tree/23.05/utils/fatresize ${HOME_PATH}/feeds/packages/utils/fatresize
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/vlmcsd ${HOME_PATH}/feeds/other/vlmcsd
+fi
 if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
   rm -rf ${HOME_PATH}/feeds/danshui/relevance/nikki
