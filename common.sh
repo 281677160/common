@@ -273,6 +273,10 @@ for x in ${t[@]}; do \
   find . -type d -name "${x}" |grep -v 'danshui' |xargs -i rm -rf {}; \
 done
 
+if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/v2raya ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/v2raya
+fi
+
 # 更换golang版本
 gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
 
