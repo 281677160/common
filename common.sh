@@ -452,6 +452,10 @@ fi
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
 fi
+if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/nikki
+fi
 gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
 }
 
