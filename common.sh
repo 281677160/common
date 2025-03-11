@@ -283,7 +283,6 @@ echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust
-  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/relevance/passwall-packages/shadowsocks-rust
 fi
 
 gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
@@ -327,9 +326,9 @@ if [[ `grep -Eoc "admin:.*" ${FILES_PATH}/etc/shadow` -eq '1' ]]; then
   sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 fi
 
-giturl https://github.com/281677160/common/blob/main/custom/Postapplication "${FILES_PATH}/etc/init.d/Postapplication"
-giturl https://github.com/281677160/common/blob/main/custom/networkdetection "${FILES_PATH}/etc/init.d/networkdetection"
-giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh "${FILES_PATH}/usr/bin/openwrt"
+giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
+giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
+giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh ${FILES_PATH}/usr/bin/openwrt
 
 
 # 给固件保留配置更新固件的保留项目
