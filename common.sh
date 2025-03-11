@@ -494,7 +494,8 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   rm -rf ${HOME_PATH}/feeds/luci/luci-app-ntpc
 fi
 if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
-  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocksr-libev  ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocksr-libev
+   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/mbedtls ${HOME_PATH}/package/libs/mbedtls
+   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/ustream-ssl ${HOME_PATH}/package/libs/ustream-ssl
 fi
 if [[ "${REPO_BRANCH}" == *"main"* ]]; then
   gitsvn https://github.com/openwrt/packages/tree/master/utils/fatresize ${HOME_PATH}/feeds/packages/utils/fatresize
