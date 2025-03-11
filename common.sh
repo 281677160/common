@@ -489,7 +489,7 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
   rm -rf ${HOME_PATH}/feeds/luci/luci-app-ntpc
 fi
-if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
+if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
   rm -rf ${HOME_PATH}/feeds/danshui/relevance/nikki
 fi
