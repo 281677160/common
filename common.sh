@@ -494,7 +494,9 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   rm -rf ${HOME_PATH}/feeds/luci/luci-app-ntpc
 fi
 if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
-  gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs ${HOME_PATH}/package/libs
+  gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/mbedtls ${HOME_PATH}/package/libs/mbedtls
+  gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/ustream-ssl ${HOME_PATH}/package/libs/ustream-ssl
+  gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/uclient ${HOME_PATH}/package/libs/uclient
 fi
 if [[ "${REPO_BRANCH}" == *"main"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs ${HOME_PATH}/package/libs
