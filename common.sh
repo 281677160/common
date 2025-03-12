@@ -295,6 +295,21 @@ fi
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
 fi
+
+if [[ -d "${HOME_PATH}/feeds/packages/net/shadowsocks-rust" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-rust
+    echo "shadowsocks-rust"
+fi
+
+if [[ -d "${HOME_PATH}/feeds/packages/net/shadowsocks-libev" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+    echo "shadowsocks-libev"
+fi
+
+if [[ -d "${HOME_PATH}/feeds/packages/net/shadowsocksr-libev" ]]; then
+  rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocksr-libev
+    echo "shadowsocksr-libev"
+fi
 }
 
 
