@@ -306,7 +306,7 @@ gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PA
 echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust
+#  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 fi
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
