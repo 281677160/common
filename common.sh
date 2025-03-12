@@ -278,7 +278,8 @@ sed -i "2isrc-git danshui https://github.com/281677160/openwrt-package.git;$SOUR
 source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 
 z="v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,v2ray-geodata, \
-luci-theme-argon,luci-theme-design,luci-theme-kucat,luci-app-smartdns,smartdns"
+luci-theme-argon,luci-theme-design,luci-theme-kucat,luci-app-smartdns,smartdns, \
+luci-app-openclash,luci-app-passwall,luci-app-ssr-plus"
 t=(${z//,/ })
 for x in ${t[@]}; do \
   find . -type d -name "${x}" |grep -v 'danshui' |xargs -i rm -rf {}; \
