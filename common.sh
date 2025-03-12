@@ -253,7 +253,6 @@ else
   sudo sh -c 'echo openwrt > /etc/oprelyon'
   TIME b "全部依赖安装完毕"
 fi
-  gcc --version
 }
 
 
