@@ -272,7 +272,7 @@ fi
 git pull
 
 sed -i '/danshui/d' "feeds.conf.default"
-sed -i "2isrc-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" feeds.conf.default
+echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
 
 ./scripts/feeds update -a > /dev/null 2>&1
 
