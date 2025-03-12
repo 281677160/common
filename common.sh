@@ -606,6 +606,7 @@ if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}"
 elif [[ -n "${Customized_Information}" ]]; then
   sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release?g" "${ZZZ_PATH}"
   sed -i "s?OpenWrt ?${Customized_Information} @ OpenWrt ?g" "${ZZZ_PATH}"
+  sed -i "s?OpenWrt2410 ?${Customized_Information} @ OpenWrt ?g" "${DEFAULT_PATH}"
   echo "个性签名[${Customized_Information}]增加完成"
 fi
 
