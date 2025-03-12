@@ -119,7 +119,7 @@ COOLSNOWWOLF)
   export SOURCE="Lede"
   export SOURCE_OWNER="Lean's"
   export LUCI_EDITION="23.05"
-  export DIY_WORK="${FOLDER_NAME}master"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
 ;;
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
@@ -260,12 +260,34 @@ fi
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
+[[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
+[[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
+[[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
+
+LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
+if [[ -n "${LUCI_CHECKUT}" ]]; then
+  git checkout ${LUCI_CHECKUT}
+  git switch -c ${LUCI_CHECKUT}
+fi
 
 git pull
 
+sed -i '/danshui/d' "feeds.conf.default"
 sed -i "2isrc-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" feeds.conf.default
 
 ./scripts/feeds update -a > /dev/null 2>&1
+source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+
+z="v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,v2ray-geodata, \
+luci-theme-argon,luci-theme-design,luci-theme-kucat,luci-app-smartdns,smartdns"
+t=(${z//,/ })
+for x in ${t[@]}; do \
+  find . -type d -name "${x}" |grep -v 'danshui' |xargs -i rm -rf {}; \
+done
+
+if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/v2raya ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/v2raya
+fi
 
 # 更换golang版本
 gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
@@ -274,19 +296,16 @@ gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages
 gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
 # 增加rust文件
-#gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 
-gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
-gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
-
-
+echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust
-  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/relevance/openwrt-passwall-packages/shadowsocks-rust
 fi
-
-gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
+if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
+fi
 }
 
 
@@ -296,30 +315,59 @@ function Diy_Wenjian() {
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
   LUCI_BANBEN="2"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
+  gitcon https://github.com/281677160/openwrt-package/tree/Theme2 ${HOME_PATH}/package/Theme-package
 else
   LUCI_BANBEN="1"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
+  gitcon https://github.com/281677160/openwrt-package/tree/Theme1 ${HOME_PATH}/package/Theme-package
 fi
-
-echo "1"
 
 Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
 if [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "2" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/Share/default-settings2 ${HOME_PATH}/package/default-settings
+  gitsvn https://github.com/281677160/common/tree/main/Share/default-settings2 ${HOME_PATH}/package/default-settings
   [[ ! -d "${HOME_PATH}/feeds/luci/libs/luci-lib-base" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
 elif [[ -z "${Settings_path}" ]] && [[ "${LUCI_BANBEN}" == "1" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/Share/default-settings1 ${HOME_PATH}/package/default-settings
+  gitsvn https://github.com/281677160/common/tree/main/Share/default-settings2 ${HOME_PATH}/package/default-settings
 fi
-echo "2"
 
 ZZZ_PATH="$(find "${HOME_PATH}/package" -type f -name "*-default-settings" |grep files)"
 if [[ -n "${ZZZ_PATH}" ]]; then  
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   sed -i '/exit 0$/d' "${ZZZ_PATH}"
 
+  if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
+    cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
+  else
+    cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/LICENSES/doc/default-settings
+  fi
+
+  if [[ -f "${HOME_PATH}/LICENSES/doc/config_generates" ]]; then
+    cp -Rf ${HOME_PATH}/LICENSES/doc/config_generates "${GENE_PATH}"
+  else
+    cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
+  fi
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+  [[ -n "$(grep "openwrt_banner" "${ZZZ_PATH}")" ]] && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
+
+cat >> "${ZZZ_PATH}" <<-EOF
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
+EOF
 fi
-echo "3"
+
+if [[ -d "${HOME_PATH}/target/linux/armsr" ]]; then
+  features_file="${HOME_PATH}/target/linux/armsr/Makefile"
+elif [[ -d "${HOME_PATH}/target/linux/armvirt" ]]; then
+  features_file="${HOME_PATH}/target/linux/armvirt/Makefile"
+fi
+[[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
+sed -i '/DISTRIB_SOURCECODE/d' "${REPAIR_PATH}"
+echo -e "\nDISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+
 # 增加一些应用
 cp -Rf ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
 sudo chmod +x "${DEFAULT_PATH}"
@@ -330,10 +378,9 @@ if [[ `grep -Eoc "admin:.*" ${FILES_PATH}/etc/shadow` -eq '1' ]]; then
   sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 fi
 
-giturl https://github.com/281677160/common/blob/main/custom/Postapplication "${FILES_PATH}/etc/init.d/Postapplication"
-giturl https://github.com/281677160/common/blob/main/custom/networkdetection "${FILES_PATH}/etc/init.d/networkdetection"
-giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh "${FILES_PATH}/usr/bin/openwrt"
-
+giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
+giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
+giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh ${FILES_PATH}/usr/bin/openwrt
 
 # 给固件保留配置更新固件的保留项目
 if [[ -z "$(grep "background" ${KEEPD_PATH})" ]]; then
@@ -347,13 +394,12 @@ fi
 # 修改一些依赖
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
-  echo "11"
   if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
   elif [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=libustream-openssl ?g' "${HOME_PATH}/include/target.mk"
   fi
-  echo "22"
+
   if [[ -n "$(grep "dnsmasq" ${HOME_PATH}/include/target.mk)" ]] && [[ -z "$(grep "dnsmasq-full" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?dnsmasq?dnsmasq-full luci luci-newapi luci-lib-fs?g' "${HOME_PATH}/include/target.mk"
   fi
@@ -425,29 +471,74 @@ cd ${HOME_PATH}
 
 function Diy_LIENOL() {
 cd ${HOME_PATH}
+if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+fi
+gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
+if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+  rm -rf ${HOME_PATH}/feeds/luci/luci-app-ntpc
+fi
+if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
+   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/mbedtls ${HOME_PATH}/package/libs/mbedtls
+   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/ustream-ssl ${HOME_PATH}/package/libs/ustream-ssl
+fi
+if [[ "${REPO_BRANCH}" == *"main"* ]]; then
+  gitsvn https://github.com/openwrt/packages/tree/master/utils/fatresize ${HOME_PATH}/feeds/packages/utils/fatresize
+  gitsvn https://github.com/bcl/parted/tree/master/libparted ${HOME_PATH}/feeds/packages/utils/libparted
+  rm -fr ${HOME_PATH}/feeds/other/vlmcsd
+  rm -fr ${HOME_PATH}/feeds/other/luci-app-vlmcsd
+fi
+if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/nikki
+fi
+[[ -d "${HOME_PATH}/build/common/Share/luci-app-samba4" ]] && rm -rf ${HOME_PATH}/build/common/Share/luci-app-samba4
+amba4="$(find . -type d -name 'luci-app-samba4')"
+autosam="$(find . -type d -name 'autosamba')"
+if [[ -z "${amba4}" ]] && [[ -n "${autosam}" ]]; then
+  for X in "$(find . -type d -name 'autosamba')/Makefile"; do sed -i "s?+luci-app-samba4?+luci-app-samba?g" "$X"; done
+else
+  for X in "$(find . -type d -name 'autosamba')/Makefile"; do
+    if [[ `grep -c "+luci-app-samba4" $X` -eq '0' ]]; then
+      sed -i "s?+luci-app-samba?+luci-app-samba4?g" "$X"
+    fi
+  done
+fi
 }
 
 
 function Diy_IMMORTALWRT() {
 cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
-  # 增加缺少的bmx6
-  if [[ -d "${HOME_PATH}/build/common/Share/bmx6" ]]; then
-    rm -rf ${HOME_PATH}/feeds/routing/bmx6
-    cp -Rf ${HOME_PATH}/build/common/Share/bmx6 ${HOME_PATH}/feeds/routing/bmx6
-  fi
+  gitsvn https://github.com/openwrt/routing/tree/openwrt-21.02/bmx6 ${HOME_PATH}/feeds/routing/bmx6
 fi
 }
 
 
 function Diy_XWRT() {
 cd ${HOME_PATH}
-  echo "44"
 }
 
 
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
+gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
+if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+fi
+if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
+  gitsvn https://github.com/openwrt/openwrt/tree/openwrt-22.03/package/utils/bcm27xx-userland ${HOME_PATH}/package/utils/bcm27xx-userland
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-diskman
+fi
+if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/nikki
+fi
 }
 
 
@@ -456,18 +547,13 @@ cd ${HOME_PATH}
 source $BUILD_PATH/$DIY_PART_SH
 cd ${HOME_PATH}
 
-# openclash
-find . -type d -name '*luci-app-openclash*' -o -name '*OpenClash*' | xargs -i rm -rf {}
-sed -i '/OpenClash/d' "feeds.conf.default"
-if [[ "${OpenClash_branch}" == "1" ]]; then
-  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "feeds.conf.default"
-  echo "OpenClash_branch=dev" >> ${GITHUB_ENV}
-else
-  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "feeds.conf.default"
-  echo "OpenClash_branch=master" >> ${GITHUB_ENV}
-fi
-
 ./scripts/feeds update -a
+
+if [[ "${OpenClash_branch}" == "1" ]]; then
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/OpenClashmaster
+else
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/OpenClashdev
+fi
 
 # 正在执行插件语言修改
 if [[ "${LUCI_BANBEN}" == "2" ]]; then
@@ -509,21 +595,6 @@ if [[ "${AdGuardHome_Core}" == "1" ]]; then
 else
   [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
   echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
-fi
-
-# openclash内核
-if [[ "${OpenClash_Core}" == "1" ]]; then
-  echo "OpenClash_Core=1" >> ${GITHUB_ENV}
-elif [[ "${OpenClash_Core}" == "2" ]]; then
-  echo "OpenClash_Core=2" >> ${GITHUB_ENV}
-else
-  echo "OpenClash_Core=0" >> ${GITHUB_ENV}
-  [[ -d "${HOME_PATH}/files/etc/openclash/core" ]] && rm -rf ${HOME_PATH}/files/etc/openclash/core
-fi
-luci_path="$({ find "${HOME_PATH}/feeds" |grep 'luci-openclash' |grep 'root'; } 2>"/dev/null")"
-if [[ -f "${luci_path}" ]] && [[ `grep -c "uci get openclash.config.enable" "${luci_path}"` -eq '0' ]]; then
-  sed -i '/uci -q set openclash.config.enable=0/i\if [[ "\$(uci get openclash.config.enable)" == "0" ]] || [[ -z "\$(uci get openclash.config.enable)" ]]; then' "${luci_path}"
-  sed -i '/uci -q commit openclash/a\fi' "${luci_path}"
 fi
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
@@ -609,6 +680,7 @@ if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}"
 elif [[ -n "${Customized_Information}" ]]; then
   sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release?g" "${ZZZ_PATH}"
   sed -i "s?OpenWrt ?${Customized_Information} @ OpenWrt ?g" "${ZZZ_PATH}"
+  sed -i "s?OpenWrt2410?${Customized_Information} @ OpenWrt?g" "${DEFAULT_PATH}"
   echo "个性签名[${Customized_Information}]增加完成"
 fi
 
@@ -1110,7 +1182,7 @@ if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]];
     echo "" >> ${HOME_PATH}/CHONGTU
   fi
 fi
-
+echo "999"
 cd ${HOME_PATH}
 make defconfig > /dev/null 2>&1
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p ${HOME_PATH}/build_logo
@@ -1289,66 +1361,6 @@ elif [[ `grep -c "CONFIG_ARCH=\"mips64el\"" ${HOME_PATH}/.config` -eq '1' ]]; th
 else
   echo "不了解您的CPU为何架构"
   weizhicpu="1"
-fi
-
-if [[ ! "${weizhicpu}" == "1" ]] && [[ -n "${OpenClash_Core}" ]] && [[ "${OpenClash_branch}" =~ (master|dev) ]]; then
-  echo "正在执行：给openclash下载核心"
-  rm -rf ${HOME_PATH}/files/etc/openclash/core
-  rm -rf ${HOME_PATH}/clash-neihe && mkdir -p ${HOME_PATH}/clash-neihe
-  mkdir -p ${HOME_PATH}/files/etc/openclash/core
-  cd ${HOME_PATH}/clash-neihe
-  if [[ "${OpenClash_Core}" == "2" ]]; then
-    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/meta/clash-${Archclash}.tar.gz -O meta.tar.gz
-    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/dev/clash-${Archclash}.tar.gz -O clash.tar.gz
-    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/core_version -O core_version
-    TUN="$(cat core_version |grep -v "^v\|^V\|^a" |grep -E "[0-9]+.[0-9]+.[0-9]+")"
-    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/premium/clash-${Archclash}-${TUN}.gz -O clash_tun.gz
-    
-    tar -zxvf clash.tar.gz -O > clash
-    if [[ $? -eq 0 ]];then
-      mv -f ${HOME_PATH}/clash-neihe/clash ${HOME_PATH}/files/etc/openclash/core/clash
-      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
-      echo "OpenClash增加dev内核成功"
-    else
-      echo "OpenClash增加dev内核失败"
-    fi
-    tar -zxvf meta.tar.gz -O > clash_meta
-    if [[ $? -eq 0 ]];then
-      mv -f ${HOME_PATH}/clash-neihe/clash_meta ${HOME_PATH}/files/etc/openclash/core/clash_meta
-      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash_meta
-      echo "OpenClash增加meta内核成功"
-    else
-      echo "OpenClash增加meta内核失败"
-    fi
-    gzip -d clash_tun.gz
-    if [[ $? -eq 0 ]];then
-      mv -f ${HOME_PATH}/clash-neihe/clash_tun ${HOME_PATH}/files/etc/openclash/core/clash_tun
-      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash_tun
-      echo "clash"
-      echo "OpenClash增加tun内核成功"
-    else
-      echo "OpenClash增加tun内核失败"
-    fi
-  elif [[ "${OpenClash_Core}" == "1" ]]; then
-    wget -q https://raw.githubusercontent.com/vernesong/OpenClash/core/${OpenClash_branch}/dev/clash-${Archclash}.tar.gz
-    if [[ $? -ne 0 ]];then
-      wget -q https://github.com/vernesong/OpenClash/releases/download/Clash/clash-${Archclash}.tar.gz
-    else
-      echo "OpenClash内核下载成功"
-    fi
-    tar -zxvf clash-${Archclash}.tar.gz
-    if [[ -f "${HOME_PATH}/clash-neihe/clash" ]]; then
-      mv -f ${HOME_PATH}/clash-neihe/clash ${HOME_PATH}/files/etc/openclash/core/clash
-      sudo chmod +x ${HOME_PATH}/files/etc/openclash/core/clash
-      echo "OpenClash增加内核成功"
-    else
-      echo "OpenClash增加内核失败"
-    fi
-  else
-    echo "无需内核"
-  fi
-  cd ${HOME_PATH}
-  rm -rf ${HOME_PATH}/clash-neihe
 fi
 
 if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
