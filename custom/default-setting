@@ -15,6 +15,10 @@ if [[ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]]; then
 	sed -i 's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
 fi
 
+if [[ -f "/usr/lib/os-release" ]]; then
+	sed -i 's?RELEASE=".*"?RELEASE="OpenWrt2410"?g' /usr/lib/os-release
+fi
+
 if [[ `grep -c "danshui" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
 	sed -i '/danshui/d' /etc/opkg/distfeeds.conf
 fi
