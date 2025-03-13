@@ -2066,11 +2066,9 @@ if [[ -n "${url}" ]]; then
         rm -rf "${content}"
     fi
     
-    echo "${url}"
-    echo "${content}"
-    curl -# -L "${url}" -o "${content}"
+    wget -q --show-progress "${url}" -O "${content}"
     if [[ ! -s "${content}" ]]; then
-        wget -q --show-progress "${url}" -O "${content}"
+        curl -# -L "${url}" -o "${content}"
         if [[ ! -s "${content}" ]]; then
             echo "${A}文件下载失败,请检查网络,或查看链接正确性"
         else
