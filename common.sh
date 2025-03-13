@@ -292,15 +292,12 @@ gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages
 # 更换node版本
 gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
-# 增加rust文件
-#gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
-#gitsvn https://github.com/Lienol/openwrt-packages/tree/master/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
-#gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
-
 echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-  #gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust
+  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocks-rust ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust
+  gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 fi
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
