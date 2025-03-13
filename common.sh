@@ -300,9 +300,9 @@ gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/f
 # 增加rust文件
 gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 
-giturl https://github.com/281677160/common/blob/cf4f1f54d40ba82dfe15c456a451bb77ac0aaf54/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile
+# giturl https://github.com/281677160/common/blob/cf4f1f54d40ba82dfe15c456a451bb77ac0aaf54/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/passwall3/shadowsocks-rust/Makefile
 
-giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile
+# giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/helloworld/shadowsocks-rust/Makefile
 
 
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
