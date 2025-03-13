@@ -293,9 +293,9 @@ gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages
 gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
 # 增加rust文件
-# gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
-# gitsvn https://github.com/Lienol/openwrt-packages/tree/master/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
-# gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
+gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+gitsvn https://github.com/Lienol/openwrt-packages/tree/master/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
 
 echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
