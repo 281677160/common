@@ -521,6 +521,7 @@ if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/relevance/nikki
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-23.05/tools/cmake ${HOME_PATH}/tools/cmake
 fi
+gitsvn https://github.com/openwrt/packages/tree/0cf46d43f42969f4d7b6e881931742a40b36d1a2/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
 }
 
 
