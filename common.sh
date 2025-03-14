@@ -513,7 +513,6 @@ cd ${HOME_PATH}
 
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
-gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
 if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
@@ -527,9 +526,6 @@ if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
   rm -rf ${HOME_PATH}/feeds/danshui/relevance/nikki
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-23.05/tools/cmake ${HOME_PATH}/tools/cmake
-fi
-if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-  gitsvn https://github.com/openwrt/packages/tree/openwrt-24.10/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
 fi
 }
 
