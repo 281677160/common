@@ -533,9 +533,9 @@ cd ${HOME_PATH}
 ./scripts/feeds update -a
 
 if [[ "${OpenClash_branch}" == "1" ]]; then
-  rm -rf ${HOME_PATH}/feeds/danshui/relevance/OpenClashmaster
+  gitcon https://github.com/vernesong/OpenClash/tree/dev
 else
-  rm -rf ${HOME_PATH}/feeds/danshui/relevance/OpenClashdev
+  gitcon https://github.com/vernesong/OpenClash/tree/master
 fi
 
 # 正在执行插件语言修改
@@ -1994,12 +1994,11 @@ if [[ -n "${url}" ]]; then
         content="$HOME_PATH/package/$B"
     fi
     
-    echo "${url}"
     sudo rm -rf "${C}"
     if [[ -n "${branch_name}" ]]; then
         git clone -b "${branch_name}" --single-branch "${url}" "${C}"
     else
-        git clone "${url}" "${C}"
+        git clone --depth 1 "${url}" "${C}"
     fi
     if [[ $? -ne 0 ]]; then
         echo "${A}文件下载失败,请检查网络,或查看链接正确性"
