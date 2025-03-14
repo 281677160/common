@@ -1933,11 +1933,11 @@ if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
         content="$HOME_PATH/package/$B"
     fi
     
-    echo "${url}"
-    git clone -b "${branch_name}" --depth 1 --filter=blob:none --sparse  "${url}" "${C}"
+    git clone --no-checkout "${url}" "${C}"
     cd "${C}"
     git sparse-checkout init --cone
     git sparse-checkout set "${path_part}"
+    git checkout "${branch_name}"
     if [[ $? -ne 0 ]]; then
         echo "${A}文件下载失败,请检查网络,或查看链接正确性"
     else
