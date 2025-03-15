@@ -296,15 +296,12 @@ gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages
 gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
 # store插件依赖
-gitsvn https://github.com/linkease/nas-packages/tree/master/multimedia/ffmpeg-remux ${HOME_PATH}/feeds/packages/multimedia/ffmpeg-remux
-gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/ddnsto ${HOME_PATH}//package/network/services/ddnsto
-gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/floatip ${HOME_PATH}//package/network/services/floatip
-gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/istoreenhance ${HOME_PATH}//package/network/services/istoreenhance
-gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/linkease ${HOME_PATH}//package/network/services/linkease
-gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/linkmount ${HOME_PATH}//package/network/services/linkmount
-gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/quickstart ${HOME_PATH}//package/network/services/quickstart
-gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/unishare ${HOME_PATH}//package/network/services/unishare
-gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/webdav2 ${HOME_PATH}//package/network/services/webdav2
+if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services" ]] && [[ ! -d "${HOME_PATH}//package/network/services/ddnsto" ]]; then
+  mv ${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services/* ${HOME_PATH}/package/network/services
+fi
+if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services" ]] && [[ ! -d "${HOME_PATH}/feeds/packages/multimedia/ffmpeg-remux" ]]; then
+  mv ${HOME_PATH}/feeds/danshui/relevance/nas-packages/multimedia/ffmpeg-remux ${HOME_PATH}/feeds/packages/multimedia/ffmpeg-remux
+fi
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
   giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
