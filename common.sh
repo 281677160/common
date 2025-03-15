@@ -259,6 +259,7 @@ fi
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
+echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
 [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
@@ -276,9 +277,16 @@ echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" 
 git clone https://github.com/nikkinikki-org/OpenWrt-nikki ${HOME_PATH}/package/OpenWrt-nikki
 ./scripts/feeds update -a > /dev/null 2>&1
 
-if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
-  gitsvn https://github.com/281677160/common/tree/main/Share/v2raya ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/v2raya
-fi
+z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
+luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
+luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
+luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-openclash, \
+luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
+luci-app-ssr-plus,*luci-app-passwall*,v2dat,v2ray-geodata,luci-app-wrtbwmon,wrtbwmon"
+t=(${z//,/ })
+for x in ${t[@]}; do \
+  find . -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
+done
 
 # 更换golang版本
 gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
@@ -286,6 +294,7 @@ gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages
 # 更换node版本
 gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
+# store插件依赖
 gitsvn https://github.com/linkease/nas-packages/tree/master/multimedia/ffmpeg-remux ${HOME_PATH}/feeds/packages/multimedia/ffmpeg-remux
 gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/ddnsto ${HOME_PATH}//package/network/services/ddnsto
 gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/floatip ${HOME_PATH}//package/network/services/floatip
@@ -296,12 +305,13 @@ gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/qui
 gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/unishare ${HOME_PATH}//package/network/services/unishare
 gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/webdav2 ${HOME_PATH}//package/network/services/webdav2
 
-echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
-
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
   giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
   gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+fi
+if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/v2raya ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/v2raya
 fi
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
@@ -378,7 +388,6 @@ sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 if [[ `grep -Eoc "admin:.*" ${FILES_PATH}/etc/shadow` -eq '1' ]]; then
   sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 fi
-
 giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
 giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
 giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh ${FILES_PATH}/usr/bin/openwrt
