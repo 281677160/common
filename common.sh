@@ -273,7 +273,7 @@ git pull
 
 sed -i '/danshui/d' "feeds.conf.default"
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
-
+echo "src-git danshui3 https://github.com/jerrykuku/luci-theme-argon.git;master" >> feeds.conf.default
 ./scripts/feeds update -a > /dev/null 2>&1
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
