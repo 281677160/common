@@ -299,8 +299,7 @@ gitsvn https://github.com/linkease/nas-packages/tree/master/network/services/web
 echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-  giturl https://github.com/281677160/common/blob/9e73637953026dcb94fea245321e63a15e66320c/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
-  giturl https://github.com/281677160/common/blob/9e73637953026dcb94fea245321e63a15e66320c/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/relevance/passwall-packages/shadowsocks-rust/Makefile
+  giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
   gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 fi
@@ -484,7 +483,6 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
 fi
 if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
-  rm -rf ${HOME_PATH}/feeds/danshui/relevance/nikki
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-23.05/tools/cmake ${HOME_PATH}/tools/cmake
   gitsvn https://github.com/openwrt/packages/tree/openwrt-24.10/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
   gitsvn https://github.com/openwrt/packages/tree/openwrt-24.10/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
@@ -530,8 +528,10 @@ if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
 fi
 if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
-  rm -rf ${HOME_PATH}/feeds/danshui/relevance/nikki
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-23.05/tools/cmake ${HOME_PATH}/tools/cmake
+fi
+if [[ "${REPO_BRANCH}" == *"main"* ]]; then
+  giturl https://github.com/281677160/common/blob/main/Share/luci-app-nginx-pingos/Makefile ${HOME_PATH}/feeds/danshui/luci-app-nginx-pingos/Makefile
 fi
 }
 
