@@ -533,9 +533,9 @@ cd ${HOME_PATH}
 ./scripts/feeds update -a
 
 if [[ "${OpenClash_branch}" == "1" ]]; then
-  gitcon https://github.com/vernesong/OpenClash/tree/dev
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/OpenClashmaster
 else
-  gitcon https://github.com/vernesong/OpenClash/tree/master
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/OpenClashdev
 fi
 
 # 正在执行插件语言修改
