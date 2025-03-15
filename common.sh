@@ -273,9 +273,7 @@ git pull
 
 sed -i '/danshui/d' "feeds.conf.default"
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
-cd ${HOME_PATH}/package
-git clone https://github.com/jerrykuku/luci-theme-argon.git
-cd ${HOME_PATH}
+git clone https://github.com/jerrykuku/luci-theme-argon.git ${HOME_PATH}/package/luci-theme-argon
 ./scripts/feeds update -a > /dev/null 2>&1
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
@@ -318,11 +316,13 @@ function Diy_Wenjian() {
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
   LUCI_BANBEN="2"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> feeds.conf.default
+  rm -fr ${HOME_PATH}/package/Theme2
+  git clone -b Theme2 --single-branch https://github.com/281677160/openwrt-package  ${HOME_PATH}/package/Theme2
 else
   LUCI_BANBEN="1"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> feeds.conf.default
+  rm -fr ${HOME_PATH}/package/Theme1
+  git clone -b Theme1 --single-branch https://github.com/281677160/openwrt-package  ${HOME_PATH}/package/Theme1
 fi
 
 Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
@@ -545,9 +545,11 @@ cd ${HOME_PATH}
 ./scripts/feeds update -a
 
 if [[ "${OpenClash_branch}" == "1" ]]; then
-  rm -rf ${HOME_PATH}/feeds/danshui/relevance/OpenClashmaster
+  rm -fr ${HOME_PATH}/package/OpenClash
+  git clone -b dev --single-branch https://github.com/vernesong/OpenClash ${HOME_PATH}/package/OpenClash
 else
-  rm -rf ${HOME_PATH}/feeds/danshui/relevance/OpenClashdev
+  rm -fr ${HOME_PATH}/package/OpenClash
+  git clone -b master --single-branch https://github.com/vernesong/OpenClash ${HOME_PATH}/package/OpenClash
 fi
 
 # 正在执行插件语言修改
