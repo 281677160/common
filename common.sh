@@ -313,17 +313,16 @@ fi
 
 function Diy_Wenjian() {
 # 增加中文语言包
-gitcon https://github.com/281677160/openwrt-package/tree/Theme2 ${HOME_PATH}/package/Theme2
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
   LUCI_BANBEN="2"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
-  gitcon https://github.com/281677160/openwrt-package/tree/Theme2 ${HOME_PATH}/package/Theme2
-  echo "2"
+  sed -i '/danshui/d' "feeds.conf.default"
+  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> feeds.conf.default
 else
   LUCI_BANBEN="1"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
-  gitcon https://github.com/281677160/openwrt-package/tree/Theme1 ${HOME_PATH}/package/Theme1
-  echo "2"
+  sed -i '/danshui/d' "feeds.conf.default"
+  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> feeds.conf.default
 fi
 
 Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
