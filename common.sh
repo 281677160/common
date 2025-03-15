@@ -273,7 +273,7 @@ git pull
 
 sed -i '/danshui/d' "feeds.conf.default"
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
-echo "src-git nikki https://github.com/nikkinikki-org/OpenWrt-nikki.git;main" >> "feeds.conf.default"
+git clone https://github.com/nikkinikki-org/OpenWrt-nikki ${HOME_PATH}/package/OpenWrt-nikki
 ./scripts/feeds update -a > /dev/null 2>&1
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
@@ -310,7 +310,6 @@ fi
 }
 
 
-
 function Diy_Wenjian() {
 # 增加中文语言包
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
@@ -318,11 +317,13 @@ if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/me
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
   rm -fr ${HOME_PATH}/package/Theme2
   git clone -b Theme2 --single-branch https://github.com/281677160/openwrt-package  ${HOME_PATH}/package/Theme2
+  git clone https://github.com/jerrykuku/luci-theme-argon.git ${HOME_PATH}/package/luci-theme-argon
 else
   LUCI_BANBEN="1"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
   rm -fr ${HOME_PATH}/package/Theme1
   git clone -b Theme1 --single-branch https://github.com/281677160/openwrt-package  ${HOME_PATH}/package/Theme1
+  git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git ${HOME_PATH}/package/luci-theme-argon
 fi
 
 Settings_path="$(find "${HOME_PATH}/package" -type d -name "default-settings")"
