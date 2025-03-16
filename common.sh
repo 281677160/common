@@ -120,6 +120,8 @@ COOLSNOWWOLF)
   export SOURCE_OWNER="Lean's"
   export LUCI_EDITION="23.05"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  export FEEDS_CONF="$REPO_URL/blob/$REPO_BRANCH/feeds.conf.default"
+  export BASE_FILES="$REPO_URL/blob/$REPO_BRANCH/package/base-files/luci2/bin/config_generate"
 ;;
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
@@ -127,21 +129,27 @@ LIENOL)
   export SOURCE_OWNER="Lienol's"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  export FEEDS_CONF="$REPO_URL/blob/$REPO_BRANCH/feeds.conf.default"
+  export BASE_FILES="$REPO_URL/blob/$REPO_BRANCH/package/base-files/files/bin/config_generate"
 ;;
 IMMORTALWRT)
   if [[ "${REPO_BRANCH}" == "mt798x" ]]; then
-    export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-23.05"
+    export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
     export SOURCE="Immortalwrt"
     export SOURCE_OWNER="padavanonly's"
     export LUCI_EDITION="mt798x"
-    export DIY_WORK="padavanonly23.05"
-    export REPO_BRANCH="openwrt-23.05"
+    export DIY_WORK="padavanonly2410"
+    export REPO_BRANCH="24.10"
+    export FEEDS_CONF="$REPO_URL/blob/24.10/feeds.conf.default"
+    export BASE_FILES="$REPO_URL/blob/24.10/package/base-files/files/bin/config_generate"
   else
     export REPO_URL="https://github.com/immortalwrt/immortalwrt"
     export SOURCE="Immortalwrt"
     export SOURCE_OWNER="ctcgfw's"
     export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+    export FEEDS_CONF="$REPO_URL/blob/$REPO_BRANCH/feeds.conf.default"
+    export BASE_FILES="$REPO_URL/blob/$REPO_BRANCH/package/base-files/files/bin/config_generate"
   fi
 ;;
 XWRT)
@@ -150,6 +158,8 @@ XWRT)
   export SOURCE_OWNER="ptpt52's"
   export LUCI_EDITION="${REPO_BRANCH}"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  export FEEDS_CONF="$REPO_URL/blob/$REPO_BRANCH/feeds.conf.default"
+  export BASE_FILES="$REPO_URL/blob/$REPO_BRANCH/package/base-files/files/bin/config_generate"
 ;;
 OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
@@ -157,6 +167,8 @@ OFFICIAL)
   export SOURCE_OWNER="openwrt's"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  export FEEDS_CONF="$REPO_URL/blob/$REPO_BRANCH/feeds.conf.default"
+  export BASE_FILES="$REPO_URL/blob/$REPO_BRANCH/package/base-files/files/bin/config_generate"
 ;;
 *)
   TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL"
@@ -198,6 +210,9 @@ echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
 echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
 echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
+echo "FEEDS_CONF=${FEEDS_CONF}" >> ${GITHUB_ENV}
+echo "BASE_FILES=${BASE_FILES}" >> ${GITHUB_ENV}
+echo "UPGRADE_KEEP=${$REPO_URL}/blob/${REPO_BRANCH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
 if [[ ${SOURCE_CODE} == "COOLSNOWWOLF" ]]; then
   echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/luci2/bin/config_generate" >> ${GITHUB_ENV}
 else
@@ -259,6 +274,20 @@ fi
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
+# 增加一些应用
+giturl ${FEEDS_CONF} ${GENE_PATH}
+giturl ${BASE_FILES} ${GENE_PATH}
+giturl ${UPGRADE_KEEP} ${KEEPD_PATH}
+giturl https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
+giturl https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
+giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
+giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
+giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh ${FILES_PATH}/usr/bin/openwrt
+
+sed -i "s?112233?${SOURCE} - ${LUCI_EDITION}?g" "${DEFAULT_PATH}" > /dev/null 2>&1
+sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
+grep -q "admin:" ${FILES_PATH}/etc/shadow && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
+
 echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
 [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
@@ -271,8 +300,6 @@ if [[ -n "${LUCI_CHECKUT}" ]]; then
 fi
 git pull
 
-
- sed -i '/danshui/d' "feeds.conf.default"
  echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
  ./scripts/feeds update -a > /dev/null 2>&1
  
@@ -288,8 +315,6 @@ git pull
    find . -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
  done
 
-
-
 # 更换golang和node版本
 gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
 gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
@@ -302,20 +327,49 @@ if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services" ]]
   mv ${HOME_PATH}/feeds/danshui/relevance/nas-packages/multimedia/ffmpeg-remux ${HOME_PATH}/feeds/packages/multimedia/ffmpeg-remux
 fi
 
-source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/v2raya ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/v2raya
+  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 fi
+
 if [[ ! -d "${HOME_PATH}/package/network/config/firewall4" ]]; then
     rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
 fi
+
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
     gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
+
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
 fi
+
+# N1类型固件修改增加固件名
+if [[ -d "${HOME_PATH}/target/linux/armsr" ]]; then
+  features_file="${HOME_PATH}/target/linux/armsr/Makefile"
+elif [[ -d "${HOME_PATH}/target/linux/armvirt" ]]; then
+  features_file="${HOME_PATH}/target/linux/armvirt/Makefile"
+fi
+[[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
+sed -i '/DISTRIB_SOURCECODE/d' "${REPAIR_PATH}"
+echo -e "\nDISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+
+# 给固件保留配置更新固件的保留项目
+cat >>"${KEEPD_PATH}" <<-EOF
+/etc/config/AdGuardHome.yaml
+/www/luci-static/argon/background/
+/etc/smartdns/custom.conf
+EOF
+
+# 个性化签名
+cat >> "${DEFAULT_PATH}" <<-EOF
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
+EOF
 }
 
 
@@ -355,47 +409,6 @@ if [[ -n "${ZZZ_PATH}" ]]; then
     cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
   fi
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-  [[ -n "$(grep "openwrt_banner" "${ZZZ_PATH}")" ]] && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
-
-cat >> "${ZZZ_PATH}" <<-EOF
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
-EOF
-fi
-
-if [[ -d "${HOME_PATH}/target/linux/armsr" ]]; then
-  features_file="${HOME_PATH}/target/linux/armsr/Makefile"
-elif [[ -d "${HOME_PATH}/target/linux/armvirt" ]]; then
-  features_file="${HOME_PATH}/target/linux/armvirt/Makefile"
-fi
-[[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
-sed -i '/DISTRIB_SOURCECODE/d' "${REPAIR_PATH}"
-echo -e "\nDISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
-
-# 增加一些应用
-cp -Rf ${HOME_PATH}/build/common/custom/default-setting "${DEFAULT_PATH}"
-sudo chmod +x "${DEFAULT_PATH}"
-sed -i '/exit 0$/d' "${DEFAULT_PATH}"
-sed -i "s?112233?${SOURCE} - ${LUCI_EDITION}?g" "${DEFAULT_PATH}" > /dev/null 2>&1
-sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
-if [[ `grep -Eoc "admin:.*" ${FILES_PATH}/etc/shadow` -eq '1' ]]; then
-  sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
-fi
-giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
-giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
-giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh ${FILES_PATH}/usr/bin/openwrt
-
-# 给固件保留配置更新固件的保留项目
-if [[ -z "$(grep "background" ${KEEPD_PATH})" ]]; then
-cat >>"${KEEPD_PATH}" <<-EOF
-/etc/config/AdGuardHome.yaml
-/www/luci-static/argon/background/
-/etc/smartdns/custom.conf
-EOF
 fi
 
 # 修改一些依赖
