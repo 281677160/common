@@ -304,12 +304,11 @@ if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services" ]]
   mv ${HOME_PATH}/feeds/danshui/relevance/nas-packages/multimedia/ffmpeg-remux ${HOME_PATH}/feeds/packages/multimedia/ffmpeg-remux
 fi
 
-source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
-
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/v2raya ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/v2raya
   gitsvn https://github.com/immortalwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
   gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocksr-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
+  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
 fi
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
     rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
