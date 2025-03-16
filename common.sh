@@ -299,7 +299,10 @@ if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services" ]]
 fi
 
 # 19.07和21.02需要的一个依赖
-source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/v2raya ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/v2raya
+  source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+fi
 
 if [[ ! -d "${HOME_PATH}/package/network/config/firewall4" ]]; then
     rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
