@@ -11,7 +11,7 @@ sudo apt-get full-upgrade -y
 sudo apt-get -y install $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
 # N1打包需要的依赖
-sudo apt-get install -y rename pigz
+sudo apt-get install -y rename pigz upx-ucl
 
 # 安装gcc-13
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
