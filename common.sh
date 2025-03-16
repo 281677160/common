@@ -336,6 +336,7 @@ elif [[ -z $(find "$C_PATH" -type f -name "$LUCI_FILE" -print -quit) ]] && [[ -z
   git clone -b Theme1 --single-branch https://github.com/281677160/openwrt-package ${HOME_PATH}/package/Theme1
 fi
 ZZZ_PATH="$(find "$A_PATH" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
+echo "${ZZZ_PATH}"
 
 if [[ -n "${ZZZ_PATH}" ]]; then  
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
