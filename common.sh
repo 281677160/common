@@ -528,7 +528,7 @@ cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
   gitsvn https://github.com/openwrt/routing/tree/openwrt-21.02/bmx6 ${HOME_PATH}/feeds/routing/bmx6
 fi
-if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
+if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
 fi
 }
@@ -557,7 +557,7 @@ fi
 if [[ "${REPO_BRANCH}" == *"main"* ]] || [[ "${REPO_BRANCH}" == *"master"* ]] || [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   giturl https://github.com/281677160/common/blob/main/Share/luci-app-nginx-pingos/Makefile ${HOME_PATH}/feeds/danshui/luci-app-nginx-pingos/Makefile
 fi
-if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
+if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
 fi
 }
