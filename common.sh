@@ -321,6 +321,11 @@ fi
 
 function Diy_Wenjian() {
 # 增加中文语言包
+A_PATH="${HOME_PATH}/package"
+B_PATH="${HOME_PATH}/feeds/luci/libs/luci-lib-base"
+C_PATH="${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d"
+LUCI_FILE="luci-mod-system.json"
+
 if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
   LUCI_BANBEN="2"
   echo "LUCI_BANBEN=${LUCI_BANBEN}" >> $GITHUB_ENV
