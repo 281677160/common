@@ -290,7 +290,11 @@ git pull
 
 
 # 更换golang版本
-gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
+rm -rf ${HOME_PATH}/feeds/packages/lang/golang
+git clone https://github.com/sbwml/packages_lang_golang -b 24.x ${HOME_PATH}/feeds/packages/lang/golang
+
+rm -rf ${HOME_PATH}/feeds/packages/lang/node
+git clone https://github.com/sbwml/feeds_packages_lang_node-prebuilt -b packages-24.10 ${HOME_PATH}/feeds/packages/lang/node
 
 # store插件依赖
 if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services" ]] && [[ ! -d "${HOME_PATH}//package/network/services/ddnsto" ]]; then
