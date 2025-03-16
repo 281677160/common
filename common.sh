@@ -275,7 +275,7 @@ echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
  luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-openclash, \
  luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
  luci-app-ssr-plus,*luci-app-passwall*,v2dat,v2ray-geodata,luci-app-wrtbwmon,wrtbwmon, \
- luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,pcre2"
+ luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin"
  t=(${z//,/ })
  for x in ${t[@]}; do \
    find . -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
@@ -286,8 +286,8 @@ gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages
 gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
 # 更换glib2
-gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
-gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+#gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
+#gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
 
 # store插件依赖
 if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services" ]] && [[ ! -d "${HOME_PATH}/package/network/services/ddnsto" ]]; then
