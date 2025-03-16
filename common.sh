@@ -264,13 +264,6 @@ echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
 [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
 
-LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
-if [[ -n "${LUCI_CHECKUT}" ]]; then
-  git checkout ${LUCI_CHECKUT}
-  git switch -c ${LUCI_CHECKUT}
-fi
-git pull
-
 
  sed -i '/danshui/d' "feeds.conf.default"
  echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
