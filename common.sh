@@ -325,16 +325,15 @@ A_PATH="$HOME_PATH/package"
 B_PATH="$HOME_PATH/feeds/luci/libs/luci-lib-base"
 C_PATH="$HOME_PATH/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d"
 LUCI_FILE="luci-mod-system.json"
+echo "LUCI_BANBEN=$C_PATH/$LUCI_FILE" >> $GITHUB_ENV
 if found_ds=$(find "$A_PATH" -type d -name "default-settings" -print); then
     found_ds="$found_ds"
 fi
 if [[ -n $(find "$C_PATH" -type f -name "$LUCI_FILE" -print -quit) ]] && [[ -z $found_ds ]]; then
-  echo "LUCI_BANBEN=2" >> $GITHUB_ENV
   gitsvn https://github.com/281677160/common/tree/main/Share/default-settings2 ${HOME_PATH}/package/default-settings
   [[ ! -d "${B_PATH}" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
   gitcon https://github.com/281677160/openwrt-package/tree/Theme2 ${HOME_PATH}/package/Theme2
 elif [[ -z $(find "$C_PATH" -type f -name "$LUCI_FILE" -print -quit) ]] && [[ -z $found_ds ]]; then
-  echo "LUCI_BANBEN=1" >> $GITHUB_ENV
   gitsvn https://github.com/281677160/common/tree/main/Share/default-settings1 ${HOME_PATH}/package/default-settings
   gitcon https://github.com/281677160/openwrt-package/tree/Theme1 ${HOME_PATH}/package/Theme1
 fi
@@ -567,7 +566,7 @@ else
 fi
 
 # 正在执行插件语言修改
-if [[ "${LUCI_BANBEN}" == "2" ]]; then
+if [[ -f "${LUCI_BANBEN}" ]]; then
   cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
   /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
 else
