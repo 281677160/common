@@ -315,7 +315,7 @@ B_PATH="${HOME_PATH}/feeds/luci/libs/luci-lib-base"
 C_PATH="${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d"
 LUCI_FILE="luci-mod-system.json"
 if found_ds=$(find "$A_PATH" -type d -name "default-settings" -print); then
-    echo "$found_ds"
+    found_ds="$found_ds"
 fi
 if [[ -n $(find "$C_PATH" -type f -name "$LUCI_FILE" -print -quit) ]] && [[ -z $found_ds ]]; then
     echo "条件1：luci存在但default-settings不存在 → 执行命令X"
