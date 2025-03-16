@@ -17,8 +17,7 @@ python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-to
 swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
 
 # N1打包需要的依赖
-sudo apt-get install -y rename pigz libfuse-dev upx upx-ucl subversion clang cmdtest
-sudo apt-get install -y $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
+sudo apt-get install -y rename pigz libfuse-dev upx upx-ucl
 
 # 安装gcc-13
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
