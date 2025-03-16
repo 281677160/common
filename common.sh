@@ -494,6 +494,7 @@ if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-23.05/tools/cmake ${HOME_PATH}/tools/cmake
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
+  gitsvn https://github.com/281677160/common/tree/main/Share/shadowsocksr-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
 fi
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
   giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
