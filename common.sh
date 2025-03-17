@@ -139,9 +139,9 @@ IMMORTALWRT)
     export SOURCE_OWNER="padavanonly's"
     export LUCI_EDITION="mt798x"
     export DIY_WORK="padavanonly2410"
-    export REPO_BRANCH="24.10"
-    export FEEDS_CONF="$REPO_URL/blob/24.10/feeds.conf.default"
-    export BASE_FILES="$REPO_URL/blob/24.10/package/base-files/files/bin/config_generate"
+    export REPO_BRANCH="openwrt-23.05"
+    export FEEDS_CONF="$REPO_URL/blob/openwrt-23.05/feeds.conf.default"
+    export BASE_FILES="$REPO_URL/blob/openwrt-23.05/package/base-files/files/bin/config_generate"
   else
     export REPO_URL="https://github.com/immortalwrt/immortalwrt"
     export SOURCE="Immortalwrt"
