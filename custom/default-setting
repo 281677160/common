@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 chmod -R 0775 /etc/init.d /usr/share
 touch /etc/crontabs/root
