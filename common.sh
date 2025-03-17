@@ -344,6 +344,10 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
 fi
 
+if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
+  giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
+fi
+
 # N1类型固件修改增加固件名
 if [[ -d "${HOME_PATH}/target/linux/armsr" ]]; then
   features_file="${HOME_PATH}/target/linux/armsr/Makefile"
@@ -351,8 +355,8 @@ elif [[ -d "${HOME_PATH}/target/linux/armvirt" ]]; then
   features_file="${HOME_PATH}/target/linux/armvirt/Makefile"
 fi
 [[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
-sed -i '/DISTRIB_SOURCECODE/d' "${REPAIR_PATH}"
-echo -e "\nDISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}" && sed -i '/^\s*$/d' "${REPAIR_PATH}"
+sed -i '/DISTRIB_DESCRIPTION/d' "${REPAIR_PATH}"
+echo "DISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}"
 
 # 给固件保留配置更新固件的保留项目
 cat >>"${KEEPD_PATH}" <<-EOF
@@ -505,7 +509,7 @@ if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
 fi
-if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
+if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
   giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
 fi
 [[ -d "${HOME_PATH}/build/common/Share/luci-app-samba4" ]] && rm -rf ${HOME_PATH}/build/common/Share/luci-app-samba4
@@ -527,9 +531,6 @@ function Diy_IMMORTALWRT() {
 cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
   gitsvn https://github.com/openwrt/routing/tree/openwrt-21.02/bmx6 ${HOME_PATH}/feeds/routing/bmx6
-fi
-if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-  giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
 fi
 }
 
@@ -556,9 +557,6 @@ if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
 fi
 if [[ "${REPO_BRANCH}" == *"main"* ]] || [[ "${REPO_BRANCH}" == *"master"* ]] || [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   giturl https://github.com/281677160/common/blob/main/Share/luci-app-nginx-pingos/Makefile ${HOME_PATH}/feeds/danshui/luci-app-nginx-pingos/Makefile
-fi
-if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-  giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
 fi
 }
 
