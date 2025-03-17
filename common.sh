@@ -546,6 +546,7 @@ if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-22.03/package/utils/bcm27xx-userland ${HOME_PATH}/package/utils/bcm27xx-userland
+  rm -fr ${HOME_PATH}/feeds/danshui/luci-app-kodexplorer
 fi
 if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-23.05/tools/cmake ${HOME_PATH}/tools/cmake
