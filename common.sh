@@ -213,6 +213,7 @@ echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 echo "FEEDS_CONF=${FEEDS_CONF}" >> ${GITHUB_ENV}
 echo "BASE_FILES=${BASE_FILES}" >> ${GITHUB_ENV}
 echo "UPGRADE_KEEP=${REPO_URL}/blob/${REPO_BRANCH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
+echo "TARGET_MK=${REPO_URL}/blob/${REPO_BRANCH}/include/target.mk" >> ${GITHUB_ENV}
 if [[ ${SOURCE_CODE} == "COOLSNOWWOLF" ]]; then
   echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/luci2/bin/config_generate" >> ${GITHUB_ENV}
 else
@@ -278,6 +279,7 @@ cd ${HOME_PATH}
 giturl ${FEEDS_CONF} ${GENE_PATH}
 giturl ${BASE_FILES} ${GENE_PATH}
 giturl ${UPGRADE_KEEP} ${KEEPD_PATH}
+giturl ${TARGET_MK} ${KEEPD_PATH} ${HOME_PATH}/include/target.mk
 giturl https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
 giturl https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
 giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
@@ -355,8 +357,6 @@ elif [[ -d "${HOME_PATH}/target/linux/armvirt" ]]; then
   features_file="${HOME_PATH}/target/linux/armvirt/Makefile"
 fi
 [[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
-sed -i '/DISTRIB_DESCRIPTION/d' "${REPAIR_PATH}"
-echo "DISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> "${REPAIR_PATH}"
 
 # 给固件保留配置更新固件的保留项目
 cat >>"${KEEPD_PATH}" <<-EOF
@@ -369,6 +369,8 @@ EOF
 cat >> "${DEFAULT_PATH}" <<-EOF
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
+echo "DISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> /etc/openwrt_release
 sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
 echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
