@@ -481,6 +481,7 @@ if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-21.02/tools/cmake ${HOME_PATH}/tools/cmake
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
+  find "${HOME_PATH}/feeds/packages" -type f -exec grep -l --binary-files=without-match "libustream-wolfss" {} \; -exec sed -i 's/\libustream-wolfss\b/libustream-openss/g' {} \;
 fi
 if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
