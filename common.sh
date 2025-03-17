@@ -279,7 +279,7 @@ cd ${HOME_PATH}
 # giturl ${FEEDS_CONF} ${HOME_PATH}/feeds.conf.default
 giturl ${BASE_FILES} ${GENE_PATH}
 giturl ${UPGRADE_KEEP} ${KEEPD_PATH}
-giturl ${TARGET_MK} ${HOME_PATH}/include/target.mk
+#giturl ${TARGET_MK} ${HOME_PATH}/include/target.mk
 giturl https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
 giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
 giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
