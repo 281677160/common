@@ -412,33 +412,20 @@ fi
 # 修改一些依赖
 case "${SOURCE_CODE}" in
 XWRT|OFFICIAL)
-  if [[ -n "$(grep "libustream-wolfssl" ${HOME_PATH}/include/target.mk)" ]]; then
+  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-  elif [[ -z "$(grep "libustream-openssl" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=libustream-openssl ?g' "${HOME_PATH}/include/target.mk"
   fi
 
-  if [[ -n "$(grep "dnsmasq" ${HOME_PATH}/include/target.mk)" ]] && [[ -z "$(grep "dnsmasq-full" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's?dnsmasq?dnsmasq-full luci luci-newapi luci-lib-fs?g' "${HOME_PATH}/include/target.mk"
+  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
   fi
 
-  if [[ -z "$(grep "ca-bundle" ${HOME_PATH}/include/target.mk)" ]]; then
+  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
   fi
 
   if [[ -z "$(grep "luci" ${HOME_PATH}/include/target.mk)" ]]; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi luci-lib-fs ?g' "${HOME_PATH}/include/target.mk"
-  fi
-;;
-*)
-  if [[ -d "${HOME_PATH}/package/emortal" ]]; then
-    if [[ -z "$(grep "default-settings-chn" ${HOME_PATH}/include/target.mk)" ]]; then
-      sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings-chn ?g' "${HOME_PATH}/include/target.mk"
-    fi
-  else
-    if [[ -z "$(grep "default-settings" ${HOME_PATH}/include/target.mk)" ]]; then
-      sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
-    fi
   fi
 ;;
 esac
