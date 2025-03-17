@@ -276,7 +276,7 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
 # 增加一些应用
-giturl ${FEEDS_CONF} ${HOME_PATH}/feeds.conf.default
+# giturl ${FEEDS_CONF} ${HOME_PATH}/feeds.conf.default
 giturl ${BASE_FILES} ${GENE_PATH}
 giturl ${UPGRADE_KEEP} ${KEEPD_PATH}
 giturl ${TARGET_MK} ${HOME_PATH}/include/target.mk
