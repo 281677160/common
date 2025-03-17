@@ -390,9 +390,32 @@ else
 fi
 if [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ -f "$C_PATH" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-settings2 ${HOME_PATH}/package/default-settings
-  [[ ! -d "${B_PATH}" ]] && sed -i "s/+luci-lib-base //g" ${HOME_PATH}/package/default-settings/Makefile
+  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-base luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+  fi
 elif [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ ! -f "$C_PATH" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-settings1 ${HOME_PATH}/package/default-settings
+  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-fs luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+  fi
 fi
 
 ZZZ_PATH="$(find "$A_PATH" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
@@ -409,21 +432,8 @@ if [[ -n "${ZZZ_PATH}" ]]; then
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
 fi
 
-# 修改一些依赖
-if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
-  sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-fi
-
-if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
-  sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-fi
-
-if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
-fi
-
 if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci ?g' "${HOME_PATH}/include/target.mk"
 fi
 
 # files大法，设置固件无烦恼
