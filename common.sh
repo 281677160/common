@@ -281,7 +281,6 @@ giturl ${BASE_FILES} ${GENE_PATH}
 giturl ${UPGRADE_KEEP} ${KEEPD_PATH}
 giturl ${TARGET_MK} ${KEEPD_PATH} ${HOME_PATH}/include/target.mk
 giturl https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
-giturl https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
 giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
 giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
 giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh ${FILES_PATH}/usr/bin/openwrt
