@@ -288,10 +288,15 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
 # 增加一些应用
-curl -fsSL ${FEEDS_CONF} ${HOME_PATH}/feeds.conf.default
-curl -fsSL ${BASE_FILES} ${GENE_PATH}
-curl -fsSL ${UPGRADE_KEEP} ${KEEPD_PATH}
-curl -fsSL ${TARGET_MK} ${HOME_PATH}/include/target.mk
+echo "${FEEDS_CONF}"
+curl -fsSL "${FEEDS_CONF}" "${HOME_PATH}/feeds.conf.default"
+echo "${BASE_FILES}"
+curl -fsSL "${BASE_FILES}" "${GENE_PATH}"
+echo "${UPGRADE_KEEP}"
+curl -fsSL "${UPGRADE_KEEP}" "${KEEPD_PATH}"
+echo "${TARGET_MK}"
+curl -fsSL "${TARGET_MK}" "${HOME_PATH}/include/target.mk"
+echo "3"
 giturl https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
 giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
 giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
