@@ -410,25 +410,21 @@ if [[ -n "${ZZZ_PATH}" ]]; then
 fi
 
 # 修改一些依赖
-case "${SOURCE_CODE}" in
-XWRT|OFFICIAL)
-  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-  fi
+if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
+  sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+fi
 
-  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-  fi
+if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
+  sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+fi
 
-  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
-  fi
+if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
+fi
 
-  if [[ -z "$(grep "luci" ${HOME_PATH}/include/target.mk)" ]]; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci luci-newapi luci-lib-fs ?g' "${HOME_PATH}/include/target.mk"
-  fi
-;;
-esac
+if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings ?g' "${HOME_PATH}/include/target.mk"
+fi
 
 # files大法，设置固件无烦恼
 if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
@@ -447,7 +443,7 @@ if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
   source ${BUILD_PATH}/upgrade.sh && Diy_Part1
 else
   find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
-  if [[ -n "$(grep "luci-app-autoupdate" ${HOME_PATH}/include/target.mk)" ]]; then
+  if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?luci-app-autoupdate??g' ${HOME_PATH}/include/target.mk
   fi
 fi
@@ -482,16 +478,13 @@ gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
-  grep -q "libustream-wolfssl" ${HOME_PATH}/include/target.mk && sed -i 's/libustream-wolfssl/libustream-openssl/g' ${HOME_PATH}/include/target.mk
+  gitsvn https://github.com/openwrt/openwrt/tree/openwrt-21.02/tools/cmake ${HOME_PATH}/tools/cmake
+  gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
+  gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
 fi
 if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
-fi
-if [[ "${REPO_BRANCH}" =~ (19.07|21.02) ]]; then
-  gitsvn https://github.com/openwrt/openwrt/tree/openwrt-23.05/tools/cmake ${HOME_PATH}/tools/cmake
-  gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
-  gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
 fi
 if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
   giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
@@ -538,11 +531,9 @@ if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-22.03/package/utils/bcm27xx-userland ${HOME_PATH}/package/utils/bcm27xx-userland
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-21.02/tools/cmake ${HOME_PATH}/tools/cmake
-  rm -fr ${HOME_PATH}/feeds/danshui/luci-app-kodexplorer
-fi
-if [[ "${REPO_BRANCH}" =~ (openwrt-19.07|openwrt-21.02) ]]; then
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
+  rm -fr ${HOME_PATH}/feeds/danshui/luci-app-kodexplorer
 fi
 if [[ "${REPO_BRANCH}" == *"main"* ]] || [[ "${REPO_BRANCH}" == *"master"* ]] || [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   giturl https://github.com/281677160/common/blob/main/Share/luci-app-nginx-pingos/Makefile ${HOME_PATH}/feeds/danshui/luci-app-nginx-pingos/Makefile
