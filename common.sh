@@ -276,10 +276,10 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
 # 增加一些应用
-giturl ${FEEDS_CONF} ${GENE_PATH}
+giturl ${FEEDS_CONF} ${HOME_PATH}/feeds.conf.default
 giturl ${BASE_FILES} ${GENE_PATH}
 giturl ${UPGRADE_KEEP} ${KEEPD_PATH}
-giturl ${TARGET_MK} ${KEEPD_PATH} ${HOME_PATH}/include/target.mk
+giturl ${TARGET_MK} ${HOME_PATH}/include/target.mk
 giturl https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
 giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
 giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
