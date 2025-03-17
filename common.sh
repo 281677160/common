@@ -297,7 +297,7 @@ giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FI
 giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
 giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh ${FILES_PATH}/usr/bin/openwrt
 
-sed -i "s?112233?${SOURCE} - ${LUCI_EDITION}?g" "${DEFAULT_PATH}" > /dev/null 2>&1
+sed -i "s?112233?${SOURCE} - ${LUCI_EDITION}?g" "${DEFAULT_PATH}"
 sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 grep -q "admin:" ${FILES_PATH}/etc/shadow && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 
@@ -1976,9 +1976,9 @@ if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
     
     git clone --no-checkout "${url}" "${C}"
     cd "${C}"
-    git sparse-checkout init --cone
-    git sparse-checkout set "${path_part}"
-    git checkout "${branch_name}"
+    git sparse-checkout init --cone > /dev/null 2>&1
+    git sparse-checkout set "${path_part}" > /dev/null 2>&1
+    git checkout "${branch_name}" > /dev/null 2>&1
     if [[ $? -ne 0 ]]; then
         echo "${A}文件下载失败,请检查网络,或查看链接正确性"
     else
