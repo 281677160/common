@@ -371,7 +371,7 @@ fi
 
 cat >> "${DEFAULT_PATH}" <<-EOF
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt2305 '" >> /etc/openwrt_release
 sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
 echo "DISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> /etc/openwrt_release
 sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
@@ -703,6 +703,7 @@ if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}"
 elif [[ -n "${Customized_Information}" ]]; then
   sed -i "s?DESCRIPTION=.*?DESCRIPTION='OpenWrt '\" >> /etc/openwrt_release?g" "${ZZZ_PATH}"
   sed -i "s?OpenWrt ?${Customized_Information} @ OpenWrt ?g" "${ZZZ_PATH}"
+  sed -i "s?OpenWrt2305 ?${Customized_Information} @ OpenWrt ?g" "${DEFAULT_PATH}"
   sed -i "s?OpenWrt2410?${Customized_Information} @ OpenWrt?g" "${DEFAULT_PATH}"
   echo "个性签名[${Customized_Information}]增加完成"
 fi
