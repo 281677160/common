@@ -364,18 +364,6 @@ cat >>"${KEEPD_PATH}" <<-EOF
 /www/luci-static/argon/background/
 /etc/smartdns/custom.conf
 EOF
-
-# 个性化签名
-cat >> "${DEFAULT_PATH}" <<-EOF
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
-sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
-echo "DISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
-EOF
 }
 
 
@@ -401,20 +389,25 @@ ZZZ_PATH="$(find "$A_PATH" -name "*-default-settings" -not -path "A/exclude_dir/
 
 if [[ -n "${ZZZ_PATH}" ]]; then  
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
-  sed -i '/exit 0$/d' "${ZZZ_PATH}"
-
   if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
     cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
   else
     cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/LICENSES/doc/default-settings
   fi
-
-  if [[ -f "${HOME_PATH}/LICENSES/doc/config_generates" ]]; then
-    cp -Rf ${HOME_PATH}/LICENSES/doc/config_generates "${GENE_PATH}"
-  else
-    cp -Rf "${GENE_PATH}" ${HOME_PATH}/LICENSES/doc/config_generates
-  fi
+  
+  sed -i '/exit 0$/d' "${ZZZ_PATH}"
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+
+cat >> "${ZZZ_PATH}" <<-EOF
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
+echo "DISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> /etc/openwrt_release
+sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
+echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
+sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
+echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
+EOF
 fi
 
 # 修改一些依赖
