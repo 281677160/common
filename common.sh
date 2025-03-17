@@ -1994,7 +1994,8 @@ fi
 function gitcon() {
 cd "${HOME_PATH}"
 tmpdir="$(mktemp -d)" && C="${tmpdir#*.}"
-A="$1" B="$2" && shift 2
+i="$1" B="$2" && shift 2
+A="${i%.git}"
 if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
     branch_name="${BASH_REMATCH[1]}"
     url="${A%%/tree/*}"
