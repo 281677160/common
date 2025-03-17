@@ -3,8 +3,13 @@
 chmod -R 0775 /etc/init.d /usr/share
 touch /etc/crontabs/root
 
-grep -q "x86_64" /etc/banner && sed -i "s?x86_64?${DISTRIB_TARGET}?g" /etc/banner
-grep -q "ImmortalWrt" /etc/banner && sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+source /etc/openwrt_release
+if [[ ! "${DISTRIB_ARCH}" == "x86_64" ]]; then
+	sed -i "s?x86_64?${DISTRIB_TARGET}?g" /etc/banner
+fi
+if [[ "${DISTRIB_ID}" == "ImmortalWrt" ]]; then
+	sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+fi
 
 if [[ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]]; then
 	sed -i 's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
