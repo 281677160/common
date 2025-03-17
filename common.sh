@@ -120,8 +120,10 @@ COOLSNOWWOLF)
   export SOURCE_OWNER="Lean's"
   export LUCI_EDITION="23.05"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
-  export FEEDS_CONF="$REPO_URL/blob/$REPO_BRANCH/feeds.conf.default"
-  export BASE_FILES="$REPO_URL/blob/$REPO_BRANCH/package/base-files/luci2/bin/config_generate"
+  export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
+  export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
+  export BASE_FILES="$RAW_WEB/package/base-files/luci2/bin/config_generate"
 ;;
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
@@ -129,8 +131,10 @@ LIENOL)
   export SOURCE_OWNER="Lienol's"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
-  export FEEDS_CONF="$REPO_URL/blob/$REPO_BRANCH/feeds.conf.default"
-  export BASE_FILES="$REPO_URL/blob/$REPO_BRANCH/package/base-files/files/bin/config_generate"
+  export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
+  export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
+  export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
 ;;
 IMMORTALWRT)
   if [[ "${REPO_BRANCH}" == "mt798x" ]]; then
@@ -140,16 +144,20 @@ IMMORTALWRT)
     export LUCI_EDITION="mt798x"
     export DIY_WORK="padavanonly2410"
     export REPO_BRANCH="openwrt-23.05"
-    export FEEDS_CONF="$REPO_URL/blob/openwrt-23.05/feeds.conf.default"
-    export BASE_FILES="$REPO_URL/blob/openwrt-23.05/package/base-files/files/bin/config_generate"
+    export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+    export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
+    export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
+    export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
   else
     export REPO_URL="https://github.com/immortalwrt/immortalwrt"
     export SOURCE="Immortalwrt"
     export SOURCE_OWNER="ctcgfw's"
     export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
-    export FEEDS_CONF="$REPO_URL/blob/$REPO_BRANCH/feeds.conf.default"
-    export BASE_FILES="$REPO_URL/blob/$REPO_BRANCH/package/base-files/files/bin/config_generate"
+    export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+    export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
+    export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
+    export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
   fi
 ;;
 XWRT)
@@ -158,8 +166,10 @@ XWRT)
   export SOURCE_OWNER="ptpt52's"
   export LUCI_EDITION="${REPO_BRANCH}"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
-  export FEEDS_CONF="$REPO_URL/blob/$REPO_BRANCH/feeds.conf.default"
-  export BASE_FILES="$REPO_URL/blob/$REPO_BRANCH/package/base-files/files/bin/config_generate"
+  export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
+  export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
+  export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
 ;;
 OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
@@ -167,8 +177,10 @@ OFFICIAL)
   export SOURCE_OWNER="openwrt's"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
-  export FEEDS_CONF="$REPO_URL/blob/$REPO_BRANCH/feeds.conf.default"
-  export BASE_FILES="$REPO_URL/blob/$REPO_BRANCH/package/base-files/files/bin/config_generate"
+  export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
+  export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
+  export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
 ;;
 *)
   TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL"
@@ -212,8 +224,8 @@ echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
 echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 echo "FEEDS_CONF=${FEEDS_CONF}" >> ${GITHUB_ENV}
 echo "BASE_FILES=${BASE_FILES}" >> ${GITHUB_ENV}
-echo "UPGRADE_KEEP=${REPO_URL}/blob/${REPO_BRANCH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
-echo "TARGET_MK=${REPO_URL}/blob/${REPO_BRANCH}/include/target.mk" >> ${GITHUB_ENV}
+echo "UPGRADE_KEEP=$RAW_WEB/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
+echo "TARGET_MK=$RAW_WEB/include/target.mk" >> ${GITHUB_ENV}
 if [[ ${SOURCE_CODE} == "COOLSNOWWOLF" ]]; then
   echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/luci2/bin/config_generate" >> ${GITHUB_ENV}
 else
@@ -276,10 +288,10 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
 # 增加一些应用
-# giturl ${FEEDS_CONF} ${HOME_PATH}/feeds.conf.default
-giturl ${BASE_FILES} ${GENE_PATH}
-giturl ${UPGRADE_KEEP} ${KEEPD_PATH}
-#giturl ${TARGET_MK} ${HOME_PATH}/include/target.mk
+curl -fsSL ${FEEDS_CONF} ${HOME_PATH}/feeds.conf.default
+curl -fsSL ${BASE_FILES} ${GENE_PATH}
+curl -fsSL ${UPGRADE_KEEP} ${KEEPD_PATH}
+curl -fsSL ${TARGET_MK} ${HOME_PATH}/include/target.mk
 giturl https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
 giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
 giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
