@@ -1048,7 +1048,7 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-ssr-plus=y" ${HOME_PATH}/.config` -ge '1
   fi
 fi
 
-if [[ grep -q "ssr-plus=y" "${HOME_PATH}/.config" ]] && [[ "${SOURCE}" == "Lienol" ]] && [[ "${REPO_BRANCH}" == "19.07" ]]; then
+if grep -q "ssr-plus=y" "${HOME_PATH}/.config" && [[ "${SOURCE}" == "Lienol" ]] && [[ "${REPO_BRANCH}" == "19.07" ]]; then
   sed -i '/plus_INCLUDE_PACKAGE_libustream-wolfssl/d' ${HOME_PATH}/.config
   sed -i '/plus_INCLUDE_libustream-openssl/d' ${HOME_PATH}/.config
   echo "CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_PACKAGE_libustream-wolfssl=y" >> ${HOME_PATH}/.config
