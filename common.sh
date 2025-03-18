@@ -290,12 +290,12 @@ giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FI
 giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
 giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh ${FILES_PATH}/usr/bin/openwrt
 
-sed -i "s?SOURCE?${SOURCE}?g" "${DEFAULT_PATH}"
-sed -i "s?LUCI_EDITION?${LUCI_EDITION}?g" "${DEFAULT_PATH}"
+sed -i "s/SOURCE/${SOURCE}/g" "${DEFAULT_PATH}"
+sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
 sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 grep -q "admin:" ${FILES_PATH}/etc/shadow && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 
-echo '#!/bin/bash' > "${DELETE}" && sudo chmod +x "${DELETE}"
+echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
 [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
@@ -319,7 +319,7 @@ git pull
  luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,luci-app-alist,alist"
  t=(${z//,/ })
  for x in ${t[@]}; do \
-   find . -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
+   find "${HOME_PATH}/feeds" -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
  done
 
 # 更换golang和node版本
@@ -355,16 +355,7 @@ if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] ||
   gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 
-cat >> "${DEFAULT_PATH}" <<-EOF
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt2305 '" >> /etc/openwrt_release
-sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
-echo "DISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
-EOF
+
 # N1类型固件修改增加固件名
 if [[ -d "${HOME_PATH}/target/linux/armsr" ]]; then
   features_file="${HOME_PATH}/target/linux/armsr/Makefile"
@@ -374,9 +365,9 @@ fi
 [[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
 
 # 给固件保留配置更新固件的保留项目
-cat >>"${KEEPD_PATH}" <<-EOF
+cat >> "${KEEPD_PATH}" <<-EOF
 /etc/config/AdGuardHome.yaml
-/www/luci-static/argon/background/
+/www/luci-static/argon/background
 /etc/smartdns/custom.conf
 EOF
 }
