@@ -508,9 +508,10 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
 fi
-#if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-  #giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
-#fi
+if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
+   #giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
+   gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+fi
 if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/mbedtls ${HOME_PATH}/package/libs/mbedtls
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/ustream-ssl ${HOME_PATH}/package/libs/ustream-ssl
