@@ -22,8 +22,6 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /
 }
 
 function update_apt_source(){
-node --version
-yarn --version
 sudo apt-get autoremove -y --purge
 sudo apt-get clean
 }
