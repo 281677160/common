@@ -4,9 +4,8 @@
 # matrix.target=${FOLDER_NAME}
 
 ACTIONS_VERSION="1.0.7"
-
+Compte=$(date +%Y年%m月%d号%H时%M分)
 function TIME() {
-    Compte=$(date +%Y年%m月%d号%H时%M分)
     case $1 in
     r) export Color="\e[31m";;
     g) export Color="\e[32m";;
