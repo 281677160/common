@@ -370,17 +370,6 @@ elif [[ -d "${HOME_PATH}/target/linux/armvirt" ]]; then
 fi
 [[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
 
-cat >> "${DEFAULT_PATH}" <<-EOF
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='OpenWrt2305 '" >> /etc/openwrt_release
-sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
-echo "DISTRIB_SOURCECODE='${SOURCE}_${LUCI_EDITION}'" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo "luciversion    = \"${LUCI_EDITION}\"" >> /usr/lib/lua/luci/version.lua
-sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"${SOURCE}\"" >> /usr/lib/lua/luci/version.lua
-EOF
-
 # 给固件保留配置更新固件的保留项目
 cat >>"${KEEPD_PATH}" <<-EOF
 /etc/config/AdGuardHome.yaml
