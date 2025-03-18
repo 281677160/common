@@ -285,10 +285,10 @@ curl -fsSL "${FEEDS_CONF}" -o "${HOME_PATH}/feeds.conf.default"
 curl -fsSL "${BASE_FILES}" -o "${GENE_PATH}"
 curl -fsSL "${UPGRADE_KEEP}" -o "${KEEPD_PATH}"
 curl -fsSL "${TARGET_MK}" -o "${HOME_PATH}/include/target.mk"
-giturl https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
-giturl https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
-giturl https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
-giturl https://github.com/281677160/common/blob/main/custom/openwrt.sh ${FILES_PATH}/usr/bin/openwrt
+gitsvn https://github.com/281677160/common/blob/main/custom/default-setting ${DEFAULT_PATH}
+gitsvn https://github.com/281677160/common/blob/main/custom/Postapplication ${FILES_PATH}/etc/init.d/Postapplication
+gitsvn https://github.com/281677160/common/blob/main/custom/networkdetection ${FILES_PATH}/etc/init.d/networkdetection
+gitsvn https://github.com/281677160/common/blob/main/custom/openwrt.sh ${FILES_PATH}/usr/bin/openwrt
 
 sed -i "s/SOURCE/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
@@ -323,8 +323,8 @@ git pull
  done
 
 # 更换golang和node版本
-gitcon https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
-gitcon https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
+gitsvn https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
+gitsvn https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
 # store插件依赖
 if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services" ]] && [[ ! -d "${HOME_PATH}//package/network/services/ddnsto" ]]; then
@@ -352,7 +352,7 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
 fi
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-  giturl https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
+  gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
 fi
 
 
@@ -380,9 +380,9 @@ B_PATH="$HOME_PATH/feeds/luci/libs/luci-lib-base"
 C_PATH="$HOME_PATH/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json"
 echo "LUCI_BANBEN=$C_PATH" >> $GITHUB_ENV
 if [[ -f "${C_PATH}" ]]; then
-  gitcon https://github.com/281677160/openwrt-package/tree/Theme2 ${HOME_PATH}/package/Theme2
+  gitsvn https://github.com/281677160/openwrt-package/tree/Theme2 ${HOME_PATH}/package/Theme2
 else
-  gitcon https://github.com/281677160/openwrt-package/tree/Theme1 ${HOME_PATH}/package/Theme1
+  gitsvn https://github.com/281677160/openwrt-package/tree/Theme1 ${HOME_PATH}/package/Theme1
 fi
 if [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ -f "$C_PATH" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-settings2 ${HOME_PATH}/package/default-settings
@@ -558,11 +558,9 @@ cd ${HOME_PATH}
 ./scripts/feeds update -a
 
 if [[ "${OpenClash_branch}" == "1" ]]; then
-  rm -fr ${HOME_PATH}/package/OpenClash
-  git clone -b dev --single-branch https://github.com/vernesong/OpenClash ${HOME_PATH}/package/OpenClash
+  gitsvn https://github.com/vernesong/OpenClash/tree/dev ${HOME_PATH}/package/OpenClash
 else
-  rm -fr ${HOME_PATH}/package/OpenClash
-  git clone -b master --single-branch https://github.com/vernesong/OpenClash ${HOME_PATH}/package/OpenClash
+  gitsvn https://github.com/vernesong/OpenClash/tree/master ${HOME_PATH}/package/OpenClash
 fi
 
 # 正在执行插件语言修改
@@ -1944,166 +1942,100 @@ Diy_variable
 
 function gitsvn() {
 cd "${HOME_PATH}"
-tmpdir="$(mktemp -d)" && C="${tmpdir#*.}"
-A="$1" B="$2" && shift 2
+local A="${1%.git}"
+local B="$2"
+local branch_name=""
+local path_part=""
+local url=""
+tmpdir="$(mktemp -d)" && C="$HOME_PATH/${tmpdir#*.}"
+rm -fr "${tmpdir}"
 if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
     branch_name="${BASH_REMATCH[1]}"
     path_part="${BASH_REMATCH[3]:-}"
-    url="${A%%/tree/*}"
-    file_name="${A##*/}"
-
-    if [[ -z "$B" ]]; then
-        content="$HOME_PATH/package/${file_name}"
-    elif [[ "$B" == *"/"* ]]; then
-        if [[ "$B" == *"openwrt"* ]]; then
-            content="$HOME_PATH/${B#*openwrt/}"
-        elif [[ "$B" == *"./"* ]]; then
-            content="$HOME_PATH/${B#*./}"
-        else
-            content="$HOME_PATH/$B"
-        fi
-    else
-        content="$HOME_PATH/package/$B"
-    fi
-    
-    git clone --no-checkout "${url}" "${C}"
-    cd "${C}"
-    git sparse-checkout init --cone > /dev/null 2>&1
-    git sparse-checkout set "${path_part}" > /dev/null 2>&1
-    git checkout "${branch_name}" > /dev/null 2>&1
-    if [[ $? -ne 0 ]]; then
-        echo "${A}文件下载失败,请检查网络,或查看链接正确性"
-    else
-        if [[ -d "${content}" ]]; then
-            rm -rf "${content}"
-        else
-            mkdir -p "${content}"
-            rm -rf "${content}"
-        fi
-        cp -fr "${path_part}" "${content}"
-        echo "${file_name}文件下载完成"
-    fi
-    cd "${HOME_PATH}"
-    sudo rm -rf "${C}"
-    sudo rm -rf "${tmpdir}"
-else
-    echo "未找到有效链接"
-fi
-}
-
-function gitcon() {
-cd "${HOME_PATH}"
-tmpdir="$(mktemp -d)" && C="${tmpdir#*.}"
-i="$1" B="$2" && shift 2
-A="${i%.git}"
-if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
-    branch_name="${BASH_REMATCH[1]}"
-    url="${A%%/tree/*}"
-    file_name="$(echo "${A}" |cut -d"/" -f5)"
 elif [[ $A =~ blob/([^/]+)(/(.*))? ]]; then
     branch_name="${BASH_REMATCH[1]}"
-    url="${A%%/blob/*}"
+    path_part="${BASH_REMATCH[3]:-}"
+    ck_name="$(echo "${A}"|cut -d"/" -f4-5)"
+elif [[ "$A" == *"github.com"* ]]; then
+    branch_name="1"
+else
+    echo "无效的GitHub URL格式"
+    return 1
+fi
+
+if [[ -z "$B" ]]; then
+    echo "没设置文件投放路径"
+    return 1
+elif [[ "$B" == *"openwrt"* ]]; then
+    content="$HOME_PATH/${B#*openwrt/}"
+    wenjianjia="${B#*openwrt/}"
+elif [[ "$B" == *"./"* ]]; then
+    content="$HOME_PATH/${B#*./}"
+    wenjianjia="${B#*./}"
+else
+    content="$HOME_PATH/$B"
+    wenjianjia="${B}"
+fi
+
+if [[ "$A" == *"tree"* ]] && [[ -n "${path_part}" ]]; then
+    url="${A%%/tree/*}"
+    file_name="${A##*/}"
+    git_laqu="1"
+elif [[ "$A" == *"tree"* ]] && [[ -n "${branch_name}" ]] && [[ -z "${path_part}" ]]; then
+    url="${A%%/tree/*}"
     file_name="$(echo "${A}" |cut -d"/" -f5)"
-elif [[ "$A" == *"github"* ]]; then
-    branch_name=""
+    git_laqu="2"
+elif [[ "${branch_name}" == "1" ]]; then
     url="${A}"
     file_name="$(echo "${A}" |cut -d"/" -f5)"
-else
-    url=""
-    echo "未找到有效链接"
+    git_laqu="3"
+elif [[ "$A" == *"blob"* ]]; then
+    url="https://raw.githubusercontent.com/${ck_name}/${branch_name}/${path_part}"
+    file_name="${path_part}"
+    parent_dir="${wenjianjia%/*}"
+    git_laqu="4"
 fi
-    
-if [[ -n "${url}" ]]; then
-    if [[ -z "$B" ]]; then
-        content="$HOME_PATH/package/$file_name"
-    elif [[ "$B" == *"/"* ]]; then
-        if [[ "$B" == *"openwrt"* ]]; then
-            content="$HOME_PATH/${B#*openwrt/}"
-        elif [[ "$B" == *"./"* ]]; then
-            content="$HOME_PATH/${B#*./}"
-        else
-            content="$HOME_PATH/$B"
-        fi
-    else
-        content="$HOME_PATH/package/$B"
-    fi
-    
-    sudo rm -rf "${C}"
-    if [[ -n "${branch_name}" ]]; then
-        git clone -b "${branch_name}" --single-branch "${url}" "${C}"
-    else
-        git clone --depth 1 "${url}" "${C}"
-    fi
-    if [[ $? -ne 0 ]]; then
-        echo "${A}文件下载失败,请检查网络,或查看链接正确性"
-    else
-        if [[ -d "${content}" ]]; then
-            rm -rf "${content}"
-            mv "${C}" "${content}"
-        else
-            mkdir -p "${content}"
-            rm -rf "${content}"
-            mv "${C}" "${content}"
-        fi
-        echo "${file_name}文件下载完成"
-    fi
-    sudo rm -rf "${tmpdir}"
-else
-    echo "未找到有效链接"
-fi
-}
 
-function giturl() {
-cd "${HOME_PATH}"
-C="$PWD"
-A="$1" B="$2" && shift 2
-if [[ "$A" == *"github"* ]] && [[ "$A" == *"blob"* ]]; then
-    link_name="$(echo "${A}" |cut -d"/" -f4-5)"
-    file_name="${A#*blob/}"
-    url="https://raw.githubusercontent.com/${link_name}/${file_name}"
-elif [[ "$A" == *"github"* ]]; then
-    url=""
-    echo "链接格式错误,链接里面带【blob】为正确链接"
-else
-    url=""
-    echo "未找到有效链接"
-fi
-    
-if [[ -n "${url}" ]]; then
-    if [[ -z "$B" ]]; then
-        content="$C"
-        new_path="$content"
-    elif [[ "$B" == *"openwrt/"* ]]; then
-        content="$HOME_PATH/${B#*openwrt/}"
-        new_path="${B%/*}"
-    elif [[ "$B" == *"./"* ]]; then
-        content="$HOME_PATH/${B#*./}"
-        new_path="${B%/*}"
+if [[ "${git_laqu}" == "1" ]]; then
+    if git clone --no-checkout "$url" "$C"; then
+      cd "${C}"
+      git sparse-checkout init --cone > /dev/null 2>&1
+      git sparse-checkout set "${path_part}" > /dev/null 2>&1
+      git checkout "${branch_name}" > /dev/null 2>&1
+      rm -fr "${content}"
+      mv "${path_part}" "${content}"
+      if [[ $? -ne 0 ]]; then
+         echo "${file_name}文件投放失败,请检查投放路径是否正确"
+      else
+         echo "${file_name}文件下载完成"
+      fi
+      cd "${HOME_PATH}"
     else
-        content="$HOME_PATH/$B"
-        new_path="${B%/*}"
+      echo "${file_name}文件下载失败"
     fi
-
-    if [[ ! -d "${new_path}" ]]; then
-        mkdir -p "${new_path}"
+    cd "${HOME_PATH}"
+    rm -fr "$C"
+elif [[ "${git_laqu}" == "2" ]]; then
+    rm -fr "${content}"
+    if git clone -b "${branch_name}" --single-branch "${url}" "${content}"; then
+      echo "${file_name}文件下载完成"
     else
-        rm -rf "${content}"
+      echo "${file_name}文件下载失败"
     fi
-    
+elif [[ "${git_laqu}" == "3" ]]; then
+    rm -fr "${content}"
+    if git clone --depth 1 "${url}" "${content}"; then
+      echo "${file_name}文件下载完成"
+    else
+      echo "${file_name}文件下载失败"
+    fi
+elif [[ "${git_laqu}" == "4" ]]; then
+    [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
     curl -# -L "${url}" -o "${content}"
-    if [[ ! -s "${content}" ]]; then
-        wget -q --show-progress "${url}" -O "${content}"
-        if [[ ! -s "${content}" ]]; then
-            echo "${A}文件下载失败,请检查网络,或查看链接正确性"
-        else
-            sudo chmod +x "${content}"
-            echo "${A}文件下载完成"
-        fi
+    if [[ -s "${content}" ]]; then
+      echo "${file_name}文件下载完成"
     else
-        sudo chmod +x "${content}"
-        echo "${A}文件下载完成"
+      echo "${file_name}文件下载失败"
     fi
-else
-    echo "未找到有效链接"
 fi
 }
