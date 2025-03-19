@@ -561,6 +561,11 @@ fi
 }
 
 
+function Diy_PADAVANONLY() {
+cd ${HOME_PATH}
+}
+
+
 function Diy_zdypartsh() {
 cd ${HOME_PATH}
 source $BUILD_PATH/$DIY_PART_SH
