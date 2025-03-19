@@ -175,6 +175,17 @@ OFFICIAL)
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
   export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
 ;;
+PADAVANONLY)
+  export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
+  export SOURCE="MT798x"
+  export SOURCE_OWNER="PADAVANONLY's"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
+  export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
+  export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
+;;
 *)
   TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL"
   exit 1
