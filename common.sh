@@ -690,7 +690,7 @@ fi
 if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
   echo "不进行,个性签名设置"
 elif [[ -n "${Customized_Information}" ]]; then
-  sed -i "s?Customized_Information?${Customized_Information}?g" "${DEFAULT_PATH}"
+  sed -i "s/Customized_Information/${Customized_Information}/g" "${DEFAULT_PATH}"
   echo "个性签名[${Customized_Information}]增加完成"
 fi
 
