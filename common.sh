@@ -2018,7 +2018,7 @@ elif [[ "${git_laqu}" == "2" ]]; then
     fi
 elif [[ "${git_laqu}" == "3" ]]; then
     rm -fr "${content}"
-    if git clone --depth 1 "${url}" "${content}"; then
+    if git clone -q --depth 1 "${url}" "${content}"; then
       echo "${file_name}文件下载完成"
     else
       echo "${file_name}文件下载失败"
