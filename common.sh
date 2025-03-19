@@ -470,7 +470,9 @@ cd ${HOME_PATH}
 function Diy_LIENOL() {
 cd ${HOME_PATH}
 gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
-[[ -d "${HOME_PATH}/feeds/danshui/relevance/mt" ]] && rm -fr ${HOME_PATH}/feeds/other/lean/mt
+gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/lean/mt ${HOME_PATH}/feeds/other/lean/mt
+gitsvn https://github.com/coolsnowwolf/luci/tree/openwrt-23.05/applications/luci-app-vlmcsd ${HOME_PATH}/feeds/other/lean/luci-app-vlmcsd
+gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/vlmcsd ${HOME_PATH}/feeds/other/lean/vlmcsd
 
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
