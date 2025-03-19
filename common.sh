@@ -309,7 +309,7 @@ git pull > /dev/null 2>&1
  luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,luci-app-alist,alist"
  t=(${z//,/ })
  for x in ${t[@]}; do \
-   find "${HOME_PATH}/feeds" -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
+   find . -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
  done
 
 # 更新golang和node版本
