@@ -1996,7 +1996,7 @@ elif [[ "$A" == *"blob"* ]]; then
 fi
 
 if [[ "${git_laqu}" == "1" ]]; then
-    if git clone --no-checkout "$url" "$C"; then
+    if git clone -q --no-checkout "$url" "$C"; then
       cd "${C}"
       git sparse-checkout init --cone > /dev/null 2>&1
       git sparse-checkout set "${path_part}" > /dev/null 2>&1
