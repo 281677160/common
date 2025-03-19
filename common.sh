@@ -169,7 +169,7 @@ OFFICIAL)
   export SOURCE="Official"
   export SOURCE_OWNER="openwrt's"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  export DIY_WORK="padavanonly$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
