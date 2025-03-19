@@ -41,6 +41,7 @@ jobs:
         git clone https://github.com/immortalwrt/immortalwrt $GITHUB_WORKSPACE/Immortalwrt
         git clone https://github.com/openwrt/openwrt $GITHUB_WORKSPACE/Official
         git clone https://github.com/x-wrt/x-wrt $GITHUB_WORKSPACE/Xwrt
+        git clone https://github.com/padavanonly/immortalwrt-mt798x-24.10 $GITHUB_WORKSPACE/MT798x
         echo "" >$GITHUB_WORKSPACE/123
         
         cd $GITHUB_WORKSPACE/Lede
@@ -49,11 +50,12 @@ jobs:
         git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/$/-Lienol\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
         cd $GITHUB_WORKSPACE/Immortalwrt
         git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/$/-Immortalwrt\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
-        echo '="mt798x-Immortalwrt"' >>$GITHUB_WORKSPACE/123
         cd $GITHUB_WORKSPACE/Official
         git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/$/-Official\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
         cd $GITHUB_WORKSPACE/Xwrt
         git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/$/-Xwrt\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
+        cd $GITHUB_WORKSPACE/MT798x
+        git branch -r |sed '/HEAD/d' |sed 's/openwrt-//g' |sed 's/$/-MT798x\"/' |sed 's/origin\//=\"/g' >>$GITHUB_WORKSPACE/123
         cd $GITHUB_WORKSPACE
         cat $GITHUB_WORKSPACE/123 |sed '/^$/d' |awk '$0=NR$0' |sed 's/^/R/' |sed s/[[:space:]]//g >$GITHUB_WORKSPACE/repogx/autoupdate/replace
         
