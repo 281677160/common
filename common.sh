@@ -488,6 +488,7 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
 fi
 if [[ "${REPO_BRANCH}" == *"23.05"* ]] || [[ "${REPO_BRANCH}" == *"main"* ]]; then
    gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+   gitsvn https://github.com/pop-os/libparted ${HOME_PATH}/package/libparted
 fi
 if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/mbedtls ${HOME_PATH}/package/libs/mbedtls
