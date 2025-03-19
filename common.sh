@@ -2011,7 +2011,7 @@ if [[ "${git_laqu}" == "1" ]]; then
     rm -fr "$C"
 elif [[ "${git_laqu}" == "2" ]]; then
     rm -fr "${content}"
-    if git clone -b "${branch_name}" --single-branch "${url}" "${content}"; then
+    if git clone -q --single-branch --depth=1 --branch=${branch_name} ${url} ${content}; then
       echo "${file_name}文件下载完成"
     else
       echo "${file_name}文件下载失败"
