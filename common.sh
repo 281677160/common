@@ -236,17 +236,6 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   sed -i 's?=?=\"?g' "${GITHUB_ENV}"
   sed -i '/=/ s/$/&\"/' "${GITHUB_ENV}"
   source ${GITHUB_ENV}
-  # 升级gcc
-  if [[ `gcc --version |grep -c "buntu 13"` -eq '0' ]]; then
-    echo "安装使用gcc13版本,如若提示enter,请按回车键继续"
-    sleep 5
-    sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-    sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
-    sudo apt-get install -y gcc-13
-    sudo apt-get install -y g++-13
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
-    gcc --version
-  fi
 else
   GIT_BUILD="build/${FOLDER_NAME}"
 fi
@@ -322,7 +311,7 @@ git pull
    find "${HOME_PATH}/feeds" -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
  done
 
-# 更换golang和node版本
+# 更新golang和node版本
 gitsvn https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
 gitsvn https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
 
@@ -334,9 +323,15 @@ if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services" ]]
   mv ${HOME_PATH}/feeds/danshui/relevance/nas-packages/multimedia/ffmpeg-remux ${HOME_PATH}/feeds/packages/multimedia/ffmpeg-remux
 fi
 
+# 降低v2raya的版本
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/v2raya ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/v2raya
   source ${HOME_PATH}/build/common/Share/19.07/netsupport.sh
+fi
+
+# 降低luci-app-ssr-plus的shadowsocks-rust版本
+if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
+  gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
 fi
 
 if [[ ! -d "${HOME_PATH}/package/network/config/firewall4" ]]; then
@@ -349,10 +344,6 @@ fi
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
-fi
-
-if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-  gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
 fi
 
 
@@ -376,7 +367,6 @@ EOF
 function Diy_Wenjian() {
 # 增加中文语言包
 A_PATH="$HOME_PATH/package"
-B_PATH="$HOME_PATH/feeds/luci/libs/luci-lib-base"
 C_PATH="$HOME_PATH/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json"
 echo "LUCI_BANBEN=$C_PATH" >> $GITHUB_ENV
 if [[ -f "${C_PATH}" ]]; then
