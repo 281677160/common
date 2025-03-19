@@ -291,11 +291,11 @@ echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
 LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
 if [[ -n "${LUCI_CHECKUT}" ]]; then
-  git checkout -q ${LUCI_CHECKUT}
-  git switch -c -q ${LUCI_CHECKUT}
+  git checkout ${LUCI_CHECKUT}
+  git switch -c ${LUCI_CHECKUT} > /dev/null 2>&1
   echo "${LUCI_CHECKUT}"
 fi
-git pull -q
+git pull > /dev/null 2>&1
 
  echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
  ./scripts/feeds update -a > /dev/null 2>&1
