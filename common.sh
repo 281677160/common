@@ -470,10 +470,11 @@ cd ${HOME_PATH}
 function Diy_LIENOL() {
 cd ${HOME_PATH}
 gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
-gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/lean/mt ${HOME_PATH}/feeds/other/lean/mt
-gitsvn https://github.com/coolsnowwolf/luci/tree/openwrt-23.05/applications/luci-app-vlmcsd ${HOME_PATH}/feeds/other/lean/luci-app-vlmcsd
-gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/vlmcsd ${HOME_PATH}/feeds/other/lean/vlmcsd
-
+if [[ -d "${HOME_PATH}/feeds/other/lean" ]]
+  gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/lean/mt ${HOME_PATH}/feeds/other/lean/mt
+  gitsvn https://github.com/coolsnowwolf/luci/tree/openwrt-23.05/applications/luci-app-vlmcsd ${HOME_PATH}/feeds/other/lean/luci-app-vlmcsd
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/vlmcsd ${HOME_PATH}/feeds/other/lean/vlmcsd
+fi
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
@@ -491,7 +492,6 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
 fi
 if [[ "${REPO_BRANCH}" == *"23.05"* ]] || [[ "${REPO_BRANCH}" == *"main"* ]]; then
    gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
-   gitsvn https://github.com/coolsnowwolf/packages/tree/master/utils/fatresize ${HOME_PATH}/feeds/packages/utils/fatresize
 fi
 if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/mbedtls ${HOME_PATH}/package/libs/mbedtls
