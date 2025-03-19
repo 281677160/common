@@ -491,7 +491,7 @@ fi
 if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
-  rm -fr ${HOME_PATH}/feeds/luci/luci-app-ntpc
+  rm -fr ${HOME_PATH}/feeds/luci/applications/luci-app-ntpc
 fi
 if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
    gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
