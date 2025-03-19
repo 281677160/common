@@ -2038,6 +2038,7 @@ elif [[ "${git_laqu}" == "4" ]]; then
     curl -# -L "${url}" -o "${content}"
     if [[ -s "${content}" ]]; then
       echo "${file_name}文件下载完成"
+      chmod +x "${content}"
     else
       echo "${file_name}文件下载失败"
     fi
