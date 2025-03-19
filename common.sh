@@ -2030,7 +2030,7 @@ elif [[ "${git_laqu}" == "3" ]]; then
     fi
 elif [[ "${git_laqu}" == "4" ]]; then
     [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
-    curl -# -L "${url}" -o "${content}"
+    curl -fsSL "${url}" -o "${content}"
     if [[ -s "${content}" ]]; then
       echo "${file_name}文件下载完成"
       chmod +x "${content}"
