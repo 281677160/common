@@ -12,7 +12,7 @@ function Diy_Part1() {
 		fi
 		echo "增加定时更新固件的插件完成"
 	else
-		echo "插件源码下载失败"
+		echo "定时更新固件的插件下载失败"
 	fi
 }
 
