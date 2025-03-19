@@ -311,7 +311,7 @@ git pull > /dev/null 2>&1
 echo "1"
 
  echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
- ./scripts/feeds update -a > /dev/null 2>&1
+ ./scripts/feeds update -a
 echo "2"
  z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
  luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
