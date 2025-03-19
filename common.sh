@@ -179,7 +179,11 @@ PADAVANONLY)
   export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
   export SOURCE="Mt798x"
   export SOURCE_OWNER="PADAVANONLY's"
-  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  if [[ "${REPO_BRANCH}" == "2410" ]]; then
+      export LUCI_EDITION="24.10"
+  else
+      export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  fi
   export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
