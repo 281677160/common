@@ -291,9 +291,9 @@ echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 
 LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
 if [[ -n "${LUCI_CHECKUT}" ]]; then
-  git checkout ${LUCI_CHECKUT}
+  git checkout ${LUCI_CHECKUT} > /dev/null 2>&1
   git switch -c ${LUCI_CHECKUT} > /dev/null 2>&1
-  echo "${LUCI_CHECKUT}"
+  echo "当前openwrt源码版本：${LUCI_CHECKUT}"
 fi
 git pull > /dev/null 2>&1
 
