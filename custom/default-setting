@@ -68,7 +68,7 @@ if [[ -f "${distfeedlist}" ]] && grep -q "openwrt.org" /etc/opkg/distfeeds.conf;
 elif grep -q "19.07" /etc/opkg/distfeeds.conf && grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
 	sed -i.bak "s|https://downloads.openwrt.org/releases/.*\/|https://mirrors.ustc.edu.cn/openwrt/releases/19.07.9/|g" /etc/opkg/distfeeds.conf
 	uci -q batch <<-EOF
-		set system.@imm_init[0].opkg_mirror="$opkg_mirror"
+		set system.@imm_init[0].opkg_mirror="https://mirrors.ustc.edu.cn/openwrt"
 		commit system
 	EOF
 elif grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
