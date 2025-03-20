@@ -18,27 +18,6 @@ if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/cront
 	rm -rf /etc/networkdetection
 fi
 
-luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
-if [[ -f '/etc/index.htm' ]]; then
-	sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "/etc/index.htm"
-else
-	sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "${luci_web}"
-fi
-if [[ -f '/etc/index.htm' ]] && [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "/etc/index.htm"` -eq '1' ]]; then
-	sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "/etc/index.htm"
-elif [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "${luci_web}"` -eq '1' ]]; then
-	sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "${luci_web}"
-fi
-
-sed -i 's?=== WARNING! =====================================?=================== WARNING! ====================?g' /etc/profile
-
-lmo_file="$({ find "/usr/lib/lua/luci/i18n" |grep "zh_Hans.lmo"; } 2>"/dev/null")"
-for b in ${lmo_file}
-do
-	lmo_new_file="$(echo -e "$b"|sed "s/zh_Hans/zh-cn/g")"
-	[[ -f "$b" ]] && mv "$b" "${lmo_new_file}" 2>"/dev/null"
-done
-
 if [[ -f "/usr/lib/os-release" ]]; then
 	sed -i 's?RELEASE=".*"?RELEASE="Customized_Information @ OpenWrt"?g' /usr/lib/os-release
 fi
@@ -78,6 +57,27 @@ elif grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
 		commit system
 	EOF
 fi
+
+luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
+if [[ -f '/etc/index.htm' ]]; then
+	sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "/etc/index.htm"
+else
+	sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "${luci_web}"
+fi
+if [[ -f '/etc/index.htm' ]] && [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "/etc/index.htm"` -eq '1' ]]; then
+	sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "/etc/index.htm"
+elif [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "${luci_web}"` -eq '1' ]]; then
+	sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "${luci_web}"
+fi
+
+sed -i 's?=== WARNING! =====================================?=================== WARNING! ====================?g' /etc/profile
+
+lmo_file="$({ find "/usr/lib/lua/luci/i18n" |grep "zh_Hans.lmo"; } 2>"/dev/null")"
+for b in ${lmo_file}
+do
+	lmo_new_file="$(echo -e "$b"|sed "s/zh_Hans/zh-cn/g")"
+	[[ -f "$b" ]] && mv "$b" "${lmo_new_file}" 2>"/dev/null"
+done
 
 if grep -q "dns_redirect" /etc/config/dhcp; then
 	service dnsmasq stop
