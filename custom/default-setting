@@ -40,22 +40,13 @@ opkg_mirror="https://mirrors.vsean.net/openwrt"
 distfeedlist="/etc/apk/repositories.d/distfeeds.list"
 if [[ -f "${distfeedlist}" ]] && grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
 	sed -i.bak "s,http.*\/downloads.openwrt.org,$opkg_mirror,g" "$distfeedlist"
-	uci -q batch <<-EOF
-		set system.@imm_init[0].opkg_mirror="$opkg_mirror"
-		commit system
-	EOF
+	grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
 elif grep -q "19.07" /etc/opkg/distfeeds.conf && grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
 	sed -i.bak "s|http.*\/downloads.openwrt.org/releases/19.07-SNAPSHOT|https://mirrors.ustc.edu.cn/openwrt/releases/19.07.9|g" /etc/opkg/distfeeds.conf
-	uci -q batch <<-EOF
-		set system.@imm_init[0].opkg_mirror="https://mirrors.ustc.edu.cn/openwrt"
-		commit system
-	EOF
+	grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
 elif grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
 	sed -i.bak "s,http.*\/downloads.openwrt.org,$opkg_mirror,g" /etc/opkg/distfeeds.conf
-	uci -q batch <<-EOF
-		set system.@imm_init[0].opkg_mirror="$opkg_mirror"
-		commit system
-	EOF
+	grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
 fi
 
 luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
