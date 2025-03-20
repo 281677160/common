@@ -9,10 +9,10 @@ grep -q "x86_64" /etc/banner && sed -i "s?x86_64?$ARCHIB?g" /etc/banner
 [[ "${DISTRIBID}" == "ImmortalWrt" ]] && sed -i "s?DISTRIB_ID='ImmortalWrt'?DISTRIB_ID='OpenWrt'?g" /etc/openwrt_release
 [[ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]] && sed -i 's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
 grep -q "danshui" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
-grep -q "helloworld" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
-grep -q "passwall" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
-grep -q "OpenClash" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
-grep -q "openwrt_x" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
+grep -q "helloworld" /etc/opkg/distfeeds.conf && sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
+grep -q "passwall" /etc/opkg/distfeeds.conf && sed -i '/passwall/d' /etc/opkg/distfeeds.conf
+grep -q "OpenClash" /etc/opkg/distfeeds.conf && sed -i '/OpenClash/d' /etc/opkg/distfeeds.conf
+grep -q "openwrt_x" /etc/opkg/distfeeds.conf && sed -i '/openwrt_x/d' /etc/opkg/distfeeds.conf
 
 if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/crontabs/root` -eq '0' ]]; then
 	rm -rf /etc/networkdetection
