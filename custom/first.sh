@@ -41,6 +41,9 @@ else
   rm -rf operates && mv -f repogx/build operates
 fi
 
+[[ ! -d "${GITHUB_WORKSPACE}/repogx/build/padavanonly" ]] && mv ${GITHUB_WORKSPACE}/shangyou/build/padavanonly ${GITHUB_WORKSPACE}/repogx/build/padavanonly
+[[ ! -f "${GITHUB_WORKSPACE}/repogx/.github/workflows/padavanonly.yml" ]] && mv ${GITHUB_WORKSPACE}/shangyou/.github/workflows/padavanonly.yml ${GITHUB_WORKSPACE}/repogx/.github/workflows/padavanonly.yml
+
 [[ -d "repogx/backups" ]] && sudo rm -rf repogx/backups
 [[ -d "operates/backups" ]] && sudo rm -rf operates/backups
 
