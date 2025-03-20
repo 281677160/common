@@ -315,7 +315,7 @@ git pull > /dev/null 2>&1
 # 添加自定义插件源
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
 echo 'src-git modem https://github.com/FUjr/modem_feeds.git;main' >> feeds.conf.default
-echo 'src-git wwan https://github.com/huanghitoy/wwan.git;main' >> feeds.conf.default
+gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/wwan ${HOME_PATH}/package/wwan
 git clone https://github.com/x32349501/quectel-cm.git ${HOME_PATH}/package/network/utils/quectel-cm
 ./scripts/feeds update -a > /dev/null 2>&1
  
