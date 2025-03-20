@@ -130,28 +130,15 @@ LIENOL)
   export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
 ;;
 IMMORTALWRT)
-  if [[ "${REPO_BRANCH}" == "mt798x" ]]; then
-    export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
-    export SOURCE="Immortalwrt"
-    export SOURCE_OWNER="padavanonly's"
-    export LUCI_EDITION="mt798x"
-    export DIY_WORK="padavanonly2410"
-    export REPO_BRANCH="openwrt-23.05"
-    export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-    export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
-    export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
-    export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
-  else
-    export REPO_URL="https://github.com/immortalwrt/immortalwrt"
-    export SOURCE="Immortalwrt"
-    export SOURCE_OWNER="ctcgfw's"
-    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-    export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
-    export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-    export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
-    export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
-    export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
-  fi
+  export REPO_URL="https://github.com/immortalwrt/immortalwrt"
+  export SOURCE="Immortalwrt"
+  export SOURCE_OWNER="ctcgfw's"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
+  export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
+  export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
 ;;
 XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
