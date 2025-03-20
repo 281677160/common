@@ -5,8 +5,8 @@ touch /etc/crontabs/root
 
 ARCHIB="$(grep 'DISTRIB_ARCH' /etc/openwrt_release|cut -d= -f2|tr -d "'")"
 DISTRIBID="$(grep 'DISTRIB_ID' /etc/openwrt_release|cut -d= -f2|tr -d "'")"
-grep -q "danshui" /etc/banner && sed -i "s?x86_64?${ARCHIB}?g" /etc/banner
-[[ "${DISTRIBID}" == "ImmortalWrt" ]] && sed -i "s?ImmortalWrt?OpenWrt?g" /etc/banner
+grep -q "x86_64" /etc/banner && sed -i "s?x86_64?$ARCHIB?g" /etc/banner
+[[ "${DISTRIBID}" == "ImmortalWrt" ]] && sed -i "s?DISTRIB_ID='ImmortalWrt'?DISTRIB_ID='OpenWrt'?g" /etc/openwrt_release
 [[ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]] && sed -i 's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
 grep -q "danshui" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
 grep -q "helloworld" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
@@ -59,7 +59,7 @@ echo "luciname    = \"SOURCE\"" >> /usr/lib/lua/luci/version.lua
 
 opkg_mirror="https://mirrors.vsean.net/openwrt"
 distfeedlist="/etc/apk/repositories.d/distfeeds.list"
-if [[ -f "${distfeedlist}" ]]; then
+if [[ -f "${distfeedlist}" ]] && grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
 	sed -i.bak "s,https://downloads.openwrt.org,$opkg_mirror,g" "$distfeedlist"
 	uci -q batch <<-EOF
 		set system.@imm_init[0].opkg_mirror="$opkg_mirror"
@@ -90,7 +90,4 @@ else
 	uci commit dhcp
 	service dnsmasq start
 fi
-
-
-
 
