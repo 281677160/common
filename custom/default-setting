@@ -3,45 +3,16 @@
 chmod -R 0775 /etc/init.d /usr/share
 touch /etc/crontabs/root
 
-source /etc/openwrt_release
-if [[ ! "${DISTRIB_ARCH}" == "x86_64" ]]; then
-	sed -i "s?x86_64?${DISTRIB_TARGET}?g" /etc/banner
-fi
-if [[ "${DISTRIB_ID}" == "ImmortalWrt" ]]; then
-	sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-fi
-
-if [[ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]]; then
-	sed -i 's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
-fi
-
-if [[ `grep -c "danshui" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
-	sed -i '/danshui/d' /etc/opkg/distfeeds.conf
-fi
-if [[ `grep -c "helloworld" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
-	sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
-fi
-if [[ `grep -c "passwall" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
-	sed -i '/passwall/d' /etc/opkg/distfeeds.conf
-fi
-if [[ `grep -c "OpenClash" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
-	sed -i '/OpenClash/d' /etc/opkg/distfeeds.conf
-fi
-if [[ `grep -c "openwrt_x" /etc/opkg/distfeeds.conf` -ge '1' ]]; then
-	sed -i '/openwrt_x/d' /etc/opkg/distfeeds.conf
-fi
-
-if [[ `grep -c "dns_redirect" /etc/config/dhcp` -ge '1' ]]; then
-	service dnsmasq stop
-	sed -i '/dns_redirect/d' /etc/config/dhcp
-	uci commit dhcp
-	service dnsmasq start
-else
-	service dnsmasq stop
-	uci set dhcp.@dnsmasq[0].dns_redirect='0'
-	uci commit dhcp
-	service dnsmasq start
-fi
+ARCHIB="$(grep 'DISTRIB_ARCH' /etc/openwrt_release|cut -d= -f2|tr -d "'")"
+DISTRIBID="$(grep 'DISTRIB_ID' /etc/openwrt_release|cut -d= -f2|tr -d "'")"
+grep -q "danshui" /etc/banner && sed -i "s?x86_64?${ARCHIB}?g" /etc/banner
+[[ "${DISTRIBID}" == "ImmortalWrt" ]] && sed -i "s?ImmortalWrt?OpenWrt?g" /etc/banner
+[[ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]] && sed -i 's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
+grep -q "danshui" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
+grep -q "helloworld" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
+grep -q "passwall" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
+grep -q "OpenClash" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
+grep -q "openwrt_x" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
 
 if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/crontabs/root` -eq '0' ]]; then
 	rm -rf /etc/networkdetection
@@ -68,17 +39,15 @@ do
 	[[ -f "$b" ]] && mv "$b" "${lmo_new_file}" 2>"/dev/null"
 done
 
-if [[ -n "$(grep "downloads.openwrt.org" /etc/opkg/distfeeds.conf)" ]]; then
-	sed -i 's?downloads.openwrt.org?mirrors.cloud.tencent.com/openwrt?g' /etc/opkg/distfeeds.conf
-fi
-
 if [[ -f "/usr/lib/os-release" ]]; then
 	sed -i 's?RELEASE=".*"?RELEASE="Customized_Information @ OpenWrt"?g' /usr/lib/os-release
 fi
+
 if [[ -f "/usr/share/ucode/luci/version.uc" ]]; then
 	sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
 	echo "export const revision = 'SOURCE - LUCI_EDITION', branch = '';" >> "/usr/share/ucode/luci/version.uc"
 fi
+
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='Customized_Information @ OpenWrt '" >> /etc/openwrt_release
 sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
@@ -87,3 +56,41 @@ sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
 echo "luciversion    = \"LUCI_EDITION\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"SOURCE\"" >> /usr/lib/lua/luci/version.lua
+
+opkg_mirror="https://mirrors.vsean.net/openwrt"
+distfeedlist="/etc/apk/repositories.d/distfeeds.list"
+if [[ -f "${distfeedlist}" ]]; then
+	sed -i.bak "s,https://downloads.openwrt.org,$opkg_mirror,g" "$distfeedlist"
+	uci -q batch <<-EOF
+		set system.@imm_init[0].opkg_mirror="$opkg_mirror"
+		commit system
+	EOF
+elif grep -q "19.07" /etc/opkg/distfeeds.conf && grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
+	sed -i.bak "s|https://downloads.openwrt.org/releases/.*\/|https://mirrors.ustc.edu.cn/openwrt/releases/19.07.9/|g" /etc/opkg/distfeeds.conf
+	uci -q batch <<-EOF
+		set system.@imm_init[0].opkg_mirror="$opkg_mirror"
+		commit system
+	EOF
+elif grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
+	sed -i.bak "s,https://downloads.openwrt.org,$opkg_mirror,g" /etc/opkg/distfeeds.conf
+	uci -q batch <<-EOF
+		set system.@imm_init[0].opkg_mirror="$opkg_mirror"
+		commit system
+	EOF
+fi
+
+if grep -q "dns_redirect" /etc/config/dhcp; then
+	service dnsmasq stop
+	sed -i '/dns_redirect/d' /etc/config/dhcp
+	uci commit dhcp
+	service dnsmasq start
+else
+	service dnsmasq stop
+	uci set dhcp.@dnsmasq[0].dns_redirect='0'
+	uci commit dhcp
+	service dnsmasq start
+fi
+
+
+
+
