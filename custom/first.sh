@@ -35,7 +35,6 @@ elif [[ ! -d "shangyou" ]]; then
   exit 1
 fi
 
-
 [[ ! -d "repogx/build/Immortalwrt" ]] && cp -Rf shangyou/build/Immortalwrt repogx/build/Immortalwrt
 [[ ! -f "repogx/.github/workflows/Immortalwrt.yml" ]] && cp -Rf shangyou/.github/workflows/padavanonly.yml repogx/.github/workflows/Immortalwrt.yml
 
