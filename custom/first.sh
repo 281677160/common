@@ -126,7 +126,6 @@ do
       sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" ${Y}
     fi
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Official/* "${X}"
-  fi
   elif [ -n "$(grep 'SOURCE_CODE="PADAVANONLY"' "${a}")" ]; then
     Y="${GITHUB_WORKSPACE}/shangyou/build/padavanonly/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
@@ -140,6 +139,7 @@ do
       sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" ${Y}
     fi
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/padavanonly/* "${X}"
+  fi
 done
 
 yml_file="$({ find ${GITHUB_WORKSPACE}/repogx |grep .yml |grep -v 'institution.yml\|compile.yml\|packaging.yml\|backups'; } 2>"/dev/null")"
