@@ -10,9 +10,9 @@ run_zzz_default() {
                 rm -rf /etc/default-setting
 	fi
 	
-	openwrt -r
 	
 	if [ -f "/usr/bin/openwrt" ]; then
+		openwrt -r
 		openwrt -e
 	fi
 }
