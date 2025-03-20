@@ -331,6 +331,9 @@ git clone https://github.com/ChaingTsung/quectel_cm-5G ${HOME_PATH}/package/netw
    find . -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
  done
 
+find . -type d -name "mosdns"
+find . -type d -name "v2ray-geodata"
+
 # 更新golang和node版本
 gitsvn https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
 gitsvn https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
