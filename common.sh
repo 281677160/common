@@ -468,6 +468,9 @@ TIME r ""
 
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
+if [[ -d "${HOME_PATH}/feeds/danshui/luci-app-qmodem/driver" ]]; then
+  rm -rf ${HOME_PATH}/package/wwan/driver
+fi
 }
 
 
