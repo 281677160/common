@@ -342,6 +342,7 @@ fi
 
 if [[ ! -d "${HOME_PATH}/package/network/config/firewall4" ]]; then
     rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
+    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-homeproxy
 fi
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
@@ -528,6 +529,7 @@ cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
   gitsvn https://github.com/openwrt/routing/tree/openwrt-21.02/bmx6 ${HOME_PATH}/feeds/routing/bmx6
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-homeproxy
 fi
 }
 
