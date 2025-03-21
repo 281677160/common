@@ -7,7 +7,7 @@ function install_mustrelyon(){
 # 安装编译openwrt的依赖
 #sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
 ${INS} update > /dev/null 2>&1
-${INS} full-upgrade > /dev/null 2>&1
+#${INS} full-upgrade > /dev/null 2>&1
 ${INS} install $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
 # N1打包需要的依赖
