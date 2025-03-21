@@ -4,6 +4,7 @@ START=99
 
 start() {
     [ -f "/usr/bin/openwrt" ] && openwrt -e
+    echo "123" > /etc/stoppedvi
 }
 
 stop() {
