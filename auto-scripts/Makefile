@@ -16,7 +16,9 @@ endef
 define Package/auto-scripts/description
   Embeds two scripts into firmware:
   1. /etc/uci-defaults/99-first-run (runs once on first boot)
-  2. /etc/init.d/auto-reboot-script (runs on every reboot, auto-enabled)
+  2. /etc/init.d/script_dingyi (runs on every reboot, auto-enabled)
+  3. /usr/bin/openwrt (runs openwrt)
+  4. /etc/networkdetection (runs networkdetection)
 endef
 
 define Build/Configure
@@ -26,15 +28,16 @@ define Build/Compile
 endef
 
 define Package/auto-scripts/install
-	# 安装首次启动脚本
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_BIN) ./files/99-first-run $(1)/etc/uci-defaults/99-first-run
-
-	# 安装重启脚本并自动启用
 	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/auto-reboot-script $(1)/etc/init.d/auto-reboot-script
+	$(INSTALL_BIN) ./files/script_dingyi $(1)/etc/init.d/script_dingyi
 	$(INSTALL_DIR) $(1)/etc/rc.d
-	ln -s ../init.d/auto-reboot-script $(1)/etc/rc.d/S99auto-reboot-script
+	ln -s ../init.d/auto-reboot-script $(1)/etc/rc.d/S99script_dingyi
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) ./files/openwrt $(1)/usr/bin/openwrt
+	$(INSTALL_DIR) $(1)/etc
+	$(INSTALL_BIN) ./files/networkdetection $(1)/etc/networkdetection
 endef
 
 $(eval $(call BuildPackage,auto-scripts))
