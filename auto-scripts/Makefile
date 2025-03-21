@@ -10,15 +10,27 @@ include $(INCLUDE_DIR)/package.mk
 define Package/auto-scripts
   SECTION:=utils
   CATEGORY:=Utilities
-  TITLE:=Automatic Scripts (Compatible with default-settings)
+  TITLE:=Automatic First-Boot & Reboot Scripts
+endef
+
+define Package/auto-scripts/description
+  Embeds two scripts into firmware:
+  1. /etc/uci-defaults/99-first-run (runs once on first boot)
+  2. /etc/init.d/auto-reboot-script (runs on every reboot, auto-enabled)
+endef
+
+define Build/Configure
+endef
+
+define Build/Compile
 endef
 
 define Package/auto-scripts/install
-	# 安装首次启动脚本（唯一文件名）
+	# 安装首次启动脚本
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_BIN) ./files/99-first-run $(1)/etc/uci-defaults/99-first-run
 
-	# 安装重启脚本（避免覆盖 default-settings 的服务）
+	# 安装重启脚本并自动启用
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/auto-reboot-script $(1)/etc/init.d/auto-reboot-script
 	$(INSTALL_DIR) $(1)/etc/rc.d
