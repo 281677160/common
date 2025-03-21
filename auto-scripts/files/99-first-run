@@ -70,15 +70,4 @@ do
 	[[ -f "$b" ]] && mv "$b" "${lmo_new_file}" 2>"/dev/null"
 done
 
-if grep -q "dns_redirect" /etc/config/dhcp; then
-	service dnsmasq stop
-	sed -i '/dns_redirect/d' /etc/config/dhcp
-	uci commit dhcp
-	service dnsmasq start
-else
-	service dnsmasq stop
-	uci set dhcp.@dnsmasq[0].dns_redirect='0'
-	uci commit dhcp
-	service dnsmasq start
-fi
 
