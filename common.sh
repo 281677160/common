@@ -291,13 +291,16 @@ echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
 
-LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
-if [[ -n "${LUCI_CHECKUT}" ]]; then
-  git checkout ${LUCI_CHECKUT} > /dev/null 2>&1
-  git switch -c ${LUCI_CHECKUT} > /dev/null 2>&1
-  echo "当前openwrt源码版本：${LUCI_CHECKUT}"
+if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
+  LUCI_CHECKUT="$(git tag -l |grep '^V\|^v' |awk 'END {print}')"
+  if [[ -n "${LUCI_CHECKUT}" ]]; then
+    git checkout ${LUCI_CHECKUT} > /dev/null 2>&1
+    git switch -c ${LUCI_CHECKUT} > /dev/null 2>&1
+  fi
 fi
-git pull > /dev/null 2>&1
+if [[ -n "${BENDI_VERSION}" ]]; then
+  git pull > /dev/null 2>&1
+fi
 
 # 添加自定义插件源
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
