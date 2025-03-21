@@ -1,22 +1,12 @@
 #!/bin/sh /etc/rc.common
-# Copyright (C) 2006 OpenWrt.org
 
 START=99
 
-run_zzz_default() {
-    
-	if [ -f "/etc/default-setting" ]; then
-		/etc/default-setting
-                rm -rf /etc/default-setting
-	fi
-	
-	
-	if [ -f "/usr/bin/openwrt" ]; then
-		openwrt -r
-		openwrt -e
-	fi
+start() {
+    openwrt -e
 }
 
-start() {
-	run_zzz_default
+stop() {
+    # 停止操作（如果需要）
+    echo "Service stopped."
 }
