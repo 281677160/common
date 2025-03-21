@@ -3,7 +3,7 @@
 START=99
 
 start() {
-    openwrt -e
+    [ -f "/usr/bin/openwrt" ] && openwrt -e
 }
 
 stop() {
