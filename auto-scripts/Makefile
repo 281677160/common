@@ -27,8 +27,6 @@ define Package/auto-scripts/install
     $(INSTALL_BIN) ./files/99-first-run $(1)/etc/uci-defaults/99-first-run
     $(INSTALL_DIR) $(1)/etc/init.d
     $(INSTALL_BIN) ./files/auto-reboot-script $(1)/etc/init.d/auto-reboot-script
-    $(INSTALL_DIR) $(1)/etc/rc.d
-    ln -s ../init.d/auto-reboot-script $(1)/etc/rc.d/S99auto-reboot-script
 endef
 
 $(eval $(call BuildPackage,auto-scripts))
