@@ -11,7 +11,7 @@ ${INS} update > /dev/null 2>&1
 ${INS} install $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
 # N1打包需要的依赖
-${INS} install rename pigz upx-ucl
+${INS} install rename pigz upx-ucl clang
 
 # 安装gcc-13
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -22,6 +22,7 @@ ${INS} install g++-13
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
 gcc --version
 g++ --version
+clang --version
 }
 
 function update_apt_source(){
