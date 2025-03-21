@@ -14,7 +14,9 @@ define Package/auto-scripts
 endef
 
 define Package/auto-scripts/description
-	Language Support Packages.
+  Embeds two scripts into firmware:
+  1. /etc/uci-defaults/99-first-run (runs once on first boot)
+  2. /etc/init.d/auto-reboot-script (runs on every reboot, auto-enabled)
 endef
 
 define Build/Compile
