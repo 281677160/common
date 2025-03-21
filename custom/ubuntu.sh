@@ -6,8 +6,8 @@
 function install_mustrelyon(){
 # 安装编译openwrt的依赖
 #sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
-${INS} update
-${INS} full-upgrade
+${INS} update > /dev/null 2>&1
+${INS} full-upgrade > /dev/null 2>&1
 ${INS} install $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
 # N1打包需要的依赖
@@ -16,6 +16,7 @@ ${INS} install rename pigz upx-ucl
 # 安装gcc-13
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
+${INS} update > /dev/null 2>&1
 ${INS} install gcc-13
 ${INS} install g++-13
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
@@ -40,7 +41,7 @@ function main(){
 		install_mustrelyon
 		update_apt_source
 	else
-		INS="sudo -E apt-get -qq -y"
+		INS="sudo apt-get -y"
 		install_mustrelyon
 		update_apt_source
 	fi
