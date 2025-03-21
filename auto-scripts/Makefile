@@ -19,7 +19,8 @@ define Package/auto-scripts/description
   2. /etc/init.d/auto-reboot-script (runs on every reboot, auto-enabled)
 endef
 
-define Build/Configure
+define Package/auto-scripts/description
+	Language Support Packages.
 endef
 
 define Build/Compile
