@@ -275,7 +275,7 @@ curl -fsSL "${FEEDS_CONF}" -o "${HOME_PATH}/feeds.conf.default"
 curl -fsSL "${BASE_FILES}" -o "${GENE_PATH}"
 curl -fsSL "${UPGRADE_KEEP}" -o "${KEEPD_PATH}"
 curl -fsSL "${TARGET_MK}" -o "${HOME_PATH}/include/target.mk"
-gitsvn https://github.com/281677160/common/tree/main/mycustom ${HOME_PATH}/Package/mycustom
+gitsvn https://github.com/281677160/common/tree/main/mycustom ${HOME_PATH}/package/mycustom
 
 sed -i "s/SOURCE/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
