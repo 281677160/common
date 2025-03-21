@@ -1,0 +1,42 @@
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=auto-scripts
+PKG_VERSION:=1.0
+PKG_RELEASE:=1
+
+include $(INCLUDE_DIR)/package.mk
+
+define Package/auto-scripts
+  SECTION:=utils
+  CATEGORY:=Utilities
+  TITLE:=Automatic First-Boot & Reboot Scripts
+  PKGARCH:=all
+endef
+
+define Package/auto-scripts/description
+  Embeds two scripts into firmware:
+  1. /etc/uci-defaults/99-first-run (runs once on first boot)
+  2. /etc/init.d/auto-reboot-script (runs on every reboot, auto-enabled)
+endef
+
+define Build/Configure
+endef
+
+define Build/Compile
+endef
+
+define Package/auto-scripts/install
+    # 1. 安装首次启动脚本 (自动运行并自毁)
+    $(INSTALL_DIR) $(1)/etc/uci-defaults
+    $(INSTALL_BIN) ./files/99-first-run $(1)/etc/uci-defaults/99-first-run
+
+    # 2. 安装重启脚本并自动启用服务
+    $(INSTALL_DIR) $(1)/etc/init.d
+    $(INSTALL_BIN) ./files/auto-reboot-script $(1)/etc/init.d/auto-reboot-script
+    
+    # 创建启用服务的符号链接 (无需手动 enable)
+    $(INSTALL_DIR) $(1)/etc/rc.d
+    ln -s ../init.d/auto-reboot-script $(1)/etc/rc.d/S99auto-reboot-script
+endef
+
+$(eval $(call BuildPackage,auto-scripts))
