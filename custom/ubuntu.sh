@@ -19,6 +19,8 @@ sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
 ${INS} install gcc-13
 ${INS} install g++-13
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
+gcc --version
+g++ --version
 }
 
 function update_apt_source(){
