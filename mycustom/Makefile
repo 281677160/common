@@ -28,7 +28,6 @@ define Build/Compile
 endef
 
 define Package/auto-scripts/install
-    # 1. 安装首次启动脚本 (自动运行并自毁)
     $(INSTALL_DIR) $(1)/etc/uci-defaults
     $(INSTALL_BIN) ./files/99-first-run $(1)/etc/uci-defaults/99-first-run
 
@@ -38,11 +37,9 @@ define Package/auto-scripts/install
     $(INSTALL_DIR) $(1)/usr/bin
     $(INSTALL_BIN) ./files/openwrt $(1)/usr/bin/openwrt
 
-    # 2. 安装重启脚本并自动启用服务
     $(INSTALL_DIR) $(1)/etc/init.d
     $(INSTALL_BIN) ./files/auto-reboot-script $(1)/etc/init.d/auto-reboot-script
     
-    # 创建启用服务的符号链接 (无需手动 enable)
     $(INSTALL_DIR) $(1)/etc/rc.d
     ln -s ../init.d/auto-reboot-script $(1)/etc/rc.d/S99auto-reboot-script
 endef
