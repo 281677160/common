@@ -23,10 +23,6 @@ endef
 define Package/auto-scripts/install
     $(INSTALL_DIR) $(1)/etc/uci-defaults
     $(INSTALL_BIN) ./files/99-first-run $(1)/etc/uci-defaults/99-first-run
-    $(INSTALL_DIR) $(1)/etc
-    $(INSTALL_BIN) ./files/networkdetection $(1)/etc/networkdetection
-    $(INSTALL_DIR) $(1)/usr/bin
-    $(INSTALL_BIN) ./files/openwrt $(1)/usr/bin/openwrt
     $(INSTALL_DIR) $(1)/etc/init.d
     $(INSTALL_BIN) ./files/auto-reboot-script $(1)/etc/init.d/auto-reboot-script
     $(INSTALL_DIR) $(1)/etc/rc.d
