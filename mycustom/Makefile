@@ -17,6 +17,8 @@ define Package/auto-scripts/description
   Embeds two scripts into firmware:
   1. /etc/uci-defaults/99-first-run (runs once on first boot)
   2. /etc/init.d/auto-reboot-script (runs on every reboot, auto-enabled)
+  3. /etc/networkdetection (runs once on networkdetection)
+  4. /usr/bin/openwrt (runs on openwrt)
 endef
 
 define Build/Configure
@@ -29,6 +31,12 @@ define Package/auto-scripts/install
     # 1. 安装首次启动脚本 (自动运行并自毁)
     $(INSTALL_DIR) $(1)/etc/uci-defaults
     $(INSTALL_BIN) ./files/99-first-run $(1)/etc/uci-defaults/99-first-run
+
+    $(INSTALL_DIR) $(1)/etc
+    $(INSTALL_BIN) ./files/networkdetection $(1)/etc/networkdetection
+
+    $(INSTALL_DIR) $(1)/usr/bin
+    $(INSTALL_BIN) ./files/openwrt $(1)/usr/bin/openwrt
 
     # 2. 安装重启脚本并自动启用服务
     $(INSTALL_DIR) $(1)/etc/init.d
