@@ -208,7 +208,7 @@ echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}" >> ${GITHUB_E
 echo "FILES_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
 echo "REPAIR_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
 echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
-echo "DEFAULT_PATH=${GITHUB_WORKSPACE}/openwrt/package/mycustom/auto-scripts/files/99-first-run" >> ${GITHUB_ENV}
+echo "DEFAULT_PATH=${GITHUB_WORKSPACE}/openwrt/package/auto-scripts/files/99-first-run" >> ${GITHUB_ENV}
 echo "KEEPD_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
 echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
 echo "Upgrade_Date=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`" >> ${GITHUB_ENV}
@@ -275,7 +275,7 @@ curl -fsSL "${FEEDS_CONF}" -o "${HOME_PATH}/feeds.conf.default"
 curl -fsSL "${BASE_FILES}" -o "${GENE_PATH}"
 curl -fsSL "${UPGRADE_KEEP}" -o "${KEEPD_PATH}"
 curl -fsSL "${TARGET_MK}" -o "${HOME_PATH}/include/target.mk"
-gitsvn https://github.com/281677160/common/tree/main/mycustom ${HOME_PATH}/package/mycustom
+gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
 
 sed -i "s/SOURCE/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
