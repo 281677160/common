@@ -59,13 +59,8 @@ jobs:
         cd $GITHUB_WORKSPACE
         cat $GITHUB_WORKSPACE/123 |sed '/^$/d' |awk '$0=NR$0' |sed 's/^/R/' |sed 's/2410/24.10/' |sed s/[[:space:]]//g >$GITHUB_WORKSPACE/repogx/autoupdate/replace
 
-        cd $GITHUB_WORKSPACE/repogx/Share
-        rm -rf bmx6 btrfs-progs cmake glib2 liburing luci-app-samba4 luci-app-ttyd
-        rm -rf pcre2 perl-parse-yapp ruby rust samba4 tailscale ttyd yaml
-        cd $GITHUB_WORKSPACE
-        git clone -b usb https://github.com/281677160/openwrt-package usbb
-        cp -rf usbb/argon $GITHUB_WORKSPACE/repogx/Share/argon
-        cp -rf usbb/block $GITHUB_WORKSPACE/repogx/Share/block
+        cp -rf $GITHUB_WORKSPACE/repogx/Share/default-settings1 $GITHUB_WORKSPACE/repogx/Share/default-setting
+        cp -rf $GITHUB_WORKSPACE/repogx/Share/default-settings2 $GITHUB_WORKSPACE/repogx/Share/default-settings
         
       
         
