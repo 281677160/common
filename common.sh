@@ -288,6 +288,7 @@ echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
   git tag -l
+fi
 if [[ -n "${BENDI_VERSION}" ]]; then
   git pull > /dev/null 2>&1
 fi
