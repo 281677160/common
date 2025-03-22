@@ -3,6 +3,8 @@
 chmod -R 0775 /etc/init.d /usr/share
 touch /etc/crontabs/root
 
+echo "$(date +%Y年%m月%d号%H时%M分%S)" >/etc/ssscrontabs
+
 ARCHIB="$(grep 'DISTRIB_ARCH' /etc/openwrt_release|cut -d= -f2|tr -d "'")"
 DISTRIBID="$(grep 'DISTRIB_ID' /etc/openwrt_release|cut -d= -f2|tr -d "'")"
 grep -q "x86_64" /etc/banner && sed -i "s?x86_64?$ARCHIB?g" /etc/banner
