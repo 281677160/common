@@ -368,9 +368,9 @@ A_PATH="$HOME_PATH/package"
 C_PATH="$HOME_PATH/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json"
 echo "LUCI_BANBEN=$C_PATH" >> $GITHUB_ENV
 if [[ -f "${C_PATH}" ]]; then
-  gitsvn https://github.com/281677160/openwrt-package/tree/Theme2 ${HOME_PATH}/package/Theme2
+  gitsvn https://github.com/281677160/openwrt-package/tree/Theme2 ${HOME_PATH}/package/Luci_theme
 else
-  gitsvn https://github.com/281677160/openwrt-package/tree/Theme1 ${HOME_PATH}/package/Theme1
+  gitsvn https://github.com/281677160/openwrt-package/tree/Theme1 ${HOME_PATH}/package/Luci_theme
 fi
 if [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ -f "$C_PATH" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-settings ${HOME_PATH}/package/default-settings
