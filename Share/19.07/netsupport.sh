@@ -50,6 +50,16 @@ fi
 
 if [[ `grep -c "KernelPackage/nft-tproxy" package/kernel/linux/modules/netfilter.mk` -eq '0' ]]; then
 echo "
+define KernelPackage/nf-tproxy
+  SUBMENU:=\$(NF_MENU)
+  TITLE:=Netfilter tproxy support
+  KCONFIG:= \$(KCONFIG_NF_TPROXY)
+  FILES:=\$(foreach mod,\$(NF_TPROXY-m),\$(LINUX_DIR)/net/\$(mod).ko)
+  AUTOLOAD:=\$(call AutoProbe,\$(notdir \$(NF_TPROXY-m)))
+endef
+
+\$(eval \$(call KernelPackage,nf-tproxy))
+
 define KernelPackage/nft-tproxy
   SUBMENU:=\$(NF_MENU)
   TITLE:=Netfilter nf_tables tproxy support
