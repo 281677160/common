@@ -287,8 +287,10 @@ echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-  git tag -l
-  git describe --tags
+  find . -type f -exec grep -l --binary-files=without-match "19.07-SNAPSHOT" {} \; -exec sed -i 's/\19.07-SNAPSHOT\b/19.07.10/g' {} \;
+  git checkout 19.07.10 > /dev/null 2>&1
+  git switch -c 19.07.10 > /dev/null 2>&1
+  git pull > /dev/null 2>&1
 fi
 if [[ -n "${BENDI_VERSION}" ]]; then
   git pull > /dev/null 2>&1
