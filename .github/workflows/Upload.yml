@@ -59,8 +59,8 @@ jobs:
         cd $GITHUB_WORKSPACE
         cat $GITHUB_WORKSPACE/123 |sed '/^$/d' |awk '$0=NR$0' |sed 's/^/R/' |sed 's/2410/24.10/' |sed s/[[:space:]]//g >$GITHUB_WORKSPACE/repogx/autoupdate/replace
 
-        cp -rf $GITHUB_WORKSPACE/repogx/Share/default-settings1 $GITHUB_WORKSPACE/repogx/Share/default-setting
-        cp -rf $GITHUB_WORKSPACE/repogx/Share/default-settings2 $GITHUB_WORKSPACE/repogx/Share/default-settings
+        rm -rf $GITHUB_WORKSPACE/repogx/Share/default-settings1
+        rm -rf $GITHUB_WORKSPACE/repogx/Share/default-settings2
         
       
         
