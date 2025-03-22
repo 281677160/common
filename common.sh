@@ -475,7 +475,7 @@ if [[ -d "${HOME_PATH}/feeds/other/lean" ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/vlmcsd ${HOME_PATH}/feeds/other/lean/vlmcsd
 fi
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
-  gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-21.02/tools/cmake ${HOME_PATH}/tools/cmake
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
@@ -535,7 +535,7 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
 fi
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
-  gitsvn https://github.com/281677160/common/tree/main/Share/libcap ${HOME_PATH}/feeds/packages/libs/libcap
+  gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-22.03/package/utils/bcm27xx-userland ${HOME_PATH}/package/utils/bcm27xx-userland
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-21.02/tools/cmake ${HOME_PATH}/tools/cmake
