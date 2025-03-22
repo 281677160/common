@@ -4,7 +4,7 @@ START=99
 
 start() {
     [ -f "/usr/bin/openwrt" ] && openwrt -e
-    echo "123" > /etc/stoppedvi
+    echo "$(date +%Y年%m月%d号%H时%M分%S)" >/etc/ssscrontsdsaa
 }
 
 stop() {
