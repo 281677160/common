@@ -50,22 +50,11 @@ fi
 
 if [[ `grep -c "KernelPackage/nft-tproxy" package/kernel/linux/modules/netfilter.mk` -eq '0' ]]; then
 echo "
-define KernelPackage/nft-socket
-  SUBMENU:=\$(NF_MENU)
-  TITLE:=Netfilter nf_tables socket support
-  DEPENDS:=+kmod-nft-core +kmod-nf-socket
-  FILES:=\$(foreach mod,\$(NFT_SOCKET-m),\$(LINUX_DIR)/net/\$(mod).ko)
-  AUTOLOAD:=\$(call AutoProbe,\$(notdir \$(NFT_SOCKET-m)))
-  KCONFIG:=\$(KCONFIG_NFT_SOCKET)
-endef
-
-\$(eval \$(call KernelPackage,nft-socket))
-
 define KernelPackage/nft-tproxy
   SUBMENU:=\$(NF_MENU)
   TITLE:=Netfilter nf_tables tproxy support
   DEPENDS:=+kmod-nft-core +kmod-nf-tproxy +kmod-nf-conntrack
-  FILES:=\$(foreach mod,\$(NFT_TPROXY-m),\$(LINUX_DIR)/net/$(mod).ko)
+  FILES:=\$(foreach mod,\$(NFT_TPROXY-m),\$(LINUX_DIR)/net/\$(mod).ko)
   AUTOLOAD:=\$(call AutoProbe,\$(notdir \$(NFT_TPROXY-m)))
   KCONFIG:=\$(KCONFIG_NFT_TPROXY)
 endef
