@@ -1,5 +1,5 @@
 #!/bin/sh
 
-grep -q "scripts_reboot" /etc/scripts_reboot && sed -i '/scripts_reboot/d' /etc/scripts_reboot
+grep -q "scripts_reboot" /etc/scripts_reboot && sed -i '/scripts_reboot/d' /etc/init.d/Restart_scripts
 rm -rf /etc/scripts_reboot
 sleep 2 && reboot
