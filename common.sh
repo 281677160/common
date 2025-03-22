@@ -373,7 +373,7 @@ else
   gitsvn https://github.com/281677160/openwrt-package/tree/Theme1 ${HOME_PATH}/package/Theme1
 fi
 if [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ -f "$C_PATH" ]]; then
-  gitsvn https://github.com/281677160/common/tree/main/Share/default-settings2 ${HOME_PATH}/package/default-settings
+  gitsvn https://github.com/281677160/common/tree/main/Share/default-settings ${HOME_PATH}/package/default-settings
   if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
   fi
@@ -387,7 +387,7 @@ if [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ -f
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-base luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
   fi
 elif [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ ! -f "$C_PATH" ]]; then
-  gitsvn https://github.com/281677160/common/tree/main/Share/default-settings1 ${HOME_PATH}/package/default-settings
+  gitsvn https://github.com/281677160/common/tree/main/Share/default-setting ${HOME_PATH}/package/default-settings
   if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
   fi
