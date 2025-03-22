@@ -42,7 +42,7 @@ if [[ -f "${distfeedlist}" ]] && grep -q "openwrt.org" /etc/opkg/distfeeds.conf;
 	sed -i.bak "s,http.*\/downloads.openwrt.org,$opkg_mirror,g" "$distfeedlist"
 	grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
 elif grep -q "19.07" /etc/opkg/distfeeds.conf && grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
-	sed -i.bak "s|http.*\/downloads.openwrt.org|https://mirrors.ustc.edu.cn/openwrt|g" /etc/opkg/distfeeds.conf
+	sed -i.bak "s|http.*\/downloads.openwrt.org/releases/19.07-SNAPSHOT|https://mirrors.ustc.edu.cn/openwrt/releases/19.07.10|g" /etc/opkg/distfeeds.conf
 	grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
 elif grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
 	sed -i.bak "s,http.*\/downloads.openwrt.org,$opkg_mirror,g" /etc/opkg/distfeeds.conf
