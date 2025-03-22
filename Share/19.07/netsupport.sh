@@ -64,7 +64,7 @@ endef
 fi
 
 if [[ `grep -c "nft_tproxy" include/netfilter.mk` -eq '0' ]]; then
-  sed -i '344i\$(eval \$(if \$(NF_KMOD),\$(call nf_add,NFT_TPROXY,CONFIG_NFT_TPROXY, \$(P_XT)nft_tproxy),))' include/netfilter.mk
+  sed -i '378i\$(eval \$(if \$(NF_KMOD),\$(call nf_add,NFT_TPROXY,CONFIG_NFT_TPROXY, \$(P_XT)nft_tproxy),))' include/netfilter.mk
 fi
 
 iproute1="package/network/utils/iproute2/Makefile"
