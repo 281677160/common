@@ -48,6 +48,25 @@ endef
 " >>  package/kernel/linux/modules/netsupport.mk
 fi
 
+if [[ `grep -c "KernelPackage/nft-tproxy" package/kernel/linux/modules/netfilter.mk` -eq '0' ]]; then
+echo "
+define KernelPackage/nft-tproxy
+  SUBMENU:=\$(NF_MENU)
+  TITLE:=Netfilter nf_tables tproxy support
+  DEPENDS:=+kmod-nft-core +kmod-nf-tproxy +kmod-nf-conntrack
+  FILES:=\$(foreach mod,\$(NFT_TPROXY-m),\$(LINUX_DIR)/net/\$(mod).ko)
+  AUTOLOAD:=\$(call AutoProbe,\$(notdir \$(NFT_TPROXY-m)))
+  KCONFIG:=\$(KCONFIG_NFT_TPROXY)
+endef
+
+\$(eval \$(call KernelPackage,nft-tproxy))
+" >>  package/kernel/linux/modules/netfilter.mk
+fi
+
+if [[ `grep -c "nft_tproxy" include/netfilter.mk` -eq '0' ]]; then
+  sed -i '344i\$(eval \$(if \$(NF_KMOD),\$(call nf_add,NFT_TPROXY,CONFIG_NFT_TPROXY, \$(P_XT)nft_tproxy),))' include/netfilter.mk
+fi
+
 iproute1="package/network/utils/iproute2/Makefile"
 if [[ `grep -c "kmod-netlink-diag" ${iproute1}` -eq '0' ]] && [[ `grep -c "Socket statistics utility" ${iproute1}` -eq '1' ]]; then
   ax="$(grep -n "Socket statistics utility" -A 1 ${iproute1} |awk 'END {print}' |grep -Eo [0-9]+)"
