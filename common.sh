@@ -287,10 +287,10 @@ echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-  sed -i "s/19.07-SNAPSHOT/19.07.10/g" ${HOME_PATH}/package/base-files/image-config.in
-  sed -i "s/19.07-SNAPSHOT/19.07.10/g" ${HOME_PATH}/include/version.mk
   git checkout v19.07.10
   git switch -c v19.07.10
+  sed -i "s/19.07-SNAPSHOT/19.07.10/g" ${HOME_PATH}/package/base-files/image-config.in
+  sed -i "s/19.07-SNAPSHOT/19.07.10/g" ${HOME_PATH}/include/version.mk
   git pull
 fi
 if [[ -n "${BENDI_VERSION}" ]]; then
