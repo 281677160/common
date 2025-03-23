@@ -325,7 +325,7 @@ if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] ||
    gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/relevance/passwall-packages/shadowsocks-rust/Makefile
 fi
 
-if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+if [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
    gitsvn https://github.com/Lienol/openwrt/blob/main/include/netfilter.mk include/netfilter.mk
    gitsvn https://github.com/Lienol/openwrt/blob/openwrt-22.03/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
 fi
