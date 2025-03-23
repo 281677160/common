@@ -1,0 +1,10 @@
+# package/utils/auto-scripts/Config.in
+
+config PACKAGE_auto-scripts
+    bool "Auto Scripts (first-boot and reboot utilities)"
+    default y               # 默认选中
+    help
+      Embeds essential boot scripts:
+       - First-run scripts (/etc/uci-defaults)
+       - Reboot-triggered scripts (/etc/init.d)
+       - System utilities (/usr/bin)
