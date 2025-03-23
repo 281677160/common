@@ -326,11 +326,6 @@ if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] ||
    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
 fi
 
-if [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-   gitsvn https://github.com/Lienol/openwrt/blob/22.03/include/netfilter.mk include/netfilter.mk
-   gitsvn https://github.com/Lienol/openwrt/blob/22.03/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
-fi
-
 # 19.07补丁
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
@@ -484,6 +479,10 @@ if [[ -d "${HOME_PATH}/feeds/other/lean" ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/lean/mt ${HOME_PATH}/feeds/other/lean/mt
   gitsvn https://github.com/coolsnowwolf/luci/tree/openwrt-23.05/applications/luci-app-vlmcsd ${HOME_PATH}/feeds/other/lean/luci-app-vlmcsd
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/vlmcsd ${HOME_PATH}/feeds/other/lean/vlmcsd
+fi
+if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+   gitsvn https://github.com/Lienol/openwrt/blob/22.03/include/netfilter.mk include/netfilter.mk
+   gitsvn https://github.com/Lienol/openwrt/blob/22.03/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
 fi
 if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
