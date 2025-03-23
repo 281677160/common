@@ -162,6 +162,17 @@ endef
 $(eval $(call KernelPackage,nf-flow))
 
 
+define KernelPackage/nf-tproxy
+  SUBMENU:=$(NF_MENU)
+  TITLE:=Netfilter tproxy support
+  KCONFIG:= $(KCONFIG_NF_TPROXY)
+  FILES:=$(foreach mod,$(NF_TPROXY-m),$(LINUX_DIR)/net/$(mod).ko)
+  AUTOLOAD:=$(call AutoProbe,$(notdir $(NF_TPROXY-m)))
+endef
+
+$(eval $(call KernelPackage,nf-tproxy))
+
+
 define AddDepends/ipt
   SUBMENU:=$(NF_MENU)
   DEPENDS+= +kmod-ipt-core $(1)
