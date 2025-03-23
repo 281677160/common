@@ -535,8 +535,8 @@ function Diy_OFFICIAL() {
 cd ${HOME_PATH}
 
 if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
-  gitsvn https://github.com/281677160/common/blob/main/Share/19.07/openwrt-21.02/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
-  gitsvn https://github.com/281677160/common/blob/main/Share/19.07/openwrt-21.02/include/netfilter.mk include/netfilter.mk
+  gitsvn https://github.com/openwrt/openwrt/blob/openwrt-22.03/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
+  gitsvn https://github.com/openwrt/openwrt/blob/openwrt-22.03/include/netfilter.mk include/netfilter.mk
 fi
 
 if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
