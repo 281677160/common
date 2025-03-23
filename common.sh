@@ -326,8 +326,8 @@ if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] ||
 fi
 
 if [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-   gitsvn https://github.com/Lienol/openwrt/blob/main/include/netfilter.mk include/netfilter.mk
-   gitsvn https://github.com/Lienol/openwrt/blob/openwrt-22.03/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
+   gitsvn https://github.com/Lienol/openwrt/blob/22.03/include/netfilter.mk include/netfilter.mk
+   gitsvn https://github.com/Lienol/openwrt/blob/22.03/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
 fi
 
 # 19.07补丁
