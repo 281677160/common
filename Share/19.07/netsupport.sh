@@ -53,8 +53,8 @@ echo "inet-diag"
 fi
 
 iproutemk="package/network/utils/iproute2/Makefile"
-if ! grep -q "kmod-netlink-diag" $iproutemk && \
-   grep -q "Socket statistics utility" $iproutemk; then
+if [[ `grep -c "kmod-netlink-diag" $iproutemk` -eq '0' ]] && \
+   [[ `grep -c "Socket statistics utility" $iproutemk` -eq '1' ]]; then
    ax="$(grep -n "Socket statistics utility" -A 1 ${iproutemk} |awk 'END {print}' |grep -Eo [0-9]+)"
    sed -i "${ax}s?.*?  DEPENDS:=+libnl-tiny +(PACKAGE_devlink||PACKAGE_rdma):libmnl +(PACKAGE_tc||PACKAGE_ip-full):libelf +PACKAGE_ip-full:libcap +kmod-netlink-diag?" ${iproutemk}
    echo "kmod-netlink-diag"
