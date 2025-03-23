@@ -541,13 +541,6 @@ cd ${HOME_PATH}
 
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
-
-if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
-  gitsvn https://github.com/openwrt/openwrt/blob/openwrt-22.03/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
-  gitsvn https://github.com/openwrt/openwrt/blob/openwrt-22.03/include/netfilter.mk include/netfilter.mk
-  gitsvn https://github.com/openwrt/openwrt/tree/openwrt-22.03/package/network/utils/iptables package/network/utils/iptables
-fi
-
 if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
