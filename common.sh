@@ -483,14 +483,14 @@ fi
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
    gitsvn https://github.com/Lienol/openwrt/blob/22.03/include/netfilter.mk include/netfilter.mk
    gitsvn https://github.com/Lienol/openwrt/blob/22.03/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
-   gitsvn https://github.com/Lienol/openwrt/tree/22.03/package/network/utils/iptables package/network/utils/iptables
-   gitsvn https://github.com/Lienol/openwrt/tree/22.03/package/network/utils/iproute2 package/network/utils/iproute2
+   gitsvn https://github.com/Lienol/openwrt/blob/22.03/package/network/utils/iptables/Makefile package/network/utils/iptables/Makefile
+   gitsvn https://github.com/Lienol/openwrt/blob/22.03/package/network/utils/iproute2/Makefile package/network/utils/iproute2/Makefile
 fi
 if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
    gitsvn https://github.com/Lienol/openwrt/blob/22.03/include/netfilter.mk include/netfilter.mk
    gitsvn https://github.com/Lienol/openwrt/blob/22.03/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
-   gitsvn https://github.com/Lienol/openwrt/tree/22.03/package/network/utils/iptables package/network/utils/iptables
-   gitsvn https://github.com/Lienol/openwrt/tree/22.03/package/network/utils/iproute2 package/network/utils/iproute2
+   gitsvn https://github.com/Lienol/openwrt/blob/22.03/package/network/utils/iptables/Makefile package/network/utils/iptables/Makefile
+   gitsvn https://github.com/Lienol/openwrt/blob/22.03/package/network/utils/iproute2/Makefile package/network/utils/iproute2/Makefile
 fi
 if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
