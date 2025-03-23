@@ -340,13 +340,14 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
 fi
 
 
-# N1类型固件修改增加固件名
+# N1类型固件修改
 if [[ -d "${HOME_PATH}/target/linux/armsr" ]]; then
   features_file="${HOME_PATH}/target/linux/armsr/Makefile"
+  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
 elif [[ -d "${HOME_PATH}/target/linux/armvirt" ]]; then
   features_file="${HOME_PATH}/target/linux/armvirt/Makefile"
+  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
 fi
-[[ -n "${features_file}" ]] && sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
 
 # 给固件保留配置更新固件的保留项目
 cat >> "${KEEPD_PATH}" <<-EOF
@@ -397,8 +398,8 @@ elif [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ 
   fi
 fi
 
+# zzz-default-settings文件
 ZZZ_PATH="$(find "$A_PATH" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
-
 if [[ -n "${ZZZ_PATH}" ]]; then  
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
@@ -406,7 +407,6 @@ if [[ -n "${ZZZ_PATH}" ]]; then
   else
     cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/LICENSES/doc/default-settings
   fi
-  
   sed -i '/exit 0$/d' "${ZZZ_PATH}"
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
   grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
