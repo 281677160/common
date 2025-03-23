@@ -1,4 +1,4 @@
 config PACKAGE_auto-scripts
     tristate
     default y
-    select TARGET_ROOTFS_PARTSIZE
+    depends on LINUX
