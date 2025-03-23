@@ -50,7 +50,7 @@ endef
 " >>  $netsupportmk
 fi
 
-iproutemk="package/network/utils/iproute2/Makefile"
+iproutemk="${HOME_PATH}/package/network/utils/iproute2/Makefile"
 if [[ `grep -c "kmod-netlink-diag" $iproutemk` -eq '0' ]] && \
    [[ `grep -c "Socket statistics utility" $iproutemk` -eq '1' ]]; then
    ax="$(grep -n "Socket statistics utility" -A 1 ${iproutemk} |awk 'END {print}' |grep -Eo [0-9]+)"
