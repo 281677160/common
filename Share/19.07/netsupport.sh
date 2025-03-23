@@ -4,7 +4,7 @@ cd ${HOME_PATH}
 
 
 netsupportmk="package/kernel/linux/modules/netsupport.mk"
-if grep -q "KernelPackage/netlink-diag" $netsupportmk; then
+if ! grep -q "KernelPackage/netlink-diag" $netsupportmk; then
 echo "
 define KernelPackage/netlink-diag
   SUBMENU:=\$(NETWORK_SUPPORT_MENU)
@@ -20,9 +20,10 @@ endef
 
 \$(eval \$(call KernelPackage,netlink-diag))
 " >>  $netsupportmk
+echo "netlink-diag"
 fi
 
-if grep -q "KernelPackage/inet-diag" $netsupportmk; then
+if ! grep -q "KernelPackage/inet-diag" $netsupportmk; then
 echo "
 define KernelPackage/inet-diag
   SUBMENU:=\$(NETWORK_SUPPORT_MENU)
@@ -48,12 +49,15 @@ endef
 
 \$(eval \$(call KernelPackage,inet-diag))
 " >>  $netsupportmk
+echo "inet-diag"
 fi
 
 iproutemk="package/network/utils/iproute2/Makefile"
-if grep -q "kmod-netlink-diag" $iproutemk && grep -q "Socket statistics utility" $iproutemk; then
-  ax="$(grep -n "Socket statistics utility" -A 1 ${iproutemk} |awk 'END {print}' |grep -Eo [0-9]+)"
-  sed -i "${ax}s?.*?  DEPENDS:=+libnl-tiny +(PACKAGE_devlink||PACKAGE_rdma):libmnl +(PACKAGE_tc||PACKAGE_ip-full):libelf +PACKAGE_ip-full:libcap +kmod-netlink-diag?" ${iproutemk}
+if ! grep -q "kmod-netlink-diag" $iproutemk && \
+   grep -q "Socket statistics utility" $iproutemk; then
+   ax="$(grep -n "Socket statistics utility" -A 1 ${iproutemk} |awk 'END {print}' |grep -Eo [0-9]+)"
+   sed -i "${ax}s?.*?  DEPENDS:=+libnl-tiny +(PACKAGE_devlink||PACKAGE_rdma):libmnl +(PACKAGE_tc||PACKAGE_ip-full):libelf +PACKAGE_ip-full:libcap +kmod-netlink-diag?" ${iproutemk}
+   echo "kmod-netlink-diag"
 fi
 
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
