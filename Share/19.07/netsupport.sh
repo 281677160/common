@@ -2,7 +2,9 @@
 
 cd ${HOME_PATH}
 
-if [[ `grep -c "KernelPackage/netlink-diag" package/kernel/linux/modules/netsupport.mk` -eq '0' ]]; then
+
+netsupportmk="package/kernel/linux/modules/netsupport.mk"
+if grep -q "KernelPackage/netlink-diag" $netsupportmk; then
 echo "
 define KernelPackage/netlink-diag
   SUBMENU:=\$(NETWORK_SUPPORT_MENU)
@@ -17,10 +19,11 @@ define KernelPackage/netlink-diag/description
 endef
 
 \$(eval \$(call KernelPackage,netlink-diag))
-" >>  package/kernel/linux/modules/netsupport.mk
+" >>  $netsupportmk
+echo "netlink-diag"
 fi
 
-if [[ `grep -c "KernelPackage/inet-diag" package/kernel/linux/modules/netsupport.mk` -eq '0' ]]; then
+if grep -q "KernelPackage/inet-diag" $netsupportmk; then
 echo "
 define KernelPackage/inet-diag
   SUBMENU:=\$(NETWORK_SUPPORT_MENU)
@@ -45,13 +48,14 @@ native Linux tools such as ss.
 endef
 
 \$(eval \$(call KernelPackage,inet-diag))
-" >>  package/kernel/linux/modules/netsupport.mk
+" >>  $netsupportmk
+echo "inet-diag"
 fi
 
-iproute1="package/network/utils/iproute2/Makefile"
-if [[ `grep -c "kmod-netlink-diag" ${iproute1}` -eq '0' ]] && [[ `grep -c "Socket statistics utility" ${iproute1}` -eq '1' ]]; then
-  ax="$(grep -n "Socket statistics utility" -A 1 ${iproute1} |awk 'END {print}' |grep -Eo [0-9]+)"
-  sed -i "${ax}s?.*?  DEPENDS:=+libnl-tiny +(PACKAGE_devlink||PACKAGE_rdma):libmnl +(PACKAGE_tc||PACKAGE_ip-full):libelf +PACKAGE_ip-full:libcap +kmod-netlink-diag?" ${iproute1}
+iproutemk="package/network/utils/iproute2/Makefile"
+if grep -q "kmod-netlink-diag" $iproutemk && grep -q "Socket statistics utility" $iproutemk; then
+  ax="$(grep -n "Socket statistics utility" -A 1 ${iproutemk} |awk 'END {print}' |grep -Eo [0-9]+)"
+  sed -i "${ax}s?.*?  DEPENDS:=+libnl-tiny +(PACKAGE_devlink||PACKAGE_rdma):libmnl +(PACKAGE_tc||PACKAGE_ip-full):libelf +PACKAGE_ip-full:libcap +kmod-netlink-diag?" ${iproutemk}
 fi
 
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
@@ -59,17 +63,10 @@ if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/19.07/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
 fi
 
-if [[ "${REPO_BRANCH}" == "21.02" ]]; then
+if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
   curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
   curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
 fi
-
-if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/openwrt-21.02/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/openwrt-21.02/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
-fi
-
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/openwrt-21.02/include/netfilter.mk
 
 # 19.07补丁
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
@@ -88,16 +85,6 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/libwebsockets ${HOME_PATH}/feeds/packages/libs/libwebsockets
   rm -fr ${HOME_PATH}/feeds/luci/applications/luci-app-ntpc
 fi
-
-
-
-
-
-
-
-
-
-
 
 
 
