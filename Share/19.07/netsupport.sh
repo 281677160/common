@@ -54,7 +54,7 @@ if [[ `grep -c "kmod-netlink-diag" ${iproute1}` -eq '0' ]] && [[ `grep -c "Socke
   sed -i "${ax}s?.*?  DEPENDS:=+libnl-tiny +(PACKAGE_devlink||PACKAGE_rdma):libmnl +(PACKAGE_tc||PACKAGE_ip-full):libelf +PACKAGE_ip-full:libcap +kmod-netlink-diag?" ${iproute1}
 fi
 
-if [[ "${REPO_BRANCH}" == "19.07" ]]; then
+if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common/blob/main/Share/19.07/19.07/include/netfilter.mk ${HOME_PATH}/include/netfilter.mk
   curl -fsSL https://raw.githubusercontent.com/281677160/common/blob/main/Share/19.07/19.07/package/kernel/linux/modules/netfilter.mk ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
 fi
