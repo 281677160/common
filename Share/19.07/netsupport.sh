@@ -3,8 +3,8 @@
 cd ${HOME_PATH}
 
 
-netsupportmk="package/kernel/linux/modules/netsupport.mk"
-if ! grep -q "KernelPackage/netlink-diag" $netsupportmk; then
+netsupportmk="${HOME_PATH}/package/kernel/linux/modules/netsupport.mk"
+if [[ `grep -c "KernelPackage/netlink-diag" $netsupportmk` -eq '0' ]]; then
 echo "
 define KernelPackage/netlink-diag
   SUBMENU:=\$(NETWORK_SUPPORT_MENU)
@@ -23,7 +23,7 @@ endef
 echo "netlink-diag"
 fi
 
-if ! grep -q "KernelPackage/inet-diag" $netsupportmk; then
+if [[ `grep -c "KernelPackage/inet-diag" $netsupportmk` -eq '0' ]]; then
 echo "
 define KernelPackage/inet-diag
   SUBMENU:=\$(NETWORK_SUPPORT_MENU)
