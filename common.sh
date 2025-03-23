@@ -876,8 +876,6 @@ echo '
 # CONFIG_PACKAGE_ipv6helper is not set
 # CONFIG_PACKAGE_ip6tables is not set
 # CONFIG_PACKAGE_dnsmasq_full_dhcpv6 is not set
-# CONFIG_PACKAGE_odhcp6c is not set
-# CONFIG_PACKAGE_odhcpd-ipv6only is not set
 # CONFIG_IPV6 is not set
 # CONFIG_PACKAGE_6rd is not set
 # CONFIG_PACKAGE_6to4 is not set
@@ -1150,6 +1148,14 @@ fi
 if [[ `grep -c "CONFIG_PACKAGE_odhcp6c=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   sed -i '/CONFIG_PACKAGE_odhcpd=y/d' "${HOME_PATH}/.config"
   sed -i '/CONFIG_PACKAGE_odhcpd_full_ext_cer_id=0/d' "${HOME_PATH}/.config"
+fi
+
+if [[ `grep -c "CONFIG_PACKAGE_odhcp6c is not set" ${HOME_PATH}/.config` -eq '1' ]]; then
+  sed -i '/CONFIG_PACKAGE_odhcp6c is not set/d' "${HOME_PATH}/.config"
+fi
+
+if [[ `grep -c "CONFIG_PACKAGE_odhcpd-ipv6only is not set" ${HOME_PATH}/.config` -eq '1' ]]; then
+  sed -i '/CONFIG_PACKAGE_odhcpd-ipv6only is not set/d' "${HOME_PATH}/.config"
 fi
 
 if [[ "${AdGuardHome_Core}" == "1" ]]; then
