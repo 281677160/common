@@ -55,13 +55,13 @@ if [[ `grep -c "kmod-netlink-diag" ${iproute1}` -eq '0' ]] && [[ `grep -c "Socke
 fi
 
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/19.07/include/netfilter.mk ${HOME_PATH}/include/netfilter.mk
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/19.07/package/kernel/linux/modules/netfilter.mk ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/19.07/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/19.07/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
 fi
 
 if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
-  curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/package/kernel/linux/modules/netfilter.mk ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
-  curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/include/netfilter.mk ${HOME_PATH}/include/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
 fi
 
 # 19.07补丁
