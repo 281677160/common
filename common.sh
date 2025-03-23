@@ -480,6 +480,10 @@ if [[ -d "${HOME_PATH}/feeds/other/lean" ]]; then
   gitsvn https://github.com/coolsnowwolf/luci/tree/openwrt-23.05/applications/luci-app-vlmcsd ${HOME_PATH}/feeds/other/lean/luci-app-vlmcsd
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/vlmcsd ${HOME_PATH}/feeds/other/lean/vlmcsd
 fi
+if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
+   gitsvn https://github.com/Lienol/openwrt/blob/22.03/include/netfilter.mk include/netfilter.mk
+   gitsvn https://github.com/Lienol/openwrt/blob/22.03/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
+fi
 if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
    gitsvn https://github.com/Lienol/openwrt/blob/22.03/include/netfilter.mk include/netfilter.mk
    gitsvn https://github.com/Lienol/openwrt/blob/22.03/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
