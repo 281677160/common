@@ -542,6 +542,10 @@ fi
 if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/openssh ${HOME_PATH}/feeds/packages/net/openssh
+  gitsvn https://github.com/coolsnowwolf/lede/tree/master/toolchain/gcc ${HOME_PATH}/toolchain/gcc
+  gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/libwebsockets ${HOME_PATH}/feeds/packages/libs/libwebsockets
+  rm -fr ${HOME_PATH}/feeds/luci/applications/luci-app-ntpc
 fi
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-22.03/package/utils/bcm27xx-userland ${HOME_PATH}/package/utils/bcm27xx-userland
