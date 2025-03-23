@@ -276,7 +276,7 @@ curl -fsSL "${BASE_FILES}" -o "${GENE_PATH}"
 curl -fsSL "${UPGRADE_KEEP}" -o "${KEEPD_PATH}"
 curl -fsSL "${TARGET_MK}" -o "${HOME_PATH}/include/target.mk"
 gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
-echo 'source "package/auto-scripts/Config.in"' >> ${HOME_PATH}/package/Config.in
+echo 'source "package/auto-scripts/Config.in"' >> ${HOME_PATH}/Config.in
 
 sed -i "s/SOURCE/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
