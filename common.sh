@@ -533,6 +533,12 @@ cd ${HOME_PATH}
 
 function Diy_OFFICIAL() {
 cd ${HOME_PATH}
+
+if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+  https://github.com/281677160/common/blob/main/Share/19.07/openwrt-21.02/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
+  https://github.com/281677160/common/blob/main/Share/19.07/openwrt-21.02/include/netfilter.mk include/netfilter.mk
+fi
+
 if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/pcre2 ${HOME_PATH}/feeds/packages/libs/pcre2
   gitsvn https://github.com/coolsnowwolf/packages/tree/master/libs/glib2 ${HOME_PATH}/feeds/packages/libs/glib2
