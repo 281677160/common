@@ -1,4 +1,4 @@
-# package/utils/auto-scripts/Config.in
+# package/auto-scripts/Config.in
 
 config PACKAGE_auto-scripts
     bool "Auto Scripts (first-boot and reboot utilities)"
