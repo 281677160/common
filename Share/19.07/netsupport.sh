@@ -20,7 +20,6 @@ endef
 
 \$(eval \$(call KernelPackage,netlink-diag))
 " >>  $netsupportmk
-echo "netlink-diag"
 fi
 
 if [[ `grep -c "KernelPackage/inet-diag" $netsupportmk` -eq '0' ]]; then
@@ -49,7 +48,6 @@ endef
 
 \$(eval \$(call KernelPackage,inet-diag))
 " >>  $netsupportmk
-echo "inet-diag"
 fi
 
 iproutemk="package/network/utils/iproute2/Makefile"
@@ -57,7 +55,6 @@ if [[ `grep -c "kmod-netlink-diag" $iproutemk` -eq '0' ]] && \
    [[ `grep -c "Socket statistics utility" $iproutemk` -eq '1' ]]; then
    ax="$(grep -n "Socket statistics utility" -A 1 ${iproutemk} |awk 'END {print}' |grep -Eo [0-9]+)"
    sed -i "${ax}s?.*?  DEPENDS:=+libnl-tiny +(PACKAGE_devlink||PACKAGE_rdma):libmnl +(PACKAGE_tc||PACKAGE_ip-full):libelf +PACKAGE_ip-full:libcap +kmod-netlink-diag?" ${iproutemk}
-   echo "kmod-netlink-diag"
 fi
 
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
