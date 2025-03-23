@@ -1,3 +1,4 @@
 config PACKAGE_auto-scripts
-    bool
+    tristate
     default y
+    select TARGET_ROOTFS_PARTSIZE
