@@ -48,58 +48,18 @@ endef
 " >>  package/kernel/linux/modules/netsupport.mk
 fi
 
-if [[ `grep -c "KernelPackage/nf-tproxy" package/kernel/linux/modules/netfilter.mk` -eq '0' ]]; then
-echo "
-define KernelPackage/nf-tproxy
-  SUBMENU:=\$(NF_MENU)
-  TITLE:=Netfilter tproxy support
-  KCONFIG:= \$(KCONFIG_NF_TPROXY)
-  FILES:=\$(foreach mod,\$(NF_TPROXY-m),\$(LINUX_DIR)/net/\$(mod).ko)
-  AUTOLOAD:=\$(call AutoProbe,\$(notdir \$(NF_TPROXY-m)))
-endef
-
-\$(eval \$(call KernelPackage,nf-tproxy))
-
-" >>  package/kernel/linux/modules/netfilter.mk
-fi
-
-if [[ `grep -c "KernelPackage/nft-tproxy" package/kernel/linux/modules/netfilter.mk` -eq '0' ]]; then
-echo "
-define KernelPackage/nft-tproxy
-  SUBMENU:=\$(NF_MENU)
-  TITLE:=Netfilter nf_tables tproxy support
-  DEPENDS:=+kmod-nft-core +kmod-nf-tproxy +kmod-nf-conntrack
-  FILES:=\$(foreach mod,\$(NFT_TPROXY-m),\$(LINUX_DIR)/net/\$(mod).ko)
-  AUTOLOAD:=\$(call AutoProbe,\$(notdir \$(NFT_TPROXY-m)))
-  KCONFIG:=\$(KCONFIG_NFT_TPROXY)
-endef
-
-\$(eval \$(call KernelPackage,nft-tproxy))
-
-" >>  package/kernel/linux/modules/netfilter.mk
-fi
-
-if [[ `grep -c "KernelPackage/nft-compat" package/kernel/linux/modules/netfilter.mk` -eq '0' ]]; then
-echo "
-define KernelPackage/nft-compat
-  SUBMENU:=\$(NF_MENU)
-  TITLE:=Netfilter nf_tables compat support
-  DEPENDS:=+kmod-nft-core +kmod-nf-ipt
-  FILES:=\$(foreach mod,\$(NFT_COMPAT-m),\$(LINUX_DIR)/net/\$(mod).ko)
-  AUTOLOAD:=\$(call AutoProbe,\$(notdir \$(NFT_COMPAT-m)))
-  KCONFIG:=\$(KCONFIG_NFT_COMPAT)
-endef
-
-\$(eval \$(call KernelPackage,nft-compat))
-" >>  package/kernel/linux/modules/netfilter.mk
-fi
-
-if [[ `grep -c "nft_tproxy" include/netfilter.mk` -eq '0' ]]; then
-  sed -i '344i\$(eval \$(if \$(NF_KMOD),\$(call nf_add,NFT_TPROXY,CONFIG_NFT_TPROXY, \$(P_XT)nft_tproxy),))' include/netfilter.mk
-fi
-
 iproute1="package/network/utils/iproute2/Makefile"
 if [[ `grep -c "kmod-netlink-diag" ${iproute1}` -eq '0' ]] && [[ `grep -c "Socket statistics utility" ${iproute1}` -eq '1' ]]; then
   ax="$(grep -n "Socket statistics utility" -A 1 ${iproute1} |awk 'END {print}' |grep -Eo [0-9]+)"
   sed -i "${ax}s?.*?  DEPENDS:=+libnl-tiny +(PACKAGE_devlink||PACKAGE_rdma):libmnl +(PACKAGE_tc||PACKAGE_ip-full):libelf +PACKAGE_ip-full:libcap +kmod-netlink-diag?" ${iproute1}
+fi
+
+if [[ "${REPO_BRANCH}" == "19.07" ]]; then
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/blob/main/Share/19.07/19.07/include/netfilter.mk ${HOME_PATH}/include/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/blob/main/Share/19.07/19.07/package/kernel/linux/modules/netfilter.mk ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
+fi
+
+if [[ "${REPO_BRANCH}" == "21.02" ]]; then
+  curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/blob/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/package/kernel/linux/modules/netfilter.mk ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/blob/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/include/netfilter.mk ${HOME_PATH}/include/netfilter.mk
 fi
