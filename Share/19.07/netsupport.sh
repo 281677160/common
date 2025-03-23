@@ -20,7 +20,6 @@ endef
 
 \$(eval \$(call KernelPackage,netlink-diag))
 " >>  $netsupportmk
-echo "netlink-diag"
 fi
 
 if grep -q "KernelPackage/inet-diag" $netsupportmk; then
@@ -49,7 +48,6 @@ endef
 
 \$(eval \$(call KernelPackage,inet-diag))
 " >>  $netsupportmk
-echo "inet-diag"
 fi
 
 iproutemk="package/network/utils/iproute2/Makefile"
