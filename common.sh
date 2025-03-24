@@ -870,7 +870,6 @@ function Diy_IPv6helper() {
 cd ${HOME_PATH}
 if [[ "${Enable_IPV6_function}" == "1" ]] || [[ "${Create_Ipv6_Lan}" == "1" ]]; then
 echo '
-CONFIG_PACKAGE_ipv6helper=y
 CONFIG_PACKAGE_ip6tables=y
 CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
 CONFIG_PACKAGE_odhcp6c=y
