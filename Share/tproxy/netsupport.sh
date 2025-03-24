@@ -97,6 +97,20 @@ if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/openwrt-18.06/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
 fi
 
+
+
+
+
+
+if [[ "${REPO_BRANCH}" == *"23.05"* ]] && [[ "${SOURCE_CODE}" == "PADAVANONLY" ]]; then
+  gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/crypto.mk package/kernel/linux/modules/crypto.mk
+  gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
+  gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/netsupport.mk package/kernel/linux/modules/netsupport.mk
+  gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/include/netfilter.mk include/netfilter.mk
+  gitsvn https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/firmware package/firmware
+fi
+
+
 # 19.07补丁
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
