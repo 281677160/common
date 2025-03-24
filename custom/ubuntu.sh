@@ -12,6 +12,8 @@ ${INS} install $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
 # N1打包需要的依赖
 ${INS} install rename pigz upx-ucl libfuse-dev clang
+${INS} build-essential ccache libncurses5-dev libssl-dev python3 rsync unzip
+
 
 # 安装gcc-13
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
