@@ -478,6 +478,8 @@ if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
    gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
+  gitsvn https://github.com/fw876/helloworld/blob/d6bc31754ac228422ee6f03a692568f7dcdd08c3/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
+  gitsvn https://github.com/fw876/helloworld/blob/d6bc31754ac228422ee6f03a692568f7dcdd08c3/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/relevance/passwall-packages/shadowsocks-rust/Makefile
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/mbedtls ${HOME_PATH}/package/libs/mbedtls
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/ustream-ssl ${HOME_PATH}/package/libs/ustream-ssl
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/uclient ${HOME_PATH}/package/libs/uclient
