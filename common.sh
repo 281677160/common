@@ -881,14 +881,25 @@ CONFIG_PACKAGE_6to4=y
 ' >> ${HOME_PATH}/.config
 fi
 
-if [[ "${Enable_IPV4_function}" == "1" ]]; then
+if [[ "${Enable_IPV4_function}" == "1" ]] && \
+[[ "${REPO_BRANCH}" == *"main"* ]] || [[ "${REPO_BRANCH}" == *"master"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]] || [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
 echo '
 # CONFIG_PACKAGE_ipv6helper is not set
 # CONFIG_PACKAGE_ip6tables is not set
 # CONFIG_PACKAGE_dnsmasq_full_dhcpv6 is not set
+# CONFIG_PACKAGE_odhcp6c is not set
+# CONFIG_PACKAGE_odhcpd-ipv6only is not set
 # CONFIG_IPV6 is not set
 # CONFIG_PACKAGE_6rd is not set
 # CONFIG_PACKAGE_6to4 is not set
+' >> ${HOME_PATH}/.config
+else
+echo '
+CONFIG_PACKAGE_ipv6helper=y
+CONFIG_PACKAGE_ip6tables=y
+CONFIG_PACKAGE_odhcp6c=y
+CONFIG_PACKAGE_odhcpd-ipv6only=y
+CONFIG_IPV6=y
 ' >> ${HOME_PATH}/.config
 fi
 
