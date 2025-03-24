@@ -50,26 +50,6 @@ endef
 " >>  $netsupportmk
 fi
 
-if [[ `grep -c "KernelPackage/xdp-sockets-diag" $netsupportmk` -eq '0' ]] && [[ "${SOURCE_CODE}" == "PADAVANONLY" ]]; then
-echo "
-define KernelPackage/xdp-sockets-diag
-  SUBMENU:=\$(NETWORK_SUPPORT_MENU)
-  TITLE:=PF_XDP sockets monitoring interface support for ss utility
-  KCONFIG:= \
-	CONFIG_XDP_SOCKETS=y \
-	CONFIG_XDP_SOCKETS_DIAG
-  FILES:=\$(LINUX_DIR)/net/xdp/xsk_diag.ko
-  AUTOLOAD:=\$(call AutoLoad,31,xsk_diag)
-endef
-
-define KernelPackage/xdp-sockets-diag/description
- Support for PF_XDP sockets monitoring interface used by the ss tool
-endef
-
-\$(eval \$(call KernelPackage,xdp-sockets-diag))
-" >>  $netsupportmk
-fi
-
 iproutemk="${HOME_PATH}/package/network/utils/iproute2/Makefile"
 if [[ `grep -c "kmod-netlink-diag" $iproutemk` -eq '0' ]] && \
    [[ `grep -c "Socket statistics utility" $iproutemk` -eq '1' ]]; then
@@ -96,20 +76,6 @@ if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/openwrt-18.06/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
   curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/openwrt-18.06/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
 fi
-
-
-
-
-
-
-if [[ "${REPO_BRANCH}" == *"23.05"* ]] && [[ "${SOURCE_CODE}" == "PADAVANONLY" ]]; then
-  gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/crypto.mk package/kernel/linux/modules/crypto.mk
-  gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
-  gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/netsupport.mk package/kernel/linux/modules/netsupport.mk
-  gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/include/netfilter.mk include/netfilter.mk
-  gitsvn https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/firmware package/firmware
-fi
-
 
 # 19.07补丁
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
