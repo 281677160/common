@@ -870,6 +870,7 @@ function Diy_IPv6helper() {
 cd ${HOME_PATH}
 if [[ "${Enable_IPV6_function}" == "1" ]] || [[ "${Create_Ipv6_Lan}" == "1" ]]; then
 echo '
+CONFIG_PACKAGE_ipv6helper=y
 CONFIG_PACKAGE_ip6tables=y
 CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
 CONFIG_PACKAGE_odhcp6c=y
@@ -893,7 +894,6 @@ echo '
 # CONFIG_PACKAGE_6to4 is not set
 ' >> ${HOME_PATH}/.config
 else
-sed -i '/ipv6helper=y/d' "${HOME_PATH}/.config"
 echo '
 CONFIG_IPV6=y
 CONFIG_PACKAGE_odhcp6c=y
@@ -1170,6 +1170,10 @@ fi
 
 if ! grep -q "auto-scripts=y" ${HOME_PATH}/.config; then
   echo -e "\nCONFIG_PACKAGE_auto-scripts=y" >> ${HOME_PATH}/.config
+fi
+
+if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
+  sed -i '/ipv6helper=y/d' "${HOME_PATH}/.config"
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_dnsmasq_full_nftset=y" ${HOME_PATH}/.config` -eq '1' ]]; then
