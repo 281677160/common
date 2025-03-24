@@ -754,6 +754,12 @@ define KernelPackage/ipt-tproxy
   $(call AddDepends/ipt)
 endef
 
+define KernelPackage/ipt-tproxy/description
+  Kernel modules for Transparent Proxying
+endef
+
+$(eval $(call KernelPackage,ipt-tproxy))
+
 define KernelPackage/ipt-tee
   TITLE:=TEE support
   DEPENDS:=+kmod-ipt-conntrack
