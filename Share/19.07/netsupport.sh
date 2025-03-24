@@ -67,6 +67,16 @@ if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
   curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
 fi
 
+if [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/openwrt-18.06-k5.4/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/openwrt-18.06-k5.4/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
+fi
+
+if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/openwrt-18.06/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/openwrt-18.06/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
+fi
+
 # 19.07补丁
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitsvn https://github.com/openwrt/packages/tree/openwrt-21.02/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
