@@ -882,7 +882,7 @@ CONFIG_PACKAGE_6to4=y
 fi
 
 if [[ "${Enable_IPV4_function}" == "1" ]] && \
-[[ "${REPO_BRANCH}" == *"main"* ]] || [[ "${REPO_BRANCH}" == *"master"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]] || [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
+[[ "${REPO_BRANCH}" =~ ^(main|master|2410|(openwrt-)?(19\.07|23\.05|24\.10))$ ]]; then
 echo '
 # CONFIG_PACKAGE_ipv6helper is not set
 # CONFIG_PACKAGE_ip6tables is not set
