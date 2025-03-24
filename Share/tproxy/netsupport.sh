@@ -96,6 +96,8 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/152022403f0ab2a85063ae1cd9687bd5240fe9b7/net/openssh ${HOME_PATH}/feeds/packages/net/openssh
   gitsvn https://github.com/coolsnowwolf/lede/tree/326599e3d08d7fe1dc084e1c87581cdf5a8e41a6/toolchain/gcc ${HOME_PATH}/toolchain/gcc
   gitsvn https://github.com/coolsnowwolf/packages/tree/152022403f0ab2a85063ae1cd9687bd5240fe9b7/libs/libwebsockets ${HOME_PATH}/feeds/packages/libs/libwebsockets
+  curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
   rm -fr ${HOME_PATH}/feeds/luci/applications/luci-app-ntpc
 fi
 
