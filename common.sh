@@ -895,11 +895,9 @@ echo '
 ' >> ${HOME_PATH}/.config
 else
 echo '
-CONFIG_PACKAGE_ipv6helper=y
-CONFIG_PACKAGE_ip6tables=y
+CONFIG_IPV6=y
 CONFIG_PACKAGE_odhcp6c=y
 CONFIG_PACKAGE_odhcpd-ipv6only=y
-CONFIG_IPV6=y
 ' >> ${HOME_PATH}/.config
 fi
 
