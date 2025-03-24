@@ -58,8 +58,8 @@ if [[ `grep -c "kmod-netlink-diag" $iproutemk` -eq '0' ]] && \
 fi
 
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/19.07/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/19.07/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/19.07/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/19.07/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
 fi
 
 if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
@@ -68,13 +68,13 @@ if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
 fi
 
 if [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/openwrt-18.06-k5.4/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/openwrt-18.06-k5.4/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/openwrt-18.06-k5.4/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/openwrt-18.06-k5.4/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
 fi
 
 if [[ "${REPO_BRANCH}" == "openwrt-18.06" ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/openwrt-18.06/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/19.07/openwrt-18.06/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/openwrt-18.06/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/openwrt-18.06/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
 fi
 
 # 19.07补丁
