@@ -162,6 +162,17 @@ endef
 $(eval $(call KernelPackage,nf-flow))
 
 
+define KernelPackage/nf-tproxy
+  SUBMENU:=$(NF_MENU)
+  TITLE:=Netfilter tproxy support
+  KCONFIG:= $(KCONFIG_NF_TPROXY)
+  FILES:=$(foreach mod,$(NF_TPROXY-m),$(LINUX_DIR)/net/$(mod).ko)
+  AUTOLOAD:=$(call AutoProbe,$(notdir $(NF_TPROXY-m)))
+endef
+
+$(eval $(call KernelPackage,nf-tproxy))
+
+
 define AddDepends/ipt
   SUBMENU:=$(NF_MENU)
   DEPENDS+= +kmod-ipt-core $(1)
@@ -712,7 +723,7 @@ $(eval $(call KernelPackage,ipt-led))
 
 define KernelPackage/ipt-tproxy
   TITLE:=Transparent proxying support
-  DEPENDS+=+kmod-ipt-conntrack +IPV6:kmod-nf-conntrack6 +IPV6:kmod-ip6tables
+  DEPENDS+=+kmod-nf-tproxy +kmod-nf-conntrack
   KCONFIG:=$(KCONFIG_IPT_TPROXY)
   FILES:=$(foreach mod,$(IPT_TPROXY-m),$(LINUX_DIR)/net/$(mod).ko)
   AUTOLOAD:=$(call AutoProbe,$(notdir $(IPT_TPROXY-m)))
@@ -1233,3 +1244,14 @@ define KernelPackage/nft-fib
 endef
 
 $(eval $(call KernelPackage,nft-fib))
+
+define KernelPackage/nft-tproxy
+  SUBMENU:=$(NF_MENU)
+  TITLE:=Netfilter nf_tables tproxy support
+  DEPENDS:=+kmod-nft-core +kmod-nf-tproxy +kmod-nf-conntrack
+  FILES:=$(foreach mod,$(NFT_TPROXY-m),$(LINUX_DIR)/net/$(mod).ko)
+  AUTOLOAD:=$(call AutoProbe,$(notdir $(NFT_TPROXY-m)))
+  KCONFIG:=$(KCONFIG_NFT_TPROXY)
+endef
+
+$(eval $(call KernelPackage,nft-tproxy))
