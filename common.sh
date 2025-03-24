@@ -309,6 +309,10 @@ echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" 
    find . -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
  done
 
+if [[ ! "${REPO_BRANCH}" =~ ^(main|master|2410|(openwrt-)?(24\.10))$ ]]; then
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
+fi
+
 # 更新golang和node版本
 gitsvn https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
 gitsvn https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
@@ -326,7 +330,6 @@ source ${HOME_PATH}/build/common/Share/tproxy/netsupport.sh
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
    gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
    gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/relevance/passwall-packages/shadowsocks-rust/Makefile
-   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
 fi
 
 if [[ ! -d "${HOME_PATH}/package/network/config/firewall4" ]]; then
