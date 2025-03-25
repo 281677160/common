@@ -101,7 +101,7 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   rm -fr ${HOME_PATH}/feeds/luci/applications/luci-app-ntpc
 fi
 
-if [[ "${SOURCE_CODE}" == "PADAVANONLY" ]] && [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+if [[ "${SOURCE_CODE}" == "PADAVANONLY" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|openwrt-23.05) ]]; then
   gitsvn https://github.com/padavanonly/immortalwrt-mt798x-24.10/blob/2410/package/boot/uboot-envtools/files/mediatek_filogic package/boot/uboot-envtools/files/mediatek_filogic
   gitsvn https://github.com/padavanonly/immortalwrt-mt798x-24.10/blob/2410/target/linux/mediatek/image/mt7981.mk target/linux/mediatek/image/mt7981.mk
   gitsvn https://github.com/padavanonly/immortalwrt-mt798x-24.10/blob/2410/target/linux/mediatek/image/mt7986.mk target/linux/mediatek/image/mt7986.mk
@@ -178,7 +178,7 @@ if [[ "${git_laqu}" == "1" ]]; then
       if [[ $? -ne 0 ]]; then
          echo "${file_name}文件投放失败,请检查投放路径是否正确"
       else
-         echo "${file_name}文件下载完成"
+         echo "文件下载完成"
       fi
       cd "${HOME_PATH}"
     else
@@ -190,14 +190,14 @@ if [[ "${git_laqu}" == "1" ]]; then
 elif [[ "${git_laqu}" == "2" ]]; then
     rm -fr "${content}"
     if git clone -q --single-branch --depth=1 --branch=${branch_name} ${url} ${content}; then
-      echo "${file_name}文件下载完成"
+      echo "文件下载完成"
     else
       echo "${file_name}文件下载失败"
     fi
 elif [[ "${git_laqu}" == "3" ]]; then
     rm -fr "${content}"
     if git clone -q --depth 1 "${url}" "${content}"; then
-      echo "${file_name}文件下载完成"
+      echo "文件下载完成"
     else
       echo "${file_name}文件下载失败"
     fi
@@ -205,7 +205,7 @@ elif [[ "${git_laqu}" == "4" ]]; then
     [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
     curl -fsSL "${url}" -o "${content}"
     if [[ -s "${content}" ]]; then
-      echo "${file_name}文件下载完成"
+      echo "文件下载完成"
       chmod +x "${content}"
     else
       echo "${file_name}文件下载失败"
