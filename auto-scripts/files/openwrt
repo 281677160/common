@@ -137,7 +137,7 @@ menu2() {
   clear
   echo  
   ECHOB "  请选择执行命令编码"
-  ECHOYY " 1. 修改后台IP和清空密码(xiu gai hou tai IP)"
+  ECHOYY " 1. 修改后台IP和清空密码(xiu gai IP)"
   ECHOY " 2. 清空密码(qing kong mi ma)"
   ECHOYY " 3. 重启系统(chong qi xi tong)"
   ECHOY " 4. 恢复出厂设置(hui fu chu chang she zhi)"
@@ -180,7 +180,7 @@ menu() {
   echo  
   ECHOB "  请选择执行命令编码"
   ECHOY " 1. 在线更新固件或转换其他作者固件(zai xian sheng ji gu jian)"
-  ECHOYY " 2. 修改后台IP和清空密码(xiu gai hou tai IP)"
+  ECHOYY " 2. 修改后台IP和清空密码(xiu gai IP)"
   ECHOY " 3. 清空密码(qing kong mi ma)"
   ECHOYY " 4. 重启系统(chong qi xi tong)"
   ECHOY " 5. 恢复出厂设置(hui fu chu chang she zhi)"
