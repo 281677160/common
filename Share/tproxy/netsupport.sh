@@ -2,6 +2,107 @@
 
 cd ${HOME_PATH}
 
+function gitcon() {
+cd "${HOME_PATH}"
+local A="${1%.git}"
+local B="$2"
+local branch_name=""
+local path_part=""
+local url=""
+tmpdir="$(mktemp -d)" && C="$HOME_PATH/${tmpdir#*.}"
+rm -fr "${tmpdir}"
+if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
+    branch_name="${BASH_REMATCH[1]}"
+    path_part="${BASH_REMATCH[3]:-}"
+elif [[ $A =~ blob/([^/]+)(/(.*))? ]]; then
+    branch_name="${BASH_REMATCH[1]}"
+    path_part="${BASH_REMATCH[3]:-}"
+    ck_name="$(echo "${A}"|cut -d"/" -f4-5)"
+elif [[ "$A" == *"github.com"* ]]; then
+    branch_name="1"
+else
+    echo "无效的GitHub URL格式"
+    return 1
+fi
+
+if [[ -z "$B" ]]; then
+    echo "没设置文件投放路径"
+    return 1
+elif [[ "$B" == *"openwrt"* ]]; then
+    content="$HOME_PATH/${B#*openwrt/}"
+    wenjianjia="${B#*openwrt/}"
+elif [[ "$B" == *"./"* ]]; then
+    content="$HOME_PATH/${B#*./}"
+    wenjianjia="${B#*./}"
+else
+    content="$HOME_PATH/$B"
+    wenjianjia="${B}"
+fi
+
+if [[ "$A" == *"tree"* ]] && [[ -n "${path_part}" ]]; then
+    url="${A%%/tree/*}"
+    file_name="${A##*/}"
+    git_laqu="1"
+elif [[ "$A" == *"tree"* ]] && [[ -n "${branch_name}" ]] && [[ -z "${path_part}" ]]; then
+    url="${A%%/tree/*}"
+    file_name="$(echo "${A}" |cut -d"/" -f5)"
+    git_laqu="2"
+elif [[ "${branch_name}" == "1" ]]; then
+    url="${A}"
+    file_name="$(echo "${A}" |cut -d"/" -f5)"
+    git_laqu="3"
+elif [[ "$A" == *"blob"* ]]; then
+    url="https://raw.githubusercontent.com/${ck_name}/${branch_name}/${path_part}"
+    file_name="${path_part}"
+    parent_dir="${wenjianjia%/*}"
+    git_laqu="4"
+fi
+
+if [[ "${git_laqu}" == "1" ]]; then
+    if git clone -q --no-checkout "$url" "$C"; then
+      cd "${C}"
+      git sparse-checkout init --cone > /dev/null 2>&1
+      git sparse-checkout set "${path_part}" > /dev/null 2>&1
+      git checkout "${branch_name}" > /dev/null 2>&1
+      rm -fr "${content}"
+      mv "${path_part}" "${content}"
+      if [[ $? -ne 0 ]]; then
+         echo "${file_name}文件投放失败,请检查投放路径是否正确"
+      else
+         echo "文件下载完成"
+      fi
+      cd "${HOME_PATH}"
+    else
+      echo "${file_name}文件下载失败"
+    fi
+    [[ "${file_name}" == "auto-scripts" ]] && chmod +x "${content}"
+    cd "${HOME_PATH}"
+    rm -fr "$C"
+elif [[ "${git_laqu}" == "2" ]]; then
+    rm -fr "${content}"
+    if git clone -q --single-branch --depth=1 --branch=${branch_name} ${url} ${content}; then
+      echo "文件下载完成"
+    else
+      echo "${file_name}文件下载失败"
+    fi
+elif [[ "${git_laqu}" == "3" ]]; then
+    rm -fr "${content}"
+    if git clone -q --depth 1 "${url}" "${content}"; then
+      echo "文件下载完成"
+    else
+      echo "${file_name}文件下载失败"
+    fi
+elif [[ "${git_laqu}" == "4" ]]; then
+    [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
+    curl -fsSL "${url}" -o "${content}"
+    if [[ -s "${content}" ]]; then
+      echo "文件下载完成"
+      chmod +x "${content}"
+    else
+      echo "${file_name}文件下载失败"
+    fi
+fi
+}
 
 netsupportmk="${HOME_PATH}/package/kernel/linux/modules/netsupport.mk"
 if [[ `grep -c "KernelPackage/netlink-diag" $netsupportmk` -eq '0' ]]; then
@@ -109,107 +210,3 @@ if [[ "${SOURCE_CODE}" == "PADAVANONLY" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21
   gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/target/linux/mediatek/mt7986 target/linux/mediatek/mt7986
   gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek
 fi
-
-
-function gitcon() {
-cd "${HOME_PATH}"
-local A="${1%.git}"
-local B="$2"
-local branch_name=""
-local path_part=""
-local url=""
-tmpdir="$(mktemp -d)" && C="$HOME_PATH/${tmpdir#*.}"
-rm -fr "${tmpdir}"
-if [[ $A =~ tree/([^/]+)(/(.*))? ]]; then
-    branch_name="${BASH_REMATCH[1]}"
-    path_part="${BASH_REMATCH[3]:-}"
-elif [[ $A =~ blob/([^/]+)(/(.*))? ]]; then
-    branch_name="${BASH_REMATCH[1]}"
-    path_part="${BASH_REMATCH[3]:-}"
-    ck_name="$(echo "${A}"|cut -d"/" -f4-5)"
-elif [[ "$A" == *"github.com"* ]]; then
-    branch_name="1"
-else
-    echo "无效的GitHub URL格式"
-    return 1
-fi
-
-if [[ -z "$B" ]]; then
-    echo "没设置文件投放路径"
-    return 1
-elif [[ "$B" == *"openwrt"* ]]; then
-    content="$HOME_PATH/${B#*openwrt/}"
-    wenjianjia="${B#*openwrt/}"
-elif [[ "$B" == *"./"* ]]; then
-    content="$HOME_PATH/${B#*./}"
-    wenjianjia="${B#*./}"
-else
-    content="$HOME_PATH/$B"
-    wenjianjia="${B}"
-fi
-
-if [[ "$A" == *"tree"* ]] && [[ -n "${path_part}" ]]; then
-    url="${A%%/tree/*}"
-    file_name="${A##*/}"
-    git_laqu="1"
-elif [[ "$A" == *"tree"* ]] && [[ -n "${branch_name}" ]] && [[ -z "${path_part}" ]]; then
-    url="${A%%/tree/*}"
-    file_name="$(echo "${A}" |cut -d"/" -f5)"
-    git_laqu="2"
-elif [[ "${branch_name}" == "1" ]]; then
-    url="${A}"
-    file_name="$(echo "${A}" |cut -d"/" -f5)"
-    git_laqu="3"
-elif [[ "$A" == *"blob"* ]]; then
-    url="https://raw.githubusercontent.com/${ck_name}/${branch_name}/${path_part}"
-    file_name="${path_part}"
-    parent_dir="${wenjianjia%/*}"
-    git_laqu="4"
-fi
-
-if [[ "${git_laqu}" == "1" ]]; then
-    if git clone -q --no-checkout "$url" "$C"; then
-      cd "${C}"
-      git sparse-checkout init --cone > /dev/null 2>&1
-      git sparse-checkout set "${path_part}" > /dev/null 2>&1
-      git checkout "${branch_name}" > /dev/null 2>&1
-      rm -fr "${content}"
-      mv "${path_part}" "${content}"
-      if [[ $? -ne 0 ]]; then
-         echo "${file_name}文件投放失败,请检查投放路径是否正确"
-      else
-         echo "文件下载完成"
-      fi
-      cd "${HOME_PATH}"
-    else
-      echo "${file_name}文件下载失败"
-    fi
-    [[ "${file_name}" == "auto-scripts" ]] && chmod +x "${content}"
-    cd "${HOME_PATH}"
-    rm -fr "$C"
-elif [[ "${git_laqu}" == "2" ]]; then
-    rm -fr "${content}"
-    if git clone -q --single-branch --depth=1 --branch=${branch_name} ${url} ${content}; then
-      echo "文件下载完成"
-    else
-      echo "${file_name}文件下载失败"
-    fi
-elif [[ "${git_laqu}" == "3" ]]; then
-    rm -fr "${content}"
-    if git clone -q --depth 1 "${url}" "${content}"; then
-      echo "文件下载完成"
-    else
-      echo "${file_name}文件下载失败"
-    fi
-elif [[ "${git_laqu}" == "4" ]]; then
-    [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
-    curl -fsSL "${url}" -o "${content}"
-    if [[ -s "${content}" ]]; then
-      echo "文件下载完成"
-      chmod +x "${content}"
-    else
-      echo "${file_name}文件下载失败"
-    fi
-fi
-}
-gitcon "$@"
