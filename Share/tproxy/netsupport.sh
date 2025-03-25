@@ -212,3 +212,4 @@ elif [[ "${git_laqu}" == "4" ]]; then
     fi
 fi
 }
+gitcon "$@"
