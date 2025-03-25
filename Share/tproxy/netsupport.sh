@@ -209,5 +209,6 @@ if [[ "${SOURCE_CODE}" == "PADAVANONLY" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21
   gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/target/linux/mediatek/mt7981 target/linux/mediatek/mt7981
   gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/target/linux/mediatek/mt7986 target/linux/mediatek/mt7986
   gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek
-  gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/package/network/services/hostapd package/network/services/hostapd
+  sed -i '/TARGET_LDFLAGS += -lubox -lubus/i\TARGET_CFLAGS += -ffunction-sections -fdata-sections -flto' package/network/services/hostapd/Makefile
+  sed -i '/TARGET_LDFLAGS += -lubox -lubus/i\TARGET_LDFLAGS += -Wl,--gc-sections -flto=jobserver -fuse-linker-plugin' package/network/services/hostapd/Makefile
 fi
