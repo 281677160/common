@@ -309,7 +309,7 @@ echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" 
    find . -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
  done
 
-if [[ ! "${REPO_BRANCH}" =~ ^(main|master|2410|(openwrt-)?(24\.10))$ ]]; then
+if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
 fi
 
