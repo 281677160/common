@@ -101,6 +101,15 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   rm -fr ${HOME_PATH}/feeds/luci/applications/luci-app-ntpc
 fi
 
+if [[ "${SOURCE_CODE}" == "PADAVANONLY" ]] && [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+  gitsvn https://github.com/padavanonly/immortalwrt-mt798x-24.10/blob/2410/package/boot/uboot-envtools/files/mediatek_filogic
+  gitsvn https://github.com/padavanonly/immortalwrt-mt798x-24.10/blob/2410/target/linux/mediatek/image/mt7981.mk
+  gitsvn https://github.com/padavanonly/immortalwrt-mt798x-24.10/blob/2410/target/linux/mediatek/image/mt7986.mk
+  gitsvn https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/target/linux/mediatek/mt7981
+  gitsvn https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/target/linux/mediatek/mt7986
+  gitsvn https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek
+fi
+
 
 function gitsvn() {
 cd "${HOME_PATH}"
