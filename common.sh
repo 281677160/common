@@ -329,10 +329,10 @@ fi
 source ${HOME_PATH}/build/common/Share/tproxy/netsupport.sh
 
 # 降低luci-app-ssr-plus的shadowsocks-rust版本
-#if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-#   gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
-#   gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/relevance/passwall-packages/shadowsocks-rust/Makefile
-#fi
+if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
+   gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
+   gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/relevance/passwall-packages/shadowsocks-rust/Makefile
+fi
 
 if [[ ! -d "${HOME_PATH}/package/network/config/firewall4" ]]; then
     rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
