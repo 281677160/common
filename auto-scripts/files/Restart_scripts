@@ -8,6 +8,10 @@ start() {
     /etc/init.d/dnsmasq restart
     /etc/init.d/system restart
     rm -rf /tmp/luci-*cache* > /dev/null 2>&1
+    if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
+      echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
+      /etc/init.d/cron restart
+    fi
     /etc/scripts_reboot
 }
 
