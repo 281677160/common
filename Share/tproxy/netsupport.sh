@@ -103,12 +103,10 @@ fi
 
 
    if [[ "${REPO_BRANCH}" == "2410" ]] && [[ "${SOURCE_CODE}" == "PADAVANONLY" ]]; then
-    gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/usb.mk package/kernel/linux/modules/usb.mk
-    gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/crypto.mk package/kernel/linux/modules/crypto.mk
-    gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/hwmon.mk package/kernel/linux/modules/hwmon.mk
-    gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
-    gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/netsupport.mk package/kernel/linux/modules/netsupport.mk
-    gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/include/netfilter.mk include/netfilter.mk
+    gitsvn https://github.com/281677160/common/blob/main/Share/tproxy/padavanonly/package/kernel/linux/modules/usb.mk package/kernel/linux/modules/usb.mk
+     gitsvn https://github.com/281677160/common/blob/main/Share/tproxy/padavanonly/package/kernel/linux/modules/crypto.mk package/kernel/linux/modules/crypto.mk
+     gitsvn https://github.com/281677160/common/blob/main/Share/tproxy/padavanonly/package/kernel/linux/modules/hwmon.mk package/kernel/linux/modules/hwmon.mk
+     gitsvn https://github.com/281677160/common/blob/main/Share/tproxy/padavanonly/package/kernel/linux/modules/netsupport.mk package/kernel/linux/modules/netsupport.mk
     gitsvn https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/firmware package/firmware
   fi
 
