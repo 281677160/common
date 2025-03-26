@@ -203,7 +203,7 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
 fi
 
 if [[ "${SOURCE_CODE}" == "PADAVANONLY" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|openwrt-23.05) ]]; then
-  git clone -q --single-branch --depth=1 --branch=2410 https://github.com/padavanonly/immortalwrt-mt798x-24.10 mt798xmk
+  git clone --single-branch --depth=1 --branch=2410 https://github.com/padavanonly/immortalwrt-mt798x-24.10 mt798xmk
   cp -r mt798xmk/package/boot/uboot-envtools/files/mediatek_filogic package/boot/uboot-envtools/files/mediatek_filogic
   cp -r mt798xmk/target/linux/mediatek/image/mt7981.mk target/linux/mediatek/image/mt7981.mk
   cp -r mt798xmk/target/linux/mediatek/image/mt7986.mk target/linux/mediatek/image/mt7986.mk
