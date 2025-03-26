@@ -213,11 +213,9 @@ if [[ "${SOURCE_CODE}" == "PADAVANONLY" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21
 fi
 
 if [[ "${REPO_BRANCH}" == *"23.05"* ]] && [[ "${SOURCE_CODE}" == "PADAVANONLY" ]]; then
-  gitcon https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
-  gitcon https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/netsupport.mk package/kernel/linux/modules/netsupport.mk
-  gitcon https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/lib.mk package/kernel/linux/modules/lib.mk
-  gitcon https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/include/netfilter.mk include/netfilter.mk
-  gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/package/network/config/swconfig package/network/config/swconfig
-  gitcon https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/firmware package/firmware
-  gitcon https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/kernel/mac80211 package/kernel/mac80211
+  gitcon https://github.com/281677160/common/tree/main/Share/tproxy/openwrt-23.05/package/kernel/linux/modules/crypto.mk package/kernel/linux/modules/crypto.mk
+  gitcon https://github.com/281677160/common/tree/main/Share/tproxy/openwrt-23.05/package/kernel/linux/modules/netsupport.mk package/kernel/linux/modules/netsupport.mk
+  gitcon https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/network/config/swconfig package/network/config/swconfig
+  gitcon https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/firmware package/firmware
+  gitcon https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/kernel/mac80211 package/kernel/mac80211
 fi
