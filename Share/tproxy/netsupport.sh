@@ -164,8 +164,8 @@ if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
 fi
 
 if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
-  curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
-  curl -fsSL https://raw.githubusercontent.com/Lienol/openwrt/d9d9e37e348f2753ff2c6c3958d46dfc573f20de/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/openwrt-21.02/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/openwrt-21.02/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
 fi
 
 if [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
