@@ -213,7 +213,6 @@ if [[ "${SOURCE_CODE}" == "PADAVANONLY" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21
 fi
 
 if [[ "${REPO_BRANCH}" == *"23.05"* ]] && [[ "${SOURCE_CODE}" == "PADAVANONLY" ]]; then
-  gitcon https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/crypto.mk package/kernel/linux/modules/crypto.mk
   gitcon https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/netfilter.mk package/kernel/linux/modules/netfilter.mk
   gitcon https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/netsupport.mk package/kernel/linux/modules/netsupport.mk
   gitcon https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/kernel/linux/modules/lib.mk package/kernel/linux/modules/lib.mk
