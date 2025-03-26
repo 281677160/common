@@ -180,8 +180,8 @@ do
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Official.yml ${f}
   elif [[ "${SOURCE_CODE1}" == "XWRT" ]]; then 
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Xwrt.yml ${f}
-  elif [[ "${SOURCE_CODE1}" == "PADAVANONLY" ]]; then 
-    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/padavanonly.yml ${f}
+  elif [[ "${SOURCE_CODE1}" == "MT798X" ]]; then 
+    cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/Mt798x.yml ${f}
   fi
   [ ! -d "${GITHUB_WORKSPACE}/operates/${a}" ] && rm -rf "${f}"
   yml_name1="$({ grep 'name:' "${f}" |sed 's/^[ ]*//g' |grep -v '^#\|^-' |awk 'NR==1'; } 2>"/dev/null")"
