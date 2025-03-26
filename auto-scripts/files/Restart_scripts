@@ -7,6 +7,7 @@ start() {
     /etc/init.d/uhttpd restart
     /etc/init.d/network restart
     /etc/init.d/dnsmasq restart
+    [ -f "/etc/config/wireless" ] && wifi reload
     rm -rf /tmp/luci-*cache* > /dev/null 2>&1
     if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
       echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
