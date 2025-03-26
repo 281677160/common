@@ -162,7 +162,7 @@ OFFICIAL)
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
   export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
 ;;
-PADAVANONLY)
+MT798X)
   if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
     export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
     export SOURCE="Mt798x"
