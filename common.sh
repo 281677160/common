@@ -558,7 +558,7 @@ fi
 }
 
 
-function Diy_PADAVANONLY() {
+function Diy_MT798X() {
 cd ${HOME_PATH}
 }
 
