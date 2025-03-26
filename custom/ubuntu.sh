@@ -19,7 +19,6 @@ swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
 
 # N1打包需要的依赖
 ${INS} install rename pigz clang upx-ucl
-${INS} install --reinstall linux-modules-extra-$(uname -r)
 
 # 安装gcc-13
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
