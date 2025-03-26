@@ -202,7 +202,7 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   rm -fr ${HOME_PATH}/feeds/luci/applications/luci-app-ntpc
 fi
 
-if [[ "${SOURCE_CODE}" == "PADAVANONLY" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|openwrt-23.05) ]]; then
+if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|openwrt-23.05) ]]; then
   git clone --single-branch --depth=1 --branch=2410 https://github.com/padavanonly/immortalwrt-mt798x-24.10 mt798xmk
   cp -r mt798xmk/package/boot/uboot-envtools/files/mediatek_filogic package/boot/uboot-envtools/files/mediatek_filogic
   cp -r mt798xmk/target/linux/mediatek/image/mt7981.mk target/linux/mediatek/image/mt7981.mk
@@ -214,7 +214,7 @@ if [[ "${SOURCE_CODE}" == "PADAVANONLY" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21
   gitcon https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/network/services/hostapd package/network/services/hostapd
 fi
 
-if [[ "${REPO_BRANCH}" == *"23.05"* ]] && [[ "${SOURCE_CODE}" == "PADAVANONLY" ]]; then
+if [[ "${REPO_BRANCH}" == *"23.05"* ]] && [[ "${SOURCE_CODE}" == "MT798X" ]]; then
   gitcon https://github.com/281677160/common/tree/main/Share/tproxy/openwrt-23.05/package/kernel/linux/modules/crypto.mk package/kernel/linux/modules/crypto.mk
   gitcon https://github.com/281677160/common/tree/main/Share/tproxy/openwrt-23.05/package/kernel/linux/modules/netsupport.mk package/kernel/linux/modules/netsupport.mk
   gitcon https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/network/config/swconfig package/network/config/swconfig
