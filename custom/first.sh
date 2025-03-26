@@ -50,8 +50,8 @@ fi
 [[ ! -d "repogx/build/Xwrt" ]] && cp -Rf shangyou/build/Xwrt repogx/build/Xwrt
 [[ ! -f "repogx/.github/workflows/Xwrt.yml" ]] && cp -Rf shangyou/.github/workflows/Xwrt.yml repogx/.github/workflows/Xwrt.yml
 
-[[ ! -d "repogx/build/padavanonly" ]] && cp -Rf shangyou/build/padavanonly repogx/build/padavanonly
-[[ ! -f "repogx/.github/workflows/padavanonly.yml" ]] && cp -Rf shangyou/.github/workflows/padavanonly.yml repogx/.github/workflows/padavanonly.yml
+[[ ! -d "repogx/build/Mt798x" ]] && cp -Rf shangyou/build/Mt798x repogx/build/Mt798x
+[[ ! -f "repogx/.github/workflows/Mt798x.yml" ]] && cp -Rf shangyou/.github/workflows/Mt798x.yml repogx/.github/workflows/Mt798x.yml
 
 if [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf repogx/build
@@ -144,8 +144,8 @@ do
       sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" ${Y}
     fi
     cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Official/* "${X}"
-  elif [ -n "$(grep 'SOURCE_CODE="PADAVANONLY"' "${a}")" ]; then
-    Y="${GITHUB_WORKSPACE}/shangyou/build/padavanonly/settings.ini"
+  elif [ -n "$(grep 'SOURCE_CODE="MT798X"' "${a}")" ]; then
+    Y="${GITHUB_WORKSPACE}/shangyou/build/Mt798x/settings.ini"
     REPO_BRANCH1="$(grep -E "REPO_BRANCH=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     CONFIG_FILE1="$(grep -E "CONFIG_FILE=" "${Y}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
     REPO_BRANCH2="$(grep -E "REPO_BRANCH=" "${a}" |sed 's/^[ ]*//g' |grep -v '^#' |awk '{print $(1)}' |sed 's?=?\\&?g' |sed 's?"?\\&?g')"
@@ -156,7 +156,7 @@ do
     if [[ -n "${CONFIG_FILE1}" ]] && [[ -n "${CONFIG_FILE2}" ]]; then
       sed -i "s?${CONFIG_FILE1}?${CONFIG_FILE2}?g" ${Y}
     fi
-    cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/padavanonly/* "${X}"
+    cp -Rf ${GITHUB_WORKSPACE}/shangyou/build/Mt798x/* "${X}"
   fi
 done
 
