@@ -36,7 +36,7 @@ elif [[ ! -d "shangyou" ]]; then
 fi
 
 [[ ! -d "repogx/build/Immortalwrt" ]] && cp -Rf shangyou/build/Immortalwrt repogx/build/Immortalwrt
-[[ ! -f "repogx/.github/workflows/Immortalwrt.yml" ]] && cp -Rf shangyou/.github/workflows/padavanonly.yml repogx/.github/workflows/Immortalwrt.yml
+[[ ! -f "repogx/.github/workflows/Immortalwrt.yml" ]] && cp -Rf shangyou/.github/workflows/Immortalwrt.yml repogx/.github/workflows/Immortalwrt.yml
 
 [[ ! -d "repogx/build/Lede" ]] && cp -Rf shangyou/build/Lede repogx/build/Lede
 [[ ! -f "repogx/.github/workflows/Lede.yml" ]] && cp -Rf shangyou/.github/workflows/Lede.yml repogx/.github/workflows/Lede.yml
