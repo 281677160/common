@@ -203,12 +203,14 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
 fi
 
 if [[ "${SOURCE_CODE}" == "PADAVANONLY" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|openwrt-23.05) ]]; then
-  gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/blob/2410/package/boot/uboot-envtools/files/mediatek_filogic package/boot/uboot-envtools/files/mediatek_filogic
-  gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/blob/2410/target/linux/mediatek/image/mt7981.mk target/linux/mediatek/image/mt7981.mk
-  gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/blob/2410/target/linux/mediatek/image/mt7986.mk target/linux/mediatek/image/mt7986.mk
-  gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/target/linux/mediatek/mt7981 target/linux/mediatek/mt7981
-  gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/target/linux/mediatek/mt7986 target/linux/mediatek/mt7986
-  gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek
+  git clone -q --single-branch --depth=1 --branch=2410 https://github.com/padavanonly/immortalwrt-mt798x-24.10 mt798xmk
+  cp -r mt798xmk/package/boot/uboot-envtools/files/mediatek_filogic package/boot/uboot-envtools/files/mediatek_filogic
+  cp -r mt798xmk/target/linux/mediatek/image/mt7981.mk target/linux/mediatek/image/mt7981.mk
+  cp -r mt798xmk/target/linux/mediatek/image/mt7986.mk target/linux/mediatek/image/mt7986.mk
+  rm -rf target/linux/mediatek/mt7981 && cp -r mt798xmk/target/linux/mediatek/mt7981 target/linux/mediatek/mt7981
+  rm -rf target/linux/mediatek/mt7986 && cp -r mt798xmk/target/linux/mediatek/mt7986 target/linux/mediatek/mt7986
+  rm -rf target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek && cp -r mt798xmk/target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek
+  rm -rf mt798xmk
   gitcon https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/network/services/hostapd package/network/services/hostapd
 fi
 
@@ -216,6 +218,6 @@ if [[ "${REPO_BRANCH}" == *"23.05"* ]] && [[ "${SOURCE_CODE}" == "PADAVANONLY" ]
   gitcon https://github.com/281677160/common/tree/main/Share/tproxy/openwrt-23.05/package/kernel/linux/modules/crypto.mk package/kernel/linux/modules/crypto.mk
   gitcon https://github.com/281677160/common/tree/main/Share/tproxy/openwrt-23.05/package/kernel/linux/modules/netsupport.mk package/kernel/linux/modules/netsupport.mk
   gitcon https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/network/config/swconfig package/network/config/swconfig
-  gitcon https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/firmware package/firmware
-  gitcon https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/kernel/mac80211 package/kernel/mac80211
+  gitcon https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/firmware package/firmware
+  gitcon https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/kernel/mac80211 package/kernel/mac80211
 fi
