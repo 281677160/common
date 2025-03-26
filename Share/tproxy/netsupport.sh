@@ -220,4 +220,5 @@ if [[ "${REPO_BRANCH}" == *"23.05"* ]] && [[ "${SOURCE_CODE}" == "PADAVANONLY" ]
   gitcon https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/include/netfilter.mk include/netfilter.mk
   gitcon https://github.com/padavanonly/immortalwrt-mt798x-24.10/tree/2410/package/network/config/swconfig package/network/config/swconfig
   gitcon https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/firmware package/firmware
+  gitcon https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/kernel/mac80211 package/kernel/mac80211
 fi
