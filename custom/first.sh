@@ -53,7 +53,7 @@ fi
 [[ ! -d "repogx/build/Mt798x" ]] && cp -Rf shangyou/build/Mt798x repogx/build/Mt798x
 [[ ! -f "repogx/.github/workflows/Mt798x.yml" ]] && cp -Rf shangyou/.github/workflows/Mt798x.yml repogx/.github/workflows/Mt798x.yml
 
-rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/padavanonly.ym
+rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/padavanonly.yml
 
 if [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf repogx/build
