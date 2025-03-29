@@ -61,7 +61,7 @@ elif [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "${luci_web}"` -eq '1' ]]; the
 	sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "${luci_web}"
 fi
 
-sed -i 's?=== WARNING! =====================================?=================== WARNING! ====================?g' /etc/profile
+sed -i 's?=== WARNING! =====================================?=================== WARNING! =====================?g' /etc/profile
 
 lmo_file="$({ find "/usr/lib/lua/luci/i18n" |grep "zh_Hans.lmo"; } 2>"/dev/null")"
 for b in ${lmo_file}
