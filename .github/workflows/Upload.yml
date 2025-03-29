@@ -59,8 +59,6 @@ jobs:
         cd $GITHUB_WORKSPACE
         cat $GITHUB_WORKSPACE/123 |sed '/^$/d' |awk '$0=NR$0' |sed 's/^/R/' |sed 's/2410/24.10/' |sed s/[[:space:]]//g >$GITHUB_WORKSPACE/repogx/autoupdate/replace
         
-      
-        
     - name: Upload
       continue-on-error: true
       if: env.REPO_TOKEN
