@@ -1,14 +1,14 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-3.0-only
-#
-# Copyright (C) ImmortalWrt.org
 
 function install_mustrelyon(){
-# 安装编译openwrt的依赖
+# 更新ubuntu源
 ${INS} update > /dev/null 2>&1
 
-#${INS} full-upgrade > /dev/null 2>&1
+# 升级ubuntu
+# ${INS} full-upgrade > /dev/null 2>&1
 
+# 安装编译openwrt的依赖
 ${INS} install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
 bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
 genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
