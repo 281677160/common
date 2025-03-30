@@ -185,7 +185,7 @@ done
 
 for X in $(find "${GITHUB_WORKSPACE}/operates" -type d -name "relevance" |grep -v 'backups'); do
   rm -rf ${X}/{*.ini,*start}
-  echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
+  echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
   echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
   echo "$(date +%Y%m%d%H%M%S)" > ${X}/armsrstart
@@ -244,7 +244,7 @@ sudo rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/*
 cp -Rf ${GITHUB_WORKSPACE}/shangyou/.github/workflows/* ${GITHUB_WORKSPACE}/repogx/.github/workflows/
 for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance" |grep -v 'backups'); do 
   rm -rf ${X}/{*.ini,*start}
-  echo "ACTIONS_VERSION=${ACTIONS_VERSION}" > ${X}/actions_version
+  echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
   echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
   echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
   echo "$(date +%Y%m%d%H%M%S)" > ${X}/armsrstart
@@ -270,9 +270,12 @@ BRANCH_HEAD="$(git rev-parse --abbrev-ref HEAD)"
 if [[ "${OPERATES_BUILD}" == "1" ]]; then
   rm -rf backups
 fi
-if [[ "${GIT_REPOSITORY}" =~ (281677160/build-actions|281677160/autobuild) ]]; then
+if [[ "${GIT_REPOSITORY}" == "281677160/build-actions" ]]; then
   rm -rf backups
   BANBEN_SHUOMING="Update $(date +%Y.%m%d.%H%M.%S)"
+fi
+if [[ "${GIT_REPOSITORY}" == "281677160/autobuild" ]]; then
+  rm -rf backups
 fi
 git add .
 git commit -m "${BANBEN_SHUOMING}"
