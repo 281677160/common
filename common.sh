@@ -326,9 +326,10 @@ if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
 fi
 
-if [[ ! "${REPO_BRANCH}" =~ ^(2410|(openwrt-)?(24\.10))$ ]]; then
+if [[ "${REPO_BRANCH}" =~ ^(2410|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-quickstart
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-linkease
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-istorex
 fi
 
 # 更新golang和node版本
