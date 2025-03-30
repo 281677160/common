@@ -320,7 +320,6 @@ curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o 
 if [[ $? -ne 0 ]]; then
   wget -q https://raw.githubusercontent.com/281677160/common/main/common.sh -O common.sh
 fi
-export ACTIONS_VERSION="$(grep -E "ACTIONS_VERSION=.*" "common.sh" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
 export DIY_PART_SH="$(grep -Eo "DIY_PART_SH=.*" "common.sh" |grep '.sh' |awk 'NR==1' |cut -d'"' -f2)"
 echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
 if [[ -n "${BENDI_VERSION}" ]]; then
@@ -359,16 +358,29 @@ elif [[ ! -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
   export SYNCHRONISE="2"
   sleep 2
 elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
-  export A="$(grep -E "ACTIONS_VERSION=.*" build/${FOLDER_NAME}/relevance/actions_version |grep -Eo [0-9]+\.[0-9]+\.[0-9]+)"
-  export B="$(echo "${A}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
-  export C="$(echo "${ACTIONS_VERSION}" |grep -Eo [0-9]+\.[0-9]+\.[0-9]+ |cut -d"." -f1)"
-  echo " 本地版本：${A}"
-  echo " 上游版本：${ACTIONS_VERSION}"
-  if [[ "${B}" != "${C}" ]]; then
+  export ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' build/${FOLDER_NAME}/relevance/actions_version)"
+  if [[ ! "$ACTIONS_VERSION2" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo -e "\033[31m $ACTIONS_VERSION2版本号格式不正确,进行同步上游仓库操作 \033[0m"
+    export SYNCHRONISE="2"
+    sleep 2
+  fi
+elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
+  export ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' common.sh)"
+  export ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' build/${FOLDER_NAME}/relevance/actions_version)"
+  export A1="$(echo "${ACTIONS_VERSION1}" |cut -d"." -f1)"
+  export A2="$(echo "${ACTIONS_VERSION2}" |cut -d"." -f1)"
+  
+  export B1="$(echo "${ACTIONS_VERSION1}" |cut -d"." -f2-)"
+  export B2="$(echo "${ACTIONS_VERSION2}" |cut -d"." -f2-)"
+  
+  echo " 本地版本：${ACTIONS_VERSION1}"
+  echo " 上游版本：${ACTIONS_VERSION2}"
+
+  if [[ ! "${A1}" == "${A2}" ]]; then
     echo -e "\033[31m 版本号不对等,进行同步上游仓库操作 \033[0m"
     export SYNCHRONISE="2"
     sleep 2
-  elif [[ "${A}" != "${ACTIONS_VERSION}" ]]; then
+  elif [[ ! "${B1}" == "${B2}" ]]; then
     echo -e "\033[31m 此仓库版本号跟上游仓库不对等,进行小版本更新 \033[0m"
     export SYNCHRONISE="1"
     sleep 2
