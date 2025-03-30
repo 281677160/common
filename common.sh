@@ -477,8 +477,6 @@ else
   TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作"
 fi
 TIME r ""
-TIME g "CPU性能：8370C > 8272CL > 8171M > E5系列"
-TIME r ""
 }
 
 
