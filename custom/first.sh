@@ -363,30 +363,27 @@ elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
     echo -e "\033[31m $ACTIONS_VERSION2版本号格式不正确,进行同步上游仓库操作 \033[0m"
     export SYNCHRONISE="2"
     sleep 2
-  fi
-elif [[ -f "build/${FOLDER_NAME}/relevance/actions_version" ]]; then
-  export ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' common.sh)"
-  export ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' build/${FOLDER_NAME}/relevance/actions_version)"
-  export A1="$(echo "${ACTIONS_VERSION1}" |cut -d"." -f1)"
-  export A2="$(echo "${ACTIONS_VERSION2}" |cut -d"." -f1)"
-  
-  export B1="$(echo "${ACTIONS_VERSION1}" |cut -d"." -f2-)"
-  export B2="$(echo "${ACTIONS_VERSION2}" |cut -d"." -f2-)"
-  
-  echo " 本地版本：${ACTIONS_VERSION1}"
-  echo " 上游版本：${ACTIONS_VERSION2}"
-
-  if [[ ! "${A1}" == "${A2}" ]]; then
-    echo -e "\033[31m 版本号不对等,进行同步上游仓库操作 \033[0m"
-    export SYNCHRONISE="2"
-    sleep 2
-  elif [[ ! "${B1}" == "${B2}" ]]; then
-    echo -e "\033[31m 此仓库版本号跟上游仓库不对等,进行小版本更新 \033[0m"
-    export SYNCHRONISE="1"
-    sleep 2
   else
-    export SYNCHRONISE="0"
-    echo -e "\033[32m 版本一致,继续编译固件... \033[0m"
+    export ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' common.sh)"
+    export ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' build/${FOLDER_NAME}/relevance/actions_version)"
+    export A1="$(echo "${ACTIONS_VERSION1}" |cut -d"." -f1)"
+    export A2="$(echo "${ACTIONS_VERSION2}" |cut -d"." -f1)"
+    export B1="$(echo "${ACTIONS_VERSION1}" |cut -d"." -f2-)"
+    export B2="$(echo "${ACTIONS_VERSION2}" |cut -d"." -f2-)"
+    echo " 本地版本：${ACTIONS_VERSION1}"
+    echo " 上游版本：${ACTIONS_VERSION2}"
+    if [[ ! "${A1}" == "${A2}" ]]; then
+      echo -e "\033[31m 版本号不对等,进行同步上游仓库操作 \033[0m"
+      export SYNCHRONISE="2"
+      sleep 2
+    elif [[ ! "${B1}" == "${B2}" ]]; then
+      echo -e "\033[31m 此仓库版本号跟上游仓库不对等,进行小版本更新 \033[0m"
+      export SYNCHRONISE="1"
+      sleep 2
+    else
+      export SYNCHRONISE="0"
+      echo -e "\033[32m 版本一致,继续编译固件... \033[0m"
+    fi
   fi
 else
   export SYNCHRONISE="0"
