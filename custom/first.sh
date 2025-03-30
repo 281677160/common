@@ -323,6 +323,7 @@ curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o 
 if [[ $? -ne 0 ]]; then
   wget -q https://raw.githubusercontent.com/281677160/common/main/common.sh -O common.sh
 fi
+export ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' common.sh)"
 export DIY_PART_SH="$(grep -Eo "DIY_PART_SH=.*" "common.sh" |grep '.sh' |awk 'NR==1' |cut -d'"' -f2)"
 echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
 if [[ -n "${BENDI_VERSION}" ]]; then
