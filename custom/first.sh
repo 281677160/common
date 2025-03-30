@@ -35,26 +35,6 @@ elif [[ ! -d "shangyou" ]]; then
   exit 1
 fi
 
-[[ ! -d "repogx/build/Immortalwrt" ]] && cp -Rf shangyou/build/Immortalwrt repogx/build/Immortalwrt
-[[ ! -f "repogx/.github/workflows/Immortalwrt.yml" ]] && cp -Rf shangyou/.github/workflows/Immortalwrt.yml repogx/.github/workflows/Immortalwrt.yml
-
-[[ ! -d "repogx/build/Lede" ]] && cp -Rf shangyou/build/Lede repogx/build/Lede
-[[ ! -f "repogx/.github/workflows/Lede.yml" ]] && cp -Rf shangyou/.github/workflows/Lede.yml repogx/.github/workflows/Lede.yml
-
-[[ ! -d "repogx/build/Lienol" ]] && cp -Rf shangyou/build/Lienol repogx/build/Lienol
-[[ ! -f "repogx/.github/workflows/Lienol.yml" ]] && cp -Rf shangyou/.github/workflows/Lienol.yml repogx/.github/workflows/Lienol.yml
-
-[[ ! -d "repogx/build/Official" ]] && cp -Rf shangyou/build/Official repogx/build/Official
-[[ ! -f "repogx/.github/workflows/Official.yml" ]] && cp -Rf shangyou/.github/workflows/Official.yml repogx/.github/workflows/Official.yml
-
-[[ ! -d "repogx/build/Xwrt" ]] && cp -Rf shangyou/build/Xwrt repogx/build/Xwrt
-[[ ! -f "repogx/.github/workflows/Xwrt.yml" ]] && cp -Rf shangyou/.github/workflows/Xwrt.yml repogx/.github/workflows/Xwrt.yml
-
-[[ ! -d "repogx/build/Mt798x" ]] && cp -Rf shangyou/build/Mt798x repogx/build/Mt798x
-[[ ! -f "repogx/.github/workflows/Mt798x.yml" ]] && cp -Rf shangyou/.github/workflows/Mt798x.yml repogx/.github/workflows/Mt798x.yml
-
-rm -rf ${GITHUB_WORKSPACE}/repogx/.github/workflows/padavanonly.yml
-
 if [[ -n "${BENDI_VERSION}" ]]; then
   rm -rf repogx/build
 else
