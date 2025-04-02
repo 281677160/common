@@ -371,7 +371,7 @@ fi
 if [[ -f "${HOME_PATH}/target/linux/armsr/Makefile" ]]; then
   sed -i "s?FEATURES+=.*?FEATURES+=targz?g" ${HOME_PATH}/target/linux/armsr/Makefile
 elif [[ -f "${HOME_PATH}/target/linux/armvirt/Makefile" ]]; then
-  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" ${HOME_PATH}/target/linux/armvirt/Makefile"
+  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" ${HOME_PATH}/target/linux/armvirt/Makefile
 fi
 
 # 给固件保留配置更新固件的保留项目
