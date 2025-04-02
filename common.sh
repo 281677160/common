@@ -368,12 +368,10 @@ fi
 
 
 # N1类型固件修改
-if [[ -d "${HOME_PATH}/target/linux/armsr" ]]; then
-  features_file="${HOME_PATH}/target/linux/armsr/Makefile"
-  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
-elif [[ -d "${HOME_PATH}/target/linux/armvirt" ]]; then
-  features_file="${HOME_PATH}/target/linux/armvirt/Makefile"
-  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" "${features_file}"
+if [[ -f "${HOME_PATH}/target/linux/armsr/Makefile" ]]; then
+  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" ${HOME_PATH}/target/linux/armsr/Makefile
+elif [[ -f "${HOME_PATH}/target/linux/armvirt/Makefile" ]]; then
+  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" ${HOME_PATH}/target/linux/armvirt/Makefile"
 fi
 
 # 给固件保留配置更新固件的保留项目
