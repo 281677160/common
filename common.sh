@@ -1808,7 +1808,7 @@ TIME b "源码分支: ${REPO_BRANCH}"
 TIME b "源码作者: ${SOURCE_OWNER}"
 TIME b "Luci版本: ${LUCI_EDITION}"
 if [[ "${AMLOGIC_CODE}" == "AMLOGIC" ]]; then
-  TIME b "编译机型: 晶晨系列"
+  TIME b "编译机型: aarch64系列"
   if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
      TIME g "打包机型: ${amlogic_model}"
      TIME g "打包内核: ${amlogic_kernel}"
@@ -1862,9 +1862,9 @@ if [[ ${COMPILATION_INFORMATION} == "true" ]]; then
 fi
 if [[ ${AMLOGIC_CODE} == "AMLOGIC" ]]; then
   if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
-    TIME y "N1和晶晨系列固件自动打包成 .img 固件: 开启"
+    TIME y "aarch64系列固件自动打包成 .img 固件: 开启"
   else
-    TIME r "N1和晶晨系列固件自动打包成 .img 固件: 关闭"
+    TIME r "aarch64系列固件自动打包成 .img 固件: 关闭"
   fi
 else
   if [[ ${UPDATE_FIRMWARE_ONLINE} == "true" ]]; then
