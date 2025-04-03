@@ -1680,9 +1680,7 @@ if [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*64.*=y' build/${FOLDER_NAME}/${CONFIG_
   export TARGET_PROFILE="x86-64"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*=y' build/${FOLDER_NAME}/${CONFIG_FILE})" ]]; then
   export TARGET_PROFILE="x86-32"
-elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armsr.*armv8.*=y' build/${FOLDER_NAME}/${CONFIG_FILE})" ]]; then
-  export TARGET_PROFILE="aarch_64"
-elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armvirt.*64.*=y' build/${FOLDER_NAME}/${CONFIG_FILE})" ]]; then
+elif [[ -n "$(grep -Eo 'CONFIG_aarch64=y' build/${FOLDER_NAME}/${CONFIG_FILE})" ]]; then
   export TARGET_PROFILE="aarch_64"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*=y' build/${FOLDER_NAME}/${CONFIG_FILE})" ]]; then
   export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/${CONFIG_FILE} | sed -r 's/.*DEVICE_(.*)=y/\1/')"
