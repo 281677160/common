@@ -317,7 +317,7 @@ luci-theme-infinityfreedom
 luci-theme-darkmatter
 "
 for x in ${z}; do \
-  find ${HOME_PATH} -path ${HOME_PATH}/feeds/danshui -prune -o -name "$x" -type d -exec rm -rf {} +
+  find . -path ./feeds/danshui -prune -o -name "$x" -type d -exec rm -rf {} +
 done
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
