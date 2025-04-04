@@ -8,6 +8,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
+        echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
         echo "Update_tag=${Update_tag}" >> ${GITHUB_ENV}
         echo "Tongzhi_Date=${Tongzhi_Date}" >> ${GITHUB_ENV}
         echo "BIN_PATH=${BIN_PATH}" >> ${GITHUB_ENV}
