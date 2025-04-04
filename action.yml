@@ -3,18 +3,19 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 公告
-      if: env.CACHEWRTBUILD_SWITCH == 'true'
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
-        echo "Update_tag=${Update_tag}" >> ${GITHUB_ENV}
-        echo "Tongzhi_Date=${Tongzhi_Date}" >> ${GITHUB_ENV}
-        echo "BIN_PATH=${BIN_PATH}" >> ${GITHUB_ENV}
+    - name: 发送[在线更新固件]至云端1
+      if: env.UPDATE_FIRMWARE_ONLINE == 'true'
+      uses: ncipollo/release-action@v1
+      with:
+        name: AutoUpdate
+        tag: ${{ env.Update_tag }}
+        token: ${{ env.REPO_TOKEN }}
+        allowUpdates: true
+        body: ${{ env.Tongzhi_Date }}
+        artifacts: "${{ env.BIN_PATH }}/*"
         
     - name: 发送[在线更新固件]至云端2
-      env.UPDATE_FIRMWARE_ONLINE == 'true'
+      if: env.UPDATE_FIRMWARE_ONLINE == 'true'
       shell: bash
       run: |
         mkdir -p Github_Api
@@ -23,6 +24,17 @@ runs:
         if ! grep -q "browser_download_url" zzz_api; then
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${Update_tag} > zzz_api
         fi
+        
+    - name: 发送[在线更新固件]至云端3
+      if: env.UPDATE_FIRMWARE_ONLINE == 'true'
+      uses: ncipollo/release-action@v1
+      with:
+        name: AutoUpdate-${{ env.TARGET_BOARD }}
+        tag: ${{ env.Update_tag }}
+        token: ${{ env.REPO_TOKEN }}
+        artifacts: "Github_Api/*"
+        allowUpdates: true
+        body: ${{ env.Tongzhi_Date }}
         
 branding:
   icon: "terminal"
