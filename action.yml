@@ -7,21 +7,18 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        echo "运行自定义1文件"
         $DIY_P1_SH
         ./scripts/feeds update -a > /dev/null 2>&1
-        echo "files大法"
+        echo ""
         [ -d "$BUILD_PATCHES" ] && find "$BUILD_PATCHES" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
         [ -d "$BUILD_DIY" ] && cp -Rf $BUILD_DIY/* $HOME_PATH
         [ -d "$BUILD_FILES" ] && cp -Rf $BUILD_FILES $HOME_PATH
         rm -rf $HOME_PATH/files/README
         mv $CONFIG_FILE $HOME_PATH/.config
         ./scripts/feeds install -a > /dev/null 2>&1
-        echo "检测是否缺依赖"
         echo ""
         ./scripts/feeds install -a
         echo ""
-        echo "运行自定义2文件"
         $DIY_P2_SH
         echo ""
         echo "提取编译机型名称"
@@ -47,12 +44,12 @@ runs:
         echo "DEVICE_NAME=${TARGET_PROFILE}" >> ${GITHUB_ENV}
         echo "BIN_TARGETS=${HOME_PATH}/bin_firmware" >> ${GITHUB_ENV}
         echo "FIRMWARE=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
+        echo ""
 
     - name: 公告
       if: env.CACHEWRTBUILD_SWITCH == 'true'
       shell: bash
       run: |
-        echo ""
         echo "缓存加速"
 
     - name: 缓存加速
@@ -66,8 +63,6 @@ runs:
     - name: 下载软件源
       shell: bash
       run: |
-        echo ""
-        echo "下载软件源"
         cd $HOME_PATH
         make download -j8
         
