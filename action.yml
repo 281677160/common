@@ -1,62 +1,23 @@
-name: "Make OpenWrt"
-author: "https://github.com/ophub/amlogic-s9xxx-openwrt"
-description: "Support Amlogic, Rockchip and Allwinner boxes."
-inputs:
-  ccache:
-    description: "Select script."
-    required: true
-    default: "true"
-  openwrt_path:
-    description: "Select armvirt64 file path."
-    required: false
-    default: "openwrt/bin/targets/*/*/*rootfs.tar.gz"
-  openwrt_board:
-    description: "Select device board."
-    required: false
-    default: "all"
-  kernel_repo:
-    description: "Select kernel repository."
-    required: false
-    default: "ophub/kernel"
-  kernel_usage:
-    description: "Set the tags of the stable kernel."
-    required: false
-    default: "stable"
-  openwrt_kernel:
-    description: "Select kernel version."
-    required: false
-    default: "6.1.y_6.12.y"
-  auto_kernel:
-    description: "Auto use the latest kernel."
-    required: false
-    default: "true"
-  openwrt_size:
-    description: "Set the rootfs size(Unit: MiB)."
-    required: false
-    default: ""
-  builder_name:
-    description: "Set OpenWrt builder signature."
-    required: false
-    default: ""
-
+name: 'My Composite Action'
+description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: Run a script
+    - name: 读取自定义文件
       shell: bash
       run: |
         cd ${HOME_PATH}
         $DIY_P1_SH
-        ./scripts/feeds update -a
+        ./scripts/feeds update -a > /dev/null 2>&1
         [ -d "$BUILD_PATCHES" ] && find "$BUILD_PATCHES" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
         [ -d "$BUILD_DIY" ] && cp -Rf $BUILD_DIY/* $HOME_PATH
         [ -d "$BUILD_FILES" ] && cp -Rf $BUILD_FILES $HOME_PATH
         rm -rf $HOME_PATH/files/README
         mv $CONFIG_FILE $HOME_PATH/.config
-        ./scripts/feeds install -a
+        ./scripts/feeds install -a > /dev/null 2>&1
         ./scripts/feeds install -a
         $DIY_P2_SH
-        make defconfig
+        make defconfig > /dev/null 2>&1
         TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)"
         TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)"
         TARGET_PROFILE_DG="$(awk -F '[="]+' '/TARGET_PROFILE/{print $2}' .config)"
@@ -77,12 +38,19 @@ runs:
         echo "BIN_TARGETS=${HOME_PATH}/bin_firmware" >> ${GITHUB_ENV}
         echo "FIRMWARE=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
 
-    - name: Use another Action
+    - name: 缓存加速
+      if: env.CACHEWRTBUILD_SWITCH == 'true'
       uses: stupidloud/cachewrtbuild@main
       with:
         ccache: 'true'
         mixkey: "${{ env.DEVICE_NAME }}"
         prefix: ${{ github.workspace }}/openwrt
+
+    - name: 下载软件源
+      shell: bash
+      run: |
+        cd ${HOME_PATH}
+        make download -j8
         
 branding:
   icon: "terminal"
