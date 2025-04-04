@@ -24,17 +24,6 @@ runs:
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${Update_tag} > zzz_api
         fi
         
-    - name: 发送[在线更新固件]至云端3
-      env.UPDATE_FIRMWARE_ONLINE == 'true'
-      uses: ncipollo/release-action@v1
-      with:
-        name: AutoUpdate-${{ env.TARGET_BOARD }}
-        tag: ${{ env.Update_tag }}
-        token: ${REPO_TOKEN}
-        artifacts: "Github_Api/*"
-        allowUpdates: true
-        body: 3333
-        
 branding:
   icon: "terminal"
   color: "gray-dark"
