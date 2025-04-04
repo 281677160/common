@@ -3,40 +3,23 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 更新插件源
+    - name: 密匙检测（密匙为空则退出）
       shell: bash
       run: |
-        cd $HOME_PATH
-        source ${BUILD_PATH}/common.sh && Diy_menu3
- 
-    - name: 加载自定义设置
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        source ${BUILD_PATH}/common.sh && Diy_menu4
-        
-    - name: 安装插件源
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        source ${BUILD_PATH}/common.sh && Diy_menu5
-    
-    - name: SSH远程连接（make menuconfig）
-      if: env.SSH_ACTION == 'true'
-      uses: danshui-git/debugger-action@main
-
-    - name: 生成"${{ matrix.target }}"配置文件
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        source ${BUILD_PATH}/common.sh && Diy_menu6
-
-    - name: 上传"${{ matrix.target }}"配置文件在 Github Artifacts
-      if: env.SHANG_CHUAN == 'true'
-      uses: actions/upload-artifact@main
-      with:
-        name: .config_${{ env.SOURCE }}_${{ env.LUCI_EDITION }}_${{ env.TARGET_PROFILE }}_${{ env.Firmware_Date }}
-        path: openwrt/build_logo/config.txt
+        cd ${GITHUB_WORKSPACE}
+        if [[ -n "${{ secrets.REPO_TOKEN }}" ]]; then
+          curl -s -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" \
+          https://api.github.com/repos/281677160/common/releases/tag/API > mishi
+          if [[ `grep -c "Bad credentials" mishi` -ge '1' ]]; then
+            echo "您的密匙不正确或已过期，请按教程设置好密匙再来"
+            echo "REPO_TOKEN密匙制作教程：https://git.io/jm.md"
+            exit 1
+          fi
+        elif [[ -z "${{ secrets.REPO_TOKEN }}" ]]; then
+          echo "您没有设置仓库密匙，请按教程设置好密匙再来"
+          echo "REPO_TOKEN密匙制作教程：https://git.io/jm.md"
+          exit 1
+        fi
         
 branding:
   icon: "terminal"
