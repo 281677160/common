@@ -52,8 +52,8 @@ runs:
       if: env.CACHEWRTBUILD_SWITCH == 'true'
       shell: bash
       run: |
-      echo ""
-      echo "缓存加速"
+        echo ""
+        echo "缓存加速"
 
     - name: 缓存加速
       if: env.CACHEWRTBUILD_SWITCH == 'true'
@@ -66,8 +66,8 @@ runs:
     - name: 公告
       shell: bash
       run: |
-      echo ""
-      echo "下载软件源"
+        echo ""
+        echo "下载软件源"
 
       - name: 下载软件源
       shell: bash
