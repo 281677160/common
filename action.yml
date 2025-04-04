@@ -3,49 +3,38 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 检查rootfs.tar.gz是否存在
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        if [[ -n "$(find $FIRMWARE_PATH -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]] && [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
-          mkdir -p "${HOME_PATH}/targz"
-          cp -Rf ${FIRMWARE_PATH}/*rootfs.tar.gz ${HOME_PATH}/targz/$SOURCE-armvirt-64-default-rootfs.tar.gz
-          echo "PACKAGING_FIRMWARE=true" >> ${GITHUB_ENV}
-        else
-          echo "没发现armvirt-64-default-rootfs.tar.gz包存在"
-          echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
-        fi
-        
-    - name: 自动打包aarch64系列固件
-      if: env.PACKAGING_FIRMWARE == 'true'
+    - name: 发送[在线更新固件]至云端1
+      env.UPDATE_FIRMWARE_ONLINE == 'true'
       uses: ncipollo/release-action@v1
       with:
-        name: rootfs.tar.gz
-        tag: targz
+        name: AutoUpdate
+        tag: ${{ env.Update_tag }}
         token: ${{ secrets.REPO_TOKEN }}
         allowUpdates: true
-        replacesArtifacts: true
-        artifacts: openwrt/targz/*rootfs.tar.gz
-
-    - name: 打包aarch64系列固件
-      if: env.PACKAGING_FIRMWARE == 'true'
-      uses: ophub/amlogic-s9xxx-openwrt@main
-      with:
-        openwrt_path: openwrt/targz/*rootfs.tar.gz
-        openwrt_board: ${{ env.amlogic_model }}
-        openwrt_kernel: ${{ env.amlogic_kernel }}
-        auto_kernel: ${{ env.auto_kernel }}
-        kernel_repo: ${{ env.kernel_repo }}
-        kernel_usage: ${{ env.kernel_usage }}
-        builder_name: ${{ env.builder_name }}
-
-    - name: 打包后的固件放回原位
-      if: env.PACKAGING_FIRMWARE == 'true'
+        body: ${{ env.Tongzhi_Date }}
+        artifacts: "${{ env.BIN_PATH }}/*"
+        
+    - name: 发送[在线更新固件]至云端2
+      env.UPDATE_FIRMWARE_ONLINE == 'true'
+      shell: bash
       run: |
-        cd $HOME_PATH
-        if [[ -d "${PACKAGED_OUTPUTPATH}" ]]; then
-          cp -Rf $PACKAGED_OUTPUTPATH/* $FIRMWARE_PATH
+        mkdir -p Github_Api
+        cd Github_Api
+        curl -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.Update_tag }} -o zzz_api
+        if ! grep -q "browser_download_url" zzz_api; then
+          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${Update_tag} > zzz_api
         fi
+        
+    - name: 发送[在线更新固件]至云端3
+      env.UPDATE_FIRMWARE_ONLINE == 'true'
+      uses: ncipollo/release-action@v1
+      with:
+        name: AutoUpdate-${{ env.TARGET_BOARD }}
+        tag: ${{ env.Update_tag }}
+        token: ${{ secrets.REPO_TOKEN }}
+        artifacts: "Github_Api/*"
+        allowUpdates: true
+        body: ${{ env.Tongzhi_Date }}
         
 branding:
   icon: "terminal"
