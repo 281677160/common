@@ -310,17 +310,14 @@ fi
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
 ./scripts/feeds update -a > /dev/null 2>&1
 
- z="luci-theme-argon,luci-app-argon-config,luci-theme-Butterfly,luci-theme-netgear,luci-theme-atmaterial, \
- luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
- luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
- luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-openclash, \
- luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
- luci-app-ssr-plus,luci-app-passwall,v2dat,v2ray-geodata, \
- luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,luci-app-alist,alist"
- t=(${z//,/ })
- for x in ${t[@]}; do \
-   find . -type d -name "${x}" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
- done
+find . -path "./danshui" -prune -o \
+$ -type d \
+    \( -name "luci-theme-argon" \
+    -o -name "luci-app-argon-config"-o -name "luci-theme-Butterfly"-o -name "luci-theme-netgear"-o -name "luci-theme-atmaterial"-o -name "luci-theme-rosy"-o -name "luci-theme-darkmatter"-o -name "luci-theme-kucat" \
+    -o -name "luci-theme-infinityfreedom"-o -name "luci-theme-design"-o -name "luci-app-design-config"-o -name "luci-theme-bootstrap-mod"-o -name "luci-theme-freifunk-generic"-o -name "luci-theme-opentomato" \
+    $ \
+\) -print
+
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
