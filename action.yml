@@ -3,6 +3,11 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
+    - name: REPO_TOKEN
+      shell: bash
+      run: |
+        echo "REPO_TOKEN=${{ secrets.REPO_TOKEN }}" >> ${GITHUB_ENV}
+  
     - name: 检查rootfs.tar.gz是否存在
       shell: bash
       run: |
@@ -22,7 +27,7 @@ runs:
       with:
         name: rootfs.tar.gz
         tag: targz
-        token: ${{ secrets.REPO_TOKEN }}
+        token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
         replacesArtifacts: true
         artifacts: openwrt/targz/*rootfs.tar.gz
