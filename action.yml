@@ -6,8 +6,8 @@ runs:
     - name: 运行杂项
       shell: bash
       run: |
-        echo "运行自定义1文件"
         cd $HOME_PATH
+        echo "运行自定义1文件"
         $DIY_P1_SH
         ./scripts/feeds update -a > /dev/null 2>&1
         echo "files大法"
