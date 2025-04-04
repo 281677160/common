@@ -310,51 +310,6 @@ fi
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
 ./scripts/feeds update -a > /dev/null 2>&1
  echo "11"
-set -euxo pipefail
-t=(
-    "*luci-theme-argon*"
-    "*luci-app-argon-config*"
-    "*luci-theme-Butterfly*"
-    "*luci-theme-netgear*"
-    "*luci-theme-atmaterial*"
-    "luci-theme-rosy"
-    "luci-theme-darkmatter"
-    "luci-theme-infinityfreedom"
-    "luci-theme-design"
-    "luci-app-design-config"
-    "luci-theme-bootstrap-mod"
-    "luci-theme-freifunk-generic"
-    "luci-theme-opentomato"
-    "luci-theme-kucat"
-    "luci-app-eqos"
-    "adguardhome"
-    "luci-app-adguardhome"
-    "mosdns"
-    "luci-app-mosdns"
-    "luci-app-openclash"
-    "luci-app-gost"
-    "gost"
-    "luci-app-smartdns"
-    "smartdns"
-    "luci-app-wizard"
-    "luci-app-msd_lite"
-    "msd_lite"
-    "luci-app-ssr-plus"
-    "*luci-app-passwall*"
-    "v2dat"
-    "v2ray-geodata"
-    "luci-app-wechatpush"
-    "v2ray-core"
-    "v2ray-plugin"
-    "v2raya"
-    "xray-core"
-    "xray-plugin"
-    "luci-app-alist"
-    "alist"
-)
-for pattern in "${t[@]}"; do
-    find . -type d -name "${pattern}" -not $ -path "*danshui*" -o -path "*freifunk*" $ -print0 | xargs -0 -r rm -rfv
-done
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
@@ -884,27 +839,18 @@ echo "builder_name=ophub" >> ${GITHUB_ENV}
 [[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 
 
-if [[ "${Mandatory_theme}" == "0" ]] || [[ -z "${Mandatory_theme}" ]]; then
-  echo "不进行,替换bootstrap主题设置"
-elif [[ -n "${Mandatory_theme}" ]]; then
-  zt_theme="luci-theme-${Mandatory_theme}"
-  if [[ `find . -type d -name "${zt_theme}" |grep -v 'dir' |grep -c "${zt_theme}"` -ge "1" ]]; then
-    if [[ -f "${HOME_PATH}/extra/luci/collections/luci/Makefile" ]]; then
-      zt2_theme="$(grep -Eo "luci-theme.*" "${HOME_PATH}/extra/luci/collections/luci/Makefile" |cut -d ' ' -f1)"
-      [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/extra/luci/collections/luci/Makefile"
-    fi
-    if [[ -f "${HOME_PATH}/feeds/luci/collections/luci/Makefile" ]]; then
-      zt2_theme="$(grep -Eo "luci-theme.*" "${HOME_PATH}/feeds/luci/collections/luci/Makefile" |cut -d ' ' -f1)"
-      [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
-    fi
-    if [[ -f "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" ]]; then
-      zt2_theme="$(grep -Eo "luci-theme.*" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" |cut -d ' ' -f1)"
-      [[ -n "${zt2_theme}" ]] && sed -i "s?${zt2_theme}?${zt_theme}?g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
-    fi
-    echo "替换必须主题完成,您现在的必选主题为：${zt_theme}"
+if [[ -n "${Mandatory_theme}" ]]; then
+  SEARCH_DIRS=("${HOME_PATH}/package" "${HOME_PATH}/feeds")
+  TARGET_DIR="luci-theme-${Mandatory_theme}"
+  if find "${SEARCH_DIRS[@]}" -type d -name "$TARGET_DIR" -print -quit | grep -q .; then
+    [[ -f "${HOME_PATH}/feeds/luci/collections/luci/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+    [[ -f "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
+    echo "替换必须主题完成,您现在的必选主题为：${TARGET_DIR}"
   else
-    echo "TIME r \"源码内没发现${zt_theme}此主题存在,不进行替换bootstrap主题操作\"" >> ${HOME_PATH}/CHONGTU
+    echo "未找到 $TARGET_DIR 文件夹，无需操作."
   fi
+else
+  echo "不进行,替换bootstrap主题设置"
 fi
 }
 
