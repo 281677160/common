@@ -3,7 +3,7 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 读取自定义文件
+    - name: 运行杂项
       shell: bash
       run: |
         echo "运行自定义1文件"
