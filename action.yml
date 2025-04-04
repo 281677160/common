@@ -63,15 +63,11 @@ runs:
         mixkey: "${{ env.DEVICE_NAME }}"
         prefix: ${{ github.workspace }}/openwrt
 
-    - name: 公告
+    - name: 下载软件源
       shell: bash
       run: |
         echo ""
         echo "下载软件源"
-
-    - name: 下载软件源
-      shell: bash
-      run: |
         cd $HOME_PATH
         make download -j8
         
