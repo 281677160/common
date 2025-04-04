@@ -1,0 +1,60 @@
+name: "Make OpenWrt"
+author: "https://github.com/ophub/amlogic-s9xxx-openwrt"
+description: "Support Amlogic, Rockchip and Allwinner boxes."
+inputs:
+  mode:
+    description: "Select script."
+    required: false
+    default: "ophub"
+  openwrt_path:
+    description: "Select armvirt64 file path."
+    required: false
+    default: "openwrt/bin/targets/*/*/*rootfs.tar.gz"
+  openwrt_board:
+    description: "Select device board."
+    required: false
+    default: "all"
+  kernel_repo:
+    description: "Select kernel repository."
+    required: false
+    default: "ophub/kernel"
+  kernel_usage:
+    description: "Set the tags of the stable kernel."
+    required: false
+    default: "stable"
+  openwrt_kernel:
+    description: "Select kernel version."
+    required: false
+    default: "6.1.y_6.12.y"
+  auto_kernel:
+    description: "Auto use the latest kernel."
+    required: false
+    default: "true"
+  openwrt_size:
+    description: "Set the rootfs size(Unit: MiB)."
+    required: false
+    default: ""
+  builder_name:
+    description: "Set OpenWrt builder signature."
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        cd ${HOME_PATH}
+        $DIY_P1_SH
+        ./scripts/feeds update -a
+        [ -d "$BUILD_PATCHES" ] && find "$BUILD_PATCHES" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
+        [ -d "$BUILD_DIY" ] && cp -Rf $BUILD_DIY/* $HOME_PATH
+        [ -d "$BUILD_FILES" ] && cp -Rf $BUILD_FILES $HOME_PATH
+        rm -rf $HOME_PATH/files/README
+        mv $CONFIG_FILE $HOME_PATH/.config
+        ./scripts/feeds install -a
+        ./scripts/feeds install -a
+        $DIY_P2_SH
+branding:
+  icon: "terminal"
+  color: "gray-dark"
