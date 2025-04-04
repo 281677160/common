@@ -51,7 +51,9 @@ runs:
     - name: 公告
       if: env.CACHEWRTBUILD_SWITCH == 'true'
       shell: bash
-      run: echo "缓存加速"
+      run: |
+      echo ""
+      echo "缓存加速"
 
     - name: 缓存加速
       if: env.CACHEWRTBUILD_SWITCH == 'true'
@@ -62,9 +64,10 @@ runs:
         prefix: ${{ github.workspace }}/openwrt
 
     - name: 公告
-      if: env.CACHEWRTBUILD_SWITCH == 'true'
       shell: bash
-      run: echo "下载软件源"
+      run: |
+      echo ""
+      echo "下载软件源"
 
       - name: 下载软件源
       shell: bash
