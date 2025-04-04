@@ -3,6 +3,13 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
+    - name: 公告
+      if: env.CACHEWRTBUILD_SWITCH == 'true'
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        echo "在线更新固件"
+  
     - name: 发送[在线更新固件]至云端1
       env.UPDATE_FIRMWARE_ONLINE == 'true'
       uses: ncipollo/release-action@v1
