@@ -353,10 +353,7 @@ t=(
     "alist"
 )
 for pattern in "${t[@]}"; do
-    find . -type d \
-        -name "${pattern}" \
-        -not $ -path "*danshui*" -o -path "*freifunk*" $ \
-        -print0 | xargs -0 -r rm -rfv
+    find . -type d -name "${pattern}" -not $ -path "*danshui*" -o -path "*freifunk*" $ -print0 | xargs -0 -r rm -rfv
 done
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
