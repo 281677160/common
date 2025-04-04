@@ -3,38 +3,32 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 发送[在线更新固件]至云端1
-      env.UPDATE_FIRMWARE_ONLINE == 'true'
-      uses: ncipollo/release-action@v1
-      with:
-        name: AutoUpdate
-        tag: ${{ env.Update_tag }}
-        token: ${{ secrets.REPO_TOKEN }}
-        allowUpdates: true
-        body: ${{ env.Tongzhi_Date }}
-        artifacts: "${{ env.BIN_PATH }}/*"
-        
-    - name: 发送[在线更新固件]至云端2
-      env.UPDATE_FIRMWARE_ONLINE == 'true'
+    - name: 更新插件源
       shell: bash
       run: |
-        mkdir -p Github_Api
-        cd Github_Api
-        curl -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.Update_tag }} -o zzz_api
-        if ! grep -q "browser_download_url" zzz_api; then
-          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${Update_tag} > zzz_api
-        fi
+        cd $HOME_PATH
+        source ${BUILD_PATH}/common.sh && Diy_menu3
+ 
+    - name: 加载自定义设置
+      run: |
+        cd openwrt
+        source ${BUILD_PATH}/common.sh && Diy_menu4
         
-    - name: 发送[在线更新固件]至云端3
-      env.UPDATE_FIRMWARE_ONLINE == 'true'
-      uses: ncipollo/release-action@v1
-      with:
-        name: AutoUpdate-${{ env.TARGET_BOARD }}
-        tag: ${{ env.Update_tag }}
-        token: ${{ secrets.REPO_TOKEN }}
-        artifacts: "Github_Api/*"
-        allowUpdates: true
-        body: ${{ env.Tongzhi_Date }}
+    - name: 安装插件源
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        source ${BUILD_PATH}/common.sh && Diy_menu5
+    
+    - name: SSH远程连接（make menuconfig）
+      if: env.SSH_ACTION == 'true'
+      uses: danshui-git/debugger-action@main
+
+    - name: 生成"${{ matrix.target }}"配置文件
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        source ${BUILD_PATH}/common.sh && Diy_menu6
         
 branding:
   icon: "terminal"
