@@ -21,7 +21,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        echo "检测源码是否缺依赖"
+        echo "安装feeds"
         ./scripts/feeds install -a
 
     - name: 运行自定义2文件
