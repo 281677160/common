@@ -311,6 +311,7 @@ echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" 
 ./scripts/feeds update -a > /dev/null 2>&1
 
 z="luci-theme-design
+luci-theme-argon
 luci-app-design-config
 luci-theme-infinityfreedom
 luci-theme-darkmatter
