@@ -1,5 +1,0 @@
-config PACKAGE_auto-scripts
-    tristate
-    default y
-    select PACKAGE_curl
-    select PACKAGE_wget-ssl
