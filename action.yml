@@ -3,12 +3,6 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: REPO_TOKEN
-      env.UPDATE_FIRMWARE_ONLINE == 'true'
-      shell: bash
-      run: |
-        echo "REPO_TOKEN=${{ secrets.REPO_TOKEN }}" >> ${GITHUB_ENV}
-  
     - name: 发送[在线更新固件]至云端1
       env.UPDATE_FIRMWARE_ONLINE == 'true'
       uses: ncipollo/release-action@v1
