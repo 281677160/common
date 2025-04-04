@@ -16,7 +16,7 @@ runs:
           echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
         fi
         
-    - name: 自动打包aarch64系列固件
+    - name: 将rootfs.tar.gz发布releases的targz
       if: env.PACKAGING_FIRMWARE == 'true'
       uses: ncipollo/release-action@v1
       with:
