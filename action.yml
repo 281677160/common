@@ -2,10 +2,10 @@ name: "Make OpenWrt"
 author: "https://github.com/ophub/amlogic-s9xxx-openwrt"
 description: "Support Amlogic, Rockchip and Allwinner boxes."
 inputs:
-  mode:
+  ccache:
     description: "Select script."
-    required: false
-    default: "ophub"
+    required: true
+    default: "true"
   openwrt_path:
     description: "Select armvirt64 file path."
     required: false
@@ -75,6 +75,10 @@ runs:
         echo "DEVICE_NAME=${TARGET_PROFILE}" >> ${GITHUB_ENV}
         echo "BIN_TARGETS=${HOME_PATH}/bin_firmware" >> ${GITHUB_ENV}
         echo "FIRMWARE=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
+        ccache='true'
+        mixkey="$DEVICE_NAME"
+        prefix="${{ github.workspace }}/openwrt"
+        uses: stupidloud/cachewrtbuild@main
 branding:
   icon: "terminal"
   color: "gray-dark"
