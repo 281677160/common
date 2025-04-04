@@ -7,7 +7,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        echo "运行自定义文件"
+        echo "运行自定义1文件"
         $DIY_P1_SH
         ./scripts/feeds update -a > /dev/null 2>&1
         [ -d "$BUILD_PATCHES" ] && find "$BUILD_PATCHES" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
@@ -16,8 +16,19 @@ runs:
         rm -rf $HOME_PATH/files/README
         mv $CONFIG_FILE $HOME_PATH/.config
         ./scripts/feeds install -a > /dev/null 2>&1
-        echo ""
+        
+    - name: 安装feeds
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        echo "检测源码是否缺依赖"
         ./scripts/feeds install -a
+
+    - name: 运行自定义2文件
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        echo "运行自定义2文件"
         $DIY_P2_SH
 
     - name: 提取编译机型名称
