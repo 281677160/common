@@ -310,9 +310,7 @@ fi
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
 ./scripts/feeds update -a > /dev/null 2>&1
 
-for i in "luci-theme-argon" "luci-theme-design" "luci-app-design-config" "luci-theme-infinityfreedom" "luci-theme-darkmatter"; do \
-  find ${HOME_PATH} -type d -name "$i" |grep -v 'danshui\|freifunk' |xargs -i rm -rf {}; \
-done
+for i in "luci-theme-argon" "luci-theme-design" "luci-app-design-config" "luci-theme-infinityfreedom" "luci-theme-darkmatter"; do find . -type d -name "$i" |grep -v 'danshui\|freifunk' |-exec rm -rf {} \; done
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
