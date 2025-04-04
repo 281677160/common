@@ -3,7 +3,7 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 运行杂项
+    - name: 检查rootfs.tar.gz是否存在
       shell: bash
       run: |
         cd $HOME_PATH
