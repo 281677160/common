@@ -47,7 +47,6 @@ runs:
         echo "DEVICE_NAME=${TARGET_PROFILE}" >> ${GITHUB_ENV}
         echo "BIN_TARGETS=${HOME_PATH}/bin_firmware" >> ${GITHUB_ENV}
         echo "FIRMWARE=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
-        echo ""
 
     - name: 公告
       if: env.CACHEWRTBUILD_SWITCH == 'true'
