@@ -12,17 +12,6 @@ runs:
         echo "Update_tag=${Update_tag}" >> ${GITHUB_ENV}
         echo "Tongzhi_Date=${Tongzhi_Date}" >> ${GITHUB_ENV}
         echo "BIN_PATH=${BIN_PATH}" >> ${GITHUB_ENV}
-  
-    - name: 发送[在线更新固件]至云端1
-      env.UPDATE_FIRMWARE_ONLINE == 'true'
-      uses: ncipollo/release-action@v1
-      with:
-        name: AutoUpdate
-        tag: ${{ env.Update_tag }}
-        token: ${REPO_TOKEN}
-        allowUpdates: true
-        body: 2222
-        artifacts: "${{ env.BIN_PATH }}/*"
         
     - name: 发送[在线更新固件]至云端2
       env.UPDATE_FIRMWARE_ONLINE == 'true'
