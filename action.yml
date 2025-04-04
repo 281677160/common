@@ -17,6 +17,7 @@ runs:
         ./scripts/feeds install -a > /dev/null 2>&1
         ./scripts/feeds install -a
         $DIY_P2_SH
+        echo ""
         make defconfig > /dev/null 2>&1
         TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)"
         TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)"
@@ -40,6 +41,11 @@ runs:
         echo "BIN_TARGETS=${HOME_PATH}/bin_firmware" >> ${GITHUB_ENV}
         echo "FIRMWARE=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
 
+    - name: 公告
+      if: env.CACHEWRTBUILD_SWITCH == 'true'
+      shell: bash
+      run: echo "缓存加速"
+
     - name: 缓存加速
       if: env.CACHEWRTBUILD_SWITCH == 'true'
       uses: stupidloud/cachewrtbuild@main
@@ -48,7 +54,12 @@ runs:
         mixkey: "${{ env.DEVICE_NAME }}"
         prefix: ${{ github.workspace }}/openwrt
 
-    - name: 下载软件源
+    - name: 公告
+      if: env.CACHEWRTBUILD_SWITCH == 'true'
+      shell: bash
+      run: echo "下载软件源"
+
+      - name: 下载软件源
       shell: bash
       run: |
         cd $HOME_PATH
