@@ -69,7 +69,7 @@ runs:
         echo ""
         echo "下载软件源"
 
-      - name: 下载软件源
+    - name: 下载软件源
       shell: bash
       run: |
         cd $HOME_PATH
