@@ -8,7 +8,9 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        echo "在线更新固件"
+        echo "Update_tag=${Update_tag}" >> ${GITHUB_ENV}
+        echo "Tongzhi_Date=${Tongzhi_Date}" >> ${GITHUB_ENV}
+        echo "BIN_PATH=${BIN_PATH}" >> ${GITHUB_ENV}
   
     - name: 发送[在线更新固件]至云端1
       env.UPDATE_FIRMWARE_ONLINE == 'true'
