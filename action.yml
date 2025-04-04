@@ -40,6 +40,7 @@ runs:
         auto_kernel: ${{ env.auto_kernel }}
         kernel_repo: ${{ env.kernel_repo }}
         kernel_usage: ${{ env.kernel_usage }}
+        openwrt_size: ${{ env.openwrt_size }}
         builder_name: ${{ env.builder_name }}
 
     - name: 打包后的固件放回原位
