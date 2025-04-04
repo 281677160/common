@@ -843,7 +843,7 @@ fi
 echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
 echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
 echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
-echo "rootfs_size=${rootfs_size}" >> ${GITHUB_ENV}
+echo "openwrt_size=${rootfs_size}" >> ${GITHUB_ENV}
 echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
 echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 echo "builder_name=ophub" >> ${GITHUB_ENV}
@@ -1571,9 +1571,9 @@ echo "开始打包"
 cd ${GITHUB_WORKSPACE}/amlogic
 sudo chmod +x remake
 if [[ -z "${gh_token}" ]]; then
-  sudo ./remake -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size} -r ${kernel_repo} -u ${kernel_usage}
+  sudo ./remake -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${openwrt_size} -r ${kernel_repo} -u ${kernel_usage} -n ${builder_name}
 else
-  sudo ./remake -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${rootfs_size} -r ${kernel_repo} -u ${kernel_usage}
+  sudo ./remake -b ${amlogic_model} -k ${amlogic_kernel} -a ${auto_kernel} -s ${openwrt_size} -r ${kernel_repo} -u ${kernel_usage} -n ${builder_name}
 fi
 if [[ 0 -eq $? ]]; then
   sudo mv -f ${GITHUB_WORKSPACE}/amlogic/openwrt/out/* ${FIRMWARE_PATH}/ && sync
