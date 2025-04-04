@@ -3,11 +3,6 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: REPO_TOKEN
-      shell: bash
-      run: |
-        echo "REPO_TOKEN=${{ secrets.REPO_TOKEN }}" >> ${GITHUB_ENV}
-
     - name: 密匙检测（密匙为空则退出）
       shell: bash
       run: |
