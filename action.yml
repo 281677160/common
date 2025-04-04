@@ -6,7 +6,7 @@ runs:
     - name: 读取自定义文件
       shell: bash
       run: |
-        cd ${HOME_PATH}
+        cd $HOME_PATH
         $DIY_P1_SH
         ./scripts/feeds update -a > /dev/null 2>&1
         [ -d "$BUILD_PATCHES" ] && find "$BUILD_PATCHES" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
@@ -49,7 +49,7 @@ runs:
     - name: 下载软件源
       shell: bash
       run: |
-        cd ${HOME_PATH}
+        cd $HOME_PATH
         make download -j8
         
 branding:
