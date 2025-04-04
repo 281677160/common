@@ -42,7 +42,7 @@ runs:
     - name: 打包后的固件放回原位
       if: env.PACKAGING_FIRMWARE == 'true'
       run: |
-        cd openwrt
+        cd $HOME_PATH
         if [[ -d "${PACKAGED_OUTPUTPATH}" ]]; then
           cp -Rf $PACKAGED_OUTPUTPATH/* $FIRMWARE_PATH
         fi
