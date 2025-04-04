@@ -7,7 +7,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
+        if [[ ! "${TARGET_PROFILE}" == "aarch_64" ]]; then
           echo "非aarch64指定打包系列"
           echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
         elif [[ -n "$(find $FIRMWARE_PATH -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
