@@ -27,7 +27,9 @@ runs:
           TARGET_PROFILE="x86-32"
         elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*phicomm.*n1=y' .config)" ]]; then
           TARGET_PROFILE="phicomm_n1"
-        elif [[ -n "$(grep -Eo 'CONFIG_aarch64=y' .config)" ]]; then
+        elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armv8.*=y' .config)" ]]; then
+          TARGET_PROFILE="aarch_64"
+        elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armvirt.*64.*=y' .config)" ]]; then
           TARGET_PROFILE="aarch_64"
         elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*=y' .config)" ]]; then
           TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" .config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
