@@ -1,5 +1,5 @@
 
-name: Upload
+name: aarch
 on:
   repository_dispatch:
   workflow_dispatch:
@@ -11,7 +11,7 @@ env:
 jobs:
   build:
     runs-on: Ubuntu-22.04
-    name: Upload
+    name: aarch
     
     steps:
     - name: Checkout
