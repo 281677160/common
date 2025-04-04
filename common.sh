@@ -310,14 +310,16 @@ fi
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
 ./scripts/feeds update -a > /dev/null 2>&1
 
-z="luci-theme-design
-luci-app-design-config
-luci-theme-infinityfreedom
-luci-theme-darkmatter
-"
-echo "$z"
-for i in "$z"; do \
-find . -path "./danshui" -prune -o -type d -name "$i" -print -exec rm -rf {} \;
+z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
+luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
+luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
+luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-openclash, \
+luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
+luci-app-ssr-plus,*luci-app-passwall*,v2dat,v2ray-geodata, \
+luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,luci-app-alist,alist"
+t=(${z//,/ })
+for x in ${t[@]}; do \
+  find . -path "./danshui" -prune -o -type d -name "$x" -print -exec rm -rf {} \;
 done
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
