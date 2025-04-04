@@ -41,6 +41,7 @@ runs:
 
     - name: 打包后的固件放回原位
       if: env.PACKAGING_FIRMWARE == 'true'
+      shell: bash
       run: |
         cd $HOME_PATH
         if [[ -d "${PACKAGED_OUTPUTPATH}" ]]; then
