@@ -21,7 +21,7 @@ runs:
         tag: ${{ env.Update_tag }}
         token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
-        body: ${{ env.Tongzhi_Date }}
+        body: 2222
         artifacts: "${{ env.BIN_PATH }}/*"
         
     - name: 发送[在线更新固件]至云端2
@@ -44,7 +44,7 @@ runs:
         token: ${{ env.REPO_TOKEN }}
         artifacts: "Github_Api/*"
         allowUpdates: true
-        body: ${{ env.Tongzhi_Date }}
+        body: 3333
         
 branding:
   icon: "terminal"
