@@ -3,13 +3,19 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
+    - name: REPO_TOKEN
+      env.UPDATE_FIRMWARE_ONLINE == 'true'
+      shell: bash
+      run: |
+        echo "REPO_TOKEN=${{ secrets.REPO_TOKEN }}" >> ${GITHUB_ENV}
+  
     - name: 发送[在线更新固件]至云端1
       env.UPDATE_FIRMWARE_ONLINE == 'true'
       uses: ncipollo/release-action@v1
       with:
         name: AutoUpdate
         tag: ${{ env.Update_tag }}
-        token: ${{ secrets.REPO_TOKEN }}
+        token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
         body: ${{ env.Tongzhi_Date }}
         artifacts: "${{ env.BIN_PATH }}/*"
@@ -31,7 +37,7 @@ runs:
       with:
         name: AutoUpdate-${{ env.TARGET_BOARD }}
         tag: ${{ env.Update_tag }}
-        token: ${{ secrets.REPO_TOKEN }}
+        token: ${{ env.REPO_TOKEN }}
         artifacts: "Github_Api/*"
         allowUpdates: true
         body: ${{ env.Tongzhi_Date }}
