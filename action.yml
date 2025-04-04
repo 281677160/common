@@ -42,7 +42,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - shell: bash
+    - name: Run a script
+      shell: bash
       run: |
         cd ${HOME_PATH}
         $DIY_P1_SH
@@ -80,8 +81,8 @@ runs:
         echo "mixkey=$DEVICE_NAME" >> $GITHUB_OUTPUT
         echo "prefix=${{ github.workspace }}/openwrt" >> $GITHUB_OUTPUT
 
-        - name: Use another Action
-          uses: stupidloud/cachewrtbuild@main
+    - name: Use another Action
+      uses: stupidloud/cachewrtbuild@main
 branding:
   icon: "terminal"
   color: "gray-dark"
