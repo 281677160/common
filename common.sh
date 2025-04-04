@@ -1253,7 +1253,9 @@ elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*=y' ${HOME_PATH}/.config)" ]]; then
   export TARGET_PROFILE="x86-32"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*phicomm.*n1=y' ${HOME_PATH}/.config)" ]]; then
   export TARGET_PROFILE="phicomm_n1"
-elif [[ -n "$(grep -Eo 'CONFIG_aarch64=y' ${HOME_PATH}/.config)" ]]; then
+elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armsr.*armv8.*=y' ${HOME_PATH}/.config)" ]]; then
+  export TARGET_PROFILE="aarch_64"
+elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armvirt.*64.*=y' ${HOME_PATH}/.config)" ]]; then
   export TARGET_PROFILE="aarch_64"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*=y' ${HOME_PATH}/.config)" ]]; then
   export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
@@ -1684,7 +1686,9 @@ elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*=y' build/${FOLDER_NAME}/${CONFIG_FI
   export TARGET_PROFILE="x86-32"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*phicomm.*n1=y' build/${FOLDER_NAME}/${CONFIG_FILE})" ]]; then
   export TARGET_PROFILE="phicomm_n1"
-elif [[ -n "$(grep -Eo 'CONFIG_aarch64=y' build/${FOLDER_NAME}/${CONFIG_FILE})" ]]; then
+elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armsr.*armv8.*=y' build/${FOLDER_NAME}/${CONFIG_FILE})" ]]; then
+  export TARGET_PROFILE="aarch_64"
+elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armvirt.*64.*=y' build/${FOLDER_NAME}/${CONFIG_FILE})" ]]; then
   export TARGET_PROFILE="aarch_64"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*=y' build/${FOLDER_NAME}/${CONFIG_FILE})" ]]; then
   export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" build/${FOLDER_NAME}/${CONFIG_FILE} | sed -r 's/.*DEVICE_(.*)=y/\1/')"
