@@ -6,8 +6,8 @@ runs:
     - name: 运行杂项
       shell: bash
       run: |
-        echo "运行自定义文件"
         cd $HOME_PATH
+        echo "运行自定义文件"
         $DIY_P1_SH
         ./scripts/feeds update -a > /dev/null 2>&1
         [ -d "$BUILD_PATCHES" ] && find "$BUILD_PATCHES" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
@@ -23,8 +23,8 @@ runs:
     - name: 提取编译机型名称
       shell: bash
       run: |
-        echo "提取编译机型名称"
         cd $HOME_PATH
+        echo "提取编译机型名称"
         make defconfig > /dev/null 2>&1
         TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' .config)"
         TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' .config)"
@@ -51,7 +51,9 @@ runs:
     - name: 公告
       if: env.CACHEWRTBUILD_SWITCH == 'true'
       shell: bash
-      run: echo "缓存加速"
+      run: |
+        cd $HOME_PATH
+        echo "缓存加速"
         
     - name: 缓存加速
       if: env.CACHEWRTBUILD_SWITCH == 'true'
@@ -64,8 +66,8 @@ runs:
     - name: 下载软件源
       shell: bash
       run: |
-        echo "下载软件源"
         cd $HOME_PATH
+        echo "下载软件源"
         make download -j8
         
 branding:
