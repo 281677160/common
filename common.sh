@@ -310,7 +310,13 @@ fi
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
 ./scripts/feeds update -a > /dev/null 2>&1
 
-for i in "luci-theme-argon" "luci-theme-design" "luci-app-design-config" "luci-theme-infinityfreedom" "luci-theme-darkmatter"; do \
+z="luci-theme-design
+luci-app-design-config
+luci-theme-infinityfreedom
+luci-theme-darkmatter
+"
+echo "$z"
+for i in "$z"; do \
 find . -path "./danshui" -prune -o -type d -name "$i" -print; \
 done
 
