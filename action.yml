@@ -26,7 +26,7 @@ runs:
       run: |
         mkdir -p Github_Api
         cd Github_Api
-        curl -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.Update_tag }} -o zzz_api
+        curl -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.Update_tag }} -o zzz_api
         if ! grep -q "browser_download_url" zzz_api; then
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${Update_tag} > zzz_api
         fi
