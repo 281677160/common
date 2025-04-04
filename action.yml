@@ -76,6 +76,10 @@ runs:
         echo "BIN_TARGETS=${HOME_PATH}/bin_firmware" >> ${GITHUB_ENV}
         echo "FIRMWARE=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
 
+        echo "ccache=true" >> $GITHUB_OUTPUT
+        echo "mixkey=$DEVICE_NAME" >> $GITHUB_OUTPUT
+        echo "prefix=${{ github.workspace }}/openwrt" >> $GITHUB_OUTPUT
+
         - name: Use another Action
           uses: stupidloud/cachewrtbuild@main
 branding:
