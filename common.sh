@@ -317,7 +317,7 @@ luci-theme-darkmatter
 "
 echo "$z"
 for i in "$z"; do \
-find . -path "./danshui" -prune -o -type d -name "$i" -print; \
+find . -path "./danshui" -prune -o -type d -name "$i" -print -exec rm -rf {} \; \
 done
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
