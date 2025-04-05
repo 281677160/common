@@ -7,17 +7,17 @@ runs:
       shell: bash
       run: |
         if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
-            echo "RRRR_RELEASE=aaarch" >> ${GITHUB_ENV}
-            if [[ -n "${{ env.source_codename }}" ]] && [[ -n "${{ env.TARGET_PROFILE_IMG }}" ]]; then
-                echo "SHANGCHUAN_MINGCHEN=${{ env.source_codename }}-${{ env.TARGET_PROFILE_IMG }}"
-            elif [[ -n "${{ env.LUCI_EDITION }}" ]]; then
-                echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}"
-            else
-                echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}"
-            fi
+          echo "RRRR_RELEASE=aaarch" >> ${GITHUB_ENV}
+          if [[ -n "${{ env.AARCH_CODENAME }}" ]] && [[ -n "${{ env.TARGET_PROFILE_IMG }}" ]]; then
+            echo "SHANGCHUAN_MINGCHEN=${{ env.AARCH_CODENAME }}-${{ env.TARGET_PROFILE_IMG }}" >> ${GITHUB_ENV}
+          elif [[ -n "${{ env.LUCI_EDITION }}" ]]; then
+            echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}" >> ${GITHUB_ENV}
+          else
+            echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}" >> ${GITHUB_ENV}
+          fi
         else
-            echo "RRRR_RELEASE=bbbrch" >> ${GITHUB_ENV}
-            SHANGCHUAN_MINGCHEN="${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}"
+          echo "RRRR_RELEASE=bbbrch" >> ${GITHUB_ENV}
+          echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}" >> ${GITHUB_ENV}
         fi
         echo "date=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
         echo "date_tg=$(date +"%Y.%m%d.%H%M")" >> ${GITHUB_ENV}
