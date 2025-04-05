@@ -3,6 +3,18 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
+    - name: 发布信息
+      shell: bash
+      run: |
+        if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
+          echo "RRRR_RELEASE=aaarch" >> ${GITHUB_ENV}
+        else
+          echo "RRRR_RELEASE=bbbrch" >> ${GITHUB_ENV}
+        fi
+        echo "date=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
+        echo "date_tg=$(date +"%Y.%m%d.%H%M")" >> ${GITHUB_ENV}
+        echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
+  
     - name: 上传固件在 github Artifacts
       id: shang
       if: env.UPLOAD_FIRMWARE == 'true'
@@ -19,18 +31,34 @@ runs:
     
     - name: 发布固件
       id: fabu
-      if: env.UPLOAD_RELEASE == 'true'
+      if: env.UPLOAD_RELEASE == 'true' && env.RRRR_RELEASE == 'bbbrch'
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.SOURCE }}-${{ env.PROMPT_TING }}
         tag: a${{ env.date }}
-        token: ${{ secrets.REPO_TOKEN }}
+        token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
         body: ${{ env.Tongzhi_Date }}
         artifacts: "${{ env.FIRMWARE_PATH }}/*"
 
+    - name: 发布固件到 Github Releases
+      id: nfabu
+      if: env.UPLOAD_RELEASE == 'true' && env.RRRR_RELEASE == 'aaarch'
+      uses: ncipollo/release-action@v1
+      with:
+        name: ${{ env.amlogic_model }}
+        tag: a${{ env.date }}
+        token: ${{ env.REPO_TOKEN }}
+        allowUpdates: true
+        artifacts: "${{ env.FIRMWARE_PATH }}/*"
+        body: |
+          发布日期：${{ env.date_tg }}
+          固件源码：${{ env.SOURCE }}
+          内核仓库：${{ env.kernel_usage }}
+          写入EMMC：Login to OpenWrt → System → Amlogic Service → Install OpenWrt
+
     - name: 发布信息
-      if: steps.fabu.outcome == 'success' && env.UPLOAD_RELEASE == 'true'
+      if: steps.fabu.outcome == 'success' && env.UPLOAD_RELEASE == 'true' || steps.nfabu.outcome == 'success' && env.UPLOAD_RELEASE == 'true'
       shell: bash
       run: |
         echo "FABU_MESSAGE=、发布" >> ${GITHUB_ENV}
