@@ -1622,11 +1622,6 @@ sudo rm -rf "${CLEAR_PATH}"
 function Diy_firmware() {
 echo "正在执行：整理固件,您不想要啥就删啥,删删删"
 echo "需要配合${DIY_PART_SH}文件设置使用"
-echo
-if [[ "${PACKAGING_FIRMWARE}" == "true" ]] && [[ -z "${BENDI_VERSION}" ]]; then
-  # 打包固件转换仓库
-  openwrt_armvirt
-fi
 Diy_upgrade3
 Diy_organize
 }
