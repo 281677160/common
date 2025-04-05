@@ -74,6 +74,7 @@ runs:
         
     - name: Telegram或pushplus信息通知
       if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG'
+      shell: bash
       run: |
         if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
           curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{env.TELEGRAM_CHAT_ID}}", "text":"${{env.SOURCE}}-${{env.LUCI_EDITION}}，${{env.TARGET_PROFILE}}固件，编译${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}${{env.YUNDUAN_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💯"}' https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage
