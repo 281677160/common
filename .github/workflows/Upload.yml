@@ -1,0 +1,48 @@
+
+name: mishi
+on:
+  repository_dispatch:
+  workflow_dispatch:
+
+env:
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: Ubuntu-22.04
+    name: mishi
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install -y git subversion git-core wget curl grep
+        sudo timedatectl set-timezone "$TZ"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+          
+    - name: Organize data
+      if: env.REPO_TOKEN
+      run: |
+        cd $GITHUB_WORKSPACE
+        git clone -b ${{ github.ref_name }} https://github.com/${{github.repository}}.git repogx
+        cd repogx
+        [[ ! -f "README.md" ]] && echo "README" > README.md
+        [[ ! -f "action.yml" ]] && echo "action.yml" > action.yml
+        
+    - name: Upload
+      continue-on-error: true
+      if: env.REPO_TOKEN
+      run: |
+        cd $GITHUB_WORKSPACE
+        chmod -R 775 repogx
+        cd repogx
+        git add .
+        git commit -m "up"
+        git push --quiet "https://${{ secrets.REPO_TOKEN }}@github.com/${{ github.repository }}" HEAD:${{ github.ref_name }}
