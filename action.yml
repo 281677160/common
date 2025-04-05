@@ -39,10 +39,10 @@ runs:
       if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG'
       run: |
         if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{ secrets.TELEGRAM_CHAT_ID }}", "text":"${{env.SOURCE}}-${{env.LUCI_EDITION}}，${{env.TARGET_PROFILE}}固件${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💯"}' https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage
+          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{ secrets.TELEGRAM_CHAT_ID }}", "text":"${{env.SOURCE}}-${{env.LUCI_EDITION}}，${{env.TARGET_PROFILE}}固件，编译${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}${{env.YUNDUAN_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💯"}' https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage
         fi
         if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"${{env.TARGET_PROFILE}}固件${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💯"}' https://www.pushplus.plus/send
+          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"${{env.TARGET_PROFILE}}固件，编译${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}${{env.YUNDUAN_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💯"}' https://www.pushplus.plus/send
         fi
 branding:
   icon: "terminal"
