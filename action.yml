@@ -29,11 +29,11 @@ runs:
         cp -Rf ${FIRMWARE_PATH}/*rootfs.tar.gz ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt-64-default-rootfs.tar.gz
         tar -xzf ${GITHUB_WORKSPACE}/amlogic/openwrt-armvirt-64-default-rootfs.tar.gz -C ${GITHUB_WORKSPACE}/amlogic/
         if [[ `grep -c "DISTRIB_SOURCECODE" ${GITHUB_WORKSPACE}/amlogic/etc/openwrt_release` -eq '1' ]]; then
-          ARCHIB="$(grep 'DISTRIB_SOURCECODE' ${GITHUB_WORKSPACE}/amlogic/etc/openwrt_release|cut -d= -f2|tr -d "'")"
+          DISTRIB_SOUR="$(grep 'DISTRIB_SOURCECODE' ${GITHUB_WORKSPACE}/amlogic/etc/openwrt_release|cut -d= -f2|tr -d "'")"
         fi
         rm -rf ${GITHUB_WORKSPACE}/amlogic
-        fi [[ -n "${ARCHIB}" ]]; then
-          echo "source_codename=${ARCHIB}" >> ${GITHUB_ENV}
+        if [[ -n "${DISTRIB_SOUR}" ]]; then
+          echo "source_codename=${DISTRIB_SOUR}" >> ${GITHUB_ENV}
         else
           echo "source_codename=${{ env.SOURCE }}" >> ${GITHUB_ENV}
         fi
