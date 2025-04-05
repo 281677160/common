@@ -24,7 +24,7 @@ fi
 
 if [[ -f "/usr/share/ucode/luci/version.uc" ]]; then
 	sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
-	echo "export const revision = 'ZHUJIMING - LUCI_EDITION', branch = '';" >> "/usr/share/ucode/luci/version.uc"
+	echo "export const revision = 'ZHUJI_MING - LUCI_EDITION', branch = '';" >> "/usr/share/ucode/luci/version.uc"
 fi
 
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
