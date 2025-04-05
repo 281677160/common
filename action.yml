@@ -7,7 +7,7 @@ runs:
       id: gitpush
       shell: bash
       run: |
-        cd ${GITHUB_WORKSPACE}
+        cd $HOME_PATH
         source ${BUILD_PATH}/common.sh && build_openwrt
         echo "TZ_Message=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
         
