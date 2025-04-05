@@ -30,11 +30,11 @@ fi
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='Customized_Information @ OpenWrt '" >> /etc/openwrt_release
 sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
-echo "DISTRIB_SOURCECODE='ZHUJIMING_LUCI_EDITION'" >> /etc/openwrt_release
+echo "DISTRIB_SOURCECODE='ZHUJI_MING_LUCI_EDITION'" >> /etc/openwrt_release
 sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
 echo "luciversion    = \"LUCI_EDITION\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"ZHUJIMING\"" >> /usr/lib/lua/luci/version.lua
+echo "luciname    = \"ZHUJI_MING\"" >> /usr/lib/lua/luci/version.lua
 
 opkg_mirror="https://mirrors.vsean.net/openwrt"
 distfeedlist="/etc/apk/repositories.d/distfeeds.list"
