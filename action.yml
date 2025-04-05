@@ -57,9 +57,9 @@ runs:
       run: |
         cd $HOME_PATH
         if [[ -d "${PACKAGED_OUTPUTPATH}" ]]; then
-          cp -Rf $PACKAGED_OUTPUTPATH/* $FIRMWARE_PATH
+          cp -Rf $FIRMWARE_PATH/* $PACKAGED_OUTPUTPATH
         fi
-        rm -rf $PACKAGED_OUTPUTPATH
+        echo "FIRMWARE_PATH=$PACKAGED_OUTPUTPATH" >> ${GITHUB_ENV}
 branding:
   icon: "terminal"
   color: "gray-dark"
