@@ -1472,7 +1472,7 @@ cat >"${RELEVANCE}/${SOURCE}.ini" <<-EOF
 amlogic_model="${amlogic_model}"
 amlogic_kernel="${amlogic_kernel}"
 auto_kernel="${auto_kernel}"
-rootfs_size="${rootfs_size}"
+openwrt_size="${openwrt_size}"
 kernel_repo="${kernel_repo}"
 kernel_usage="${kernel_usage}"
 builder_name="${builder_name}"
@@ -1509,7 +1509,7 @@ cd ${GITHUB_WORKSPACE}
 export FIRMWARE_PATH="${HOME_PATH}/bin/targets/armvirt/64"
 [[ -z "${amlogic_model}" ]] && export amlogic_model="s905d"
 [[ -z "${auto_kernel}" ]] && export auto_kernel="true"
-[[ -z "${rootfs_size}" ]] && export rootfs_size="2560"
+[[ -z "${openwrt_size}" ]] && export openwrt_size="2560"
 export kernel_repo="ophub/kernel"
 [[ -z "${kernel_usage}" ]] && export kernel_usage="stable"
 [[ -z "${UPLOAD_WETRANSFER}" ]] && export UPLOAD_WETRANSFER="true"
@@ -1523,7 +1523,7 @@ export gh_token="${REPO_TOKEN}"
 echo "芯片型号：${amlogic_model}"
 echo "使用内核：${amlogic_kernel}"
 echo "自动检测：${auto_kernel}"
-echo "rootfs大小：${rootfs_size}"
+echo "rootfs大小：${openwrt_size}"
 echo "内核仓库：${kernel_usage}"
 
 git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git ${GITHUB_WORKSPACE}/amlogic
@@ -1805,7 +1805,7 @@ if [[ "${AMLOGIC_CODE}" == "AMLOGIC" ]]; then
   if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
      TIME g "打包机型: ${amlogic_model}"
      TIME g "打包内核: ${amlogic_kernel}"
-     TIME g "分区大小: ${rootfs_size}"
+     TIME g "分区大小: ${openwrt_size}"
      if [[ "${auto_kernel}" == "true" ]]; then
        TIME g "自动检测最新内核: 是"
      else
