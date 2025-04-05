@@ -14,6 +14,7 @@ runs:
       if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' && steps.gitpush.outcome == 'success' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG' && steps.gitpush.outcome == 'success'
       shell: bash
       run: |
+        cd ${GITHUB_WORKSPACE}
         if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
           curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{env.TELEGRAM_CHAT_ID}}", "text":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}，编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💐"}' https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage
         fi
