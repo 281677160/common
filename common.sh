@@ -1597,9 +1597,6 @@ fi
 
 function Diy_organize() {
 cd ${FIRMWARE_PATH}
-if [[ -d "${PACKAGED_OUTPUTPATH}" ]]; then
-  sudo mv -f ${PACKAGED_OUTPUTPATH}/* ${FIRMWARE_PATH}/ && sync
-fi
 mkdir -p ipk
 cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
 sudo tar -czf ipk.tar.gz ipk && sync && sudo rm -rf ipk
