@@ -38,6 +38,7 @@ runs:
       if: steps.shang.outcome == 'success' && env.UPLOAD_FIRMWARE == 'true'
       shell: bash
       run: |
+        cd $HOME_PATH
         echo "SHANG_MESSAGE=、上传Artifacts" >> ${GITHUB_ENV}
     
     - name: 发布固件
@@ -72,6 +73,7 @@ runs:
       if: steps.fabu.outcome == 'success' && env.UPLOAD_RELEASE == 'true' || steps.nfabu.outcome == 'success' && env.UPLOAD_RELEASE == 'true'
       shell: bash
       run: |
+        cd $HOME_PATH
         echo "FABU_MESSAGE=、发布" >> ${GITHUB_ENV}
         
     - name: Telegram或pushplus信息通知
