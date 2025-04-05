@@ -12,7 +12,14 @@ function install_mustrelyon(){
 sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
 
 # N1打包需要的依赖
-${INS} install rename pigz clang upx-ucl
+${INS} install rename pigz clang-14 libclang-14-dev upx-ucl build-essential
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+${INS} update
+${INS} install gcc-13 g++-13
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 13
+sudo update-alternatives --config gcc
+sudo update-alternatives --config g++
 gcc --version
 g++ --version
 clang --version
