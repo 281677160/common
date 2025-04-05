@@ -1,0 +1,54 @@
+name: API
+on:
+  workflow_dispatch:
+        
+  schedule:
+   - cron: 40 3 * * *
+
+env:
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    name: API
+    runs-on: ubuntu-22.04
+    
+    steps:
+    - name: 准备结束
+      uses: actions/checkout@v4
+      
+    - name: 部署环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install -y git subversion git-core wget curl grep jq
+        sudo timedatectl set-timezone "$TZ"
+        
+    - name: 下载API
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        mkdir -p Github_Api
+        cd Github_Api
+        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest -o AdGuardHome.api
+        if [[ $? -ne 0 ]]; then
+          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
+        fi
+        
+    - name: 发布API
+      uses: ncipollo/release-action@main
+      with:
+        name: API
+        tag: API
+        token: ${{ secrets.REPO_TOKEN }}
+        artifacts: "Github_Api/*"
+        allowUpdates: true
+        
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@main
+      with:
+        token: ${{ secrets.REPO_TOKEN }}
+        repository: ${{ github.repository }}       
+        retain_days: 0.1
+        keep_minimum_runs: 0
