@@ -3,30 +3,16 @@
 
 function install_mustrelyon(){
 # 更新ubuntu源
-${INS} update > /dev/null 2>&1
+#${INS} update > /dev/null 2>&1
 
 # 升级ubuntu
 # ${INS} full-upgrade > /dev/null 2>&1
 
 # 安装编译openwrt的依赖
-${INS} install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
-bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
-genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
-libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
-libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf \
-python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion \
-swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
+sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
 
 # N1打包需要的依赖
 ${INS} install rename pigz clang upx-ucl
-
-# 安装gcc-13
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
-${INS} update > /dev/null 2>&1
-${INS} install gcc-13
-${INS} install g++-13
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
 gcc --version
 g++ --version
 clang --version
