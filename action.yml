@@ -4,14 +4,22 @@ runs:
   using: "composite"
   steps:
     - name: 上传固件在 github Artifacts
+      id: shang
       if: env.UPLOAD_FIRMWARE == 'true'
       uses: actions/upload-artifact@main
       with:
         name: ${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}-firmware-${{ env.Firmware_Date }}
         path: ${{ env.FIRMWARE_PATH }}
+
+    - name: 上传信息
+      if: steps.shang.outcome == 'success' && env.UPLOAD_FIRMWARE == 'true'
+      shell: bash
+      run: |
+        echo "SHANG_MESSAGE=、上传Artifacts" >> ${GITHUB_ENV}
     
     - name: 发布固件
-      if: env.UPLOAD_RELEASE == 'true' && env.ING_FIRMWAR == 'true'
+      id: fabu
+      if: env.UPLOAD_RELEASE == 'true'
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.SOURCE }}-${{ env.PROMPT_TING }}
@@ -20,22 +28,22 @@ runs:
         allowUpdates: true
         body: ${{ env.Tongzhi_Date }}
         artifacts: "${{ env.FIRMWARE_PATH }}/*"
-        
-    - name: Telegram或pushplus信息通知
-      if: steps.compile.outcome == 'success' && env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' || steps.compile.outcome == 'success' && env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG'
-      run: |
-        if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{ secrets.TELEGRAM_CHAT_ID }}", "text":"我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译【${REPO_BRANCH}分支的${{env.TARGET_PROFILE}}】固件顺利编译完成了✌️💯💐(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)！($(date +%Y年%m月%d号%H时%M分))"}' https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage
-        fi
-        if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{ secrets.PUSH_PLUS_TOKEN }}","title":"${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}编译成功","content":"我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译【${REPO_BRANCH}分支的${{env.TARGET_PROFILE}}】固件顺利编译完成了✌️💯💐(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)！($(date +%Y年%m月%d号%H时%M分))"}' https://www.pushplus.plus/send
-        fi
 
-    - name: 发送[在线更新固件]至云端4
-      if: steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
+    - name: 发布信息
+      if: steps.fabu.outcome == 'success' && env.UPLOAD_RELEASE == 'true'
       shell: bash
       run: |
-        echo "YUNDUAN_MESSAGE=、发送云端" >> ${GITHUB_ENV}
+        echo "FABU_MESSAGE=、发布" >> ${GITHUB_ENV}
+        
+    - name: Telegram或pushplus信息通知
+      if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG'
+      run: |
+        if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
+          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{ secrets.TELEGRAM_CHAT_ID }}", "text":"${{env.SOURCE}}-${{env.LUCI_EDITION}}，${{env.TARGET_PROFILE}}固件${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💯"}' https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage
+        fi
+        if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
+          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"${{env.TARGET_PROFILE}}固件${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💯"}' https://www.pushplus.plus/send
+        fi
 branding:
   icon: "terminal"
   color: "gray-dark"
