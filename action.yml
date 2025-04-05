@@ -3,39 +3,33 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 发送[在线更新固件]至云端1
-      id: yunduan
-      if: env.UPDATE_FIRMWARE_ONLINE == 'true'
+    - name: 上传固件在 github Artifacts
+      if: env.UPLOAD_FIRMWARE == 'true'
+      uses: actions/upload-artifact@main
+      with:
+        name: ${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}-firmware-${{ env.Firmware_Date }}
+        path: ${{ env.FIRMWARE_PATH }}
+    
+    - name: 发布固件
+      if: env.UPLOAD_RELEASE == 'true' && env.ING_FIRMWAR == 'true'
       uses: ncipollo/release-action@v1
       with:
-        name: AutoUpdate
-        tag: ${{ env.Update_tag }}
-        token: ${{ env.REPO_TOKEN }}
+        name: ${{ env.SOURCE }}-${{ env.PROMPT_TING }}
+        tag: a${{ env.date }}
+        token: ${{ secrets.REPO_TOKEN }}
         allowUpdates: true
         body: ${{ env.Tongzhi_Date }}
-        artifacts: "${{ env.BIN_PATH }}/*"
+        artifacts: "${{ env.FIRMWARE_PATH }}/*"
         
-    - name: 发送[在线更新固件]至云端2
-      if: steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
-      shell: bash
+    - name: Telegram或pushplus信息通知
+      if: steps.compile.outcome == 'success' && env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' || steps.compile.outcome == 'success' && env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG'
       run: |
-        mkdir -p Github_Api
-        cd Github_Api
-        curl -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.Update_tag }} -o zzz_api
-        if ! grep -q "browser_download_url" zzz_api; then
-          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${Update_tag} > zzz_api
+        if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
+          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{ secrets.TELEGRAM_CHAT_ID }}", "text":"我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译【${REPO_BRANCH}分支的${{env.TARGET_PROFILE}}】固件顺利编译完成了✌️💯💐(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)！($(date +%Y年%m月%d号%H时%M分))"}' https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage
         fi
-        
-    - name: 发送[在线更新固件]至云端3
-      if: steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
-      uses: ncipollo/release-action@v1
-      with:
-        name: AutoUpdate-${{ env.TARGET_BOARD }}
-        tag: ${{ env.Update_tag }}
-        token: ${{ env.REPO_TOKEN }}
-        artifacts: "Github_Api/*"
-        allowUpdates: true
-        body: ${{ env.Tongzhi_Date }}
+        if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
+          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{ secrets.PUSH_PLUS_TOKEN }}","title":"${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}编译成功","content":"我亲爱的✨主人✨：您使用【${{matrix.target}}】文件夹编译【${REPO_BRANCH}分支的${{env.TARGET_PROFILE}}】固件顺利编译完成了✌️💯💐(${{env.WAREHOUSE_MAN}}仓库的#${{env.RUN_NUMBER}}号)！($(date +%Y年%m月%d号%H时%M分))"}' https://www.pushplus.plus/send
+        fi
 
     - name: 发送[在线更新固件]至云端4
       if: steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
