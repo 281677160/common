@@ -7,6 +7,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
+        find $FIRMWARE_PATH -type f -name "*.tar.gz" -size -1M -delete
         if [[ ! "${TARGET_PROFILE}" == "aarch_64" ]]; then
           echo -e "\033[31m 非aarch64指定打包系列 \033[0m"
           echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
