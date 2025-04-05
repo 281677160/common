@@ -33,10 +33,8 @@ jobs:
         cd $GITHUB_WORKSPACE
         git clone -b ${{ github.ref_name }} https://github.com/${{github.repository}}.git repogx
         cd repogx
-        rm -Rf *
-        git rm --cache *
-        echo "README" > README.md
-        echo "README" > action.yml
+        [[ ! -f "README.md" ]] && echo "README" > README.md
+        [[ ! -f "action.yml" ]] && echo "action.yml" > action.yml
         
     - name: Upload
       continue-on-error: true
