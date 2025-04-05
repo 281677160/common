@@ -41,6 +41,7 @@ runs:
       if: steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
       shell: bash
       run: |
+        cd $HOME_PATH
         echo "YUNDUAN_MESSAGE=、发送云端" >> ${GITHUB_ENV}
 branding:
   icon: "terminal"
