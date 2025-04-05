@@ -3,85 +3,23 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 发布信息
+    - name: 触发启动开始编译
+      id: gitpush
+      if: steps.compile.outcome == 'success'
       shell: bash
       run: |
-        cd $HOME_PATH
-        if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
-          echo "RRRR_RELEASE=aaarch" >> ${GITHUB_ENV}
-          if [[ -n "${{ env.AARCH_CODENAME }}" ]] && [[ -n "${{ env.TARGET_PROFILE_IMG }}" ]]; then
-            echo "SHANGCHUAN_MINGCHEN=${{ env.AARCH_CODENAME }}-${{ env.TARGET_PROFILE_IMG }}" >> ${GITHUB_ENV}
-          elif [[ -n "${{ env.LUCI_EDITION }}" ]]; then
-            echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}" >> ${GITHUB_ENV}
-          else
-            echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.TARGET_PROFILE }}" >> ${GITHUB_ENV}
-          fi
-        else
-          echo "RRRR_RELEASE=bbbrch" >> ${GITHUB_ENV}
-          echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}" >> ${GITHUB_ENV}
-        fi
-        echo "date=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
-        echo "date_tg=$(date +"%Y.%m%d.%H%M")" >> ${GITHUB_ENV}
-        echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
-        echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
-  
-    - name: 上传固件在 github Artifacts
-      id: shang
-      if: env.UPLOAD_FIRMWARE == 'true'
-      uses: actions/upload-artifact@main
-      with:
-        name: ${{ env.SHANGCHUAN_MINGCHEN }}-firmware-${{ env.Firmware_Date }}
-        path: ${{ env.FIRMWARE_PATH }}
-
-    - name: 上传信息
-      if: steps.shang.outcome == 'success' && env.UPLOAD_FIRMWARE == 'true'
-      shell: bash
-      run: |
-        echo "SHANG_MESSAGE=、上传Artifacts" >> ${GITHUB_ENV}
-    
-    - name: 发布固件
-      id: fabu
-      if: env.UPLOAD_RELEASE == 'true' && env.RRRR_RELEASE == 'bbbrch'
-      uses: ncipollo/release-action@v1
-      with:
-        name: ${{ env.SOURCE }}-${{ env.PROMPT_TING }}
-        tag: a${{ env.date }}
-        token: ${{ env.REPO_TOKEN }}
-        allowUpdates: true
-        body: ${{ env.Tongzhi_Date }}
-        artifacts: "${{ env.FIRMWARE_PATH }}/*"
-
-    - name: 发布固件到 Github Releases
-      id: nfabu
-      if: env.UPLOAD_RELEASE == 'true' && env.RRRR_RELEASE == 'aaarch'
-      uses: ncipollo/release-action@v1
-      with:
-        name: ${{ env.amlogic_model }}
-        tag: a${{ env.date }}
-        token: ${{ env.REPO_TOKEN }}
-        allowUpdates: true
-        artifacts: "${{ env.FIRMWARE_PATH }}/*"
-        body: |
-          发布日期：${{ env.date_tg }}
-          固件源码：${{ env.SOURCE }}
-          内核仓库：${{ env.kernel_usage }}
-          写入EMMC：Login to OpenWrt → System → Amlogic Service → Install OpenWrt
-
-    - name: 发布信息
-      if: steps.fabu.outcome == 'success' && env.UPLOAD_RELEASE == 'true' || steps.nfabu.outcome == 'success' && env.UPLOAD_RELEASE == 'true'
-      shell: bash
-      run: |
-        echo "FABU_MESSAGE=、发布" >> ${GITHUB_ENV}
+        cd ${GITHUB_WORKSPACE}
+        source ${BUILD_PATH}/common.sh && build_openwrt
         
     - name: Telegram或pushplus信息通知
-      if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG'
+      if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' && steps.gitpush.outcome == 'success' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG' && steps.gitpush.outcome == 'success'
       shell: bash
       run: |
         if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{env.TELEGRAM_CHAT_ID}}", "text":"${{env.SOURCE}}-${{env.LUCI_EDITION}}，${{env.TARGET_PROFILE}}固件，编译${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}${{env.YUNDUAN_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💯"}' https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage
+          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{env.TELEGRAM_CHAT_ID}}", "text":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}，编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💐"}' https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage
         fi
         if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"${{env.TARGET_PROFILE}}固件，编译${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}${{env.YUNDUAN_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💯"}' https://www.pushplus.plus/send
+          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，($(date +%Y年%m月%d号%H时%M分))💐"}' https://www.pushplus.plus/send
         fi
 branding:
   icon: "terminal"
