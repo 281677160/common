@@ -24,6 +24,7 @@ runs:
         echo "date_tg=$(date +"%Y.%m%d.%H%M")" >> ${GITHUB_ENV}
         echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
         echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
+        echo "TZ_Message=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
   
     - name: 上传固件在 github Artifacts
       id: shang
@@ -79,10 +80,10 @@ runs:
       run: |
         cd ${GITHUB_WORKSPACE}
         if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{env.TELEGRAM_CHAT_ID}}", "text":"${{env.SOURCE}}-${{env.LUCI_EDITION}}，${{env.TARGET_PROFILE}}固件，编译${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}${{env.YUNDUAN_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，$(date +%Y年%m月%d号%H时%M分)💯"}' https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage
+          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{env.TELEGRAM_CHAT_ID}}", "text":"${{env.SOURCE}}-${{env.LUCI_EDITION}}，${{env.TARGET_PROFILE}}固件，编译${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}${{env.YUNDUAN_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💯"}' https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage
         fi
         if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"${{env.TARGET_PROFILE}}固件，编译${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}${{env.YUNDUAN_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，$(date +%Y年%m月%d号%H时%M分)💯"}' https://www.pushplus.plus/send
+          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"${{env.TARGET_PROFILE}}固件，编译${{env.DABAO_MESSAGE}}${{env.SHANG_MESSAGE}}${{env.FABU_MESSAGE}}${{env.YUNDUAN_MESSAGE}}成功，✌️💐(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💯"}' https://www.pushplus.plus/send
         fi
 branding:
   icon: "terminal"
