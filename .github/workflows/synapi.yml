@@ -36,7 +36,9 @@ jobs:
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/ophub/kernel/releases/tags/kernel_stable > stable.api
         fi
 
-        curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/281677160/autobuild/releases/tags/targz > mishi
+        curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/281677160/autobuild/releases/tags/targ > mishi
+
+        curl -s -H "Authorization: Bearer ${{ env.REPO_TOKE }}" https://api.github.com/repos/281677160/autobuild/releases/tags/targz > mishi2
         
         curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/ophub/kernel/releases/tags/kernel_flippy -o flippy.api
         if [[ $? -ne 0 ]]; then
