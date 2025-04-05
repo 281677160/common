@@ -9,7 +9,7 @@ runs:
         cd ${GITHUB_WORKSPACE}
         if [[ -n "${{ env.REPO_TOKEN }}" ]]; then
           curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" \
-          https://api.github.com/repos/281677160/common/releases/tag/API > mishi
+          https://api.github.com/repos/281677160/common/releases/tags/API > mishi
           if [[ `grep -c "Bad credentials" mishi` -ge '1' ]]; then
             echo "您的密匙不正确或已过期，请按教程设置好密匙再来"
             echo "REPO_TOKEN密匙制作教程：https://git.io/jm.md"
