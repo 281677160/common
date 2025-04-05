@@ -24,17 +24,17 @@ fi
 
 if [[ -f "/usr/share/ucode/luci/version.uc" ]]; then
 	sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
-	echo "export const revision = 'SOURCE - LUCI_EDITION', branch = '';" >> "/usr/share/ucode/luci/version.uc"
+	echo "export const revision = 'ZHUJIMING - LUCI_EDITION', branch = '';" >> "/usr/share/ucode/luci/version.uc"
 fi
 
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='Customized_Information @ OpenWrt '" >> /etc/openwrt_release
 sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
-echo "DISTRIB_SOURCECODE='SOURCE_LUCI_EDITION'" >> /etc/openwrt_release
+echo "DISTRIB_SOURCECODE='ZHUJIMING_LUCI_EDITION'" >> /etc/openwrt_release
 sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
 echo "luciversion    = \"LUCI_EDITION\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
-echo "luciname    = \"SOURCE\"" >> /usr/lib/lua/luci/version.lua
+echo "luciname    = \"ZHUJIMING\"" >> /usr/lib/lua/luci/version.lua
 
 opkg_mirror="https://mirrors.vsean.net/openwrt"
 distfeedlist="/etc/apk/repositories.d/distfeeds.list"
