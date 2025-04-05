@@ -35,7 +35,6 @@ runs:
         artifacts: "Github_Api/*"
         allowUpdates: true
         body: ${{ env.Tongzhi_Date }}
-        
 branding:
   icon: "terminal"
   color: "gray-dark"
