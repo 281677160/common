@@ -32,6 +32,7 @@ runs:
         artifacts: openwrt/targz/*rootfs.tar.gz
 
     - name: 打包aarch64系列固件
+      id: dabao
       if: env.PACKAGING_FIRMWARE == 'true'
       uses: ophub/amlogic-s9xxx-openwrt@main
       with:
@@ -44,8 +45,14 @@ runs:
         openwrt_size: ${{ env.openwrt_size }}
         builder_name: ${{ env.builder_name }}
 
+    - name: 打包信息
+      if: steps.dabao.outcome == 'success'
+      shell: bash
+      run: |
+        echo "DABAO_MESSAGE=、打包" >> ${GITHUB_ENV}
+
     - name: 打包后的固件放回原位
-      if: env.PACKAGING_FIRMWARE == 'true'
+      if: steps.dabao.outcome == 'success' && env.PACKAGING_FIRMWARE == 'true'
       shell: bash
       run: |
         cd $HOME_PATH
