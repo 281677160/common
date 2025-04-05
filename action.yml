@@ -52,6 +52,7 @@ runs:
         if [[ -d "${PACKAGED_OUTPUTPATH}" ]]; then
           cp -Rf $PACKAGED_OUTPUTPATH/* $FIRMWARE_PATH
         fi
+        rm -rf $PACKAGED_OUTPUTPATH
 branding:
   icon: "terminal"
   color: "gray-dark"
