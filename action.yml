@@ -4,6 +4,7 @@ runs:
   using: "composite"
   steps:
     - name: 发送[在线更新固件]至云端1
+      id: yunduan
       if: env.UPDATE_FIRMWARE_ONLINE == 'true'
       uses: ncipollo/release-action@v1
       with:
@@ -15,7 +16,7 @@ runs:
         artifacts: "${{ env.BIN_PATH }}/*"
         
     - name: 发送[在线更新固件]至云端2
-      if: env.UPDATE_FIRMWARE_ONLINE == 'true'
+      if: steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
       shell: bash
       run: |
         mkdir -p Github_Api
@@ -26,7 +27,7 @@ runs:
         fi
         
     - name: 发送[在线更新固件]至云端3
-      if: env.UPDATE_FIRMWARE_ONLINE == 'true'
+      if: steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
       uses: ncipollo/release-action@v1
       with:
         name: AutoUpdate-${{ env.TARGET_BOARD }}
@@ -35,6 +36,12 @@ runs:
         artifacts: "Github_Api/*"
         allowUpdates: true
         body: ${{ env.Tongzhi_Date }}
+
+    - name: 发送[在线更新固件]至云端4
+      if: steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true'
+      shell: bash
+      run: |
+        echo "YUNDUAN_MESSAGE=、发送云端" >> ${GITHUB_ENV}
 branding:
   icon: "terminal"
   color: "gray-dark"
