@@ -33,9 +33,9 @@ runs:
         fi
         rm -rf ${GITHUB_WORKSPACE}/amlogic
         if [[ -n "${DISTRIB_SOUR}" ]]; then
-          echo "source_codename=${DISTRIB_SOUR}" >> ${GITHUB_ENV}
+          echo "AARCH_CODENAME=${DISTRIB_SOUR}" >> ${GITHUB_ENV}
         else
-          echo "source_codename=${{ env.SOURCE }}" >> ${GITHUB_ENV}
+          echo "AARCH_CODENAME=${{ env.SOURCE }}" >> ${GITHUB_ENV}
         fi
         
     - name: 将rootfs.tar.gz发布releases的targz
