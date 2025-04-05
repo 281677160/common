@@ -293,7 +293,7 @@ if ! grep -q "auto-scripts" "${HOME_PATH}/Config.in"; then
   echo 'source "package/auto-scripts/Config.in"' >> ${HOME_PATH}/Config.in
 fi
 
-sed -i "s/SOURCE/${SOURCE}/g" "${DEFAULT_PATH}"
+sed -i "s/ZHUJI_MING/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
 sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 grep -q "admin:" ${FILES_PATH}/etc/shadow && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
