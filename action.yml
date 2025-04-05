@@ -6,6 +6,7 @@ runs:
     - name: 发布信息
       shell: bash
       run: |
+        cd $HOME_PATH
         if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
           echo "RRRR_RELEASE=aaarch" >> ${GITHUB_ENV}
           if [[ -n "${{ env.AARCH_CODENAME }}" ]] && [[ -n "${{ env.TARGET_PROFILE_IMG }}" ]]; then
