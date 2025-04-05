@@ -19,9 +19,6 @@ runs:
           echo -e "\033[31m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m"
           exit 1
         fi
-
-    - name: 准备结束
-      uses: actions/checkout@v4
 branding:
   icon: "terminal"
   color: "gray-dark"
