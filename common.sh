@@ -292,7 +292,7 @@ if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/multimedia/ffmpeg-re
 fi
 
 # tproxy补丁
-# source ${OPERATES_PATH}/common/Share/tproxy/nft_tproxy.sh
+source ${OPERATES_PATH}/common/Share/tproxy/nft_tproxy.sh
 
 # 降低luci-app-ssr-plus的shadowsocks-rust版本
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
@@ -446,11 +446,11 @@ cd ${HOME_PATH}
 
 # 正在执行插件语言修改
 if [[ -d "${HOME_PATH}/feeds/luci/modules/luci-mod-system" ]]; then
-  cp -Rf ${HOME_PATH}/build/common/language/zh_Hans.sh ${HOME_PATH}/zh_Hans.sh
-  /bin/bash zh_Hans.sh && rm -rf zh_Hans.sh
+  cd ${HOME_PATH}
+  ${OPERATES_PATH}/common/language/zh_Hans.sh
 else
-  cp -Rf ${HOME_PATH}/build/common/language/zh-cn.sh ${HOME_PATH}/zh-cn.sh
-  /bin/bash zh-cn.sh && rm -rf zh-cn.sh
+  cd ${HOME_PATH}
+  ${OPERATES_PATH}/common/language/zh-cn.sh
 fi
 ./scripts/feeds install -a > /dev/null 2>&1
 # 使用自定义配置文件
