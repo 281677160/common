@@ -54,7 +54,7 @@ cd ${GITHUB_WORKSPACE}
 if [[ "${SYNCHRONISE}" == "NO" ]]; then
   if [[ -n "${BENDI_VERSION}" ]]; then
     git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
-    if [[ -d "operates" ]]; then
+    if [[ -d "${OPER_ATES}" ]]; then
       mv ${OPER_ATES} backups
       cp -Rf shangyou/build ${OPER_ATES}
       mv backups ${OPER_ATES}/backups
