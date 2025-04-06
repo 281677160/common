@@ -5,12 +5,12 @@
 
 function Diy_one() {
 cd ${GITHUB_WORKSPACE}
-if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPER_ATES}" ]]; then
+if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
   git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
-  cp -Rf shangyou/build ${OPER_ATES}
+  cp -Rf shangyou/build ${OPERATES_PATH}
   rm -rf shangyou
-  chmod -R +x ${OPER_ATES}
-  for X in $(find "${OPER_ATES}" -name "settings.ini"); do
+  chmod -R +x ${OPERATES_PATH}
+  for X in $(find "${OPERATES_PATH}" -name "settings.ini"); do
     sed -i '/SSH_ACTIONS/d' "${X}"
     sed -i '/INFORMATION_NOTICE/d' "${X}"
     sed -i '/UPLOAD_FIRMWARE/d' "${X}"
@@ -26,8 +26,8 @@ if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPER_ATES}" ]]; then
   done
 else
   if [[ -d "build" ]]; then
-    rm -rf ${OPER_ATES}
-    cp -Rf build ${OPER_ATES}
+    rm -rf ${OPERATES_PATH}
+    cp -Rf build ${OPERATES_PATH}
   fi
 fi
 }
@@ -35,11 +35,11 @@ fi
 function Diy_two() {
 cd ${GITHUB_WORKSPACE}
 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o common.sh
-if [[ ! -d "${OPER_ATES}" ]]; then
+if [[ ! -d "${OPERATES_PATH}" ]]; then
   echo -e "\033[31m 根目录缺少编译必要文件夹存在 \033[0m"
   SYNCHRONISE="NO"
-elif [[ ! -d "${FOLDER_NAME}" ]]; then
-  echo -e "\033[31m 缺少${FOLDER_NAME}文件夹 \033[0m"
+elif [[ ! -d "${COMPILE_PATH}" ]]; then
+  echo -e "\033[31m 缺少${COMPILE_PATH}文件夹 \033[0m"
   SYNCHRONISE="NO"
 elif [[ ! -f "${BUILD_PARTSH}" ]]; then
   echo -e "\033[31m 缺少${BUILD_PARTSH}文件 \033[0m"
@@ -47,12 +47,12 @@ elif [[ ! -f "${BUILD_PARTSH}" ]]; then
 elif [[ ! -f "${BUILD_SETTINGS}" ]]; then
   echo -e "\033[31m 缺少${BUILD_SETTINGS}文件 \033[0m"
   SYNCHRONISE="NO"
-elif [[ ! -f "${FOLDER_NAME}/relevance/actions_version" ]]; then
+elif [[ ! -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
   echo -e "\033[31m 缺少relevance/actions_version文件 \033[0m"
   SYNCHRONISE="NO"
-elif [[ -f "${FOLDER_NAME}/relevance/actions_version" ]]; then
+elif [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
   ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' common.sh)"
-  ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' ${FOLDER_NAME}/relevance/actions_version)"
+  ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' ${COMPILE_PATH}/relevance/actions_version)"
   if [[ ! "${ACTIONS_VERSION1}" == "${ACTIONS_VERSION2}" ]]; then
     echo -e "\033[31m 和上游版本不一致 \033[0m"
     SYNCHRONISE="NO"
@@ -67,17 +67,17 @@ cd ${GITHUB_WORKSPACE}
 if [[ "${SYNCHRONISE}" == "NO" ]]; then
   if [[ -n "${BENDI_VERSION}" ]]; then
     git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
-    if [[ -d "${OPER_ATES}" ]]; then
-      mv ${OPER_ATES} backups
-      cp -Rf shangyou/build ${OPER_ATES}
-      mv backups ${OPER_ATES}/backups
+    if [[ -d "${OPERATES_PATH}" ]]; then
+      mv ${OPERATES_PATH} backups
+      cp -Rf shangyou/build ${OPERATES_PATH}
+      mv backups ${OPERATES_PATH}/backups
       rm -rf shangyou
     else
-      cp -Rf shangyou/build ${OPER_ATES}
+      cp -Rf shangyou/build ${OPERATES_PATH}
       rm -rf shangyou
     fi
-    chmod -R +x ${OPER_ATES}
-    for X in $(find "${OPER_ATES}" -name "settings.ini"); do
+    chmod -R +x ${OPERATES_PATH}
+    for X in $(find "${OPERATES_PATH}" -name "settings.ini"); do
       sed -i '/SSH_ACTIONS/d' "${X}"
       sed -i '/INFORMATION_NOTICE/d' "${X}"
       sed -i '/UPLOAD_FIRMWARE/d' "${X}"
