@@ -26,6 +26,7 @@ function Diy_Part2() {
 	export Release_download1="${GITHUB_LINK}/releases/download/${Update_tag}"
 	export Release_download2="https://ghfast.top/${GITHUB_LINK}/releases/download/${Update_tag}"
 	export Github_Release="${GITHUB_LINK}/releases/tag/${Update_tag}"
+        curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -o replace
 	
 	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 		export TARGET_PROFILE_ER="phicomm-k3"
@@ -118,7 +119,7 @@ Release_download1="${Release_download1}"
 Release_download2="${Release_download2}"
 EOF
 
-	cat ${HOME_PATH}/build/common/autoupdate/replace >> ${In_Firmware_Info}
+	cat replace >> ${In_Firmware_Info}
 	sudo chmod +x ${In_Firmware_Info}
 }
 
