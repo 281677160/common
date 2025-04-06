@@ -95,7 +95,7 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
     done
   else
     git clone -b ${{ env.GIT_REFNAME }} https://user:${{ env.REPO_TOKEN }}@github.com/${{ env.REPO_TOKEN }}.git repogx
-    git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
+    git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/autobuild shangyou
     if [[ -d "repogx/build" ]]; then
       cp -Rf repogx/build shangyou/backups
     fi
