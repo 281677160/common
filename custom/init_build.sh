@@ -204,7 +204,7 @@ function install_dependencies() {
 	# fix broken http2 support for curl on buster
 	if [ "$VERSION_CODENAME" == "buster"]; then
 		apt-get full-upgrade -y
-		apt reinstall -y libcurl3-gnutls/buster
+		apt-get reinstall -y libcurl3-gnutls/buster
 	fi
 
 	if [ -n "$CHN_NET" ]; then
@@ -235,10 +235,10 @@ function install_dependencies() {
 		yarn config set registry "https://registry.npmmirror.com" --global
 	fi
 
-	apt-get install -y $BPO_FLAG golang-1.23-go
+	apt-get install -y $BPO_FLAG golang-1.24-go
 	rm -rf "/usr/bin/go" "/usr/bin/gofmt"
-	ln -svf "/usr/lib/go-1.23/bin/go" "/usr/bin/go"
-	ln -svf "/usr/lib/go-1.23/bin/gofmt" "/usr/bin/gofmt"
+	ln -svf "/usr/lib/go-1.24/bin/go" "/usr/bin/go"
+	ln -svf "/usr/lib/go-1.24/bin/gofmt" "/usr/bin/gofmt"
 	if [ -n "$CHN_NET" ]; then
 		go env -w GOPROXY=https://goproxy.cn,direct
 	fi
