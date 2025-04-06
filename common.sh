@@ -269,7 +269,7 @@ fi
 
 
 function Diy_update() {
-sudo bash -c 'bash <(curl -s https://raw.githubusercontent.com/281677160/common/main/custom/init_build.sh)'
+bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/ubuntu.sh)
 if [[ $? -ne 0 ]];then
   TIME r "依赖安装失败，请检测网络后再次尝试!"
   exit 1
