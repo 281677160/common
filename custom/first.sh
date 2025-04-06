@@ -118,10 +118,22 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
 fi
 }
 
+function Diy_four() {
+rm -rf ${OPERATES_PATH}/common
+git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/common ${OPERATES_PATH}/common
+if [[ ! -d "${OPERATES_PATH}/common" ]]; then
+  echo -e "\033[31m common文件下载失败 \033[0m"
+  exit 1
+fi
+export COMMON_SH=${OPERATES_PATH}/common/common.sh
+echo "COMMON_SH=${OPERATES_PATH}/common/common.sh" >> ${GITHUB_ENV}
+}
+
 function Diy_memu() {
 Diy_one
 Diy_two
 Diy_three
+Diy_four
 }
 
 Diy_memu "$@"
