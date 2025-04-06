@@ -45,9 +45,10 @@ runs:
         name: rootfs.tar.gz
         tag: targz
         token: ${{ env.REPO_TOKEN }}
+        artifacts: openwrt/targz/*rootfs.tar.gz
         allowUpdates: true
         replacesArtifacts: true
-        artifacts: openwrt/targz/*rootfs.tar.gz
+        body: aarch64系列打包使用的rootfs.tar.gz包
 
     - name: 打包aarch64系列固件
       id: dabao
