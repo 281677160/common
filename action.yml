@@ -65,7 +65,6 @@ runs:
         echo "WAREHOUSE_MAN=${GIT_REPOSITORY##*/}" >> ${GITHUB_ENV}
         echo "RUN_NUMBER=${{github.run_number}}" >> ${GITHUB_ENV}
         echo "GIT_REFNAME=${{ github.ref_name }}" >> ${GITHUB_ENV}
-        echo "LUCI_EDITION=$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')" >> ${GITHUB_ENV}
 
         echo "HOME_PATH=$GITHUB_WORKSPACE/openwrt" >> ${GITHUB_ENV}
         echo "OPERATES_PATH=$GITHUB_WORKSPACE/operates" >> ${GITHUB_ENV}
@@ -80,6 +79,8 @@ runs:
     - name: 密匙检测（密匙为空则退出）
       shell: bash
       run: |
+        cd ${GITHUB_WORKSPACE}
+        LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
         echo "DIY_WORK=${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")" >> ${GITHUB_ENV}
         if [[ "${SOURCE_CODE}" == "COOLSNOWWOLF" ]]; then
           echo "LUCI_EDITION=23.05" >> ${GITHUB_ENV}
@@ -95,8 +96,12 @@ runs:
           echo "INFORMATION_NOTICE=false" >> ${GITHUB_ENV}
         fi
         bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
-        
-        source $COMMON_SH && Diy_menu2
+
+    - name: 密匙检测（密匙为空则退出）
+      shell: bash
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        source $COMMON_SH && Diy_menu1
 branding:
   icon: "terminal"
   color: "gray-dark"
