@@ -309,7 +309,7 @@ fi
 
 # files大法，设置固件无烦恼
 if [ -d "${BUILD_PATCHES}" ]; then
-  find "${BUILD_PATCHES}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
+  find "${BUILD_PATCHES}" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
 if [ -d "${BUILD_DIY}" ]; then
   cp -Rf ${BUILD_DIY}/* ${HOME_PATH}
