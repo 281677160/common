@@ -64,8 +64,8 @@ runs:
         echo "BUILD_DIY=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/diy" >> ${GITHUB_ENV}
         echo "BUILD_FILES=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/files" >> ${GITHUB_ENV}
         echo "BUILD_PATCHES=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/patches" >> ${GITHUB_ENV}
-        echo "BUILD_PARTSH="$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/diy-part.sh" >> ${GITHUB_ENV}
-        echo "BUILD_SETTINGS="$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/settings.ini" >> ${GITHUB_ENV}
+        echo "BUILD_PARTSH=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/diy-part.sh" >> ${GITHUB_ENV}
+        echo "BUILD_SETTINGS=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/settings.ini" >> ${GITHUB_ENV}
         echo "CONFIG_FILE=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/seed/${CONFIG_FILE}" >> ${GITHUB_ENV}
 
     - name: 密匙检测（密匙为空则退出）
