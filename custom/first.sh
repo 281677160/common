@@ -49,12 +49,12 @@ elif [[ ! -f "${BUILD_PARTSH}" ]]; then
 elif [[ ! -f "${BUILD_SETTINGS}" ]]; then
   echo -e "\033[31m 缺少${BUILD_SETTINGS}文件 \033[0m"
   SYNCHRONISE="NO"
-elif [[ ! -f "${OPER_ATES}/${FOLDER_NAME}/relevance/actions_version" ]]; then
+elif [[ ! -f "${FOLDER_NAME}/relevance/actions_version" ]]; then
   echo -e "\033[31m 缺少relevance/actions_version文件 \033[0m"
   SYNCHRONISE="NO"
-elif [[ -f "${OPER_ATES}/${FOLDER_NAME}/relevance/actions_version" ]]; then
+elif [[ -f "${FOLDER_NAME}/relevance/actions_version" ]]; then
   ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' common.sh)"
-  ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' ${OPER_ATES}/${FOLDER_NAME}/relevance/actions_version)"
+  ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' ${FOLDER_NAME}/relevance/actions_version)"
   if [[ ! "${ACTIONS_VERSION1}" == "${ACTIONS_VERSION2}" ]]; then
     echo -e "\033[31m 和上游版本不一致 \033[0m"
     SYNCHRONISE="NO"
@@ -94,7 +94,7 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
       echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
     done
   else
-    git clone -b ${{ env.GIT_REFNAME }} https://user:${{ env.REPO_TOKEN }}@github.com/${{ env.REPO_TOKEN }}.git repogx
+    git clone -b ${GIT_REFNAME} https://user:${REPO_TOKEN}@github.com/${REPO_TOKEN}.git repogx
     git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/autobuild shangyou
     if [[ -d "repogx/build" ]]; then
       cp -Rf repogx/build shangyou/backups
@@ -109,7 +109,7 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
     cd repogx
     git add .
     git commit -m "${BANBEN_SHUOMING}"
-    git push --force "https://${{ env.REPO_TOKEN }}@github.com/${{ env.REPO_TOKEN }}" HEAD:${{ env.GIT_REFNAME }}
+    git push --force "https://${REPO_TOKEN}@github.com/${REPO_TOKEN}" HEAD:${GIT_REFNAME}
     if [[ $? -ne 0 ]]; then
       echo -e "\033[31m 同步上游仓库失败,请注意密匙是否正确 \033[0m"
     else
