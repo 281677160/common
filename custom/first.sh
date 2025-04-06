@@ -6,7 +6,7 @@
 FOLDER_NAME="${FOLDER_NAME}"
 DIY_PARTSH="${DIY_PARTSH}"
 SETTINGS_INI="${SETTINGS_INI}"
-OPER_ATES="$GITHUB_WORKSPACE/operates"
+export OPER_ATES="$GITHUB_WORKSPACE/operates"
 function Diy_one() {
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "operates" ]]; then
