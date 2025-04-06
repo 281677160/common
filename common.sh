@@ -19,7 +19,7 @@ echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
 
 function settings_variable() {
 cd ${GITHUB_WORKSPACE}
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
 }
 
 function Diy_variable() {
