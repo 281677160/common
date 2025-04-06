@@ -80,6 +80,9 @@ runs:
       shell: bash
       run: |
         echo "DIY_WORK=${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")" >> ${GITHUB_ENV}
+        if [[ "${SOURCE_CODE}" == "COOLSNOWWOLF" ]]; then
+          echo "LUCI_EDITION=23.05" >> ${GITHUB_ENV}
+        fi
         bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
         
 branding:
