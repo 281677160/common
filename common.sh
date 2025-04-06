@@ -112,10 +112,6 @@ echo "DEFAULT_PATH=${HOME_PATH}/package/auto-scripts/files/99-first-run" >> ${GI
 echo "KEEPD_PATH=${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
 echo "CLEAR_PATH=${HOME_PATH}/Clear" >> ${GITHUB_ENV}
 echo "Upgrade_Date=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`" >> ${GITHUB_ENV}
-echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
-echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
-echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
-echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 echo "FEEDS_CONF=${FEEDS_CONF}" >> ${GITHUB_ENV}
 echo "BASE_FILES=${BASE_FILES}" >> ${GITHUB_ENV}
 echo "UPGRADE_KEEP=$RAW_WEB/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
@@ -178,7 +174,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 fi
 
 # 添加自定义插件源
-CLASH_FENZHIHAO="$(grep 'OpenClash_branch=' "${DIYPART_PATH}" | awk -F'["#]' '{print $2}')"
+CLASH_FENZHIHAO="$(grep 'OpenClash_branch=' "${BUILD_SETTINGS}" | awk -F'["#]' '{print $2}')"
 if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
   CLASH_BRANCH="dev"
 else
@@ -316,14 +312,14 @@ if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
 fi
 
 # files大法，设置固件无烦恼
-if [ -n "$(ls -A "${BUILD_PATH}/patches" 2>/dev/null)" ]; then
-  find "${BUILD_PATH}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
+if [ -d "${BUILD_PATCHES}" ]; then
+  find "${BUILD_PATCHES}/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 --forward --no-backup-if-mismatch"
 fi
-if [ -n "$(ls -A "${BUILD_PATH}/diy" 2>/dev/null)" ]; then
-  cp -Rf ${BUILD_PATH}/diy/* ${HOME_PATH}
+if [ -d "${BUILD_DIY}" ]; then
+  cp -Rf ${BUILD_DIY}/* ${HOME_PATH}
 fi
-if [ -n "$(ls -A "${BUILD_PATH}/files" 2>/dev/null)" ]; then
-  cp -Rf ${BUILD_PATH}/files ${HOME_PATH}
+if [ -d "${BUILD_FILES}" ]; then
+  cp -Rf ${BUILD_FILES} ${HOME_PATH}
 fi
 
 # 定时更新固件的插件包
