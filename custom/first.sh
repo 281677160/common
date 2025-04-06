@@ -127,6 +127,7 @@ if [[ ! -d "${OPERATES_PATH}/common" ]]; then
 fi
 export COMMON_SH=${OPERATES_PATH}/common/common.sh
 echo "COMMON_SH=${OPERATES_PATH}/common/common.sh" >> ${GITHUB_ENV}
+chmod -R +x ${OPERATES_PATH}
 }
 
 function Diy_memu() {
