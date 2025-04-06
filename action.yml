@@ -30,21 +30,21 @@ runs:
           rm -rf operates
           cp -Rf build ${GITHUB_WORKSPACE}/operates
         fi
-        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
           ls -a
           if [[ -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
             SOURCE_CODE="$(grep '^SOURCE_CODE=' "operates/${FOLDER_NAME}/settings.ini" | awk -F'"' '{print $2}')"
           fi
-          REPO_BRANCH="${{ inputs.REPO_BRANCH }}"
-          CONFIG_FILE="${{ inputs.CONFIG_FILE }}"
-          INFORMATION_NOTICE="${{ inputs.FOLDER_NAME }}"
-          RETAIN_MINUTE="${{ inputs.RETAIN_MINUTE }}"
-          KEEP_LATEST="${{ inputs.KEEP_LATEST }}"
-          SSH_ACTION="${{ inputs.SSH_ACTION }}"
-          UPLOAD_FIRMWARE="${{ inputs.UPLOAD_FIRMWARE }}"
-          UPLOAD_RELEASE="${{ inputs.UPLOAD_RELEASE }}"
-          CACHEWRTBUILD_SWITCH="${{ inputs.CACHEWRTBUILD_SWITCH }}"
-          UPDATE_FIRMWARE_ONLINE="${{ inputs.FIRMWARE_BIN }}"
+          REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
+          CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"
+          INFORMATION_NOTICE="${{ github.event.inputs.FOLDER_NAME }}"
+          RETAIN_MINUTE="${{ github.event.inputs.RETAIN_MINUTE }}"
+          KEEP_LATEST="${{ github.event.inputs.KEEP_LATEST }}"
+          SSH_ACTION="${{ github.event.inputs.SSH_ACTION }}"
+          UPLOAD_FIRMWARE="${{ github.event.inputs.UPLOAD_FIRMWARE }}"
+          UPLOAD_RELEASE="${{ github.event.inputs.UPLOAD_RELEASE }}"
+          CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
+          UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.FIRMWARE_BIN }}"
         else
           if [[ -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
             source operates/${FOLDER_NAME}/settings.ini
