@@ -26,14 +26,14 @@ runs:
         cd ${GITHUB_WORKSPACE}
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        if [[ -d "${GITHUB_WORKSPACE}/build" ]]; then
-          rm -rf ${GITHUB_WORKSPACE}/operates
-          cp -Rf ${GITHUB_WORKSPACE}/build ${GITHUB_WORKSPACE}/operates
+        if [[ -d "build" ]]; then
+          rm -rf operates
+          cp -Rf build ${GITHUB_WORKSPACE}/operates
         fi
         if [[ -n "${{ inputs.REPO_BRANCH }}" ]]; then
           ls -a
-          if [[ -f "$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/settings.ini" ]]; then
-            SOURCE_CODE="$(grep '^SOURCE_CODE=' "$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/settings.ini" | awk -F'"' '{print $2}')"
+          if [[ -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
+            SOURCE_CODE="$(grep '^SOURCE_CODE=' "operates/${FOLDER_NAME}/settings.ini" | awk -F'"' '{print $2}')"
           fi
           REPO_BRANCH="${{ inputs.REPO_BRANCH }}"
           CONFIG_FILE="${{ inputs.CONFIG_FILE }}"
@@ -46,7 +46,9 @@ runs:
           CACHEWRTBUILD_SWITCH="${{ inputs.CACHEWRTBUILD_SWITCH }}"
           UPDATE_FIRMWARE_ONLINE="${{ inputs.FIRMWARE_BIN }}"
         else
-          source $GITHUB_WORKSPACE/operates/${{ matrix.target }}/settings.ini
+          if [[ -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
+            source operates/${FOLDER_NAME}/settings.ini
+          fi
         fi
         echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
         echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
