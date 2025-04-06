@@ -44,7 +44,7 @@ runs:
           UPLOAD_FIRMWARE="${{ github.event.inputs.UPLOAD_FIRMWARE }}"
           UPLOAD_RELEASE="${{ github.event.inputs.UPLOAD_RELEASE }}"
           CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
-          UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.FIRMWARE_BIN }}"
+          UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
         else
           if [[ -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
             source operates/${FOLDER_NAME}/settings.ini
