@@ -19,13 +19,13 @@ runs:
           echo -e "\033[31m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m"
           exit 1
         fi
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
 
     - name: 密匙检测（密匙为空则退出）
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
         if [[ -d "build" ]]; then
           rm -rf operates
           cp -Rf build ${GITHUB_WORKSPACE}/operates
