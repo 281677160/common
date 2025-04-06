@@ -174,7 +174,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 fi
 echo "22"
 # 添加自定义插件源
-CLASH_FENZHIHAO="$(grep 'OpenClash_branch=' "${BUILD_SETTINGS}" | awk -F'["#]' '{print $2}')"
+CLASH_FENZHIHAO="$(grep 'OpenClash_branch=' "$BUILD_SETTINGS" | awk -F'["#]' '{print $2}')"
 if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
   CLASH_BRANCH="dev"
 else
