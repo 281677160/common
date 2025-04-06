@@ -81,20 +81,6 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
       rm -rf shangyou
     fi
     chmod -R +x operates
-    for X in $(find "operates" -name "settings.ini"); do
-      sed -i '/SSH_ACTIONS/d' "${X}"
-      sed -i '/INFORMATION_NOTICE/d' "${X}"
-      sed -i '/UPLOAD_FIRMWARE/d' "${X}"
-      sed -i '/UPLOAD_RELEASE/d' "${X}"
-      sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
-      sed -i '/COMPILATION_INFORMATION/d' "${X}"
-      sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
-      sed -i '/RETAIN_DAYS/d' "${X}"
-      sed -i '/KEEP_LATEST/d' "${X}"
-      echo 'PACKAGING_FIRMWARE="true"           # 自动把Amlogic_Rockchip系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
-      echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
-      echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
-    done
   else
     git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
     [[ -d "build" ]] && cp -Rf build shangyou/build
