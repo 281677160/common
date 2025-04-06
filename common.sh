@@ -194,7 +194,7 @@ if [[ -d "${HOME_PATH}/SRC_LUCI/modules/luci-mod-system" ]]; then
 else
   THEME_BRANCH="Theme1"
 fi
-
+echo "1"
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
 echo "src-git dstheme https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
 echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;$CLASH_BRANCH" >> ${HOME_PATH}/feeds.conf.default
@@ -230,14 +230,14 @@ elif [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ 
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-fs luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
   fi
 fi
-
+echo "2"
 if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
   sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci ?g' "${HOME_PATH}/include/target.mk"
 fi
 
 # 删除前面下载而又不需要了的
 rm -rf ${HOME_PATH}/SRC_LUCI
-
+echo "3"
 # zzz-default-settings文件
 ZZZ_PATH="$(find "$A_PATH" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
 if [[ -n "${ZZZ_PATH}" ]]; then  
