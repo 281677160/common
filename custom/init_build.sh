@@ -93,8 +93,8 @@ function update_apt_source() {
 	__info_msg "Updating apt source lists..."
 	set -x
 
-	apt update -y
-	apt install -y apt-transport-https gnupg2
+	apt-get update -y
+	apt-get install -y apt-transport-https gnupg2
 	if [ -n "$CHN_NET" ]; then
 		mv "/etc/apt/sources.list" "/etc/apt/sources.list.bak"
 		if [ "$VERSION_CODENAME" == "$UBUNTU_CODENAME" ]; then
@@ -181,7 +181,7 @@ function update_apt_source() {
 		sed -i "s,ppa.launchpadcontent.net,launchpad.proxy.ustclug.org,g" "/etc/apt/sources.list.d"/*
 	fi
 
-	apt update -y $BPO_FLAG
+	apt-get update -y $BPO_FLAG
 
 	set +x
 }
@@ -189,8 +189,8 @@ function install_dependencies() {
 	__info_msg "Installing dependencies..."
 	set -x
 
-	apt full-upgrade -y $BPO_FLAG
-	apt install -y $BPO_FLAG ack antlr3 asciidoc autoconf automake autopoint binutils bison \
+	apt-get full-upgrade -y $BPO_FLAG
+	apt-get install -y $BPO_FLAG ack antlr3 asciidoc autoconf automake autopoint binutils bison \
 		build-essential bzip2 ccache cmake cpio curl device-tree-compiler ecj fakeroot \
 		fastjar flex gawk gettext genisoimage git gnutls-dev gperf haveged help2man \
 		intltool irqbalance jq libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev \
@@ -203,7 +203,7 @@ function install_dependencies() {
 
 	# fix broken http2 support for curl on buster
 	if [ "$VERSION_CODENAME" == "buster"]; then
-		apt full-upgrade -y
+		apt-get full-upgrade -y
 		apt reinstall -y libcurl3-gnutls/buster
 	fi
 
@@ -212,30 +212,30 @@ function install_dependencies() {
 		pip3 config set install.trusted-host "https://mirrors.aliyun.com"
 	fi
 
-	apt install -y $BPO_FLAG "gcc-$GCC_VERSION" "g++-$GCC_VERSION" "gcc-$GCC_VERSION-multilib" "g++-$GCC_VERSION-multilib"
+	apt-get install -y $BPO_FLAG "gcc-$GCC_VERSION" "g++-$GCC_VERSION" "gcc-$GCC_VERSION-multilib" "g++-$GCC_VERSION-multilib"
 	for i in "gcc-$GCC_VERSION" "g++-$GCC_VERSION" "gcc-ar-$GCC_VERSION" "gcc-nm-$GCC_VERSION" "gcc-ranlib-$GCC_VERSION"; do
 		ln -svf "$i" "/usr/bin/${i%-$GCC_VERSION}"
 	done
 	ln -svf "/usr/bin/g++" "/usr/bin/c++"
 	[ -e "/usr/include/asm" ] || ln -svf "/usr/include/$(gcc -dumpmachine)/asm" "/usr/include/asm"
 
-	apt install -y $BPO_FLAG clang-18 libclang-18-dev lld-18 liblld-18-dev
+	apt-get install -y $BPO_FLAG clang-18 libclang-18-dev lld-18 liblld-18-dev
 	for i in "clang-18" "clang++-18" "clang-cpp-18" "ld.lld-18" "ld64.lld-18" "llc-18" "lld-18" "lld-link-18" "opt-18" "wasm-ld-18"; do
 		ln -svf "$i" "/usr/bin/${i%-18}"
 	done
 
-	apt install -y $BPO_FLAG llvm-18
+	apt-get install -y $BPO_FLAG llvm-18
 	for i in "/usr/bin"/llvm-*-18; do
 		ln -svf "$i" "${i%-18}"
 	done
 
-	apt install -y $BPO_FLAG nodejs yarn
+	apt-get install -y $BPO_FLAG nodejs yarn
 	if [ -n "$CHN_NET" ]; then
 		npm config set registry "https://registry.npmmirror.com" --global
 		yarn config set registry "https://registry.npmmirror.com" --global
 	fi
 
-	apt install -y $BPO_FLAG golang-1.23-go
+	apt-get install -y $BPO_FLAG golang-1.23-go
 	rm -rf "/usr/bin/go" "/usr/bin/gofmt"
 	ln -svf "/usr/lib/go-1.23/bin/go" "/usr/bin/go"
 	ln -svf "/usr/lib/go-1.23/bin/gofmt" "/usr/bin/gofmt"
@@ -243,7 +243,7 @@ function install_dependencies() {
 		go env -w GOPROXY=https://goproxy.cn,direct
 	fi
 
-	apt install gh -y
+	apt-get install gh -y
 
 	apt clean -y
 
