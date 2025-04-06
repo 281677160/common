@@ -28,6 +28,7 @@ COOLSNOWWOLF)
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
   export BASE_FILES="$RAW_WEB/package/base-files/luci2/bin/config_generate"
+  export GENE_PATH="${HOME_PATH}/package/base-files/luci2/bin/config_generate"
 ;;
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
@@ -37,6 +38,7 @@ LIENOL)
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
   export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 IMMORTALWRT)
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
@@ -46,6 +48,7 @@ IMMORTALWRT)
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
   export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
@@ -54,6 +57,7 @@ XWRT)
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
   export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
@@ -64,6 +68,7 @@ OFFICIAL)
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
   export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 MT798X)
   if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
@@ -75,6 +80,7 @@ MT798X)
     export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
     export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
     export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
+    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
   else
     export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
     export SOURCE="Mt798x"
@@ -87,6 +93,7 @@ MT798X)
     export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
     export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
     export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
+    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
   fi
 ;;
 *)
@@ -95,6 +102,7 @@ MT798X)
 ;;
 esac
 
+echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
 echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
 echo "FILES_PATH=${HOME_PATH}/package/base-files/files" >> ${GITHUB_ENV}
@@ -112,11 +120,7 @@ echo "FEEDS_CONF=${FEEDS_CONF}" >> ${GITHUB_ENV}
 echo "BASE_FILES=${BASE_FILES}" >> ${GITHUB_ENV}
 echo "UPGRADE_KEEP=$RAW_WEB/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
 echo "TARGET_MK=$RAW_WEB/include/target.mk" >> ${GITHUB_ENV}
-if [[ ${SOURCE_CODE} == "COOLSNOWWOLF" ]]; then
-  echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/luci2/bin/config_generate" >> ${GITHUB_ENV}
-else
-  echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/bin/config_generate" >> ${GITHUB_ENV}
-fi
+echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
 if [[ -n "${BENDI_VERSION}" ]]; then
   echo "PACKAGING_FIRMWARE_BENDI=${PACKAGING_FIRMWARE}" >> ${GITHUB_ENV}
   echo "MODIFY_CONFIGURATION=${MODIFY_CONFIGURATION}" >> ${GITHUB_ENV}
