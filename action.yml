@@ -72,7 +72,9 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        echo "$FOLDER_NAME"
+        echo "$BUILD_PARTSH"
+        echo "$BUILD_SETTINGS"
+        echo "$CONFIG_FILE"
         bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
 branding:
   icon: "terminal"
