@@ -14,20 +14,6 @@ if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "operates" ]]; then
   cp -Rf shangyou/build operates
   rm -rf shangyou
   chmod -R +x operates
-  for X in $(find "operates" -name "settings.ini"); do
-    sed -i '/SSH_ACTIONS/d' "${X}"
-    sed -i '/INFORMATION_NOTICE/d' "${X}"
-    sed -i '/UPLOAD_FIRMWARE/d' "${X}"
-    sed -i '/UPLOAD_RELEASE/d' "${X}"
-    sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
-    sed -i '/COMPILATION_INFORMATION/d' "${X}"
-    sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
-    sed -i '/RETAIN_DAYS/d' "${X}"
-    sed -i '/KEEP_LATEST/d' "${X}"
-    echo 'PACKAGING_FIRMWARE="true"           # 自动把Amlogic_Rockchip系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
-    echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
-    echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
-  done
 else
   if [[ -d "build" ]]; then
     rm -rf operates
@@ -95,6 +81,7 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
       echo -e "\033[33m 同步上游仓库完成,请重新设置好文件再继续编译 \033[0m"
     fi
     exit 1
+  fi
 fi
 }
 
