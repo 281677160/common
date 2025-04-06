@@ -94,12 +94,19 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
       echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
     done
   else
-    git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-    git config --global user.name "github-actions[bot]"
+    git clone -b ${{ env.GIT_REFNAME }} https://user:${{ env.REPO_TOKEN }}@github.com/${{ env.REPO_TOKEN }}.git repogx
     git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
-    [[ -d "build" ]] && cp -Rf build shangyou/backups
+    if [[ -d "repogx/build" ]]; then
+      cp -Rf repogx/build shangyou/backups
+    fi
+    cd repogx
+    rm -rf *
+    git rm --cache *
+    cd ../
+    cp -Rf shangyou/* repogx
     BANBEN_SHUOMING="同步上游于 $(date +%Y.%m%d.%H%M.%S)"
-    chmod -R +x shangyou
+    chmod -R +x repogx
+    cd repogx
     git add .
     git commit -m "${BANBEN_SHUOMING}"
     git push --force "https://${{ env.REPO_TOKEN }}@github.com/${{ env.REPO_TOKEN }}" HEAD:${{ env.GIT_REFNAME }}
