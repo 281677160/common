@@ -30,7 +30,7 @@ runs:
           rm -rf operates
           cp -Rf build ${GITHUB_WORKSPACE}/operates
         fi
-        if [[ -n "${{ inputs.REPO_BRANCH }}" ]]; then
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
           ls -a
           if [[ -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
             SOURCE_CODE="$(grep '^SOURCE_CODE=' "operates/${FOLDER_NAME}/settings.ini" | awk -F'"' '{print $2}')"
