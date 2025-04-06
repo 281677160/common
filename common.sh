@@ -324,7 +324,7 @@ fi
 
 # 定时更新固件的插件包
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  source ${BUILD_PATH}/upgrade.sh && Diy_Part1
+  source ${UPGRADE_SH} && Diy_Part1
 else
   find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
@@ -443,7 +443,7 @@ cd ${HOME_PATH}
 
 function Diy_zdypartsh() {
 cd ${HOME_PATH}
-source $BUILD_PATH/$DIY_PART_SH
+source ${BUILD_PARTSH}
 cd ${HOME_PATH}
 
 ./scripts/feeds update -a
@@ -458,7 +458,7 @@ else
 fi
 ./scripts/feeds install -a > /dev/null 2>&1
 # 使用自定义配置文件
-[[ -f ${BUILD_PATH}/$CONFIG_FILE ]] && mv ${BUILD_PATH}/$CONFIG_FILE .config
+[[ -f "${CONFIG_FILE}" ]] && mv $CONFIG_FILE .config
 }
 
 
