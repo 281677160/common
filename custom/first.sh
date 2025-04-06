@@ -4,7 +4,8 @@
 # matrix.target=${FOLDER_NAME}
 
 function Diy_one() {
-echo "${INPUTS_REPO_BRANCH}"
+echo "${OPER_ATES}"
+echo "${FOLDER_NAME}"
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPER_ATES}" ]]; then
   git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
