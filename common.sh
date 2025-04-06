@@ -440,8 +440,8 @@ cd ${HOME_PATH}
 function Diy_zdypartsh() {
 cd ${HOME_PATH}
 source ${BUILD_PARTSH}
+echo "333"
 cd ${HOME_PATH}
-
 ./scripts/feeds update -a
 
 # 正在执行插件语言修改
@@ -1301,7 +1301,7 @@ sed -i '$a\exit 0' "${ZZZ_PATH}"
 [[ -d "${HOME_PATH}/files" ]] && sudo chmod +x ${HOME_PATH}/files
 rm -rf ${HOME_PATH}/files/{LICENSE,.*README}
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  source ${BUILD_PATH}/upgrade.sh && Diy_Part2
+  source $UPGRADE_SH && Diy_Part2
 fi
 }
 
