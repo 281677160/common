@@ -62,6 +62,8 @@ runs:
         echo "GITHUB_LINK=https://github.com/${{github.repository}}" >> ${GITHUB_ENV}
         echo "GIT_ACTOR=${{github.actor}}" >> ${GITHUB_ENV}
         echo "WAREHOUSE_MAN=${GIT_REPOSITORY##*/}" >> ${GITHUB_ENV}
+        echo "RUN_NUMBER=${{github.run_number}}" >> ${GITHUB_ENV}
+        echo "GIT_REFNAME=${{ github.ref_name }}" >> ${GITHUB_ENV}
 
         echo "HOME_PATH=$GITHUB_WORKSPACE/openwrt" >> ${GITHUB_ENV}
         echo "OPERATES_PATH=$GITHUB_WORKSPACE/operates" >> ${GITHUB_ENV}
