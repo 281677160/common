@@ -96,6 +96,7 @@ runs:
         fi
         bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
         
+        source $COMMON_SH && Diy_menu2
 branding:
   icon: "terminal"
   color: "gray-dark"
