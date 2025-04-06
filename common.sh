@@ -130,7 +130,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   sed -i '/=/ s/$/&\"/' "${GITHUB_ENV}"
   source ${GITHUB_ENV}
 else
-cat >"${BUILD_SETTINGS}" <<-EOF
+cat >"${COMPILE_PATH}/relevance/settings.ini" <<-EOF
 SOURCE_CODE="${SOURCE_CODE}"
 REPO_BRANCH="${REPO_BRANCH}"
 CONFIG_FILE="${CONFIG_FILE}"
