@@ -172,7 +172,7 @@ echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 if [[ -n "${BENDI_VERSION}" ]]; then
   git pull > /dev/null 2>&1
 fi
-
+echo "22"
 # 添加自定义插件源
 CLASH_FENZHIHAO="$(grep 'OpenClash_branch=' "${BUILD_SETTINGS}" | awk -F'["#]' '{print $2}')"
 if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
@@ -180,7 +180,7 @@ if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
 else
   CLASH_BRANCH="master"
 fi
-
+echo "11"
 SRC_LIANJIE="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
 SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
