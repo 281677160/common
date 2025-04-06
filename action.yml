@@ -25,12 +25,12 @@ runs:
       run: |
         cd ${GITHUB_WORKSPACE}
         echo ${PWD}
-        ls -a
-        if [[ -d "build" ]]; then
-          rm -rf operates
-          cp -Rf build operates
+        if [[ -d "${GITHUB_WORKSPACE}/build" ]]; then
+          rm -rf ${GITHUB_WORKSPACE}/operates
+          cp -Rf ${GITHUB_WORKSPACE}/build ${GITHUB_WORKSPACE}/operates
         fi
         if [[ -n "${{ inputs.REPO_BRANCH }}" ]]; then
+          ls -a
           if [[ -f "$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/settings.ini" ]]; then
             SOURCE_CODE="$(grep '^SOURCE_CODE=' "$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/settings.ini" | awk -F'"' '{print $2}')"
           fi
@@ -72,6 +72,7 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
+        echo "$FOLDER_NAME"
         bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
 branding:
   icon: "terminal"
