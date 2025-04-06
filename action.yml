@@ -29,7 +29,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        source ${BUILD_PATH}/common.sh && Diy_menu6
+        source $COMMON_SH && Diy_menu6
 
     - name: 上传"${{ matrix.target }}"配置文件在 Github Artifacts
       if: env.SHANG_CHUAN == 'true'
