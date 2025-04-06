@@ -52,6 +52,7 @@ runs:
         fi
         echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
         echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
+        echo "INFORMATION_NOTICE=${INFORMATION_NOTICE}" >> ${GITHUB_ENV}
         echo "RETAIN_MINUTE=${RETAIN_MINUTE}" >> ${GITHUB_ENV}
         echo "KEEP_LATEST=${KEEP_LATEST}" >> ${GITHUB_ENV}
         echo "SSH_ACTION=${SSH_ACTION}" >> ${GITHUB_ENV}
@@ -82,6 +83,16 @@ runs:
         echo "DIY_WORK=${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")" >> ${GITHUB_ENV}
         if [[ "${SOURCE_CODE}" == "COOLSNOWWOLF" ]]; then
           echo "LUCI_EDITION=23.05" >> ${GITHUB_ENV}
+        fi
+
+        if [[ "${INFORMATION_NOTICE}" =~ (关闭|false) ]]; then
+          echo "INFORMATION_NOTICE=false" >> ${GITHUB_ENV}
+        elif [[ -n "$(echo "${INFORMATION_NOTICE}" |grep -i 'TG\|telegram')" ]]; then
+          echo "INFORMATION_NOTICE=TG" >> ${GITHUB_ENV}
+        elif [[ -n "$(echo "${INFORMATION_NOTICE}" |grep -i 'PUSH\|pushplus')" ]]; then
+          echo "INFORMATION_NOTICE=PUSH" >> ${GITHUB_ENV}
+        else
+          echo "INFORMATION_NOTICE=false" >> ${GITHUB_ENV}
         fi
         bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
         
