@@ -126,7 +126,10 @@ if [[ ! -d "${OPERATES_PATH}/common" ]]; then
   exit 1
 fi
 export COMMON_SH=${OPERATES_PATH}/common/common.sh
+export COMMON_SH=${OPERATES_PATH}/common/upgrade.sh
 echo "COMMON_SH=${OPERATES_PATH}/common/common.sh" >> ${GITHUB_ENV}
+echo "UPGRADE_SH=${OPERATES_PATH}/common/upgrade.sh" >> ${GITHUB_ENV}
+
 chmod -R +x ${OPERATES_PATH}
 }
 
