@@ -30,6 +30,7 @@ if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "operates" ]]; then
   done
 else
   if [[ -d "build" ]]; then
+    rm -rf operates
     cp -Rf build operates
   fi
 fi
