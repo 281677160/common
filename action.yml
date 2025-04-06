@@ -19,6 +19,18 @@ runs:
           echo -e "\033[31m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m"
           exit 1
         fi
+
+    - name: 密匙检测（密匙为空则退出）
+      shell: bash
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        echo "INPUTS_REPO_BRANCH=${{ github.event.inputs.REPO_BRANCH }}" >> ${GITHUB_ENV}
+
+    - name: 密匙检测（密匙为空则退出）
+      shell: bash
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        echo "${INPUTS_REPO_BRANCH}"
 branding:
   icon: "terminal"
   color: "gray-dark"
