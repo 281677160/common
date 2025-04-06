@@ -20,6 +20,19 @@ swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
 # N1打包需要的依赖
 ${INS} install rename pigz clang upx-ucl
 
+# 安装po2lmo
+git clone --filter=blob:none --no-checkout "https://github.com/openwrt/luci.git" "po2lmo"
+pushd "po2lmo"
+git config core.sparseCheckout true
+echo "modules/luci-base/src" >> ".git/info/sparse-checkout"
+git checkout
+cd "modules/luci-base/src"
+make po2lmo
+strip "po2lmo"
+rm -rf "/usr/bin/po2lmo"
+cp -fp "po2lmo" "/usr/bin/po2lmo"
+popd
+
 # 安装gcc-13
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
