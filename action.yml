@@ -24,13 +24,53 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        echo "INPUTS_REPO_BRANCH=${{ github.event.inputs.REPO_BRANCH }}" >> ${GITHUB_ENV}
+        if [[ -d "build" ]]; then
+          rm -rf operates
+          cp -Rf build operates
+        fi
+        if [[ -n "${{ inputs.REPO_BRANCH }}" ]]; then
+          if [[ -f "$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/settings.ini" ]]; then
+            SOURCE_CODE="$(grep '^SOURCE_CODE=' "$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/settings.ini" | awk -F'"' '{print $2}')"
+          fi
+          REPO_BRANCH="${{ inputs.REPO_BRANCH }}"
+          CONFIG_FILE="${{ inputs.CONFIG_FILE }}"
+          INFORMATION_NOTICE="${{ inputs.FOLDER_NAME }}"
+          RETAIN_MINUTE="${{ inputs.RETAIN_MINUTE }}"
+          KEEP_LATEST="${{ inputs.KEEP_LATEST }}"
+          SSH_ACTION="${{ inputs.SSH_ACTION }}"
+          UPLOAD_FIRMWARE="${{ inputs.UPLOAD_FIRMWARE }}"
+          UPLOAD_RELEASE="${{ inputs.UPLOAD_RELEASE }}"
+          CACHEWRTBUILD_SWITCH="${{ inputs.CACHEWRTBUILD_SWITCH }}"
+          UPDATE_FIRMWARE_ONLINE="${{ inputs.FIRMWARE_BIN }}"
+        else
+          source $GITHUB_WORKSPACE/operates/${{ matrix.target }}/settings.ini
+        fi
+        echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
+        echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
+        echo "RETAIN_MINUTE=${RETAIN_MINUTE}" >> ${GITHUB_ENV}
+        echo "KEEP_LATEST=${KEEP_LATEST}" >> ${GITHUB_ENV}
+        echo "SSH_ACTION=${SSH_ACTION}" >> ${GITHUB_ENV}
+        echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${GITHUB_ENV}
+        echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
+        echo "CACHEWRTBUILD_SWITCH=${CACHEWRTBUILD_SWITCH}" >> ${GITHUB_ENV}
+        echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+        echo "WAREHOUSE_MAN=${GIT_REPOSITORY##*/}" >> ${GITHUB_ENV}
+        echo "FOLDER_NAME=${{ matrix.target }}" >> ${GITHUB_ENV}
+        echo "OPER_ATES=$GITHUB_WORKSPACE/operates" >> ${GITHUB_ENV}
+        echo "HOME_PATH=$GITHUB_WORKSPACE/openwrt" >> ${GITHUB_ENV}
+        
+        echo "BUILD_DIY=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/diy" >> ${GITHUB_ENV}
+        echo "BUILD_FILES=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/files" >> ${GITHUB_ENV}
+        echo "BUILD_PATCHES=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/patches" >> ${GITHUB_ENV}
+        echo "BUILD_PARTSH="$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/diy-part.sh" >> ${GITHUB_ENV}
+        echo "BUILD_SETTINGS="$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/settings.ini" >> ${GITHUB_ENV}
+        echo "CONFIG_FILE=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/seed/${CONFIG_FILE}" >> ${GITHUB_ENV}
 
     - name: 密匙检测（密匙为空则退出）
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        echo "${INPUTS_REPO_BRANCH}"
+        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
 branding:
   icon: "terminal"
   color: "gray-dark"
