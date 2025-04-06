@@ -330,12 +330,8 @@ else
 fi
 
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
-echo "src-git dssubject https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
+echo "src-git dstheme https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
 echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;$CLASH_BRANCH" >> ${HOME_PATH}/feeds.conf.default
-
-echo "THEME_BRANCH=${THEME_BRANCH}" >> ${GITHUB_ENV}
-echo "CLASH_BRANCH=${CLASH_BRANCH}" >> ${GITHUB_ENV}
-
 
 # 增加中文语言包
 A_PATH="$HOME_PATH/package"
@@ -368,9 +364,12 @@ elif [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ 
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-fs luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
   fi
 fi
+
 if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
   sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci ?g' "${HOME_PATH}/include/target.mk"
 fi
+
+# 删除前面下载而又不需要了的
 rm -rf ${HOME_PATH}/SRC_LUCI
 
 # zzz-default-settings文件
@@ -399,7 +398,7 @@ luci-app-ssr-plus,luci-app-passwall,v2dat,v2ray-geodata, \
 luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,luci-app-alist,alist"
 t=(${z//,/ })
 for x in ${t[@]}; do \
-  find . '(' -path './feeds/danshui' -o -path './feeds/dssubject' ')' -prune -o -name "$x" -type d -exec rm -rf {} +
+  find . '(' -path './feeds/danshui' -o -path './feeds/dstheme' ')' -prune -o -name "$x" -type d -exec rm -rf {} +
 done
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
