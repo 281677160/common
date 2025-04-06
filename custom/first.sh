@@ -102,7 +102,7 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
     chmod -R +x shangyou
     git add .
     git commit -m "${BANBEN_SHUOMING}"
-    git push --force "https://${{ env.REPO_TOKEN }}@github.com/${{ github.repository }}" HEAD:${{ github.ref_name }}
+    git push --force "https://${{ env.REPO_TOKEN }}@github.com/${{ env.REPO_TOKEN }}" HEAD:${{ env.GIT_REFNAME }}
     if [[ $? -ne 0 ]]; then
       echo -e "\033[31m 同步上游仓库失败,请注意密匙是否正确 \033[0m"
     else
