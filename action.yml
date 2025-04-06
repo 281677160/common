@@ -25,13 +25,13 @@ runs:
       if: env.SSH_ACTION == 'true'
       uses: danshui-git/debugger-action@main
 
-    - name: 生成"${{ matrix.target }}"配置文件
+    - name: 生成配置文件
       shell: bash
       run: |
         cd $HOME_PATH
         source $COMMON_SH && Diy_menu6
 
-    - name: 上传"${{ matrix.target }}"配置文件在 Github Artifacts
+    - name: 上传配置文件在 Github Artifacts
       if: env.SHANG_CHUAN == 'true'
       uses: actions/upload-artifact@main
       with:
