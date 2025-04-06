@@ -7,18 +7,21 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
+        echo "111"
         source $COMMON_SH && Diy_menu3
  
     - name: 加载自定义设置
       shell: bash
       run: |
         cd $HOME_PATH
+        echo "222"
         source $COMMON_SH && Diy_menu4
         
     - name: 安装插件源
       shell: bash
       run: |
         cd $HOME_PATH
+        echo "333"
         source $COMMON_SH && Diy_menu5
     
     - name: SSH远程连接（make menuconfig）
@@ -29,6 +32,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
+        echo "444"
         source $COMMON_SH && Diy_menu6
 
     - name: 上传配置文件在 Github Artifacts
