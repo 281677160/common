@@ -24,6 +24,7 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
+        echo ${PWD}
         ls -a
         if [[ -d "build" ]]; then
           rm -rf operates
