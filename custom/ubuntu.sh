@@ -27,7 +27,7 @@ git config core.sparseCheckout true
 echo "modules/luci-base/src" >> ".git/info/sparse-checkout"
 git checkout
 cd "modules/luci-base/src"
-make po2lmo
+sudo make po2lmo
 strip "po2lmo"
 rm -rf "/usr/bin/po2lmo"
 cp -fp "po2lmo" "/usr/bin/po2lmo"
