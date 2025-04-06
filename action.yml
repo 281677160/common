@@ -7,19 +7,19 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        source ${BUILD_PATH}/common.sh && Diy_menu3
+        source $COMMON_SH && Diy_menu3
  
     - name: 加载自定义设置
       shell: bash
       run: |
         cd $HOME_PATH
-        source ${BUILD_PATH}/common.sh && Diy_menu4
+        source $COMMON_SH && Diy_menu4
         
     - name: 安装插件源
       shell: bash
       run: |
         cd $HOME_PATH
-        source ${BUILD_PATH}/common.sh && Diy_menu5
+        source $COMMON_SH && Diy_menu5
     
     - name: SSH远程连接（make menuconfig）
       if: env.SSH_ACTION == 'true'
