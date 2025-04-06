@@ -58,6 +58,7 @@ elif [[ -f "${OPER_ATES}/${FOLDER_NAME}/relevance/actions_version" ]]; then
   ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' common.sh)"
   ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' ${OPER_ATES}/${FOLDER_NAME}/relevance/actions_version)"
   if [[ ! "${ACTIONS_VERSION1}" == "${ACTIONS_VERSION2}" ]]; then
+    echo -e "\033[31m 和上游版本不一致 \033[0m"
     SYNCHRONISE="NO"
   fi
 else
