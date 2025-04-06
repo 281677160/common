@@ -11,6 +11,20 @@ if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPER_ATES}" ]]; then
   cp -Rf shangyou/build ${OPER_ATES}
   rm -rf shangyou
   chmod -R +x ${OPER_ATES}
+  for X in $(find "${OPER_ATES}" -name "settings.ini"); do
+    sed -i '/SSH_ACTIONS/d' "${X}"
+    sed -i '/INFORMATION_NOTICE/d' "${X}"
+    sed -i '/UPLOAD_FIRMWARE/d' "${X}"
+    sed -i '/UPLOAD_RELEASE/d' "${X}"
+    sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
+    sed -i '/COMPILATION_INFORMATION/d' "${X}"
+    sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
+    sed -i '/RETAIN_DAYS/d' "${X}"
+    sed -i '/KEEP_LATEST/d' "${X}"
+    echo 'PACKAGING_FIRMWARE="true"           # 自动把Amlogic_Rockchip系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
+    echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
+    echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
+  done
 else
   if [[ -d "build" ]]; then
     rm -rf ${OPER_ATES}
@@ -64,6 +78,20 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
       rm -rf shangyou
     fi
     chmod -R +x ${OPER_ATES}
+    for X in $(find "${OPER_ATES}" -name "settings.ini"); do
+      sed -i '/SSH_ACTIONS/d' "${X}"
+      sed -i '/INFORMATION_NOTICE/d' "${X}"
+      sed -i '/UPLOAD_FIRMWARE/d' "${X}"
+      sed -i '/UPLOAD_RELEASE/d' "${X}"
+      sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
+      sed -i '/COMPILATION_INFORMATION/d' "${X}"
+      sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
+      sed -i '/RETAIN_DAYS/d' "${X}"
+      sed -i '/KEEP_LATEST/d' "${X}"
+      echo 'PACKAGING_FIRMWARE="true"           # 自动把Amlogic_Rockchip系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
+      echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
+      echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
+    done
   else
     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
     git config --global user.name "github-actions[bot]"
