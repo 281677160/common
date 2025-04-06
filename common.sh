@@ -307,6 +307,13 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 fi
 
 # 添加自定义插件源
+CLASH_FENZHIHAO="$(grep 'OpenClash_branch=' "$BUILD_PATH/$DIY_PART_SH" | awk -F'=' '{print $2}' | tr -d '"')"
+if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
+  CLASH_BRANCH="dev"
+else
+  CLASH_BRANCH="master"
+fi
+
 SRC_LIANJIE="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
 SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
@@ -316,12 +323,18 @@ else
 fi
 C_PATH="${HOME_PATH}/SRC_LUCI/modules/luci-mod-system"
 if [[ -d "${HOME_PATH}/SRC_LUCI/modules/luci-mod-system" ]]; then
-  echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> ${HOME_PATH}/feeds.conf.default
+  THEME_BRANCH="Theme2"
 else
-  echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> ${HOME_PATH}/feeds.conf.default
+  THEME_BRANCH="Theme1"
 fi
+
+echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
+echo "src-git dssubject https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
+echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;$CLASH_BRANCH" >> ${HOME_PATH}/feeds.conf.default
+
+echo "THEME_BRANCH=${THEME_BRANCH}" >> ${GITHUB_ENV}
+echo "CLASH_BRANCH=${CLASH_BRANCH}" >> ${GITHUB_ENV}
+
 
 # 增加中文语言包
 A_PATH="$HOME_PATH/package"
@@ -572,12 +585,6 @@ source $BUILD_PATH/$DIY_PART_SH
 cd ${HOME_PATH}
 
 ./scripts/feeds update -a
-
-if [[ "${OpenClash_branch}" == "1" ]]; then
-  gitsvn https://github.com/vernesong/OpenClash/tree/dev ${HOME_PATH}/package/OpenClash
-else
-  gitsvn https://github.com/vernesong/OpenClash/tree/master ${HOME_PATH}/package/OpenClash
-fi
 
 # 正在执行插件语言修改
 if [[ -d "${HOME_PATH}/feeds/luci/modules/luci-mod-system" ]]; then
