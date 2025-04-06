@@ -65,7 +65,6 @@ else
 fi
 }
 
-
 function Diy_three() {
 cd ${GITHUB_WORKSPACE}
 if [[ "${SYNCHRONISE}" == "NO" ]]; then
