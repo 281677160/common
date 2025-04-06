@@ -307,7 +307,73 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 fi
 
 # 添加自定义插件源
-echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> feeds.conf.default
+SRC_LIANJIE="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
+SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+if [[ -n "${SRC_FENZHIHAO}" ]]; then
+  git clone -q --single-branch --depth=1 --branch=${SRC_FENZHIHAO} ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
+else
+  git clone -q --depth 1 ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
+fi
+C_PATH="${HOME_PATH}/SRC_LUCI/modules/luci-mod-system"
+if [[ -d "${HOME_PATH}/SRC_LUCI/modules/luci-mod-system" ]]; then
+  echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
+  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> ${HOME_PATH}/feeds.conf.default
+else
+  echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
+  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> ${HOME_PATH}/feeds.conf.default
+fi
+
+# 增加中文语言包
+A_PATH="$HOME_PATH/package"
+if [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ -d "$C_PATH" ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/default-settings ${HOME_PATH}/package/default-settings
+  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-base luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+  fi
+elif [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ ! -d "$C_PATH" ]]; then
+  gitsvn https://github.com/281677160/common/tree/main/Share/default-setting ${HOME_PATH}/package/default-settings
+  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-fs luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+  fi
+fi
+if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci ?g' "${HOME_PATH}/include/target.mk"
+fi
+rm -rf ${HOME_PATH}/SRC_LUCI
+
+# zzz-default-settings文件
+ZZZ_PATH="$(find "$A_PATH" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
+if [[ -n "${ZZZ_PATH}" ]]; then  
+  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+  if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
+    cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
+  else
+    cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/LICENSES/doc/default-settings
+  fi
+  sed -i '/exit 0$/d' "${ZZZ_PATH}"
+  sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+  grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
+fi
+
+# 更新feeds
 ./scripts/feeds update -a > /dev/null 2>&1
 
 z="luci-theme-argon,luci-app-argon-config,luci-theme-Butterfly,luci-theme-netgear,luci-theme-atmaterial, \
@@ -332,6 +398,12 @@ if [[ "${REPO_BRANCH}" =~ ^(2410|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-istorex
 fi
 
+if [[ ! -d "${HOME_PATH}/package/network/config/firewall4" ]]; then
+    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
+    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-homeproxy
+fi
+
+
 # 更新golang和node版本
 gitsvn https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
 gitsvn https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
@@ -353,92 +425,12 @@ if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] ||
    gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/relevance/passwall-packages/shadowsocks-rust/Makefile
 fi
 
-if [[ ! -d "${HOME_PATH}/package/network/config/firewall4" ]]; then
-    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
-    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-homeproxy
-fi
-
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
     gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
-fi
-
-
-# N1类型固件修改
-if [[ -f "${HOME_PATH}/target/linux/armsr/Makefile" ]]; then
-  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" ${HOME_PATH}/target/linux/armsr/Makefile
-elif [[ -f "${HOME_PATH}/target/linux/armvirt/Makefile" ]]; then
-  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" ${HOME_PATH}/target/linux/armvirt/Makefile
-fi
-
-# 给固件保留配置更新固件的保留项目
-cat >> "${KEEPD_PATH}" <<-EOF
-/etc/config/AdGuardHome.yaml
-/www/luci-static/argon/background
-/etc/smartdns/custom.conf
-EOF
-}
-
-
-function Diy_Wenjian() {
-# 增加中文语言包
-A_PATH="$HOME_PATH/package"
-C_PATH="$HOME_PATH/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json"
-echo "LUCI_BANBEN=$C_PATH" >> $GITHUB_ENV
-if [[ -f "${C_PATH}" ]]; then
-  gitsvn https://github.com/281677160/openwrt-package/tree/Theme2 ${HOME_PATH}/package/Luci_theme
-else
-  gitsvn https://github.com/281677160/openwrt-package/tree/Theme1 ${HOME_PATH}/package/Luci_theme
-fi
-if [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ -f "$C_PATH" ]]; then
-  gitsvn https://github.com/281677160/common/tree/main/Share/default-settings ${HOME_PATH}/package/default-settings
-  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-base luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
-  fi
-elif [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ ! -f "$C_PATH" ]]; then
-  gitsvn https://github.com/281677160/common/tree/main/Share/default-setting ${HOME_PATH}/package/default-settings
-  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-fs luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
-  fi
-fi
-
-# zzz-default-settings文件
-ZZZ_PATH="$(find "$A_PATH" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
-if [[ -n "${ZZZ_PATH}" ]]; then  
-  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
-  if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
-    cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
-  else
-    cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/LICENSES/doc/default-settings
-  fi
-  sed -i '/exit 0$/d' "${ZZZ_PATH}"
-  sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-  grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
-fi
-
-if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci ?g' "${HOME_PATH}/include/target.mk"
 fi
 
 # files大法，设置固件无烦恼
@@ -461,6 +453,20 @@ else
     sed -i 's?luci-app-autoupdate??g' ${HOME_PATH}/include/target.mk
   fi
 fi
+
+# N1类型固件修改
+if [[ -f "${HOME_PATH}/target/linux/armsr/Makefile" ]]; then
+  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" ${HOME_PATH}/target/linux/armsr/Makefile
+elif [[ -f "${HOME_PATH}/target/linux/armvirt/Makefile" ]]; then
+  sed -i "s?FEATURES+=.*?FEATURES+=targz?g" ${HOME_PATH}/target/linux/armvirt/Makefile
+fi
+
+# 给固件保留配置更新固件的保留项目
+cat >> "${KEEPD_PATH}" <<-EOF
+/etc/config/AdGuardHome.yaml
+/www/luci-static/argon/background
+/etc/smartdns/custom.conf
+EOF
 }
 
 
@@ -1938,7 +1944,6 @@ Diy_Publicarea
 
 function Diy_menu3() {
 Diy_checkout
-Diy_Wenjian
 Diy_${SOURCE_CODE}
 }
 
