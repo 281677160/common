@@ -17,12 +17,102 @@ function TIME() {
 echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
 }
 
+function settings_variable() {
+cd ${GITHUB_WORKSPACE}
+bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh)
+}
+
 function Diy_variable() {
 # 读取变量
+if [[ -n "${BENDI_VERSION}" ]]; then
+  export start_path="${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/relevance/settings.ini"
+else
+  export start_path="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini"
+fi
+
+if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
+  SOURCE_CODE="${SOURCE_CODE}"
+  REPO_BRANCH="${INPUTS_REPO_BRANCH}"
+  CONFIG_FILE="$(echo "${INPUTS_CONFIG_FILE}" |cut -d"/" -f2)"
+  RETAIN_MINUTE="${INPUTS_RETAIN_MINUTE}"
+  INFORMATION_NOTICE="${INPUTS_INFORMATION_NOTICE}"
+  UPLOAD_FIRMWARE="${INPUTS_UPLOAD_FIRMWARE}"
+  UPLOAD_RELEASE="${INPUTS_UPLOAD_RELEASE}"
+  CACHEWRTBUILD_SWITCH="${INPUTS_CACHEWRTBUILD_SWITCH}"
+  UPDATE_FIRMWARE_ONLINE="${INPUTS_UPDATE_FIRMWARE_ONLINE}"
+  COMPILATION_INFORMATION="${COMPILATION_INFORMATION}"
+  RETAIN_MINUTE="${RETAIN_MINUTE}"
+  KEEP_LATEST="${INPUTS_KEEP_LATEST}"
+  echo "SSH_ACTION=${INPUTS_SSH_ACTION}" >> ${GITHUB_ENV}
+  WAREHOUSE_MAN="${GIT_REPOSITORY##*/}"
+else
+  SOURCE_CODE="${SOURCE_CODE}"
+  REPO_BRANCH="${REPO_BRANCH}"
+  CONFIG_FILE="$(echo "${CONFIG_FILE}" |cut -d"/" -f2)"
+  CPU_SELECTION="${CPU_SELECTION}"
+  INFORMATION_NOTICE="${INFORMATION_NOTICE}"
+  UPLOAD_FIRMWARE="${UPLOAD_FIRMWARE}"
+  UPLOAD_RELEASE="${UPLOAD_RELEASE}"
+  CACHEWRTBUILD_SWITCH="${CACHEWRTBUILD_SWITCH}"
+  UPDATE_FIRMWARE_ONLINE="${UPDATE_FIRMWARE_ONLINE}"
+  COMPILATION_INFORMATION="${COMPILATION_INFORMATION}"
+  RETAIN_MINUTE="${RETAIN_MINUTE}"
+  KEEP_LATEST="${KEEP_LATEST}"
+  WAREHOUSE_MAN="${GIT_REPOSITORY##*/}"
+fi
+
+if [[ -n "$(echo "${CPU_SELECTION}" |grep -i 'E5\|默认\|false')" ]]; then
+  CPU_SELECTION="false"
+elif [[ -n "$(echo "${CPU_SELECTION}" |grep '8370')" ]]; then
+  CPU_SELECTION="8370"
+elif [[ -n "$(echo "${CPU_SELECTION}" |grep '8272')" ]]; then
+  CPU_SELECTION="8272"
+elif [[ -n "$(echo "${CPU_SELECTION}" |grep '8171')" ]]; then
+  CPU_SELECTION="8171"
+else
+  CPU_SELECTION="false"
+fi
+
+if [[ "${INFORMATION_NOTICE}" =~ (关闭|false) ]]; then
+  INFORMATION_NOTICE="false"
+elif [[ -n "$(echo "${INFORMATION_NOTICE}" |grep -i 'TG\|telegram')" ]]; then
+  INFORMATION_NOTICE="TG"
+elif [[ -n "$(echo "${INFORMATION_NOTICE}" |grep -i 'PUSH\|pushplus')" ]]; then
+  INFORMATION_NOTICE="PUSH"
+else
+  INFORMATION_NOTICE="false"
+fi
+  
+cat >"${start_path}" <<-EOF
+SOURCE_CODE="${SOURCE_CODE}"
+REPO_BRANCH="${REPO_BRANCH}"
+CONFIG_FILE="seed/${CONFIG_FILE}"
+CPU_SELECTION="${CPU_SELECTION}"
+INFORMATION_NOTICE="${INFORMATION_NOTICE}"
+UPLOAD_FIRMWARE="${UPLOAD_FIRMWARE}"
+UPLOAD_RELEASE="${UPLOAD_RELEASE}"
+CACHEWRTBUILD_SWITCH="${CACHEWRTBUILD_SWITCH}"
+UPDATE_FIRMWARE_ONLINE="${UPDATE_FIRMWARE_ONLINE}"
+COMPILATION_INFORMATION="${COMPILATION_INFORMATION}"
+RETAIN_MINUTE="${RETAIN_MINUTE}"
+KEEP_LATEST="${KEEP_LATEST}"
+EOF
+
+if [[ -n "${BENDI_VERSION}" ]]; then
+  echo "PACKAGING_FIRMWARE_BENDI=${PACKAGING_FIRMWARE}" >> "${start_path}"
+  echo "MODIFY_CONFIGURATION=${MODIFY_CONFIGURATION}" >> "${start_path}"
+  echo "WSL_ROUTEPATH=${WSL_ROUTEPATH}" >> "${start_path}"
+fi
+
+chmod -R +x ${start_path} && source ${start_path}
+
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
   export SOURCE="Lede"
+  export SOURCE_OWNER="Lean's"
+  export LUCI_EDITION="23.05"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
@@ -31,6 +121,9 @@ COOLSNOWWOLF)
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
   export SOURCE="Lienol"
+  export SOURCE_OWNER="Lienol's"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
@@ -39,6 +132,9 @@ LIENOL)
 IMMORTALWRT)
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export SOURCE="Immortalwrt"
+  export SOURCE_OWNER="ctcgfw's"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
@@ -47,6 +143,9 @@ IMMORTALWRT)
 XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="Xwrt"
+  export SOURCE_OWNER="ptpt52's"
+  export LUCI_EDITION="${REPO_BRANCH}"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
@@ -56,6 +155,8 @@ OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
   export SOURCE="Official"
   export SOURCE_OWNER="openwrt's"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
@@ -65,7 +166,10 @@ MT798X)
   if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
     export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
     export SOURCE="Mt798x"
+    export SOURCE_OWNER="hanwckf's"
     export REPO_BRANCH="openwrt-21.02"
+    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    export DIY_WORK="hanwckf2102"
     export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
     export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
     export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
@@ -73,11 +177,13 @@ MT798X)
   else
     export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
     export SOURCE="Mt798x"
+    export SOURCE_OWNER="PADAVANONLY's"
     if [[ "${REPO_BRANCH}" == "2410" ]]; then
       export LUCI_EDITION="24.10"
     else
       export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     fi
+    export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
     export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
     export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
     export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
@@ -90,14 +196,35 @@ MT798X)
 ;;
 esac
 
+export DIY_PART_SH="diy-part.sh"
+echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
+echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
+echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
+echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
+echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
+echo "CONFIG_FILE=${CONFIG_FILE}" >> ${GITHUB_ENV}
+echo "CPU_SELECTION=${CPU_SELECTION}" >> ${GITHUB_ENV}
+echo "INFORMATION_NOTICE=${INFORMATION_NOTICE}" >> ${GITHUB_ENV}
+echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${GITHUB_ENV}
+echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
+echo "CACHEWRTBUILD_SWITCH=${CACHEWRTBUILD_SWITCH}" >> ${GITHUB_ENV}
+echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+echo "COMPILATION_INFORMATION=${COMPILATION_INFORMATION}" >> ${GITHUB_ENV}
+echo "RETAIN_MINUTE=${RETAIN_MINUTE}" >> ${GITHUB_ENV}
+echo "KEEP_LATEST=${KEEP_LATEST}" >> ${GITHUB_ENV}
+echo "WAREHOUSE_MAN=${WAREHOUSE_MAN}" >> ${GITHUB_ENV}
 echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
-echo "FILES_PATH=${HOME_PATH}/package/base-files/files" >> ${GITHUB_ENV}
-echo "REPAIR_PATH=${HOME_PATH}/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
-echo "DELETE=${HOME_PATH}/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
-echo "DEFAULT_PATH=${HOME_PATH}/package/auto-scripts/files/99-first-run" >> ${GITHUB_ENV}
-echo "KEEPD_PATH=${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
-echo "CLEAR_PATH=${HOME_PATH}/Clear" >> ${GITHUB_ENV}
+echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
+echo "DIY_WORK=${DIY_WORK}" >> ${GITHUB_ENV}
+echo "DIYPART_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}/${DIY_PART_SH}" >> ${GITHUB_ENV}
+echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}" >> ${GITHUB_ENV}
+echo "FILES_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
+echo "REPAIR_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
+echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
+echo "DEFAULT_PATH=${GITHUB_WORKSPACE}/openwrt/package/auto-scripts/files/99-first-run" >> ${GITHUB_ENV}
+echo "KEEPD_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
+echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
 echo "Upgrade_Date=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`" >> ${GITHUB_ENV}
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
@@ -126,6 +253,18 @@ if [[ -n "${BENDI_VERSION}" ]]; then
   source ${GITHUB_ENV}
 else
   GIT_BUILD="build/${FOLDER_NAME}"
+fi
+
+# 检查自定义文件是否存在
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${CONFIG_FILE}名称的配置文件],请在[${FOLDER_NAME}/seed]文件夹内补齐"
+  echo
+  exit 1
+fi
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART_SH}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${DIY_PART_SH}名称的自定义设置文件],请在[${FOLDER_NAME}]文件夹内补齐"
+  echo
+  exit 1
 fi
 }
 
