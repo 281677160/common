@@ -8,6 +8,7 @@ DIY_PARTSH="${DIY_PARTSH}"
 SETTINGS_INI="${SETTINGS_INI}"
 export OPER_ATES="$GITHUB_WORKSPACE/operates"
 function Diy_one() {
+echo "$INPUTS_REPO_BRANCH"
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "operates" ]]; then
   git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
