@@ -24,7 +24,8 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        echo ${PWD}
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
         if [[ -d "${GITHUB_WORKSPACE}/build" ]]; then
           rm -rf ${GITHUB_WORKSPACE}/operates
           cp -Rf ${GITHUB_WORKSPACE}/build ${GITHUB_WORKSPACE}/operates
