@@ -3,25 +3,18 @@
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
 
-FOLDER_NAME="${FOLDER_NAME}"
-DIY_PARTSH="${DIY_PARTSH}"
-SETTINGS_INI="${SETTINGS_INI}"
-export OPER_ATES="$GITHUB_WORKSPACE/operates"
-
-export INPUTS_REPO_BRANCH="${INPUTS_REPO_BRANCH}"
-
 function Diy_one() {
 echo "${INPUTS_REPO_BRANCH}"
 cd ${GITHUB_WORKSPACE}
-if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "operates" ]]; then
+if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPER_ATES}" ]]; then
   git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
-  cp -Rf shangyou/build operates
+  cp -Rf shangyou/build ${OPER_ATES}
   rm -rf shangyou
-  chmod -R +x operates
+  chmod -R +x ${OPER_ATES}
 else
   if [[ -d "build" ]]; then
-    rm -rf operates
-    cp -Rf build operates
+    rm -rf ${OPER_ATES}
+    cp -Rf build ${OPER_ATES}
   fi
 fi
 }
@@ -35,11 +28,11 @@ if [[ ! -d "${OPER_ATES}" ]]; then
 elif [[ ! -d "${FOLDER_NAME}" ]]; then
   echo -e "\033[31m 缺少${FOLDER_NAME}文件夹 \033[0m"
   SYNCHRONISE="NO"
-elif [[ ! -f "${SETTINGS_INI}" ]]; then
-  echo -e "\033[31m 缺少${SETTINGS_INI}文件 \033[0m"
+elif [[ ! -f "${BUILD_PARTSH}" ]]; then
+  echo -e "\033[31m 缺少${BUILD_PARTSH}文件 \033[0m"
   SYNCHRONISE="NO"
-elif [[ ! -f "${DIY_PARTSH}" ]]; then
-  echo -e "\033[31m 缺少${DIY_PARTSH}文件 \033[0m"
+elif [[ ! -f "${BUILD_SETTINGS}" ]]; then
+  echo -e "\033[31m 缺少${BUILD_SETTINGS}文件 \033[0m"
   SYNCHRONISE="NO"
 elif [[ ! -f "${OPER_ATES}/${FOLDER_NAME}/relevance/actions_version" ]]; then
   echo -e "\033[31m 缺少relevance/actions_version文件 \033[0m"
@@ -62,18 +55,20 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
   if [[ -n "${BENDI_VERSION}" ]]; then
     git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
     if [[ -d "operates" ]]; then
-      mv operates backups
-      cp -Rf shangyou/build operates
-      mv backups operates/backups
+      mv ${OPER_ATES} backups
+      cp -Rf shangyou/build ${OPER_ATES}
+      mv backups ${OPER_ATES}/backups
       rm -rf shangyou
     else
-      cp -Rf shangyou/build operates
+      cp -Rf shangyou/build ${OPER_ATES}
       rm -rf shangyou
     fi
-    chmod -R +x operates
+    chmod -R +x ${OPER_ATES}
   else
+    git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    git config --global user.name "github-actions[bot]"
     git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
-    [[ -d "build" ]] && cp -Rf build shangyou/build
+    [[ -d "build" ]] && cp -Rf build shangyou/backups
     BANBEN_SHUOMING="同步上游于 $(date +%Y.%m%d.%H%M.%S)"
     chmod -R +x shangyou
     git add .
