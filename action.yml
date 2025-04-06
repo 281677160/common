@@ -8,14 +8,14 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        echo "${FOLDER_NAME} program-$(date +%Y%m%d%H%M%S)" > $OPERATES_PATH/relevance/start
+        mkdir -p "UPLOAD/build/${FOLDER_NAME}/relevance"
+        echo "${FOLDER_NAME} program-$(date +%Y%m%d%H%M%S)" > $COMPILE_PATH/relevance/start
         git -b ${GIT_REFNAME} clone https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git UPLOAD
         rm -rf UPLOAD/*
         cp -Rf ${HOME_PATH}/build_logo/config.txt ${CONFIG_FILE}
         cp -Rf $OPERATES_PATH/* UPLOAD
         cp -Rf $GITHUB_WORKSPACE/.github/workflows/* UPLOAD/.github/workflows
-        mkdir -p "UPLOAD/build/${FOLDER_NAME}/relevance"
-        cp -Rf $OPERATES_PATH/relevance/settings.ini UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
+        cp -Rf $COMPILE_PATH/relevance/settings.ini UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
         YML_PATH="UPLOAD/.github/workflows/compile.yml"
         TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         TARGET2="target: \\[${FOLDER_NAME}\\]"
