@@ -29,9 +29,9 @@ echo "modules/luci-base/src" >> ".git/info/sparse-checkout"
 git checkout
 cd "modules/luci-base/src"
 sudo make po2lmo
-strip "po2lmo"
-rm -rf "/usr/bin/po2lmo"
-cp -fp "po2lmo" "/usr/bin/po2lmo"
+sudo strip "po2lmo"
+sudo rm -rf "/usr/bin/po2lmo"
+sudo cp -fp "po2lmo" "/usr/bin/po2lmo"
 popd
 
 # 安装gcc-13
