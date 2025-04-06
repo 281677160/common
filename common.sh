@@ -217,6 +217,7 @@ echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
 echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
 echo "DIY_WORK=${DIY_WORK}" >> ${GITHUB_ENV}
+echo "DIYPART_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}/${DIY_PART_SH}" >> ${GITHUB_ENV}
 echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}" >> ${GITHUB_ENV}
 echo "FILES_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
 echo "REPAIR_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
@@ -307,7 +308,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 fi
 
 # 添加自定义插件源
-CLASH_FENZHIHAO="$(grep 'OpenClash_branch=' "$BUILD_PATH/$DIY_PART_SH" | awk -F'=' '{print $2}' | tr -d '"')"
+CLASH_FENZHIHAO="$(grep 'OpenClash_branch=' "${DIYPART_PATH}" | awk -F'=' '{print $2}' | tr -d '"')"
 if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
   CLASH_BRANCH="dev"
 else
