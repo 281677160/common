@@ -157,9 +157,8 @@ runs:
         echo
         TIME z " 系统空间      类型   总数  已用  可用 使用率"
         df -hT $PWD
+        
         echo
-        echo
-
         if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
           echo
           echo
