@@ -41,7 +41,6 @@ runs:
       run: |
         cd $HOME_PATH
         bash $COMMON_SH Diy_menu3
-        
         echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
         echo "SendMessage=true" >> ${GITHUB_ENV}
 
