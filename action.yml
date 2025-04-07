@@ -7,42 +7,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        source $COMMON_SH && Diy_checkout
-
-    - name: 更新feeds
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        ./scripts/feeds update -a
-
-    - name: 更新feeds后再次修改补充
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        source $COMMON_SH && Diy_complement
-        source $COMMON_SH && Diy_${SOURCE_CODE}
-
-    - name: 加载自定义设置diy-part.sh
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        ${BUILD_PARTSH}
-
-    - name: 重新更新feeds
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        ./scripts/feeds update -a
-
-    - name: 安装feeds
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        ./scripts/feeds update -a
-        ./scripts/feeds update -a
-        
-        # 使用自定义配置文件
-        [[ -f "$MYCONFIG_FILE" ]] && mv $MYCONFIG_FILE .config
+        bash $COMMON_SH Diy_menu
 
     - name: SSH远程连接（make menuconfig）
       if: env.SSH_ACTION == 'true'
@@ -52,8 +17,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        make defconfig
-        source $COMMON_SH && Make_defconfig
+        bash $COMMON_SH Diy_menu2
 
     - name: 机型为aarch_64的时,改变是远程更新为打包设置
       shell: bash
@@ -70,25 +34,13 @@ runs:
       run: |
         cd $HOME_PATH
         source $UPGRADE_SH && Diy_Part2
-
-    - name: 生成配置文件的小修改
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        source $COMMON_SH && Diy_management
-        
-    - name: 配置自定义里面的各种开关
-      shell: bash
-      run: |
-        cd $HOME_PATH
-        source $COMMON_SH && Diy_definition
   
 
     - name: 判断插件有否冲突减少编译错误
       shell: bash
       run: |
         cd $HOME_PATH
-        source $COMMON_SH && Diy_prevent
+        bash $COMMON_SH Diy_menu3
         
         echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
         echo "SendMessage=true" >> ${GITHUB_ENV}
