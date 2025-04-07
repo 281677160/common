@@ -23,6 +23,7 @@ case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
   export SOURCE="Lede"
+  export SOURCE_OWNER="Lean"
   export LUCI_EDITION="23.05"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
@@ -33,6 +34,7 @@ COOLSNOWWOLF)
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
   export SOURCE="Lienol"
+  export SOURCE_OWNER="Lienol"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
@@ -43,6 +45,7 @@ LIENOL)
 IMMORTALWRT)
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export SOURCE="Immortalwrt"
+  export SOURCE_OWNER="ctcgfw"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
@@ -53,6 +56,7 @@ IMMORTALWRT)
 XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="Xwrt"
+  export SOURCE_OWNER="ptpt52"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
@@ -62,7 +66,7 @@ XWRT)
 OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
   export SOURCE="Official"
-  export SOURCE_OWNER="openwrt's"
+  export SOURCE_OWNER="openwrt"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
@@ -74,6 +78,7 @@ MT798X)
   if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
     export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
     export SOURCE="Mt798x"
+    export SOURCE_OWNER="hanwckf"
     export REPO_BRANCH="openwrt-21.02"
     export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
@@ -84,6 +89,7 @@ MT798X)
   else
     export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
     export SOURCE="Mt798x"
+    export SOURCE_OWNER="padavanonly"
     if [[ "${REPO_BRANCH}" == "2410" ]]; then
       export LUCI_EDITION="24.10"
     else
@@ -104,6 +110,7 @@ esac
 
 echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
 echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
+echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
 echo "FILES_PATH=${HOME_PATH}/package/base-files/files" >> ${GITHUB_ENV}
 echo "REPAIR_PATH=${HOME_PATH}/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
@@ -1395,7 +1402,7 @@ fi
 TIME b "固件作者: ${GIT_ACTOR}"
 TIME b "仓库地址: ${GITHUB_LINK}"
 TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${RUN_WORKFLOW}]工作流程）"
-TIME b "编译时间: ${Compte_Date}"
+TIME b "编译时间: $(date +%Y年%m月%d号%H时%M分)"
 if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
   TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${amlogic_model}】固件"
 else
