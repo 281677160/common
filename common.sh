@@ -257,7 +257,7 @@ fi
 
 
 # 更新feeds
-./scripts/feeds update -a
+./scripts/feeds update -a > /dev/null 2>&1
 
 
 # 更新feeds后再次修改补充
@@ -437,15 +437,15 @@ cd ${HOME_PATH}
 function Diy_partsh() {
 cd ${HOME_PATH}
 ${BUILD_PARTSH}
-./scripts/feeds update -a
-./scripts/feeds install -a
+./scripts/feeds update -a > /dev/null 2>&1
+./scripts/feeds install -a > /dev/null 2>&1
 [[ -f "$MYCONFIG_FILE" ]] && mv $MYCONFIG_FILE .config
 
 # 主题设置
 Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
 Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
-echo "CONFIG_PACKAGE_luci-app-$Mandatory_theme=y" .config
-echo "CONFIG_PACKAGE_luci-app-$Default_theme=y" .config
+echo "CONFIG_PACKAGE_luci-theme-$Mandatory_theme=y" .config
+echo "CONFIG_PACKAGE_luci-theme-$Default_theme=y" .config
 ./scripts/feeds install -a
 }
 
