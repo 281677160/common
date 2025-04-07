@@ -74,7 +74,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        source $COMMON_SH && Diy_menu5
+        source $COMMON_SH && Diy_definition
   
 
     - name: 判断插件有否冲突减少编译错误
