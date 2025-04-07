@@ -3,6 +3,32 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
+    if: env.SendMessage != 'true'
+    - name: 编译信息
+      shell: bash
+      run: |
+        cd ${HOME_PATH}
+        function TIME() {
+          case $1 in
+            r) export Color="\e[31m";;
+            g) export Color="\e[32m";;
+            b) export Color="\e[34m";;
+            y) export Color="\e[33m";;
+            z) export Color="\e[35m";;
+            l) export Color="\e[36m";;
+          esac
+        echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
+        }
+        TIME r ""
+        TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
+        TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
+        if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
+          TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP、清空密码、还原出厂设置和在线更新固件操作"
+        else
+          TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作"
+        fi
+        TIME r ""
+  
     if: env.SendMessage == 'true'
     - name: 编译信息
       shell: bash
