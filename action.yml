@@ -8,56 +8,150 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        tmpdir="$(mktemp -d)" && UPLOAD="$GITHUB_WORKSPACE/${tmpdir#*.}"
-        git clone -b ${GIT_REFNAME} https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git $UPLOAD
-        [[ -d "$UPLOAD/build" ]] && rm -rf $UPLOAD/build
-        cp -Rf ${HOME_PATH}/build_logo/config.txt $MYCONFIG_FILE
-        cp -Rf $OPERATES_PATH $UPLOAD/build
-        [[ -d "$UPLOAD/build/common" ]] && rm -rf $UPLOAD/build/common
-        cp -Rf $GITHUB_WORKSPACE/.github/workflows/* $UPLOAD/.github/workflows
-        mkdir -p "$UPLOAD/build/${FOLDER_NAME}/relevance"
-        echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > $UPLOAD/build/${FOLDER_NAME}/relevance/start
-        cp -Rf $COMPILE_PATH/relevance/settings.ini $UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
-        YML_PATH="$UPLOAD/.github/workflows/compile.yml"
-        TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-        TARGET2="target: \\[${FOLDER_NAME}\\]"
-        PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
-        PATHS2="- 'build/${FOLDER_NAME}/relevance/start'"
-        if [[ -n "${PATHS1}" ]] && [[ -n "${TARGET1}" ]]; then
-          sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
-          sed -i "s?${TARGET1}?${TARGET2}?g" "${YML_PATH}"
+        function TIME() {
+          case $1 in
+            r) export Color="\e[31m";;
+            g) export Color="\e[32m";;
+            b) export Color="\e[34m";;
+            y) export Color="\e[33m";;
+            z) export Color="\e[35m";;
+            l) export Color="\e[36m";;
+          esac
+        echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
+        }
+
+        
+        Plug_in1="$(grep -Eo "CONFIG_PACKAGE_luci-app-.*=y|CONFIG_PACKAGE_luci-theme-.*=y" .config |grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic\|_USE' |sed 's/=y//' |sed 's/CONFIG_PACKAGE_//g')"
+        Plug_in2="$(echo "${Plug_in1}" |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
+        echo "${Plug_in2}" >Plug-in
+
+        if [[ `grep -c "CONFIG_GRUB_EFI_IMAGES=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+          export EFI_NO="1"
         else
-          echo "获取变量失败,请勿胡乱修改compile.yml文件"
-          exit 1
-        fi
-        chmod -R +x $UPLOAD
-        cd $UPLOAD
-        git add .
-        git commit -m "编译-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
-        git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${GIT_REFNAME}
-        if [[ $? -ne 0 ]]; then
-          echo -e "\033[31m 触发编译失败,获取变量失败,请勿胡乱修改compile.yml文件 \033[0m"
-        else
-          echo -e "\033[33m 触发编译${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}成功 \033[0m"
+          export EFI_NO="0"
         fi
 
-    - name: 信息通知的时间
-      if: steps.gitpush.outcome == 'success'
-      shell: bash
-      run: |
-        cd ${GITHUB_WORKSPACE}
-        echo "TZ_Message=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
-        
-    - name: Telegram或pushplus信息通知
-      if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' && steps.gitpush.outcome == 'success' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG' && steps.gitpush.outcome == 'success'
-      shell: bash
-      run: |
-        cd ${GITHUB_WORKSPACE}
-        if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{env.TELEGRAM_CHAT_ID}}", "text":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}，编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💐"}' https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage
+        echo
+        TIME b "编译源码: ${SOURCE}"
+        TIME b "源码链接: ${REPO_URL}"
+        TIME b "源码分支: ${REPO_BRANCH}"
+        TIME b "源码作者: ${SOURCE_OWNER}"
+        TIME b "Luci版本: ${LUCI_EDITION}"
+        if [[ "${AMLOGIC_CODE}" == "AMLOGIC" ]]; then
+          TIME b "编译机型: aarch64系列"
+          if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
+             TIME g "打包机型: ${amlogic_model}"
+             TIME g "打包内核: ${amlogic_kernel}"
+             TIME g "分区大小: ${openwrt_size}"
+             if [[ "${auto_kernel}" == "true" ]]; then
+               IME g "自动检测最新内核: 是"
+             else
+               TIME g "自动检测最新内核: 不是"
+             fi
+          else
+             TIME b "内核版本: ${LINUX_KERNEL}"
+             TIME r "自动打包: 没开启自动打包设置"
+          fi
+        else
+          TIME b "内核版本: ${LINUX_KERNEL}"
+          TIME b "编译机型: ${TARGET_PROFILE}"
         fi
-        if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💐"}' https://www.pushplus.plus/send
+        TIME b "固件作者: ${GIT_ACTOR}"
+        TIME b "仓库地址: ${GITHUB_LINK}"
+        TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${RUN_WORKFLOW}]工作流程）"
+        TIME b "编译时间: $(date +%Y年%m月%d号%H时%M分)"
+        if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
+          TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${amlogic_model}】固件"
+        else
+          TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${TARGET_PROFILE}】固件"
+        fi
+        echo
+        echo
+        if [[ ${INFORMATION_NOTICE} == "TG" ]] || [[ ${INFORMATION_NOTICE} == "PUSH" ]]; then
+          TIME y "pushplus/Telegram通知: 开启"
+        else
+          TIME r "pushplus/Telegram通知: 关闭"
+        fi
+        if [[ ${UPLOAD_FIRMWARE} == "true" ]]; then
+          TIME y "上传固件在github actions: 开启"
+        else
+          TIME r "上传固件在github actions: 关闭"
+        fi
+        if [[ ${UPLOAD_RELEAS} == "true" ]]; then
+          TIME y "发布固件(Releases): 开启"
+        else
+          TIME r "发布固件(Releases): 关闭"
+        fi
+        if [[ ${CACHEWRTBUILD_SWITCH} == "true" ]]; then
+          TIME y "是否开启缓存加速: 开启"
+        else
+          TIME r "是否开启缓存加速: 关闭"
+        fi
+        if [[ ${COMPILATION_INFORMATION} == "true" ]]; then
+          TIME y "编译信息显示: 开启"
+        fi
+        if [[ ${AMLOGIC_CODE} == "AMLOGIC" ]]; then
+          if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
+            TIME y "aarch64系列固件自动打包成 .img 固件: 开启"
+          else
+            TIME r "aarch64系列固件自动打包成 .img 固件: 关闭"
+          fi
+        else
+          if [[ ${UPDATE_FIRMWARE_ONLINE} == "true" ]]; then
+            TIME y "把定时自动更新插件编译进固件: 开启"
+          else
+            TIME r "把定时自动更新插件编译进固件: 关闭"
+          fi
+        fi
+        if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] && [[ -z "${REPO_TOKEN}" ]]; then
+          echo
+          echo
+          TIME r "您虽然开启了编译在线更新固件操作,但是您的[REPO_TOKEN]密匙为空,"
+          TIME r "无法将固件发布至云端,已为您自动关闭了编译在线更新固件"
+          echo
+        elif [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] && [[ -n "${REPO_TOKEN}" ]]; then
+          echo
+          TIME l "定时自动更新信息"
+          TIME z "插件版本: ${AutoUpdate_Version}"
+          if [[ ${TARGET_BOARD} == "x86" ]]; then
+            TIME b "传统固件: ${AutoBuild_Legacy}${Firmware_SFX}"
+            [[ "${EFI_NO}" == "1" ]] && TIME b "UEFI固件: ${AutoBuild_Uefi}${Firmware_SFX}"
+          else
+            TIME b "固件名称: ${AutoBuild_Firmware}${Firmware_SFX}"
+          fi
+          TIME b "固件后缀: ${Firmware_SFX}"
+          TIME b "固件版本: ${Openwrt_Version}"
+          TIME b "云端路径: ${Github_Release}"
+          TIME g "《编译成功后，会自动把固件发布到指定地址，然后才会生成云端路径》"
+          TIME g "《普通的那个发布固件跟云端的发布路径是两码事，如果你不需要普通发布的可以不用打开发布功能》"
+          TIME g "修改IP、DNS、网关或者在线更新，请输入命令：openwrt"
+          echo
+        else
+          echo
+        fi
+        echo
+        TIME z " 系统空间      类型   总数  已用  可用 使用率"
+        df -hT $PWD
+        echo
+        echo
+
+        if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
+          echo
+          echo
+          TIME b "			错误信息"
+          echo
+          chmod -R +x ${HOME_PATH}/CHONGTU
+          source ${HOME_PATH}/CHONGTU
+        fi
+        rm -rf ${HOME_PATH}/CHONGTU
+        if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
+          echo
+          echo
+          TIME r "	      已选插件列表"
+          chmod -R +x ${HOME_PATH}/Plug-in
+          source ${HOME_PATH}/Plug-in
+          rm -rf ${HOME_PATH}/{Plug-in,Plug-2}
+          echo
         fi
 branding:
   icon: "terminal"
