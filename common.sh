@@ -1261,7 +1261,14 @@ fi
 }
 
 
-function Diy_organize() {
+function Diy_firmware() {
+# 远程更新处理固件
+if [ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]; then
+  cd ${HOME_PATH}
+  source $UPGRADE_SH && Diy_Part3
+fi
+
+# 编译完毕后,整理固件
 cd ${FIRMWARE_PATH}
 mkdir -p ipk
 cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
@@ -1278,48 +1285,9 @@ done
 if [[ `ls -1 | grep -c "armvirt"` -eq '0' ]]; then
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
 fi
-sudo rm -rf "${CLEAR_PATH}"
+rm -rf "${CLEAR_PATH}"
 }
 
-
-function Diy_firmware() {
-echo "正在执行：整理固件,您不想要啥就删啥,删删删"
-echo "需要配合${DIY_PART_SH}文件设置使用"
-Diy_upgrade3
-Diy_organize
-}
-
-
-function Diy_menu6() {
-Diy_prevent
-Make_defconfig
-Diy_Publicarea2
-Diy_adguardhome
-Diy_upgrade2
-}
-
-function Diy_menu5() {
-Diy_feeds
-Diy_IPv6helper
-}
-
-function Diy_menu4() {
-Diy_zdypartsh
-Diy_Publicarea
-}
-
-function Diy_menu3() {
-Diy_checkout
-Diy_${SOURCE_CODE}
-}
-
-function Diy_menu2() {
-Diy_Notice
-}
-
-function Diy_menu1() {
-Diy_variable
-}
 
 function gitsvn() {
 cd "${HOME_PATH}"
