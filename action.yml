@@ -55,10 +55,14 @@ runs:
         make defconfig
         source $COMMON_SH && Make_defconfig
 
-    - name: 生成机型后,根据机型做微调
+    - name: 机型为aarch_64的时,改变是远程更新为打包设置
       shell: bash
       run: |
         cd $HOME_PATH
+        if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
+          echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+          echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
+        fi
         source $COMMON_SH && Diy_aarch
         
     - name: 配置自定义里面的各种开关
