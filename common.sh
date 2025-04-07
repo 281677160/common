@@ -466,7 +466,7 @@ else
 fi
 ./scripts/feeds install -a > /dev/null 2>&1
 # 使用自定义配置文件
-[[ -f "$MYCONFIG_FILE/$CONFIG_FILE" ]] && mv $MYCONFIG_FILE/$CONFIG_FILE .config
+[[ -f "$MYCONFIG_FILE" ]] && mv $MYCONFIG_FILE .config
 }
 
 
