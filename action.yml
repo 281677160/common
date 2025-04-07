@@ -3,36 +3,77 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 更新插件源
+    - name: 下载源码后进行源码微调和增加插件源
       shell: bash
       run: |
         cd $HOME_PATH
-        source $COMMON_SH && Diy_menu3
- 
-    - name: 加载自定义设置
+        source $COMMON_SH && Diy_checkout
+
+    - name: 更新feeds
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        ./scripts/feeds update -a > /dev/null 2>&1
+
+    - name: 更新feeds后再次修改补充
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        source $COMMON_SH && Diy_complement
+        source $COMMON_SH && Diy_${SOURCE_CODE}
+
+    - name: 加载自定义设置diy-part.sh
       shell: bash
       run: |
         cd $HOME_PATH
         source ${BUILD_PARTSH}
-        source $COMMON_SH && Diy_menu4
-        echo "${Customized_Information}"
-        
-    - name: 安装插件源
+
+    - name: 重新更新feeds
       shell: bash
       run: |
         cd $HOME_PATH
-        source $COMMON_SH && Diy_menu5
-        echo "${Customized_Information}"
-    
+        ./scripts/feeds update -a > /dev/null 2>&1
+
+    - name: 安装feeds
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        ./scripts/feeds update -a > /dev/null 2>&1
+        ./scripts/feeds update -a
+        
+        # 使用自定义配置文件
+        [[ -f "$MYCONFIG_FILE" ]] && mv $MYCONFIG_FILE .config
+
     - name: SSH远程连接（make menuconfig）
       if: env.SSH_ACTION == 'true'
       uses: danshui-git/debugger-action@main
 
-    - name: 生成配置文件
+    - name: 生成配置文件和提取机型
       shell: bash
       run: |
         cd $HOME_PATH
-        source $COMMON_SH && Diy_menu6
+        make defconfig
+        source $COMMON_SH && Make_defconfig
+
+    - name: 生成机型后,根据机型做微调
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        source $COMMON_SH && Diy_menu5
+        
+    - name: 配置自定义里面的各种开关
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        source $COMMON_SH && Diy_menu5
+  
+
+    - name: 判断插件有否冲突减少编译错误
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        source $COMMON_SH && Diy_prevent
+        
         echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
         echo "SendMessage=true" >> ${GITHUB_ENV}
 
