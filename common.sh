@@ -187,6 +187,7 @@ if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
 else
   CLASH_BRANCH="master"
 fi
+echo "1"
 SRC_LIANJIE="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
 SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
@@ -201,7 +202,7 @@ else
   THEME_BRANCH="Theme1"
   rm -rf ${HOME_PATH}/SRC_LUCI
 fi
-
+echo "2"
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
 echo "src-git dstheme https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
 echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;$CLASH_BRANCH" >> ${HOME_PATH}/feeds.conf.default
@@ -240,7 +241,7 @@ fi
 if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
   sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci ?g' "${HOME_PATH}/include/target.mk"
 fi
-
+echo "3"
 # zzz-default-settings文件
 ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
 if [[ -n "${ZZZ_PATH}" ]]; then  
