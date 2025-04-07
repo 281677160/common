@@ -444,8 +444,12 @@ ${BUILD_PARTSH}
 # 主题设置
 Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
 Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
-echo "CONFIG_PACKAGE_luci-theme-$Mandatory_theme=y" .config
-echo "CONFIG_PACKAGE_luci-theme-$Default_theme=y" .config
+if ! grep -q "Mandatory_theme" .config && [ -n "$Mandatory_theme" ]; then
+  echo "CONFIG_PACKAGE_luci-theme-$Mandatory_theme=y" .config
+fi
+if ! grep -q "Default_theme" .config && [ -n "$Default_theme" ]; then
+  echo "CONFIG_PACKAGE_luci-theme-$Default_theme=y" .config
+fi
 ./scripts/feeds install -a
 }
 
