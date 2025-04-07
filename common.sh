@@ -481,6 +481,7 @@ echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
 echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
 echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
 
+# 内核版本号
 KERNEL_PATCH="$(grep -Eo "KERNEL_PATCHVER.*[0-9.]+" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
 KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
   if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
@@ -494,24 +495,14 @@ echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 }
 
 
-function Diy_aarch() {
+function Diy_management() {
 cd ${HOME_PATH}
-# 机型为aarch_64的时,改变是远程更新为打包设置
-if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
-  echo "AMLOGIC_CODE=AMLOGIC" >> ${GITHUB_ENV}
-  export PACKAGING_FIRMWARE="${UPDATE_FIRMWARE_ONLINE}"
-  echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
-  echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
-  echo "修改cpufreq代码适配Armvirt"
+# 机型为aarch_64的时,修改cpufreq代码适配Armvirt
+if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
   for X in $(find . -type d -name "luci-app-cpufreq"); do \
     [[ -d "$X" ]] && \
     sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' "$X/Makefile"; \
   done
-elif [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
-  echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
-  echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
-else
-  echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
 fi
 
 if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
@@ -527,10 +518,19 @@ else
   cd ${HOME_PATH}
   ${OPERATES_PATH}/common/language/zh-cn.sh
 fi
+
+# 前面修改的文件改回去
+sed -i 's/^[ ]*//g' "${DEFAULT_PATH}"
+sed -i '$a\exit 0' "${DEFAULT_PATH}"
+sed -i 's/^[ ]*//g' "${ZZZ_PATH}"
+sed -i '$a\exit 0' "${ZZZ_PATH}" 
+[[ -d "${HOME_PATH}/files" ]] && sudo chmod +x ${HOME_PATH}/files
+rm -rf ${HOME_PATH}/files/{LICENSE,README}
+}
 }
 
 
-function Diy_zdypartsh() {
+function Diy_definition() {
 cd ${HOME_PATH}
 Ipv4_ipaddr="$(grep '^export Ipv4_ipaddr=' $BUILD_PARTSH |cut -d '"' -f2)"
 Netmask_netm="$(grep '^export Netmask_netm=' $BUILD_PARTSH |cut -d '"' -f2)"
@@ -753,6 +753,125 @@ else
    echo "不进行,去掉samba"
 fi
 
+if [[ "${Automatic_Mount_Settings}" == "1" ]]; then
+echo '
+CONFIG_PACKAGE_block-mount=y
+CONFIG_PACKAGE_fdisk=y
+CONFIG_PACKAGE_usbutils=y
+CONFIG_PACKAGE_badblocks=y
+CONFIG_PACKAGE_ntfs-3g=y
+CONFIG_PACKAGE_kmod-scsi-core=y
+CONFIG_PACKAGE_kmod-usb-core=y
+CONFIG_PACKAGE_kmod-usb-ohci=y
+CONFIG_PACKAGE_kmod-usb-uhci=y
+CONFIG_PACKAGE_kmod-usb-storage=y
+CONFIG_PACKAGE_kmod-usb-storage-extras=y
+CONFIG_PACKAGE_kmod-usb2=y
+CONFIG_PACKAGE_kmod-usb3=y
+CONFIG_PACKAGE_kmod-fs-ext4=y
+CONFIG_PACKAGE_kmod-fs-vfat=y
+CONFIG_PACKAGE_kmod-fuse=y
+# CONFIG_PACKAGE_kmod-fs-ntfs is not set
+' >> ${HOME_PATH}/.config
+gitsvn https://github.com/281677160/common/blob/main/Share/block/10-mount ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
+fi
+
+if [[ "${Enable_IPV6_function}" == "1" ]]; then
+  echo "固件加入IPV6功能"
+  echo "
+    uci set network.lan.ip6assign='64'
+    uci commit network
+    uci set dhcp.lan.ra='server'
+    uci set dhcp.lan.dhcpv6='server'
+    uci set dhcp.lan.ra_management='1'
+    uci set dhcp.lan.ra_default='1'
+    uci set dhcp.@dnsmasq[0].localservice=0
+    uci set dhcp.@dnsmasq[0].nonwildcard=0
+    uci set dhcp.@dnsmasq[0].filter_aaaa='0'
+    uci commit dhcp
+  " >> "${DEFAULT_PATH}"
+elif [[ "${Create_Ipv6_Lan}" == "1" ]]; then
+  echo "爱快+OP双系统时,爱快接管IPV6,在OP创建IPV6的lan口接收IPV6信息"
+  echo "
+    uci delete network.lan.ip6assign
+    uci set network.lan.delegate='0'
+    uci commit network
+    uci delete dhcp.lan.ra
+    uci delete dhcp.lan.ra_management
+    uci delete dhcp.lan.ra_default
+    uci delete dhcp.lan.dhcpv6
+    uci delete dhcp.lan.ndp
+    uci set dhcp.@dnsmasq[0].filter_aaaa='0'
+    uci commit dhcp
+    uci set network.ipv6=interface
+    uci set network.ipv6.proto='dhcpv6'
+    ${devicee}
+    ${ifnamee}
+    uci set network.ipv6.reqaddress='try'
+    uci set network.ipv6.reqprefix='auto'
+    uci commit network
+    ${set_add}
+    uci commit firewall
+  " >> "${DEFAULT_PATH}"
+elif [[ "${Enable_IPV4_function}" == "1" ]]; then
+  echo "固件加入IPV4功能"
+  echo "
+    uci delete network.globals.ula_prefix
+    uci delete network.lan.ip6assign
+    uci delete network.wan6
+    uci set network.lan.delegate='0' 
+    uci commit network
+    uci delete dhcp.lan.ra
+    uci delete dhcp.lan.ra_management
+    uci delete dhcp.lan.ra_default
+    uci delete dhcp.lan.dhcpv6
+    uci delete dhcp.lan.ndp
+    uci set dhcp.@dnsmasq[0].filter_aaaa='1'
+    uci commit dhcp
+  " >> "${DEFAULT_PATH}"
+fi
+
+if [[ "${Enable_IPV6_function}" == "1" ]]; then
+echo '
+CONFIG_PACKAGE_ipv6helper=y
+CONFIG_PACKAGE_ip6tables=y
+CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
+CONFIG_PACKAGE_odhcp6c=y
+CONFIG_PACKAGE_odhcpd-ipv6only=y
+CONFIG_IPV6=y
+CONFIG_PACKAGE_6rd=y
+CONFIG_PACKAGE_6to4=y
+' >> ${HOME_PATH}/.config
+elif [[ "${Create_Ipv6_Lan}" == "1" ]]; then
+echo '
+CONFIG_PACKAGE_ipv6helper=y
+CONFIG_PACKAGE_ip6tables=y
+CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
+CONFIG_PACKAGE_odhcp6c=y
+CONFIG_PACKAGE_odhcpd-ipv6only=y
+CONFIG_IPV6=y
+CONFIG_PACKAGE_6rd=y
+CONFIG_PACKAGE_6to4=y
+' >> ${HOME_PATH}/.config
+elif [[ "${Enable_IPV4_function}" == "1" ]]; then
+echo '
+# CONFIG_PACKAGE_ipv6helper is not set
+# CONFIG_PACKAGE_ip6tables is not set
+# CONFIG_PACKAGE_dnsmasq_full_dhcpv6 is not set
+# CONFIG_PACKAGE_odhcp6c is not set
+# CONFIG_PACKAGE_odhcpd-ipv6only is not set
+# CONFIG_IPV6 is not set
+# CONFIG_PACKAGE_6rd is not set
+# CONFIG_PACKAGE_6to4 is not set
+' >> ${HOME_PATH}/.config
+elif [[ "${REPO_BRANCH}" =~ ^(main|master|2410|(openwrt-)?(19\.07|23\.05|24\.10))$ ]]; then
+echo '
+CONFIG_IPV6=y
+CONFIG_PACKAGE_odhcp6c=y
+CONFIG_PACKAGE_odhcpd-ipv6only=y
+' >> ${HOME_PATH}/.config
+fi
+
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
   echo "删除其他机型的固件,只保留当前主机型固件完成"
   sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
@@ -782,6 +901,17 @@ CONFIG_PACKAGE_default-settings=y
 CONFIG_PACKAGE_default-settings-chn=y
 EOF
 
+
+# 晶晨CPU机型自定义机型,内核,分区
+echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
+echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
+echo "openwrt_size=${rootfs_size}" >> ${GITHUB_ENV}
+echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
+echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
+echo "builder_name=ophub" >> ${GITHUB_ENV}
+
+# adguardhome增加核心
 if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
   Arch="linux_amd64"
   Archclash="linux-amd64"
@@ -855,177 +985,6 @@ if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
     rm -rf ${HOME_PATH}/{AdGuardHome_${Arch}.tar.gz,AdGuardHome}
 else
   [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
-fi
-}
-
-
-function Diy_Publicarea() {
-cd ${HOME_PATH}
-# Diy_zdypartsh的延伸
-rm -rf ${HOME_PATH}/CHONGTU && touch ${HOME_PATH}/CHONGTU
-lan="/set network.\$1.netmask/a"
-ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |grep -v 'addr_offset' |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-netmas="$(grep "netmask:-" "${GENE_PATH}" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-opname="$(grep "hostname=" "${GENE_PATH}" |grep -v '\$hostname' |cut -d "'" -f2)"
-if [[ -n "$(grep "set network.\${1}6.device" "${GENE_PATH}")" ]]; then
-  ifnamee="uci set network.ipv6.device='@lan'"
-  set_add="uci add_list firewall.@zone[0].network='ipv6'"
-else
-  ifnamee="uci set network.ipv6.ifname='@lan'"
-  set_add="uci set firewall.@zone[0].network='lan ipv6'"
-fi
-
-if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
-  devicee="uci set network.ipv6.device='@lan'"
-fi
-
-
-if [[ "${Enable_IPV6_function}" == "1" ]]; then
-  echo "固件加入IPV6功能"
-  export Create_Ipv6_Lan="0"
-  export Enable_IPV4_function="0"
-  echo "Create_Ipv6_Lan=0" >> ${GITHUB_ENV}
-  echo "Enable_IPV4_function=0" >> ${GITHUB_ENV}
-  echo "Enable_IPV6_function=1" >> ${GITHUB_ENV}
-  echo "
-    uci set network.lan.ip6assign='64'
-    uci commit network
-    uci set dhcp.lan.ra='server'
-    uci set dhcp.lan.dhcpv6='server'
-    uci set dhcp.lan.ra_management='1'
-    uci set dhcp.lan.ra_default='1'
-    uci set dhcp.@dnsmasq[0].localservice=0
-    uci set dhcp.@dnsmasq[0].nonwildcard=0
-    uci set dhcp.@dnsmasq[0].filter_aaaa='0'
-    uci commit dhcp
-  " >> "${DEFAULT_PATH}"
-fi
-
-if [[ "${Create_Ipv6_Lan}" == "1" ]]; then
-  echo "爱快+OP双系统时,爱快接管IPV6,在OP创建IPV6的lan口接收IPV6信息"
-  export Enable_IPV4_function="0"
-  echo "Create_Ipv6_Lan=1" >> ${GITHUB_ENV}
-  echo "Enable_IPV4_function=0" >> ${GITHUB_ENV}
-  echo "Enable_IPV6_function=0" >> ${GITHUB_ENV}
-  echo "
-    uci delete network.lan.ip6assign
-    uci set network.lan.delegate='0'
-    uci commit network
-    uci delete dhcp.lan.ra
-    uci delete dhcp.lan.ra_management
-    uci delete dhcp.lan.ra_default
-    uci delete dhcp.lan.dhcpv6
-    uci delete dhcp.lan.ndp
-    uci set dhcp.@dnsmasq[0].filter_aaaa='0'
-    uci commit dhcp
-    uci set network.ipv6=interface
-    uci set network.ipv6.proto='dhcpv6'
-    ${devicee}
-    ${ifnamee}
-    uci set network.ipv6.reqaddress='try'
-    uci set network.ipv6.reqprefix='auto'
-    uci commit network
-    ${set_add}
-    uci commit firewall
-  " >> "${DEFAULT_PATH}"
-fi
-
-if [[ "${Enable_IPV4_function}" == "1" ]]; then
-  echo "Enable_IPV4_function=1" >> ${GITHUB_ENV}
-  echo "Enable_IPV6_function=0" >> ${GITHUB_ENV}
-  echo "Create_Ipv6_Lan=0" >> ${GITHUB_ENV}
-  echo "固件加入IPV4功能"
-  echo "
-    uci delete network.globals.ula_prefix
-    uci delete network.lan.ip6assign
-    uci delete network.wan6
-    uci set network.lan.delegate='0' 
-    uci commit network
-    uci delete dhcp.lan.ra
-    uci delete dhcp.lan.ra_management
-    uci delete dhcp.lan.ra_default
-    uci delete dhcp.lan.dhcpv6
-    uci delete dhcp.lan.ndp
-    uci set dhcp.@dnsmasq[0].filter_aaaa='1'
-    uci commit dhcp
-  " >> "${DEFAULT_PATH}"
-fi
-
-
-# 晶晨CPU机型自定义机型,内核,分区
-echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
-echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
-echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
-echo "openwrt_size=${rootfs_size}" >> ${GITHUB_ENV}
-echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
-echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
-echo "builder_name=ophub" >> ${GITHUB_ENV}
-}
-
-
-
-
-
-function Diy_IPv6helper() {
-cd ${HOME_PATH}
-if [[ "${Enable_IPV6_function}" == "1" ]] || [[ "${Create_Ipv6_Lan}" == "1" ]]; then
-echo '
-CONFIG_PACKAGE_ipv6helper=y
-CONFIG_PACKAGE_ip6tables=y
-CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
-CONFIG_PACKAGE_odhcp6c=y
-CONFIG_PACKAGE_odhcpd-ipv6only=y
-CONFIG_IPV6=y
-CONFIG_PACKAGE_6rd=y
-CONFIG_PACKAGE_6to4=y
-' >> ${HOME_PATH}/.config
-fi
-
-if [[ "${Enable_IPV4_function}" == "1" ]] && \
-[[ "${REPO_BRANCH}" =~ ^(main|master|2410|(openwrt-)?(19\.07|23\.05|24\.10))$ ]]; then
-echo '
-# CONFIG_PACKAGE_ipv6helper is not set
-# CONFIG_PACKAGE_ip6tables is not set
-# CONFIG_PACKAGE_dnsmasq_full_dhcpv6 is not set
-# CONFIG_PACKAGE_odhcp6c is not set
-# CONFIG_PACKAGE_odhcpd-ipv6only is not set
-# CONFIG_IPV6 is not set
-# CONFIG_PACKAGE_6rd is not set
-# CONFIG_PACKAGE_6to4 is not set
-' >> ${HOME_PATH}/.config
-else
-echo '
-CONFIG_IPV6=y
-CONFIG_PACKAGE_odhcp6c=y
-CONFIG_PACKAGE_odhcpd-ipv6only=y
-' >> ${HOME_PATH}/.config
-fi
-
-if [[ "${Disable_NaiveProxy}" == "1" ]]; then
-sed -i '/NaiveProxy/d; /naiveproxy/d' ${HOME_PATH}/.config
-fi
-
-if [[ "${Automatic_Mount_Settings}" == "1" ]]; then
-echo '
-CONFIG_PACKAGE_block-mount=y
-CONFIG_PACKAGE_fdisk=y
-CONFIG_PACKAGE_usbutils=y
-CONFIG_PACKAGE_badblocks=y
-CONFIG_PACKAGE_ntfs-3g=y
-CONFIG_PACKAGE_kmod-scsi-core=y
-CONFIG_PACKAGE_kmod-usb-core=y
-CONFIG_PACKAGE_kmod-usb-ohci=y
-CONFIG_PACKAGE_kmod-usb-uhci=y
-CONFIG_PACKAGE_kmod-usb-storage=y
-CONFIG_PACKAGE_kmod-usb-storage-extras=y
-CONFIG_PACKAGE_kmod-usb2=y
-CONFIG_PACKAGE_kmod-usb3=y
-CONFIG_PACKAGE_kmod-fs-ext4=y
-CONFIG_PACKAGE_kmod-fs-vfat=y
-CONFIG_PACKAGE_kmod-fuse=y
-# CONFIG_PACKAGE_kmod-fs-ntfs is not set
-' >> ${HOME_PATH}/.config
-gitsvn https://github.com/281677160/common/blob/main/Share/block/10-mount ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
 fi
 }
 
@@ -1292,28 +1251,6 @@ sed -i '/^$/d' "${HOME_PATH}/build_logo/config.txt"
 
 
 
-function Diy_Publicarea2() {
-
-}
-
-function Diy_adguardhome() {
-cd ${HOME_PATH}
-
-}
-
-
-function Diy_upgrade2() {
-cd ${HOME_PATH}
-sed -i 's/^[ ]*//g' "${DEFAULT_PATH}"
-sed -i '$a\exit 0' "${DEFAULT_PATH}"
-sed -i 's/^[ ]*//g' "${ZZZ_PATH}"
-sed -i '$a\exit 0' "${ZZZ_PATH}" 
-[[ -d "${HOME_PATH}/files" ]] && sudo chmod +x ${HOME_PATH}/files
-rm -rf ${HOME_PATH}/files/{LICENSE,.*README}
-if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  source $UPGRADE_SH && Diy_Part2
-fi
-}
 
 
 function Diy_upgrade3() {
