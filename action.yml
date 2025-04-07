@@ -67,6 +67,7 @@ runs:
         echo "RUN_NUMBER=${{github.run_number}}" >> ${GITHUB_ENV}
         echo "GIT_REFNAME=${{ github.ref_name }}" >> ${GITHUB_ENV}
         echo "COMPILATION_INFORMATION=${COMPILATION_INFORMATION}" >> ${GITHUB_ENV}
+        echo "CONFIG_FILE=${CONFIG_FILE}" >> ${GITHUB_ENV}
 
         echo "HOME_PATH=$GITHUB_WORKSPACE/openwrt" >> ${GITHUB_ENV}
         echo "OPERATES_PATH=$GITHUB_WORKSPACE/operates" >> ${GITHUB_ENV}
@@ -76,7 +77,7 @@ runs:
         echo "BUILD_PATCHES=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/patches" >> ${GITHUB_ENV}
         echo "BUILD_PARTSH=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/diy-part.sh" >> ${GITHUB_ENV}
         echo "BUILD_SETTINGS=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/settings.ini" >> ${GITHUB_ENV}
-        echo "CONFIG_FILE=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/seed/${CONFIG_FILE}" >> ${GITHUB_ENV}
+        echo "MYCONFIG_FILE=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/seed" >> ${GITHUB_ENV}
 
     - name: 密匙检测（密匙为空则退出）
       shell: bash
