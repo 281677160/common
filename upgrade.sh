@@ -10,7 +10,7 @@ function Diy_Part1() {
         	if ! grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
 			sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
 		fi
-		echo "luci-app-autoupdate下载失败"
+		echo "luci-app-autoupdate下载完成"
 	else
 		echo "luci-app-autoupdate下载失败"
 	fi
