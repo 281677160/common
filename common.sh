@@ -530,6 +530,8 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 function Diy_definition() {
 cd ${HOME_PATH}
+echo "" >${HOME_PATH}/CHONGTU
+
 Ipv4_ipaddr="$(grep '^export Ipv4_ipaddr=' $BUILD_PARTSH |cut -d '"' -f2)"
 Netmask_netm="$(grep '^export Netmask_netm=' $BUILD_PARTSH |cut -d '"' -f2)"
 Op_name="$(grep '^export Op_name=' $BUILD_PARTSH |cut -d '"' -f2)"
