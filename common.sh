@@ -257,7 +257,7 @@ fi
 }
 
 
-function Diy_checkout() {
+function Diy_complement() {
 # 更新feeds后再次修改补充
 cd ${HOME_PATH}
 z="luci-theme-argon,luci-app-argon-config,luci-theme-Butterfly,luci-theme-netgear,luci-theme-atmaterial, \
@@ -514,7 +514,6 @@ sed -i 's/^[ ]*//g' "${ZZZ_PATH}"
 sed -i '$a\exit 0' "${ZZZ_PATH}" 
 [[ -d "${HOME_PATH}/files" ]] && sudo chmod +x ${HOME_PATH}/files
 rm -rf ${HOME_PATH}/files/{LICENSE,README}
-}
 }
 
 
@@ -830,7 +829,9 @@ CONFIG_IPV6=y
 CONFIG_PACKAGE_6rd=y
 CONFIG_PACKAGE_6to4=y
 ' >> ${HOME_PATH}/.config
-elif [[ "${Create_Ipv6_Lan}" == "1" ]]; then
+fi
+
+if [[ "${Create_Ipv6_Lan}" == "1" ]]; then
 echo '
 CONFIG_PACKAGE_ipv6helper=y
 CONFIG_PACKAGE_ip6tables=y
@@ -841,7 +842,10 @@ CONFIG_IPV6=y
 CONFIG_PACKAGE_6rd=y
 CONFIG_PACKAGE_6to4=y
 ' >> ${HOME_PATH}/.config
-elif [[ "${Enable_IPV4_function}" == "1" ]]; then
+fi
+
+if [[ "${Enable_IPV4_function}" == "1" ]] && \
+[[ "${REPO_BRANCH}" =~ ^(main|master|2410|(openwrt-)?(19\.07|23\.05|24\.10))$ ]]; then
 echo '
 # CONFIG_PACKAGE_ipv6helper is not set
 # CONFIG_PACKAGE_ip6tables is not set
@@ -852,13 +856,14 @@ echo '
 # CONFIG_PACKAGE_6rd is not set
 # CONFIG_PACKAGE_6to4 is not set
 ' >> ${HOME_PATH}/.config
-elif [[ "${REPO_BRANCH}" =~ ^(main|master|2410|(openwrt-)?(19\.07|23\.05|24\.10))$ ]]; then
+else
 echo '
 CONFIG_IPV6=y
 CONFIG_PACKAGE_odhcp6c=y
 CONFIG_PACKAGE_odhcpd-ipv6only=y
 ' >> ${HOME_PATH}/.config
 fi
+
 
 if [[ "${Delete_unnecessary_items}" == "1" ]]; then
   echo "删除其他机型的固件,只保留当前主机型固件完成"
@@ -898,6 +903,7 @@ echo "openwrt_size=${rootfs_size}" >> ${GITHUB_ENV}
 echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
 echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 echo "builder_name=ophub" >> ${GITHUB_ENV}
+
 
 # adguardhome增加核心
 if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
