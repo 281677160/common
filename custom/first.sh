@@ -93,15 +93,19 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
     done
   else
     git clone -b ${GIT_REFNAME} https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
-    git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/autobuild shangyou
-    if [[ -d "repogx/build" ]]; then
-      cp -Rf repogx/build shangyou/backups
-    fi
+    git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
+    find . -type d -name "backups" -exec sudo rm -rf {} \;
+    mkdir -p backups
+    cp -Rf repogx/* backups
+    cp -Rf repogx/.github/workflows backups/workflows
     cd repogx
     rm -rf *
     git rm --cache *
     cd ../
+    mkdir -p repogx/.github/workflows
     cp -Rf shangyou/* repogx
+    cp -Rf shangyou/.github/workflows/* repogx/.github/workflows
+    cp -Rf backups repogx/backups
     BANBEN_SHUOMING="同步上游于 $(date +%Y.%m%d.%H%M.%S)"
     chmod -R +x repogx
     cd repogx
