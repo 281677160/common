@@ -266,10 +266,12 @@ if [[ -n "${ZZZ_PATH}" ]]; then
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
   grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 fi
+}
 
-# 更新feeds
-./scripts/feeds update -a > /dev/null 2>&1
 
+function Diy_checkout() {
+# 更新feeds后再次修改补充
+cd ${HOME_PATH}
 z="luci-theme-argon,luci-app-argon-config,luci-theme-Butterfly,luci-theme-netgear,luci-theme-atmaterial, \
 luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
 luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
@@ -440,6 +442,91 @@ fi
 
 function Diy_MT798X() {
 cd ${HOME_PATH}
+}
+
+
+function Make_defconfig() {
+cd ${HOME_PATH}
+echo "正在执行：识别源码编译为何机型"
+export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
+export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
+export TARGET_PROFILE_DG="$(awk -F '[="]+' '/TARGET_PROFILE/{print $2}' ${HOME_PATH}/.config)"
+if [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*64.*=y' ${HOME_PATH}/.config)" ]]; then
+  export TARGET_PROFILE="x86-64"
+elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*=y' ${HOME_PATH}/.config)" ]]; then
+  export TARGET_PROFILE="x86-32"
+elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*phicomm.*n1=y' ${HOME_PATH}/.config)" ]]; then
+  export TARGET_PROFILE="phicomm_n1"
+elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armsr.*armv8.*=y' ${HOME_PATH}/.config)" ]]; then
+  export TARGET_PROFILE="aarch_64"
+elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armvirt.*64.*=y' ${HOME_PATH}/.config)" ]]; then
+  export TARGET_PROFILE="aarch_64"
+elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*=y' ${HOME_PATH}/.config)" ]]; then
+  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+else
+  export TARGET_PROFILE="${TARGET_PROFILE_DG}"
+fi
+export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+echo "正在编译：${TARGET_PROFILE}"
+
+if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
+  echo "PROMPT_TING=${amlogic_model}" >> ${GITHUB_ENV}
+else
+  echo "PROMPT_TING=${LUCI_EDITION}-${TARGET_PROFILE}" >> ${GITHUB_ENV}
+fi
+
+echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
+echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
+echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
+echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
+
+KERNEL_PATCH="$(grep -Eo "KERNEL_PATCHVER.*[0-9.]+" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
+KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
+  if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
+LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-[0-9.]+" "${HOME_PATH}/include/${KERNEL_VERSINO}"  |grep -Eo "[0-9.]+")"
+  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
+else
+  LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-${KERNEL_PATCH}.[0-9]+" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "[0-9.]+")"
+  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
+fi
+echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
+}
+
+
+function Diy_aarch() {
+cd ${HOME_PATH}
+# 机型为aarch_64的时,改变是远程更新为打包设置
+if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
+  echo "AMLOGIC_CODE=AMLOGIC" >> ${GITHUB_ENV}
+  export PACKAGING_FIRMWARE="${UPDATE_FIRMWARE_ONLINE}"
+  echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+  echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
+  echo "修改cpufreq代码适配Armvirt"
+  for X in $(find . -type d -name "luci-app-cpufreq"); do \
+    [[ -d "$X" ]] && \
+    sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' "$X/Makefile"; \
+  done
+elif [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
+  echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
+  echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
+else
+  echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+fi
+
+if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
+  cp -Rf /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
+  cp -Rf /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
+fi
+
+# 正在执行插件语言修改
+if [[ -d "${HOME_PATH}/feeds/luci/modules/luci-mod-system" ]]; then
+  cd ${HOME_PATH}
+  ${OPERATES_PATH}/common/language/zh_Hans.sh
+else
+  cd ${HOME_PATH}
+  ${OPERATES_PATH}/common/language/zh-cn.sh
+fi
 }
 
 
@@ -876,21 +963,7 @@ echo "builder_name=ophub" >> ${GITHUB_ENV}
 }
 
 
-function Diy_feeds() {
-if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
-  cp -Rf /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
-  cp -Rf /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
-fi
 
-# 正在执行插件语言修改
-if [[ -d "${HOME_PATH}/feeds/luci/modules/luci-mod-system" ]]; then
-  cd ${HOME_PATH}
-  ${OPERATES_PATH}/common/language/zh_Hans.sh
-else
-  cd ${HOME_PATH}
-  ${OPERATES_PATH}/common/language/zh-cn.sh
-fi
-}
 
 
 function Diy_IPv6helper() {
@@ -1217,74 +1290,10 @@ sed -i '/^$/d' "${HOME_PATH}/build_logo/config.txt"
 }
 
 
-function Make_defconfig() {
-cd ${HOME_PATH}
-echo "正在执行：识别源码编译为何机型"
-export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
-export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
-export TARGET_PROFILE_DG="$(awk -F '[="]+' '/TARGET_PROFILE/{print $2}' ${HOME_PATH}/.config)"
-if [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*64.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="x86-64"
-elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="x86-32"
-elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*phicomm.*n1=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="phicomm_n1"
-elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armsr.*armv8.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="aarch_64"
-elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armvirt.*64.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="aarch_64"
-elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
-else
-  export TARGET_PROFILE="${TARGET_PROFILE_DG}"
-fi
-export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-echo "正在编译：${TARGET_PROFILE}"
-
-if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
-  echo "PROMPT_TING=${amlogic_model}" >> ${GITHUB_ENV}
-else
-  echo "PROMPT_TING=${LUCI_EDITION}-${TARGET_PROFILE}" >> ${GITHUB_ENV}
-fi
-
-echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
-echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
-echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
-echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
-
-KERNEL_PATCH="$(grep -Eo "KERNEL_PATCHVER.*[0-9.]+" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
-KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
-  if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
-LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-[0-9.]+" "${HOME_PATH}/include/${KERNEL_VERSINO}"  |grep -Eo "[0-9.]+")"
-  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
-else
-  LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-${KERNEL_PATCH}.[0-9]+" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "[0-9.]+")"
-  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
-fi
-echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
-}
 
 
 function Diy_Publicarea2() {
-cd ${HOME_PATH}
-# 机型为aarch_64的设置
-if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
-  echo "AMLOGIC_CODE=AMLOGIC" >> ${GITHUB_ENV}
-  export PACKAGING_FIRMWARE="${UPDATE_FIRMWARE_ONLINE}"
-  echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
-  echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
-  echo "修改cpufreq代码适配Armvirt"
-  for X in $(find . -type d -name "luci-app-cpufreq"); do \
-    [[ -d "$X" ]] && \
-    sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' "$X/Makefile"; \
-  done
-elif [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
-  echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
-  echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
-else
-  echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
-fi
+
 }
 
 function Diy_adguardhome() {
