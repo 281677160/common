@@ -8,7 +8,6 @@ runs:
       shell: bash
       run: |
         cd ${HOME_PATH}
-        echo "${{ steps.info.outcome }}"
         function TIME() {
           case $1 in
             r) export Color="\e[31m";;
@@ -21,7 +20,6 @@ runs:
         echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
         }
 
-        
         Plug_in1="$(grep -Eo "CONFIG_PACKAGE_luci-app-.*=y|CONFIG_PACKAGE_luci-theme-.*=y" $HOME_PATH/.config |grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic\|_USE' |sed 's/=y//' |sed 's/CONFIG_PACKAGE_//g')"
         Plug_in2="$(echo "${Plug_in1}" |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
         echo "${Plug_in2}" >Plug-in
