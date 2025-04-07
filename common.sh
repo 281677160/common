@@ -181,7 +181,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 fi
 
 # 添加自定义插件源
-#CLASH_FENZHIHAO="$(grep -E '^export OpenClash_branch=' $BUILD_PARTSH |cut -d '"' -f2)"
+CLASH_FENZHIHAO="$(grep -E '^export OpenClash_branch=' $BUILD_PARTSH |cut -d '"' -f2)"
 if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
   CLASH_BRANCH="dev"
 else
@@ -255,6 +255,7 @@ if [[ -n "${ZZZ_PATH}" ]]; then
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
   grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 fi
+echo "4"
 }
 
 
