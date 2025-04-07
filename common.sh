@@ -440,6 +440,12 @@ ${BUILD_PARTSH}
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 [[ -f "$MYCONFIG_FILE" ]] && mv $MYCONFIG_FILE .config
+
+# 主题设置
+Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
+Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
+echo "CONFIG_PACKAGE_luci-app-$Mandatory_theme=y" .config
+echo "CONFIG_PACKAGE_luci-app-$Default_theme=y" .config
 ./scripts/feeds install -a
 }
 
@@ -549,7 +555,7 @@ Enable_IPV6_function="$(grep '^export Enable_IPV6_function=' $BUILD_PARTSH |cut 
 Enable_IPV4_function="$(grep '^export Enable_IPV4_function=' $BUILD_PARTSH |cut -d '"' -f2)"
 Customized_Information="$(grep '^export Customized_Information=' $BUILD_PARTSH |cut -d '"' -f2)"
 Replace_Kernel="$(grep '^export Replace_Kernel=' $BUILD_PARTSH |cut -d '"' -f2)"
-Password_free_login="$(grep '^export EPassword_free_login=' $BUILD_PARTSH |cut -d '"' -f2)"
+Password_free_login="$(grep '^export Password_free_login=' $BUILD_PARTSH |cut -d '"' -f2)"
 AdGuardHome_Core="$(grep '^export AdGuardHome_Core=' $BUILD_PARTSH |cut -d '"' -f2)"
 Automatic_Mount_Settings="$(grep '^export Automatic_Mount_Settings=' $BUILD_PARTSH |cut -d '"' -f2)"
 Disable_autosamba="$(grep '^export Disable_autosamba=' $BUILD_PARTSH |cut -d '"' -f2)"
@@ -592,7 +598,7 @@ elif [[ -n "${Ipv4_ipaddr}" ]]; then
      sed -i "s/${ipadd}/${Ipv4_ipaddr}/g" "${GENE_PATH}"
      echo "openwrt后台IP[${Ipv4_ipaddr}]修改完成"
    else
-     echo "TIME r \"因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
+     echo "因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了"
    fi
 fi
 
@@ -605,7 +611,7 @@ elif [[ -n "${Netmask_netm}" ]]; then
      sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
      echo "子网掩码[${Netmask_netm}]修改完成"
    else
-     echo "TIME r \"因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
+     echo "因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了"
   fi
 fi
 
@@ -632,8 +638,9 @@ fi
 if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
   echo "不进行,个性签名设置"
 elif [[ -n "${Customized_Information}" ]]; then
-  sed -i "s/Customized_Information/${Customized_Information}/g" "${DEFAULT_PATH}"
-  echo "个性签名[${Customized_Information}]增加完成"
+  Customized_Informat="${Customized_Information}"
+  sed -i "s/Customized_Information/${Customized_Informat}/g" "${DEFAULT_PATH}"
+  echo "个性签名[${Customized_Informat}]增加完成"
 fi
 
 if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
