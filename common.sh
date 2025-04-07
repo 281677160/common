@@ -193,7 +193,7 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 fi
 echo "22"
 # 添加自定义插件源
-CLASH_FENZHIHAO="$(grep '^export OpenClash_branch=' "${DIYPART_PATH}"  |cut -d '"' -f2)"
+CLASH_FENZHIHAO="$(grep '^export OpenClash_branch=' $BUILD_PARTSH |cut -d '"' -f2)"
 if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
   CLASH_BRANCH="dev"
 else
