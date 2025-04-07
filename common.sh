@@ -1939,6 +1939,6 @@ case "$1" in
     Diy_menu4
     ;;
   *)
-    echo "未知参数"
+    echo ""
     ;;
 esac
