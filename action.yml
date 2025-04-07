@@ -13,7 +13,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        bash $COMMON_SH Diy_menu4
+        source $COMMON_SH && Diy_menu4
         
     - name: 安装插件源
       shell: bash
