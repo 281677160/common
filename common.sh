@@ -154,18 +154,6 @@ fi
 }
 
 
-function Diy_update() {
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/ubuntu.sh)
-if [[ $? -ne 0 ]];then
-  TIME r "依赖安装失败，请检测网络后再次尝试!"
-  exit 1
-else
-  sudo sh -c 'echo openwrt > /etc/oprelyon'
-  TIME b "全部依赖安装完毕"
-fi
-}
-
-
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
