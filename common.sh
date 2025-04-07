@@ -462,9 +462,6 @@ cd ${HOME_PATH}
 
 function Diy_zdypartsh() {
 cd ${HOME_PATH}
-source ${BUILD_PARTSH}
-echo "333"
-cd ${HOME_PATH}
 ./scripts/feeds update -a
 
 # 正在执行插件语言修改
