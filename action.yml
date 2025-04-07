@@ -87,7 +87,7 @@ runs:
         echo "BUILD_PATCHES=${COMPILE_PATH}/patches" >> ${GITHUB_ENV}
         echo "BUILD_PARTSH=${COMPILE_PATH}/diy-part.sh" >> ${GITHUB_ENV}
         echo "BUILD_SETTINGS=${COMPILE_PATH}/settings.ini" >> ${GITHUB_ENV}
-        echo "MYCONFIG_FILE=${COMPILE_PATH}/seed" >> ${GITHUB_ENV}
+        echo "MYCONFIG_FILE=${COMPILE_PATH}/seed/${CONFIG_FILE}" >> ${GITHUB_ENV}
 
     - name: 密匙检测（密匙为空则退出）
       shell: bash
