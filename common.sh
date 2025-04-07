@@ -199,7 +199,6 @@ if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
 else
   CLASH_BRANCH="master"
 fi
-
 SRC_LIANJIE="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
 SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
@@ -207,23 +206,20 @@ if [[ -n "${SRC_FENZHIHAO}" ]]; then
 else
   git clone -q --depth 1 ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
 fi
-C_PATH="${HOME_PATH}/SRC_LUCI/modules/luci-mod-system"
 if [[ -d "${HOME_PATH}/SRC_LUCI/modules/luci-mod-system" ]]; then
   THEME_BRANCH="Theme2"
+  rm -rf ${HOME_PATH}/SRC_LUCI
 else
   THEME_BRANCH="Theme1"
+  rm -rf ${HOME_PATH}/SRC_LUCI
 fi
 
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
 echo "src-git dstheme https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
 echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;$CLASH_BRANCH" >> ${HOME_PATH}/feeds.conf.default
 
-echo "$THEME_BRANCH"
-echo "$CLASH_BRANCH"
-
 # 增加中文语言包
-A_PATH="$HOME_PATH/package"
-if [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ -d "$C_PATH" ]]; then
+if [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)" ]] && [[ "${THEME_BRANCH}" == "Theme2" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-settings ${HOME_PATH}/package/default-settings
   if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
@@ -237,7 +233,7 @@ if [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ -d
   if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-base luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
   fi
-elif [[ -z "$(find "$A_PATH" -type d -name "default-settings" -print)" ]] && [[ ! -d "$C_PATH" ]]; then
+elif [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)" ]] && [[ "${THEME_BRANCH}" == "Theme1" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-setting ${HOME_PATH}/package/default-settings
   if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
@@ -257,11 +253,8 @@ if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
   sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci ?g' "${HOME_PATH}/include/target.mk"
 fi
 
-# 删除前面下载而又不需要了的
-rm -rf ${HOME_PATH}/SRC_LUCI
-
 # zzz-default-settings文件
-ZZZ_PATH="$(find "$A_PATH" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
+ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
 if [[ -n "${ZZZ_PATH}" ]]; then  
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
