@@ -30,7 +30,11 @@ runs:
           rm -rf operates
           cp -Rf build ${GITHUB_WORKSPACE}/operates
         fi
-        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+        if [[ github.event_name == 'push' && github.event.head_commit != null ]]; then
+          if [[ -f "operates/${FOLDER_NAME}/relevance/settings.ini" ]]; then
+            source operates/${FOLDER_NAME}/relevance/settings.ini
+          fi
+        elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
           ls -a
           if [[ -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
             SOURCE_CODE="$(grep '^SOURCE_CODE=' "operates/${FOLDER_NAME}/settings.ini" | awk -F'"' '{print $2}')"
