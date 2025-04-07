@@ -26,19 +26,22 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
+        
         if [[ -d "build" ]]; then
           rm -rf operates
           cp -Rf build ${GITHUB_WORKSPACE}/operates
+          COMPILE_PATH="$GITHUB_WORKSPACE/operates/${FOLDER_NAME}"
         fi
+        
         if [[ github.event_name == 'push' && github.event.head_commit != null ]]; then
-          if [[ -f "operates/${FOLDER_NAME}/relevance/settings.ini" ]]; then
-            source operates/${FOLDER_NAME}/relevance/settings.ini
+          if [[ -f "${COMPILE_PATH}/relevance/settings.ini" ]]; then
+            source ${COMPILE_PATH}/relevance/settings.ini
           fi
         elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
           ls -a
-          if [[ -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
-            SOURCE_CODE="$(grep '^SOURCE_CODE=' "operates/${FOLDER_NAME}/settings.ini" | awk -F'"' '{print $2}')"
-            COMPILATION_INFORMATION="$(grep '^COMPILATION_INFORMATION=' "operates/${FOLDER_NAME}/settings.ini" | awk -F'"' '{print $2}')"
+          if [[ -f "${COMPILE_PATH}/settings.ini" ]]; then
+            SOURCE_CODE="$(grep '^SOURCE_CODE=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
+            COMPILATION_INFORMATION="$(grep '^COMPILATION_INFORMATION=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
           fi
           REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
           CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"
@@ -51,10 +54,11 @@ runs:
           CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
           UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
         else
-          if [[ -f "operates/${FOLDER_NAME}/settings.ini" ]]; then
-            source operates/${FOLDER_NAME}/settings.ini
+          if [[ -f "${COMPILE_PATH}/settings.ini" ]]; then
+            source ${COMPILE_PATH}/settings.ini
           fi
         fi
+        
         echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
         echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
         echo "INFORMATION_NOTICE=${INFORMATION_NOTICE}" >> ${GITHUB_ENV}
@@ -75,13 +79,13 @@ runs:
 
         echo "HOME_PATH=$GITHUB_WORKSPACE/openwrt" >> ${GITHUB_ENV}
         echo "OPERATES_PATH=$GITHUB_WORKSPACE/operates" >> ${GITHUB_ENV}
-        echo "COMPILE_PATH=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}" >> ${GITHUB_ENV}
-        echo "BUILD_DIY=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/diy" >> ${GITHUB_ENV}
-        echo "BUILD_FILES=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/files" >> ${GITHUB_ENV}
-        echo "BUILD_PATCHES=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/patches" >> ${GITHUB_ENV}
-        echo "BUILD_PARTSH=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/diy-part.sh" >> ${GITHUB_ENV}
-        echo "BUILD_SETTINGS=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/settings.ini" >> ${GITHUB_ENV}
-        echo "MYCONFIG_FILE=$GITHUB_WORKSPACE/operates/${FOLDER_NAME}/seed" >> ${GITHUB_ENV}
+        echo "COMPILE_PATH=${COMPILE_PATH}" >> ${GITHUB_ENV}
+        echo "BUILD_DIY=${COMPILE_PATH}/diy" >> ${GITHUB_ENV}
+        echo "BUILD_FILES=${COMPILE_PATH}/files" >> ${GITHUB_ENV}
+        echo "BUILD_PATCHES=${COMPILE_PATH}/patches" >> ${GITHUB_ENV}
+        echo "BUILD_PARTSH=${COMPILE_PATH}/diy-part.sh" >> ${GITHUB_ENV}
+        echo "BUILD_SETTINGS=${COMPILE_PATH}/settings.ini" >> ${GITHUB_ENV}
+        echo "MYCONFIG_FILE=${COMPILE_PATH}/seed" >> ${GITHUB_ENV}
 
     - name: 密匙检测（密匙为空则退出）
       shell: bash
