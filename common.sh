@@ -438,11 +438,14 @@ function Diy_partsh() {
 cd ${HOME_PATH}
 ${BUILD_PARTSH}
 ./scripts/feeds update -a
-./scripts/feeds update -a
+./scripts/feeds install -a
+[[ -f "$MYCONFIG_FILE" ]] && mv $MYCONFIG_FILE .config
+./scripts/feeds install -a
 }
 
-function Make_defconfig() {
+function Diy_profile() {
 cd ${HOME_PATH}
+make defconfig
 echo "正在执行：识别源码编译为何机型"
 export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
 export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
@@ -1252,17 +1255,6 @@ sed -i '/^$/d' "${HOME_PATH}/build_logo/config.txt"
 
 
 
-
-
-
-function Diy_upgrade3() {
-if [ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]; then
-  cd ${HOME_PATH}
-  source $UPGRADE_SH && Diy_Part3
-fi
-}
-
-
 function Diy_firmware() {
 # 远程更新处理固件
 if [ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]; then
@@ -1392,3 +1384,37 @@ elif [[ "${git_laqu}" == "4" ]]; then
     fi
 fi
 }
+
+
+function Diy_menu() {
+cd $HOME_PATH
+Diy_checkout
+Diy_${SOURCE_CODE}
+Diy_partsh
+}
+
+function Diy_menu2() {
+Diy_profile
+}
+
+function Diy_menu3() {
+Diy_Part2
+Diy_management
+Diy_definition
+Diy_prevent
+}
+
+case "$1" in
+  "Diy_menu")
+    Diy_menu
+    ;;
+  "Diy_menu2")
+    Diy_menu2
+    ;;
+  "Diy_menu3")
+    Diy_menu3
+    ;;
+  *)
+    echo ""
+    ;;
+esac
