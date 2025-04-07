@@ -3,7 +3,7 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 密匙检测（密匙为空则退出）
+    - name: 密匙检测
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
@@ -22,7 +22,7 @@ runs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
 
-    - name: 密匙检测（密匙为空则退出）
+    - name: 判断启动方式和变量
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
@@ -89,7 +89,7 @@ runs:
         echo "BUILD_SETTINGS=${COMPILE_PATH}/settings.ini" >> ${GITHUB_ENV}
         echo "MYCONFIG_FILE=${COMPILE_PATH}/seed/${CONFIG_FILE}" >> ${GITHUB_ENV}
 
-    - name: 密匙检测（密匙为空则退出）
+    - name: 整理个别变量
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
@@ -110,7 +110,7 @@ runs:
         fi
         bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
 
-    - name: 密匙检测（密匙为空则退出）
+    - name: 运行其他变量
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
