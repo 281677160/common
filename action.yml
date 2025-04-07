@@ -3,7 +3,7 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 发布信息
+    - name: 整理上传固件的名称
       shell: bash
       run: |
         cd $HOME_PATH
