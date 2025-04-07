@@ -15,7 +15,7 @@ runs:
       run: |
         cd $HOME_PATH
         echo "222"
-        source $COMMON_SH && Diy_menu4
+        bash $COMMON_SH && Diy_menu4
         
     - name: 安装插件源
       shell: bash
