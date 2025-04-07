@@ -13,6 +13,9 @@ runs:
         rm -rf UPLOAD/*
         cp -Rf ${HOME_PATH}/build_logo/config.txt $MYCONFIG_FILE/$CONFIG_FILE
         cp -Rf $OPERATES_PATH UPLOAD/build
+        if [[ -d "UPLOAD/build/common" ]]; then
+          rm -rf UPLOAD/build/common
+        fi
         cp -Rf $GITHUB_WORKSPACE/.github/workflows/* UPLOAD/.github/workflows
         mkdir -p "UPLOAD/build/${FOLDER_NAME}/relevance"
         echo "${FOLDER_NAME} $(date +%Y.%m%d.%H%M.%S)" > $COMPILE_PATH/relevance/start
