@@ -343,7 +343,7 @@ if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
 else
   find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?luci-app-autoupdate??g' ${HOME_PATH}/include/target.mk
+    sed -i 's?luci-app-autoupdate ??g' ${HOME_PATH}/include/target.mk
   fi
 fi
 
@@ -360,19 +360,6 @@ cat >> "${KEEPD_PATH}" <<-EOF
 /www/luci-static/argon/background
 /etc/smartdns/custom.conf
 EOF
-}
-
-
-function Diy_Notice() {
-TIME r ""
-TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
-TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
-if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP、清空密码、还原出厂设置和在线更新固件操作"
-else
-  TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作"
-fi
-TIME r ""
 }
 
 
