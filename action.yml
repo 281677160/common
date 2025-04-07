@@ -114,7 +114,7 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        source $COMMON_SH && Diy_menu1
+        source $COMMON_SH && Diy_variable
 branding:
   icon: "terminal"
   color: "gray-dark"
