@@ -31,6 +31,7 @@ runs:
         cd $HOME_PATH
         source $COMMON_SH && Diy_menu6
         echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
+        echo "SendMessage=true" >> ${GITHUB_ENV}
 
     - name: 上传配置文件在 Github Artifacts
       if: env.SHANG_CHUAN == 'true'
