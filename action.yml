@@ -3,7 +3,7 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 触发启动开始编译
+    - name: 编译信息
       id: gitpush
       shell: bash
       run: |
@@ -58,7 +58,7 @@ runs:
         fi
         TIME b "固件作者: ${GIT_ACTOR}"
         TIME b "仓库地址: ${GITHUB_LINK}"
-        TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${RUN_WORKFLOW}]工作流程）"
+        TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${{github.workflow}}]工作流程）"
         TIME b "编译时间: $(date +%Y年%m月%d号%H时%M分)"
         if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
           TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${amlogic_model}】固件"
