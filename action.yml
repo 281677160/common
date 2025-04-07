@@ -63,7 +63,12 @@ runs:
           echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
           echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
         fi
-        source $COMMON_SH && Diy_aarch
+
+    - name: 生成配置文件的小修改
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        source $COMMON_SH && Diy_management
         
     - name: 配置自定义里面的各种开关
       shell: bash
