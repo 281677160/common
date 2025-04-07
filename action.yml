@@ -35,6 +35,11 @@ runs:
         git add .
         git commit -m "编译-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
         git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${GIT_REFNAME}
+        if [[ $? -ne 0 ]]; then
+          echo -e "\033[31m 触发编译${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}失败 \033[0m"
+        else
+          echo -e "\033[33m 触发编译${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}成功 \033[0m"
+        fi
 
         echo "TZ_Message=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
         
