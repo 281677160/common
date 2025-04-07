@@ -59,7 +59,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        source $COMMON_SH && Diy_menu5
+        source $COMMON_SH && Diy_aarch
         
     - name: 配置自定义里面的各种开关
       shell: bash
