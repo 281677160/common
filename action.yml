@@ -3,10 +3,10 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 编译信息
+    - name: 检查rootfs.tar.gz是否存在
       shell: bash
       run: |
-        cd ${HOME_PATH}
+        cd $HOME_PATH
         function TIME() {
           case $1 in
             r) export Color="\e[31m";;
@@ -30,8 +30,8 @@ runs:
           echo
         fi
   
-    if: env.SendMessage == 'true'
     - name: 编译信息
+      if: env.SendMessage == 'true'
       shell: bash
       run: |
         cd ${HOME_PATH}
