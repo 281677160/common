@@ -7,7 +7,7 @@ runs:
       id: gitpush
       shell: bash
       run: |
-        cd ${GITHUB_WORKSPACE}
+        cd ${HOME_PATH}
         function TIME() {
           case $1 in
             r) export Color="\e[31m";;
@@ -21,11 +21,11 @@ runs:
         }
 
         
-        Plug_in1="$(grep -Eo "CONFIG_PACKAGE_luci-app-.*=y|CONFIG_PACKAGE_luci-theme-.*=y" .config |grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic\|_USE' |sed 's/=y//' |sed 's/CONFIG_PACKAGE_//g')"
+        Plug_in1="$(grep -Eo "CONFIG_PACKAGE_luci-app-.*=y|CONFIG_PACKAGE_luci-theme-.*=y" $HOME_PATH/.config |grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic\|_USE' |sed 's/=y//' |sed 's/CONFIG_PACKAGE_//g')"
         Plug_in2="$(echo "${Plug_in1}" |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
         echo "${Plug_in2}" >Plug-in
 
-        if [[ `grep -c "CONFIG_GRUB_EFI_IMAGES=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+        if [[ `grep -c "CONFIG_GRUB_EFI_IMAGES=y" $HOME_PATH/.config` -eq '1' ]]; then
           export EFI_NO="1"
         else
           export EFI_NO="0"
