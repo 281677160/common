@@ -18,7 +18,7 @@ runs:
           esac
         echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
         }
-        if [[ -z "SendMessage" ]]; then
+        if [[ -z "${SendMessage}" ]]; then
           echo
           TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
           TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
