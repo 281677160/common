@@ -455,7 +455,7 @@ fi
 
 function Diy_profile() {
 cd ${HOME_PATH}
-make defconfig
+make defconfig > /dev/null 2>&1
 echo "正在执行：识别源码编译为何机型"
 export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
 export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
