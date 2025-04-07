@@ -8,7 +8,7 @@ runs:
       shell: bash
       run: |
         cd ${HOME_PATH}
-        echo "${info}"
+        echo "${steps.info.outcome}"
         function TIME() {
           case $1 in
             r) export Color="\e[31m";;
