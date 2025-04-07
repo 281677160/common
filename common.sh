@@ -256,10 +256,10 @@ if [[ -n "${ZZZ_PATH}" ]]; then
   grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 fi
 echo "4"
-}
 
+# 更新feeds
+./scripts/feeds update -a
 
-function Diy_complement() {
 # 更新feeds后再次修改补充
 cd ${HOME_PATH}
 z="luci-theme-argon,luci-app-argon-config,luci-theme-Butterfly,luci-theme-netgear,luci-theme-atmaterial, \
@@ -434,6 +434,12 @@ function Diy_MT798X() {
 cd ${HOME_PATH}
 }
 
+function Diy_partsh() {
+cd ${HOME_PATH}
+${BUILD_PARTSH}
+./scripts/feeds update -a
+./scripts/feeds update -a
+}
 
 function Make_defconfig() {
 cd ${HOME_PATH}
