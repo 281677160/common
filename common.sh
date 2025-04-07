@@ -437,6 +437,7 @@ cd ${HOME_PATH}
 function Diy_partsh() {
 cd ${HOME_PATH}
 ${BUILD_PARTSH}
+echo "$Customized_Information"
 ./scripts/feeds update -a > /dev/null 2>&1
 ./scripts/feeds install -a > /dev/null 2>&1
 [[ -f "$MYCONFIG_FILE" ]] && mv $MYCONFIG_FILE .config
