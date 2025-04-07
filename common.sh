@@ -599,7 +599,7 @@ elif [[ -n "${Ipv4_ipaddr}" ]]; then
      sed -i "s/${ipadd}/${Ipv4_ipaddr}/g" "${GENE_PATH}"
      echo "openwrt后台IP[${Ipv4_ipaddr}]修改完成"
    else
-     echo "因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了"
+     TIME r "因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了"
    fi
 fi
 
@@ -612,12 +612,12 @@ elif [[ -n "${Netmask_netm}" ]]; then
      sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
      echo "子网掩码[${Netmask_netm}]修改完成"
    else
-     echo "因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了"
+     TIME r "因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了"
   fi
 fi
 
 if [[ `grep -c "${Default_theme}=y" ${HOME_PATH}/.config` -eq '0' ]]; then
-  echo "没有${Default_theme}此主题存在"
+  echo "没有${Default_theme}此主题存在,或者没选择此主题"
 elif [[ "${Default_theme}" == "0" ]] || [[ -z "${Default_theme}" ]]; then
   echo "不进行,默认主题设置"
 elif [[ -n "${Default_theme}" ]]; then
@@ -631,7 +631,7 @@ fi
 if [[ `grep -c "${Mandatory_theme}=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   [[ -f "${HOME_PATH}/feeds/luci/collections/luci/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
   [[ -f "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
-  echo "替换必须主题完成,您现在的必选主题为：${TARGET_DIR}"
+  echo "替换必须主题完成,您现在的必选主题为：luci-theme-${Mandatory_theme}"
 else
   echo "没有${Mandatory_theme}此主题存在,或者没选择此主题"
 fi
@@ -675,7 +675,7 @@ elif [[ -n "${Gateway_Settings}" ]]; then
     sed -i "$lan\set network.lan.gateway='${Gateway_Settings}'" "${GENE_PATH}"
     echo "网关[${Gateway_Settings}]修改完成"
   else
-    echo "TIME r \"因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
+    TIME r "因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了"
   fi
 fi
 
@@ -687,7 +687,7 @@ elif [[ -n "${DNS_Settings}" ]]; then
      sed -i "$lan\set network.lan.dns='${DNS_Settings}'" "${GENE_PATH}"
      echo "DNS[${DNS_Settings}]设置完成"
   else
-    echo "TIME r \"因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确\"" >> ${HOME_PATH}/CHONGTU
+    TIME r "因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确"
   fi
 fi
 
@@ -700,7 +700,7 @@ elif [[ -n "${Broadcast_Ipv4}" ]]; then
     sed -i "$lan\set network.lan.broadcast='${Broadcast_Ipv4}'" "${GENE_PATH}"
     echo "广播IP[${Broadcast_Ipv4}]设置完成"
   else
-    echo "TIME r \"因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确\"" >> ${HOME_PATH}/CHONGTU
+    TIME r "因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确"
   fi
 fi
 
