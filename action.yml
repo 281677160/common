@@ -41,6 +41,10 @@ runs:
           echo -e "\033[33m 触发编译${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}成功 \033[0m"
         fi
 
+    - name: 信息通知的时间
+      shell: bash
+      run: |
+        cd ${GITHUB_WORKSPACE}
         echo "TZ_Message=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
         
     - name: Telegram或pushplus信息通知
