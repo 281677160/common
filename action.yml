@@ -33,7 +33,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        source $UPGRADE_SH && Diy_Part2
+        source ${UPGRADE_SH} && Diy_Part2
   
 
     - name: 判断插件有否冲突减少编译错误
