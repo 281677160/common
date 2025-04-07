@@ -1630,12 +1630,3 @@ elif [[ "${git_laqu}" == "4" ]]; then
     fi
 fi
 }
-
-case "$1" in
-  "Diy_menu4")
-    Diy_menu4
-    ;;
-  *)
-    echo ""
-    ;;
-esac
