@@ -479,19 +479,221 @@ kernel_usage="$(grep '^export kernel_usage=' $BUILD_PARTSH |cut -d '"' -f2)"
 
 
 
+lan="/set network.\$1.netmask/a"
+ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |grep -v 'addr_offset' |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+netmas="$(grep "netmask:-" "${GENE_PATH}" |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+opname="$(grep "hostname=" "${GENE_PATH}" |grep -v '\$hostname' |cut -d "'" -f2)"
+if [[ -n "$(grep "set network.\${1}6.device" "${GENE_PATH}")" ]]; then
+  ifnamee="uci set network.ipv6.device='@lan'"
+  set_add="uci add_list firewall.@zone[0].network='ipv6'"
+else
+  ifnamee="uci set network.ipv6.ifname='@lan'"
+  set_add="uci set firewall.@zone[0].network='lan ipv6'"
+fi
+
+if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
+  devicee="uci set network.ipv6.device='@lan'"
+fi
 
 
+if [[ "${Ipv4_ipaddr}" == "0" ]] || [[ -z "${Ipv4_ipaddr}" ]]; then
+  echo "使用源码默认后台IP"
+elif [[ -n "${Ipv4_ipaddr}" ]]; then
+  Kernel_Pat="$(echo ${Ipv4_ipaddr} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  ipadd_Pat="$(echo ${ipadd} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  if [[ -n "${Kernel_Pat}" ]] && [[ -n "${ipadd_Pat}" ]]; then
+     sed -i "s/${ipadd}/${Ipv4_ipaddr}/g" "${GENE_PATH}"
+     echo "openwrt后台IP[${Ipv4_ipaddr}]修改完成"
+   else
+     echo "TIME r \"因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
+   fi
+fi
+
+if [[ "${Netmask_netm}" == "0" ]] || [[ -z "${Netmask_netm}" ]]; then
+  echo "使用默认子网掩码"
+elif [[ -n "${Netmask_netm}" ]]; then
+  Kernel_netm="$(echo ${Netmask_netm} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  ipadd_mas="$(echo ${netmas} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  if [[ -n "${Kernel_netm}" ]] && [[ -n "${ipadd_mas}" ]]; then
+     sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
+     echo "子网掩码[${Netmask_netm}]修改完成"
+   else
+     echo "TIME r \"因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
+  fi
+fi
+
+if [[ `grep -c "${Default_theme}=y" ${HOME_PATH}/.config` -eq '0' ]]; then
+  echo "没有${Default_theme}此主题存在"
+elif [[ "${Default_theme}" == "0" ]] || [[ -z "${Default_theme}" ]]; then
+  echo "不进行,默认主题设置"
+elif [[ -n "${Default_theme}" ]]; then
+  echo "
+    uci set luci.main.mediaurlbase='/luci-static/${Default_theme}'
+    uci commit luci
+  " >> "${DEFAULT_PATH}"
+  echo "默认主题[${Default_theme}]设置完成"
+fi
+
+if [[ `grep -c "${Mandatory_theme}=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  [[ -f "${HOME_PATH}/feeds/luci/collections/luci/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+  [[ -f "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
+  echo "替换必须主题完成,您现在的必选主题为：${TARGET_DIR}"
+else
+  echo "没有${Mandatory_theme}此主题存在,或者没选择此主题"
+fi
+
+if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
+  echo "不进行,个性签名设置"
+elif [[ -n "${Customized_Information}" ]]; then
+  sed -i "s/Customized_Information/${Customized_Information}/g" "${DEFAULT_PATH}"
+  echo "个性签名[${Customized_Information}]增加完成"
+fi
+
+if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
+  echo "CONFIG_TARGET_KERNEL_PARTSIZE=${Kernel_partition_size}" >> ${HOME_PATH}/.config
+  echo "内核分区设置完成，大小为：${Kernel_partition_size}MB"
+else
+  echo "不进行,内核分区大小设置"
+fi
+
+if [[ -n "${Rootfs_partition_size}" ]] && [[ "${Rootfs_partition_size}" != "0" ]]; then
+  echo "CONFIG_TARGET_ROOTFS_PARTSIZE=${Rootfs_partition_size}" >> ${HOME_PATH}/.config
+  echo "系统分区设置完成，大小为：${Rootfs_partition_size}MB"
+else
+  echo "不进行,系统分区大小设置"
+fi
 
 
+if [[ "${Op_name}" == "0" ]] || [[ -z "${Op_name}" ]]; then
+  echo "使用源码默认主机名"
+elif [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
+  sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
+  echo "主机名[${Op_name}]修改完成"
+fi
 
 
+if [[ "${Gateway_Settings}" == "0" ]] || [[ -z "${Gateway_Settings}" ]]; then
+  echo "不进行,网关设置"
+elif [[ -n "${Gateway_Settings}" ]]; then
+  Router_gat="$(echo ${Gateway_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  if [[ -n "${Router_gat}" ]]; then
+    sed -i "$lan\set network.lan.gateway='${Gateway_Settings}'" "${GENE_PATH}"
+    echo "网关[${Gateway_Settings}]修改完成"
+  else
+    echo "TIME r \"因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
+  fi
+fi
+
+if [[ "${DNS_Settings}" == "0" ]] || [[ -z "${DNS_Settings}" ]]; then
+  echo "不进行,DNS设置"
+elif [[ -n "${DNS_Settings}" ]]; then
+  ipa_dns="$(echo ${DNS_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  if [[ -n "${ipa_dns}" ]]; then
+     sed -i "$lan\set network.lan.dns='${DNS_Settings}'" "${GENE_PATH}"
+     echo "DNS[${DNS_Settings}]设置完成"
+  else
+    echo "TIME r \"因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确\"" >> ${HOME_PATH}/CHONGTU
+  fi
+fi
 
 
+if [[ "${Broadcast_Ipv4}" == "0" ]] || [[ -z "${Broadcast_Ipv4}" ]]; then
+  echo "不进行,广播IP设置"
+elif [[ -n "${Broadcast_Ipv4}" ]]; then
+  IPv4_Bro="$(echo ${Broadcast_Ipv4} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
+  if [[ -n "${IPv4_Bro}" ]]; then
+    sed -i "$lan\set network.lan.broadcast='${Broadcast_Ipv4}'" "${GENE_PATH}"
+    echo "广播IP[${Broadcast_Ipv4}]设置完成"
+  else
+    echo "TIME r \"因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确\"" >> ${HOME_PATH}/CHONGTU
+  fi
+fi
+
+if [[ "${Disable_DHCP}" == "1" ]]; then
+   sed -i "$lan\set dhcp.lan.ignore='1'" "${GENE_PATH}"
+   echo "关闭DHCP设置完成"
+else
+   echo "不进行,关闭DHCP设置"
+fi
+
+if [[ "${Disable_Bridge}" == "1" ]]; then
+   sed -i "$lan\delete network.lan.type" "${GENE_PATH}"
+   echo "去掉桥接设置完成"
+else
+   echo "不进行,去掉桥接设"
+fi
+
+if [[ "${Ttyd_account_free_login}" == "1" ]]; then
+   sed -i "$lan\set ttyd.@ttyd[0].command='/bin/login -f root'" "${GENE_PATH}"
+   echo "TTYD免账户登录完成"
+else
+   echo "不进行,TTYD免账户登录"
+fi
+
+if [[ "${Password_free_login}" == "1" ]]; then
+   sed -i '/CYXluq4wUazHjmCDBCqXF/d' "${ZZZ_PATH}"
+   echo "固件免密登录设置完成"
+else
+   echo "不进行,固件免密登录设置"
+fi
+
+if [[ "${Disable_53_redirection}" == "1" ]]; then
+   sed -i '/to-ports 53/d' "${ZZZ_PATH}"
+   echo "删除DNS重定向53端口完成"
+else
+   echo "不进行,删除DNS重定向53端"
+fi
+
+if [[ "${Cancel_running}" == "1" ]]; then
+   echo "sed -i '/coremark/d' /etc/crontabs/root" >> "${DEFAULT_PATH}"
+   echo "删除每天跑分任务完成"
+else
+   echo "不进行,删除每天跑分任务"
+fi
+
+if [[ "${Disable_autosamba}" == "1" ]]; then
+sed -i '/samba/d;/SAMBA/d' "${HOME_PATH}/.config"
+echo '
+# CONFIG_PACKAGE_autosamba is not set
+# CONFIG_PACKAGE_luci-app-samba is not set
+# CONFIG_PACKAGE_luci-app-samba4 is not set
+# CONFIG_PACKAGE_samba36-server is not set
+# CONFIG_PACKAGE_samba4-libs is not set
+# CONFIG_PACKAGE_samba4-server is not set
+' >> ${HOME_PATH}/.config
+   echo "去掉samba完成"
+else
+   echo "不进行,去掉samba"
+fi
+
+if [[ "${Delete_unnecessary_items}" == "1" ]]; then
+  echo "删除其他机型的固件,只保留当前主机型固件完成"
+  sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
+fi
+
+export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
+if [[ "${TARGET_BOARD}" == "armvirt" ]]; then
+  export KERNEL_patc="config-${Replace_Kernel}"
+else
+  export KERNEL_patc="patches-${Replace_Kernel}"
+fi
+if [[ "${Replace_Kernel}" == "0" ]]; then
+  echo "不进行内核更换"
+elif [[ -n "${Replace_Kernel}" ]] && [[ -n "${patchverl}" ]]; then
+  if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
+    sed -i "s/${patchverl}/${Replace_Kernel}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
+    echo "内核[${Replace_Kernel}]更换完成"
+  else
+    echo "TIME r \"${TARGET_PROFILE}机型源码没发现[ ${Replace_Kernel} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译\"" >> ${HOME_PATH}/CHONGTU
+  fi
+fi
 
 
-
-
-
+cat >> "${HOME_PATH}/.config" <<-EOF
+CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_default-settings=y
+CONFIG_PACKAGE_default-settings-chn=y
+EOF
 
 
 
