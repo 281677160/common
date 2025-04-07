@@ -1398,7 +1398,6 @@ Diy_profile
 }
 
 function Diy_menu3() {
-Diy_Part2
 Diy_management
 Diy_definition
 Diy_prevent
