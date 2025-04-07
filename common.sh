@@ -695,21 +695,80 @@ CONFIG_PACKAGE_default-settings=y
 CONFIG_PACKAGE_default-settings-chn=y
 EOF
 
-
-
-
-
-# 正在执行插件语言修改
-if [[ -d "${HOME_PATH}/feeds/luci/modules/luci-mod-system" ]]; then
-  cd ${HOME_PATH}
-  ${OPERATES_PATH}/common/language/zh_Hans.sh
+if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_amd64"
+  Archclash="linux-amd64"
+  echo "CPU架构：amd64"
+elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_386"
+  Archclash="linux-386"
+  echo "CPU架构：X86 32"
+elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_arm64"
+  Archclash="linux-arm64"
+  echo "CPU架构：arm64"
+elif [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_armv7"
+  Archclash="linux-armv7"
+  echo "CPU架构：armv7"
+elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep "CONFIG_TARGET_ARCH_PACKAGES" "${HOME_PATH}/.config" |grep -c "vfp"` -eq '1' ]]; then
+  Arch="linux_armv6"
+  Archclash="linux-armv6"
+  echo "CPU架构：armv6"
+elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep "CONFIG_TARGET_ARCH_PACKAGES" "${HOME_PATH}/.config" |grep -c "vfp"` -eq '0' ]]; then
+  Arch="linux_armv5"
+  Archclash="linux-armv5"
+  echo "CPU架构：armv6"
+elif [[ `grep -c "CONFIG_ARCH=\"mips\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_mips_softfloat"
+  Archclash="linux-mips-softfloat"
+  echo "CPU架构：mips"
+elif [[ `grep -c "CONFIG_ARCH=\"mips64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_mips64_softfloat"
+  Archclash="linux-mips64"
+  echo "CPU架构：mips64"
+elif [[ `grep -c "CONFIG_ARCH=\"mipsel\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_mipsle_softfloat"
+  Archclash="linux-mipsle-softfloat"
+  echo "CPU架构：mipsel"
+elif [[ `grep -c "CONFIG_ARCH=\"mips64el\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_mips64le_softfloat"
+  Archclash="linux-mips64le"
+  echo "CPU架构：mips64el"
 else
-  cd ${HOME_PATH}
-  ${OPERATES_PATH}/common/language/zh-cn.sh
+  echo "不了解您的CPU为何架构"
+  weizhicpu="1"
 fi
-./scripts/feeds install -a > /dev/null 2>&1
-# 使用自定义配置文件
-[[ -f "$MYCONFIG_FILE" ]] && mv $MYCONFIG_FILE .config
+
+if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
+  echo "正在执行：给adguardhome下载核心"
+  rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
+  wget -q https://github.com/281677160/common/releases/download/API/AdGuardHome.api -O AdGuardHome.api
+  if [[ $? -ne 0 ]];then
+    curl -fsSL https://github.com/281677160/common/releases/download/API/AdGuardHome.api -o AdGuardHome.api
+  fi
+  latest_ver="$(grep -E 'tag_name' 'AdGuardHome.api' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
+  rm -rf AdGuardHome.api
+  wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_${Arch}.tar.gz
+  if [[ -f "AdGuardHome_${Arch}.tar.gz" ]]; then
+    tar -zxvf AdGuardHome_${Arch}.tar.gz -C ${HOME_PATH}
+    echo "核心下载成功"
+  else
+    echo "下载核心失败"
+  fi
+  mkdir -p ${HOME_PATH}/files/usr/bin
+  if [[ -f "${HOME_PATH}/AdGuardHome/AdGuardHome" ]]; then
+    mv -f ${HOME_PATH}/AdGuardHome ${HOME_PATH}/files/usr/bin/
+    sudo chmod +x ${HOME_PATH}/files/usr/bin/AdGuardHome/AdGuardHome
+    echo "增加AdGuardHome核心完成"
+    echo -e "\nCONFIG_PACKAGE_luci-app-adguardhome=y" >> ${HOME_PATH}/.config
+  else
+    echo "增加AdGuardHome核心失败"
+  fi
+    rm -rf ${HOME_PATH}/{AdGuardHome_${Arch}.tar.gz,AdGuardHome}
+else
+  [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
+fi
 }
 
 
@@ -733,13 +792,6 @@ if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07
   devicee="uci set network.ipv6.device='@lan'"
 fi
 
-# AdGuardHome内核
-if [[ "${AdGuardHome_Core}" == "1" ]]; then
-  echo "AdGuardHome_Core=1" >> ${GITHUB_ENV}
-else
-  [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
-  echo "AdGuardHome_Core=0" >> ${GITHUB_ENV}
-fi
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
   echo "固件加入IPV6功能"
@@ -812,158 +864,6 @@ if [[ "${Enable_IPV4_function}" == "1" ]]; then
   " >> "${DEFAULT_PATH}"
 fi
 
-if [[ "${Default_theme}" == "0" ]] || [[ -z "${Default_theme}" ]]; then
-  echo "Default_theme=0" >> ${GITHUB_ENV}
-  echo "不进行,默认主题设置"
-elif [[ -n "${Default_theme}" ]]; then
-  echo "Default_theme=${Default_theme}" >> ${GITHUB_ENV}
-fi
-
-if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
-  echo "不进行,个性签名设置"
-elif [[ -n "${Customized_Information}" ]]; then
-  sed -i "s/Customized_Information/${Customized_Information}/g" "${DEFAULT_PATH}"
-  echo "个性签名[${Customized_Information}]增加完成"
-fi
-
-if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
-  echo "CONFIG_TARGET_KERNEL_PARTSIZE=${Kernel_partition_size}" >> ${HOME_PATH}/.config
-  echo "内核分区设置完成，大小为：${Kernel_partition_size}MB"
-else
-  echo "不进行,内核分区大小设置"
-fi
-
-if [[ -n "${Rootfs_partition_size}" ]] && [[ "${Rootfs_partition_size}" != "0" ]]; then
-  echo "CONFIG_TARGET_ROOTFS_PARTSIZE=${Rootfs_partition_size}" >> ${HOME_PATH}/.config
-  echo "系统分区设置完成，大小为：${Rootfs_partition_size}MB"
-else
-  echo "不进行,系统分区大小设置"
-fi
-
-if [[ "${Delete_unnecessary_items}" == "1" ]]; then
-   echo "Delete_unnecessary_items=${Delete_unnecessary_items}" >> ${GITHUB_ENV}
-fi
-
-if [[ "${Replace_Kernel}" == "0" ]] || [[ -z "${Replace_Kernel}" ]]; then
-  echo "Replace_Kernel=0" >> ${GITHUB_ENV}
-  echo "使用默认内核"
-elif [[ -n "${Replace_Kernel}" ]]; then
-  Replace_nel="$(echo ${Replace_Kernel} |grep -Eo "[0-9]+\.[0-9]+")"
-  if [[ -n "${Replace_nel}" ]]; then
-    echo "Replace_Kernel=${Replace_Kernel}" >> ${GITHUB_ENV}
-    echo "修改源码默认内核为：${Replace_Kernel}"
-  else
-    echo "Replace_Kernel=0" >> ${GITHUB_ENV}
-    echo "填写的内核格式错误,使用源码默认内核编译"
-  fi
-fi
-
-if [[ "${Ipv4_ipaddr}" == "0" ]] || [[ -z "${Ipv4_ipaddr}" ]]; then
-  echo "使用源码默认后台IP"
-elif [[ -n "${Ipv4_ipaddr}" ]]; then
-  Kernel_Pat="$(echo ${Ipv4_ipaddr} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-  ipadd_Pat="$(echo ${ipadd} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-  if [[ -n "${Kernel_Pat}" ]] && [[ -n "${ipadd_Pat}" ]]; then
-     sed -i "s/${ipadd}/${Ipv4_ipaddr}/g" "${GENE_PATH}"
-     echo "openwrt后台IP[${Ipv4_ipaddr}]修改完成"
-   else
-     echo "TIME r \"因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
-   fi
-fi
-
-if [[ "${Netmask_netm}" == "0" ]] || [[ -z "${Netmask_netm}" ]]; then
-  echo "使用默认子网掩码"
-elif [[ -n "${Netmask_netm}" ]]; then
-  Kernel_netm="$(echo ${Netmask_netm} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-  ipadd_mas="$(echo ${netmas} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-  if [[ -n "${Kernel_netm}" ]] && [[ -n "${ipadd_mas}" ]]; then
-     sed -i "s/${netmas}/${Netmask_netm}/g" "${GENE_PATH}"
-     echo "子网掩码[${Netmask_netm}]修改完成"
-   else
-     echo "TIME r \"因子网掩码获取有错误，子网掩码设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
-  fi
-fi
-
-if [[ "${Op_name}" == "0" ]] || [[ -z "${Op_name}" ]]; then
-  echo "使用源码默认主机名"
-elif [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
-  sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
-  echo "主机名[${Op_name}]修改完成"
-fi
-
-if [[ "${Gateway_Settings}" == "0" ]] || [[ -z "${Gateway_Settings}" ]]; then
-  echo "不进行,网关设置"
-elif [[ -n "${Gateway_Settings}" ]]; then
-  Router_gat="$(echo ${Gateway_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-  if [[ -n "${Router_gat}" ]]; then
-    sed -i "$lan\set network.lan.gateway='${Gateway_Settings}'" "${GENE_PATH}"
-    echo "网关[${Gateway_Settings}]修改完成"
-  else
-    echo "TIME r \"因子网关IP获取有错误，网关IP设置失败，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了\"" >> ${HOME_PATH}/CHONGTU
-  fi
-fi
-
-if [[ "${DNS_Settings}" == "0" ]] || [[ -z "${DNS_Settings}" ]]; then
-  echo "不进行,DNS设置"
-elif [[ -n "${DNS_Settings}" ]]; then
-  ipa_dns="$(echo ${DNS_Settings} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-  if [[ -n "${ipa_dns}" ]]; then
-     sed -i "$lan\set network.lan.dns='${DNS_Settings}'" "${GENE_PATH}"
-     echo "DNS[${DNS_Settings}]设置完成"
-  else
-    echo "TIME r \"因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确\"" >> ${HOME_PATH}/CHONGTU
-  fi
-fi
-
-if [[ "${Broadcast_Ipv4}" == "0" ]] || [[ -z "${Broadcast_Ipv4}" ]]; then
-  echo "不进行,广播IP设置"
-elif [[ -n "${Broadcast_Ipv4}" ]]; then
-  IPv4_Bro="$(echo ${Broadcast_Ipv4} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
-  if [[ -n "${IPv4_Bro}" ]]; then
-    sed -i "$lan\set network.lan.broadcast='${Broadcast_Ipv4}'" "${GENE_PATH}"
-    echo "广播IP[${Broadcast_Ipv4}]设置完成"
-  else
-    echo "TIME r \"因IPv4 广播IP获取有错误，IPv4广播IP设置失败，请检查IPv4广播IP是否填写正确\"" >> ${HOME_PATH}/CHONGTU
-  fi
-fi
-
-if [[ "${Disable_DHCP}" == "1" ]]; then
-   sed -i "$lan\set dhcp.lan.ignore='1'" "${GENE_PATH}"
-   echo "关闭DHCP设置完成"
-fi
-
-if [[ "${Disable_Bridge}" == "1" ]]; then
-   sed -i "$lan\delete network.lan.type" "${GENE_PATH}"
-   echo "去掉桥接设置完成"
-fi
-
-if [[ "${Ttyd_account_free_login}" == "1" ]]; then
-   sed -i "$lan\set ttyd.@ttyd[0].command='/bin/login -f root'" "${GENE_PATH}"
-   echo "TTYD免账户登录完成"
-fi
-
-if [[ "${Password_free_login}" == "1" ]]; then
-   sed -i '/CYXluq4wUazHjmCDBCqXF/d' "${ZZZ_PATH}"
-   echo "固件免密登录设置完成"
-fi
-
-if [[ "${Disable_53_redirection}" == "1" ]]; then
-   sed -i '/to-ports 53/d' "${ZZZ_PATH}"
-   echo "删除DNS重定向53端口完成"
-fi
-
-if [[ "${Cancel_running}" == "1" ]]; then
-   echo "sed -i '/coremark/d' /etc/crontabs/root" >> "${DEFAULT_PATH}"
-   echo "删除每天跑分任务完成"
-fi
-
-if [[ "${Disable_NaiveProxy}" == "1" ]]; then
-  echo "Disable_NaiveProxy=1" >> ${GITHUB_ENV}
-fi
-
-if [[ "${Disable_autosamba}" == "1" ]]; then
-  echo "Disable_autosamba=1" >> ${GITHUB_ENV}
-fi
 
 # 晶晨CPU机型自定义机型,内核,分区
 echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
@@ -973,33 +873,22 @@ echo "openwrt_size=${rootfs_size}" >> ${GITHUB_ENV}
 echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
 echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 echo "builder_name=ophub" >> ${GITHUB_ENV}
-[[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
-
-
-if [[ -n "${Mandatory_theme}" ]]; then
-  SEARCH_DIRS=("${HOME_PATH}/package" "${HOME_PATH}/feeds")
-  TARGET_DIR="luci-theme-${Mandatory_theme}"
-  if find "${SEARCH_DIRS[@]}" -type d -name "$TARGET_DIR" -print -quit | grep -q .; then
-    [[ -f "${HOME_PATH}/feeds/luci/collections/luci/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
-    [[ -f "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
-    echo "替换必须主题完成,您现在的必选主题为：${TARGET_DIR}"
-  else
-    echo "未找到 $TARGET_DIR 文件夹，无需操作."
-  fi
-else
-  echo "不进行,替换bootstrap主题设置"
-fi
 }
 
 
 function Diy_feeds() {
-echo "正在执行：安装feeds,请耐心等待..."
-cd ${HOME_PATH}
-./scripts/feeds install -a
-
 if [[ ! -f "${HOME_PATH}/staging_dir/host/bin/upx" ]]; then
   cp -Rf /usr/bin/upx ${HOME_PATH}/staging_dir/host/bin/upx
   cp -Rf /usr/bin/upx-ucl ${HOME_PATH}/staging_dir/host/bin/upx-ucl
+fi
+
+# 正在执行插件语言修改
+if [[ -d "${HOME_PATH}/feeds/luci/modules/luci-mod-system" ]]; then
+  cd ${HOME_PATH}
+  ${OPERATES_PATH}/common/language/zh_Hans.sh
+else
+  cd ${HOME_PATH}
+  ${OPERATES_PATH}/common/language/zh-cn.sh
 fi
 }
 
@@ -1065,35 +954,12 @@ CONFIG_PACKAGE_kmod-fuse=y
 ' >> ${HOME_PATH}/.config
 gitsvn https://github.com/281677160/common/blob/main/Share/block/10-mount ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
 fi
-
-if [[ "${Disable_autosamba}" == "1" ]]; then
-sed -i '/luci-i18n-samba/d; /PACKAGE_samba/d; /SAMBA_MAX/d; /SAMBA4_SERVER/d' "${HOME_PATH}/.config"
-echo '
-# CONFIG_PACKAGE_autosamba is not set
-# CONFIG_PACKAGE_luci-app-samba is not set
-# CONFIG_PACKAGE_luci-app-samba4 is not set
-# CONFIG_PACKAGE_samba36-server is not set
-# CONFIG_PACKAGE_samba4-libs is not set
-# CONFIG_PACKAGE_samba4-server is not set
-' >> ${HOME_PATH}/.config
-else
-sed -i '/luci-app-samba/d; /CONFIG_PACKAGE_samba/d' "${HOME_PATH}/.config"
-echo "CONFIG_PACKAGE_autosamba=y" >> ${HOME_PATH}/.config
-fi
-
-cat >> "${HOME_PATH}/.config" <<-EOF
-CONFIG_PACKAGE_luci=y
-CONFIG_PACKAGE_default-settings=y
-CONFIG_PACKAGE_default-settings-chn=y
-EOF
 }
 
 
 function Diy_prevent() {
 cd ${HOME_PATH}
-Diy_IPv6helper
 echo "正在执行：判断插件有否冲突减少编译错误"
-make defconfig > /dev/null 2>&1
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-server=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-vpnd=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-app-ipsec-vpnd=y/# CONFIG_PACKAGE_luci-app-ipsec-vpnd is not set/g' ${HOME_PATH}/.config
@@ -1302,14 +1168,6 @@ if [[ `grep -c "CONFIG_TARGET_mxs=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `gre
   fi
 fi
 
-if [[ "${AdGuardHome_Core}" == "1" ]]; then
-  echo -e "\nCONFIG_PACKAGE_luci-app-adguardhome=y" >> ${HOME_PATH}/.config
-fi
-
-if ! grep -q "auto-scripts=y" ${HOME_PATH}/.config; then
-  echo -e "\nCONFIG_PACKAGE_auto-scripts=y" >> ${HOME_PATH}/.config
-fi
-
 if [[ `grep -c "CONFIG_PACKAGE_libopenssl-afalg_sync=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   if [[ `grep -c "CONFIG_PACKAGE_libopenssl-devcrypto=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_libopenssl-devcrypto=y/# CONFIG_PACKAGE_libopenssl-devcrypto is not set/g' ${HOME_PATH}/.config
@@ -1394,48 +1252,23 @@ echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
 echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
 echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
 echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
+
+KERNEL_PATCH="$(grep -Eo "KERNEL_PATCHVER.*[0-9.]+" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
+KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
+  if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
+LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-[0-9.]+" "${HOME_PATH}/include/${KERNEL_VERSINO}"  |grep -Eo "[0-9.]+")"
+  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
+else
+  LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-${KERNEL_PATCH}.[0-9]+" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "[0-9.]+")"
+  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
+fi
+echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 }
 
 
 function Diy_Publicarea2() {
 cd ${HOME_PATH}
-if [[ "${Delete_unnecessary_items}" == "1" ]]; then
-  echo "删除其他机型的固件,只保留当前主机型固件完成"
-  sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
-fi
-
-export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
-if [[ "${TARGET_BOARD}" == "armvirt" ]]; then
-  export KERNEL_patc="config-${Replace_Kernel}"
-else
-  export KERNEL_patc="patches-${Replace_Kernel}"
-fi
-if [[ "${Replace_Kernel}" == "0" ]]; then
-  echo "不进行内核更换"
-elif [[ -n "${Replace_Kernel}" ]] && [[ -n "${patchverl}" ]]; then
-  if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
-    sed -i "s/${patchverl}/${Replace_Kernel}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
-    echo "内核[${Replace_Kernel}]更换完成"
-  else
-    echo "TIME r \"${TARGET_PROFILE}机型源码没发现[ ${Replace_Kernel} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译\"" >> ${HOME_PATH}/CHONGTU
-  fi
-fi
-
-if [[ "${Default_theme}" == "0" ]]; then 
-  echo "不进行默认主题设置"
-elif [[ -n "${Default_theme}" ]]; then
-  export defaultt=CONFIG_PACKAGE_luci-theme-${Default_theme}=y
-  if [[ `grep -c "${defaultt}" ${HOME_PATH}/.config` -eq '1' ]]; then
-    echo "
-      uci set luci.main.mediaurlbase='/luci-static/${Default_theme}'
-      uci commit luci
-    " >> "${DEFAULT_PATH}"
-    echo "默认主题[${Default_theme}]设置完成"
-  else
-     echo "TIME r \"没有选择luci-theme-${Default_theme}此主题,将${Default_theme}设置成默认主题的操作失败\"" >> ${HOME_PATH}/CHONGTU
-  fi
-fi
-
+# 机型为aarch_64的设置
 if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
   echo "AMLOGIC_CODE=AMLOGIC" >> ${GITHUB_ENV}
   export PACKAGING_FIRMWARE="${UPDATE_FIRMWARE_ONLINE}"
@@ -1452,98 +1285,11 @@ elif [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
 else
   echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
 fi
-
-if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
-  echo "ING_FIRMWAR=false" >> ${GITHUB_ENV}
-else
-  echo "ING_FIRMWAR=true" >> ${GITHUB_ENV}
-fi
-
-export KERNEL_PATCH="$(grep -Eo "KERNEL_PATCHVER.*[0-9.]+" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
-export KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
-if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
-  export LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-[0-9.]+" "${HOME_PATH}/include/${KERNEL_VERSINO}"  |grep -Eo "[0-9.]+")"
-  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
-else
-  export LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-${KERNEL_PATCH}.[0-9]+" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "[0-9.]+")"
-  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
-fi
-echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 }
 
 function Diy_adguardhome() {
 cd ${HOME_PATH}
-if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_amd64"
-  Archclash="linux-amd64"
-  echo "CPU架构：amd64"
-elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_386"
-  Archclash="linux-386"
-  echo "CPU架构：X86 32"
-elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_arm64"
-  Archclash="linux-arm64"
-  echo "CPU架构：arm64"
-elif [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_armv7"
-  Archclash="linux-armv7"
-  echo "CPU架构：armv7"
-elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep "CONFIG_TARGET_ARCH_PACKAGES" "${HOME_PATH}/.config" |grep -c "vfp"` -eq '1' ]]; then
-  Arch="linux_armv6"
-  Archclash="linux-armv6"
-  echo "CPU架构：armv6"
-elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep "CONFIG_TARGET_ARCH_PACKAGES" "${HOME_PATH}/.config" |grep -c "vfp"` -eq '0' ]]; then
-  Arch="linux_armv5"
-  Archclash="linux-armv5"
-  echo "CPU架构：armv6"
-elif [[ `grep -c "CONFIG_ARCH=\"mips\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_mips_softfloat"
-  Archclash="linux-mips-softfloat"
-  echo "CPU架构：mips"
-elif [[ `grep -c "CONFIG_ARCH=\"mips64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_mips64_softfloat"
-  Archclash="linux-mips64"
-  echo "CPU架构：mips64"
-elif [[ `grep -c "CONFIG_ARCH=\"mipsel\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_mipsle_softfloat"
-  Archclash="linux-mipsle-softfloat"
-  echo "CPU架构：mipsel"
-elif [[ `grep -c "CONFIG_ARCH=\"mips64el\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_mips64le_softfloat"
-  Archclash="linux-mips64le"
-  echo "CPU架构：mips64el"
-else
-  echo "不了解您的CPU为何架构"
-  weizhicpu="1"
-fi
 
-if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
-  echo "正在执行：给adguardhome下载核心"
-  rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
-  wget -q https://github.com/281677160/common/releases/download/API/AdGuardHome.api -O AdGuardHome.api
-  if [[ $? -ne 0 ]];then
-    curl -fsSL https://github.com/281677160/common/releases/download/API/AdGuardHome.api -o AdGuardHome.api
-  fi
-  latest_ver="$(grep -E 'tag_name' 'AdGuardHome.api' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
-  rm -rf AdGuardHome.api
-  wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_${Arch}.tar.gz
-  if [[ -f "AdGuardHome_${Arch}.tar.gz" ]]; then
-    tar -zxvf AdGuardHome_${Arch}.tar.gz -C ${HOME_PATH}
-    echo "核心下载成功"
-  else
-    echo "下载核心失败"
-  fi
-  mkdir -p ${HOME_PATH}/files/usr/bin
-  if [[ -f "${HOME_PATH}/AdGuardHome/AdGuardHome" ]]; then
-    mv -f ${HOME_PATH}/AdGuardHome ${HOME_PATH}/files/usr/bin/
-    sudo chmod +x ${HOME_PATH}/files/usr/bin/AdGuardHome/AdGuardHome
-    echo "增加AdGuardHome核心完成"
-  else
-    echo "增加AdGuardHome核心失败"
-  fi
-    rm -rf ${HOME_PATH}/{AdGuardHome_${Arch}.tar.gz,AdGuardHome}
-fi
 }
 
 
@@ -1564,7 +1310,7 @@ fi
 function Diy_upgrade3() {
 if [ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]; then
   cd ${HOME_PATH}
-  source ${BUILD_PATH}/upgrade.sh && Diy_Part3
+  source $UPGRADE_SH && Diy_Part3
 fi
 }
 
@@ -1597,142 +1343,6 @@ Diy_upgrade3
 Diy_organize
 }
 
-
-function Diy_xinxi() {
-# 信息
-Plug_in1="$(grep -Eo "CONFIG_PACKAGE_luci-app-.*=y|CONFIG_PACKAGE_luci-theme-.*=y" .config |grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic\|_USE' |sed 's/=y//' |sed 's/CONFIG_PACKAGE_//g')"
-Plug_in2="$(echo "${Plug_in1}" |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
-echo "${Plug_in2}" >Plug-in
-
-if [[ `grep -c "CONFIG_GRUB_EFI_IMAGES=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  export EFI_NO="1"
-else
-  export EFI_NO="0"
-fi
-
-echo
-TIME b "编译源码: ${SOURCE}"
-TIME b "源码链接: ${REPO_URL}"
-TIME b "源码分支: ${REPO_BRANCH}"
-TIME b "源码作者: ${SOURCE_OWNER}"
-TIME b "Luci版本: ${LUCI_EDITION}"
-if [[ "${AMLOGIC_CODE}" == "AMLOGIC" ]]; then
-  TIME b "编译机型: aarch64系列"
-  if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
-     TIME g "打包机型: ${amlogic_model}"
-     TIME g "打包内核: ${amlogic_kernel}"
-     TIME g "分区大小: ${openwrt_size}"
-     if [[ "${auto_kernel}" == "true" ]]; then
-       TIME g "自动检测最新内核: 是"
-     else
-       TIME g "自动检测最新内核: 不是"
-     fi
-  else
-     TIME b "内核版本: ${LINUX_KERNEL}"
-     TIME r "自动打包: 没开启自动打包设置"
-  fi
-else
-  TIME b "内核版本: ${LINUX_KERNEL}"
-  TIME b "编译机型: ${TARGET_PROFILE}"
-fi
-TIME b "固件作者: ${GIT_ACTOR}"
-TIME b "仓库地址: ${GITHUB_LINK}"
-TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${RUN_WORKFLOW}]工作流程）"
-TIME b "编译时间: $(date +%Y年%m月%d号%H时%M分)"
-if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
-  TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${amlogic_model}】固件"
-else
-  TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${TARGET_PROFILE}】固件"
-fi
-echo
-echo
-if [[ ${INFORMATION_NOTICE} == "TG" ]] || [[ ${INFORMATION_NOTICE} == "PUSH" ]]; then
-  TIME y "pushplus/Telegram通知: 开启"
-else
-  TIME r "pushplus/Telegram通知: 关闭"
-fi
-if [[ ${UPLOAD_FIRMWARE} == "true" ]]; then
-  TIME y "上传固件在github actions: 开启"
-else
-  TIME r "上传固件在github actions: 关闭"
-fi
-if [[ ${UPLOAD_RELEAS} == "true" ]]; then
-  TIME y "发布固件(Releases): 开启"
-else
-  TIME r "发布固件(Releases): 关闭"
-fi
-if [[ ${CACHEWRTBUILD_SWITCH} == "true" ]]; then
-  TIME y "是否开启缓存加速: 开启"
-else
-  TIME r "是否开启缓存加速: 关闭"
-fi
-if [[ ${COMPILATION_INFORMATION} == "true" ]]; then
-  TIME y "编译信息显示: 开启"
-fi
-if [[ ${AMLOGIC_CODE} == "AMLOGIC" ]]; then
-  if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
-    TIME y "aarch64系列固件自动打包成 .img 固件: 开启"
-  else
-    TIME r "aarch64系列固件自动打包成 .img 固件: 关闭"
-  fi
-else
-  if [[ ${UPDATE_FIRMWARE_ONLINE} == "true" ]]; then
-    TIME y "把定时自动更新插件编译进固件: 开启"
-  else
-    TIME r "把定时自动更新插件编译进固件: 关闭"
-  fi
-fi
-if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] && [[ -z "${REPO_TOKEN}" ]]; then
-  echo
-  echo
-  TIME r "您虽然开启了编译在线更新固件操作,但是您的[REPO_TOKEN]密匙为空,"
-  TIME r "无法将固件发布至云端,已为您自动关闭了编译在线更新固件"
-  echo
-elif [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] && [[ -n "${REPO_TOKEN}" ]]; then
-  echo
-  TIME l "定时自动更新信息"
-  TIME z "插件版本: ${AutoUpdate_Version}"
-  if [[ ${TARGET_BOARD} == "x86" ]]; then
-    TIME b "传统固件: ${AutoBuild_Legacy}${Firmware_SFX}"
-    [[ "${EFI_NO}" == "1" ]] && TIME b "UEFI固件: ${AutoBuild_Uefi}${Firmware_SFX}"
-  else
-    TIME b "固件名称: ${AutoBuild_Firmware}${Firmware_SFX}"
-  fi
-  TIME b "固件后缀: ${Firmware_SFX}"
-  TIME b "固件版本: ${Openwrt_Version}"
-  TIME b "云端路径: ${Github_Release}"
-  TIME g "《编译成功后，会自动把固件发布到指定地址，然后才会生成云端路径》"
-  TIME g "《普通的那个发布固件跟云端的发布路径是两码事，如果你不需要普通发布的可以不用打开发布功能》"
-  TIME g "修改IP、DNS、网关或者在线更新，请输入命令：openwrt"
-  echo
-else
-  echo
-fi
-echo
-TIME z " 系统空间      类型   总数  已用  可用 使用率"
-df -hT $PWD
-echo
-echo
-
-if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
-  echo
-  echo
-  TIME b "			错误信息"
-  echo
-  chmod -R +x ${HOME_PATH}/CHONGTU
-  source ${HOME_PATH}/CHONGTU
-fi
-rm -rf ${HOME_PATH}/CHONGTU
-if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
-  echo
-  echo
-  TIME r "	      已选插件列表"
-  chmod -R +x ${HOME_PATH}/Plug-in
-  source ${HOME_PATH}/Plug-in
-  rm -rf ${HOME_PATH}/{Plug-in,Plug-2}
-  echo
-fi
-}
 
 function Diy_menu6() {
 Diy_prevent
