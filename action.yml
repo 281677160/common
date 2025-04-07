@@ -33,7 +33,7 @@ runs:
           COMPILE_PATH="$GITHUB_WORKSPACE/operates/${FOLDER_NAME}"
         fi
         
-        if [[ github.event_name == 'push' && github.event.head_commit != null ]]; then
+        if [[ "${{ github.event_name }}" == "push" && [[ "${{ github.event.head_commit }}" != "null" ]]; then
           echo "push"
           if [[ -f "${COMPILE_PATH}/relevance/settings.ini" ]]; then
             source ${COMPILE_PATH}/relevance/settings.ini
