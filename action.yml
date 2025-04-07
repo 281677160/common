@@ -15,12 +15,14 @@ runs:
         cd $HOME_PATH
         ${BUILD_PARTSH}
         source $COMMON_SH && Diy_menu4
+        echo "${Customized_Information}"
         
     - name: 安装插件源
       shell: bash
       run: |
         cd $HOME_PATH
         source $COMMON_SH && Diy_menu5
+        echo "${Customized_Information}"
     
     - name: SSH远程连接（make menuconfig）
       if: env.SSH_ACTION == 'true'
