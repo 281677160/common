@@ -64,6 +64,13 @@ runs:
           echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
         fi
 
+    - name: 远程更新,如果UPDATE_FIRMWARE_ONLINE == 'true'则运行
+      if: env.UPDATE_FIRMWARE_ONLINE == 'true'
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        source $UPGRADE_SH && Diy_Part2
+
     - name: 生成配置文件的小修改
       shell: bash
       run: |
