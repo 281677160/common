@@ -1395,10 +1395,12 @@ Diy_partsh
 }
 
 function Diy_menu2() {
+cd $HOME_PATH
 Diy_profile
 }
 
 function Diy_menu3() {
+cd $HOME_PATH
 Diy_management
 Diy_definition
 Diy_prevent
