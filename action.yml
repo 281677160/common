@@ -32,8 +32,6 @@ runs:
           echo "获取变量失败,请勿胡乱修改compile.yml文件"
           exit 1
         fi
-        
-
         chmod -R +x UPLOAD
         cd UPLOAD
         git add .
