@@ -397,7 +397,7 @@ luci-app-ssr-plus,luci-app-passwall,v2dat,v2ray-geodata, \
 luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,luci-app-alist,alist"
 t=(${z//,/ })
 for x in ${t[@]}; do \
-  find . '(' -path './feeds/danshui' -o -path './feeds/dstheme' ')' -prune -o -name "$x" -type d -exec rm -rf {} +
+  find . '(' -path './feeds/danshui' -o -path './feeds/dstheme' -o -path './feeds/OpenClash' ')' -prune -o -name "$x" -type d -exec rm -rf {} +
 done
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
