@@ -26,7 +26,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        source ${BUILD_PARTSH}
+        ${BUILD_PARTSH}
 
     - name: 重新更新feeds
       shell: bash
