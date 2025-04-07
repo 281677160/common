@@ -3,8 +3,8 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
+    if: env.SendMessage == 'true'
     - name: 编译信息
-      id: gitpush
       shell: bash
       run: |
         cd ${HOME_PATH}
