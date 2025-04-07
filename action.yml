@@ -34,11 +34,12 @@ runs:
         fi
         
         if [[ github.event_name == 'push' && github.event.head_commit != null ]]; then
+          echo "push"
           if [[ -f "${COMPILE_PATH}/relevance/settings.ini" ]]; then
             source ${COMPILE_PATH}/relevance/settings.ini
           fi
         elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-          ls -a
+          echo "workflow_dispatch"
           if [[ -f "${COMPILE_PATH}/settings.ini" ]]; then
             SOURCE_CODE="$(grep '^SOURCE_CODE=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
             COMPILATION_INFORMATION="$(grep '^COMPILATION_INFORMATION=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
@@ -54,6 +55,7 @@ runs:
           CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
           UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
         else
+          echo "other"
           if [[ -f "${COMPILE_PATH}/settings.ini" ]]; then
             source ${COMPILE_PATH}/settings.ini
           fi
