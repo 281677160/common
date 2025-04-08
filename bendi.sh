@@ -127,7 +127,7 @@ source $GITHUB_ENV
 }
 
 function Diy_main() {
-FOLDER_NAME="Lede"
+export FOLDER_NAME="Lede"
 Diy_diskcapacity
 Diy_update
 Diy_bianliang
