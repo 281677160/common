@@ -76,18 +76,23 @@ fi
 }
 
 function Diy_bianliang() {
+if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
+  source $OPERATES_PATH/$FOLDER_NAME/settings.ini
+  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
+elif [[ ! -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
+  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
+fi
+source $OPERATES_PATH/$FOLDER_NAME/settings.ini
 export COMPILE_PATH="$OPERATES_PATH/$FOLDER_NAME"
-export BUILD_SETTINGS="${COMPILE_PATH}/settings.ini"
-[[ -f "${BUILD_SETTINGS}" ]] && source $BUILD_SETTINGS
 export SOURCE_CODE="${SOURCE_CODE}"
 export REPO_BRANCH="${REPO_BRANCH}"
 export BUILD_DIY="${COMPILE_PATH}/diy"
 export BUILD_FILES="${COMPILE_PATH}/files"
 export BUILD_PATCHES="${COMPILE_PATH}/patches"
 export BUILD_PARTSH="${COMPILE_PATH}/diy-part.sh"
+export BUILD_SETTINGS="${COMPILE_PATH}/settings.ini"
 export CONFIG_FILE="${CONFIG_FILE}"
 export MYCONFIG_FILE="${COMPILE_PATH}/seed/${CONFIG_FILE}"
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
 source $COMMON_SH && Diy_variable
 source $GITHUB_ENV
 }
