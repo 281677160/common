@@ -132,19 +132,9 @@ echo "BASE_FILES=${BASE_FILES}" >> ${GITHUB_ENV}
 echo "UPGRADE_KEEP=$RAW_WEB/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
 echo "TARGET_MK=$RAW_WEB/include/target.mk" >> ${GITHUB_ENV}
 echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
-if [[ -n "${BENDI_VERSION}" ]]; then
-  echo "PACKAGING_FIRMWARE_BENDI=${PACKAGING_FIRMWARE}" >> ${GITHUB_ENV}
-  echo "MODIFY_CONFIGURATION=${MODIFY_CONFIGURATION}" >> ${GITHUB_ENV}
-  echo "WSL_ROUTEPATH=${WSL_ROUTEPATH}" >> ${GITHUB_ENV}
-fi
 
 # 修改本地文件变量
-if [[ -n "${BENDI_VERSION}" ]]; then
-  GIT_BUILD="operates/${FOLDER_NAME}"
-  sed -i 's?=?=\"?g' "${GITHUB_ENV}"
-  sed -i '/=/ s/$/&\"/' "${GITHUB_ENV}"
-  source ${GITHUB_ENV}
-else
+if [[ -z "${BENDI_VERSION}" ]]; then
 cat >"${COMPILE_PATH}/relevance/settings.ini" <<-EOF
 SOURCE_CODE="${SOURCE_CODE}"
 REPO_BRANCH="${REPO_BRANCH}"
@@ -251,8 +241,8 @@ if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
 fi
 
 # zzz-default-settings文件
-ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
-if [[ -n "${ZZZ_PATH}" ]]; then  
+export ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
+if [[ -n "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
     cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
