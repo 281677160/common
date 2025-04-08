@@ -99,8 +99,9 @@ source $GITHUB_ENV
 
 
 function Diy_xiazai() {
-cd $HOME_PATH
+rm -rf openwrt
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+cd $HOME_PATH
 }
 
 function Diy_beidememu() {
