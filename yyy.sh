@@ -121,7 +121,7 @@ cd $HOME_PATH
 
 function Diy_beidememu() {
 cd $HOME_PATH
-bash $COMMON_SH Diy_menu
+source $COMMON_SH && Diy_menu
 source $GITHUB_ENV
 }
 
@@ -132,13 +132,13 @@ make menuconfig
 
 function Diy_beidememu2() {
 cd $HOME_PATH
-bash $COMMON_SH Diy_menu2
+source $COMMON_SH && Diy_menu2
 source $GITHUB_ENV
 }
 
 function Diy_beidememu3() {
 cd $HOME_PATH
-bash $COMMON_SH Diy_menu3
+source $COMMON_SH && Diy_menu3
 source $GITHUB_ENV
 }
 
