@@ -10,11 +10,11 @@ runs:
         cd ${GITHUB_WORKSPACE}
         tmpdir="$(mktemp -d)" && UPLOAD="$GITHUB_WORKSPACE/${tmpdir#*.}"
         git clone -b ${GIT_REFNAME} https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git $UPLOAD
-        [[ -d "$UPLOAD/build" ]] && rm -rf $UPLOAD/build
+        [[ -d "$UPLOAD/build/${FOLDER_NAME}" ]] && rm -rf $UPLOAD/build/${FOLDER_NAME}
         cp -Rf ${HOME_PATH}/build_logo/config.txt $MYCONFIG_FILE
-        cp -Rf $OPERATES_PATH $UPLOAD/build
+        cp -Rf $COMPILE_PATH $UPLOAD/build/${FOLDER_NAME}
         [[ -d "$UPLOAD/build/common" ]] && rm -rf $UPLOAD/build/common
-        cp -Rf $GITHUB_WORKSPACE/.github/workflows/* $UPLOAD/.github/workflows
+        cp -Rf $GITHUB_WORKSPACE/.github/workflows/compile.yml $UPLOAD/.github/workflows/compile.yml
         mkdir -p "$UPLOAD/build/${FOLDER_NAME}/relevance"
         echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > $UPLOAD/build/${FOLDER_NAME}/relevance/start
         cp -Rf $COMPILE_PATH/relevance/settings.ini $UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
