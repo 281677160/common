@@ -90,7 +90,6 @@ export BUILD_PARTSH="${COMPILE_PATH}/diy-part.sh"
 export BUILD_SETTINGS="${COMPILE_PATH}/settings.ini"
 export CONFIG_FILE="${CONFIG_FILE}"
 export MYCONFIG_FILE="${COMPILE_PATH}/seed/${CONFIG_FILE}"
-export COMMON_SH=${OPERATES_PATH}/common/common.sh
 
 echo "FOLDER_NAME=${FOLDER_NAME}" >> ${GITHUB_ENV}
 echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
@@ -106,10 +105,7 @@ echo "BUILD_PARTSH=${BUILD_PARTSH}" >> ${GITHUB_ENV}
 echo "BUILD_SETTINGS=${BUILD_SETTINGS}" >> ${GITHUB_ENV}
 echo "MYCONFIG_FILE=${MYCONFIG_FILE}" >> ${GITHUB_ENV}
 
-curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh >first.sh
-chmod -R +x first.sh
-source first.sh
-source $GITHUB_ENV
+bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
 echo "$COMMON_SH"
 source $COMMON_SH && Diy_vare
 source $GITHUB_ENV
