@@ -20,7 +20,7 @@ function Diy_one() {
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
   TIME r "缺少编译主文件,正在同步上游仓库"
-  if git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou; then
+  if git clone --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou; then
     cp -Rf shangyou/build ${OPERATES_PATH}
     rm -rf shangyou
     chmod -R +x ${OPERATES_PATH}
@@ -87,7 +87,7 @@ cd ${GITHUB_WORKSPACE}
 if [[ "${SYNCHRONISE}" == "NO" ]]; then
   if [[ -n "${BENDI_VERSION}" ]]; then
     TIME r "缺少文件,正在同步上游仓库"
-    if git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou; then
+    if git clone --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou; then
       if [[ -d "${OPERATES_PATH}" ]]; then
         mv ${OPERATES_PATH} backups
         cp -Rf shangyou/build ${OPERATES_PATH}
