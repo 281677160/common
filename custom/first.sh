@@ -17,9 +17,6 @@ echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
 }
 
 function Diy_one() {
-echo "$FOLDER_NAME"
-echo "$OPERATES_PATH"
-
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
   TIME r "缺少编译主文件,正在同步上游仓库"
@@ -154,13 +151,11 @@ fi
 
 function Diy_four() {
 rm -rf ${OPERATES_PATH}/common
-git clone -q --single-branch --depth=1 --branch=ceshi https://github.com/281677160/common ${OPERATES_PATH}/common
+git clone --single-branch --depth=1 --branch=ceshi https://github.com/281677160/common ${OPERATES_PATH}/common
 if [[ ! -d "${OPERATES_PATH}/common" ]]; then
   echo -e "\033[31m common文件下载失败 \033[0m"
   exit 1
 fi
-export COMMON_SH=${OPERATES_PATH}/common/common.sh
-export COMMON_SH=${OPERATES_PATH}/common/upgrade.sh
 echo "COMMON_SH=${OPERATES_PATH}/common/common.sh" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${OPERATES_PATH}/common/upgrade.sh" >> ${GITHUB_ENV}
 chmod -R +x ${OPERATES_PATH}
