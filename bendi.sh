@@ -105,7 +105,6 @@ echo "BUILD_PATCHES=${BUILD_PATCHES}" >> ${GITHUB_ENV}
 echo "BUILD_PARTSH=${BUILD_PARTSH}" >> ${GITHUB_ENV}
 echo "BUILD_SETTINGS=${BUILD_SETTINGS}" >> ${GITHUB_ENV}
 echo "MYCONFIG_FILE=${MYCONFIG_FILE}" >> ${GITHUB_ENV}
-echo "COMMON_SH=${COMMON_SH}" >> ${GITHUB_ENV}
 
 curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh >first.sh
 chmod -R +x first.sh
