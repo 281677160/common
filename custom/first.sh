@@ -17,6 +17,9 @@ echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
 }
 
 function Diy_one() {
+echo "$FOLDER_NAME"
+echo "$OPERATES_PATH"
+
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
   TIME r "缺少编译主文件,正在同步上游仓库"
