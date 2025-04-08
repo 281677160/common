@@ -444,7 +444,7 @@ cd ${HOME_PATH}
 ${BUILD_PARTSH}
 }
 
-function Diy_ scrips() {
+function Diy_scrips() {
 cd ${HOME_PATH}
 # 主题设置
 Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
