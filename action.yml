@@ -102,10 +102,10 @@ runs:
         else
           TIME r "上传固件在github actions: 关闭"
         fi
-        if [[ ${UPLOAD_RELEAS} == "true" ]]; then
-          TIME y "发布固件(Releases): 开启"
+        if [[ ${UPLOAD_RELEASE} == "true" ]]; then
+          TIME y "发布固件(Release): 开启"
         else
-          TIME r "发布固件(Releases): 关闭"
+          TIME r "发布固件(Release): 关闭"
         fi
         if [[ ${CACHEWRTBUILD_SWITCH} == "true" ]]; then
           TIME y "是否开启缓存加速: 开启"
