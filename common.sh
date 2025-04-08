@@ -618,6 +618,7 @@ if [[ `grep -c "${Mandatory_theme}=y" ${HOME_PATH}/.config` -eq '1' ]]; then
 else
   sed -i -E "s/(\+luci-theme-)[^ \\]*/\1bootstrap/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
   sed -i -E "s/(\+luci-theme-)[^ \\]*/\1bootstrap/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
+  echo "CONFIG_PACKAGE_luci-theme-bootstrap=y" >>.config
   TIME r "没有${Mandatory_theme}此主题存在，替换失败"
 fi
 
