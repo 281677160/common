@@ -1403,7 +1403,7 @@ Diy_checkout
 Diy_${SOURCE_CODE}
 }
 
-function Diy_partsh() {
+function Diy_xpartsh() {
 Diy_partsh
 }
 
