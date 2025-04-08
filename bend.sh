@@ -106,6 +106,7 @@ echo "BUILD_SETTINGS=${BUILD_SETTINGS}" >> ${GITHUB_ENV}
 echo "MYCONFIG_FILE=${MYCONFIG_FILE}" >> ${GITHUB_ENV}
 
 bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
+source $GITHUB_ENV
 echo "$COMMON_SH"
 source $COMMON_SH && Diy_vare
 source $GITHUB_ENV
