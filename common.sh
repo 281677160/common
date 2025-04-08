@@ -18,7 +18,6 @@ echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
 }
 
 function Diy_variable() {
-[[ -f "bendi.ini" ]] && source bendi.ini
 # 读取变量
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
