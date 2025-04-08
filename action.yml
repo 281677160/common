@@ -9,8 +9,8 @@ runs:
         cd $HOME_PATH
         if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
           echo "RRRR_RELEASE=aaarch" >> ${GITHUB_ENV}
-          if [[ -n "${{ env.AARCH_CODENAME }}" ]] && [[ -n "${{ env.TARGET_PROFILE_IMG }}" ]]; then
-            echo "SHANGCHUAN_MINGCHEN=${{ env.AARCH_CODENAME }}-${{ env.TARGET_PROFILE_IMG }}" >> ${GITHUB_ENV}
+          if [[ -n "${{ env.TARGET_PROFILE_IMG }}" ]]; then
+            echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE_IMG }}" >> ${GITHUB_ENV}
           elif [[ -n "${{ env.LUCI_EDITION }}" ]]; then
             echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}" >> ${GITHUB_ENV}
           else
