@@ -331,7 +331,9 @@ fi
 
 # 定时更新固件的插件包
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  source ${UPGRADE_SH} && Diy_Part1
+  if ! grep -q "armvirt=y" "$MYCONFIG_FILE" || ! grep -q "armsr=y" "$MYCONFIG_FILE"; then
+    source ${UPGRADE_SH} && Diy_Part1
+  fi
 else
   find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
@@ -461,9 +463,7 @@ elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*=y' ${HOME_PATH}/.config)" ]]; then
   export TARGET_PROFILE="x86-32"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*phicomm.*n1=y' ${HOME_PATH}/.config)" ]]; then
   export TARGET_PROFILE="phicomm_n1"
-elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armsr.*armv8.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="aarch_64"
-elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*armvirt.*64.*=y' ${HOME_PATH}/.config)" ]]; then
+elif grep -q "armvirt=y" "${HOME_PATH}/.config" || grep -q "armsr=y" "${HOME_PATH}/.config"; then
   export TARGET_PROFILE="aarch_64"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*=y' ${HOME_PATH}/.config)" ]]; then
   export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
