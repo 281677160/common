@@ -432,7 +432,7 @@ ${BUILD_PARTSH}
 # 主题设置
 Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
 Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
-if [[ -z "$(grep -Eo "${$Mandatory_theme}" $MYCONFIG_FILE)" ]] && [ -n "${Mandatory_theme}" ]; then
+if [[ -z "$(grep -Eo "${Mandatory_theme}" $MYCONFIG_FILE)" ]] && [ -n "${Mandatory_theme}" ]; then
   echo "CONFIG_PACKAGE_luci-theme-$Mandatory_theme=y" >>$MYCONFIG_FILE
   sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
   sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
