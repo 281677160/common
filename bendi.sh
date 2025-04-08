@@ -108,6 +108,8 @@ echo "BUILD_PARTSH=${COMPILE_PATH}/diy-part.sh" >> ${GITHUB_ENV}
 echo "BUILD_SETTINGS=${COMPILE_PATH}/settings.ini" >> ${GITHUB_ENV}
 echo "MYCONFIG_FILE=${COMPILE_PATH}/seed/${CONFIG_FILE}" >> ${GITHUB_ENV}
 
+echo "$COMMON_SH"
+
 source $COMMON_SH && Diy_variable
 source $GITHUB_ENV
 }
