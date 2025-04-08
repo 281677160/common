@@ -29,6 +29,18 @@ if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` -eq '0' ]]; 
   sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
 fi
 
+function TIME() {
+  case $1 in
+    r) export Color="\e[31m";;
+    g) export Color="\e[32m";;
+    b) export Color="\e[34m";;
+    y) export Color="\e[33m";;
+    z) export Color="\e[35m";;
+    l) export Color="\e[36m";;
+  esac
+echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
+}
+
 function BENDI_Diskcapacity() {
 Cipan_Size="$(df -hT $PWD|awk 'NR==2'|awk '{print $(3)}')"
 Cipan_Used="$(df -hT $PWD|awk 'NR==2'|awk '{print $(4)}')"
