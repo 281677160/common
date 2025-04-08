@@ -1409,7 +1409,7 @@ Diy_partsh
 
 function Diy_menu2() {
 cd $HOME_PATH
-Diy_ scrips
+Diy_scrips
 Diy_profile
 }
 
