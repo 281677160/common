@@ -427,13 +427,6 @@ cd ${HOME_PATH}
 # 运行自定义文件
 ${BUILD_PARTSH}
 
-# 更新和安装feeds
-./scripts/feeds update -a > /dev/null 2>&1
-./scripts/feeds install -a > /dev/null 2>&1
-
-# 使用自定义配置文件
-[[ -f "$MYCONFIG_FILE" ]] && mv $MYCONFIG_FILE .config
-
 # 主题设置
 Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
 Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
@@ -445,6 +438,13 @@ fi
 if ! grep -q "Default_theme" .config && [ -n "$Default_theme" ]; then
   echo "CONFIG_PACKAGE_luci-theme-$Default_theme=y" >>.config
 fi
+
+# 更新和安装feeds
+./scripts/feeds update -a > /dev/null 2>&1
+./scripts/feeds install -a > /dev/null 2>&1
+
+# 使用自定义配置文件
+[[ -f "$MYCONFIG_FILE" ]] && mv $MYCONFIG_FILE .config
 ./scripts/feeds install -a
 }
 
@@ -957,7 +957,6 @@ fi
 
 if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   echo "正在执行：给adguardhome下载核心"
-  echo -e "\nCONFIG_PACKAGE_luci-app-adguardhome=y" >> ${HOME_PATH}/.config
   rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
   wget -q https://github.com/281677160/common/releases/download/API/AdGuardHome.api -O AdGuardHome.api
   if [[ $? -ne 0 ]];then
@@ -967,10 +966,10 @@ if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   rm -rf AdGuardHome.api
   wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_${Arch}.tar.gz
   if [[ -f "AdGuardHome_${Arch}.tar.gz" ]]; then
-    tar -zxvf AdGuardHome_${Arch}.tar.gz -C ${HOME_PATH}
-    echo "核心下载成功"
+    tar -zxf AdGuardHome_${Arch}.tar.gz -C ${HOME_PATH}
+    echo "AdGuardHome核心下载成功"
   else
-    echo "下载核心失败"
+    echo "AdGuardHome核心下载失败"
   fi
   mkdir -p ${HOME_PATH}/files/usr/bin
   if [[ -f "${HOME_PATH}/AdGuardHome/AdGuardHome" ]]; then
