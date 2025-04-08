@@ -158,16 +158,6 @@ runs:
         TIME z " 系统空间      类型   总数  已用  可用 使用率"
         df -hT $PWD
         
-        echo
-        if [[ -s "${HOME_PATH}/CHONGTU" ]]; then
-          echo
-          echo
-          TIME b "			错误信息"
-          echo
-          chmod -R +x ${HOME_PATH}/CHONGTU
-          source ${HOME_PATH}/CHONGTU
-        fi
-        rm -rf ${HOME_PATH}/CHONGTU
         if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
           echo
           echo
