@@ -161,7 +161,6 @@ export COMMON_SH=${OPERATES_PATH}/common/upgrade.sh
 echo "COMMON_SH=${OPERATES_PATH}/common/common.sh" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${OPERATES_PATH}/common/upgrade.sh" >> ${GITHUB_ENV}
 chmod -R +x ${OPERATES_PATH}
-source $GITHUB_ENV
 }
 
 function Diy_memu() {
