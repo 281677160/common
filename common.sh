@@ -332,7 +332,7 @@ fi
 # 定时更新固件的插件包
 cat $MYCONFIG_FILE
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  if [[ -z "$(grep -Eo 'armvirt=y' $MYCONFIG_FILE)" ]] || [[ -z "$(grep -Eo 'armsr=y' $MYCONFIG_FILE)" ]]; then
+  if [[ -z "$(cat $MYCONFIG_FILE |grep -i 'armvirt=y')" ]] || [[ -z "$(cat $MYCONFIG_FILE |grep -i 'armsr=y')" ]]; then
     source ${UPGRADE_SH} && Diy_Part1
   fi
 else
