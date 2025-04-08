@@ -132,7 +132,7 @@ echo "BASE_FILES=${BASE_FILES}" >> ${GITHUB_ENV}
 echo "UPGRADE_KEEP=$RAW_WEB/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
 echo "TARGET_MK=$RAW_WEB/include/target.mk" >> ${GITHUB_ENV}
 echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
-
+source $GITHUB_ENV
 # 修改本地文件变量
 if [[ -z "${BENDI_VERSION}" ]]; then
 cat >"${COMPILE_PATH}/relevance/settings.ini" <<-EOF
