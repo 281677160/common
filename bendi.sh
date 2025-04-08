@@ -110,7 +110,7 @@ curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first
 chmod -R +x first.sh
 source first.sh
 
-source $COMMON_SH && Diy_variable
+source $COMMON_SH && Diy_vare
 source $GITHUB_ENV
 }
 
