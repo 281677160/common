@@ -78,9 +78,13 @@ fi
 function Diy_bianliang() {
 if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
   source $OPERATES_PATH/$FOLDER_NAME/settings.ini
-  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
+  echo "$OPERATES_PATH/$FOLDER_NAME/settings.ini"
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh >first.sh
+  source first.sh
 elif [[ ! -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
-  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
+  echo "$OPERATES_PATH/$FOLDER_NAME/settings.ini"
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh >first.sh
+  source first.sh
 fi
 source $OPERATES_PATH/$FOLDER_NAME/settings.ini
 export COMPILE_PATH="$OPERATES_PATH/$FOLDER_NAME"
