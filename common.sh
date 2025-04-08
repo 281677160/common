@@ -444,10 +444,14 @@ ${BUILD_PARTSH}
 # 主题设置
 Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
 Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
-echo "CONFIG_PACKAGE_luci-theme-$Mandatory_theme=y" >>$MYCONFIG_FILE
-echo "CONFIG_PACKAGE_luci-theme-$Default_theme=y" >>$MYCONFIG_FILE
-sed -i -E "s/(\+luci-theme-)[^ \\]*/\1$Mandatory_theme/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
-sed -i -E "s/(\+luci-theme-)[^ \\]*/\1$Mandatory_theme/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
+if [[ ! "${Mandatory_theme}" == "0" ]] && [[ -n "${Mandatory_theme}" ]]; then
+  echo "CONFIG_PACKAGE_luci-theme-$Mandatory_theme=y" >>$MYCONFIG_FILE
+  sed -i -E "s/(\+luci-theme-)[^ \\]*/\1$Mandatory_theme/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
+  sed -i -E "s/(\+luci-theme-)[^ \\]*/\1$Mandatory_theme/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
+fi
+if [[ ! "${Default_theme}" == "0" ]] && [[ -n "${Default_theme}" ]]; then
+  echo "CONFIG_PACKAGE_luci-theme-$Default_theme=y" >>$MYCONFIG_FILE
+fi
 
 # 更新和安装feeds
 ./scripts/feeds update -a > /dev/null 2>&1
