@@ -607,27 +607,30 @@ elif [[ -n "${Netmask_netm}" ]]; then
   fi
 fi
 
-if [[ `grep -c "${Default_theme}=y" ${HOME_PATH}/.config` -eq '0' ]]; then
-  TIME r "没有${Default_theme}此主题存在，默认主题设置失败"
-elif [[ "${Default_theme}" == "0" ]] || [[ -z "${Default_theme}" ]]; then
+if [[ ! "${Default_theme}" == "0" ]] && [[ -n "${Default_theme}" ]]; then
+  if [[ `grep -c "${Default_theme}=y" ${HOME_PATH}/.config` -eq '0' ]]; then
+    TIME r "没有${Default_theme}此主题存在，默认主题设置失败"
+  else
+    echo "uci set luci.main.mediaurlbase='/luci-static/${Default_theme}'" >> "${DEFAULT_PATH}"
+    echo "默认主题[${Default_theme}]设置完成"
+  fi
+else
   echo "不进行,默认主题设置"
-elif [[ -n "${Default_theme}" ]]; then
-  echo "
-    uci set luci.main.mediaurlbase='/luci-static/${Default_theme}'
-    uci commit luci
-  " >> "${DEFAULT_PATH}"
-  echo "默认主题[${Default_theme}]设置完成"
 fi
 
-if [[ `grep -c "${Mandatory_theme}=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
-  sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
-  echo "替换必须主题完成,您现在的必选主题为：luci-theme-${Mandatory_theme}"
+if [[ ! "${Mandatory_theme}" == "0" ]] && [[ -n "${Mandatory_theme}" ]]; then
+  if [[ `grep -c "${Mandatory_theme}=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+    sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
+    sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
+    echo "替换系统默认主题完成,您现在的系统默认主题为：luci-theme-${Mandatory_theme}"
+  else
+    sed -i -E "s/(\+luci-theme-)[^ \\]*/\1bootstrap/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
+    sed -i -E "s/(\+luci-theme-)[^ \\]*/\1bootstrap/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
+    echo "CONFIG_PACKAGE_luci-theme-bootstrap=y" >>.config
+    TIME r "没有${Mandatory_theme}此主题存在，替换失败"
+  fi
 else
-  sed -i -E "s/(\+luci-theme-)[^ \\]*/\1bootstrap/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
-  sed -i -E "s/(\+luci-theme-)[^ \\]*/\1bootstrap/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
-  echo "CONFIG_PACKAGE_luci-theme-bootstrap=y" >>.config
-  TIME r "没有${Mandatory_theme}此主题存在，替换失败"
+  echo "不进行,系统默认主题替换"
 fi
 
 if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
