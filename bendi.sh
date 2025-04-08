@@ -89,12 +89,30 @@ export CONFIG_FILE="${CONFIG_FILE}"
 export MYCONFIG_FILE="${COMPILE_PATH}/seed/${CONFIG_FILE}"
 bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
 source $COMMON_SH && Diy_variable
+source $GITHUB_ENV
 }
 
 
+function Diy_xiazai() {
+git clone -q -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+}
 
+function Diy_beidememu() {
+bash $COMMON_SH Diy_menu
+source $GITHUB_ENV
+}
 
+function Diy_menuconfig() {
+make menuconfig
+}
 
+function Diy_beidememu2() {
+bash $COMMON_SH Diy_menu2
+source $GITHUB_ENV
+}
 
-
+function Diy_beidememu3() {
+bash $COMMON_SH Diy_menu3
+source $GITHUB_ENV
+}
 
