@@ -330,9 +330,9 @@ if [ -d "${BUILD_FILES}" ]; then
 fi
 
 # 定时更新固件的插件包
-cat $MYCONFIG_FILE
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
   if [[ -z "$(cat $MYCONFIG_FILE |grep -i 'armvirt=y')" ]] || [[ -z "$(cat $MYCONFIG_FILE |grep -i 'armsr=y')" ]]; then
+    echo "123"
     source ${UPGRADE_SH} && Diy_Part1
   fi
 else
