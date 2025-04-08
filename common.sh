@@ -330,11 +330,15 @@ if [ -d "${BUILD_FILES}" ]; then
 fi
 
 # 定时更新固件的插件包
-if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  if [[ -z "$(cat $MYCONFIG_FILE |grep -i 'armvirt=y')" ]] || [[ -z "$(cat $MYCONFIG_FILE |grep -i 'armsr=y')" ]]; then
-    echo "123"
-    source ${UPGRADE_SH} && Diy_Part1
+if [[ -n "$(grep -Eo 'armvirt=y' $HOME_PATH/.config)" ]] || [[ -n "$(grep -Eo 'armsr=y' $HOME_PATH/.config)" ]]; then
+  find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
+  if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?luci-app-autoupdate ??g' ${HOME_PATH}/include/target.mk
   fi
+  echo "123"
+elif [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
+    echo "456"
+    source ${UPGRADE_SH} && Diy_Part1
 else
   find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
