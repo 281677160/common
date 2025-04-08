@@ -335,9 +335,7 @@ if [[ -n "$(grep -Eo 'armvirt=y' $MYCONFIG_FILE)" ]] || [[ -n "$(grep -Eo 'armsr
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?luci-app-autoupdate ??g' ${HOME_PATH}/include/target.mk
   fi
-  echo "123"
 elif [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-    echo "456"
     source ${UPGRADE_SH} && Diy_Part1
 else
   find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
