@@ -156,6 +156,7 @@ if [[ ! -d "${OPERATES_PATH}/common" ]]; then
   echo -e "\033[31m common文件下载失败 \033[0m"
   exit 1
 fi
+export COMMON_SH=${OPERATES_PATH}/common/common.sh
 echo "COMMON_SH=${OPERATES_PATH}/common/common.sh" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${OPERATES_PATH}/common/upgrade.sh" >> ${GITHUB_ENV}
 chmod -R +x ${OPERATES_PATH}
