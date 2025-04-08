@@ -125,6 +125,12 @@ source $COMMON_SH && Diy_menu
 source $GITHUB_ENV
 }
 
+function Diy_xmemu() {
+cd $HOME_PATH
+source ${BUILD_PARTSH}
+source $GITHUB_ENV
+}
+
 function Diy_menuconfig() {
 cd $HOME_PATH
 make menuconfig
@@ -149,6 +155,7 @@ Diy_update
 Diy_bianliang
 Diy_xiazai
 Diy_beidememu
+Diy_xmemu
 Diy_menuconfig
 Diy_beidememu2
 Diy_beidememu3
