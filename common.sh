@@ -330,7 +330,7 @@ if [ -d "${BUILD_FILES}" ]; then
 fi
 
 # 定时更新固件的插件包
-if [[ -n "$(grep -Eo 'armvirt=y' $MYCONFIG_FILE)" ]] || [[ -n "$(grep -Eo 'armsr=y' $MYCONFIG_FILE)" ]]; then
+if grep -q "armvirt=y" $MYCONFIG_FILE || grep -q "armsr=y" $MYCONFIG_FILE; then
   find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?luci-app-autoupdate ??g' ${HOME_PATH}/include/target.mk
@@ -437,13 +437,13 @@ Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2
 Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
 echo "$Mandatory_theme"
 echo "$Default_theme"
-if [[ -z "$(grep -Eo "$Mandatory_theme" $MYCONFIG_FILE)" ]] && [ -n "$Mandatory_theme" ]; then
+if ! grep -q "$Mandatory_theme" $MYCONFIG_FILE && [ -n "$Mandatory_theme" ]; then
   echo "123"
   echo "CONFIG_PACKAGE_luci-theme-$Mandatory_theme=y" >>$MYCONFIG_FILE
   sed -i -E "s/(\+luci-theme-)[^ \\]*/\1$Mandatory_theme/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
   sed -i -E "s/(\+luci-theme-)[^ \\]*/\1$Mandatory_theme/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
 fi
-if [[ -z "$(grep -Eo "$Default_theme" $MYCONFIG_FILE)" ]] && [ -n "$Default_theme" ]; then
+if ! grep -q "$Default_theme" $MYCONFIG_FILE && [ -n "$Default_theme" ]; then
   echo "456"
   echo "CONFIG_PACKAGE_luci-theme-$Default_theme=y" >>$MYCONFIG_FILE
 fi
