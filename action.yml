@@ -45,6 +45,13 @@ runs:
 
     - name: 上传配置文件在 Github Artifacts
       if: env.SHANG_CHUAN == 'true'
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        echo "上传.config配置文件至Github Artifacts"
+
+    - name: 上传配置文件在 Github Artifacts
+      if: env.SHANG_CHUAN == 'true'
       uses: actions/upload-artifact@main
       with:
         name: .config_${{ env.SOURCE }}_${{ env.LUCI_EDITION }}_${{ env.TARGET_PROFILE }}_${{ env.Firmware_Date }}
