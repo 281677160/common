@@ -160,6 +160,8 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 cd ${HOME_PATH}
 # 增加一些应用
+echo "${FEEDS_CONF}"
+
 curl -fsSL "${FEEDS_CONF}" -o "${HOME_PATH}/feeds.conf.default"
 curl -fsSL "${BASE_FILES}" -o "${GENE_PATH}"
 curl -fsSL "${UPGRADE_KEEP}" -o "${KEEPD_PATH}"
