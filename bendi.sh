@@ -45,17 +45,17 @@ function Diy_diskcapacity() {
 Cipan_Size="$(df -hT $PWD|awk 'NR==2'|awk '{print $(3)}')"
 Cipan_Used="$(df -hT $PWD|awk 'NR==2'|awk '{print $(4)}')"
 Cipan_Avail="$(df -hT $PWD|awk 'NR==2'|awk '{print $(5)}' |cut -d 'G' -f1)"
-ECHOY "磁盘总量为[${Cipan_Size}]，已用[${Cipan_Used}]，可用[${Cipan_Avail}G]"
+TIME y "磁盘总量为[${Cipan_Size}]，已用[${Cipan_Used}]，可用[${Cipan_Avail}G]"
 if [[ "${Cipan_Avail}" -lt "20" ]];then
-  print_error "敬告：可用空间小于[ 20G ]编译容易出错,建议可用空间大于20G,是否继续?"
+  TIME r "敬告：可用空间小于[ 20G ]编译容易出错,建议可用空间大于20G,是否继续?"
   read -p " 直接回车退出编译，按[Y/y]回车则继续编译： " KJYN
   case ${KJYN} in
   [Yy]) 
-    ECHOG  "可用空间太小严重影响编译,请满天神佛保佑您成功吧！"
+    TIME y  "可用空间太小严重影响编译,请满天神佛保佑您成功吧！"
     sleep 2
   ;;
   *)
-    ECHOY  "您已取消编译,请清理Ubuntu空间或增加硬盘容量..."
+    TIME y  "您已取消编译,请清理Ubuntu空间或增加硬盘容量..."
     exit 0
   ;;
   esac
@@ -76,7 +76,6 @@ fi
 }
 
 function Diy_bianliang() {
-cd $HOME_PATH
 if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
   source $OPERATES_PATH/$FOLDER_NAME/settings.ini
   bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
@@ -101,7 +100,7 @@ source $GITHUB_ENV
 
 function Diy_xiazai() {
 cd $HOME_PATH
-git clone -q -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 }
 
 function Diy_beidememu() {
