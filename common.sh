@@ -331,7 +331,7 @@ fi
 
 # 定时更新固件的插件包
 if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-  if ! grep -q "armvirt=y" "$MYCONFIG_FILE" || ! grep -q "armsr=y" "$MYCONFIG_FILE"; then
+  if [[ -z "$(grep -Eo 'armvirt=y' $MYCONFIG_FILE)" ]] || [[ -z "$(grep -Eo 'armsr=y' $MYCONFIG_FILE)" ]]; then
     source ${UPGRADE_SH} && Diy_Part1
   fi
 else
@@ -432,12 +432,12 @@ ${BUILD_PARTSH}
 # 主题设置
 Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
 Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
-if ! grep -q "Mandatory_theme" $MYCONFIG_FILE && [ -n "$Mandatory_theme" ]; then
+if [[ -z "$(grep -Eo "${$Mandatory_theme}" $MYCONFIG_FILE)" ]] && [ -n "${Mandatory_theme}" ]; then
   echo "CONFIG_PACKAGE_luci-theme-$Mandatory_theme=y" >>$MYCONFIG_FILE
   sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
   sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
 fi
-if ! grep -q "Default_theme" $MYCONFIG_FILE && [ -n "$Default_theme" ]; then
+if [[ -z "$(grep -Eo "${Default_theme}" $MYCONFIG_FILE)" ]] && [ -n "${Default_theme}" ]; then
   echo "CONFIG_PACKAGE_luci-theme-$Default_theme=y" >>$MYCONFIG_FILE
 fi
 
@@ -463,7 +463,7 @@ elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*=y' ${HOME_PATH}/.config)" ]]; then
   export TARGET_PROFILE="x86-32"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*phicomm.*n1=y' ${HOME_PATH}/.config)" ]]; then
   export TARGET_PROFILE="phicomm_n1"
-elif grep -q "armvirt=y" "${HOME_PATH}/.config" || grep -q "armsr=y" "${HOME_PATH}/.config"; then
+elif [[ -n "$(grep -Eo 'armvirt=y' $HOME_PATH/.config)" ]] || [[ -n "$(grep -Eo 'armsr=y' $HOME_PATH/.config)" ]]; then
   export TARGET_PROFILE="aarch_64"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*=y' ${HOME_PATH}/.config)" ]]; then
   export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
