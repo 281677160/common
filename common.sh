@@ -330,7 +330,7 @@ if [ -d "${BUILD_FILES}" ]; then
 fi
 
 # 定时更新固件的插件包
-if [[ -n "$(grep -Eo 'armvirt=y' $HOME_PATH/.config)" ]] || [[ -n "$(grep -Eo 'armsr=y' $HOME_PATH/.config)" ]]; then
+if [[ -n "$(grep -Eo 'armvirt=y' $MYCONFIG_FILE)" ]] || [[ -n "$(grep -Eo 'armsr=y' $MYCONFIG_FILE)" ]]; then
   find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?luci-app-autoupdate ??g' ${HOME_PATH}/include/target.mk
