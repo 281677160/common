@@ -76,6 +76,8 @@ fi
 }
 
 function Diy_bianliang() {
+export FOLDER_NAME="$FOLDER_NAME"
+echo "$FOLDER_NAME"
 if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
   source $OPERATES_PATH/$FOLDER_NAME/settings.ini
   echo "$OPERATES_PATH/$FOLDER_NAME/settings.ini"
