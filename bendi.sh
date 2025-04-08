@@ -41,7 +41,7 @@ function TIME() {
 echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
 }
 
-function BENDI_Diskcapacity() {
+function Diy_diskcapacity() {
 Cipan_Size="$(df -hT $PWD|awk 'NR==2'|awk '{print $(3)}')"
 Cipan_Used="$(df -hT $PWD|awk 'NR==2'|awk '{print $(4)}')"
 Cipan_Avail="$(df -hT $PWD|awk 'NR==2'|awk '{print $(5)}' |cut -d 'G' -f1)"
@@ -76,6 +76,7 @@ fi
 }
 
 function Diy_bianliang() {
+cd $HOME_PATH
 if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
   source $OPERATES_PATH/$FOLDER_NAME/settings.ini
   bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
@@ -99,25 +100,42 @@ source $GITHUB_ENV
 
 
 function Diy_xiazai() {
+cd $HOME_PATH
 git clone -q -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 }
 
 function Diy_beidememu() {
+cd $HOME_PATH
 bash $COMMON_SH Diy_menu
 source $GITHUB_ENV
 }
 
 function Diy_menuconfig() {
+cd $HOME_PATH
 make menuconfig
 }
 
 function Diy_beidememu2() {
+cd $HOME_PATH
 bash $COMMON_SH Diy_menu2
 source $GITHUB_ENV
 }
 
 function Diy_beidememu3() {
+cd $HOME_PATH
 bash $COMMON_SH Diy_menu3
 source $GITHUB_ENV
 }
 
+function Diy_main() {
+Diy_diskcapacity
+Diy_update
+Diy_bianliang
+Diy_xiazai
+Diy_beidememu
+Diy_menuconfig
+Diy_beidememu2
+Diy_beidememu3
+}
+
+Diy_main
