@@ -115,7 +115,7 @@ runs:
         if [[ ${COMPILATION_INFORMATION} == "true" ]]; then
           TIME y "编译信息显示: 开启"
         fi
-        if [[ ${AMLOGIC_CODE} == "AMLOGIC" ]]; then
+        if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
           if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
             TIME y "aarch64系列固件自动打包成 .img 固件: 开启"
           else
@@ -128,13 +128,7 @@ runs:
             TIME r "把定时自动更新插件编译进固件: 关闭"
           fi
         fi
-        if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] && [[ -z "${REPO_TOKEN}" ]]; then
-          echo
-          echo
-          TIME r "您虽然开启了编译在线更新固件操作,但是您的[REPO_TOKEN]密匙为空,"
-          TIME r "无法将固件发布至云端,已为您自动关闭了编译在线更新固件"
-          echo
-        elif [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]] && [[ -n "${REPO_TOKEN}" ]]; then
+        if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
           echo
           TIME l "定时自动更新信息"
           TIME z "插件版本: ${AutoUpdate_Version}"
