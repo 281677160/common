@@ -57,7 +57,7 @@ fi
 
 function Diy_two() {
 cd ${GITHUB_WORKSPACE}
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o common.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o common.sh
 if [[ ! -d "${OPERATES_PATH}" ]]; then
   echo -e "\033[31m 根目录缺少编译必要文件夹存在 \033[0m"
   SYNCHRONISE="NO"
