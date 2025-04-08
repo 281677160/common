@@ -67,7 +67,7 @@ runs:
           if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
              TIME g "打包机型: ${amlogic_model}"
              TIME g "打包内核: ${amlogic_kernel}"
-             TIME g "分区大小: ${openwrt_size}"
+             TIME g "分区数据: ${openwrt_size}"
              if [[ "${auto_kernel}" == "true" ]]; then
                TIME g "自动检测最新内核: 是"
              else
