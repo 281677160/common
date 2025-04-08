@@ -1397,25 +1397,27 @@ fi
 
 
 
+function Diy_menu() {
+cd $HOME_PATH
+Diy_checkout
+Diy_${SOURCE_CODE}
+}
 
+function Diy_partsh() {
+Diy_partsh
+}
+
+function Diy_menu2() {
+cd $HOME_PATH
+Diy_ scrips
+Diy_profile
+}
 
 function Diy_menu3() {
 cd $HOME_PATH
 Diy_management
 Diy_definition
 Diy_prevent
-}
-
-function Diy_menu2() {
-cd $HOME_PATH
-Diy_profile
-}
-
-function Diy_menu() {
-cd $HOME_PATH
-Diy_checkout
-Diy_${SOURCE_CODE}
-Diy_partsh
 }
 
 function Diy_vare() {
