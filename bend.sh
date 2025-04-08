@@ -109,6 +109,7 @@ echo "MYCONFIG_FILE=${MYCONFIG_FILE}" >> ${GITHUB_ENV}
 curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh >first.sh
 chmod -R +x first.sh
 source first.sh
+source $GITHUB_ENV
 echo "$COMMON_SH"
 source $COMMON_SH && Diy_vare
 source $GITHUB_ENV
