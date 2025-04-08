@@ -25,6 +25,7 @@ COOLSNOWWOLF)
   export SOURCE="Lede"
   export SOURCE_OWNER="Lean"
   export LUCI_EDITION="23.05"
+  export DISTRIB_SOURCECODE="lede"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
@@ -35,6 +36,7 @@ LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
   export SOURCE="Lienol"
   export SOURCE_OWNER="Lienol"
+  export DISTRIB_SOURCECODE="lienol"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
@@ -46,6 +48,7 @@ IMMORTALWRT)
   export REPO_URL="https://github.com/immortalwrt/immortalwrt"
   export SOURCE="Immortalwrt"
   export SOURCE_OWNER="ctcgfw"
+  export DISTRIB_SOURCECODE="immortalwrt"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
@@ -57,6 +60,7 @@ XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="Xwrt"
   export SOURCE_OWNER="ptpt52"
+  export DISTRIB_SOURCECODE="xwrt"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
@@ -67,6 +71,7 @@ OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
   export SOURCE="Official"
   export SOURCE_OWNER="openwrt"
+  export DISTRIB_SOURCECODE="official"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
@@ -80,6 +85,7 @@ MT798X)
     export SOURCE="Mt798x"
     export SOURCE_OWNER="hanwckf"
     export REPO_BRANCH="openwrt-21.02"
+    export DISTRIB_SOURCECODE="immortalwrt"
     export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
     export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
@@ -95,6 +101,7 @@ MT798X)
     else
       export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     fi
+    export DISTRIB_SOURCECODE="immortalwrt"
     export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
     export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
     export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
@@ -112,6 +119,7 @@ echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
 echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
 echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
+echo "DISTRIB_SOURCECODE=${DISTRIB_SOURCECODE}" >> ${GITHUB_ENV}
 echo "FILES_PATH=${HOME_PATH}/package/base-files/files" >> ${GITHUB_ENV}
 echo "REPAIR_PATH=${HOME_PATH}/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
 echo "DELETE=${HOME_PATH}/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
@@ -169,6 +177,7 @@ fi
 
 sed -i "s/ZHUJI_MING/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
+sed -i "s/LUCI_EDITION/${DISTRIB_SOURCECODE}/g" "${DEFAULT_PATH}"
 sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 grep -q "admin:" ${FILES_PATH}/etc/shadow && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 
