@@ -2,28 +2,48 @@
 # https://github.com/281677160/build-actions
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
+export TONGBU_YUANMA=""
+
+function TIME() {
+  case $1 in
+    r) export Color="\e[31m";;
+    g) export Color="\e[32m";;
+    b) export Color="\e[34m";;
+    y) export Color="\e[33m";;
+    z) export Color="\e[35m";;
+    l) export Color="\e[36m";;
+  esac
+echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
+}
 
 function Diy_one() {
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
-  git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
-  cp -Rf shangyou/build ${OPERATES_PATH}
-  rm -rf shangyou
-  chmod -R +x ${OPERATES_PATH}
-  for X in $(find "${OPERATES_PATH}" -name "settings.ini"); do
-    sed -i '/SSH_ACTIONS/d' "${X}"
-    sed -i '/INFORMATION_NOTICE/d' "${X}"
-    sed -i '/UPLOAD_FIRMWARE/d' "${X}"
-    sed -i '/UPLOAD_RELEASE/d' "${X}"
-    sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
-    sed -i '/COMPILATION_INFORMATION/d' "${X}"
-    sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
-    sed -i '/RETAIN_DAYS/d' "${X}"
-    sed -i '/KEEP_LATEST/d' "${X}"
-    echo 'PACKAGING_FIRMWARE="true"           # 自动把Amlogic_Rockchip系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
-    echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
-    echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
-  done
+  TIME r "缺少编译主文件,正在同步上游仓库"
+  if git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou; then
+    cp -Rf shangyou/build ${OPERATES_PATH}
+    rm -rf shangyou
+    chmod -R +x ${OPERATES_PATH}
+    for X in $(find "${OPERATES_PATH}" -name "settings.ini"); do
+      sed -i '/SSH_ACTIONS/d' "${X}"
+      sed -i '/INFORMATION_NOTICE/d' "${X}"
+      sed -i '/UPLOAD_FIRMWARE/d' "${X}"
+      sed -i '/UPLOAD_RELEASE/d' "${X}"
+      sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
+      sed -i '/COMPILATION_INFORMATION/d' "${X}"
+      sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
+      sed -i '/RETAIN_DAYS/d' "${X}"
+      sed -i '/KEEP_LATEST/d' "${X}"
+      echo 'PACKAGING_FIRMWARE="true"           # 自动把Amlogic_Rockchip系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
+      echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
+      echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
+    done
+    TIME g "同步上游仓库完成"
+    export TONGBU_YUANMA="YES"
+  else
+    TIME r "同步上游仓库失败,注意网络环境,请重新再运行命令试试"
+    exit 1
+  fi
 else
   if [[ -d "build" ]]; then
     rm -rf ${OPERATES_PATH}
@@ -66,31 +86,38 @@ function Diy_three() {
 cd ${GITHUB_WORKSPACE}
 if [[ "${SYNCHRONISE}" == "NO" ]]; then
   if [[ -n "${BENDI_VERSION}" ]]; then
-    git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
-    if [[ -d "${OPERATES_PATH}" ]]; then
-      mv ${OPERATES_PATH} backups
-      cp -Rf shangyou/build ${OPERATES_PATH}
-      mv backups ${OPERATES_PATH}/backups
-      rm -rf shangyou
+    TIME r "缺少文件,正在同步上游仓库"
+    if git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou; then
+      if [[ -d "${OPERATES_PATH}" ]]; then
+        mv ${OPERATES_PATH} backups
+        cp -Rf shangyou/build ${OPERATES_PATH}
+        mv backups ${OPERATES_PATH}/backups
+        rm -rf shangyou
+      else
+        cp -Rf shangyou/build ${OPERATES_PATH}
+        rm -rf shangyou
+      fi
+      chmod -R +x ${OPERATES_PATH}
+      for X in $(find "${OPERATES_PATH}" -name "settings.ini"); do
+        sed -i '/SSH_ACTIONS/d' "${X}"
+        sed -i '/INFORMATION_NOTICE/d' "${X}"
+        sed -i '/UPLOAD_FIRMWARE/d' "${X}"
+        sed -i '/UPLOAD_RELEASE/d' "${X}"
+        sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
+        sed -i '/COMPILATION_INFORMATION/d' "${X}"
+        sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
+        sed -i '/RETAIN_DAYS/d' "${X}"
+        sed -i '/KEEP_LATEST/d' "${X}"
+        echo 'PACKAGING_FIRMWARE="true"           # 自动把Amlogic_Rockchip系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
+        echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
+        echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
+      done
+      TIME g "同步上游仓库完成"
+      export TONGBU_YUANMA="YES"
     else
-      cp -Rf shangyou/build ${OPERATES_PATH}
-      rm -rf shangyou
+      TIME r "同步上游仓库失败,注意网络环境,请重新再运行命令试试"
+      exit 1
     fi
-    chmod -R +x ${OPERATES_PATH}
-    for X in $(find "${OPERATES_PATH}" -name "settings.ini"); do
-      sed -i '/SSH_ACTIONS/d' "${X}"
-      sed -i '/INFORMATION_NOTICE/d' "${X}"
-      sed -i '/UPLOAD_FIRMWARE/d' "${X}"
-      sed -i '/UPLOAD_RELEASE/d' "${X}"
-      sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
-      sed -i '/COMPILATION_INFORMATION/d' "${X}"
-      sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
-      sed -i '/RETAIN_DAYS/d' "${X}"
-      sed -i '/KEEP_LATEST/d' "${X}"
-      echo 'PACKAGING_FIRMWARE="true"           # 自动把Amlogic_Rockchip系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
-      echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
-      echo 'WSL_ROUTEPATH="false"               # 关闭询问改变WSL路径（true=开启）（false=关闭）' >> "${X}"
-    done
   else
     git clone -b ${GIT_REFNAME} https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
     git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
