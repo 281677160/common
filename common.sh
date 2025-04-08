@@ -135,7 +135,9 @@ echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
 
 # 修改本地文件变量
 if [[ -n "${BENDI_VERSION}" ]]; then
-source $GITHUB_ENV
+  sed -i 's?=?=\"?g' "${GITHUB_ENV}"
+  sed -i '/=/ s/$/&\"/' "${GITHUB_ENV}"
+  source ${GITHUB_ENV}
 else
 cat >"${COMPILE_PATH}/relevance/settings.ini" <<-EOF
 SOURCE_CODE="${SOURCE_CODE}"
