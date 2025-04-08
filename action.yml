@@ -69,7 +69,7 @@ runs:
              TIME g "打包内核: ${amlogic_kernel}"
              TIME g "分区大小: ${openwrt_size}"
              if [[ "${auto_kernel}" == "true" ]]; then
-               IME g "自动检测最新内核: 是"
+               TIME g "自动检测最新内核: 是"
              else
                TIME g "自动检测最新内核: 不是"
              fi
