@@ -437,11 +437,15 @@ function Diy_MT798X() {
 cd ${HOME_PATH}
 }
 
+
 function Diy_partsh() {
 cd ${HOME_PATH}
 # 运行自定义文件
 ${BUILD_PARTSH}
+}
 
+function Diy_ scrips() {
+cd ${HOME_PATH}
 # 主题设置
 Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
 Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
