@@ -447,6 +447,8 @@ Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2
 Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
 if ! grep -q "Mandatory_theme" .config && [ -n "$Mandatory_theme" ]; then
   echo "CONFIG_PACKAGE_luci-theme-$Mandatory_theme=y" >>.config
+  sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
+  sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
 fi
 if ! grep -q "Default_theme" .config && [ -n "$Default_theme" ]; then
   echo "CONFIG_PACKAGE_luci-theme-$Default_theme=y" >>.config
@@ -618,7 +620,7 @@ elif [[ -n "${Netmask_netm}" ]]; then
 fi
 
 if [[ `grep -c "${Default_theme}=y" ${HOME_PATH}/.config` -eq '0' ]]; then
-  echo "没有${Default_theme}此主题存在,或者没选择此主题"
+  TIME r "没有${Default_theme}此主题存在，默认主题设置失败"
 elif [[ "${Default_theme}" == "0" ]] || [[ -z "${Default_theme}" ]]; then
   echo "不进行,默认主题设置"
 elif [[ -n "${Default_theme}" ]]; then
@@ -634,7 +636,9 @@ if [[ `grep -c "${Mandatory_theme}=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
   echo "替换必须主题完成,您现在的必选主题为：luci-theme-${Mandatory_theme}"
 else
-  echo "没有${Mandatory_theme}此主题存在,或者没选择此主题"
+  sed -i -E "s/(\+luci-theme-)[^ \\]*/\1bootstrap/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
+  sed -i -E "s/(\+luci-theme-)[^ \\]*/\1bootstrap/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
+  TIME r "没有${Mandatory_theme}此主题存在，替换失败"
 fi
 
 if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
@@ -659,14 +663,12 @@ else
   echo "不进行,系统分区大小设置"
 fi
 
-
 if [[ "${Op_name}" == "0" ]] || [[ -z "${Op_name}" ]]; then
   echo "使用源码默认主机名"
 elif [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
   sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
   echo "主机名[${Op_name}]修改完成"
 fi
-
 
 if [[ "${Gateway_Settings}" == "0" ]] || [[ -z "${Gateway_Settings}" ]]; then
   echo "不进行,网关设置"
@@ -691,7 +693,6 @@ elif [[ -n "${DNS_Settings}" ]]; then
     TIME r "因DNS获取有错误，DNS设置失败，请检查DNS是否填写正确"
   fi
 fi
-
 
 if [[ "${Broadcast_Ipv4}" == "0" ]] || [[ -z "${Broadcast_Ipv4}" ]]; then
   echo "不进行,广播IP设置"
