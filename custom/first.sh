@@ -3,7 +3,7 @@
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
 export TONGBU_YUANMA=""
-
+[[ -f "bendi.ini" ]] && source bendi.ini
 function TIME() {
   case $1 in
     r) export Color="\e[31m";;
