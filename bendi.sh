@@ -80,13 +80,6 @@ export FOLDER_NAME="$FOLDER_NAME"
 echo "$FOLDER_NAME"
 if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
   source $OPERATES_PATH/$FOLDER_NAME/settings.ini
-  echo "$OPERATES_PATH/$FOLDER_NAME/settings.ini"
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh >first.sh
-  source first.sh
-elif [[ ! -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
-  echo "$OPERATES_PATH/$FOLDER_NAME/settings.ini"
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh >first.sh
-  source first.sh
 fi
 source $OPERATES_PATH/$FOLDER_NAME/settings.ini
 export COMPILE_PATH="$OPERATES_PATH/$FOLDER_NAME"
@@ -115,6 +108,11 @@ echo "BUILD_PARTSH=${BUILD_PARTSH}" >> ${GITHUB_ENV}
 echo "BUILD_SETTINGS=${BUILD_SETTINGS}" >> ${GITHUB_ENV}
 echo "MYCONFIG_FILE=${MYCONFIG_FILE}" >> ${GITHUB_ENV}
 echo "COMMON_SH=${COMMON_SH}" >> ${GITHUB_ENV}
+
+curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh >first.sh
+chmod -R +x first.sh
+source first.sh
+
 source $COMMON_SH && Diy_variable
 source $GITHUB_ENV
 }
