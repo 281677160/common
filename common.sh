@@ -134,7 +134,9 @@ echo "TARGET_MK=$RAW_WEB/include/target.mk" >> ${GITHUB_ENV}
 echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
 
 # 修改本地文件变量
-if [[ -z "${BENDI_VERSION}" ]]; then
+if [[ -n "${BENDI_VERSION}" ]]; then
+source $GITHUB_ENV
+else
 cat >"${COMPILE_PATH}/relevance/settings.ini" <<-EOF
 SOURCE_CODE="${SOURCE_CODE}"
 REPO_BRANCH="${REPO_BRANCH}"
@@ -241,7 +243,12 @@ if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
 fi
 
 # zzz-default-settings文件
-export ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
+ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
+if [[ -n "${BENDI_VERSION}" ]] && [[ -n "${ZZZ_PATH}" ]]; then
+  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+  source $GITHUB_ENV
+fi
+
 if [[ -n "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
