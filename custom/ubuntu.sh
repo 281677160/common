@@ -65,6 +65,7 @@ sudo rm -rf po2lmo
 gcc --version
 g++ --version
 clang --version
+upx --version
 }
 
 function update_apt_source(){
