@@ -64,7 +64,7 @@ fi
 
 function Ben_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
-  wget -q https://github.com/281677160/common/raw/ceshi/custom/ubuntu.sh -O ubuntu.sh
+  curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/ubuntu.sh -o ubuntu.sh
   chmod -R +x ubuntu.sh
   source ubuntu.sh
   rm -rf ubuntu.sh
@@ -94,7 +94,7 @@ export BUILD_PARTSH="${COMPILE_PATH}/diy-part.sh"
 export BUILD_SETTINGS="${COMPILE_PATH}/settings.ini"
 export CONFIG_FILE="${CONFIG_FILE}"
 export MYCONFIG_FILE="${COMPILE_PATH}/seed/${CONFIG_FILE}"
-wget -q https://github.com/281677160/common/raw/ceshi/custom/first.sh -O first.sh
+curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o first.sh
 chmod -R +x first.sh
 source first.sh
 rm -rf first.sh
