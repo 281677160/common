@@ -218,6 +218,3 @@ if [[ "${REPO_BRANCH}" == *"23.05"* ]] && [[ "${SOURCE_CODE}" == "MT798X" ]]; th
   gitcon https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/kernel/mac80211 package/kernel/mac80211
 fi
 
-echo "${REPO_BRANCH}"
-echo "123"
-
