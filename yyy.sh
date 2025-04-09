@@ -234,7 +234,6 @@ if [[ "${compile_error}" == "1" ]]; then
   sed -i 's/^[ ]*//g' ${HOME_PATH}/LICENSES/doc/key-buildzu.ini
   exit 1
 else
-  source ${GITHUB_ENV}
   echo "
   SUCCESS_FAILED="success"
   FOLDER_NAME2="${FOLDER_NAME}"
@@ -245,6 +244,27 @@ else
   " > ${HOME_PATH}/LICENSES/doc/key-buildzu.ini
   sed -i 's/^[ ]*//g' ${HOME_PATH}/LICENSES/doc/key-buildzu.ini
 fi
+}
+
+function Ben_compiletwo() {
+if [[ `grep -c 'CONFIG_TARGET_armvirt_64=y' ${HOME_PATH}/.config` -eq '1' ]]; then
+  TIME g "[ Amlogic_Rockchip系列专用固件 ]顺利编译完成~~~"
+else
+  TIME g "[ ${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE} ]顺利编译完成~~~"
+fi
+TIME y "编译日期：$(date +'%Y年%m月%d号')"
+END_TIME=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
+SECONDS=$((END_TIME-START_TIME))
+HOUR=$(( $SECONDS/3600 ))
+MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
+SEC=$(( $SECONDS-${HOUR}*3600-${MIN}*60 ))
+if [[ "${HOUR}" == "0" ]]; then
+  TIME g "编译总计用时 ${MIN}分${SEC}秒"
+else
+  TIME g "编译总计用时 ${HOUR}时${MIN}分${SEC}秒"
+fi
+TIME r "提示：再次输入编译命令可进行二次编译"
+echo
 }
 
 
@@ -278,7 +298,9 @@ Ben_download
 function Ben_menu5() {
 cd $HOME_PATH
 Ben_compile
+source ${GITHUB_ENV}
 source $COMMON_SH && Diy_firmware
+Ben_compiletwo
 }
 
 function Diy_main() {
