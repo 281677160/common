@@ -169,7 +169,7 @@ fi
 
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
-echo "正在下载和整理应用,请耐心等候"
+echo "正在下载和整理应用,请耐心等候..."
 cd ${HOME_PATH}
 # 增加一些应用
 
@@ -344,7 +344,6 @@ if [ -d "${BUILD_FILES}" ]; then
 fi
 
 # 定时更新固件的插件包
-echo "N1"
 if grep -q "armvirt=y" $MYCONFIG_FILE || grep -q "armsr=y" $MYCONFIG_FILE; then
   find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
@@ -376,7 +375,6 @@ EOF
 
 
 function Diy_COOLSNOWWOLF() {
-echo "N2"
 cd ${HOME_PATH}
 if [[ -d "${HOME_PATH}/feeds/danshui/luci-app-qmodem/driver" ]]; then
   rm -rf ${HOME_PATH}/package/wwan/driver
@@ -445,7 +443,6 @@ cd ${HOME_PATH}
 
 
 function Diy_partsh() {
-echo "N3"
 cd ${HOME_PATH}
 # 运行自定义文件
 ${BUILD_PARTSH}
@@ -474,7 +471,6 @@ fi
 }
 
 function Diy_profile() {
-echo "N4"
 cd ${HOME_PATH}
 make defconfig > /dev/null 2>&1
 echo "正在执行：识别源码编译为何机型"
@@ -512,7 +508,6 @@ echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
 
 
 function Diy_management() {
-echo "N5"
 cd ${HOME_PATH}
 # 机型为aarch_64的时,修改cpufreq代码适配Armvirt
 if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
@@ -547,7 +542,6 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 
 function Diy_definition() {
-echo "N6"
 cd ${HOME_PATH}
 Ipv4_ipaddr="$(grep '^export Ipv4_ipaddr=' $BUILD_PARTSH |cut -d '"' -f2)"
 Netmask_netm="$(grep '^export Netmask_netm=' $BUILD_PARTSH |cut -d '"' -f2)"
@@ -581,8 +575,6 @@ kernel_usage="$(grep '^export kernel_usage=' $BUILD_PARTSH |cut -d '"' -f2)"
 Customized_Information="$(cat signature)"
 rm -rf signature
 
-
-
 # 获取源码文件的IP
 lan="/set network.\$1.netmask/a"
 ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |grep -v 'addr_offset' |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
@@ -599,7 +591,6 @@ fi
 if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
   devicee="uci set network.ipv6.device='@lan'"
 fi
-
 
 if [[ "${Ipv4_ipaddr}" == "0" ]] || [[ -z "${Ipv4_ipaddr}" ]]; then
   echo "使用源码默认后台IP"
@@ -922,13 +913,11 @@ elif [[ -n "${Replace_Kernel}" ]] && [[ -n "${patchverl}" ]]; then
   fi
 fi
 
-
 cat >> "${HOME_PATH}/.config" <<-EOF
 CONFIG_PACKAGE_luci=y
 CONFIG_PACKAGE_default-settings=y
 CONFIG_PACKAGE_default-settings-chn=y
 EOF
-
 
 # 晶晨CPU机型自定义机型,内核,分区
 echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
@@ -938,7 +927,6 @@ echo "openwrt_size=${rootfs_size}" >> ${GITHUB_ENV}
 echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
 echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 echo "builder_name=ophub" >> ${GITHUB_ENV}
-
 
 # adguardhome增加核心
 if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
