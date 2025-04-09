@@ -27,7 +27,6 @@ export GITHUB_WORKSPACE="/home/$USER"
 export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 export OPERATES_PATH="${GITHUB_WORKSPACE}/operates"
 export GITHUB_ENV="${GITHUB_WORKSPACE}/compile"
-export CURRENT_PATH="${GITHUB_WORKSPACE##*/}"
 export BENDI_VERSION="1"
 install -m 0755 /dev/null $GITHUB_ENV
 
@@ -127,6 +126,8 @@ source $COMMON_SH && Diy_menu2
 function Ben_menu3() {
 cd $HOME_PATH
 source $COMMON_SH && Diy_menu3
+source $GITHUB_ENV
+echo "$LINUX_KERNEL"
 }
 
 function Diy_main() {
