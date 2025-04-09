@@ -100,7 +100,6 @@ source first.sh
 rm -rf first.sh
 source $COMMON_SH && Diy_variable
 }
-LINUX_KERNEL
 
 function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
