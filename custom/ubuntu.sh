@@ -21,7 +21,7 @@ swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
 ${INS} install rename pigz clang upx-ucl
 
 # 安装po2lmo
-${INS} install libncurses-dev libssl-dev libgmp-dev bison gettext zlib1g-dev libexpat1-dev python3-pip libpython3-dev
+${INS} install libncurses-dev libssl-dev libgmp-dev zlib1g-dev libexpat1-dev python3-pip libpython3-dev
 sudo rm -rf po2lmo
 git clone --filter=blob:none --no-checkout "https://github.com/openwrt/luci.git" "po2lmo"
 pushd "po2lmo"
