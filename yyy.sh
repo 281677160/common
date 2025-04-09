@@ -168,6 +168,84 @@ else
 fi
 }
 
+function Ben_compile() {
+cd ${HOME_PATH}
+START_TIME=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
+Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
+Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
+RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
+RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
+
+echo
+TIME y "您的机器CPU型号为[ ${Model_Name} ]"
+TIME g "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
+TIME y "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
+echo
+
+[[ -d "${FIRMWARE_PATH}" ]] && sudo rm -rf ${FIRMWARE_PATH}
+rm -rf ${HOME_PATH}/build_logo/build.log
+
+if [[ "$(nproc)" -le "12" ]];then
+  TIME y "即将使用$(nproc)线程进行编译固件,请耐心等候..."
+  sleep 5
+  if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
+    TIME y "WSL临时路径编译中"
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j$(nproc) |& tee ${HOME_PATH}/build_logo/build.log 2>&1
+  else
+     make V=s -j$(nproc) |& tee ${HOME_PATH}/build_logo/build.log 2>&1
+  fi
+else
+  TIME g "您的CPU线程超过或等于16线程，强制使用16线程进行编译固件,请耐心等候..."
+  sleep 5
+  if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
+    TIME y "WSL临时路径编译中,请耐心等候..."
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j16 |& tee ${HOME_PATH}/build_logo/build.log 2>&1
+  else
+     make V=s -j16 |& tee ${HOME_PATH}/build_logo/build.log 2>&1
+  fi
+fi
+
+if [[ `grep -ic "Error 2" ${HOME_PATH}/build_logo/build.log` -eq '0' ]] || [[ `grep -c "make with -j1 V=s or V=sc" ${HOME_PATH}/build_logo/build.log` -eq '0' ]]; then
+  compile_error="0"
+else
+  compile_error="1"
+fi
+
+if [[ "${compile_error}" == "0" ]]; then
+  if [[ -n "$(ls -1 "${FIRMWARE_PATH}" |grep "${TARGET_BOARD}")" ]]; then
+    compile_error="0"
+  else
+    compile_error="1"
+  fi
+fi
+
+sleep 3
+if [[ "${compile_error}" == "1" ]]; then
+  TIME r "编译失败~~!"
+  TIME y "在 openwrt/build_logo/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
+  echo "
+  SUCCESS_FAILED="fail"
+  FOLDER_NAME2="${FOLDER_NAME}"
+  REPO_BRANCH2="${REPO_BRANCH}"
+  LUCI_EDITION2="${LUCI_EDITION}"
+  TARGET_PROFILE2="${TARGET_PROFILE}"
+  SOURCE2="${SOURCE}"
+  " > ${HOME_PATH}/LICENSES/doc/key-buildzu.ini
+  sed -i 's/^[ ]*//g' ${HOME_PATH}/LICENSES/doc/key-buildzu.ini
+  exit 1
+else
+  source ${GITHUB_ENV}
+  echo "
+  SUCCESS_FAILED="success"
+  FOLDER_NAME2="${FOLDER_NAME}"
+  REPO_BRANCH2="${REPO_BRANCH}"
+  LUCI_EDITION2="${LUCI_EDITION}"
+  TARGET_PROFILE2="${TARGET_PROFILE}"
+  SOURCE2="${SOURCE}"
+  " > ${HOME_PATH}/LICENSES/doc/key-buildzu.ini
+  sed -i 's/^[ ]*//g' ${HOME_PATH}/LICENSES/doc/key-buildzu.ini
+fi
+}
 
 
 function Ben_menu() {
@@ -195,6 +273,11 @@ echo "$LINUX_KERNEL"
 function Ben_menu4() {
 cd $HOME_PATH
 Ben_download
+}
+
+function Ben_menu5() {
+cd $HOME_PATH
+Ben_compile
 }
 
 function Diy_main() {
