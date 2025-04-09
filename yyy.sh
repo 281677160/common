@@ -66,13 +66,6 @@ function Ben_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
   bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)
 fi
-if [[ $? -ne 0 ]];then
-  TIME r "依赖安装失败，请检测网络后再次尝试!"
-  exit 1
-else
-  sudo sh -c 'echo openwrt > /etc/oprelyon'
-  TIME b "全部依赖安装完毕"
-fi
 }
 
 function Ben_variable() {
@@ -109,7 +102,7 @@ function Ben_configuration() {
 Menuconfig_Config="true"
 cd ${HOME_PATH}
 if [[ "${Menuconfig_Config}" == "true" ]]; then
-  TIME g "配置机型，插件等..."
+  TIME y "配置机型，插件等..."
   make menuconfig
   if [[ $? -ne 0 ]]; then
     TIME y "SSH工具窗口分辨率太小，无法弹出设置机型或插件的窗口"
@@ -138,9 +131,10 @@ fi
 function Ben_download() {
 TIME y "下载DL文件,请耐心等候..."
 cd ${HOME_PATH}
-rm -rf ${HOME_PATH}/build_logo/build.log
+op_log="${HOME_PATH}/build_logo/build.log"
+rm -rf "${op_log}"
 make -j8 download |& tee ${HOME_PATH}/build_logo/build.log 2>&1
-if [[ `grep -c "ERROR" ${HOME_PATH}/build_logo/build.log` -eq '0' ]] || [[ `grep -c "make with -j1 V=s" ${HOME_PATH}/build_logo/build.log` -eq '0' ]]; then
+if [[ -n "$(cat "${op_log}" |grep -i 'ERROR')" ]] || [[ -n "$(cat "${op_log}" |grep -i 'make with -j1 V=s')" ]]; then 
   TIME g "DL文件下载成功"
 else
   clear
@@ -170,6 +164,7 @@ fi
 
 function Ben_compile() {
 cd ${HOME_PATH}
+rm -rf "${op_log}"
 START_TIME=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
 Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
 Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
@@ -182,9 +177,6 @@ TIME g "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
 TIME y "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
 echo
 
-rm -rf ${HOME_PATH}/build_logo/build.log
-op_log="${HOME_PATH}/build_logo/build.log"
-
 if [[ "$(nproc)" -ge "16" ]];then
   cpunproc="16"
 else
@@ -192,6 +184,7 @@ else
 fi
 
 TIME g "即将使用${cpunproc}线程进行编译固件,请耐心等候..."
+echo
 sleep 5
 if [[ -n "$(echo "${PATH}" |grep -i 'windows')" ]]; then
   TIME y "WSL临时路径编译中"
