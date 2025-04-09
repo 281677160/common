@@ -53,7 +53,6 @@ runs:
 
     - name: 发布固件到 Github Releases
       id: nfabu
-      if: env.UPLOAD_RELEASE == 'true' && env.RRRR_RELEASE == 'aaarch'
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.amlogic_model }}
