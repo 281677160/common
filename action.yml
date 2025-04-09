@@ -44,7 +44,7 @@ runs:
       if: env.UPLOAD_RELEASE == 'true' && env.RRRR_RELEASE == 'bbbrch'
       uses: ncipollo/release-action@v1
       with:
-        name: ${{ env.SOURCE }}-${{ env.PROMPT_TING }}
+        name: ${{ env.SHANGCHUAN_MINGCHEN }}
         tag: a${{ env.date }}
         token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
