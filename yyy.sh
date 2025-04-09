@@ -135,6 +135,40 @@ if [[ "${Menuconfig_Config}" == "true" ]]; then
 fi
 }
 
+function Ben_download() {
+TIME y "下载DL文件,请耐心等候..."
+cd ${HOME_PATH}
+rm -rf ${HOME_PATH}/build_logo/build.log
+make -j8 download |& tee ${HOME_PATH}/build_logo/build.log 2>&1
+if [[ `grep -c "ERROR" ${HOME_PATH}/build_logo/build.log` -eq '0' ]] || [[ `grep -c "make with -j1 V=s" ${HOME_PATH}/build_logo/build.log` -eq '0' ]]; then
+  TIME g "DL文件下载成功"
+else
+  clear
+  echo
+  TIME r "下载DL失败，更换节点后再尝试下载？"
+  QLMEUN="请更换节点后按[Y/y]回车继续尝试下载DL，或输入[N/n]回车,退出编译"
+  while :; do
+    read -p " [${QLMEUN}]： " BenDownload
+    case ${BenDownload} in
+  [Yy])
+    Ben_download
+  break
+  ;;
+  [Nn])
+    TIME r "退出编译程序!"
+    sleep 1
+    exit 1
+  break
+  ;;
+  *)
+    QLMEUN="请更换节点后按[Y/y]回车继续尝试下载DL，或现在输入[N/n]回车,退出编译"
+  ;;
+  esac
+  done
+fi
+}
+
+
 
 function Ben_menu() {
 cd $HOME_PATH
@@ -156,6 +190,11 @@ cd $HOME_PATH
 source $COMMON_SH && Diy_menu3
 source $GITHUB_ENV
 echo "$LINUX_KERNEL"
+}
+
+function Ben_menu4() {
+cd $HOME_PATH
+Ben_download
 }
 
 function Diy_main() {
