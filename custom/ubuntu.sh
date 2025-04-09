@@ -20,20 +20,22 @@ swig texinfo uglifyjs unzip upx-ucl vim wget xmlto xxd zlib1g-dev
 # N1打包需要的依赖
 ${INS} install rename pigz
 
-# 安装clang-18
+# 安装clang
+CLANG_REV="18"
 wget -q https://apt.llvm.org/llvm.sh -O llvm.sh
 chmod +x llvm.sh
-sudo ./llvm.sh 18
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
+sudo ./llvm.sh $CLANG_REV
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-$CLANG_REV 100
 sudo update-alternatives --config clang
 sudo rm -rf llvm.sh
 
-# 安装gcc-13 g++-13
+# 安装gcc g++
+GCC_REV="13"
 sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
 ${INS} update > /dev/null 2>&1
-${INS} install gcc-13 g++-13
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+${INS} install gcc-$GCC_REV g++-$GCC_REV
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-$GCC_REV 100
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-$GCC_REV 100
 sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 
