@@ -104,8 +104,9 @@ LINUX_KERNEL
 
 function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
-rm -rf openwrt
-git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+if [[ ! -d "openwrt" ]]; then
+  git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+fi
 }
 
 function Ben_menu() {
