@@ -15,10 +15,10 @@ genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfus
 libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
 libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf \
 python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion \
-swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
+swig texinfo uglifyjs unzip upx-ucl vim wget xmlto xxd zlib1g-dev
 
 # N1打包需要的依赖
-${INS} install rename pigz upx-ucl
+${INS} install rename pigz
 
 # clang-18
 wget -q https://apt.llvm.org/llvm.sh -O llvm.sh
