@@ -1403,12 +1403,9 @@ Diy_checkout
 Diy_${SOURCE_CODE}
 }
 
-function Diy_xpartsh() {
-Diy_partsh
-}
-
 function Diy_menu2() {
 cd $HOME_PATH
+Diy_partsh
 Diy_scrips
 Diy_profile
 }
