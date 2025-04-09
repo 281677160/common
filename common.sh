@@ -110,7 +110,11 @@ MT798X)
   fi
 ;;
 *)
-  TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL"
+  if [[ -n "${BENDI_VERSION}" ]]; then
+    TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
+  else
+    TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL"
+  fi
   exit 1
 ;;
 esac
