@@ -148,7 +148,7 @@ echo "Upgrade_Date=${Upgrade_Date}" >> ${GITHUB_ENV}
 echo "UPGRADE_KEEP=${UPGRADE_KEEP}" >> ${GITHUB_ENV}
 echo "TARGET_MK=${TARGET_MK}" >> ${GITHUB_ENV}
 
-# 修改本地文件变量
+# 启动编译时的变量文件
 if [[ -z "${BENDI_VERSION}" ]]; then
 cat >"${COMPILE_PATH}/relevance/settings.ini" <<-EOF
 SOURCE_CODE="${SOURCE_CODE}"
