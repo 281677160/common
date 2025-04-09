@@ -40,7 +40,6 @@ runs:
         echo "SHANG_MESSAGE=、上传Artifacts" >> ${GITHUB_ENV}
     
     - name: 发布固件
-      id: fabu
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}
@@ -52,7 +51,6 @@ runs:
         artifacts: "${{ env.FIRMWARE_PATH }}/*"
 
     - name: 发布固件到 Github Releases
-      id: nfabu
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.amlogic_model }}
