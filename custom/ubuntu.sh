@@ -21,7 +21,7 @@ swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
 ${INS} install rename pigz upx-ucl
 
 # clang-18
-wget https://apt.llvm.org/llvm.sh
+wget -q https://apt.llvm.org/llvm.sh -O llvm.sh
 chmod +x llvm.sh
 sudo ./llvm.sh 18
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
@@ -37,6 +37,7 @@ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
 sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 
+# 安装upx
 UPX_REV="5.0.0"
 curl -fLO "https://github.com/upx/upx/releases/download/v${UPX_REV}/upx-$UPX_REV-amd64_linux.tar.xz"
 sudo tar -Jxf "upx-$UPX_REV-amd64_linux.tar.xz"
@@ -44,6 +45,8 @@ sudo rm -rf "/usr/bin/upx" "/usr/bin/upx-ucl"
 sudo cp -fp "upx-$UPX_REV-amd64_linux/upx" "/usr/bin/upx-ucl"
 sudo chmod 0755 "/usr/bin/upx-ucl"
 sudo ln -svf "/usr/bin/upx-ucl" "/usr/bin/upx"
+sudo rm -rf upx-$UPX_REV-amd64_linux
+sudo rm -rf upx-$UPX_REV-amd64_linux.tar.xz
 
 # 安装po2lmo
 ${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip
