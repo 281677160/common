@@ -470,6 +470,7 @@ fi
 ./scripts/feeds install -a
 }
 
+
 function Diy_profile() {
 cd ${HOME_PATH}
 make defconfig > /dev/null 2>&1
