@@ -33,7 +33,7 @@ sudo strip "po2lmo"
 sudo rm -rf "/usr/bin/po2lmo"
 sudo cp -fp "po2lmo" "/usr/bin/po2lmo"
 popd
-sodu rm -rf po2lmo
+sudo rm -rf po2lmo
 
 # 安装gcc-13
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
