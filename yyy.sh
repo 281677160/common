@@ -117,7 +117,6 @@ function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
 rm -rf openwrt
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
-cd $HOME_PATH
 }
 
 function Ben_menu() {
