@@ -66,5 +66,5 @@ do
 		sed -i "s?DEPENDS:=?DEPENDS:=\+\@LUCI_LANG_zh_Hans ?g" "$f"
 	fi
 done
-echo "LUCI_LANG_zh_Hans"
+echo "zh_Hans"
 exit 0
