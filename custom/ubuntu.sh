@@ -37,10 +37,13 @@ popd
 sudo rm -rf po2lmo
 
 # 安装gcc-13
-sudo add-apt-repository ppa:deadsnakes/ppa
+sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
 ${INS} update > /dev/null 2>&1
 ${INS} install gcc-13 g++-13
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+sudo update-alternatives --config gcc
+sudo update-alternatives --config g++
 gcc --version
 g++ --version
 clang --version
