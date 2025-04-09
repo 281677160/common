@@ -30,19 +30,6 @@ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-$GCC_REV 100
 sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 
-# 安装upx
-UPX_REV="5.0.0"
-sudo rm -rf upx-$UPX_REV-amd64_linux
-sudo rm -rf upx-$UPX_REV-amd64_linux.tar.xz
-curl -fLO "https://github.com/upx/upx/releases/download/v${UPX_REV}/upx-$UPX_REV-amd64_linux.tar.xz"
-sudo tar -Jxf "upx-$UPX_REV-amd64_linux.tar.xz"
-sudo rm -rf "/usr/bin/upx" "/usr/bin/upx-ucl"
-sudo cp -fp "upx-$UPX_REV-amd64_linux/upx" "/usr/bin/upx-ucl"
-sudo chmod 0755 "/usr/bin/upx-ucl"
-sudo ln -svf "/usr/bin/upx-ucl" "/usr/bin/upx"
-sudo rm -rf upx-$UPX_REV-amd64_linux
-sudo rm -rf upx-$UPX_REV-amd64_linux.tar.xz
-
 # 安装po2lmo
 ${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip
 sudo rm -rf po2lmo
