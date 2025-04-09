@@ -64,7 +64,9 @@ fi
 
 function Ben_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
-  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/ubuntu.sh)
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/ubuntu.sh >ubuntu.sh
+  chmod -R +x ubuntu.sh
+  source ubuntu.sh
 fi
 if [[ $? -ne 0 ]];then
   TIME r "依赖安装失败，请检测网络后再次尝试!"
@@ -91,7 +93,9 @@ export BUILD_PARTSH="${COMPILE_PATH}/diy-part.sh"
 export BUILD_SETTINGS="${COMPILE_PATH}/settings.ini"
 export CONFIG_FILE="${CONFIG_FILE}"
 export MYCONFIG_FILE="${COMPILE_PATH}/seed/${CONFIG_FILE}"
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
+curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh >first.sh
+chmod -R +x first.sh
+source first.sh
 echo "$COMMON_SH"
 source $COMMON_SH && Diy_variable
 
