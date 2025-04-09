@@ -22,6 +22,7 @@ ${INS} install rename pigz clang upx-ucl
 
 # 安装po2lmo
 ${INS} install build-essential libtool autoconf automake pkg-config libncurses-dev libssl-dev libgmp-dev flex bison gettext zlib1g-dev libexpat1-dev python3-pip libpython3-dev
+sudo rm -rf po2lmo
 git clone --filter=blob:none --no-checkout "https://github.com/openwrt/luci.git" "po2lmo"
 pushd "po2lmo"
 git config core.sparseCheckout true
