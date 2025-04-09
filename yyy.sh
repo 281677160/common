@@ -9,7 +9,7 @@ function TIME() {
     z) export Color="\e[35m";;
     l) export Color="\e[36m";;
   esac
-echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
+echo -e "\e[36m\e[0m${Color}${2}\e[0m"
 }
 
 source /etc/os-release
