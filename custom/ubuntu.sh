@@ -21,8 +21,8 @@ swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
 ${INS} install rename pigz clang upx-ucl
 
 # 安装gcc-13
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
+sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/ppa
 ${INS} update > /dev/null 2>&1
 ${INS} install gcc-13
 ${INS} install g++-13
