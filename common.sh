@@ -564,7 +564,6 @@ Disable_Bridge="$(grep '^export Disable_Bridge=' $BUILD_PARTSH |cut -d '"' -f2)"
 Create_Ipv6_Lan="$(grep '^export Create_Ipv6_Lan=' $BUILD_PARTSH |cut -d '"' -f2)"
 Enable_IPV6_function="$(grep '^export Enable_IPV6_function=' $BUILD_PARTSH |cut -d '"' -f2)"
 Enable_IPV4_function="$(grep '^export Enable_IPV4_function=' $BUILD_PARTSH |cut -d '"' -f2)"
-Customized_Information="$(grep '^export Customized_Information=' $BUILD_PARTSH |cut -d '"' -f2)"
 Replace_Kernel="$(grep '^export Replace_Kernel=' $BUILD_PARTSH |cut -d '"' -f2)"
 Password_free_login="$(grep '^export Password_free_login=' $BUILD_PARTSH |cut -d '"' -f2)"
 AdGuardHome_Core="$(grep '^export AdGuardHome_Core=' $BUILD_PARTSH |cut -d '"' -f2)"
@@ -579,6 +578,9 @@ amlogic_kernel="$(grep '^export amlogic_kernel=' $BUILD_PARTSH |cut -d '"' -f2)"
 auto_kernel="$(grep '^export auto_kernel=' $BUILD_PARTSH |cut -d '"' -f2)"
 rootfs_size="$(grep '^export rootfs_size=' $BUILD_PARTSH |cut -d '"' -f2)"
 kernel_usage="$(grep '^export kernel_usage=' $BUILD_PARTSH |cut -d '"' -f2)"
+Customized_Information="$(cat signature)"
+rm -rf signature
+
 
 
 # 获取源码文件的IP
