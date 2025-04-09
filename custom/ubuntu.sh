@@ -20,7 +20,7 @@ swig texinfo uglifyjs unzip upx-ucl vim wget xmlto xxd zlib1g-dev
 # N1打包需要的依赖
 ${INS} install rename pigz
 
-# clang-18
+# 安装clang-18
 wget -q https://apt.llvm.org/llvm.sh -O llvm.sh
 chmod +x llvm.sh
 sudo ./llvm.sh 18
