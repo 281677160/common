@@ -54,7 +54,7 @@ runs:
         token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
         replacesArtifacts: true
-        artifacts: "${{ env.PACKAGED_OUTPUTPATH }}"
+        artifacts: ${{ env.PACKAGED_OUTPUTPATH }}/*
         body: |
           发布日期：${{ env.date_tg }}
           固件源码：${{ env.SOURCE }}
