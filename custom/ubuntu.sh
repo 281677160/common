@@ -20,6 +20,7 @@ swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
 # N1打包需要的依赖
 ${INS} install rename pigz upx-ucl
 
+# clang-18
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
 sudo ./llvm.sh 18
@@ -42,7 +43,7 @@ sudo cp -fp "po2lmo" "/usr/bin/po2lmo"
 popd
 sudo rm -rf po2lmo
 
-# 安装gcc-13
+# 安装gcc-13 g++-13
 sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
 ${INS} update > /dev/null 2>&1
 ${INS} install gcc-13 g++-13
