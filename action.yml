@@ -41,7 +41,6 @@ runs:
     
     - name: 发布固件
       id: fabu
-      if: env.UPLOAD_RELEASE == 'true' && env.RRRR_RELEASE == 'bbbrch'
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}
