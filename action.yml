@@ -63,6 +63,37 @@ runs:
         fi
         echo "FIRMWARE_PATH=$PACKAGED_OUTPUTPATH" >> ${GITHUB_ENV}
         echo "TARGET_PROFILE_IMG=aarch64-img" >> ${GITHUB_ENV}
+
+
+    - name: 上传固件在 github Artifacts
+      id: shang
+      if: env.UPLOAD_FIRMWARE == 'true'
+      uses: actions/upload-artifact@main
+      with:
+        name: ${{ env.SHANGCHUAN_MINGCHEN }}-firmware-${{ env.Firmware_Date }}
+        path: ${{ env.FIRMWARE_PATH }}
+
+    - name: 上传信息
+      if: steps.shang.outcome == 'success' && env.UPLOAD_FIRMWARE == 'true'
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        echo "SHANG_MESSAGE=、上传Artifacts" >> ${GITHUB_ENV}
+
+    - name: 发布固件到 Github Releases
+      uses: ncipollo/release-action@v1
+      with:
+        name: ${{ env.amlogic_model }}
+        tag: a${{ env.date }}
+        token: ${{ env.REPO_TOKEN }}
+        allowUpdates: true
+        replacesArtifacts: true
+        artifacts: "${{ env.FIRMWARE_PATH }}/*"
+        body: |
+          发布日期：${{ env.date_tg }}
+          固件源码：${{ env.SOURCE }}
+          内核仓库：${{ env.kernel_usage }}
+          写入EMMC：Login to OpenWrt → System → Amlogic Service → Install OpenWrt
 branding:
   icon: "terminal"
   color: "gray-dark"
