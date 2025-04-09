@@ -169,7 +169,7 @@ fi
 
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
-TIME y "正在下载和整理应用,请耐心等候..."
+TIME y "正在执行：下载和整理应用,请耐心等候..."
 cd ${HOME_PATH}
 # 增加一些应用
 
@@ -443,6 +443,7 @@ cd ${HOME_PATH}
 
 
 function Diy_partsh() {
+TIME y "正在执行：自定义文件"
 cd ${HOME_PATH}
 # 运行自定义文件
 ${BUILD_PARTSH}
@@ -474,7 +475,7 @@ fi
 function Diy_profile() {
 cd ${HOME_PATH}
 make defconfig > /dev/null 2>&1
-echo "正在执行：识别源码编译为何机型"
+TIME y "正在执行：识别源码编译为何机型"
 export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
 export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
 export TARGET_PROFILE_DG="$(awk -F '[="]+' '/TARGET_PROFILE/{print $2}' ${HOME_PATH}/.config)"
@@ -1021,7 +1022,7 @@ echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 
 function Diy_prevent() {
 cd ${HOME_PATH}
-echo "正在执行：判断插件有否冲突减少编译错误"
+TIME y "正在执行：判断插件有否冲突减少编译错误"
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-server=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-vpnd=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-app-ipsec-vpnd=y/# CONFIG_PACKAGE_luci-app-ipsec-vpnd is not set/g' ${HOME_PATH}/.config
