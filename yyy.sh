@@ -41,7 +41,7 @@ function TIME() {
 echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
 }
 
-function Diy_diskcapacity() {
+function Ben_diskcapacity() {
 Cipan_Size="$(df -hT $PWD|awk 'NR==2'|awk '{print $(3)}')"
 Cipan_Used="$(df -hT $PWD|awk 'NR==2'|awk '{print $(4)}')"
 Cipan_Avail="$(df -hT $PWD|awk 'NR==2'|awk '{print $(5)}' |cut -d 'G' -f1)"
@@ -62,7 +62,7 @@ if [[ "${Cipan_Avail}" -lt "20" ]];then
 fi
 }
 
-function Diy_update() {
+function Ben_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
   bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/ubuntu.sh)
 fi
@@ -75,7 +75,7 @@ else
 fi
 }
 
-function Diy_bianliang() {
+function Ben_variable() {
 export FOLDER_NAME="$FOLDER_NAME"
 if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
   source $OPERATES_PATH/$FOLDER_NAME/settings.ini
@@ -108,41 +108,35 @@ echo "MYCONFIG_FILE=${MYCONFIG_FILE}" >> ${GITHUB_ENV}
 bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
 source $GITHUB_ENV
 echo "$COMMON_SH"
-source $COMMON_SH && Diy_vare
+source $COMMON_SH && Diy_variable
 source $GITHUB_ENV
 }
 
 
-function Diy_xiazai() {
+function Ben_xiazai() {
 rm -rf openwrt
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 cd $HOME_PATH
 }
 
-function Diy_beidememu() {
+function Ben_menu() {
 cd $HOME_PATH
 source $COMMON_SH && Diy_menu
 source $GITHUB_ENV
 }
 
-function Diy_xmemu() {
-cd $HOME_PATH
-source ${BUILD_PARTSH}
-source $GITHUB_ENV
-}
-
-function Diy_menuconfig() {
+function Ben_menuconfig() {
 cd $HOME_PATH
 make menuconfig
 }
 
-function Diy_beidememu2() {
+function Ben_menu2() {
 cd $HOME_PATH
 source $COMMON_SH && Diy_menu2
 source $GITHUB_ENV
 }
 
-function Diy_beidememu3() {
+function Ben_menu3() {
 cd $HOME_PATH
 source $COMMON_SH && Diy_menu3
 source $GITHUB_ENV
@@ -150,15 +144,14 @@ source $GITHUB_ENV
 
 function Diy_main() {
 export FOLDER_NAME="Lede"
-Diy_diskcapacity
-Diy_update
-Diy_bianliang
-Diy_xiazai
-Diy_beidememu
-Diy_xmemu
-Diy_menuconfig
-Diy_beidememu2
-Diy_beidememu3
+Ben_diskcapacity
+Ben_update
+Ben_variable
+Ben_xiazai
+Ben_menu
+Ben_menuconfig
+Ben_menu2
+Ben_menu3
 }
 
 Diy_main
