@@ -115,30 +115,37 @@ MT798X)
 ;;
 esac
 
+export FILES_PATH="${HOME_PATH}/package/base-files/files"
+export REPAIR_PATH="${HOME_PATH}/package/base-files/files/etc/openwrt_release"
+export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
+export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
+export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
+export CLEAR_PATH="${HOME_PATH}/Clear"
+export Upgrade_Date="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
+export UPGRADE_KEEP="$RAW_WEB/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
+export TARGET_MK="$RAW_WEB/include/target.mk"
+
 echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
 echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
 echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
 echo "DISTRIB_SOURCECODE=${DISTRIB_SOURCECODE}" >> ${GITHUB_ENV}
-echo "FILES_PATH=${HOME_PATH}/package/base-files/files" >> ${GITHUB_ENV}
-echo "REPAIR_PATH=${HOME_PATH}/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
-echo "DELETE=${HOME_PATH}/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
-echo "DEFAULT_PATH=${HOME_PATH}/package/auto-scripts/files/99-first-run" >> ${GITHUB_ENV}
-echo "KEEPD_PATH=${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
-echo "CLEAR_PATH=${HOME_PATH}/Clear" >> ${GITHUB_ENV}
-echo "Upgrade_Date=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`" >> ${GITHUB_ENV}
 echo "FEEDS_CONF=${FEEDS_CONF}" >> ${GITHUB_ENV}
 echo "BASE_FILES=${BASE_FILES}" >> ${GITHUB_ENV}
-echo "UPGRADE_KEEP=$RAW_WEB/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
-echo "TARGET_MK=$RAW_WEB/include/target.mk" >> ${GITHUB_ENV}
 echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
 
+echo "FILES_PATH=${FILES_PATH}" >> ${GITHUB_ENV}
+echo "REPAIR_PATH=${REPAIR_PATH}" >> ${GITHUB_ENV}
+echo "DELETE=${DELETE}" >> ${GITHUB_ENV}
+echo "DEFAULT_PATH=${DEFAULT_PATH}" >> ${GITHUB_ENV}
+echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
+echo "CLEAR_PATH=${CLEAR_PATH}" >> ${GITHUB_ENV}
+echo "Upgrade_Date=${Upgrade_Date}" >> ${GITHUB_ENV}
+echo "UPGRADE_KEEP=${UPGRADE_KEEP}" >> ${GITHUB_ENV}
+echo "TARGET_MK=${TARGET_MK}" >> ${GITHUB_ENV}
+
 # 修改本地文件变量
-if [[ -n "${BENDI_VERSION}" ]]; then
-  sed -i 's?=?=\"?g' "${GITHUB_ENV}"
-  sed -i '/=/ s/$/&\"/' "${GITHUB_ENV}"
-  source ${GITHUB_ENV}
-else
+if [[ -z "${BENDI_VERSION}" ]]; then
 cat >"${COMPILE_PATH}/relevance/settings.ini" <<-EOF
 SOURCE_CODE="${SOURCE_CODE}"
 REPO_BRANCH="${REPO_BRANCH}"
@@ -248,11 +255,7 @@ fi
 
 # zzz-default-settings文件
 ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
-if [[ -n "${BENDI_VERSION}" ]] && [[ -n "${ZZZ_PATH}" ]]; then
-  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
-  source $GITHUB_ENV
-fi
-
+export ZZZ_PATH="${ZZZ_PATH}"
 if [[ -n "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
