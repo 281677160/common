@@ -76,6 +76,7 @@ fi
 }
 
 function Ben_variable() {
+cd ${GITHUB_WORKSPACE}
 export FOLDER_NAME="$FOLDER_NAME"
 if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
   source $OPERATES_PATH/$FOLDER_NAME/settings.ini
@@ -106,14 +107,14 @@ echo "BUILD_SETTINGS=${BUILD_SETTINGS}" >> ${GITHUB_ENV}
 echo "MYCONFIG_FILE=${MYCONFIG_FILE}" >> ${GITHUB_ENV}
 
 bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
-source $GITHUB_ENV
 echo "$COMMON_SH"
 source $COMMON_SH && Diy_variable
-source $GITHUB_ENV
+
 }
 
 
 function Ben_xiazai() {
+cd ${GITHUB_WORKSPACE}
 rm -rf openwrt
 git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 cd $HOME_PATH
@@ -122,7 +123,6 @@ cd $HOME_PATH
 function Ben_menu() {
 cd $HOME_PATH
 source $COMMON_SH && Diy_menu
-source $GITHUB_ENV
 }
 
 function Ben_menuconfig() {
@@ -133,13 +133,11 @@ make menuconfig
 function Ben_menu2() {
 cd $HOME_PATH
 source $COMMON_SH && Diy_menu2
-source $GITHUB_ENV
 }
 
 function Ben_menu3() {
 cd $HOME_PATH
 source $COMMON_SH && Diy_menu3
-source $GITHUB_ENV
 }
 
 function Diy_main() {
