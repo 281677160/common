@@ -290,6 +290,8 @@ Ben_menu
 Ben_menuconfig
 Ben_menu2
 Ben_menu3
+Ben_menu4
+Ben_menu5
 }
 
 Diy_main
