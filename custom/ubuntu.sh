@@ -39,6 +39,8 @@ sudo update-alternatives --config g++
 
 # 安装upx
 UPX_REV="5.0.0"
+sudo rm -rf upx-$UPX_REV-amd64_linux
+sudo rm -rf upx-$UPX_REV-amd64_linux.tar.xz
 curl -fLO "https://github.com/upx/upx/releases/download/v${UPX_REV}/upx-$UPX_REV-amd64_linux.tar.xz"
 sudo tar -Jxf "upx-$UPX_REV-amd64_linux.tar.xz"
 sudo rm -rf "/usr/bin/upx" "/usr/bin/upx-ucl"
