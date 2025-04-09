@@ -20,10 +20,11 @@ swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
 # N1打包需要的依赖
 ${INS} install rename pigz upx-ucl
 
-${INS} clang-18 libclang-18-dev lld-18 liblld-18-dev
-for i in "clang-18" "clang++-18" "clang-cpp-18" "ld.lld-18" "ld64.lld-18" "llc-18" "lld-18" "lld-link-18" "opt-18" "wasm-ld-18"; do
-  sudo ln -svf "$i" "/usr/bin/${i%-18}"
-done
+wget https://apt.llvm.org/llvm.sh
+chmod +x llvm.sh
+sudo ./llvm.sh 18
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
+sudo update-alternatives --config clang
 
 # 安装po2lmo
 ${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip
