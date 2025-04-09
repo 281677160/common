@@ -26,6 +26,7 @@ chmod +x llvm.sh
 sudo ./llvm.sh 18
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
 sudo update-alternatives --config clang
+sudo rm -rf llvm.sh
 
 # 安装po2lmo
 ${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip
