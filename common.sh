@@ -442,9 +442,6 @@ function Diy_partsh() {
 cd ${HOME_PATH}
 # 运行自定义文件
 ${BUILD_PARTSH}
-}
-
-function Diy_scrips() {
 cd ${HOME_PATH}
 # 主题设置
 Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
@@ -1401,12 +1398,11 @@ function Diy_menu() {
 cd $HOME_PATH
 Diy_checkout
 Diy_${SOURCE_CODE}
+Diy_partsh
 }
 
 function Diy_menu2() {
 cd $HOME_PATH
-Diy_partsh
-Diy_scrips
 Diy_profile
 }
 
@@ -1415,10 +1411,6 @@ cd $HOME_PATH
 Diy_management
 Diy_definition
 Diy_prevent
-}
-
-function Diy_vare() {
-Diy_variable
 }
 
 case "$1" in
