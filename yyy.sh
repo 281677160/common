@@ -278,6 +278,7 @@ Ben_download
 function Ben_menu5() {
 cd $HOME_PATH
 Ben_compile
+source $COMMON_SH && Diy_firmware
 }
 
 function Diy_main() {
