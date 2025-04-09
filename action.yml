@@ -46,6 +46,21 @@ runs:
         openwrt_size: ${{ env.openwrt_size }}
         builder_name: ${{ env.builder_name }}
 
+    - name: 发布固件到 Github Releases
+      uses: ncipollo/release-action@v1
+      with:
+        name: ${{ env.amlogic_model }}
+        tag: a${{ env.date }}
+        token: ${{ env.REPO_TOKEN }}
+        allowUpdates: true
+        replacesArtifacts: true
+        artifacts: "${{ env.PACKAGED_OUTPUTPATH }}/*"
+        body: |
+          发布日期：${{ env.date_tg }}
+          固件源码：${{ env.SOURCE }}
+          内核仓库：${{ env.kernel_usage }}
+          写入EMMC：Login to OpenWrt → System → Amlogic Service → Install OpenWrt
+
     - name: 打包信息
       if: steps.dabao.outcome == 'success'
       shell: bash
