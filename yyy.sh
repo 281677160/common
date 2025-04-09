@@ -182,41 +182,29 @@ TIME g "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
 TIME y "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
 echo
 
-[[ -d "${FIRMWARE_PATH}" ]] && sudo rm -rf ${FIRMWARE_PATH}
 rm -rf ${HOME_PATH}/build_logo/build.log
+op_log="${HOME_PATH}/build_logo/build.log"
 
-if [[ "$(nproc)" -le "12" ]];then
-  TIME y "即将使用$(nproc)线程进行编译固件,请耐心等候..."
-  sleep 5
-  if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
-    TIME y "WSL临时路径编译中"
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j$(nproc) |& tee ${HOME_PATH}/build_logo/build.log 2>&1
-  else
-     make -j$(nproc) || make -j1 || make -j1 V=s |& tee ${HOME_PATH}/build_logo/build.log 2>&1
-  fi
+if [[ "$(nproc)" -ge "16" ]];then
+  cpunproc="16"
 else
-  TIME g "您的CPU线程超过或等于16线程，强制使用16线程进行编译固件,请耐心等候..."
-  sleep 5
-  if [[ `echo "${PATH}" |grep -c "Windows"` -ge '1' ]]; then
-    TIME y "WSL临时路径编译中,请耐心等候..."
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make V=s -j16 |& tee ${HOME_PATH}/build_logo/build.log 2>&1
-  else
-     make V=s -j16 |& tee ${HOME_PATH}/build_logo/build.log 2>&1
-  fi
+  cpunproc="$(nproc)"
 fi
 
-if [[ `grep -ic "Error 2" ${HOME_PATH}/build_logo/build.log` -eq '0' ]] || [[ `grep -c "make with -j1 V=s or V=sc" ${HOME_PATH}/build_logo/build.log` -eq '0' ]]; then
-  compile_error="0"
+TIME g "即将使用${cpunproc}线程进行编译固件,请耐心等候..."
+sleep 5
+if [[ -n "$(echo "${PATH}" |grep -i 'windows')" ]]; then
+  TIME y "WSL临时路径编译中"
+  PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin 
+  make -j${cpunproc} |& tee $op_log 2>&1
 else
+  make -j${cpunproc} |& tee $op_log 2>&1
+fi
+
+if [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]] || [[ -n "$(cat "${op_log}" |grep -i 'make with -j1 V=s or V=sc')" ]]; then 
   compile_error="1"
-fi
-
-if [[ "${compile_error}" == "0" ]]; then
-  if [[ -n "$(ls -1 "${FIRMWARE_PATH}" |grep "${TARGET_BOARD}")" ]]; then
-    compile_error="0"
-  else
-    compile_error="1"
-  fi
+else
+  compile_error="0"
 fi
 
 sleep 3
