@@ -48,7 +48,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        echo -e "\033[31m上传.config配置文件至Github Artifacts\033[0m"
+        echo -e "\033[33m上传.config配置文件至Github Artifacts\033[0m"
 
     - name: 上传配置文件在 Github Artifacts
       if: env.SHANG_CHUAN == 'true'
