@@ -18,16 +18,7 @@ python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-to
 swig texinfo uglifyjs unzip upx-ucl vim wget xmlto xxd zlib1g-dev
 
 # N1打包需要的依赖
-${INS} install rename pigz
-
-# 安装clang
-CLANG_REV="18"
-curl -fsSL https://apt.llvm.org/llvm.sh -o llvm.sh
-sudo chmod +x llvm.sh
-sudo ./llvm.sh $CLANG_REV
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-$CLANG_REV 100
-sudo update-alternatives --config clang
-sudo rm -rf llvm.sh
+${INS} install rename pigz clang
 
 # 安装gcc g++
 GCC_REV="13"
