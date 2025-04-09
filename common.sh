@@ -568,7 +568,7 @@ amlogic_kernel="$(grep '^export amlogic_kernel=' $BUILD_PARTSH |cut -d '"' -f2)"
 auto_kernel="$(grep '^export auto_kernel=' $BUILD_PARTSH |cut -d '"' -f2)"
 rootfs_size="$(grep '^export rootfs_size=' $BUILD_PARTSH |cut -d '"' -f2)"
 kernel_usage="$(grep '^export kernel_usage=' $BUILD_PARTSH |cut -d '"' -f2)"
-Customized_Information="$(cat signature)"
+[[ -f "signature" ]] && Customized_Information="$(cat signature)"
 rm -rf signature
 
 # 获取源码文件的IP
