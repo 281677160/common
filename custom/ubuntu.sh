@@ -10,7 +10,7 @@ ${INS} update > /dev/null 2>&1
 
 # 安装编译openwrt的依赖
 ${INS} install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
-bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
+bzip2 ccache cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
 genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
 libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
 libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf \
@@ -18,7 +18,12 @@ python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-to
 swig texinfo uglifyjs unzip vim wget xmlto xxd zlib1g-dev
 
 # N1打包需要的依赖
-${INS} install rename pigz clang upx-ucl
+${INS} install rename pigz upx-ucl
+
+${INS} clang-18 libclang-18-dev lld-18 liblld-18-dev
+for i in "clang-18" "clang++-18" "clang-cpp-18" "ld.lld-18" "ld64.lld-18" "llc-18" "lld-18" "lld-link-18" "opt-18" "wasm-ld-18"; do
+  sudo ln -svf "$i" "/usr/bin/${i%-18}"
+done
 
 # 安装po2lmo
 ${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip
