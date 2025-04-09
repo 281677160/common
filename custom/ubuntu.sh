@@ -39,8 +39,7 @@ sudo rm -rf po2lmo
 # 安装gcc-13
 sudo add-apt-repository ppa:deadsnakes/ppa
 ${INS} update > /dev/null 2>&1
-${INS} install gcc-13
-${INS} install g++-13
+${INS} install gcc-13 g++-13
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
 gcc --version
 g++ --version
