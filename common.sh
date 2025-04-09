@@ -340,6 +340,7 @@ if [ -d "${BUILD_FILES}" ]; then
 fi
 
 # 定时更新固件的插件包
+echo "N1"
 if grep -q "armvirt=y" $MYCONFIG_FILE || grep -q "armsr=y" $MYCONFIG_FILE; then
   find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
@@ -371,6 +372,7 @@ EOF
 
 
 function Diy_COOLSNOWWOLF() {
+echo "N2"
 cd ${HOME_PATH}
 if [[ -d "${HOME_PATH}/feeds/danshui/luci-app-qmodem/driver" ]]; then
   rm -rf ${HOME_PATH}/package/wwan/driver
@@ -439,6 +441,7 @@ cd ${HOME_PATH}
 
 
 function Diy_partsh() {
+echo "N3"
 cd ${HOME_PATH}
 # 运行自定义文件
 ${BUILD_PARTSH}
@@ -460,11 +463,12 @@ fi
 ./scripts/feeds install -a > /dev/null 2>&1
 
 # 使用自定义配置文件
-[[ -f "$MYCONFIG_FILE" ]] && mv $MYCONFIG_FILE .config
+[[ -f "$MYCONFIG_FILE" ]] && cp -Rf $MYCONFIG_FILE .config
 ./scripts/feeds install -a
 }
 
 function Diy_profile() {
+echo "N4"
 cd ${HOME_PATH}
 make defconfig > /dev/null 2>&1
 echo "正在执行：识别源码编译为何机型"
@@ -502,6 +506,7 @@ echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
 
 
 function Diy_management() {
+echo "N5"
 cd ${HOME_PATH}
 # 机型为aarch_64的时,修改cpufreq代码适配Armvirt
 if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
@@ -536,6 +541,7 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 
 function Diy_definition() {
+echo "N6"
 cd ${HOME_PATH}
 Ipv4_ipaddr="$(grep '^export Ipv4_ipaddr=' $BUILD_PARTSH |cut -d '"' -f2)"
 Netmask_netm="$(grep '^export Netmask_netm=' $BUILD_PARTSH |cut -d '"' -f2)"
