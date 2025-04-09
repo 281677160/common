@@ -317,7 +317,8 @@ if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/multimedia/ffmpeg-re
 fi
 
 # tproxy补丁
-source ${OPERATES_PATH}/common/Share/tproxy/nft_tproxy.sh
+bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/nft_tproxy.sh)
+
 
 # 降低luci-app-ssr-plus的shadowsocks-rust版本
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
@@ -595,7 +596,7 @@ if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-19.07
 fi
 
 if [[ "${Ipv4_ipaddr}" == "0" ]] || [[ -z "${Ipv4_ipaddr}" ]]; then
-  echo "使用源码默认后台IP"
+  echo "不进行,修改后台IP"
 elif [[ -n "${Ipv4_ipaddr}" ]]; then
   Kernel_Pat="$(echo ${Ipv4_ipaddr} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   ipadd_Pat="$(echo ${ipadd} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
@@ -608,7 +609,7 @@ elif [[ -n "${Ipv4_ipaddr}" ]]; then
 fi
 
 if [[ "${Netmask_netm}" == "0" ]] || [[ -z "${Netmask_netm}" ]]; then
-  echo "使用默认子网掩码"
+  echo "不进行,子网掩码修改"
 elif [[ -n "${Netmask_netm}" ]]; then
   Kernel_netm="$(echo ${Netmask_netm} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
   ipadd_mas="$(echo ${netmas} |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
@@ -669,7 +670,7 @@ else
 fi
 
 if [[ "${Op_name}" == "0" ]] || [[ -z "${Op_name}" ]]; then
-  echo "使用源码默认主机名"
+  echo "不进行,修改主机名称"
 elif [[ -n "${Op_name}" ]] && [[ -n "${opname}" ]]; then
   sed -i "s/${opname}/${Op_name}/g" "${GENE_PATH}"
   echo "主机名[${Op_name}]修改完成"
@@ -792,7 +793,7 @@ gitsvn https://github.com/281677160/common/blob/main/Share/block/10-mount ${HOME
 fi
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
-  echo "固件加入IPV6功能"
+  echo "编译IPV6固件"
   echo "
     uci set network.lan.ip6assign='64'
     uci commit network
@@ -829,7 +830,7 @@ elif [[ "${Create_Ipv6_Lan}" == "1" ]]; then
     uci commit firewall
   " >> "${DEFAULT_PATH}"
 elif [[ "${Enable_IPV4_function}" == "1" ]]; then
-  echo "固件加入IPV4功能"
+  echo "编译IPV4固件"
   echo "
     uci delete network.globals.ula_prefix
     uci delete network.lan.ip6assign
@@ -905,13 +906,13 @@ else
   export KERNEL_patc="patches-${Replace_Kernel}"
 fi
 if [[ "${Replace_Kernel}" == "0" ]]; then
-  echo "不进行内核更换"
+  echo "不进行,内核更换"
 elif [[ -n "${Replace_Kernel}" ]] && [[ -n "${patchverl}" ]]; then
   if [[ `ls -1 "${HOME_PATH}/target/linux/${TARGET_BOARD}" |grep -c "${KERNEL_patc}"` -eq '1' ]]; then
     sed -i "s/${patchverl}/${Replace_Kernel}/g" ${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile
     echo "内核[${Replace_Kernel}]更换完成"
   else
-    echo "TIME r \"${TARGET_PROFILE}机型源码没发现[ ${Replace_Kernel} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译\"" >> ${HOME_PATH}/CHONGTU
+    TIME r "${TARGET_PROFILE}机型源码没发现[ ${Replace_Kernel} ]内核存在，替换内核操作失败，保持默认内核[${patchverl}]继续编译"
   fi
 fi
 
