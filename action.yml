@@ -47,6 +47,7 @@ runs:
         tag: a${{ env.date }}
         token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
+        replacesArtifacts: true
         body: ${{ env.Tongzhi_Date }}
         artifacts: "${{ env.FIRMWARE_PATH }}/*"
 
@@ -58,6 +59,7 @@ runs:
         tag: a${{ env.date }}
         token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
+        replacesArtifacts: true
         artifacts: "${{ env.FIRMWARE_PATH }}/*"
         body: |
           发布日期：${{ env.date_tg }}
