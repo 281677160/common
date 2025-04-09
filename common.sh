@@ -495,7 +495,7 @@ else
 fi
 export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-echo "正在编译：${TARGET_PROFILE}"
+TIME g "正在编译：${TARGET_PROFILE}"
 
 if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
   echo "PROMPT_TING=${amlogic_model}" >> ${GITHUB_ENV}
