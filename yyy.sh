@@ -105,6 +105,37 @@ if [[ ! -d "openwrt" ]]; then
 fi
 }
 
+function Ben_configuration() {
+Menuconfig_Config="true"
+cd ${HOME_PATH}
+if [[ "${Menuconfig_Config}" == "true" ]]; then
+  TIME g "配置机型，插件等..."
+  make menuconfig
+  if [[ $? -ne 0 ]]; then
+    TIME y "SSH工具窗口分辨率太小，无法弹出设置机型或插件的窗口"
+    TIME g "请调整SSH工具窗口分辨率后按[Y/y]继续,或者按[N/n]退出编译"
+    XUANMA="请输入您的选择"
+    while :; do
+    read -p " ${XUANMA}：" menu_config
+    case ${menu_config} in
+    [Yy])
+      Ben_configuration
+    break
+    ;;
+    [Nn])
+      exit 1
+    break
+    ;;
+    *)
+      XUANMA="输入错误,请输入[Y/n]"
+    ;;
+    esac
+    done
+  fi
+fi
+}
+
+
 function Ben_menu() {
 cd $HOME_PATH
 source $COMMON_SH && Diy_menu
@@ -112,7 +143,7 @@ source $COMMON_SH && Diy_menu
 
 function Ben_menuconfig() {
 cd $HOME_PATH
-make menuconfig
+Ben_configuration
 }
 
 function Ben_menu2() {
