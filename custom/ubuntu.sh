@@ -22,7 +22,7 @@ ${INS} install rename pigz
 
 # 安装clang
 CLANG_REV="18"
-wget -q https://apt.llvm.org/llvm.sh -O llvm.sh
+curl -fsSL https://apt.llvm.org/llvm.sh -o llvm.sh
 chmod +x llvm.sh
 sudo ./llvm.sh $CLANG_REV
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-$CLANG_REV 100
