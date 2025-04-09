@@ -64,10 +64,7 @@ fi
 
 function Ben_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
-  curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/ubuntu.sh -o ubuntu.sh
-  chmod -R +x ubuntu.sh
-  source ubuntu.sh
-  rm -rf ubuntu.sh
+  bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)
 fi
 if [[ $? -ne 0 ]];then
   TIME r "依赖安装失败，请检测网络后再次尝试!"
