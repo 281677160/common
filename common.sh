@@ -450,6 +450,12 @@ TIME y "正在执行：自定义文件"
 cd ${HOME_PATH}
 # 运行自定义文件
 ${BUILD_PARTSH}
+}
+
+
+function Diy_scripts() {
+TIME y "正在执行：更新和安装feeds"
+# 运行自定义后,检测主题是否可用
 cd ${HOME_PATH}
 # 主题设置
 Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
@@ -468,10 +474,10 @@ fi
 # 更新和安装feeds
 ./scripts/feeds update -a > /dev/null 2>&1
 ./scripts/feeds install -a > /dev/null 2>&1
+./scripts/feeds install -a
 
 # 使用自定义配置文件
 [[ -f "$MYCONFIG_FILE" ]] && cp -Rf $MYCONFIG_FILE .config
-./scripts/feeds install -a
 }
 
 
@@ -1398,15 +1404,24 @@ function Diy_menu() {
 cd $HOME_PATH
 Diy_checkout
 Diy_${SOURCE_CODE}
-Diy_partsh
 }
 
 function Diy_menu2() {
 cd $HOME_PATH
-Diy_profile
+Diy_partsh
 }
 
 function Diy_menu3() {
+cd $HOME_PATH
+Diy_scripts
+}
+
+function Diy_menu4() {
+cd $HOME_PATH
+Diy_profile
+}
+
+function Diy_menu5() {
 cd $HOME_PATH
 Diy_management
 Diy_definition
