@@ -172,8 +172,6 @@ if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'ERROR')" ]]; then
   ;;
   esac
   done
-else
-  TIME g "DL文件下载成功"
 fi
 }
 
