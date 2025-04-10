@@ -114,7 +114,7 @@ function Ben_configuration() {
 Menuconfig_Config="true"
 cd ${HOME_PATH}
 if [[ "${Menuconfig_Config}" == "true" ]]; then
-  TIME y "配置机型，插件等..."
+  TIME y "正在执行：选取插件等..."
   make menuconfig
   if [[ $? -ne 0 ]]; then
     TIME y "SSH工具窗口分辨率太小，无法弹出设置机型或插件的窗口"
