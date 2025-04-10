@@ -209,7 +209,7 @@ else
   make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
 fi
 
-if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'make with -j1 V=s or V=sc')" ]]; then
+if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]]; then
   compile_error="1"
 else
   compile_error="0"
