@@ -62,6 +62,7 @@ XWRT)
   export SOURCE="Xwrt"
   export SOURCE_OWNER="ptpt52"
   export DISTRIB_SOURCECODE="xwrt"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
   export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
   export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
