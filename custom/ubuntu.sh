@@ -72,18 +72,10 @@ ${INS} clean
 }
 
 function main(){
-	if [[ -n "${BENDI_VERSION}" ]]; then
-		export BENDI_VERSION="1"
-		INS="sudo apt-get -y"
-		echo "开始升级ubuntu插件和安装依赖....."
-		install_mustrelyon
-		update_apt_source
-	else
-		INS="sudo apt-get -y"
-                echo "开始升级ubuntu插件和安装依赖....."
-		install_mustrelyon
-		update_apt_source
-	fi
+echo "开始升级ubuntu插件和安装依赖....."
+INS="sudo apt-get -y"
+install_mustrelyon
+update_apt_source
 }
 
 main
