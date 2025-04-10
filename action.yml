@@ -7,21 +7,17 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        find $FIRMWARE_PATH -type f -name "*.tar.gz" -size -1M -delete
-        if [[ ! "${TARGET_PROFILE}" == "aarch_64" ]]; then
-          echo -e "\033[31m 非aarch64指定打包系列 \033[0m"
-          echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
-        elif [[ -n "$(find $FIRMWARE_PATH -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
+        if [[ -n "$(find $FIRMWARE_PATH -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
           mkdir -p "${HOME_PATH}/targz"
           cp -Rf ${FIRMWARE_PATH}/*rootfs.tar.gz ${HOME_PATH}/targz/${SOURCE}-armvirt-64-default-rootfs.tar.gz
-          echo "PACKAGING_FIRMWARE=true" >> ${GITHUB_ENV}
+          echo "PACKAGING_ROOTFS=true" >> ${GITHUB_ENV}
         else
           echo -e "\033[31m 没发现armvirt-64-default-rootfs.tar.gz包存在 \033[0m"
           echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
         fi
         
     - name: 将rootfs.tar.gz发布releases的targz
-      if: env.PACKAGING_FIRMWARE == 'true'
+      if: env.PACKAGING_ROOTFS == 'true'
       uses: ncipollo/release-action@v1
       with:
         name: rootfs.tar.gz
