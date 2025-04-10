@@ -28,7 +28,7 @@ export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 export OPERATES_PATH="${GITHUB_WORKSPACE}/operates"
 export GITHUB_ENV="/tmp/compile"
 export BENDI_VERSION="1"
-op_log="${OPERATES_PATH}/common/build.log"
+export op_log="${OPERATES_PATH}/common/build.log"
 install -m 0755 /dev/null $GITHUB_ENV
 
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
