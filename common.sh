@@ -126,6 +126,7 @@ export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
 export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
 export CLEAR_PATH="${HOME_PATH}/Clear"
 export Upgrade_Date="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
+export Gujian_Date="$(date +%m.%d)"
 export UPGRADE_KEEP="$RAW_WEB/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
 export TARGET_MK="$RAW_WEB/include/target.mk"
 
@@ -145,6 +146,7 @@ echo "DEFAULT_PATH=${DEFAULT_PATH}" >> ${GITHUB_ENV}
 echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
 echo "CLEAR_PATH=${CLEAR_PATH}" >> ${GITHUB_ENV}
 echo "Upgrade_Date=${Upgrade_Date}" >> ${GITHUB_ENV}
+echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 echo "UPGRADE_KEEP=${UPGRADE_KEEP}" >> ${GITHUB_ENV}
 echo "TARGET_MK=${TARGET_MK}" >> ${GITHUB_ENV}
 
