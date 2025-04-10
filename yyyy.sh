@@ -304,7 +304,6 @@ Ben_download
 function Ben_menu7() {
 cd $HOME_PATH
 Ben_compile
-source ${GITHUB_ENV}
 source $COMMON_SH && Diy_firmware
 Ben_compiletwo
 }
