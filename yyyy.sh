@@ -9,6 +9,7 @@ function TIME() {
     z) export Color="\e[35m";;
     l) export Color="\e[36m";;
   esac
+echo
 echo -e "\e[36m\e[0m${Color}${2}\e[0m"
 }
 
@@ -46,7 +47,6 @@ function Ben_wslpath() {
 if [[ -n "$(echo "${PATH}" |grep -i 'windows')" ]]; then
   clear
   echo
-  echo
   TIME r "您的ubuntu为Windows子系统,需要解决路径问题"
   read -p " [输入[Y/y]回车解决路径问题，输入[N/n]不使用此脚本编译openwrt： " Bendi_Wsl
   case ${Bendi_Wsl} in
@@ -66,7 +66,6 @@ function Ben_diskcapacity() {
 Cipan_Size="$(df -hT $PWD|awk 'NR==2'|awk '{print $(3)}')"
 Cipan_Used="$(df -hT $PWD|awk 'NR==2'|awk '{print $(4)}')"
 Cipan_Avail="$(df -hT $PWD|awk 'NR==2'|awk '{print $(5)}' |cut -d 'G' -f1)"
-echo
 TIME y "磁盘总量为[${Cipan_Size}]，已用[${Cipan_Used}]，可用[${Cipan_Avail}G]"
 if [[ "${Cipan_Avail}" -lt "20" ]];then
   TIME r "敬告：可用空间小于[ 20G ]编译容易出错,建议可用空间大于20G,是否继续?"
@@ -126,7 +125,6 @@ source $COMMON_SH && Diy_variable
 function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
 if [[ ! -d "openwrt" ]]; then
-  echo
   TIME y "正在执行：下载源码"
   git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 else
@@ -137,7 +135,6 @@ fi
 }
 
 function Ben_diyptsh() {
-echo
 TIME y "正在执行：加载自定义文件"
 cd ${HOME_PATH}
 for X in $(grep -E 'sed.*grep.*-rl' "$DIY_PT_SH" |cut -d"'" -f2 |sed 's/\//\\&/g'); \
@@ -181,7 +178,6 @@ rm -rf "${op_log}"
 make -j8 download || make -j8 download V=s 2>&1 | tee $op_log
 if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'ERROR')" ]]; then
   clear
-  echo
   TIME r "下载DL失败，更换节点后再尝试下载？"
   QLMEUN="请更换节点后按[Y/y]回车继续尝试下载DL，或输入[N/n]回车,退出编译"
   while :; do
@@ -214,7 +210,6 @@ Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -
 RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
 RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
 [[ -d "${FIRMWARE_PATH}" ]] && sudo rm -rf ${FIRMWARE_PATH}/*
-echo
 TIME y "您的机器CPU型号为[ ${Model_Name} ]"
 TIME g "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
 TIME y "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
@@ -227,7 +222,6 @@ else
 fi
 
 TIME g "即将使用${cpunproc}线程进行编译固件,请耐心等候..."
-echo
 sleep 5
 make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
 if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]]; then
@@ -264,7 +258,6 @@ fi
 }
 
 function Ben_firmware() {
-echo
 cd ${FIRMWARE_PATH}
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename -v "s/^immortalwrt/openwrt/" * > /dev/null 2>&1
@@ -298,7 +291,6 @@ else
   TIME g "编译总计用时 ${HOUR}时${MIN}分${SEC}秒"
 fi
 TIME r "提示：再次输入编译命令可进行二次编译"
-echo
 }
 
 
