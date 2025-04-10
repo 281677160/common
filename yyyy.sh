@@ -175,7 +175,7 @@ fi
 }
 
 function Ben_download() {
-  TIME y "正在执行：下载DL文件,请耐心等候..."
+TIME y "正在执行：下载DL文件,请耐心等候..."
 cd ${HOME_PATH}
 rm -rf "${op_log}"
 make -j8 download || make -j8 download V=s 2>&1 | tee $op_log
