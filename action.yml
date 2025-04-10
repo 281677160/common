@@ -7,7 +7,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        if [[ "${TARGET_PROFILE}" == "aarch_64" ]] && [[ -n "${{ env.TARGET_PROFILE_IMG }}" ]]; then
+        if [[ -n "${{ env.TARGET_PROFILE_IMG }}" ]]; then
           echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE_IMG }}" >> ${GITHUB_ENV}
           echo "RR_RELEASE=b" >> ${GITHUB_ENV}
         else
