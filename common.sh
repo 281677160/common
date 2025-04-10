@@ -1265,7 +1265,7 @@ CONFIG_PACKAGE_kmod-veth=y,CONFIG_PACKAGE_libdevmapper=y,CONFIG_PACKAGE_liblzo=y
 CONFIG_PACKAGE_luci-i18n-dockerman-zh-cn=y,CONFIG_PACKAGE_luci-lib-docker=y,CONFIG_PACKAGE_mount-utils=y,CONFIG_PACKAGE_runc=y,CONFIG_PACKAGE_tini=y,CONFIG_PACKAGE_naiveproxy=y, \
 CONFIG_PACKAGE_samba36-server=y,CONFIG_PACKAGE_samba4-libs=y,CONFIG_PACKAGE_samba4-server=y"
 k=(${d//,/ })
-for x in ${k[@]}; do \
+for x in "${k[@]}"; do \
   sed -i "/${x}/d" "${CONFIG_TXT}"; \
 done
 sed -i '/^$/d' "${CONFIG_TXT}"
