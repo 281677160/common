@@ -186,7 +186,7 @@ Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -
 Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
 RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
 RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
-
+[[ -d "${FIRMWARE_PATH}" ]] && sudo rm -rf ${FIRMWARE_PATH}/*
 echo
 TIME y "您的机器CPU型号为[ ${Model_Name} ]"
 TIME g "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
@@ -194,7 +194,7 @@ TIME y "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_av
 echo
 
 if [[ "$(nproc)" -ge "16" ]];then
-  cpunproc="16"
+  cpunproc="8"
 else
   cpunproc="$(nproc)"
 fi
