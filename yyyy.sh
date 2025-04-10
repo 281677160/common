@@ -42,6 +42,26 @@ fi
 
 cd $GITHUB_WORKSPACE
 
+function Ben_wslpath() {
+if [[ -n "$(echo "${PATH}" |grep -i 'windows')" ]]; then
+  clear
+  echo
+  echo
+  TIME r "您的ubuntu为Windows子系统,需要解决路径问题"
+  read -p " [输入[Y/y]回车解决路径问题，输入[N/n]不使用此脚本编译openwrt： " Bendi_Wsl
+  case ${Bendi_Wsl} in
+  [Yy])
+    bash -c  "$(curl -fsSL https://raw.githubusercontent.com/281677160/bendi/main/wsl.sh)"
+    exit 0
+  ;;
+  [Nn])
+    TIME y "不使用此脚本编译openwrt！"
+    exit 1
+  ;;
+  esac
+fi
+}
+
 function Ben_diskcapacity() {
 Cipan_Size="$(df -hT $PWD|awk 'NR==2'|awk '{print $(3)}')"
 Cipan_Used="$(df -hT $PWD|awk 'NR==2'|awk '{print $(4)}')"
@@ -320,6 +340,7 @@ Ben_compiletwo
 
 function Diy_main() {
 export FOLDER_NAME="Lede"
+Ben_wslpath
 Ben_diskcapacity
 Ben_update
 Ben_variable
