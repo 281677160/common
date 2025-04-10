@@ -1438,6 +1438,12 @@ case "$1" in
   "Diy_menu3")
     Diy_menu3
     ;;
+  "Diy_menu4")
+    Diy_menu4
+    ;;
+  "Diy_menu5")
+    Diy_menu5
+    ;;
   *)
     echo ""
     ;;
