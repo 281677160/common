@@ -164,6 +164,9 @@ git clone --single-branch --depth=1 --branch=ceshi https://github.com/281677160/
 if [[ ! -d "${OPERATES_PATH}/common" ]]; then
   echo -e "\033[31m common文件下载失败 \033[0m"
   exit 1
+else
+  cp -Rf ${COMPILE_PATH} ${OPERATES_PATH}/common/${FOLDER_NAME}
+  export DIY_PT_SH=${OPERATES_PATH}/common/${FOLDER_NAME}/diy-part.sh
 fi
 export COMMON_SH=${OPERATES_PATH}/common/common.sh
 echo "COMMON_SH=${OPERATES_PATH}/common/common.sh" >> ${GITHUB_ENV}
