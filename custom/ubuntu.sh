@@ -6,7 +6,11 @@ function install_mustrelyon(){
 ${INS} update > /dev/null 2>&1
 
 # 升级ubuntu
-# ${INS} full-upgrade > /dev/null 2>&1
+if [[ -n "${BENDI_VERSION}" ]]; then
+  ${INS} full-upgrade > /dev/null 2>&1
+else
+  # ${INS} full-upgrade > /dev/null 2>&1
+fi
 
 # 安装编译openwrt的依赖
 ${INS} install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
