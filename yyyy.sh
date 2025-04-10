@@ -28,6 +28,7 @@ export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 export OPERATES_PATH="${GITHUB_WORKSPACE}/operates"
 export GITHUB_ENV="/tmp/compile"
 export BENDI_VERSION="1"
+op_log="${OPERATES_PATH}/common/build.log"
 install -m 0755 /dev/null $GITHUB_ENV
 
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
@@ -142,7 +143,6 @@ fi
 function Ben_download() {
 TIME y "下载DL文件,请耐心等候..."
 cd ${HOME_PATH}
-op_log="${GITHUB_WORKSPACE}/operates/build.log"
 rm -rf "${op_log}"
 make -j8 download || make -j8 download V=s 2>&1 | tee $op_log
 find dl -size -1024c -exec ls -l {} \;
@@ -215,7 +215,7 @@ fi
 sleep 3
 if [[ "${compile_error}" == "1" ]]; then
   TIME r "编译失败~~!"
-  TIME y "在 openwrt/build_logo/build.log 可查看编译日志,日志文件比较大,拖动到电脑查看比较方便"
+  TIME y "在[${op_log}]可查看编译日志"
   echo "
   SUCCESS_FAILED="fail"
   FOLDER_NAME2="${FOLDER_NAME}"
