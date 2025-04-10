@@ -146,8 +146,6 @@ cd ${HOME_PATH}
 rm -rf "${op_log}"
 make -j8 download || make -j8 download V=s 2>&1 | tee $op_log
 if [[ -f "${op_log}" ]] && [[ -z "$(cat "${op_log}" |grep -i 'ERROR')" ]]; then
-  TIME g "DL文件下载成功"
-else
   clear
   echo
   TIME r "下载DL失败，更换节点后再尝试下载？"
@@ -170,6 +168,8 @@ else
   ;;
   esac
   done
+else
+  TIME g "DL文件下载成功"
 fi
 }
 
