@@ -48,7 +48,7 @@ Cipan_Avail="$(df -hT $PWD|awk 'NR==2'|awk '{print $(5)}' |cut -d 'G' -f1)"
 TIME y "磁盘总量为[${Cipan_Size}]，已用[${Cipan_Used}]，可用[${Cipan_Avail}G]"
 if [[ "${Cipan_Avail}" -lt "20" ]];then
   TIME r "敬告：可用空间小于[ 20G ]编译容易出错,建议可用空间大于20G,是否继续?"
-  read -p " 直接回车退出编译，按[Y/y]回车则继续编译： " KJYN
+  read -p "直接回车退出编译，按[Y/y]回车则继续编译： " KJYN
   case ${KJYN} in
   [Yy]) 
     TIME y  "可用空间太小严重影响编译,请满天神佛保佑您成功吧！"
@@ -112,7 +112,7 @@ if [[ "${Menuconfig_Config}" == "true" ]]; then
     TIME g "请调整SSH工具窗口分辨率后按[Y/y]继续,或者按[N/n]退出编译"
     XUANMA="请输入您的选择"
     while :; do
-    read -p " ${XUANMA}：" menu_config
+    read -p "${XUANMA}：" menu_config
     case ${menu_config} in
     [Yy])
       Ben_configuration
@@ -145,7 +145,7 @@ else
   TIME r "下载DL失败，更换节点后再尝试下载？"
   QLMEUN="请更换节点后按[Y/y]回车继续尝试下载DL，或输入[N/n]回车,退出编译"
   while :; do
-    read -p " [${QLMEUN}]： " BenDownload
+    read -p "[${QLMEUN}]： " BenDownload
     case ${BenDownload} in
   [Yy])
     Ben_download
