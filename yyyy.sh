@@ -104,6 +104,11 @@ else
 fi
 }
 
+function Ben_diyptsh() {
+cd ${HOME_PATH}
+bash $DIY_PT_SH
+}
+
 function Ben_configuration() {
 Menuconfig_Config="true"
 cd ${HOME_PATH}
@@ -261,29 +266,39 @@ cd $HOME_PATH
 source $COMMON_SH && Diy_menu
 }
 
-function Ben_menuconfig() {
-cd $HOME_PATH
-Ben_configuration
-}
-
 function Ben_menu2() {
 cd $HOME_PATH
-source $COMMON_SH && Diy_menu2
+Ben_diyptsh
 }
 
 function Ben_menu3() {
 cd $HOME_PATH
 source $COMMON_SH && Diy_menu3
-source $GITHUB_ENV
-echo "$LINUX_KERNEL"
+}
+
+function Ben_menuconfig() {
+cd $HOME_PATH
+Ben_configuration
 }
 
 function Ben_menu4() {
 cd $HOME_PATH
-Ben_download
+source $COMMON_SH && Diy_menu4
 }
 
 function Ben_menu5() {
+cd $HOME_PATH
+source $COMMON_SH && Diy_menu5
+source $GITHUB_ENV
+echo "$LINUX_KERNEL"
+}
+
+function Ben_menu6() {
+cd $HOME_PATH
+Ben_download
+}
+
+function Ben_menu7() {
 cd $HOME_PATH
 Ben_compile
 source ${GITHUB_ENV}
