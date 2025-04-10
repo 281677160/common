@@ -137,6 +137,8 @@ cd ${HOME_PATH}
 op_log="${HOME_PATH}/build_logo/build.log"
 rm -rf "${op_log}"
 make -j8 download |& tee ${HOME_PATH}/build_logo/build.log 2>&1
+find dl -size -1024c -exec ls -l {} \;
+find dl -size -1024c -exec rm -f {} \;
 if [[ -z "$(cat "${op_log}" |grep -i 'ERROR')" ]] || [[ -z "$(cat "${op_log}" |grep -i 'make with -j1 V=s')" ]]; then 
   TIME g "DL文件下载成功"
 else
