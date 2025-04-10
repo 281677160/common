@@ -145,9 +145,7 @@ TIME y "下载DL文件,请耐心等候..."
 cd ${HOME_PATH}
 rm -rf "${op_log}"
 make -j8 download || make -j8 download V=s 2>&1 | tee $op_log
-find dl -size -1024c -exec ls -l {} \;
-find dl -size -1024c -exec rm -f {} \;
-if [[ -z "$(cat "${op_log}" |grep -i 'ERROR')" ]] || [[ -z "$(cat "${op_log}" |grep -i 'make with -j1 V=s')" ]]; then 
+if [[ -f "${op_log}" ]] && [[ -z "$(cat "${op_log}" |grep -i 'ERROR')" ]]; then
   TIME g "DL文件下载成功"
 else
   clear
@@ -206,7 +204,7 @@ else
   make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
 fi
 
-if [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]] || [[ -n "$(cat "${op_log}" |grep -i 'make with -j1 V=s or V=sc')" ]]; then 
+if [[ -f "${op_log}" ]] && [[ -z "$(cat "${op_log}" |grep -i 'make with -j1 V=s or V=sc')" ]]; then
   compile_error="1"
 else
   compile_error="0"
@@ -215,7 +213,7 @@ fi
 sleep 3
 if [[ "${compile_error}" == "1" ]]; then
   TIME r "编译失败~~!"
-  TIME y "在[${op_log}]可查看编译日志"
+  TIME y "在[operates/common/build.log]可查看编译日志"
   echo "
   SUCCESS_FAILED="fail"
   FOLDER_NAME2="${FOLDER_NAME}"
