@@ -166,9 +166,11 @@ else
   cp -Rf ${COMPILE_PATH} ${OPERATES_PATH}/common/${FOLDER_NAME}
   export DIY_PT_SH=${OPERATES_PATH}/common/${FOLDER_NAME}/diy-part.sh
 fi
+export CONFIG_TXT="${OPERATES_PATH}/common/config.txt"
 export COMMON_SH=${OPERATES_PATH}/common/common.sh
 echo "COMMON_SH=${OPERATES_PATH}/common/common.sh" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${OPERATES_PATH}/common/upgrade.sh" >> ${GITHUB_ENV}
+echo "CONFIG_TXT=${OPERATES_PATH}/common/config.txt" >> ${GITHUB_ENV}
 chmod -R +x ${OPERATES_PATH}
 }
 
