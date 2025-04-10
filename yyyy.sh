@@ -313,11 +313,13 @@ Ben_update
 Ben_variable
 Ben_xiazai
 Ben_menu
-Ben_menuconfig
 Ben_menu2
 Ben_menu3
+Ben_menuconfig
 Ben_menu4
 Ben_menu5
+Ben_menu6
+Ben_menu7
 }
 
 Diy_main
