@@ -9,6 +9,18 @@ runs:
         cd $HOME_PATH
         bash $COMMON_SH Diy_menu
 
+    - name: 运行自定义文件
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        bash $COMMON_SH Diy_menu2
+
+    - name: 自定义后检测主题是否可设置系统默认主题
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        bash $COMMON_SH Diy_menu3
+
     - name: SSH远程连接（make menuconfig）
       if: env.SSH_ACTION == 'true'
       uses: danshui-git/debugger-action@main
@@ -17,7 +29,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        bash $COMMON_SH Diy_menu2
+        bash $COMMON_SH Diy_menu4
 
     - name: 机型为aarch_64的时,改变是远程更新为打包设置
       shell: bash
@@ -40,7 +52,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        bash $COMMON_SH Diy_menu3
+        bash $COMMON_SH Diy_menu5
         echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
         echo "SendMessage=true" >> ${GITHUB_ENV}
 
