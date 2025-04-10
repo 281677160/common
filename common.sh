@@ -1273,13 +1273,12 @@ if [ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]; then
   cd ${HOME_PATH}
   source $UPGRADE_SH && Diy_Part3
 fi
-
 # 编译完毕后,整理固件
 cd ${FIRMWARE_PATH}
 mkdir -p ipk
 cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
 sudo tar -czf ipk.tar.gz ipk && sync && sudo rm -rf ipk
-if [[ `ls -1 | grep -c "immortalwrt"` -ge '1' ]]; then
+if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
   sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
 fi
@@ -1288,10 +1287,9 @@ for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
   rm -rf *"$X"*
 done
 
-if [[ `ls -1 | grep -c "armvirt"` -eq '0' ]]; then
+if [[ -z "$(ls -1 |grep -E 'armvirt')" ]] || [[ -z "$(ls -1 |grep -E 'armsr')" ]]; then
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
 fi
-rm -rf "${CLEAR_PATH}"
 }
 
 
