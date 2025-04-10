@@ -216,22 +216,16 @@ TIME g "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
 TIME y "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
 echo
 
-if [[ "$(nproc)" -ge "16" ]];then
+if [[ "${Cpu_Cores}" -ge "8" ]];then
   cpunproc="8"
 else
-  cpunproc="$(nproc)"
+  cpunproc="${Cpu_Cores}"
 fi
 
 TIME g "即将使用${cpunproc}线程进行编译固件,请耐心等候..."
 echo
 sleep 5
-if [[ -n "$(echo "${PATH}" |grep -i 'windows')" ]]; then
-  TIME y "WSL临时路径编译中"
-  PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
-else
-  make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
-fi
-
+make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
 if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]]; then
   compile_error="1"
 else
