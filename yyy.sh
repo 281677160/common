@@ -193,8 +193,7 @@ echo
 sleep 5
 if [[ -n "$(echo "${PATH}" |grep -i 'windows')" ]]; then
   TIME y "WSL临时路径编译中"
-  PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin 
-  make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
+  PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
 else
   make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
 fi
