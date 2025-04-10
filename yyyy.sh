@@ -145,7 +145,7 @@ TIME y "下载DL文件,请耐心等候..."
 cd ${HOME_PATH}
 rm -rf "${op_log}"
 make -j8 download || make -j8 download V=s 2>&1 | tee $op_log
-if [[ -f "${op_log}" ]] && [[ -z "$(cat "${op_log}" |grep -i 'ERROR')" ]]; then
+if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'ERROR')" ]]; then
   clear
   echo
   TIME r "下载DL失败，更换节点后再尝试下载？"
@@ -204,7 +204,7 @@ else
   make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
 fi
 
-if [[ -f "${op_log}" ]] && [[ -z "$(cat "${op_log}" |grep -i 'make with -j1 V=s or V=sc')" ]]; then
+if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'make with -j1 V=s or V=sc')" ]]; then
   compile_error="1"
 else
   compile_error="0"
