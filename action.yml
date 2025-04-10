@@ -68,7 +68,7 @@ runs:
       uses: actions/upload-artifact@main
       with:
         name: .config_${{ env.SOURCE }}_${{ env.LUCI_EDITION }}_${{ env.TARGET_PROFILE }}_${{ env.Firmware_Date }}
-        path: ${{ env.CONFIG_TXT }}}
+        path: ${{ env.CONFIG_TXT }}
 branding:
   icon: "terminal"
   color: "gray-dark"
