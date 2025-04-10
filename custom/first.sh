@@ -159,19 +159,22 @@ fi
 
 function Diy_four() {
 rm -rf ${OPERATES_PATH}/common
-git clone --single-branch --depth=1 --branch=ceshi https://github.com/281677160/common ${OPERATES_PATH}/common
-if [[ ! -d "${OPERATES_PATH}/common" ]]; then
-  echo -e "\033[31m common文件下载失败 \033[0m"
-  exit 1
-else
+mkdir -p ${OPERATES_PATH}/common
+curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o ${OPERATES_PATH}/common/common.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/upgrade.sh -o ${OPERATES_PATH}/common/upgrade.sh
+export COMMON_SH=${OPERATES_PATH}/common/common.sh
+export UPGRADE_SH=${OPERATES_PATH}/common/upgrade.sh
+export CONFIG_TXT="${OPERATES_PATH}/common/config.txt"
+if grep -q "TIME" "${COMMON_SH}" && grep -q "Diy_Part2" "${UPGRADE_SH}"; then
   cp -Rf ${COMPILE_PATH} ${OPERATES_PATH}/common/${FOLDER_NAME}
   export DIY_PT_SH=${OPERATES_PATH}/common/${FOLDER_NAME}/diy-part.sh
+else
+  echo -e "\033[31m common文件下载失败 \033[0m"
+  exit 1
 fi
-export CONFIG_TXT="${OPERATES_PATH}/common/config.txt"
-export COMMON_SH=${OPERATES_PATH}/common/common.sh
-echo "COMMON_SH=${OPERATES_PATH}/common/common.sh" >> ${GITHUB_ENV}
-echo "UPGRADE_SH=${OPERATES_PATH}/common/upgrade.sh" >> ${GITHUB_ENV}
-echo "CONFIG_TXT=${OPERATES_PATH}/common/config.txt" >> ${GITHUB_ENV}
+echo "COMMON_SH=${COMMON_SH}" >> ${GITHUB_ENV}
+echo "UPGRADE_SH=${UPGRADE_SH}" >> ${GITHUB_ENV}
+echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
 chmod -R +x ${OPERATES_PATH}
 }
 
