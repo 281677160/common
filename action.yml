@@ -26,6 +26,7 @@ runs:
         if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
           echo "PACKAGING_FIRMWARE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
           echo "UPDATE_FIRMWARE_ONLINE=false" >> ${GITHUB_ENV}
+          echo "ONLINE_FIRMWARE=true" >> ${GITHUB_ENV}
         fi
 
     - name: 远程更新,如果UPDATE_FIRMWARE_ONLINE == 'true'则运行
