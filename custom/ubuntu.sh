@@ -65,6 +65,7 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /
 gcc --version
 g++ --version
 clang --version
+upx --version
 echo "依赖安装完毕"
 }
 
