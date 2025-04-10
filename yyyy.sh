@@ -282,7 +282,7 @@ else
   TIME g "[ ${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE} ]顺利编译完成~~~"
 fi
 cd ${HOME_PATH}
-echo "固件存放路径：${FIRMWARE_PATH}"
+echo "固件存放路径：openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 }
 
 function Ben_compiletwo() {
