@@ -98,6 +98,9 @@ function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
 if [[ ! -d "openwrt" ]]; then
   git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+else
+  cd ${HOME_PATH}
+  ./scripts/feeds update -a
 fi
 }
 
