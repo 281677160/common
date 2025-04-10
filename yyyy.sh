@@ -90,6 +90,13 @@ if [[ ! -f "/etc/oprelyon" ]]; then
     sudo sh -c 'echo openwrt > /etc/oprelyon'
   fi
 fi
+if [[ -f "/etc/ssh/sshd_config" ]] && [[ -z "$(grep -E 'ClientAliveInterval 30' /etc/ssh/sshd_config)" ]]; then
+  sudo sed -i '/ClientAliveInterval/d' /etc/ssh/sshd_config
+  sudo sed -i '/ClientAliveCountMax/d' /etc/ssh/sshd_config
+  sudo sh -c 'echo ClientAliveInterval 30 >> /etc/ssh/sshd_config'
+  sudo sh -c 'echo ClientAliveCountMax 6 >> /etc/ssh/sshd_config'
+  sudo service ssh restart
+fi
 }
 
 function Ben_variable() {
