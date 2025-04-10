@@ -9,10 +9,10 @@ runs:
         cd $HOME_PATH
         if [[ "${TARGET_PROFILE}" == "aarch_64" ]] && [[ -n "${{ env.TARGET_PROFILE_IMG }}" ]]; then
           echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE_IMG }}" >> ${GITHUB_ENV}
-          echo "RRRR_RELEASE=b" >> ${GITHUB_ENV}
+          echo "RR_RELEASE=b" >> ${GITHUB_ENV}
         else
           echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}" >> ${GITHUB_ENV}
-          echo "RRRR_RELEASE=a" >> ${GITHUB_ENV}
+          echo "RR_RELEASE=a" >> ${GITHUB_ENV}
         fi
         echo "date_tg=$(date +"%Y.%m%d.%H%M")" >> ${GITHUB_ENV}
         echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
@@ -35,7 +35,7 @@ runs:
     
     - name: 发布固件
       id: fabu
-      if: env.UPLOAD_RELEASE == 'true' && env.RRRR_RELEASE == 'a'
+      if: env.UPLOAD_RELEASE == 'true' && env.RR_RELEASE == 'a'
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.SHANGCHUAN_MINGCHEN }}
@@ -47,7 +47,7 @@ runs:
 
     - name: 发布固件到 Github Releases
       id: nfabu
-      if: env.UPLOAD_RELEASE == 'true' && env.RRRR_RELEASE == 'b'
+      if: env.UPLOAD_RELEASE == 'true' && env.RR_RELEASE == 'b'
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.amlogic_model }}
