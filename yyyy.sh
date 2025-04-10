@@ -66,6 +66,7 @@ function Ben_diskcapacity() {
 Cipan_Size="$(df -hT $PWD|awk 'NR==2'|awk '{print $(3)}')"
 Cipan_Used="$(df -hT $PWD|awk 'NR==2'|awk '{print $(4)}')"
 Cipan_Avail="$(df -hT $PWD|awk 'NR==2'|awk '{print $(5)}' |cut -d 'G' -f1)"
+echo
 TIME y "磁盘总量为[${Cipan_Size}]，已用[${Cipan_Used}]，可用[${Cipan_Avail}G]"
 if [[ "${Cipan_Avail}" -lt "20" ]];then
   TIME r "敬告：可用空间小于[ 20G ]编译容易出错,建议可用空间大于20G,是否继续?"
@@ -125,6 +126,7 @@ source $COMMON_SH && Diy_variable
 function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
 if [[ ! -d "openwrt" ]]; then
+  echo
   TIME y "正在执行：下载源码"
   git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 else
@@ -134,6 +136,7 @@ fi
 }
 
 function Ben_diyptsh() {
+echo
 TIME y "正在执行：加载自定义文件"
 cd ${HOME_PATH}
 for X in $(grep -E 'sed.*grep.*-rl' "$DIY_PT_SH" |cut -d"'" -f2 |sed 's/\//\\&/g'); \
