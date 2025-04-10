@@ -264,7 +264,7 @@ fi
 }
 
 function Ben_firmware() {
-TIME y "正在执行：整理固件"
+echo
 cd ${FIRMWARE_PATH}
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename -v "s/^immortalwrt/openwrt/" * > /dev/null 2>&1
@@ -282,6 +282,7 @@ else
   TIME g "[ ${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE} ]顺利编译完成~~~"
 fi
 cd ${HOME_PATH}
+echo "固件存放路径：${FIRMWARE_PATH}"
 }
 
 function Ben_compiletwo() {
