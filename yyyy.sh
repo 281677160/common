@@ -116,7 +116,6 @@ $DIY_PT_SH
 }
 
 function Ben_configuration() {
-Menuconfig_Config="true"
 cd ${HOME_PATH}
 if [[ "${Menuconfig_Config}" == "true" ]]; then
   TIME y "正在执行：选取插件等..."
