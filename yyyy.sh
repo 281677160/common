@@ -98,6 +98,7 @@ source $COMMON_SH && Diy_variable
 function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
 if [[ ! -d "openwrt" ]]; then
+  TIME y "正在执行：下载源码"
   git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 else
   cd ${HOME_PATH}
@@ -106,6 +107,7 @@ fi
 }
 
 function Ben_diyptsh() {
+TIME y "正在执行：加载自定义文件"
 cd ${HOME_PATH}
 bash $DIY_PT_SH
 }
