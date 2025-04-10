@@ -204,12 +204,12 @@ else
   CLASH_BRANCH="master"
 fi
 if grep -q "src-git-full" "${HOME_PATH}/feeds.conf.default"; then
-  src_git_luci="src-git-full luci https"
+  SRC_LIANJIE="$(grep -E '^src-git-full luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
+  SRC_FENZHIHAO="$(grep -E '^src-git-full luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
 else
-  src_git_luci="src-git luci https"
+ SRC_LIANJIE="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
+ SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
 fi
-SRC_LIANJIE="$(grep -E ^"${src_git_luci}" "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
-SRC_FENZHIHAO="$(grep -E ^"${src_git_luci}" "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
   git clone -q --single-branch --depth=1 --branch=${SRC_FENZHIHAO} ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
 else
