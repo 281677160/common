@@ -65,7 +65,7 @@ fi
 function Ben_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
   bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)
-  if [[ $? -ne 0 ]];then
+  if [[ $? -eq 0 ]];then
     sudo sh -c 'echo openwrt > /etc/oprelyon'
   fi
 fi
