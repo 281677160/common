@@ -8,8 +8,6 @@ ${INS} update > /dev/null 2>&1
 # 升级ubuntu
 if [[ -n "${BENDI_VERSION}" ]]; then
   ${INS} full-upgrade > /dev/null 2>&1
-else
-  # ${INS} full-upgrade > /dev/null 2>&1
 fi
 
 # 安装编译openwrt的依赖
