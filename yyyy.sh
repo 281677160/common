@@ -308,7 +308,6 @@ function Ben_menu5() {
 cd $HOME_PATH
 source $COMMON_SH && Diy_menu5
 source $GITHUB_ENV
-echo "$LINUX_KERNEL"
 }
 
 function Ben_menu6() {
