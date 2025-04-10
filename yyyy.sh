@@ -242,6 +242,21 @@ else
 fi
 }
 
+function Diy_firmware() {
+if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
+  rename -v "s/^immortalwrt/openwrt/" *
+  sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
+fi
+
+for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
+  rm -rf *"$X"*
+done
+
+if [[ -z "$(ls -1 |grep -E 'armvirt')" ]] || [[ -z "$(ls -1 |grep -E 'armsr')" ]]; then
+  rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
+fi
+}
+
 function Ben_compiletwo() {
 if [[ `grep -c 'CONFIG_TARGET_armvirt_64=y' ${HOME_PATH}/.config` -eq '1' ]]; then
   TIME g "[ Amlogic_Rockchip系列专用固件 ]顺利编译完成~~~"
