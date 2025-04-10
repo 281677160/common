@@ -171,7 +171,7 @@ fi
 }
 
 function Ben_download() {
-TIME y "下载DL文件,请耐心等候..."
+  TIME y "正在执行：下载DL文件,请耐心等候..."
 cd ${HOME_PATH}
 rm -rf "${op_log}"
 make -j8 download || make -j8 download V=s 2>&1 | tee $op_log
@@ -266,9 +266,11 @@ fi
 }
 
 function Ben_firmware() {
+TIME y "正在执行：整理固件"
+cd ${FIRMWARE_PATH}
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
-  rename -v "s/^immortalwrt/openwrt/" *
-  sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./` > /dev/null 2>&1
+  rename -v "s/^immortalwrt/openwrt/" * > /dev/null 2>&1
+  sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
 fi
 
 for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
@@ -281,6 +283,7 @@ else
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" * > /dev/null 2>&1
   TIME g "[ ${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE} ]顺利编译完成~~~"
 fi
+cd ${HOME_PATH}
 }
 
 function Ben_compiletwo() {
