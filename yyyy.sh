@@ -100,6 +100,9 @@ if [[ ! -d "openwrt" ]]; then
   git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 else
   cd ${HOME_PATH}
+  export OPERATES_PATH="${HOME_PATH}/operates"
+  
+  
   git pull
 fi
 }
@@ -137,9 +140,9 @@ fi
 function Ben_download() {
 TIME y "下载DL文件,请耐心等候..."
 cd ${HOME_PATH}
-op_log="${HOME_PATH}/build_logo/build.log"
+op_log="${GITHUB_WORKSPACE}/operates/build.log"
 rm -rf "${op_log}"
-make -j8 download |& tee ${HOME_PATH}/build_logo/build.log 2>&1
+make -j8 download || make -j8 download V=s 2>&1 | tee $op_log
 find dl -size -1024c -exec ls -l {} \;
 find dl -size -1024c -exec rm -f {} \;
 if [[ -z "$(cat "${op_log}" |grep -i 'ERROR')" ]] || [[ -z "$(cat "${op_log}" |grep -i 'make with -j1 V=s')" ]]; then 
