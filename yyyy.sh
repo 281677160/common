@@ -242,10 +242,10 @@ else
 fi
 }
 
-function Diy_firmware() {
+function Ben_firmware() {
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
-  sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
+  sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./` > /dev/null 2>&1
 fi
 
 for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
@@ -253,7 +253,7 @@ for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
 done
 
 if [[ -z "$(ls -1 |grep -E 'armvirt')" ]] || [[ -z "$(ls -1 |grep -E 'armsr')" ]]; then
-  rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
+  rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" * > /dev/null 2>&1
 fi
 }
 
@@ -319,7 +319,7 @@ Ben_download
 function Ben_menu7() {
 cd $HOME_PATH
 Ben_compile
-source $COMMON_SH && Diy_firmware
+Ben_firmware
 Ben_compiletwo
 }
 
