@@ -26,7 +26,7 @@ fi
 export GITHUB_WORKSPACE="/home/$USER"
 export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 export OPERATES_PATH="${GITHUB_WORKSPACE}/operates"
-export GITHUB_ENV="${GITHUB_WORKSPACE}/compile"
+export GITHUB_ENV="/tmp/compile"
 export BENDI_VERSION="1"
 install -m 0755 /dev/null $GITHUB_ENV
 
