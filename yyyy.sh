@@ -275,17 +275,15 @@ for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
   rm -rf *"$X"*
 done
 
-if [[ -z "$(ls -1 |grep -E 'armvirt')" ]] || [[ -z "$(ls -1 |grep -E 'armsr')" ]]; then
+if [[ -n "$(ls -1 |grep -E 'armvirt')" ]] || [[ -n "$(ls -1 |grep -E 'armsr')" ]]; then
+  TIME g "[ Amlogic_Rockchip系列专用固件 ]顺利编译完成~~~"
+else
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" * > /dev/null 2>&1
+  TIME g "[ ${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE} ]顺利编译完成~~~"
 fi
 }
 
 function Ben_compiletwo() {
-if [[ `grep -c 'CONFIG_TARGET_armvirt_64=y' ${HOME_PATH}/.config` -eq '1' ]]; then
-  TIME g "[ Amlogic_Rockchip系列专用固件 ]顺利编译完成~~~"
-else
-  TIME g "[ ${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE} ]顺利编译完成~~~"
-fi
 TIME y "编译日期：$(date +'%Y年%m月%d号')"
 END_TIME=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
 SECONDS=$((END_TIME-START_TIME))
