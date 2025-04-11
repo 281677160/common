@@ -173,7 +173,7 @@ else
   exit 1
 fi
 
-export DIY_PT2_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/two.sh"
+export DIY_PT2_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/diy2-part.sh"
 export TWO_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/two.sh"
 export BUILD_PARTSH="${DIY_PT_SH}"
 export DIY_PT2_SH="${DIY_PT2_SH}"
