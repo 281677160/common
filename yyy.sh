@@ -137,8 +137,6 @@ fi
 function Ben_diyptsh() {
 TIME y "正在执行：加载自定义文件"
 cd ${HOME_PATH}
-for X in $(grep -E 'sed.*grep.*-rl' "$DIY_PT_SH" |cut -d"'" -f2 |sed 's/\//\\&/g'); \
-do sed -i "/${X}/d" "$DIY_PT_SH"; done
 $BUILD_PARTSH
 }
 
