@@ -187,10 +187,9 @@ grep -E '.*export.*=".*"' $DIY_PT1_SH >> ${DIY_PT2_SH}
 
 cat >> "${TWO_SH}" <<-EOF
 #!/bin/bash
-echo "bedone" >$HOME_PATH/README_EN.md
+echo "danshuiglad" >$HOME_PATH/README_EN.md
 EOF
 grep -E 'grep -rl '.*'.*|.*xargs -r sed' $DIY_PT1_SH >> ${TWO_SH}
-echo 'echo "bedone" >$HOME_PATH/README_EN.md' >> ${TWO_SH}
 grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed' $DIY_PT1_SH > tmp && mv tmp $DIY_PT1_SH
 
 chmod -R +x ${OPERATES_PATH}
