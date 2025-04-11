@@ -365,6 +365,66 @@ Ben_menu7
 
 Diy_main
 
+function Ben_xuanzhe() {
+  clear
+  echo 
+  echo
+  cd ${OPERATES_PATH}
+  XYZDSZ="$(ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR" "$0'| awk 'END {print}' |awk '{print $(1)}')"
+  ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 > /tmp/GITHUB_EVN
+  ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
+  cd ${GITHUB_WORKSPACE}
+  echo
+  echo -e "${Blue}  请输入您要编译源码前面对应的数值(1~X)，输入[N/n]则为退出程序${Font}"
+  echo
+  export YUMINGIP="  请输入您的选择"
+  while :; do
+  YMXZ=""
+  read -p "${YUMINGIP}：" YMXZ
+  if [[ "${YMXZ}" =~ (W|w) ]]; then
+    CUrrenty="W"
+  elif [[ "${YMXZ}" =~ (N|n) ]]; then
+    CUrrenty="N"
+  elif [[ "${YMXZ}" == "0" ]] || [[ -z "${YMXZ}" ]]; then
+    CUrrenty="x"
+  elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
+    CUrrenty="B"
+  else
+    CUrrenty="x"
+  fi
+  case $CUrrenty in
+  B)
+    export FOLDER_NAME3=$(cat ${GITHUB_WORKSPACE}/GITHUB_EVN |awk ''NR==${YMXZ}'')
+    export FOLDER_NAME="${FOLDER_NAME3}"
+    sed -i '/FOLDER_NAME=/d' "${GITHUB_ENV}"
+    echo "FOLDER_NAME=${FOLDER_NAME}" >> ${GITHUB_ENV}
+    rm -rf ${GITHUB_WORKSPACE}/GITHUB_EVN
+    if [[ "$zhizuoconfig" == "1" ]]; then
+      ECHOY " 您选择了使用 ${FOLDER_NAME} 制作配置文件"
+    else
+      ECHOY " 您选择了使用 ${FOLDER_NAME} 编译固件"
+    fi
+    Bendi_menu
+  break
+  ;;
+  N)
+    rm -rf ${GITHUB_WORKSPACE}/GITHUB_EVN
+    echo
+    exit 0
+  break
+  ;;
+  W)
+    BENDI_WENJIAN
+    echo
+  break
+  ;;
+  x)
+    export YUMINGIP="  敬告,请输入正确选项"
+  ;;
+  esac
+  done
+}
+
 function menu3() {
   clear
   echo
@@ -441,12 +501,11 @@ read -p " ${XUANZHEOP}： " CHOOSE
 case $CHOOSE in
 1)
   zhizuoconfig="0"
-  Bendi_xuanzhe
+  Ben_xuanzhe
 break
 ;;
 2)
   Bendi_Dependent
-  Bendi_Packaging
 break
 ;;
 3)
