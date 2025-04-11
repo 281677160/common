@@ -9,7 +9,7 @@ function TIME() {
     z) export Color="\e[35m";;
     l) export Color="\e[36m";;
   esac
-echo ""
+echo
 echo -e "\e[36m\e[0m${Color}${2}\e[0m"
 }
 
@@ -210,9 +210,10 @@ Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -
 RAM_total="$(free -h |awk 'NR==2' |awk '{print $(2)}' |sed 's/.$//')"
 RAM_available="$(free -h |awk 'NR==2' |awk '{print $(7)}' |sed 's/.$//')"
 [[ -d "${FIRMWARE_PATH}" ]] && sudo rm -rf ${FIRMWARE_PATH}/*
-TIME y "您的机器CPU型号为[ ${Model_Name} ]"
-TIME g "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
-TIME y "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
+echo
+TIME g "您的机器CPU型号为[ ${Model_Name} ]"
+TIME y "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
+TIME g "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
 echo
 
 if [[ "${Cpu_Cores}" -ge "8" ]];then
@@ -221,7 +222,7 @@ else
   cpunproc="${Cpu_Cores}"
 fi
 
-TIME g "即将使用${cpunproc}线程进行编译固件,请耐心等候..."
+TIME y "即将使用${cpunproc}线程进行编译固件,请耐心等候..."
 sleep 5
 make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
 if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]]; then
@@ -275,18 +276,18 @@ else
   TIME g "[ ${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE} ]顺利编译完成~~~"
 fi
 cd ${HOME_PATH}
-echo "固件存放路径：openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
+TIME y "固件存放路径：openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 }
 
 function Ben_compiletwo() {
-TIME y "编译日期：$(date +'%Y年%m月%d号')"
+TIME g "编译日期：$(date +'%Y年%m月%d号')"
 END_TIME=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
 SECONDS=$((END_TIME-START_TIME))
 HOUR=$(( $SECONDS/3600 ))
 MIN=$(( ($SECONDS-${HOUR}*3600)/60 ))
 SEC=$(( $SECONDS-${HOUR}*3600-${MIN}*60 ))
 if [[ "${HOUR}" == "0" ]]; then
-  TIME g "编译总计用时 ${MIN}分${SEC}秒"
+  TIME y "编译总计用时 ${MIN}分${SEC}秒"
 else
   TIME g "编译总计用时 ${HOUR}时${MIN}分${SEC}秒"
 fi
