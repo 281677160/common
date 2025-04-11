@@ -549,11 +549,7 @@ else
   bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh-cn.sh)
 fi
 
-# 前面修改的文件改回去
-sed -i 's/^[ ]*//g' "${DEFAULT_PATH}"
-sed -i '$a\exit 0' "${DEFAULT_PATH}"
-sed -i 's/^[ ]*//g' "${ZZZ_PATH}"
-sed -i '$a\exit 0' "${ZZZ_PATH}" 
+# files文件夹删除LICENSE,README
 [[ -d "${HOME_PATH}/files" ]] && sudo chmod +x ${HOME_PATH}/files
 rm -rf ${HOME_PATH}/files/{LICENSE,README}
 }
@@ -1276,6 +1272,12 @@ for x in "${k[@]}"; do \
   sed -i "/${x}/d" "${CONFIG_TXT}"; \
 done
 sed -i '/^$/d' "${CONFIG_TXT}"
+
+# 前面修改的文件改回去
+sed -i -E '/^\t/! s/^ +//' "${DEFAULT_PATH}"
+sed -i '$a\exit 0' "${DEFAULT_PATH}"
+sed -i -E '/^\t/! s/^ +//' "${ZZZ_PATH}"
+sed -i '$a\exit 0' "${ZZZ_PATH}" 
 }
 
 
