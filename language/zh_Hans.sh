@@ -4,6 +4,7 @@
 # --------------------------------------------------------
 # Convert translation files zh-cn to zh_Hans
 # The script is still in testing, welcome to report bugs.
+cd ${HOME_PATH}
 
 for X in $(find . -regex '.*zh-cn\|.*zh_Hans\|.*rclone.po' -type l |grep po |grep -v "openclash\|store\|settings"); do rm -rf "${X}"; done
 for X in $(find . -regex '.*zh-cn\|.*zh_Hans' -type f |grep po |grep -v "openclash\|store\|settings"); do rm -rf "${X}"; done
