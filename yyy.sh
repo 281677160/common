@@ -139,6 +139,7 @@ TIME y "正在执行：加载自定义文件"
 cd ${HOME_PATH}
 $DIY_PT1_SH
 if [[ ! -d "/home/danshui/openwrt/staging_dir" ]]; then
+  echo "1111111111111"
   source "${TWO_SH}"
 fi
 }
