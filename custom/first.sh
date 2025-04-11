@@ -172,14 +172,21 @@ else
   echo -e "\033[31m common文件下载失败 \033[0m"
   exit 1
 fi
+
+export TWO_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/two.sh"
 export BUILD_PARTSH="${DIY_PT_SH}"
 echo "BUILD_PARTSH=${DIY_PT_SH}" >> ${GITHUB_ENV}
 echo "COMMON_SH=${COMMON_SH}" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${UPGRADE_SH}" >> ${GITHUB_ENV}
 echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
-chmod -R +x ${OPERATES_PATH}
 
 sed -i 's/^[[:space:]]*//' $DIY_PT_SH
+
+echo '#!/bin/sh' > ${TWO_SH}
+grep -E 'grep -rl '.*'.*|.*xargs -r sed' $DIY_PT_SH >> ${TWO_SH}
+grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed' $DIY_PT_SH > tmp && mv tmp $DIY_PT_SH
+
+chmod -R +x ${OPERATES_PATH}
 }
 
 function Diy_memu() {
