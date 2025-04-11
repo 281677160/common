@@ -172,6 +172,7 @@ else
   echo -e "\033[31m common文件下载失败 \033[0m"
   exit 1
 fi
+echo "DIY_PT_SH=${DIY_PT_SH}" >> ${GITHUB_ENV}
 echo "COMMON_SH=${COMMON_SH}" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${UPGRADE_SH}" >> ${GITHUB_ENV}
 echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
