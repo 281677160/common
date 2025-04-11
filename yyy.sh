@@ -290,6 +290,18 @@ fi
 TIME r "提示：再次输入编译命令可进行二次编译"
 }
 
+function Ben_erci() {
+cd ${HOME_PATH}
+make menuconfig
+git pull
+./scripts/feeds update -a
+./scripts/feeds install -a
+make defconfig
+Ben_download
+Ben_menu7
+}
+
+
 
 function Ben_menu() {
 cd $HOME_PATH
@@ -380,12 +392,12 @@ function menu3() {
   case $menu_num in
   1)
     ZX_XZYM="0"
-    Bendi_menu
+    Ben_erci
   break
   ;;
   2)
     ZX_XZYM="1"
-    Bendi_xuanzhe
+    Diy_main
   break
   ;;
   3)
@@ -393,8 +405,7 @@ function menu3() {
   break
   ;;
   4)
-    Bendi_Dependent
-    Bendi_Packaging
+    menu2
   break
   ;;
   5)
