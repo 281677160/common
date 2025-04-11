@@ -131,6 +131,7 @@ export Upgrade_Date="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
 export Gujian_Date="$(date +%m.%d)"
 export UPGRADE_KEEP="$RAW_WEB/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
 export TARGET_MK="$RAW_WEB/include/target.mk"
+export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
 
 echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
 echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
@@ -151,6 +152,7 @@ echo "Upgrade_Date=${Upgrade_Date}" >> ${GITHUB_ENV}
 echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 echo "UPGRADE_KEEP=${UPGRADE_KEEP}" >> ${GITHUB_ENV}
 echo "TARGET_MK=${TARGET_MK}" >> ${GITHUB_ENV}
+echo "LICENSES_DOC=${LICENSES_DOC}" >> ${GITHUB_ENV}
 
 # 启动编译时的变量文件
 if [[ -z "${BENDI_VERSION}" ]]; then
@@ -176,7 +178,8 @@ function Diy_checkout() {
 TIME y "正在执行：下载和整理应用,请耐心等候..."
 cd ${HOME_PATH}
 # 增加一些应用
-
+mkdir -p "${LICENSES_DOC}"
+echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 curl -fsSL "${FEEDS_CONF}" -o "${HOME_PATH}/feeds.conf.default"
 curl -fsSL "${BASE_FILES}" -o "${GENE_PATH}"
 curl -fsSL "${UPGRADE_KEEP}" -o "${KEEPD_PATH}"
@@ -191,10 +194,6 @@ sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
 sed -i "s/OPHUBOPENWRT/${DISTRIB_SOURCECODE}/g" "${DEFAULT_PATH}"
 sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 grep -q "admin:" ${FILES_PATH}/etc/shadow && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
-
-echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
-[[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
-[[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
 
 # 添加自定义插件源
 CLASH_FENZHIHAO="$(grep -E '^export OpenClash_branch=' $BUILD_PARTSH |cut -d '"' -f2)"
@@ -269,10 +268,10 @@ ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/e
 export ZZZ_PATH="${ZZZ_PATH}"
 if [[ -n "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
-  if [[ -f "${HOME_PATH}/LICENSES/doc/default-settings" ]]; then
-    cp -Rf ${HOME_PATH}/LICENSES/doc/default-settings "${ZZZ_PATH}"
+  if [[ -f "${LICENSES_DOC}/default-settings" ]]; then
+    cp -Rf ${LICENSES_DOC}/default-settings "${ZZZ_PATH}"
   else
-    cp -Rf "${ZZZ_PATH}" ${HOME_PATH}/LICENSES/doc/default-settings
+    cp -Rf "${ZZZ_PATH}" ${LICENSES_DOC}/default-settings
   fi
   sed -i '/exit 0$/d' "${ZZZ_PATH}"
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
