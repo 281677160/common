@@ -41,7 +41,7 @@ sudo rm -rf upx-$UPX_REV-amd64_linux
 sudo rm -rf upx-$UPX_REV-amd64_linux.tar.xz
 
 # 安装po2lmo
-${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip
+${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip python3-distutils
 sudo rm -rf po2lmo
 git clone --filter=blob:none --no-checkout "https://github.com/openwrt/luci.git" "po2lmo"
 pushd "po2lmo"
