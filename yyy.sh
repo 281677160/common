@@ -246,6 +246,7 @@ else
   TARGET_BOARD="${TARGET_BOARD}"
   MYCONFIG_FILE="${MYCONFIG_FILE}"
   TARGET_PROFILE="${TARGET_PROFILE}"
+  CONFIG_FILE="${CONFIG_FILE}"
   " > ${LICENSES_DOC}/buildzu.ini
   sed -i 's/^[ ]*//g' ${LICENSES_DOC}/buildzu.ini
 fi
@@ -253,6 +254,8 @@ fi
 
 function Ben_firmware() {
 cd ${FIRMWARE_PATH}
+cp -Rf config.buildinfo ${LICENSES_DOC}/${CONFIG_FILE}
+cp -Rf config.buildinfo ${MYCONFIG_FILE}
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename -v "s/^immortalwrt/openwrt/" * > /dev/null 2>&1
   sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
@@ -459,7 +462,7 @@ if [[ -f "${LICENSES_DOC}/buildzu.ini" ]] && [[ -n "$(grep -E 'success' ${LICENS
       fi
   done
 
-  if [[ $missing_flag -eq 0 ]] && grep -q "${TARGET_BOARD}" "${MYCONFIG_FILE}"; then
+  if [[ $missing_flag -eq 0 ]] && [[ -f "${LICENSES_DOC}/${CONFIG_FILE}" ]]; then
     menu3
   else
     menu2
