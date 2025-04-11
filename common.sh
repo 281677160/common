@@ -556,37 +556,11 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 function Diy_definition() {
 cd ${HOME_PATH}
-Ipv4_ipaddr="$(grep '^export Ipv4_ipaddr=' $BUILD_PARTSH |cut -d '"' -f2)"
-Netmask_netm="$(grep '^export Netmask_netm=' $BUILD_PARTSH |cut -d '"' -f2)"
-Op_name="$(grep '^export Op_name=' $BUILD_PARTSH |cut -d '"' -f2)"
-Kernel_partition_size="$(grep '^export Kernel_partition_size=' $BUILD_PARTSH |cut -d '"' -f2)"
-Rootfs_partition_size="$(grep '^export Rootfs_partition_size=' $BUILD_PARTSH |cut -d '"' -f2)"
-Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
-Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
-Gateway_Settings="$(grep '^export Gateway_Settings=' $BUILD_PARTSH |cut -d '"' -f2)"
-DNS_Settings="$(grep '^export DNS_Settings=' $BUILD_PARTSH |cut -d '"' -f2)"
-Broadcast_Ipv4="$(grep '^export Broadcast_Ipv4=' $BUILD_PARTSH |cut -d '"' -f2)"
-Disable_DHCP="$(grep '^export Disable_DHCP=' $BUILD_PARTSH |cut -d '"' -f2)"
-Disable_Bridge="$(grep '^export Disable_Bridge=' $BUILD_PARTSH |cut -d '"' -f2)"
-Create_Ipv6_Lan="$(grep '^export Create_Ipv6_Lan=' $BUILD_PARTSH |cut -d '"' -f2)"
-Enable_IPV6_function="$(grep '^export Enable_IPV6_function=' $BUILD_PARTSH |cut -d '"' -f2)"
-Enable_IPV4_function="$(grep '^export Enable_IPV4_function=' $BUILD_PARTSH |cut -d '"' -f2)"
-Replace_Kernel="$(grep '^export Replace_Kernel=' $BUILD_PARTSH |cut -d '"' -f2)"
-Password_free_login="$(grep '^export Password_free_login=' $BUILD_PARTSH |cut -d '"' -f2)"
-AdGuardHome_Core="$(grep '^export AdGuardHome_Core=' $BUILD_PARTSH |cut -d '"' -f2)"
-Automatic_Mount_Settings="$(grep '^export Automatic_Mount_Settings=' $BUILD_PARTSH |cut -d '"' -f2)"
-Disable_autosamba="$(grep '^export Disable_autosamba=' $BUILD_PARTSH |cut -d '"' -f2)"
-Ttyd_account_free_login="$(grep '^export Ttyd_account_free_login=' $BUILD_PARTSH |cut -d '"' -f2)"
-Delete_unnecessary_items="$(grep '^export Delete_unnecessary_items=' $BUILD_PARTSH |cut -d '"' -f2)"
-Disable_53_redirection="$(grep '^export Disable_53_redirection=' $BUILD_PARTSH |cut -d '"' -f2)"
-Cancel_running="$(grep '^export Cancel_running=' $BUILD_PARTSH |cut -d '"' -f2)"
-amlogic_model="$(grep '^export amlogic_model=' $BUILD_PARTSH |cut -d '"' -f2)"
-amlogic_kernel="$(grep '^export amlogic_kernel=' $BUILD_PARTSH |cut -d '"' -f2)"
-auto_kernel="$(grep '^export auto_kernel=' $BUILD_PARTSH |cut -d '"' -f2)"
-rootfs_size="$(grep '^export rootfs_size=' $BUILD_PARTSH |cut -d '"' -f2)"
-kernel_usage="$(grep '^export kernel_usage=' $BUILD_PARTSH |cut -d '"' -f2)"
-[[ -f "signature" ]] && Customized_Information="$(cat signature)"
-rm -rf signature
+if [[ -z "${BENDI_VERSION}" ]]; then
+  source "${TWO_SH}"
+fi
+
+source "${DIY_PT2_SH}"
 
 # 获取源码文件的IP
 lan="/set network.\$1.netmask/a"
@@ -1271,10 +1245,6 @@ for x in "${k[@]}"; do \
   sed -i "/${x}/d" "${CONFIG_TXT}"; \
 done
 sed -i '/^$/d' "${CONFIG_TXT}"
-
-if [[ -z "${BENDI_VERSION}" ]]; then
-  ${TWO_SH}
-fi
 
 # 前面修改的文件改回去
 sed -i -E '/^\t/! s/^ +//' "${DEFAULT_PATH}"
