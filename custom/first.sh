@@ -167,7 +167,7 @@ export UPGRADE_SH="${OPERATES_PATH}/common/upgrade.sh"
 export CONFIG_TXT="${OPERATES_PATH}/common/config.txt"
 if grep -q "TIME" "${COMMON_SH}" && grep -q "Diy_Part2" "${UPGRADE_SH}"; then
   cp -Rf ${COMPILE_PATH} ${OPERATES_PATH}/common/${FOLDER_NAME}
-  DIY_PT_SH=${OPERATES_PATH}/common/${FOLDER_NAME}/diy-part.sh
+  export DIY_PT_SH=${OPERATES_PATH}/common/${FOLDER_NAME}/diy-part.sh
 else
   echo -e "\033[31m common文件下载失败 \033[0m"
   exit 1
