@@ -184,11 +184,9 @@ echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
 
 echo '#!/bin/sh' > ${DIY_PT2_SH}
 grep -E '.*export.*=".*"' $DIY_PT_SH >> ${DIY_PT2_SH}
-sed -i '$a\exit 0' ${DIY_PT2_SH}
 
 echo '#!/bin/sh' > ${TWO_SH}
 grep -E 'grep -rl '.*'.*|.*xargs -r sed' $DIY_PT_SH >> ${TWO_SH}
-sed -i '$a\exit 0' ${TWO_SH}
 grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed' $DIY_PT_SH > tmp && mv tmp $DIY_PT_SH
 
 chmod -R +x ${OPERATES_PATH}
