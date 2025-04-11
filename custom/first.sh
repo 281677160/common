@@ -85,6 +85,10 @@ elif [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
     SYNCHRONISE="NO"
     tongbu_message="和上游版本不一致"
   fi
+elif [[ ! -d "${COMPILE_PATH}/seed/${CONFIG_FILE}" ]]; then
+  echo -e "\033[31m 缺少seed/${CONFIG_FILE}文件夹 \033[0m"
+  SYNCHRONISE="NO"
+  tongbu_message="缺少seed/${CONFIG_FILE}文件"
 else
   SYNCHRONISE="YES"
 fi
