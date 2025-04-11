@@ -162,27 +162,24 @@ rm -rf ${OPERATES_PATH}/common
 mkdir -p ${OPERATES_PATH}/common
 curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o ${OPERATES_PATH}/common/common.sh
 curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/upgrade.sh -o ${OPERATES_PATH}/common/upgrade.sh
-export COMMON_SH=${OPERATES_PATH}/common/common.sh
-export UPGRADE_SH=${OPERATES_PATH}/common/upgrade.sh
+export COMMON_SH="${OPERATES_PATH}/common/common.sh"
+export UPGRADE_SH="${OPERATES_PATH}/common/upgrade.sh"
 export CONFIG_TXT="${OPERATES_PATH}/common/config.txt"
 if grep -q "TIME" "${COMMON_SH}" && grep -q "Diy_Part2" "${UPGRADE_SH}"; then
   cp -Rf ${COMPILE_PATH} ${OPERATES_PATH}/common/${FOLDER_NAME}
-  export DIY_PT_SH=${OPERATES_PATH}/common/${FOLDER_NAME}/diy-part.sh
+  DIY_PT_SH=${OPERATES_PATH}/common/${FOLDER_NAME}/diy-part.sh
 else
   echo -e "\033[31m common文件下载失败 \033[0m"
   exit 1
 fi
-echo "DIY_PT_SH=${DIY_PT_SH}" >> ${GITHUB_ENV}
+export BUILD_PARTSH="${DIY_PT_SH}"
+echo "BUILD_PARTSH=${DIY_PT_SH}" >> ${GITHUB_ENV}
 echo "COMMON_SH=${COMMON_SH}" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${UPGRADE_SH}" >> ${GITHUB_ENV}
 echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
 chmod -R +x ${OPERATES_PATH}
 
-if [[ -n "${BENDI_VERSION}" ]]; then
-  sed -i 's/^[[:space:]]*//' $DIY_PT_SH
-else
-  sed -i 's/^[[:space:]]*//' $BUILD_PARTSH
-fi
+sed -i 's/^[[:space:]]*//' $DIY_PT_SH
 }
 
 function Diy_memu() {
