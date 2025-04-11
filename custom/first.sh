@@ -183,7 +183,6 @@ sed -i 's/^[[:space:]]*//' $DIY_PT_SH
 }
 
 function Diy_memu() {
-echo
 TIME y "正在执行：判断文件是否缺失"
 Diy_one
 Diy_two
