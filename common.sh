@@ -560,7 +560,7 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 function Diy_definition() {
 cd ${HOME_PATH}
-if ! grep -q "danshuiglad" README_EN.md; then
+if ! grep -q "danshuiglad" "README_EN.md"; then
   echo "12333"
   source "${TWO_SH}"
 fi
