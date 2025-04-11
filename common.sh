@@ -560,6 +560,7 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 function Diy_definition() {
 cd ${HOME_PATH}
+cat 'README_EN.md'
 if [[ -z "$(cat 'README_EN.md' |grep -E 'danshuiglad')" ]]; then
   echo "12333"
   source "${TWO_SH}"
