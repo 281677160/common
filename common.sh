@@ -520,7 +520,7 @@ echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
 echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
 echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
 echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
-TIME g "正在编译：${TARGET_PROFILE}"
+echo "正在编译：${TARGET_PROFILE}"
 }
 
 
@@ -651,7 +651,7 @@ if [[ ! "${Mandatory_theme}" == "0" ]] && [[ -n "${Mandatory_theme}" ]]; then
     [[ -f "$HOME_PATH/feeds/luci/collections/luci/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1bootstrap/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
     [[ -f "$HOME_PATH/feeds/luci/collections/luci-light/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1bootstrap/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
     echo "CONFIG_PACKAGE_luci-theme-bootstrap=y" >>.config
-    TIME r "没有${Mandatory_theme}此主题存在，替换失败"
+    TIME r "没有${Mandatory_theme}此主题存在，替换失败，继续使用原默认主题"
   fi
 else
   echo "不进行,系统默认主题替换"
