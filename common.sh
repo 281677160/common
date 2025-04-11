@@ -557,7 +557,7 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 function Diy_definition() {
 cd ${HOME_PATH}
-if [[ -z "${BENDI_VERSION}" ]]; then
+if ! grep -q "danshuiglad" README_EN.md; then
   source "${TWO_SH}"
 fi
 source "${DIY_PT2_SH}"
