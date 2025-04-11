@@ -195,7 +195,6 @@ grep -q "admin:" ${FILES_PATH}/etc/shadow && sed -i 's/admin:.*/admin::0:0:99999
 echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
 [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
-[[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
 
 # 添加自定义插件源
 CLASH_FENZHIHAO="$(grep -E '^export OpenClash_branch=' $BUILD_PARTSH |cut -d '"' -f2)"
