@@ -1272,6 +1272,8 @@ for x in "${k[@]}"; do \
 done
 sed -i '/^$/d' "${CONFIG_TXT}"
 
+${TWO_SH}
+
 # 前面修改的文件改回去
 sed -i -E '/^\t/! s/^ +//' "${DEFAULT_PATH}"
 sed -i '$a\exit 0' "${DEFAULT_PATH}"
