@@ -1272,7 +1272,9 @@ for x in "${k[@]}"; do \
 done
 sed -i '/^$/d' "${CONFIG_TXT}"
 
-${TWO_SH}
+if [[ -z "${BENDI_VERSION}" ]]; then
+  ${TWO_SH}
+fi
 
 # 前面修改的文件改回去
 sed -i -E '/^\t/! s/^ +//' "${DEFAULT_PATH}"
