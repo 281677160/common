@@ -173,14 +173,18 @@ else
   exit 1
 fi
 
+export DIY_PT2_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/two.sh"
 export TWO_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/two.sh"
 export BUILD_PARTSH="${DIY_PT_SH}"
+export DIY_PT2_SH="${DIY_PT2_SH}"
 echo "BUILD_PARTSH=${DIY_PT_SH}" >> ${GITHUB_ENV}
 echo "COMMON_SH=${COMMON_SH}" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${UPGRADE_SH}" >> ${GITHUB_ENV}
 echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
 
-sed -i 's/^[[:space:]]*//' $DIY_PT_SH
+echo '#!/bin/sh' > ${DIY_PT2_SH}
+grep -E '.*export.*=".*"' $DIY_PT_SH >> ${DIY_PT2_SH}
+sed -i '$a\exit 0' ${DIY_PT2_SH}
 
 echo '#!/bin/sh' > ${TWO_SH}
 grep -E 'grep -rl '.*'.*|.*xargs -r sed' $DIY_PT_SH >> ${TWO_SH}
