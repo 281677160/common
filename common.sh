@@ -543,10 +543,10 @@ fi
 # 正在执行插件语言修改
 if [[ -d "${HOME_PATH}/feeds/luci/modules/luci-mod-system" ]]; then
   cd ${HOME_PATH}
-  ${OPERATES_PATH}/common/language/zh_Hans.sh
+  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh_Hans.sh)
 else
   cd ${HOME_PATH}
-  ${OPERATES_PATH}/common/language/zh-cn.sh
+  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh-cn.sh)
 fi
 
 # 前面修改的文件改回去
