@@ -479,8 +479,6 @@ Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
 if [[ ! "${Mandatory_theme}" == "0" ]] && [[ -n "${Mandatory_theme}" ]]; then
   sed -i "/${Mandatory_theme}/d" $MYCONFIG_FILE
   echo "CONFIG_PACKAGE_luci-theme-$Mandatory_theme=y" >>$MYCONFIG_FILE
-  [[ -f "$HOME_PATH/feeds/luci/collections/luci/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci/Makefile"
-  [[ -f "$HOME_PATH/feeds/luci/collections/luci-light/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "$HOME_PATH/feeds/luci/collections/luci-light/Makefile"
 fi
 if [[ ! "${Default_theme}" == "0" ]] && [[ -n "${Default_theme}" ]]; then
   sed -i "/${Default_theme}/d" $MYCONFIG_FILE
