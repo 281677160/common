@@ -184,6 +184,7 @@ echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
 
 echo '#!/bin/sh' > ${DIY_PT2_SH}
 grep -E '.*export.*=".*"' $DIY_PT1_SH >> ${DIY_PT2_SH}
+echo 'echo "bedone" >README_EN.md' >> ${DIY_PT2_SH}
 
 echo '#!/bin/sh' > ${TWO_SH}
 grep -E 'grep -rl '.*'.*|.*xargs -r sed' $DIY_PT1_SH >> ${TWO_SH}
