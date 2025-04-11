@@ -189,8 +189,8 @@ cat >> "${TWO_SH}" <<-EOF
 #!/bin/bash
 echo "danshuiglad" >$HOME_PATH/README_EN.md
 EOF
-grep -E 'grep -rl '.*'.*|.*xargs -r sed' $DIY_PT1_SH >> ${TWO_SH}
-grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed' $DIY_PT1_SH > tmp && mv tmp $DIY_PT1_SH
+grep -E 'sed -i .*s/.*/g.* .*egrep .* -rl ./.*' $DIY_PT1_SH >> ${TWO_SH}
+grep -vE '^[[:space:]]*sed -i .*s/.*/g.* .*egrep .* -rl ./.*' $DIY_PT1_SH > tmp && mv tmp $DIY_PT1_SH
 
 chmod -R +x ${OPERATES_PATH}
 }
