@@ -137,7 +137,7 @@ fi
 function Ben_diyptsh() {
 TIME y "正在执行：加载自定义文件"
 cd ${HOME_PATH}
-$BUILD_PARTSH
+$DIY_PT1_SH
 }
 
 function Ben_configuration() {
