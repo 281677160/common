@@ -30,6 +30,7 @@ export OPERATES_PATH="${GITHUB_WORKSPACE}/operates"
 export GITHUB_ENV="/tmp/compile"
 export BENDI_VERSION="1"
 export op_log="${OPERATES_PATH}/common/build.log"
+export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
 install -m 0755 /dev/null $GITHUB_ENV
 
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
@@ -233,26 +234,20 @@ sleep 3
 if [[ "${compile_error}" == "1" ]]; then
   TIME r "编译失败~~!"
   TIME y "在[operates/common/build.log]可查看编译日志"
-  echo "
-  SUCCESS_FAILED="fail"
-  FOLDER_NAME2="${FOLDER_NAME}"
-  REPO_BRANCH2="${REPO_BRANCH}"
-  LUCI_EDITION2="${LUCI_EDITION}"
-  TARGET_PROFILE2="${TARGET_PROFILE}"
-  SOURCE2="${SOURCE}"
-  " > ${HOME_PATH}/LICENSES/doc/key-buildzu.ini
-  sed -i 's/^[ ]*//g' ${HOME_PATH}/LICENSES/doc/key-buildzu.ini
   exit 1
 else
   echo "
   SUCCESS_FAILED="success"
-  FOLDER_NAME2="${FOLDER_NAME}"
-  REPO_BRANCH2="${REPO_BRANCH}"
-  LUCI_EDITION2="${LUCI_EDITION}"
-  TARGET_PROFILE2="${TARGET_PROFILE}"
-  SOURCE2="${SOURCE}"
-  " > ${HOME_PATH}/LICENSES/doc/key-buildzu.ini
-  sed -i 's/^[ ]*//g' ${HOME_PATH}/LICENSES/doc/key-buildzu.ini
+  SOURCE_CODE="${SOURCE_CODE}"
+  SOURCE="${SOURCE}"
+  FOLDER_NAME="${FOLDER_NAME}"
+  REPO_BRANCH="${REPO_BRANCH}"
+  LUCI_EDITION="${LUCI_EDITION}"
+  TARGET_BOARD="${TARGET_BOARD}"
+  MYCONFIG_FILE="${MYCONFIG_FILE}"
+  TARGET_PROFILE="${TARGET_PROFILE}"
+  " > ${LICENSES_DOC}/buildzu.ini
+  sed -i 's/^[ ]*//g' ${LICENSES_DOC}/buildzu.ini
 fi
 }
 
@@ -354,3 +349,122 @@ Ben_menu7
 }
 
 Diy_main
+
+function menu3() {
+  clear
+  echo
+  echo
+  echo -e "${Yellow}上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}成功编译${TARGET_PROFILE}${Font}"
+  echo
+  echo
+  echo -e " 1${Red}.${Font}${Green}保留缓存,只更改插件再编译${Font}"
+  echo
+  echo -e " 2${Red}.${Font}${Green}保留缓存,可改设置再编译${Font}"
+  echo
+  echo -e " 3${Red}.${Font}${Green}重选择源码再编译${Font}"
+  echo
+  echo -e " 4${Red}.${Font}${Green}回到编译主菜单${Font}"
+  echo
+  echo -e " 5${Red}.${Font}${Green}打包Amlogic/Rockchip固件(您要有armvirt_64的.tar.gz固件)${Font}"
+  echo
+  echo -e " 6${Red}.${Font}${Green}退出${Font}"
+  echo
+  echo
+  XUANZop="请输入数字"
+  echo
+  while :; do
+  read -p " ${XUANZop}：" menu_num
+  case $menu_num in
+  1)
+    ZX_XZYM="0"
+    Bendi_menu
+  break
+  ;;
+  2)
+    ZX_XZYM="1"
+    Bendi_xuanzhe
+  break
+  ;;
+  3)
+    menu
+  break
+  ;;
+  4)
+    Bendi_Dependent
+    Bendi_Packaging
+  break
+  ;;
+  5)
+    Bendi_Dependent
+    Bendi_Packaging
+  break
+  ;;
+  6)
+    echo
+    exit 0
+  break
+  ;;
+  *)
+    XUANZop="请输入正确的数字编号"
+  ;;
+  esac
+  done
+}
+
+function menu2() {
+cd ${GITHUB_WORKSPACE}
+clear
+echo
+echo
+ECHOY " 1. 进行编译固件"
+ECHOY " 2. 打包Amlogic/Rockchip固件(您要有armvirt_64的.tar.gz固件)"
+ECHOY " 3. 退出程序"
+echo
+XUANZHEOP="请输入数字"
+echo
+while :; do
+read -p " ${XUANZHEOP}： " CHOOSE
+case $CHOOSE in
+1)
+  zhizuoconfig="0"
+  Bendi_xuanzhe
+break
+;;
+2)
+  Bendi_Dependent
+  Bendi_Packaging
+break
+;;
+3)
+  echo
+  exit 0
+break
+;;
+*)
+   XUANZHEOP="请输入正确的数字编号"
+;;
+esac
+done
+}
+
+function main() {
+if [[ -f "${LICENSES_DOC}/buildzu.ini" ]] && [[ -n "$(grep -E 'success' ${LICENSES_DOC}/buildzu.ini)" ]]; then
+  source ${LICENSES_DOC}/buildzu.ini
+  required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools")
+  missing_flag=0
+  for dir in "${required_dirs[@]}"; do
+      if [[ ! -d "$HOME_PATH/$dir" ]]; then
+        echo "目录缺失: $dir"
+        missing_flag=1
+      fi
+  done
+
+  if [[ $missing_flag -eq 0 ]] && grep -q "${TARGET_BOARD}" "${MYCONFIG_FILE}"; then
+    menu3
+  else
+    menu2
+  fi
+else
+  menu2
+fi
+}
