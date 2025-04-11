@@ -218,9 +218,11 @@ fi
 if [[ -d "${HOME_PATH}/SRC_LUCI/modules/luci-mod-system" ]]; then
   THEME_BRANCH="Theme2"
   rm -rf ${HOME_PATH}/SRC_LUCI
+  gitsvn https://github.com/jerrykuku/luci-theme-argon.git ${HOME_PATH}/package/luci-theme-argon
 else
   THEME_BRANCH="Theme1"
   rm -rf ${HOME_PATH}/SRC_LUCI
+  gitsvn https://github.com/jerrykuku/luci-theme-argon/tree/18.06 ${HOME_PATH}/package/luci-theme-argon
 fi
 
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
@@ -297,6 +299,7 @@ for x in "${t[@]}"; do
         -path './feeds/danshui' -prune -o \
         -path './feeds/dstheme' -prune -o \
         -path './feeds/OpenClash' -prune -o \
+        -path './package/luci-theme-argon' -prune -o \
         -name "$x" -type d -exec rm -rf {} +
 done
 
