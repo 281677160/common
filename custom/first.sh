@@ -176,6 +176,12 @@ echo "COMMON_SH=${COMMON_SH}" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${UPGRADE_SH}" >> ${GITHUB_ENV}
 echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
 chmod -R +x ${OPERATES_PATH}
+
+if [[ -n "${BENDI_VERSION}" ]]; then
+  sed -i 's/^[[:space:]]*//' $DIY_PT_SH
+else
+  sed -i 's/^[[:space:]]*//' $BUILD_PARTSH
+fi
 }
 
 function Diy_memu() {
