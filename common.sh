@@ -300,8 +300,9 @@ for x in "${t[@]}"; do
         -name "$x" -type d -exec rm -rf {} +
 done
 
-
-
+if [[ -d "${HOME_PATH}/feeds/dstheme/luci-theme-argon" ]]; then
+  mv ${HOME_PATH}/feeds/dstheme/luci-theme-argon ${HOME_PATH}/feeds/luci/themes/luci-theme-argon
+fi
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
