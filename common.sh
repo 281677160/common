@@ -542,10 +542,8 @@ fi
 
 # 正在执行插件语言修改
 if [[ -d "${HOME_PATH}/feeds/luci/modules/luci-mod-system" ]]; then
-  cd ${HOME_PATH}
   bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh_Hans.sh)
 else
-  cd ${HOME_PATH}
   bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh-cn.sh)
 fi
 
@@ -557,9 +555,7 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 function Diy_definition() {
 cd ${HOME_PATH}
-echo "1"
 source "${TWO_SH}"
-echo "2"
 source "${DIY_PT2_SH}"
 
 # 获取源码文件的IP
