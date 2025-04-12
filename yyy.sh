@@ -375,9 +375,7 @@ function Ben_xuanzhe() {
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 > /tmp/GITHUB_EVN
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   cd ${GITHUB_WORKSPACE}
-  echo
-  echo -e "${Blue}  请输入您要编译源码前面对应的数值(1~X)，输入[N/n]则为退出程序${Font}"
-  echo
+  TIME y  请输入您要编译源码前面对应的数值(1~X)，输入[N/n]则为退出程序"
   export YUMINGIP="  请输入您的选择"
   while :; do
   YMXZ=""
@@ -395,28 +393,13 @@ function Ben_xuanzhe() {
   fi
   case $CUrrenty in
   B)
-    export FOLDER_NAME3=$(cat ${GITHUB_WORKSPACE}/GITHUB_EVN |awk ''NR==${YMXZ}'')
-    export FOLDER_NAME="${FOLDER_NAME3}"
-    sed -i '/FOLDER_NAME=/d' "${GITHUB_ENV}"
-    echo "FOLDER_NAME=${FOLDER_NAME}" >> ${GITHUB_ENV}
-    rm -rf ${GITHUB_WORKSPACE}/GITHUB_EVN
-    if [[ "$zhizuoconfig" == "1" ]]; then
-      ECHOY " 您选择了使用 ${FOLDER_NAME} 制作配置文件"
-    else
-      ECHOY " 您选择了使用 ${FOLDER_NAME} 编译固件"
-    fi
-    Bendi_menu
+    export FOLDER_NAME=$(cat ${GITHUB_WORKSPACE}/GITHUB_EVN |awk ''NR==${YMXZ}'')
+    TIME g " 您选择了使用 ${FOLDER_NAME} 编译固件"
+    Diy_main
   break
   ;;
   N)
-    rm -rf ${GITHUB_WORKSPACE}/GITHUB_EVN
-    echo
     exit 0
-  break
-  ;;
-  W)
-    BENDI_WENJIAN
-    echo
   break
   ;;
   x)
@@ -429,24 +412,21 @@ function Ben_xuanzhe() {
 function menu3() {
   clear
   echo
+  TIME g " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}成功编译${TARGET_PROFILE}固件"
   echo
-  echo -e "${Yellow}上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}成功编译${TARGET_PROFILE}${Font}"
+  TIME y " 1、保留缓存,不改设置,只更改插件再编译"
   echo
+  TIME y " 2、保留缓存,可改设置再编译"
   echo
-  echo -e " 1${Red}.${Font}${Green}保留缓存,只更改插件再编译${Font}"
+  TIME y " 3、重选择源码再编译"
   echo
-  echo -e " 2${Red}.${Font}${Green}保留缓存,可改设置再编译${Font}"
+  TIME y " 4、回到编译主菜单"
   echo
-  echo -e " 3${Red}.${Font}${Green}重选择源码再编译${Font}"
+  TIME y " 5、打包Amlogic/Rockchip固件(您要有armvirt_64的.tar.gz固件)"
   echo
-  echo -e " 4${Red}.${Font}${Green}回到编译主菜单${Font}"
+  TIME r " 6、退出"
   echo
-  echo -e " 5${Red}.${Font}${Green}打包Amlogic/Rockchip固件(您要有armvirt_64的.tar.gz固件)${Font}"
-  echo
-  echo -e " 6${Red}.${Font}${Green}退出${Font}"
-  echo
-  echo
-  XUANZop="请输入数字"
+  XUANZop=" 请输入数字"
   echo
   while :; do
   read -p " ${XUANZop}：" menu_num
@@ -480,7 +460,7 @@ function menu3() {
   break
   ;;
   *)
-    XUANZop="请输入正确的数字编号"
+    XUANZop=" 请输入正确的数字编号"
   ;;
   esac
   done
@@ -490,19 +470,18 @@ function menu2() {
 cd ${GITHUB_WORKSPACE}
 clear
 echo
+TIME y " 1. 进行编译固件"
+TIME y " 2. 打包Amlogic/Rockchip固件(您要有armvirt_64的.tar.gz固件)"
+TIME r " 3. 退出程序"
 echo
-ECHOY " 1. 进行编译固件"
-ECHOY " 2. 打包Amlogic/Rockchip固件(您要有armvirt_64的.tar.gz固件)"
-ECHOY " 3. 退出程序"
-echo
-XUANZHEOP="请输入数字"
+XUANZHEOP=" 请输入数字"
 echo
 while :; do
 read -p " ${XUANZHEOP}： " CHOOSE
 case $CHOOSE in
 1)
   zhizuoconfig="0"
-  Ben_xuanzhe
+  Diy_main
 break
 ;;
 2)
@@ -515,7 +494,7 @@ break
 break
 ;;
 *)
-   XUANZHEOP="请输入正确的数字编号"
+   XUANZHEOP=" 请输入正确的数字编号"
 ;;
 esac
 done
