@@ -23,6 +23,13 @@ do
     let convert_files++
 done
 
+zh_file="$({ find |grep "/zh-cn/" |grep "\.po"; } 2>"/dev/null")"
+for h in ${zh_file}
+do
+    [ -n "$(grep "Language: zh_Hans" "$h")" ] && sed -i "s/zh_Hans/zh_CN/g" "$h"
+    let convert_files++
+done
+
 po_file2="$({ find |grep "/zh_Hans/" |grep "\.po"; } 2>"/dev/null")"
 for b in ${po_file2}
 do
