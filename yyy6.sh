@@ -150,8 +150,12 @@ if [[ "${NUM_BER}" == "1" ]]; then
 elif [[ "${NUM_BER}" == "2" ]]; then
   cd ${HOME_PATH}
   export ZZZ_PATH="${ZZZ_PATH}"
+  sed -i '/exit 0$/d' "${DEFAULT_PATH}"
   git reset --hard HEAD >/dev/null 2>&1
   git pull >/dev/null 2>&1
+elif [[ "${NUM_BER}" == "3" ]]; then
+  cd $HOME_PATH
+  cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
 fi
 }
 
@@ -310,11 +314,6 @@ fi
 TIME r "提示：再次输入编译命令可进行二次编译"
 }
 
-function Ben_gaierci() {
-cd $HOME_PATH
-cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
-}
-
 function Ben_menu() {
 cd $HOME_PATH
 source $COMMON_SH && Diy_menu
@@ -382,7 +381,6 @@ Ben_update
 Ben_variable
 Ben_config
 Ben_xiazai
-Ben_gaierci
 Ben_menu2
 Ben_menu3
 Ben_menuconfig
