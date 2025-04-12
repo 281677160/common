@@ -85,7 +85,7 @@ fi
 }
 
 function Ben_config() {
-if [[ "${MODIFY_CONFIGURATION}" = "true" ]]; then
+if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   TIME g "是否需要选择机型和增删插件?"
   read -t 30 -p " [输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
   case ${Bendi_Diy} in
@@ -306,18 +306,6 @@ fi
 TIME r "提示：再次输入编译命令可进行二次编译"
 }
 
-function Ben_erci() {
-cd ${HOME_PATH}
-Ben_config
-Ben_menuconfig
-git pull
-./scripts/feeds update -a
-./scripts/feeds install -a
-make defconfig
-Ben_download
-Ben_menu7
-}
-
 function Ben_gaierci() {
 cd $HOME_PATH
 cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
@@ -400,6 +388,18 @@ Ben_menu6
 Ben_menu7
 }
 
+function Diy_main3() {
+cd ${HOME_PATH}
+Ben_config
+Ben_menuconfig
+git pull
+./scripts/feeds update -a
+./scripts/feeds install -a
+make defconfig
+Ben_download
+Ben_menu7
+}
+
 function Ben_xuanzhe() {
   clear
   echo 
@@ -466,13 +466,11 @@ function menu3() {
   read -p " ${XUANZop}：" menu_num
   case $menu_num in
   1)
-    ZX_XZYM="0"
-    Ben_erci
+    Diy_main3
   break
   ;;
   2)
-    ZX_XZYM="1"
-    Diy_main
+    Diy_main2
   break
   ;;
   3)
@@ -514,8 +512,7 @@ while :; do
 read -p " ${XUANZHEOP}： " CHOOSE
 case $CHOOSE in
 1)
-  zhizuoconfig="0"
-  Diy_main
+  Ben_xuanzhe
 break
 ;;
 2)
