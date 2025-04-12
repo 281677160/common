@@ -54,4 +54,3 @@ do
     [ -n "$(grep "zh_Hans.lmo" "$f")" ] && sed -i "s/zh-cn.lmo/zh_Hans.lmo/g" "$f"
     let convert_files++
 done
-exit 0
