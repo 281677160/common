@@ -68,5 +68,5 @@ do
 		sed -i "s?DEPENDS:=?DEPENDS:=\+\@LUCI_LANG_zh-cn ?g" "$f"
 	fi
 done
-echo "LUCI_LANG_zh-cn"
+echo "zh-cn"
 exit 0
