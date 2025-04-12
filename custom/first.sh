@@ -193,12 +193,13 @@ cat >> "${TWO_SH}" <<-EOF
 #!/bin/bash
 echo "danshuiglad" >$HOME_PATH/LICENSES/doc/README
 EOF
-grep -E 'sed -i .*s/.*/g.* .*egrep .* -rl ./.*' $DIY_PT1_SH >> ${TWO_SH}
-sed -i 's?-rl ./?-rl ./feeds?g' "${TWO_SH}"
-grep -E 'sed -i .*s/.*/g.* .*egrep .* -rl ./.*' $DIY_PT1_SH >> ${TWO_SH}
-sed -i 's?-rl ./?-rl ./package?g' "${TWO_SH}"
+
+grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${TWO_SH}
+sed -i 's. |?./feeds |?g' "${TWO_SH}"
+grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${TWO_SH}
+sed -i 's. |?./package |?g' "${TWO_SH}"
 sed -i 's?./packagefeeds?./feeds?g' "${TWO_SH}"
-grep -vE '^[[:space:]]*sed -i .*s/.*/g.* .*egrep .* -rl ./.*' $DIY_PT1_SH > tmp && mv tmp $DIY_PT1_SH
+grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH > tmp && mv tmp $DIY_PT1_SH
 
 chmod -R +x ${OPERATES_PATH}
 }
