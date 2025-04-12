@@ -85,23 +85,6 @@ if [[ "${Cipan_Avail}" -lt "20" ]];then
 fi
 }
 
-function Ben_config() {
-if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
-  TIME g "是否需要选择机型和增删插件?"
-  read -t 30 -p " [输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
-  case ${Bendi_Diy} in
-  [Yy])
-    Menuconfig_Config="true"
-    TIME y "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
-  ;;
-  *)
-    Menuconfig_Config="false"
-    ECHOR "您已关闭选择机型和增删插件设置！"
-  ;;
-  esac
-fi
-}
-
 function Ben_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
   bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)
@@ -139,6 +122,23 @@ chmod -R +x first.sh
 source first.sh
 rm -rf first.sh
 source $COMMON_SH && Diy_variable
+}
+
+function Ben_config() {
+if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
+  TIME g "是否需要选择机型和增删插件?"
+  read -t 30 -p " [输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
+  case ${Bendi_Diy} in
+  [Yy])
+    Menuconfig_Config="true"
+    TIME y "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
+  ;;
+  *)
+    Menuconfig_Config="false"
+    ECHOR "您已关闭选择机型和增删插件设置！"
+  ;;
+  esac
+fi
 }
 
 function Ben_xiazai() {
@@ -359,9 +359,9 @@ Ben_compiletwo
 function Diy_main() {
 Ben_wslpath
 Ben_diskcapacity
-Ben_config
 Ben_update
 Ben_variable
+Ben_config
 Ben_xiazai
 Ben_menu
 Ben_menu2
@@ -376,9 +376,9 @@ Ben_menu7
 function Diy_main2() {
 Ben_wslpath
 Ben_diskcapacity
-Ben_config
 Ben_update
 Ben_variable
+Ben_config
 Ben_xiazai
 Ben_gaierci
 Ben_menu2
@@ -392,6 +392,10 @@ Ben_menu7
 
 function Diy_main3() {
 cd ${HOME_PATH}
+Ben_wslpath
+Ben_diskcapacity
+Ben_update
+Ben_variable
 Ben_config
 Ben_menuconfig
 git pull
