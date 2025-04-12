@@ -32,6 +32,13 @@ do
     let convert_files++
 done
 
+zh_file="$({ find |grep "/zh_Hans/" |grep "\.po"; } 2>"/dev/null")"
+for h in ${zh_file}
+do
+    [ -n "$(grep "Language: zh_CN" "$h")" ] && sed -i "s/zh_CN/zh_Hans/g" "$h"
+    let convert_files++
+done
+
 lmo_file="$({ find |grep -E "[a-z0-9]+\.zh_Hans.+lmo"; } 2>"/dev/null")"
 for c in ${lmo_file}
 do
