@@ -31,6 +31,7 @@ export GITHUB_ENV="/tmp/compile"
 export BENDI_VERSION="1"
 export op_log="${OPERATES_PATH}/common/build.log"
 export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
+export NUM_BER=""
 install -m 0755 /dev/null $GITHUB_ENV
 
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
@@ -142,10 +143,11 @@ source $COMMON_SH && Diy_variable
 
 function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
-if [[ ! -d "openwrt" ]]; then
+if [[ "${NUM_BER}" == "1" ]]; then
   TIME y "正在执行：下载源码"
+  rm -rf openwrt
   git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
-else
+elif [[ "${NUM_BER}" == "2" ]]; then
   cd ${HOME_PATH}
   git reset --hard HEAD >/dev/null 2>&1
   git pull >/dev/null 2>&1
@@ -429,6 +431,8 @@ function Ben_xuanzhe() {
   B)
     export FOLDER_NAME=$(cat ${GITHUB_WORKSPACE}/GITHUB_EVN |awk ''NR==${YMXZ}'')
     TIME g " 您选择了使用 ${FOLDER_NAME} 编译固件"
+    number
+    NUM_BER="1"
     Diy_main
   break
   ;;
@@ -466,10 +470,12 @@ function menu3() {
   read -p " ${XUANZop}：" menu_num
   case $menu_num in
   1)
+    NUM_BER="3"
     Diy_main3
   break
   ;;
   2)
+    NUM_BER="2"
     Diy_main2
   break
   ;;
