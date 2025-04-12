@@ -105,7 +105,7 @@ function Ben_variable() {
 cd ${GITHUB_WORKSPACE}
 export FOLDER_NAME="$FOLDER_NAME"
 if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
-  if [[ ! "${NUM_BER}" == "2" ]]; then
+  if [[ ! "${NUM_BER}" =~ (2|3) ]]; then
     source $OPERATES_PATH/$FOLDER_NAME/settings.ini
   fi
 fi
@@ -161,6 +161,9 @@ elif [[ "${NUM_BER}" == "2" ]]; then
 elif [[ "${NUM_BER}" == "3" ]]; then
   cd $HOME_PATH
   cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
+  git pull
+  ./scripts/feeds update -a
+  ./scripts/feeds install -a
 fi
 }
 
@@ -396,7 +399,6 @@ Ben_menu7
 }
 
 function Diy_main3() {
-cd ${HOME_PATH}
 Ben_wslpath
 Ben_diskcapacity
 Ben_update
@@ -404,9 +406,6 @@ Ben_variable
 Ben_config
 Ben_menuconfig
 Ben_menu4
-git pull
-./scripts/feeds update -a
-./scripts/feeds install -a
 make defconfig
 Ben_download
 Ben_menu7
