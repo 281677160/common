@@ -84,6 +84,23 @@ if [[ "${Cipan_Avail}" -lt "20" ]];then
 fi
 }
 
+function Ben_config() {
+if [[ "${MODIFY_CONFIGURATION}" = "true" ]]; then
+  TIME g "是否需要选择机型和增删插件?"
+  read -t 30 -p " [输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
+  case ${Bendi_Diy} in
+  [Yy])
+    Menuconfig_Config="true"
+    TIME y "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
+  ;;
+  *)
+    Menuconfig_Config="false"
+    ECHOR "您已关闭选择机型和增删插件设置！"
+  ;;
+  esac
+fi
+}
+
 function Ben_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
   bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)
@@ -143,7 +160,6 @@ $DIY_PT1_SH
 
 function Ben_configuration() {
 cd ${HOME_PATH}
-Menuconfig_Config="true"
 if [[ "${Menuconfig_Config}" == "true" ]]; then
   TIME y "正在执行：选取插件等..."
   make menuconfig
@@ -255,7 +271,6 @@ fi
 
 function Ben_firmware() {
 cd ${FIRMWARE_PATH}
-cp -Rf config.buildinfo ${LICENSES_DOC}/${CONFIG_FILE}
 cp -Rf config.buildinfo ${MYCONFIG_FILE}
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename -v "s/^immortalwrt/openwrt/" * > /dev/null 2>&1
@@ -293,7 +308,8 @@ TIME r "提示：再次输入编译命令可进行二次编译"
 
 function Ben_erci() {
 cd ${HOME_PATH}
-make menuconfig
+Ben_config
+Ben_menuconfig
 git pull
 ./scripts/feeds update -a
 ./scripts/feeds install -a
@@ -302,7 +318,10 @@ Ben_download
 Ben_menu7
 }
 
-
+function Ben_gaierci() {
+cd $HOME_PATH
+cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
+}
 
 function Ben_menu() {
 cd $HOME_PATH
@@ -348,9 +367,9 @@ Ben_compiletwo
 }
 
 function Diy_main() {
-export FOLDER_NAME="Lede"
 Ben_wslpath
 Ben_diskcapacity
+Ben_config
 Ben_update
 Ben_variable
 Ben_xiazai
@@ -364,7 +383,22 @@ Ben_menu6
 Ben_menu7
 }
 
-
+function Diy_main2() {
+Ben_wslpath
+Ben_diskcapacity
+Ben_config
+Ben_update
+Ben_variable
+Ben_xiazai
+Ben_gaierci
+Ben_menu2
+Ben_menu3
+Ben_menuconfig
+Ben_menu4
+Ben_menu5
+Ben_menu6
+Ben_menu7
+}
 
 function Ben_xuanzhe() {
   clear
@@ -512,7 +546,7 @@ if [[ -n "$(grep -E 'success' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]]; then
       fi
   done
 
-  if [[ $missing_flag -eq 0 ]] && [[ -f "${MYCONFIG_FILE}" ]]; then
+  if [[ $missing_flag -eq 0 ]] && [[ -n "$( grep -E "${TARGET_BOARD}" "${MYCONFIG_FILE}" 2>/dev/null)" ]]; then
     menu3
   else
     menu2
