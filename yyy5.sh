@@ -105,7 +105,9 @@ function Ben_variable() {
 cd ${GITHUB_WORKSPACE}
 export FOLDER_NAME="$FOLDER_NAME"
 if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
-  source $OPERATES_PATH/$FOLDER_NAME/settings.ini
+  if [[ ! "${NUM_BER}" == "2" ]]; then
+    source $OPERATES_PATH/$FOLDER_NAME/settings.ini
+  fi
 fi
 export COMPILE_PATH="$OPERATES_PATH/$FOLDER_NAME"
 export SOURCE_CODE="${SOURCE_CODE}"
@@ -150,6 +152,8 @@ if [[ "${NUM_BER}" == "1" ]]; then
 elif [[ "${NUM_BER}" == "2" ]]; then
   cd ${HOME_PATH}
   export ZZZ_PATH="${ZZZ_PATH}"
+  cp -Rf "$HOME_PATH/LICENSES/doc/99-first-run" "${DEFAULT_PATH}"
+  sed -i '/exit 0$/d' "${ZZZ_PATH}"
   sed -i '/exit 0$/d' "${DEFAULT_PATH}"
   git reset --hard HEAD >/dev/null 2>&1
   git pull >/dev/null 2>&1
