@@ -191,7 +191,7 @@ grep -E '.*export.*=".*"' $DIY_PT1_SH >> ${DIY_PT2_SH}
 
 cat >> "${TWO_SH}" <<-EOF
 #!/bin/bash
-echo "danshuiglad" >$HOME_PATH/README_EN.md
+echo "danshuiglad" >$HOME_PATH/LICENSES/doc/README
 EOF
 grep -E 'sed -i .*s/.*/g.* .*egrep .* -rl ./.*' $DIY_PT1_SH >> ${TWO_SH}
 grep -vE '^[[:space:]]*sed -i .*s/.*/g.* .*egrep .* -rl ./.*' $DIY_PT1_SH > tmp && mv tmp $DIY_PT1_SH
