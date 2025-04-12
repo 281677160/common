@@ -168,6 +168,7 @@ elif [[ "${NUM_BER}" == "3" ]]; then
   cd $HOME_PATH
   cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
   git pull > /dev/null 2>&1
+  TIME y "正在执行：更新和安装feeds"
   ./scripts/feeds update -a > /dev/null 2>&1
   ./scripts/feeds install -a
 fi
