@@ -8,7 +8,7 @@ convert_files=0
 po_file="$({ find |grep -E "[a-z0-9]+\.zh\-cn.+po"; } 2>"/dev/null")"
 for a in ${po_file}
 do
-    [ -n "$(grep "Language: zh_CN" "$a")" ] && sed -i "s/Language: zh_CN/Language: zh_Hans/g" "$a"
+    [ -n "$(grep "Language: zh_CN" "$a")" ] && sed -i "s/zh_CN/zh_Hans/g" "$a"
     po_new_file="$(echo -e "$a"|sed "s/zh-cn/zh_Hans/g")"
     mv "$a" "${po_new_file}" 2>"/dev/null"
     let convert_files++
@@ -17,7 +17,7 @@ done
 po_file2="$({ find |grep "/zh-cn/" |grep "\.po"; } 2>"/dev/null")"
 for b in ${po_file2}
 do
-    [ -n "$(grep "Language: zh_CN" "$b")" ] && sed -i "s/Language: zh_CN/Language: zh_Hans/g" "$b"
+    [ -n "$(grep "Language: zh_CN" "$b")" ] && sed -i "s/zh_CN/zh_Hans/g" "$b"
     po_new_file2="$(echo -e "$b"|sed "s/zh-cn/zh_Hans/g")"
     mv "$b" "${po_new_file2}" 2>"/dev/null"
     let convert_files++
