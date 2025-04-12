@@ -197,6 +197,7 @@ grep -E 'sed -i .*s/.*/g.* .*egrep .* -rl ./.*' $DIY_PT1_SH >> ${TWO_SH}
 sed -i 's?-rl ./?-rl ./feeds?g' "${TWO_SH}"
 grep -E 'sed -i .*s/.*/g.* .*egrep .* -rl ./.*' $DIY_PT1_SH >> ${TWO_SH}
 sed -i 's?-rl ./?-rl ./package?g' "${TWO_SH}"
+sed -i 's?./packagefeeds?./feeds?g' "${TWO_SH}"
 grep -vE '^[[:space:]]*sed -i .*s/.*/g.* .*egrep .* -rl ./.*' $DIY_PT1_SH > tmp && mv tmp $DIY_PT1_SH
 
 chmod -R +x ${OPERATES_PATH}
