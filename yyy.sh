@@ -375,7 +375,7 @@ function Ben_xuanzhe() {
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 > /tmp/GITHUB_EVN
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   cd ${GITHUB_WORKSPACE}
-  TIME y  "请输入您要编译源码前面对应的数值(1~X)，输入[N/n]则为退出程序"
+  TIME y "请输入您要编译源码前面对应的数值(1~X)，输入[N/n]则为退出程序"
   export YUMINGIP="  请输入您的选择"
   while :; do
   YMXZ=""
