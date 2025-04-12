@@ -1,7 +1,7 @@
 #!/bin/bash
 # [CTCGFW]immortalwrt
 # Use it under GPLv3, please.
-# Convert translation files zh-cn to zh_Hans
+# Convert translation files zh_Hans to zh-cn
 # The script is still in testing, welcome to report bugs.
 # ------------------------------- Start Conversion -------------------------------
 convert_files=0
