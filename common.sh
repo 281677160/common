@@ -273,7 +273,6 @@ if [[ -n "${ZZZ_PATH}" ]]; then
   grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 fi
 
-cp -Rf ${HOME_PATH}/feeds.conf.default ${LICENSES_DOC}/feeds.conf.default
 
 # 更新feeds
 ./scripts/feeds update -a > /dev/null 2>&1
@@ -386,6 +385,9 @@ cat >> "${KEEPD_PATH}" <<-EOF
 /www/luci-static/argon/background
 /etc/smartdns/custom.conf
 EOF
+
+cp -Rf "${HOME_PATH}/feeds.conf.default" "${LICENSES_DOC}/feeds.conf.default"
+cp -Rf "${DEFAULT_PATH}" "${LICENSES_DOC}/99-first-run"
 }
 
 
