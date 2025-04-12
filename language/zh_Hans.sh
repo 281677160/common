@@ -4,7 +4,7 @@
 # --------------------------------------------------------
 # Convert translation files zh-cn to zh_Hans
 # The script is still in testing, welcome to report bugs.
-cd cd $HOME_PATH
+cd $HOME_PATH
 echo -e "\033[33m检查所有插件包,把插件包的zh-cn改成zh_Hans格式\033[0m"
 
 for X in $(find . -regex '.*zh-cn\|.*zh_Hans\|.*rclone.po' -type l |grep po |grep -v "openclash\|store\|settings"); do rm -rf "${X}"; done
