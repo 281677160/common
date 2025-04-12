@@ -639,7 +639,7 @@ cat >> "${ZZZ_PATH}" <<-EOF
     echo "DISTRIB_DESCRIPTION='Customized_Information @ OpenWrt '" >> /etc/openwrt_release
 EOF
   Customized_Informat="${Customized_Information}"
-  sed -i "s/Customized_Information/${Customized_Informat}/g" "${ZZZ_PATH}"
+  sed -i "s?Customized_Information?${Customized_Informat}?g" "${ZZZ_PATH}"
   echo "个性签名[${Customized_Informat}]增加完成"
 fi
 
