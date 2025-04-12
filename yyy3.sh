@@ -410,9 +410,9 @@ Ben_diskcapacity
 Ben_update
 Ben_variable
 Ben_config
+Ben_xiazai
 Ben_menuconfig
 Ben_menu4
-make defconfig
 Ben_download
 Ben_menu7
 }
