@@ -521,7 +521,7 @@ done
 }
 
 function main() {
-if [[ -f "${LICENSES_DOC}/buildzu.ini" ]] && [[ -n "$(grep -E 'success' ${LICENSES_DOC}/buildzu.ini)" ]]; then
+if [[ -n "$(grep -E 'success' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]]; then
   source ${LICENSES_DOC}/buildzu.ini
   required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools")
   missing_flag=0
@@ -532,7 +532,7 @@ if [[ -f "${LICENSES_DOC}/buildzu.ini" ]] && [[ -n "$(grep -E 'success' ${LICENS
       fi
   done
 
-  if [[ $missing_flag -eq 0 ]] && [[ -f "${LICENSES_DOC}/${CONFIG_FILE}" ]]; then
+  if [[ $missing_flag -eq 0 ]] && [[ -f "${MYCONFIG_FILE}" ]]; then
     menu3
   else
     menu2
