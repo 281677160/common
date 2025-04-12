@@ -364,7 +364,7 @@ Ben_menu6
 Ben_menu7
 }
 
-Diy_main
+
 
 function Ben_xuanzhe() {
   clear
@@ -542,3 +542,4 @@ else
   menu2
 fi
 }
+main
