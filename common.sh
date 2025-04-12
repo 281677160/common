@@ -308,24 +308,32 @@ if [[ -n "${BENDI_VERSION}" ]]; then
 fi
 
 # 添加自定义插件源
-CLASH_FENZHIHAO="$(grep '^export OpenClash_branch=' $DIYPART_PATH |cut -d '"' -f2)"
+CLASH_FENZHIHAO="$(grep -E '^export OpenClash_branch=' $BUILD_PARTSH |cut -d '"' -f2)"
 if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
   CLASH_BRANCH="dev"
 else
   CLASH_BRANCH="master"
 fi
-SRC_LIANJIE="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
-SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+if grep -q "src-git-full" "${HOME_PATH}/feeds.conf.default"; then
+  SRC_LIANJIE="$(grep -E '^src-git-full luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git-full luci (https?:\/\/[^;]+).*/\1/')"
+  SRC_FENZHIHAO="$(grep -E '^src-git-full luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+else
+ SRC_LIANJIE="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
+ SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+fi
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
   git clone -q --single-branch --depth=1 --branch=${SRC_FENZHIHAO} ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
 else
   git clone -q --depth 1 ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
 fi
-C_PATH="${HOME_PATH}/SRC_LUCI/modules/luci-mod-system"
 if [[ -d "${HOME_PATH}/SRC_LUCI/modules/luci-mod-system" ]]; then
   THEME_BRANCH="Theme2"
+  rm -rf ${HOME_PATH}/SRC_LUCI
+  gitsvn https://github.com/jerrykuku/luci-theme-argon.git ${HOME_PATH}/package/luci-theme-argon
 else
   THEME_BRANCH="Theme1"
+  rm -rf ${HOME_PATH}/SRC_LUCI
+  gitsvn https://github.com/jerrykuku/luci-theme-argon/tree/18.06 ${HOME_PATH}/package/luci-theme-argon
 fi
 
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
