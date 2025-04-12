@@ -7,8 +7,11 @@
 cd $HOME_PATH
 echo -e "\033[33m检查所有插件包,把插件包的zh-cn改成zh_Hans格式\033[0m"
 
-for X in $(find . -regex '.*zh-cn\|.*zh_Hans\|.*rclone.po' -type l |grep po |grep -v "openclash\|store\|settings"); do rm -rf "${X}"; done
-for X in $(find . -regex '.*zh-cn\|.*zh_Hans' -type f |grep po |grep -v "openclash\|store\|settings"); do rm -rf "${X}"; done
+for X in $(find ./feeds -regex '.*zh-cn\|.*zh_Hans\|.*rclone.po' -type l |grep po |grep -v "openclash\|store\|settings"); do rm -rf "${X}"; done
+for X in $(find ./feeds -regex '.*zh-cn\|.*zh_Hans' -type f |grep po |grep -v "openclash\|store\|settings"); do rm -rf "${X}"; done
+
+for X in $(find ./package -regex '.*zh-cn\|.*zh_Hans\|.*rclone.po' -type l |grep po |grep -v "openclash\|store\|settings"); do rm -rf "${X}"; done
+for X in $(find ./package -regex '.*zh-cn\|.*zh_Hans' -type f |grep po |grep -v "openclash\|store\|settings"); do rm -rf "${X}"; done
 
 po_file="$({ find |grep -E "[a-z0-9]+\.zh\-cn.+po" |grep -v "openclash\|store\|settings"; } 2>"/dev/null")"
 for a in ${po_file}
