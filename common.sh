@@ -461,6 +461,7 @@ function Diy_partsh() {
 TIME y "正在执行：自定义文件"
 cd ${HOME_PATH}
 # 运行自定义文件
+gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/lean/luci-app-leigod-acc package/lean/luci-app-leigod-acc
 ${DIY_PT1_SH}
 }
 
