@@ -400,6 +400,7 @@ Ben_update
 Ben_variable
 Ben_config
 Ben_menuconfig
+Ben_menu4
 git pull
 ./scripts/feeds update -a
 ./scripts/feeds install -a
