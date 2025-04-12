@@ -5,6 +5,15 @@
 # The script is still in testing, welcome to report bugs.
 # ------------------------------- Start Conversion -------------------------------
 convert_files=0
+for X in $(find . -regex '.*zh-cn\|.*zh_Hans' -type f |grep po); do rm -rf "${X}"; done
+
+ha_file="$({ find . -type d -name "zh_Hans" | sed 's|/[^/]*$||' | sort -u; } 2>"/dev/null")"
+for y in ${ha_file}
+do
+    [[ -d "$y/zh_Hans" && -d "$y/zh-cn" ]] && rm -rf "$y/zh_Hans"
+    let convert_files++
+done
+
 po_file="$({ find |grep -E "[a-z0-9]+\.zh\-Hans.+po"; } 2>"/dev/null")"
 for a in ${po_file}
 do
