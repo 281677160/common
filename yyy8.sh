@@ -266,6 +266,7 @@ else
   MYCONFIG_FILE="${MYCONFIG_FILE}"
   TARGET_PROFILE="${TARGET_PROFILE}"
   CONFIG_FILE="${CONFIG_FILE}"
+  ZZZ_PATH="${ZZZ_PATH}"
   " > ${LICENSES_DOC}/buildzu.ini
   sed -i 's/^[ ]*//g' ${LICENSES_DOC}/buildzu.ini
 fi
