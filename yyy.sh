@@ -143,6 +143,7 @@ $DIY_PT1_SH
 
 function Ben_configuration() {
 cd ${HOME_PATH}
+Menuconfig_Config="true"
 if [[ "${Menuconfig_Config}" == "true" ]]; then
   TIME y "正在执行：选取插件等..."
   make menuconfig
