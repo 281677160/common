@@ -149,6 +149,7 @@ if [[ "${NUM_BER}" == "1" ]]; then
   git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 elif [[ "${NUM_BER}" == "2" ]]; then
   cd ${HOME_PATH}
+  export ZZZ_PATH="${ZZZ_PATH}"
   git reset --hard HEAD >/dev/null 2>&1
   git pull >/dev/null 2>&1
 fi
