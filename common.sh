@@ -603,6 +603,7 @@ if [[ ! "${Default_theme}" == "0" ]] && [[ -n "${Default_theme}" ]]; then
     TIME r "没有${Default_theme}此主题存在，默认主题设置失败"
   else
     echo "uci set luci.main.mediaurlbase='/luci-static/${Default_theme}'" >> "${DEFAULT_PATH}"
+    echo "uci commit luci" >> "${DEFAULT_PATH}"
     echo "默认主题[${Default_theme}]设置完成"
   fi
 else
@@ -1241,9 +1242,9 @@ sed -i '/^$/d' "${CONFIG_TXT}"
 
 # 前面修改的文件改回去
 sed -i -E '/^\t/! s/^ +//' "${DEFAULT_PATH}"
-sed -i '$a\exit 0' "${DEFAULT_PATH}"
+[[ -z "$( grep -E 'exit 0' "$DEFAULT_PATH" 2>/dev/null)" ]] && sed -i '$a\exit 0' "${DEFAULT_PATH}"
 sed -i -E '/^\t/! s/^ +//' "${ZZZ_PATH}"
-sed -i '$a\exit 0' "${ZZZ_PATH}" 
+[[ -z "$( grep -E 'exit 0' "$ZZZ_PATH" 2>/dev/null)" ]] && sed -i '$a\exit 0' "${ZZZ_PATH}"
 }
 
 
