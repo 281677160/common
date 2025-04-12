@@ -189,11 +189,7 @@ echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
 echo '#!/bin/bash' > ${DIY_PT2_SH}
 grep -E '.*export.*=".*"' $DIY_PT1_SH >> ${DIY_PT2_SH}
 
-cat >> "${TWO_SH}" <<-EOF
-#!/bin/bash
-echo "danshuiglad" >$HOME_PATH/LICENSES/doc/README
-EOF
-
+echo '#!/bin/bash' > ${TWO_SH}
 grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${TWO_SH}
 sed -i 's/\. |/.\/feeds |/g' ${TWO_SH}
 grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${TWO_SH}
