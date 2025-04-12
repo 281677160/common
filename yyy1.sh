@@ -130,8 +130,8 @@ if [[ ! -d "openwrt" ]]; then
   git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 else
   cd ${HOME_PATH}
-  git reset --hard HEAD
-  git pull
+  git reset --hard HEAD >/dev/null 2>&1
+  git pull >/dev/null 2>&1
 fi
 }
 
