@@ -150,6 +150,9 @@ if [[ "${NUM_BER}" == "1" ]]; then
   rm -rf openwrt
   git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 elif [[ "${NUM_BER}" == "2" ]]; then
+  clear
+  TIME g "开始执行编译固件"
+  echo
   cd ${HOME_PATH}
   git reset --hard HEAD >/dev/null 2>&1
   git pull >/dev/null 2>&1
@@ -159,10 +162,13 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   sed -i '/exit 0$/d' "${ZZZ_PATH}"
   sed -i '/exit 0$/d' "${DEFAULT_PATH}"
 elif [[ "${NUM_BER}" == "3" ]]; then
+  clear
+  TIME g "开始执行编译固件"
+  echo
   cd $HOME_PATH
   cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
-  git pull
-  ./scripts/feeds update -a
+  git pull > /dev/null 2>&1
+  ./scripts/feeds update -a > /dev/null 2>&1
   ./scripts/feeds install -a
 fi
 }
