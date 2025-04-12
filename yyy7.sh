@@ -126,8 +126,8 @@ source $COMMON_SH && Diy_variable
 
 function Ben_config() {
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
-  TIME g "是否需要选择机型和增删插件?"
-  read -t 30 -p " [输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
+  TIME g "是否需要增删插件?"
+  read -t 30 -p "[输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
   case ${Bendi_Diy} in
   [Yy])
     Menuconfig_Config="true"
@@ -135,7 +135,7 @@ if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   ;;
   *)
     Menuconfig_Config="false"
-    ECHOR "您已关闭选择机型和增删插件设置！"
+    TIME r "您已关闭选择机型和增删插件设置!"
   ;;
   esac
 fi
@@ -438,7 +438,7 @@ function Ben_xuanzhe() {
     export FOLDER_NAME=$(cat ${GITHUB_WORKSPACE}/GITHUB_EVN |awk ''NR==${YMXZ}'')
     TIME g " 您选择了使用 ${FOLDER_NAME} 编译固件"
     number
-    NUM_BER="1"
+    export NUM_BER="1"
     Diy_main
   break
   ;;
@@ -476,12 +476,12 @@ function menu3() {
   read -p " ${XUANZop}：" menu_num
   case $menu_num in
   1)
-    NUM_BER="3"
+    export NUM_BER="3"
     Diy_main3
   break
   ;;
   2)
-    NUM_BER="2"
+    export NUM_BER="2"
     Diy_main2
   break
   ;;
