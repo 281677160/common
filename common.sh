@@ -557,7 +557,7 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 function Diy_definition() {
 cd ${HOME_PATH}
-if [[ -z "$(grep -E 'danshuiglad' $HOME_PATH/LICENSES/doc/README)" ]]; then
+if [[ -z "$(grep -E 'danshuiglad' $HOME_PATH/LICENSES/doc/README 2>/dev/null)" ]]; then
   echo "12333"
   source "${TWO_SH}"
 fi
