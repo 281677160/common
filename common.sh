@@ -557,7 +557,9 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 function Diy_definition() {
 cd ${HOME_PATH}
+echo "1"
 source "${TWO_SH}"
+echo "2"
 source "${DIY_PT2_SH}"
 
 # 获取源码文件的IP
