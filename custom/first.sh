@@ -56,37 +56,41 @@ fi
 function Diy_two() {
 cd ${GITHUB_WORKSPACE}
 if [[ ! -d "${OPERATES_PATH}" ]]; then
-  echo -e "\033[31m 根目录缺少编译必要文件夹 \033[0m"
+  TIME r "根目录缺少编译必要文件夹"
   SYNCHRONISE="NO"
   tongbu_message="根目录缺少编译必要文件夹"
 elif [[ ! -d "${COMPILE_PATH}" ]]; then
-  echo -e "\033[31m 缺少${COMPILE_PATH}文件夹 \033[0m"
+  echo -e "\033[31m 缺少${COMPILE_PATH}文件夹"
   SYNCHRONISE="NO"
   tongbu_message="缺少编译必要文件夹"
 elif [[ ! -f "${BUILD_PARTSH}" ]]; then
-  echo -e "\033[31m 缺少${BUILD_PARTSH}文件 \033[0m"
+  echo -e "\033[31m 缺少${BUILD_PARTSH}文件"
   SYNCHRONISE="NO"
   tongbu_message="缺少文件"
 elif [[ ! -f "${BUILD_SETTINGS}" ]]; then
-  echo -e "\033[31m 缺少${BUILD_SETTINGS}文件 \033[0m"
+  TIME r "缺少${BUILD_SETTINGS}文件"
   SYNCHRONISE="NO"
   tongbu_message="缺少文件"
 elif [[ ! -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
-  echo -e "\033[31m 缺少relevance/actions_version文件 \033[0m"
+  TIME r "缺少relevance/actions_version文件"
   SYNCHRONISE="NO"
   tongbu_message="缺少文件"
 elif [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o common.sh
+  if [[ -z "$( grep -E 'export' 'common.sh' 2>/dev/null)" ]]; then
+    TIME r "对比版本号文件下载失败,请检查网络"
+    exit 1
+  fi
   ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' common.sh)"
   ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' ${COMPILE_PATH}/relevance/actions_version)"
   rm -rf common.sh
   if [[ ! "${ACTIONS_VERSION1}" == "${ACTIONS_VERSION2}" ]]; then
-    echo -e "\033[31m 和上游版本不一致 \033[0m"
+    TIME r "和上游版本不一致"
     SYNCHRONISE="NO"
     tongbu_message="和上游版本不一致"
   fi
 elif [[ ! -d "${COMPILE_PATH}/seed/${CONFIG_FILE}" ]]; then
-  echo -e "\033[31m 缺少seed/${CONFIG_FILE}文件夹 \033[0m"
+  TIME r "缺少seed/${CONFIG_FILE}文件夹"
   SYNCHRONISE="NO"
   tongbu_message="缺少seed/${CONFIG_FILE}文件"
 else
