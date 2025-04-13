@@ -361,7 +361,7 @@ function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
 }
 
-
+/feeds/other/lean/luci-app-vlmcsd
 function Diy_LIENOL() {
 cd ${HOME_PATH}
 gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
@@ -382,10 +382,6 @@ if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/ustream-ssl ${HOME_PATH}/package/libs/ustream-ssl
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/uclient ${HOME_PATH}/package/libs/uclient
   rm -fr ${HOME_PATH}/feeds/packages/utils/owut
-fi
-
-if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
-  gitsvn https://github.com/Lienol/openwrt/tree/21.02/package/network/services/dnsmasq ${HOME_PATH}/package/network/services/dnsmasq
 fi
 }
 
