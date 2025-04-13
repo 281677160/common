@@ -160,6 +160,7 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   if git clone --depth=1 -b "${REPO_BRANCH}" "${REPO_URL}" "${tmpdir}"; then
     cd $HOME_PATH && rm -rf !(dl|build_dir|staging_dir|LICENSES)
     cp -Rf $tmpdir/* $HOME_PATH
+    rm -rf $HOME_PATH/.git && cp -Rf $tmpdir/.git $HOME_PATH/.git
     rm -rf $tmpdir
   else
     TIME r "源码下载错误,请检测网络"
