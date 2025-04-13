@@ -117,8 +117,10 @@ export BUILD_PARTSH="${COMPILE_PATH}/diy-part.sh"
 export BUILD_SETTINGS="${COMPILE_PATH}/settings.ini"
 export CONFIG_FILE="${CONFIG_FILE}"
 export MYCONFIG_FILE="${COMPILE_PATH}/seed/${CONFIG_FILE}"
-bash <(curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh)
-source $GITHUB_ENV
+curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o first.sh
+chmod -R +x first.sh
+source first.sh
+rm -rf first.sh
 source $COMMON_SH && Diy_variable
 }
 
