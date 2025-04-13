@@ -572,10 +572,9 @@ if [[ -n "$(grep -E 'success' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]]; then
   required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools")
   missing_flag=0
   for dir in "${required_dirs[@]}"; do
-      if [[ ! -d "$HOME_PATH/$dir" ]]; then
-        echo "目录缺失: $dir"
-        missing_flag=1
-      fi
+    if [[ ! -d "$HOME_PATH/$dir" ]]; then
+      missing_flag=1
+    fi
   done
 
   if [[ $missing_flag -eq 0 ]] && [[ -n "$( grep -E "${TARGET_BOARD}" "${MYCONFIG_FILE}" 2>/dev/null)" ]]; then
