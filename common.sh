@@ -98,7 +98,7 @@ export REPAIR_PATH="${HOME_PATH}/package/base-files/files/etc/openwrt_release"
 export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
 export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
 export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
-export CLEAR_PATH="${HOME_PATH}/Clear"
+export CLEAR_PATH="/tmp/Clear"
 export Upgrade_Date="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
 export Gujian_Date="$(date +%m.%d)"
 export UPGRADE_KEEP="$RAW_WEB/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
@@ -110,8 +110,6 @@ echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
 echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
 echo "DISTRIB_SOURCECODE=${DISTRIB_SOURCECODE}" >> ${GITHUB_ENV}
-echo "FEEDS_CONF=${FEEDS_CONF}" >> ${GITHUB_ENV}
-echo "BASE_FILES=${BASE_FILES}" >> ${GITHUB_ENV}
 echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
 
 echo "FILES_PATH=${FILES_PATH}" >> ${GITHUB_ENV}
