@@ -151,6 +151,9 @@ if [[ "${NUM_BER}" == "1" ]]; then
   git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 elif [[ "${NUM_BER}" == "2" ]]; then
   clear
+
+  tmpdir="$(mktemp -d)"
+  git clone -q -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"
   TIME g "开始执行编译固件"
   echo
   cd ${HOME_PATH}
