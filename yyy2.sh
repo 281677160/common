@@ -33,6 +33,7 @@ export op_log="${OPERATES_PATH}/common/build.log"
 export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
 export NUM_BER=""
 install -m 0755 /dev/null $GITHUB_ENV
+cd $GITHUB_WORKSPACE
 
 Google_Check=$(curl -I -s --connect-timeout 8 google.com -w %{http_code} | tail -n1)
 if [ ! "${Google_Check}" == 301 ]; then
@@ -42,8 +43,6 @@ fi
 if [[ `sudo grep -c "sudo ALL=(ALL:ALL) NOPASSWD:ALL" /etc/sudoers` -eq '0' ]]; then
   sudo sed -i 's?%sudo.*?%sudo ALL=(ALL:ALL) NOPASSWD:ALL?g' /etc/sudoers
 fi
-
-cd $GITHUB_WORKSPACE
 
 function Ben_wslpath() {
 if [[ -n "$(echo "${PATH}" |grep -i 'windows')" ]]; then
@@ -65,12 +64,11 @@ fi
 }
 
 function Ben_diskcapacity() {
-Cipan_Size="$(df -hT $PWD|awk 'NR==2'|awk '{print $(3)}')"
-Cipan_Used="$(df -hT $PWD|awk 'NR==2'|awk '{print $(4)}')"
-Cipan_Avail="$(df -hT $PWD|awk 'NR==2'|awk '{print $(5)}' |cut -d 'G' -f1)"
-TIME y "磁盘总量为[${Cipan_Size}]，已用[${Cipan_Used}]，可用[${Cipan_Avail}G]"
-if [[ "${Cipan_Avail}" -lt "20" ]];then
-  TIME r "敬告：可用空间小于[ 20G ]编译容易出错,建议可用空间大于20G,是否继续?"
+total_size=$(df -h / | awk 'NR==2 {gsub("G", "", $2); print $2}')
+available_size=$(df -h / | awk 'NR==2 {gsub("G", "", $4); print $4}')
+TIME y "磁盘总量为[${total_size}]，可用[${available_size}]"
+if [[ "${available_size}" -lt "20" ]];then
+  TIME r "敬告：可用空间小于[ 20G ]编译容易出错,建议可用空间大于[ 20G ],是否继续?"
   read -p "直接回车退出编译，按[Y/y]回车则继续编译： " KJYN
   case ${KJYN} in
   [Yy]) 
@@ -119,10 +117,8 @@ export BUILD_PARTSH="${COMPILE_PATH}/diy-part.sh"
 export BUILD_SETTINGS="${COMPILE_PATH}/settings.ini"
 export CONFIG_FILE="${CONFIG_FILE}"
 export MYCONFIG_FILE="${COMPILE_PATH}/seed/${CONFIG_FILE}"
-curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o first.sh
-chmod -R +x first.sh
-source first.sh
-rm -rf first.sh
+bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/first.sh)
+echo "$COMMON_SH"
 source $COMMON_SH && Diy_variable
 }
 
