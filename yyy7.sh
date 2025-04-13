@@ -263,10 +263,10 @@ TIME y "在此ubuntu分配核心数为[ ${Cpu_Cores} ],线程数为[ $(nproc) ]"
 TIME g "在此ubuntu分配内存为[ ${RAM_total} ],现剩余内存为[ ${RAM_available} ]"
 echo
 
-if [[ "${Cpu_Cores}" -ge "8" ]];then
+if [[ "$(nproc)" -ge "8" ]];then
   cpunproc="8"
 else
-  cpunproc="${Cpu_Cores}"
+  cpunproc="$(nproc)"
 fi
 
 TIME y "即将使用${cpunproc}线程进行编译固件,请耐心等候..."
