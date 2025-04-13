@@ -449,6 +449,7 @@ fi
 # 更新和安装feeds
 ./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
+clear
 ./scripts/feeds install -a
 
 # 使用自定义配置文件
