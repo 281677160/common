@@ -392,6 +392,7 @@ Ben_wslpath
 Ben_diskcapacity
 Ben_update
 Ben_variable
+Ben_xuanzhe
 Ben_config
 Ben_xiazai
 Ben_menu
@@ -438,11 +439,7 @@ function Ben_xuanzhe() {
   clear
   echo 
   echo
-  if [[ ! -d "${OPERATES_PATH}" ]]; then
-    bash <(curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh)
-  else
-    cd ${OPERATES_PATH}
-  fi
+  cd ${OPERATES_PATH}
   XYZDSZ="$(ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR" "$0'| awk 'END {print}' |awk '{print $(1)}')"
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 > /tmp/GITHUB_EVN
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
@@ -554,7 +551,7 @@ while :; do
 read -p " ${XUANZHEOP}： " CHOOSE
 case $CHOOSE in
 1)
-  Ben_xuanzhe
+  Diy_main
 break
 ;;
 2)
