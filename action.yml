@@ -115,6 +115,7 @@ runs:
       run: |
         cd ${GITHUB_WORKSPACE}
         source $COMMON_SH && Diy_variable
+        echo "$COMMON_SH"
 branding:
   icon: "terminal"
   color: "gray-dark"
