@@ -2,7 +2,8 @@
 # https://github.com/281677160/build-actions
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
-export TONGBU_YUANMA=""
+TONGBU_YUANMA=""
+SYNCHRONISE=""
 
 function TIME() {
   case $1 in
