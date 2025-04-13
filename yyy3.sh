@@ -154,13 +154,14 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   TIME g "开始执行编译固件"
   echo
   TIME y "正在同步上游源码"
-  tmpdir="oplede"
-  git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" oplede
+  tmpdir="$(mktemp -d)"
+  git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"
   required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools"  "Config.in" "feeds.conf.default" "Makefile" "rules.mk")
   for dir in "${required_dirs[@]}"; do
       sudo rm -rf $HOME_PATH/$dir
       cp -Rf $tmpdir/$dir $HOME_PATH/$dir
   done
+  rm -rf "${tmpdir}"
   cd ${HOME_PATH}
   ./scripts/feeds clean
   git pull
