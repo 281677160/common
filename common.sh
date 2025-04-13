@@ -1299,12 +1299,12 @@ elif [[ "$A" == *"github.com"* ]]; then
     branch_name="1"
 else
     echo "无效的GitHub URL格式"
-    return 1
+    exit 1
 fi
 
 if [[ -z "$B" ]]; then
     echo "没设置文件投放路径"
-    return 1
+    exit 1
 elif [[ "$B" == *"openwrt"* ]]; then
     content="$HOME_PATH/${B#*openwrt/}"
     wenjianjia="${B#*openwrt/}"
@@ -1345,12 +1345,14 @@ if [[ "${git_laqu}" == "1" ]]; then
       mv "${path_part}" "${content}"
       if [[ $? -ne 0 ]]; then
          echo "${file_name}文件投放失败,请检查投放路径是否正确"
+         exit 1
       else
          echo "${file_name}文件下载完成"
       fi
       cd "${HOME_PATH}"
     else
       echo "${file_name}文件下载失败"
+      exit 1
     fi
     [[ "${file_name}" == "auto-scripts" ]] && chmod +x "${content}"
     cd "${HOME_PATH}"
@@ -1361,6 +1363,7 @@ elif [[ "${git_laqu}" == "2" ]]; then
       echo "${file_name}文件下载完成"
     else
       echo "${file_name}文件下载失败"
+      exit 1
     fi
 elif [[ "${git_laqu}" == "3" ]]; then
     rm -fr "${content}"
@@ -1368,6 +1371,7 @@ elif [[ "${git_laqu}" == "3" ]]; then
       echo "${file_name}文件下载完成"
     else
       echo "${file_name}文件下载失败"
+      exit 1
     fi
 elif [[ "${git_laqu}" == "4" ]]; then
     [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
@@ -1377,6 +1381,7 @@ elif [[ "${git_laqu}" == "4" ]]; then
       chmod +x "${content}"
     else
       echo "${file_name}文件下载失败"
+      exit 1
     fi
 fi
 }
