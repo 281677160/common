@@ -39,27 +39,27 @@ jobs:
         echo "" >$GITHUB_WORKSPACE/123
         
         branches_raw=$(git ls-remote --heads https://github.com/coolsnowwolf/lede.git | grep refs/heads/)
-        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/master/23.05/g' |sed 's/$/-Lede\"/')
+        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/master/23.05/g' |sed 's/$/-Lede\"/' |sed 's/^/="/')
         echo "$branches" >>$GITHUB_WORKSPACE/123
 
         branches_raw=$(git ls-remote --heads https://github.com/Lienol/openwrt.git | grep refs/heads/)
-        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/$/-Lienol\"/')
+        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/$/-Lienol\"/' |sed 's/^/="/')
         echo "$branches" >>$GITHUB_WORKSPACE/123
 
         branches_raw=$(git ls-remote --heads https://github.com/immortalwrt/immortalwrt.git | grep refs/heads/)
-        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/$/-Immortalwrt\"/')
+        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/$/-Immortalwrt\"/' |sed 's/^/="/')
         echo "$branches" >>$GITHUB_WORKSPACE/123
 
         branches_raw=$(git ls-remote --heads https://github.com/openwrt/openwrt.git | grep refs/heads/)
-        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/$/-Official\"/')
+        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/$/-Official\"/' |sed 's/^/="/')
         echo "$branches" >>$GITHUB_WORKSPACE/123
 
         branches_raw=$(git ls-remote --heads https://github.com/x-wrt/x-wrt.git | grep refs/heads/)
-        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/$/-Xwrt\"/')
+        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/$/-Xwrt\"/' |sed 's/^/="/')
         echo "$branches" >>$GITHUB_WORKSPACE/123
 
         branches_raw=$(git ls-remote --heads https://github.com/padavanonly/immortalwrt-mt798x-24.10 | grep refs/heads/)
-        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/$/-Mt798x\"/' |sed 's/2410/24.10/')
+        branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/$/-Mt798x\"/' |sed 's/2410/24.10/' |sed 's/^/="/')
         echo "$branches" >>$GITHUB_WORKSPACE/123
 
         cat $GITHUB_WORKSPACE/123 |sed '/^$/d' |awk '$0=NR$0' |sed 's/^/R/' |sed s/[[:space:]]//g >$GITHUB_WORKSPACE/repogx/autoupdate/replace 
