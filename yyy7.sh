@@ -466,7 +466,7 @@ function Ben_xuanzhe() {
   fi
   case $CUrrenty in
   B)
-    export FOLDER_NAME="$(awk -v line="$XYZDSZ" 'NR==line {print $0}' /tmp/GITHUB_EVN)"
+    export FOLDER_NAME=$(cat /tmp/GITHUB_EVN |awk ''NR==${YMXZ}'')
     TIME g " 您选择了使用 ${FOLDER_NAME} 编译固件"
     export NUM_BER="1"
     Diy_main
