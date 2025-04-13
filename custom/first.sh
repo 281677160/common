@@ -21,9 +21,10 @@ function Diy_one() {
 cd ${GITHUB_WORKSPACE}
 if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
   TIME r "缺少编译主文件,正在同步上游仓库"
-  if git clone --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou; then
-    cp -Rf shangyou/build ${OPERATES_PATH}
-    rm -rf shangyou
+  shangyou="$(mktemp -d)"
+  if git clone --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions ${shangyou}; then
+    cp -Rf $shangyou/build ${OPERATES_PATH}
+    rm -rf $shangyou
     chmod -R +x ${OPERATES_PATH}
     for X in $(find "${OPERATES_PATH}" -name "settings.ini"); do
       sed -i '/SSH_ACTIONS/d' "${X}"
@@ -76,14 +77,13 @@ elif [[ ! -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
   SYNCHRONISE="NO"
   tongbu_message="缺少文件"
 elif [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o common.sh
-  if [[ -z "$( grep -E 'export' 'common.sh' 2>/dev/null)" ]]; then
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o /tmp/common.sh
+  if [[ -z "$( grep -E 'export' '/tmp/common.sh' 2>/dev/null)" ]]; then
     TIME r "对比版本号文件下载失败,请检查网络"
     exit 1
   fi
-  ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' common.sh)"
+  ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' /tmp/common.sh)"
   ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' ${COMPILE_PATH}/relevance/actions_version)"
-  rm -rf common.sh
   if [[ ! "${ACTIONS_VERSION1}" == "${ACTIONS_VERSION2}" ]]; then
     TIME r "和上游版本不一致"
     SYNCHRONISE="NO"
@@ -103,12 +103,13 @@ cd ${GITHUB_WORKSPACE}
 if [[ "${SYNCHRONISE}" == "NO" ]]; then
   if [[ -n "${BENDI_VERSION}" ]]; then
     TIME r "${tongbu_message},正在同步上游仓库"
-    if git clone --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou; then
+    shangyou="$(mktemp -d)"
+    if git clone --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions ${shangyou}; then
       if [[ -d "${OPERATES_PATH}" ]]; then
         mv ${OPERATES_PATH} backups
-        cp -Rf shangyou/build ${OPERATES_PATH}
+        cp -Rf $shangyou/build ${OPERATES_PATH}
         mv backups ${OPERATES_PATH}/backups
-        rm -rf shangyou
+        rm -rf $shangyou
       else
         cp -Rf shangyou/build ${OPERATES_PATH}
         rm -rf shangyou
