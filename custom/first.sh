@@ -60,11 +60,11 @@ if [[ ! -d "${OPERATES_PATH}" ]]; then
   SYNCHRONISE="NO"
   tongbu_message="根目录缺少编译必要文件夹"
 elif [[ ! -d "${COMPILE_PATH}" ]]; then
-  echo -e "\033[31m 缺少${COMPILE_PATH}文件夹"
+  TIME r "缺少${COMPILE_PATH}文件夹"
   SYNCHRONISE="NO"
   tongbu_message="缺少编译必要文件夹"
 elif [[ ! -f "${BUILD_PARTSH}" ]]; then
-  echo -e "\033[31m 缺少${BUILD_PARTSH}文件"
+  TIME r "缺少${BUILD_PARTSH}文件"
   SYNCHRONISE="NO"
   tongbu_message="缺少文件"
 elif [[ ! -f "${BUILD_SETTINGS}" ]]; then
@@ -156,9 +156,9 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
     git commit -m "${BANBEN_SHUOMING}"
     git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${GIT_REFNAME}
     if [[ $? -ne 0 ]]; then
-      echo -e "\033[31m 同步上游仓库失败,请注意密匙是否正确 \033[0m"
+      TIME r "同步上游仓库失败,请注意密匙是否正确"
     else
-      echo -e "\033[33m 同步上游仓库完成,请重新设置好文件再继续编译 \033[0m"
+      TIME r "同步上游仓库完成,请重新设置好文件再继续编译"
     fi
     exit 1
   fi
