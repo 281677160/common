@@ -158,7 +158,8 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   TIME y "正在同步上游源码"
   tmpdir="$(mktemp -d)"
   if git clone --depth=1 -b "${REPO_BRANCH}" "${REPO_URL}" "${tmpdir}"; then
-    cd $HOME_PATH && rm -rf !(dl|build_dir|staging_dir|LICENSES)
+    cd $HOME_PATH
+    rm -rf !(dl|build_dir|staging_dir|LICENSES)
     cp -Rf $tmpdir/* $HOME_PATH
     rm -rf $HOME_PATH/.git && cp -Rf $tmpdir/.git $HOME_PATH/.git
     rm -rf $tmpdir
