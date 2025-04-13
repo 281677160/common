@@ -386,7 +386,6 @@ Ben_wslpath
 Ben_diskcapacity
 Ben_update
 Ben_variable
-Ben_xuanzhe
 Ben_config
 Ben_xiazai
 Ben_menu
@@ -433,7 +432,7 @@ function Ben_xuanzhe() {
   clear
   echo 
   echo
-  if [[ -d "${OPERATES_PATH}" ]]
+  if [[ -d "${OPERATES_PATH}" ]]; then
     bash <(curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh)
   else
     cd ${OPERATES_PATH}
@@ -549,7 +548,7 @@ while :; do
 read -p " ${XUANZHEOP}： " CHOOSE
 case $CHOOSE in
 1)
-  Diy_main
+  Ben_xuanzhe
 break
 ;;
 2)
