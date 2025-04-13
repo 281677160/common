@@ -151,13 +151,17 @@ if [[ "${NUM_BER}" == "1" ]]; then
   git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
 elif [[ "${NUM_BER}" == "2" ]]; then
   clear
-
-  tmpdir="$(mktemp -d)"
-  git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"
   TIME g "开始执行编译固件"
   echo
+  TIME y "正在同步上游源码"
+  tmpdir="$(mktemp -d)"
+  git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"
+  required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools"  "Config.in" "feeds.conf.default" "Makefile" "rules.mk")
+  for dir in "${required_dirs[@]}"; do
+      sudo rm -rf $HOME_PATH/$dir
+      cp -Rf $tmpdir/$dir $HOME_PATH/$dir
+  done
   cd ${HOME_PATH}
-  git reset --hard HEAD >/dev/null 2>&1
   git pull >/dev/null 2>&1
   cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
   cp -Rf "$HOME_PATH/LICENSES/doc/99-first-run" "${DEFAULT_PATH}"
