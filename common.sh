@@ -361,7 +361,7 @@ function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
 }
 
-/feeds/other/lean/luci-app-vlmcsd
+
 function Diy_LIENOL() {
 cd ${HOME_PATH}
 gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
