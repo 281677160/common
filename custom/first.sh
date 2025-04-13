@@ -90,9 +90,8 @@ elif [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
     tongbu_message="和上游版本不一致"
   fi
 elif [[ ! -d "${COMPILE_PATH}/seed/${CONFIG_FILE}" ]]; then
-  TIME r "缺少seed/${CONFIG_FILE}文件夹"
-  SYNCHRONISE="NO"
-  tongbu_message="缺少seed/${CONFIG_FILE}文件"
+  TIME r "缺少seed/${CONFIG_FILE}文件，请先建立seed/${CONFIG_FILE}文件"
+  exit 1
 else
   SYNCHRONISE="YES"
 fi
