@@ -432,7 +432,7 @@ function Ben_xuanzhe() {
   clear
   echo 
   echo
-  if [[ -d "${OPERATES_PATH}" ]]; then
+  if [[ ! -d "${OPERATES_PATH}" ]]; then
     bash <(curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh)
   else
     cd ${OPERATES_PATH}
