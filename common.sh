@@ -383,6 +383,10 @@ if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/uclient ${HOME_PATH}/package/libs/uclient
   rm -fr ${HOME_PATH}/feeds/packages/utils/owut
 fi
+
+if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
+  gitsvn https://github.com/Lienol/openwrt/tree/21.02/package/network/services/dnsmasq ${HOME_PATH}/package/network/services/dnsmasq
+fi
 }
 
 
@@ -395,7 +399,7 @@ if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
 fi
 
 if [[ "${REPO_BRANCH}" == "openwrt-21.02" ]]; then
-  gitsvn https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/network/services/dnsmasq
+  gitsvn https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/network/services/dnsmasq ${HOME_PATH}/package/network/services/dnsmasq
 fi
 }
 
