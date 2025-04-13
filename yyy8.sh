@@ -119,7 +119,6 @@ export CONFIG_FILE="${CONFIG_FILE}"
 export MYCONFIG_FILE="${COMPILE_PATH}/seed/${CONFIG_FILE}"
 bash <(curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh)
 source $GITHUB_ENV
-echo "$COMMON_SH"
 source $COMMON_SH && Diy_variable
 }
 
