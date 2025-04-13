@@ -179,7 +179,7 @@ if grep -q "TIME" "${COMMON_SH}" && grep -q "Diy_Part2" "${UPGRADE_SH}"; then
   DIY_PT2_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/diy2-part.sh"
   TWO_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/two.sh"
 else
-  echo -e "\033[31m common文件下载失败 \033[0m"
+  TIME r "common文件下载失败"
   exit 1
 fi
 
