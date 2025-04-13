@@ -460,7 +460,6 @@ function Diy_partsh() {
 TIME y "正在执行：自定义文件"
 cd ${HOME_PATH}
 # 运行自定义文件
-gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/lean/luci-app-leigod-acc package/lean/luci-app-leigod-acc
 ${DIY_PT1_SH}
 }
 
@@ -482,7 +481,7 @@ if [[ ! "${Default_theme}" == "0" ]] && [[ -n "${Default_theme}" ]]; then
 fi
 
 # 更新和安装feeds
-./scripts/feeds update -a > /dev/null 2>&1
+./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 
