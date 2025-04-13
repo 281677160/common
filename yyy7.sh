@@ -158,21 +158,16 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   TIME y "正在同步上游源码"
   tmpdir="$(mktemp -d)"
   if git clone --depth=1 -b "${REPO_BRANCH}" "${REPO_URL}" "${tmpdir}"; then
-    required_dirs=("dl" "build_dir" "staging_dir")
-    for dir in "${required_dirs[@]}"; do
-        cp -Rf $HOME_PATH/$dir $tmpdir/$dir
-    done
-    sudo rm -rf $HOME_PATH
-    mv -r $tmpdir $HOME_PATH
+    cd $HOME_PATH && rm -rf !(dl|build_dir|staging_dir|LICENSES)
+    cp -Rf $tmpdir/* $HOME_PATH
+    rm -rf $tmpdir
   else
     TIME r "源码下载错误,请检测网络"
     exit 1
   fi
-  rm -rf "${tmpdir}"
   cd ${HOME_PATH}
   ./scripts/feeds clean
   git pull
-  export ZZZ_PATH="${ZZZ_PATH}"
 elif [[ "${NUM_BER}" == "3" ]]; then
   clear
   TIME g "开始执行编译固件"
