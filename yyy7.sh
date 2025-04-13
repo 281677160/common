@@ -66,7 +66,7 @@ fi
 function Ben_diskcapacity() {
 total_size=$(df -h / | awk 'NR==2 {gsub("G", "", $2); print $2}')
 available_size=$(df -h / | awk 'NR==2 {gsub("G", "", $4); print $4}')
-TIME y "磁盘总量为[${total_size}]，可用[${available_size}]"
+TIME y "磁盘总量为[${total_size}G]，可用[${available_size}G]"
 if [[ "${available_size}" -lt "20" ]];then
   TIME r "敬告：可用空间小于[ 20G ]编译容易出错,建议可用空间大于[ 20G ],是否继续?"
   read -p "直接回车退出编译，按[Y/y]回车则继续编译： " KJYN
@@ -158,11 +158,12 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   TIME y "正在同步上游源码"
   tmpdir="$(mktemp -d)"
   if git clone --depth=1 -b "${REPO_BRANCH}" "${REPO_URL}" "${tmpdir}"; then
-    required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools"  "Config.in" "feeds.conf.default" "Makefile" "rules.mk")
+    required_dirs=("dl" "build_dir" "staging_dir")
     for dir in "${required_dirs[@]}"; do
-        sudo rm -rf $HOME_PATH/$dir
-        cp -Rf $tmpdir/$dir $HOME_PATH/$dir
+        cp -Rf $HOME_PATH/$dir $tmpdir/$dir
     done
+    sudo rm -rf $HOME_PATH
+    mv -r $tmpdir $HOME_PATH
   else
     TIME r "源码下载错误,请检测网络"
     exit 1
