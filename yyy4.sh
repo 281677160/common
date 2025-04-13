@@ -148,19 +148,28 @@ cd ${GITHUB_WORKSPACE}
 if [[ "${NUM_BER}" == "1" ]]; then
   TIME y "正在执行：下载源码"
   rm -rf openwrt
-  git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt
+  if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt; then
+    TIME g "源码下载完成"
+  else
+    TIME r "源码下载错误,请检测网络"
+    exit 1
+  fi
 elif [[ "${NUM_BER}" == "2" ]]; then
   clear
   TIME g "开始执行编译固件"
   echo
   TIME y "正在同步上游源码"
   tmpdir="$(mktemp -d)"
-  git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"
-  required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools"  "Config.in" "feeds.conf.default" "Makefile" "rules.mk")
-  for dir in "${required_dirs[@]}"; do
-      sudo rm -rf $HOME_PATH/$dir
-      cp -Rf $tmpdir/$dir $HOME_PATH/$dir
-  done
+  if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
+    required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools"  "Config.in" "feeds.conf.default" "Makefile" "rules.mk")
+    for dir in "${required_dirs[@]}"; do
+        sudo rm -rf $HOME_PATH/$dir
+        cp -Rf $tmpdir/$dir $HOME_PATH/$dir
+    done
+  else
+    TIME r "源码下载错误,请检测网络"
+    exit 1
+  fi
   rm -rf "${tmpdir}"
   cd ${HOME_PATH}
   ./scripts/feeds clean
