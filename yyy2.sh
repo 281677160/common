@@ -162,12 +162,9 @@ elif [[ "${NUM_BER}" == "2" ]]; then
       cp -Rf $tmpdir/$dir $HOME_PATH/$dir
   done
   cd ${HOME_PATH}
-  git pull >/dev/null 2>&1
-  cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
-  cp -Rf "$HOME_PATH/LICENSES/doc/99-first-run" "${DEFAULT_PATH}"
+  ./scripts/feeds clean
+  git pull
   export ZZZ_PATH="${ZZZ_PATH}"
-  sed -i '/exit 0$/d' "${ZZZ_PATH}"
-  sed -i '/exit 0$/d' "${DEFAULT_PATH}"
 elif [[ "${NUM_BER}" == "3" ]]; then
   clear
   TIME g "开始执行编译固件"
@@ -403,6 +400,7 @@ Ben_update
 Ben_variable
 Ben_config
 Ben_xiazai
+Ben_menu
 Ben_menu2
 Ben_menu3
 Ben_menuconfig
