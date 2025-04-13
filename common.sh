@@ -393,9 +393,6 @@ cp -Rf "${DEFAULT_PATH}" "${LICENSES_DOC}/99-first-run"
 
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
-if [[ -d "${HOME_PATH}/feeds/danshui/luci-app-qmodem/driver" ]]; then
-  rm -rf ${HOME_PATH}/package/wwan/driver
-fi
 }
 
 
