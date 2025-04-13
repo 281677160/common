@@ -42,7 +42,9 @@ if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
       echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
     done
     TIME g "同步上游仓库完成"
+    TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
     export TONGBU_YUANMA="YES"
+    exit 1
   else
     TIME r "同步上游仓库失败,注意网络环境,请重新再运行命令试试"
     exit 1
@@ -130,7 +132,9 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
         echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
       done
       TIME g "同步上游仓库完成"
+      TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
       export TONGBU_YUANMA="YES"
+      exit 1
     else
       TIME r "同步上游仓库失败,注意网络环境,请重新再运行命令试试"
       exit 1
