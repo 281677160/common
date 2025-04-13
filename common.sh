@@ -163,8 +163,7 @@ sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 grep -q "admin:" ${FILES_PATH}/etc/shadow && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 
 # 添加自定义插件源
-CLASH_FENZHIHAO="$(grep -E '^export OpenClash_branch=' $BUILD_PARTSH |cut -d '"' -f2)"
-if [[ "${CLASH_FENZHIHAO}" == "1" ]]; then
+if [[ "${OpenClash_branch}" == "1" ]]; then
   CLASH_BRANCH="dev"
 else
   CLASH_BRANCH="master"
