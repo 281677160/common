@@ -386,6 +386,7 @@ Ben_wslpath
 Ben_diskcapacity
 Ben_update
 Ben_variable
+Ben_xuanzhe
 Ben_config
 Ben_xiazai
 Ben_menu
@@ -544,7 +545,7 @@ while :; do
 read -p " ${XUANZHEOP}： " CHOOSE
 case $CHOOSE in
 1)
-  Ben_xuanzhe
+  Diy_main
 break
 ;;
 2)
