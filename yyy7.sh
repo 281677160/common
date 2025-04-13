@@ -149,6 +149,7 @@ if [[ "${NUM_BER}" == "1" ]]; then
   TIME y "正在执行：下载源码"
   rm -rf openwrt
   if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt; then
+  if git clone --depth=1 -b "${REPO_BRANCH}" "${REPO_URL}" openwrt; then
     TIME g "源码下载完成"
   else
     TIME r "源码下载错误,请检测网络"
@@ -160,7 +161,7 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   echo
   TIME y "正在同步上游源码"
   tmpdir="$(mktemp -d)"
-  if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
+  if git clone --depth=1 -b "${REPO_BRANCH}" "${REPO_URL}" "${tmpdir}"; then
     required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools"  "Config.in" "feeds.conf.default" "Makefile" "rules.mk")
     for dir in "${required_dirs[@]}"; do
         sudo rm -rf $HOME_PATH/$dir
