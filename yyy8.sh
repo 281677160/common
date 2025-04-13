@@ -439,7 +439,12 @@ function Ben_xuanzhe() {
   clear
   echo 
   echo
-  cd ${OPERATES_PATH}
+  if [[ ! -d "${OPERATES_PATH}" ]]; then
+     bash <(curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh)
+     Ben_xuanzhe
+   else
+     cd ${OPERATES_PATH}
+   fi
   XYZDSZ="$(ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR" "$0'| awk 'END {print}' |awk '{print $(1)}')"
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 > /tmp/GITHUB_EVN
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
