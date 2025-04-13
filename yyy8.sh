@@ -182,6 +182,7 @@ elif [[ "${NUM_BER}" == "3" ]]; then
   TIME y "正在执行：更新和安装feeds"
   ./scripts/feeds update -a > /dev/null 2>&1
   ./scripts/feeds install -a
+  cp -Rf ${MYCONFIG_FILE} ${HOME_PATH}/.config
 fi
 }
 
