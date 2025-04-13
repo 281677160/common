@@ -44,7 +44,7 @@ if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
     TIME g "同步上游仓库完成"
     TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
     export TONGBU_YUANMA="YES"
-    exit 1
+    exit 0
   else
     TIME r "同步上游仓库失败,注意网络环境,请重新再运行命令试试"
     exit 1
@@ -134,7 +134,7 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
       TIME g "同步上游仓库完成"
       TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
       export TONGBU_YUANMA="YES"
-      exit 1
+      exit 0
     else
       TIME r "同步上游仓库失败,注意网络环境,请重新再运行命令试试"
       exit 1
