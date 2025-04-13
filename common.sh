@@ -27,10 +27,6 @@ COOLSNOWWOLF)
   export SOURCE_OWNER="Lean"
   export LUCI_EDITION="23.05"
   export DISTRIB_SOURCECODE="lede"
-  export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
-  export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
-  export BASE_FILES="$RAW_WEB/package/base-files/luci2/bin/config_generate"
   export GENE_PATH="${HOME_PATH}/package/base-files/luci2/bin/config_generate"
 ;;
 LIENOL)
@@ -39,10 +35,6 @@ LIENOL)
   export SOURCE_OWNER="Lienol"
   export DISTRIB_SOURCECODE="lienol"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
-  export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
-  export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
   export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 IMMORTALWRT)
@@ -51,10 +43,6 @@ IMMORTALWRT)
   export SOURCE_OWNER="ctcgfw"
   export DISTRIB_SOURCECODE="immortalwrt"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
-  export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
-  export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
   export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 XWRT)
@@ -63,10 +51,6 @@ XWRT)
   export SOURCE_OWNER="ptpt52"
   export DISTRIB_SOURCECODE="xwrt"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
-  export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
-  export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
   export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 OFFICIAL)
@@ -75,10 +59,6 @@ OFFICIAL)
   export SOURCE_OWNER="openwrt"
   export DISTRIB_SOURCECODE="official"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
-  export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
-  export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
   export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 MT798X)
@@ -89,10 +69,6 @@ MT798X)
     export REPO_BRANCH="openwrt-21.02"
     export DISTRIB_SOURCECODE="immortalwrt"
     export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-    export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-    export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
-    export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
-    export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
     export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
   else
     export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
@@ -104,10 +80,6 @@ MT798X)
       export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     fi
     export DISTRIB_SOURCECODE="immortalwrt"
-    export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-    export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}"
-    export FEEDS_CONF="$RAW_WEB/feeds.conf.default"
-    export BASE_FILES="$RAW_WEB/package/base-files/files/bin/config_generate"
     export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
   fi
 ;;
