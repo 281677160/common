@@ -121,7 +121,11 @@ curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o firs
 chmod -R +x first.sh
 source first.sh
 rm -rf first.sh
-source $COMMON_SH && Diy_variable
+if [[ "${TONGBU_YUANMA}" == "YES" ]]; then
+  exit 0
+else
+  source $COMMON_SH && Diy_variable
+fi
 }
 
 function Ben_config() {
