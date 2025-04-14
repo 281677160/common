@@ -16,13 +16,8 @@ bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g
 genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
 libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
 libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf \
-python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion \
+ python2.7 python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion \
 swig texinfo uglifyjs unzip upx-ucl vim wget xmlto xxd zlib1g-dev
-
-# 97
-${INS} -y install build-essential asciidoc binutils bzip2 curl gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip \
-zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev \
-xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf
 
 # N1打包需要的依赖
 ${INS} install rename pigz clang
