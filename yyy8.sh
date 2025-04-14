@@ -152,8 +152,12 @@ function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
 if [[ "${NUM_BER}" == "1" ]]; then
   TIME y "正在执行：下载源码"
-  rm -rf openwrt
-  if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt; then
+  
+  tmpdir="$(mktemp -d)"
+  if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
+    rm -rf openwrt
+    cp -Rf $tmpdir $HOME_PATH
+    rm -rf $tmpdir
     TIME g "源码下载完成"
   else
     TIME r "源码下载错误,请检测网络"
