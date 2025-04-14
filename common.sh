@@ -152,9 +152,6 @@ cd ${HOME_PATH}
 mkdir -p "${LICENSES_DOC}"
 echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
-if ! grep -q "auto-scripts" "${HOME_PATH}/Config.in"; then
-  echo 'source "package/auto-scripts/Config.in"' >> ${HOME_PATH}/Config.in
-fi
 
 sed -i "s/ZHUJI_MING/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
