@@ -328,9 +328,9 @@ else
   fi
 fi
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
-  git clone -q --single-branch --depth=1 --branch=${SRC_FENZHIHAO} ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
+  git clone --single-branch --depth=1 --branch=${SRC_FENZHIHAO} ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
 else
-  git clone -q --depth 1 ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
+  git clone --depth 1 ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
 fi
 if [[ -d "${HOME_PATH}/SRC_LUCI/modules/luci-mod-system" ]]; then
   THEME_BRANCH="Theme2"
