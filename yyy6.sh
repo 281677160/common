@@ -32,6 +32,7 @@ export BENDI_VERSION="1"
 export op_log="${OPERATES_PATH}/common/build.log"
 export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
 export NUM_BER=""
+export SUCCESS_FAILED=""
 install -m 0755 /dev/null $GITHUB_ENV
 cd $GITHUB_WORKSPACE
 
@@ -466,15 +467,22 @@ function Ben_xuanzhe() {
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 > /tmp/GITHUB_EVN
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   cd ${GITHUB_WORKSPACE}
-  TIME y "请输入您要编译源码前面对应的数值(1~X)，输入[N/n]则为退出程序"
+  if [[ "${SUCCESS_FAILED}" =~ (success|breakdown) ]]; then
+    hx=",输入[Q/q]返回上一步"
+    YMXZ="Q"
+  else
+    YMXZ=""
+  fi
+  TIME y "请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
   export YUMINGIP="请输入您的选择"
   while :; do
-  YMXZ=""
   read -p "${YUMINGIP}：" YMXZ
   if [[ "${YMXZ}" =~ (W|w) ]]; then
     CUrrenty="W"
   elif [[ "${YMXZ}" =~ (N|n) ]]; then
     CUrrenty="N"
+  elif [[ "${YMXZ}" =~ (Q|q) ]]; then
+    CUrrenty="Q"
   elif [[ "${YMXZ}" == "0" ]] || [[ -z "${YMXZ}" ]]; then
     CUrrenty="x"
   elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
@@ -492,6 +500,10 @@ function Ben_xuanzhe() {
   ;;
   N)
     exit 0
+  break
+  ;;
+  Q)
+    menu3
   break
   ;;
   x)
