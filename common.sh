@@ -371,9 +371,9 @@ function Diy_LIENOL() {
 cd ${HOME_PATH}
 gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
 if [[ -d "${HOME_PATH}/feeds/other/lean" ]]; then
-  gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/lean/mt ${HOME_PATH}/feeds/other/lean/mt
-  gitsvn https://github.com/coolsnowwolf/luci/tree/openwrt-23.05/applications/luci-app-vlmcsd ${HOME_PATH}/feeds/other/lean/luci-app-vlmcsd
-  gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/vlmcsd ${HOME_PATH}/feeds/other/lean/vlmcsd
+  rm -rf ${HOME_PATH}/feeds/other/lean/mt
+  rm -rf ${HOME_PATH}/feeds/other/lean/luci-app-vlmcsd
+  rm -rf ${HOME_PATH}/feeds/other/lean/vlmcsd
 fi
 if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
    # luci-app-ssr-plus的shadowsocks-rust版本（1.23.0）编译错误，拉取1.22.0使用
