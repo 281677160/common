@@ -249,6 +249,7 @@ fi
 
 # 更新feeds
 cd ${HOME_PATH}
+./scripts/feeds clean
 ./scripts/feeds update -a > /dev/null 2>&1
 
 
