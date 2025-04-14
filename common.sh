@@ -439,6 +439,7 @@ TIME y "正在执行：自定义文件"
 cd ${HOME_PATH}
 # 运行自定义文件
 ${DIY_PT1_SH}
+./scripts/feeds update -a
 }
 
 
@@ -447,11 +448,15 @@ TIME y "正在执行：更新和安装feeds"
 # 运行自定义后,检测主题是否可用
 cd ${HOME_PATH}
 # 主题设置
-Mandatory_theme="$(grep '^export Mandatory_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
-Default_theme="$(grep '^export Default_theme=' $BUILD_PARTSH |cut -d '"' -f2)"
 if [[ ! "${Mandatory_theme}" == "0" ]] && [[ -n "${Mandatory_theme}" ]]; then
   sed -i "/${Mandatory_theme}/d" $MYCONFIG_FILE
   echo "CONFIG_PACKAGE_luci-theme-$Mandatory_theme=y" >>$MYCONFIG_FILE
+  SEARCH_DIRS=("${HOME_PATH}/package" "${HOME_PATH}/feeds")
+  TARGET_DIR="luci-theme-${Mandatory_theme}"
+  if find "${SEARCH_DIRS[@]}" -type d -name "$TARGET_DIR" -print -quit | grep -q .; then
+    [[ -f "${HOME_PATH}/feeds/luci/collections/luci/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "${HOME_PATH}/feeds/luci/collections/luci/Makefile"
+    [[ -f "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile" ]] && sed -i -E "s/(\+luci-theme-)[^ \\]*/\1${Mandatory_theme}/g" "${HOME_PATH}/feeds/luci/collections/luci-light/Makefile"
+  fi
 fi
 if [[ ! "${Default_theme}" == "0" ]] && [[ -n "${Default_theme}" ]]; then
   sed -i "/${Default_theme}/d" $MYCONFIG_FILE
@@ -459,7 +464,6 @@ if [[ ! "${Default_theme}" == "0" ]] && [[ -n "${Default_theme}" ]]; then
 fi
 
 # 更新和安装feeds
-./scripts/feeds update -a
 ./scripts/feeds install -a > /dev/null 2>&1
 ./scripts/feeds install -a
 
