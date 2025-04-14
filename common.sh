@@ -168,6 +168,7 @@ if [[ "${OpenClash_branch}" == "1" ]]; then
 else
   CLASH_BRANCH="master"
 fi
+srcdir="$(mktemp -d)"
 if grep -q "src-git-full" "${HOME_PATH}/feeds.conf.default"; then
   SRC_LIANJIE="$(grep -E '^src-git-full luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git-full luci (https?:\/\/[^;]+).*/\1/')"
   a=$(grep -E '^src-git-full luci https' "feeds.conf.default")
@@ -182,17 +183,17 @@ else
   fi
 fi
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
-  git clone --single-branch --depth=1 --branch=${SRC_FENZHIHAO} ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
+  git clone --single-branch --depth=1 --branch=${SRC_FENZHIHAO} ${SRC_LIANJIE} ${srcdir}
 else
-  git clone --depth=1 ${SRC_LIANJIE} ${HOME_PATH}/SRC_LUCI
+  git clone --depth=1 ${SRC_LIANJIE} ${srcdir}
 fi
-if [[ -d "${HOME_PATH}/SRC_LUCI/modules/luci-mod-system" ]]; then
+if [[ -d "${srcdir}/modules/luci-mod-system" ]]; then
   THEME_BRANCH="Theme2"
-  rm -rf ${HOME_PATH}/SRC_LUCI
+  rm -rf ${srcdir}
   gitsvn https://github.com/281677160/luci-theme-argon/tree/master ${HOME_PATH}/package/luci-theme-argon
 else
   THEME_BRANCH="Theme1"
-  rm -rf ${HOME_PATH}/SRC_LUCI
+  rm -rf ${srcdir}
   gitsvn https://github.com/281677160/luci-theme-argon/tree/18.06 ${HOME_PATH}/package/luci-theme-argon
 fi
 
