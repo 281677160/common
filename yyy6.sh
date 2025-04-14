@@ -522,11 +522,11 @@ function menu3() {
     TIME r " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}编译${TARGET_PROFILE}固件失败"
   fi
   echo
-  TIME y " 1、保留缓存,不改设置,只更改插件再编译"
+  TIME g " 1、保留全部缓存,不读取配置文件,只更改插件再编译"
   echo
-  TIME y " 2、保留缓存,可改设置再编译"
+  TIME y " 2、保留部分缓存(插件源码都重新下载),可改配置文件再编译"
   echo
-  TIME y " 3、重选择源码再编译"
+  TIME g " 3、重选择源码再编译"
   echo
   TIME y " 4、打包Amlogic/Rockchip固件(您要有armvirt_64的.tar.gz固件)"
   echo
