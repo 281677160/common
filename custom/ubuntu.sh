@@ -16,7 +16,7 @@ bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g
 genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
 libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
 libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf \
- python2.7 python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion \
+python2.7 python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion \
 swig texinfo uglifyjs unzip upx-ucl vim wget xmlto xxd zlib1g-dev
 
 # N1打包需要的依赖
