@@ -389,9 +389,6 @@ if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/uclient ${HOME_PATH}/package/libs/uclient
   rm -fr ${HOME_PATH}/feeds/packages/utils/owut
 fi
-if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
-  gitsvn https://github.com/Lienol/openwrt/blob/21.02/package/network/services/dnsmasq/Makefile ${HOME_PATH}/package/network/services/dnsmasq/Makefile
-fi
 }
 
 
@@ -401,9 +398,6 @@ if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
   gitsvn https://github.com/openwrt/routing/tree/openwrt-21.02/bmx6 ${HOME_PATH}/feeds/routing/bmx6
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-homeproxy
-fi
-if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
-  gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/network/services/dnsmasq/Makefile ${HOME_PATH}/package/network/services/dnsmasq/Makefile
 fi
 }
 
