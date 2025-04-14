@@ -206,7 +206,7 @@ fi
 if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|openwrt-23.05) ]]; then
   git clone --single-branch --depth=1 --branch=2410 https://github.com/padavanonly/immortalwrt-mt798x-24.10 mt798xmk
   cd mt798xmk
-  git checkout 295085d44e783aab53956cde9ba94efa4fe5c3e2
+  git checkout 3c4e606420c81da1892f64cce6011125dce9e552
   cd ${HOME_PATH}
   rm -rf package/boot && cp -r mt798xmk/package/boot package/boot
   rm -rf target/linux/mediatek && cp -r mt798xmk/target/linux/mediatek target/linux/mediatek
