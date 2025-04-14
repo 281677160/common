@@ -228,9 +228,9 @@ elif [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)
   fi
 fi
 
-if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci ?g' "${HOME_PATH}/include/target.mk"
-fi
+#if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
+#  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci ?g' "${HOME_PATH}/include/target.mk"
+#fi
 
 # zzz-default-settings文件
 ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
