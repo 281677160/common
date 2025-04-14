@@ -207,6 +207,8 @@ if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|o
   rm -rf package/boot && cp -r mt798xmk/package/boot package/boot
   rm -rf target/linux/mediatek && cp -r mt798xmk/target/linux/mediatek target/linux/mediatek
   rm -rf target/linux/mediatek/patches-5.4
+  rm -rf target/linux/mediatek/mt7981/config-5.4
+  rm -rf target/linux/mediatek/mt7986/config-5.4
   rm -rf package/boot/arm-trusted-firmware-stm32
   gitcon https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/network/services/hostapd package/network/services/hostapd
 fi
