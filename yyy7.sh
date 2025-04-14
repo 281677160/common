@@ -495,11 +495,9 @@ function menu3() {
   echo
   TIME y " 3、重选择源码再编译"
   echo
-  TIME y " 4、回到编译主菜单"
+  TIME y " 4、打包Amlogic/Rockchip固件(您要有armvirt_64的.tar.gz固件)"
   echo
-  TIME y " 5、打包Amlogic/Rockchip固件(您要有armvirt_64的.tar.gz固件)"
-  echo
-  TIME r " 6、退出"
+  TIME r " 5、退出"
   echo
   XUANZop="请输入数字"
   echo
@@ -517,7 +515,7 @@ function menu3() {
   break
   ;;
   3)
-    menu
+    Ben_xuanzhe
   break
   ;;
   4)
@@ -525,11 +523,6 @@ function menu3() {
   break
   ;;
   5)
-    Bendi_Dependent
-    Bendi_Packaging
-  break
-  ;;
-  6)
     echo
     exit 0
   break
