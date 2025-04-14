@@ -175,7 +175,6 @@ elif [[ "${NUM_BER}" == "2" ]]; then
     exit 1
   fi
   cd ${HOME_PATH}
-  ./scripts/feeds clean
   git pull
 elif [[ "${NUM_BER}" == "3" ]]; then
   clear
