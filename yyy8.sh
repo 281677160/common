@@ -152,7 +152,6 @@ function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
 if [[ "${NUM_BER}" == "1" ]]; then
   TIME y "正在执行：下载源码"
-  
   tmpdir="$(mktemp -d)"
   if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
     rm -rf openwrt
@@ -537,6 +536,7 @@ function menu3() {
   break
   ;;
   3)
+    export NUM_BER=""
     Ben_xuanzhe
   break
   ;;
