@@ -193,6 +193,7 @@ function Ben_diyptsh() {
 TIME y "正在执行：加载自定义文件"
 cd ${HOME_PATH}
 $DIY_PT1_SH
+./scripts/feeds update -a
 }
 
 function Ben_configuration() {
