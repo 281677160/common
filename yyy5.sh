@@ -182,7 +182,7 @@ elif [[ "${NUM_BER}" == "3" ]]; then
   cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
   git pull > /dev/null 2>&1
   TIME y "正在执行：更新和安装feeds"
-  ./scripts/feeds update -a > /dev/null 2>&1
+  ./scripts/feeds update -a
   ./scripts/feeds install -a
   cp -Rf ${MYCONFIG_FILE} ${HOME_PATH}/.config
 fi
@@ -191,8 +191,7 @@ fi
 function Ben_diyptsh() {
 TIME y "正在执行：加载自定义文件"
 cd ${HOME_PATH}
-$DIY_PT1_SH
-./scripts/feeds update -a
+source $COMMON_SH && Diy_partsh
 }
 
 function Ben_configuration() {
