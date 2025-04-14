@@ -416,10 +416,6 @@ if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
   gitsvn https://github.com/openwrt/openwrt/tree/openwrt-22.03/package/utils/bcm27xx-userland ${HOME_PATH}/package/utils/bcm27xx-userland
   rm -fr ${HOME_PATH}/feeds/danshui/luci-app-kodexplorer
 fi
-if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-   # luci-app-ssr-plus的shadowsocks-rust版本（1.23.0）编译错误，拉取1.22.0使用
-   gitsvn https://github.com/fw876/helloworld/blob/d6bc31754ac228422ee6f03a692568f7dcdd08c3/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
-fi
 if [[ "${REPO_BRANCH}" =~ (main|master|openwrt-24.10) ]]; then
   gitsvn https://github.com/281677160/common/blob/main/Share/luci-app-nginx-pingos/Makefile ${HOME_PATH}/feeds/danshui/luci-app-nginx-pingos/Makefile
 fi
