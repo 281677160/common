@@ -291,6 +291,20 @@ fi
 
 sleep 3
 if [[ "${compile_error}" == "1" ]]; then
+  echo "
+  SUCCESS_FAILED="breakdown"
+  SOURCE_CODE="${SOURCE_CODE}"
+  SOURCE="${SOURCE}"
+  FOLDER_NAME="${FOLDER_NAME}"
+  REPO_BRANCH="${REPO_BRANCH}"
+  LUCI_EDITION="${LUCI_EDITION}"
+  TARGET_BOARD="${TARGET_BOARD}"
+  MYCONFIG_FILE="${MYCONFIG_FILE}"
+  TARGET_PROFILE="${TARGET_PROFILE}"
+  CONFIG_FILE="${CONFIG_FILE}"
+  ZZZ_PATH="${ZZZ_PATH}"
+  " > ${LICENSES_DOC}/buildzu.ini
+  sed -i 's/^[ ]*//g' ${LICENSES_DOC}/buildzu.ini
   TIME r "编译失败~~!"
   TIME y "在[operates/common/build.log]可查看编译日志"
   exit 1
@@ -487,7 +501,11 @@ function Ben_xuanzhe() {
 function menu3() {
   clear
   echo
-  TIME g " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}成功编译${TARGET_PROFILE}固件"
+  if [[ "${SUCCESS_FAILED}" == "success" ]]; then
+    TIME g " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}成功编译${TARGET_PROFILE}固件"
+  else
+    TIME r " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}编译${TARGET_PROFILE}固件失败"
+  fi
   echo
   TIME y " 1、保留缓存,不改设置,只更改插件再编译"
   echo
@@ -568,7 +586,8 @@ done
 }
 
 function main() {
-if [[ -n "$(grep -E 'success' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]]; then
+if [[ -n "$(grep -E 'success' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]] || \
+[[ -n "$(grep -E 'breakdown' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]]; then
   source ${LICENSES_DOC}/buildzu.ini
   required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools")
   missing_flag=0
@@ -578,7 +597,7 @@ if [[ -n "$(grep -E 'success' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]]; then
     fi
   done
 
-  if [[ $missing_flag -eq 0 ]] && [[ -n "$( grep -E "${TARGET_BOARD}" "${MYCONFIG_FILE}" 2>/dev/null)" ]]; then
+  if [[ $missing_flag -eq 0 ]] && [[ -n "$( grep -E "${TARGET_BOARD}" "$HOME_PATH/.config" 2>/dev/null)" ]]; then
     menu3
   else
     menu2
