@@ -371,6 +371,7 @@ cd ${HOME_PATH}
 
 function Diy_LIENOL() {
 cd ${HOME_PATH}
+rm -rf $HOME_PATH/feeds/packages/net/miniupnpd
 gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
 #gitsvn https://github.com/Lienol/openwrt-packages/tree/24.10/net/miniupnpd ${HOME_PATH}/feeds/packages/net/miniupnpd
 if [[ -d "${HOME_PATH}/feeds/other/lean" ]]; then
