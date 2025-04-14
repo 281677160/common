@@ -266,9 +266,6 @@ for x in "${t[@]}"; do
         -name "$x" -type d -exec rm -rf {} +
 done
 
-if [[ -d "${HOME_PATH}/feeds/dstheme/luci-theme-argon" ]]; then
-  mv ${HOME_PATH}/feeds/dstheme/luci-theme-argon ${HOME_PATH}/feeds/luci/themes/luci-theme-argon
-fi
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
@@ -299,7 +296,8 @@ if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/multimedia/ffmpeg-re
 fi
 
 # tproxy补丁
-bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/nft_tproxy.sh)
+curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/nft_tproxy.sh -o nft_tproxy.sh
+source nft_tproxy.sh
 
 
 # 降低luci-app-ssr-plus的shadowsocks-rust版本
