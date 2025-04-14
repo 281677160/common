@@ -193,9 +193,9 @@ else
   gitsvn https://github.com/281677160/luci-theme-argon/tree/18.06 ${HOME_PATH}/package/luci-theme-argon
 fi
 
-echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
-echo "src-git dstheme https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
-echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;$CLASH_BRANCH" >> ${HOME_PATH}/feeds.conf.default
+#echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
+#echo "src-git dstheme https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
+#echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;$CLASH_BRANCH" >> ${HOME_PATH}/feeds.conf.default
 
 # 增加中文语言包
 if [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)" ]] && [[ "${THEME_BRANCH}" == "Theme2" ]]; then
