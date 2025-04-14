@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd ${HOME_PATH}
+echo "123"
 
 function gitcon() {
 cd "${HOME_PATH}"
