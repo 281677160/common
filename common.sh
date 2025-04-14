@@ -151,21 +151,8 @@ cd ${HOME_PATH}
 # 增加一些应用
 mkdir -p "${LICENSES_DOC}"
 echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
-gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
 
-
-
-# zzz-default-settings文件
-ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
-export ZZZ_PATH="${ZZZ_PATH}"
-if [[ -n "${ZZZ_PATH}" ]]; then
-  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
-  sed -i '/exit 0$/d' "${ZZZ_PATH}"
-  sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-  grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
-fi
-
-
+echo "9999"
 # 更新feeds
 cd ${HOME_PATH}
 ./scripts/feeds clean
