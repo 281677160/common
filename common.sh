@@ -246,11 +246,10 @@ if [[ -n "${ZZZ_PATH}" ]]; then
   grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 fi
 
-echo "9999"
+
 # 更新feeds
 cd ${HOME_PATH}
-./scripts/feeds clean
-./scripts/feeds update -a
+./scripts/feeds update -a > /dev/null 2>&1
 
 
 # 更新feeds后再次修改补充
