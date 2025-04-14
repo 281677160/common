@@ -402,6 +402,9 @@ if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-homeproxy
 fi
+if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+  gitsvn https://github.com/immortalwrt/immortalwrt/blob/openwrt-23.05/package/network/services/dnsmasq/Makefile ${HOME_PATH}/package/network/services/dnsmasq/Makefile
+fi
 }
 
 
