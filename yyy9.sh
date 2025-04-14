@@ -409,10 +409,10 @@ Ben_menu7
 
 function Diy_main2() {
 Ben_wslpath
+Ben_config
 Ben_diskcapacity
 Ben_update
 Ben_variable
-Ben_config
 Ben_xiazai
 Ben_menu
 Ben_menu2
@@ -426,10 +426,10 @@ Ben_menu7
 
 function Diy_main3() {
 Ben_wslpath
+Ben_config
 Ben_diskcapacity
 Ben_update
 Ben_variable
-Ben_config
 Ben_xiazai
 Ben_menuconfig
 Ben_menu4
