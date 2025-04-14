@@ -135,11 +135,11 @@ if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   case ${Bendi_Diy} in
   [Yy])
     Menuconfig_Config="true"
-    TIME y "您执行机型和增删插件命令,请耐心等待程序运行至窗口弹出进行机型和插件配置!"
+    TIME y "您执行增删插件命令,请耐心等待程序运行至窗口弹出进行插件配置!"
   ;;
   *)
     Menuconfig_Config="false"
-    TIME r "您已关闭选择机型和增删插件设置!"
+    TIME r "您已关闭选择增删插件设置!"
   ;;
   esac
 fi
@@ -150,7 +150,7 @@ cd ${GITHUB_WORKSPACE}
 if [[ "${NUM_BER}" == "1" ]]; then
   TIME y "正在执行：下载源码"
   rm -rf openwrt
-  if git clone --depth=1 -b "${REPO_BRANCH}" "${REPO_URL}" openwrt; then
+  if git clone -b ${REPO_BRANCH} --single-branch ${REPO_URL} openwrt; then
     TIME g "源码下载完成"
   else
     TIME r "源码下载错误,请检测网络"
@@ -162,7 +162,7 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   echo
   TIME y "正在同步上游源码"
   tmpdir="$(mktemp -d)"
-  if git clone --depth=1 -b "${REPO_BRANCH}" "${REPO_URL}" "${tmpdir}"; then
+  if git clone -b ${REPO_BRANCH} --single-branch ${REPO_URL} ${tmpdir}; then
     cd $HOME_PATH
     cp -Rf $tmpdir/* $HOME_PATH
     rm -rf $HOME_PATH/.git && cp -Rf $tmpdir/.git $HOME_PATH/.git
