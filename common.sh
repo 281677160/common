@@ -389,6 +389,9 @@ if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/uclient ${HOME_PATH}/package/libs/uclient
   rm -fr ${HOME_PATH}/feeds/packages/utils/owut
 fi
+if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
+  gitsvn https://github.com/Lienol/openwrt/blob/21.02/package/network/services/dnsmasq/Makefile ${HOME_PATH}/package/network/services/dnsmasq/Makefile
+fi
 }
 
 
