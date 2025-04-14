@@ -149,7 +149,7 @@ cd ${GITHUB_WORKSPACE}
 if [[ "${NUM_BER}" == "1" ]]; then
   TIME y "正在执行：下载源码"
   rm -rf openwrt
-  if git clone -b ${REPO_BRANCH} --single-branch ${REPO_URL} openwrt; then
+  if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" openwrt; then
     TIME g "源码下载完成"
   else
     TIME r "源码下载错误,请检测网络"
@@ -161,7 +161,7 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   echo
   TIME y "正在同步上游源码"
   tmpdir="$(mktemp -d)"
-  if git clone -b ${REPO_BRANCH} --single-branch ${REPO_URL} ${tmpdir}; then
+  if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
     cd $HOME_PATH
     for X in $(ls -1 |grep -v "feeds\|dl\|build_dir\|staging_dir\|LICENSES"); do
       rm -rf $X
@@ -169,6 +169,7 @@ elif [[ "${NUM_BER}" == "2" ]]; then
     cp -Rf $tmpdir/* $HOME_PATH
     rm -rf $HOME_PATH/.git
     cp -Rf $tmpdir/.git $HOME_PATH/.git
+    rm -rf $tmpdir
   else
     TIME r "源码下载错误,请检测网络"
     exit 1
