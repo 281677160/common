@@ -204,6 +204,8 @@ fi
 
 if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|openwrt-23.05) ]]; then
   git clone https://github.com/281677160/mt798x mt798xmk
+  rm -rf mt798xmk/target/linux/mediatek/patches-5.4
+  cp -r target/linux/mediatek/patches-5.4 mt798xmk/target/linux/mediatek/patches-5.4
   rm -rf package/boot && cp -r mt798xmk/package/boot package/boot
   rm -rf target/linux/mediatek && cp -r mt798xmk/target/linux/mediatek target/linux/mediatek
   rm -rf package/boot/arm-trusted-firmware-stm32
