@@ -200,6 +200,12 @@ export COMMON_SH UPGRADE_SH CONFIG_TXT DIY_PT1_SH DIY_PT2_SH TWO_SH
 echo '#!/bin/bash' > ${DIY_PT2_SH}
 grep -E '.*export.*=".*"' $DIY_PT1_SH >> ${DIY_PT2_SH}
 grep -E '.*export.*OpenClash_branch=".*"' $DIY_PT1_SH > /tmp/OpenClash
+grep -E '.*export.*Mandatory_theme=".*"' $DIY_PT1_SH >> /tmp/OpenClash
+grep -E '.*export.*Default_theme=".*"' $DIY_PT1_SH >> /tmp/OpenClash
+source /tmp/OpenClash
+echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+echo "Mandatory_theme=${Mandatory_theme}" >> ${GITHUB_ENV}
+echo "Default_theme=${Default_theme}" >> ${GITHUB_ENV}
 
 echo '#!/bin/bash' > ${TWO_SH}
 grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${TWO_SH}
@@ -209,8 +215,6 @@ sed -i 's/\. |/.\/package |/g' ${TWO_SH}
 sed -i 's?./packagefeeds?./feeds?g' "${TWO_SH}"
 grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH > tmp && mv tmp $DIY_PT1_SH
 chmod -R +x ${OPERATES_PATH}
-source /tmp/OpenClash
-echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 }
 
 function Diy_memu() {
