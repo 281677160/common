@@ -303,7 +303,7 @@ else
   cpunproc="$(nproc)"
 fi
 
-TIME y "即将使用${cpunproc}线程进行编译固件,请耐心等候..."
+TIME z "即将使用${cpunproc}线程进行编译固件,请耐心等候..."
 sleep 5
 make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
 if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]]; then
