@@ -219,16 +219,6 @@ echo "COMMON_SH=${COMMON_SH}" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${UPGRADE_SH}" >> ${GITHUB_ENV}
 echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
 
-echo '#!/bin/bash' > ${DIY_PT2_SH}
-grep -E '.*export.*=".*"' $DIY_PT1_SH >> ${DIY_PT2_SH}
-grep -E '.*export.*OpenClash_branch=".*"' $DIY_PT1_SH > ${LINSHI_COMMON}/OpenClash
-grep -E '.*export.*Mandatory_theme=".*"' $DIY_PT1_SH >> ${LINSHI_COMMON}/OpenClash
-grep -E '.*export.*Default_theme=".*"' $DIY_PT1_SH >> ${LINSHI_COMMON}/OpenClash
-source ${LINSHI_COMMON}/OpenClash
-echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
-echo "Mandatory_theme=${Mandatory_theme}" >> ${GITHUB_ENV}
-echo "Default_theme=${Default_theme}" >> ${GITHUB_ENV}
-
 echo '#!/bin/bash' > ${TWO_SH}
 grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${TWO_SH}
 sed -i 's/\. |/.\/feeds |/g' ${TWO_SH}
@@ -236,6 +226,14 @@ grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${TWO_SH}
 sed -i 's/\. |/.\/package |/g' ${TWO_SH}
 sed -i 's?./packagefeeds?./feeds?g' "${TWO_SH}"
 grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH > tmp && mv tmp $DIY_PT1_SH
+
+echo '#!/bin/bash' > ${DIY_PT2_SH}
+grep -E '.*export.*=".*"' $DIY_PT1_SH >> ${DIY_PT2_SH}
+chmod -R +x ${LINSHI_COMMON}
+source ${DIY_PT2_SH}
+echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
+echo "Mandatory_theme=${Mandatory_theme}" >> ${GITHUB_ENV}
+echo "Default_theme=${Default_theme}" >> ${GITHUB_ENV}
 chmod -R +x ${OPERATES_PATH}
 }
 
