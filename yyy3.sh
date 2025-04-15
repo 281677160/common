@@ -372,24 +372,28 @@ TIME r "提示：再次输入编译命令可进行二次编译"
 
 function Ben_packaging() {
 cd $GITHUB_WORKSPACE
-if [[ ! -d "amlogic" ]]; then
-  mkdir -p $GITHUB_WORKSPACE/amlogic
-  TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
-  exit 1
-elif [[ -d "amlogic/armvirt" ]]; then
+if [[ -d "amlogic/armvirt" ]]; then
   sudo rm -rf amlogic/armvirt
   if [[ -d "amlogic/armvirt" ]]; then
     TIME r "旧的打包程序存在，且无法删除,请重启ubuntu再来操作"
     exit 1
   fi
-elif [[ -d "amlogic" ]]; then
+fi
+  
+if [[ ! -d "amlogic" ]]; then
+  mkdir -p $GITHUB_WORKSPACE/amlogic
+  TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
+  exit 1
+else
   find $GITHUB_WORKSPACE/amlogic -type f -name "*.rootfs.tar.gz" -size -2M -delete
   sudo rm -rf $GITHUB_WORKSPACE/amlogic/*Identifier*
   if [[ -z "$(find $GITHUB_WORKSPACE/amlogic -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
     TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
     exit 1
   fi
-else
+fi
+
+if [[ -d "amlogic" ]]; then
   if git clone -q https://github.com/ophub/amlogic-s9xxx-openwrt.git $$GITHUB_WORKSPACE/amlogic/armvirt; then
     echo ""
     mkdir -p $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt
@@ -410,7 +414,7 @@ kernel_repo="ophub/kernel"
 builder_name="ophub"
 
 echo -e "\n${BLUE}请选择固件名称：${NC}"
-PS6="请输入选项编号: "
+PS3="请输入选项编号: "
 select gender in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
     case $REPLY in
         1|2|3|4|5|6) 
@@ -444,7 +448,7 @@ while :; do
 done
 
 echo -e "\n${BLUE}是否自动选择输入内核版本为最新版本：${NC}"
-PS6="请输入选项编号: "
+PS3="请输入选项编号: "
 select auto_kernell in "自动选择最新版本内核" "无需选择最新版本内核"; do
     case $REPLY in
         1|2) 
@@ -474,7 +478,7 @@ while :; do
 done
 
 echo -e "\n${BLUE}请选择内核仓库(内核的作者)：${NC}"
-PS4="请输入选项编号: "
+PS3="请输入选项编号: "
 select kernel_usage in "stable" "flippy" "dev" "beta"; do
     case $REPLY in
         1|2|3|4) 
@@ -496,7 +500,7 @@ echo -e "▪ 内核仓库\t\t: $kernel_usage"
 echo -e "▪ 内核选择\t\t: $auto_kernell"
 
 echo -e "\n${BLUE}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N退出打包${NC}\n"
-read -p "确认选择" NNKC
+read -p "确认选择: " NNKC
     case $NNKC in
     [Qq])
         Ben_packaging
