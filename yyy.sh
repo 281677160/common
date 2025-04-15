@@ -125,7 +125,6 @@ if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
     source $OPERATES_PATH/$FOLDER_NAME/settings.ini
   else
     MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "$OPERATES_PATH/$FOLDER_NAME/settings.ini" | awk -F'"' '{print $2}')"
-    echo "$MODIFY_CONFIGURATION"
   fi
 fi
 export COMPILE_PATH="$OPERATES_PATH/$FOLDER_NAME"
