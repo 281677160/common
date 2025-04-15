@@ -86,6 +86,7 @@ fi
 
 function Ben_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
+  echo
   clear
   TIME y "首次使用本脚本，需要先安装依赖"
   TIME y "升级ubuntu插件和安装依赖，时间或者会比较长(取决于您的网络质量)，请耐心等待"
@@ -113,6 +114,7 @@ if [[ -f "/etc/ssh/sshd_config" ]] && [[ -z "$(grep -E 'ClientAliveInterval 30' 
   sudo sh -c 'echo ClientAliveCountMax 6 >> /etc/ssh/sshd_config'
   sudo service ssh restart
 fi
+clear
 }
 
 function Ben_variable() {
