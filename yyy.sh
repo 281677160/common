@@ -372,15 +372,22 @@ TIME r "提示：再次输入编译命令可进行二次编译"
 }
 
 function Ben_packaging() {
+# 固件打包程序,本地不能使用,不知何解
 cd $GITHUB_WORKSPACE
-if [[ -d "amlogic/armvirt" ]]; then
-  sudo rm -rf amlogic/armvirt
-  if [[ -d "amlogic/armvirt" ]]; then
-    TIME r "旧的打包程序存在，且无法删除,请重启ubuntu再来操作"
-    exit 1
-  fi
+CLONE_DIR="$GITHUB_WORKSPACE/amlogic/armvirt"
+if [[ -d "${CLONE_DIR}" ]]; then
+  TIME_THRESHOLD=86400
+  LAST_MODIFIED=$(stat -c %Y "$CLONE_DIR" 2>/dev/null || echo 0)
+  CURRENT_TIME=$(date +%s)
+  TIME_DIFF=$((CURRENT_TIME - LAST_MODIFIED))
+  if [ "$TIME_DIFF" -gt "$TIME_THRESHOLD" ]; then
+    sudo rm -rf "$CLONE_DIR"
+    if [[ -d "${CLONE_DIR}" ]]; then
+      TIME r "旧的打包程序存在，且无法删除,请重启ubuntu再来操作"
+      exit 1
+    fi
 fi
-  
+
 if [[ ! -d "amlogic" ]]; then
   mkdir -p $GITHUB_WORKSPACE/amlogic
   TIME r "请用WinSCP工具将\"xxx-armvirt-64-default-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
@@ -392,12 +399,11 @@ else
     TIME r "请用WinSCP工具将\"xxx-armvirt-64-default-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
     exit 1
   fi
-fi
 
-if [[ -d "amlogic" ]]; then
-  if git clone -q https://github.com/ophub/amlogic-s9xxx-openwrt.git $GITHUB_WORKSPACE/amlogic/armvirt; then
+if [[ ! -d "${CLONE_DIR}" ]]; then
+  if git clone -q https://github.com/ophub/amlogic-s9xxx-openwrt.git $CLONE_DIR; then
     echo ""
-    mkdir -p $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt
+    mkdir -p $CLONE_DIR/openwrt-armvirt
   else
     TIME r "打包程序下载失败,请检查网络"
     exit 1
@@ -571,6 +577,7 @@ Ben_firmware
 Ben_compiletwo
 }
 
+
 function Diy_main() {
 Ben_wslpath
 Ben_diskcapacity
@@ -614,7 +621,85 @@ Ben_download
 Ben_menu7
 }
 
-function Ben_xuanzhe() {
+
+function menu1() {
+cd ${GITHUB_WORKSPACE}
+clear
+echo
+TIME y " 1. 进行编译固件"
+TIME r " 2. 退出程序"
+echo
+XUANZHEOP="请输入数字"
+echo
+while :; do
+read -p " ${XUANZHEOP}： " CHOOSE
+case $CHOOSE in
+1)
+  menu3
+break
+;;
+2)
+  echo
+  exit 0
+break
+;;
+*)
+   XUANZHEOP="请输入正确的数字编号"
+;;
+esac
+done
+}
+
+function menu2() {
+  clear
+  echo
+  if [[ "${SUCCESS_FAILED}" == "success" ]]; then
+    TIME g " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}成功编译${TARGET_PROFILE}固件"
+  else
+    TIME r " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}编译${TARGET_PROFILE}固件失败"
+  fi
+  echo
+  TIME g " 1、保留全部缓存,不读取配置文件,只更改插件再编译"
+  echo
+  TIME y " 2、保留部分缓存(插件源码都重新下载),可改配置文件再编译"
+  echo
+  TIME g " 3、重选择源码再编译"
+  echo
+  TIME r " 4、退出"
+  echo
+  XUANZop="请输入数字"
+  echo
+  while :; do
+  read -p " ${XUANZop}：" menu_num
+  case $menu_num in
+  1)
+    export NUM_BER="3"
+    Diy_main3
+  break
+  ;;
+  2)
+    export NUM_BER="2"
+    Diy_main2
+  break
+  ;;
+  3)
+    export NUM_BER=""
+    menu3
+  break
+  ;;
+  4)
+    echo
+    exit 0
+  break
+  ;;
+  *)
+    XUANZop="请输入正确的数字编号"
+  ;;
+  esac
+  done
+}
+
+function menu3() {
   clear
   echo 
   echo
@@ -664,7 +749,7 @@ function Ben_xuanzhe() {
   break
   ;;
   Q)
-    menu3
+    menu2
   break
   ;;
   x)
@@ -672,83 +757,6 @@ function Ben_xuanzhe() {
   ;;
   esac
   done
-}
-
-function menu3() {
-  clear
-  echo
-  if [[ "${SUCCESS_FAILED}" == "success" ]]; then
-    TIME g " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}成功编译${TARGET_PROFILE}固件"
-  else
-    TIME r " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}编译${TARGET_PROFILE}固件失败"
-  fi
-  echo
-  TIME g " 1、保留全部缓存,不读取配置文件,只更改插件再编译"
-  echo
-  TIME y " 2、保留部分缓存(插件源码都重新下载),可改配置文件再编译"
-  echo
-  TIME g " 3、重选择源码再编译"
-  echo
-  TIME r " 4、退出"
-  echo
-  XUANZop="请输入数字"
-  echo
-  while :; do
-  read -p " ${XUANZop}：" menu_num
-  case $menu_num in
-  1)
-    export NUM_BER="3"
-    Diy_main3
-  break
-  ;;
-  2)
-    export NUM_BER="2"
-    Diy_main2
-  break
-  ;;
-  3)
-    export NUM_BER=""
-    Ben_xuanzhe
-  break
-  ;;
-  4)
-    echo
-    exit 0
-  break
-  ;;
-  *)
-    XUANZop="请输入正确的数字编号"
-  ;;
-  esac
-  done
-}
-
-function menu2() {
-cd ${GITHUB_WORKSPACE}
-clear
-echo
-TIME y " 1. 进行编译固件"
-TIME r " 2. 退出程序"
-echo
-XUANZHEOP="请输入数字"
-echo
-while :; do
-read -p " ${XUANZHEOP}： " CHOOSE
-case $CHOOSE in
-1)
-  Ben_xuanzhe
-break
-;;
-2)
-  echo
-  exit 0
-break
-;;
-*)
-   XUANZHEOP="请输入正确的数字编号"
-;;
-esac
-done
 }
 
 function main() {
@@ -762,14 +770,13 @@ if [[ -n "$(grep -E 'success' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]] || \
       missing_flag=1
     fi
   done
-
   if [[ $missing_flag -eq 0 ]] && [[ -n "$( grep -E "${TARGET_BOARD}" "$HOME_PATH/.config" 2>/dev/null)" ]]; then
-    menu3
-  else
     menu2
+  else
+    menu1
   fi
 else
-  menu2
+  menu1
 fi
 }
 main
