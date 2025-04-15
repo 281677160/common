@@ -711,12 +711,7 @@ function menu3() {
   clear
   echo 
   echo
-  if [[ ! -d "${OPERATES_PATH}" ]]; then
-     bash <(curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh)
-     exit 0
-   else
-     cd ${OPERATES_PATH}
-   fi
+  cd ${OPERATES_PATH}
   XYZDSZ="$(ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR" "$0'| awk 'END {print}' |awk '{print $(1)}')"
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 > /tmp/GITHUB_EVN
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
@@ -768,6 +763,10 @@ function menu3() {
 }
 
 function main() {
+if [[ ! -d "${OPERATES_PATH}" ]]; then
+  bash <(curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh)
+  exit 0
+fi
 if [[ -n "$(grep -E 'success' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]] || \
 [[ -n "$(grep -E 'breakdown' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]]; then
   source ${LICENSES_DOC}/buildzu.ini
