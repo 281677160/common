@@ -204,7 +204,9 @@ TIME y "正在执行：判断文件是否缺失"
 Diy_one
 Diy_two
 Diy_three
-Diy_four
+if [[ ! "${TONGBU_YUANMA}" == "2" ]]; then
+  Diy_four
+fi
 }
 
 Diy_memu "$@"
