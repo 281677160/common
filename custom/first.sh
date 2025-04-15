@@ -38,7 +38,6 @@ if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
       sed -i '/RETAIN_DAYS/d' "${X}"
       sed -i '/RETAIN_MINUTE/d' "${X}"
       sed -i '/KEEP_LATEST/d' "${X}"
-      echo 'PACKAGING_FIRMWARE="true"           # 自动把Amlogic_Rockchip系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
       echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
     done
     TIME g "同步上游仓库完成"
@@ -128,7 +127,6 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
         sed -i '/RETAIN_DAYS/d' "${X}"
         sed -i '/RETAIN_MINUTE/d' "${X}"
         sed -i '/KEEP_LATEST/d' "${X}"
-        echo 'PACKAGING_FIRMWARE="true"           # 自动把Amlogic_Rockchip系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
         echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
       done
       if [[ -d "${OPERATES_PATH}/backups" ]]; then
