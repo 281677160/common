@@ -767,8 +767,12 @@ if [[ -f "${LICENSES_DOC}/buildzu.ini" ]]; then
   source ${LICENSES_DOC}/buildzu.ini
 fi
 if [[ ! -d "${OPERATES_PATH}" ]]; then
-  bash <(curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh)
+  curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o /tmp/first.sh
+  chmod +x /tmp/first.sh && source /tmp/first.sh
   if [[ ! "${SUCCESS_FAILED}" == "success" ]] || [[ ! "${SUCCESS_FAILED}" == "breakdown" ]]; then
+    exit 0
+  fi
+  if [[ "${TONGBU_YUANMA}" == "2" ]]; then
     exit 0
   fi
 fi
