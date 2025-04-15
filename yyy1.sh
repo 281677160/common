@@ -412,6 +412,7 @@ else
     TIME r "请用WinSCP工具将\"xxx-armvirt-64-default-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
     exit 1
   fi
+fi
 
 if [[ ! -d "${CLONE_DIR}" ]]; then
   if git clone -q https://github.com/ophub/amlogic-s9xxx-openwrt.git $CLONE_DIR; then
