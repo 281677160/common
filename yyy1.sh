@@ -385,7 +385,7 @@ elif [[ -d "amlogic/armvirt" ]]; then
 elif [[ -d "amlogic" ]]; then
   find $GITHUB_WORKSPACE/amlogic -type f -name "*.rootfs.tar.gz" -size -2M -delete
   sudo rm -rf $GITHUB_WORKSPACE/amlogic/*Identifier*
-  if [[ -z "$(find $FIRMWARE_PATH -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
+  if [[ -z "$(find $GITHUB_WORKSPACE/amlogic -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
     TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
     exit 1
   fi
