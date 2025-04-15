@@ -200,7 +200,6 @@ chmod -R +x ${OPERATES_PATH}
 }
 
 function Diy_memu() {
-TIME y "正在执行：判断文件是否缺失"
 Diy_one
 Diy_two
 Diy_three
