@@ -169,9 +169,10 @@ fi
 }
 
 function Ben_xiazai() {
+clear
+TIME g "开始执行编译固件"
 cd ${GITHUB_WORKSPACE}
 if [[ "${NUM_BER}" == "1" ]]; then
-  clear
   TIME y "正在执行：下载${SOURCE}-${LUCI_EDITION}源码中，请耐心等候..."
   tmpdir="$(mktemp -d)"
   if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
@@ -184,9 +185,6 @@ if [[ "${NUM_BER}" == "1" ]]; then
     exit 1
   fi
 elif [[ "${NUM_BER}" == "2" ]]; then
-  clear
-  TIME g "开始执行编译固件"
-  echo
   TIME y "正在同步上游源码(${SOURCE}-${LUCI_EDITION})"
   tmpdir="$(mktemp -d)"
   if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
@@ -205,9 +203,6 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   cd ${HOME_PATH}
   git pull > /dev/null 2>&1
 elif [[ "${NUM_BER}" == "3" ]]; then
-  clear
-  TIME g "开始执行编译固件"
-  echo
   cd $HOME_PATH
   cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
   git pull > /dev/null 2>&1
@@ -307,12 +302,6 @@ TIME z "即将使用${cpunproc}线程进行编译固件,请耐心等候..."
 sleep 5
 make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
 if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]]; then
-  compile_error="1"
-else
-  compile_error="0"
-fi
-
-if [[ "${compile_error}" == "1" ]]; then
   echo "
   SUCCESS_FAILED="breakdown"
   SOURCE_CODE="${SOURCE_CODE}"
@@ -679,7 +668,7 @@ function menu2() {
     TIME r " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}编译${TARGET_PROFILE}固件失败"
   fi
   echo
-  TIME y " 1、保留全部缓存,不读取配置文件,只更改插件再编译"
+  TIME y " 1、保留全部缓存,不再次读取配置文件,只更改插件再编译"
   echo
   TIME y " 2、保留部分缓存(插件源码都重新下载),可改配置文件再编译"
   echo
@@ -713,7 +702,7 @@ function menu2() {
   break
   ;;
   *)
-    XUANZop=" 请输入正确的数字编号"
+    XUANZop="请输入正确的数字编号"
   ;;
   esac
   done
