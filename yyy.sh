@@ -50,14 +50,14 @@ if [[ -n "$(echo "${PATH}" |grep -i 'windows')" ]]; then
   clear
   echo
   TIME r "您的ubuntu为Windows子系统,需要解决路径问题"
-  read -p " [输入[Y/y]回车解决路径问题，输入[N/n]不使用此脚本编译openwrt： " Bendi_Wsl
+  read -p "输入[Y/y]回车解决路径问题，输入[N/n]回车则退出编译： " Bendi_Wsl
   case ${Bendi_Wsl} in
   [Yy])
-    bash -c  "$(curl -fsSL https://raw.githubusercontent.com/281677160/bendi/main/wsl.sh)"
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/bendi/main/wsl.sh)"
     exit 0
   ;;
   [Nn])
-    TIME y "不使用此脚本编译openwrt！"
+    TIME y "退出编译openwrt固件"
     exit 1
   ;;
   esac
@@ -73,11 +73,11 @@ if [[ "${available_size}" -lt "20" ]];then
   read -p "直接回车退出编译，按[Y/y]回车则继续编译： " KJYN
   case ${KJYN} in
   [Yy]) 
-    TIME y  "可用空间太小严重影响编译,请满天神佛保佑您成功吧！"
+    TIME y "可用空间太小严重影响编译,请满天神佛保佑您成功吧！"
     sleep 2
   ;;
   *)
-    TIME y  "您已取消编译,请清理Ubuntu空间或增加硬盘容量..."
+    TIME y "您已取消编译,请清理Ubuntu空间或增加硬盘容量..."
     exit 0
   ;;
   esac
@@ -92,7 +92,7 @@ if [[ ! -f "/etc/oprelyon" ]]; then
   TIME y "升级ubuntu插件和安装依赖，时间或者会比较长(取决于您的网络质量)，请耐心等待"
   TIME y "如果出现 YES OR NO 选择界面，直接按回车即可"
   TIME g "请确认是否继续进行,按任意键则继续,输入[N]后按回车则退出编译"
-  read -p "确认选择: " elyou
+  read -p "确认选择:" elyou
     case $elyou in
     [Nn])
         echo
