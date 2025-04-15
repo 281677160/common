@@ -163,6 +163,7 @@ sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 grep -q "admin:" ${FILES_PATH}/etc/shadow && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
 
 # 添加自定义插件源
+echo "${OpenClash_branch}"
 if [[ "${OpenClash_branch}" == "1" ]]; then
   CLASH_BRANCH="dev"
 else
