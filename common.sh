@@ -312,7 +312,7 @@ if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] ||
 fi
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
-    gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+    gitsvn https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
@@ -373,14 +373,13 @@ function Diy_LIENOL() {
 cd ${HOME_PATH}
 rm -rf $HOME_PATH/feeds/packages/net/miniupnpd
 gitsvn https://github.com/openwrt/packages/tree/master/net/tailscale ${HOME_PATH}/feeds/packages/net/tailscale
-#gitsvn https://github.com/Lienol/openwrt-packages/tree/24.10/net/miniupnpd ${HOME_PATH}/feeds/packages/net/miniupnpd
 if [[ -d "${HOME_PATH}/feeds/other/lean" ]]; then
   rm -rf ${HOME_PATH}/feeds/other/lean/mt
   rm -rf ${HOME_PATH}/feeds/other/lean/luci-app-vlmcsd
   rm -rf ${HOME_PATH}/feeds/other/lean/vlmcsd
 fi
 if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-   gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+   gitsvn https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   # luci-app-ssr-plus的shadowsocks-rust版本（1.23.0）编译错误，拉取1.22.0使用
@@ -416,8 +415,7 @@ if [[ "${REPO_BRANCH}" == "openwrt-19.07" ]]; then
 fi
 
 if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-  # luci-app-ssr-plus的shadowsocks-rust版本（1.23.0）编译错误，拉取1.22.0使用
-  gitsvn https://github.com/fw876/helloworld/blob/d6bc31754ac228422ee6f03a692568f7dcdd08c3/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
+   gitsvn https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 if [[ "${REPO_BRANCH}" =~ (main|master|openwrt-24.10) ]]; then
   gitsvn https://github.com/281677160/common/blob/main/Share/luci-app-nginx-pingos/Makefile ${HOME_PATH}/feeds/danshui/luci-app-nginx-pingos/Makefile
