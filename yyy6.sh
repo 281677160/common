@@ -343,6 +343,9 @@ for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
 done
 
 if [[ -n "$(ls -1 |grep -E 'armvirt')" ]] || [[ -n "$(ls -1 |grep -E 'armsr')" ]]; then
+  mkdir -p $GITHUB_WORKSPACE/amlogic
+  rm -rf $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
+  cp -Rf *rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
   TIME g "[ Amlogic_Rockchip系列专用固件 ]顺利编译完成~~~"
 else
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" * > /dev/null 2>&1
@@ -366,6 +369,130 @@ else
 fi
 TIME r "提示：再次输入编译命令可进行二次编译"
 }
+
+function Ben_packaging() {
+cd $GITHUB_WORKSPACE
+if [[ ! -d "amlogic" ]]; then
+  mkdir -p $GITHUB_WORKSPACE/amlogic
+  TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
+  exit 1
+elif [[ -d "amlogic" ]]; then
+  find $GITHUB_WORKSPACE/amlogic -type f -name "*.tar.gz" -size -2M -delete
+  sudo rm -rf $GITHUB_WORKSPACE/amlogic/*Identifier*
+  if [[ -z "$(find $FIRMWARE_PATH -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
+    TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
+    exit 1
+  fi
+elif [[ -d "amlogic" ]] && [[ -d "amlogic/armvirt" ]]; then
+  sudo rm -rf amlogic/armvirt
+  if [[ -d "amlogic/armvirt" ]]; then
+    TIME r "旧的打包程序存在，且无法删除,请重启ubuntu再来操作"
+    exit 1
+  fi
+else
+  if git clone -q https://github.com/ophub/amlogic-s9xxx-openwrt.git $$GITHUB_WORKSPACE/amlogic/armvirt; then
+    echo ""
+    mkdir -p $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt
+  else
+    TIME r "打包程序下载失败,请检查网络"
+    exit 1
+  fi
+fi
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+echo -e "${GREEN}\n==== 打包信息采集 ====${NC}\n"
+kernel_repo="ophub/kernel"
+builder_name="ophub"
+
+echo -e "\n${BLUE}请选择固件名称：${NC}"
+PS6="请输入选项编号: "
+select gender in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
+    case $REPLY in
+        1|2|3|4|5|6) 
+            echo -e "已选择: ${GREEN}$gender-armvirt-64-rootfs.tar.gz${NC}\n"
+            break
+            ;;
+        *) 
+            echo -e "${RED}无效选项，请重新输入！${NC}"
+            ;;
+    esac
+done
+
+echo -e "\n${BLUE}输入机型,比如：s905d 或 s905d_s905x2${NC}\n"
+while :; do
+    read -p "请输入打包机型: " openwrt_board
+    if [[ -n "$openwrt_board" ]]; then
+        break
+    else
+        echo -e "${RED}错误：机型不能为空！${NC}\n"
+    fi
+done
+
+echo -e "\n${BLUE}输入内核版本,比如：5.10.172 或 5.15.97_6.1.16${NC}\n"
+while :; do
+    read -p "请输入打包机型: " openwrt_kernel
+    if [[ -n "$openwrt_kernel" ]]; then
+        break
+    else
+        echo -e "${RED}错误：机型不能为空！${NC}\n"
+    fi
+done
+
+echo -e "\n${BLUE}设置rootfs大小(单位：MiB),比如：1024 或 512/2560${NC}"
+while :; do
+    read -p "请输入打包机型: " openwrt_size
+    if [[ -n "$openwrt_size" ]]; then
+        break
+    else
+        echo -e "${RED}错误：机型不能为空！${NC}\n"
+    fi
+done
+
+echo -e "\n${BLUE}请选择内核仓库(内核的作者)：${NC}"
+PS4="请输入选项编号: "
+select kernel_usage in "stable" "flippy" "dev" "beta"; do
+    case $REPLY in
+        1|2|3|4) 
+            echo -e "已选择: ${GREEN}$kernel_usage${NC}\n"
+            break
+            ;;
+        *) 
+            echo -e "${RED}无效选项，请重新输入！${NC}"
+            ;;
+    esac
+done
+
+echo -e "\n${GREEN}==== 录入完成 ====${NC}"
+echo -e "▪ 固件名称\t\t: $gender"
+echo -e "▪ 打包机型\t\t: $openwrt_board"
+echo -e "▪ 内核版本\t\t: $openwrt_kernel"
+echo -e "▪ 分区大小\t\t: $openwrt_size"
+echo -e "▪ 内核仓库\t\t: $kernel_usage"
+
+echo -e "\n${BLUE}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N退出打包${NC}\n"
+read -p "确认选择" NNKC
+    case $NNKC in
+    [Qq])
+        Ben_packaging
+    ;;
+    [Nn])
+        echo
+        exit 0
+    ;;
+    *)
+        echo
+    ;;
+    esac
+
+cp -Rf $GITHUB_WORKSPACE/amlogic/$gender $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-rootfs.tar.gz
+sudo ./remake -b ${openwrt_board} -r ${kernel_repo} -u ${kernel_usage} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -n ${builder_name}
+}
+
 
 function Ben_menu() {
 cd $HOME_PATH
