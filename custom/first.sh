@@ -131,7 +131,11 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
         echo 'PACKAGING_FIRMWARE="true"           # 自动把Amlogic_Rockchip系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
         echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
       done
-      TIME g "同步上游仓库完成"
+      if [[ -d "${OPERATES_PATH}/backups" ]]; then
+        TIME g "同步上游仓库完成,operates文件夹内有个backups备份包,您以前的文件都存放在这里"
+      else
+        TIME g "同步上游仓库完成"
+      fi
       TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
       export TONGBU_YUANMA="YES"
       exit 0
