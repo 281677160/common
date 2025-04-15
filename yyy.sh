@@ -681,11 +681,11 @@ function menu2() {
     TIME r " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}编译${TARGET_PROFILE}固件失败"
   fi
   echo
-  TIME g " 1、保留全部缓存,不读取配置文件,只更改插件再编译"
+  TIME y " 1、保留全部缓存,不读取配置文件,只更改插件再编译"
   echo
   TIME y " 2、保留部分缓存(插件源码都重新下载),可改配置文件再编译"
   echo
-  TIME g " 3、重选择源码再编译"
+  TIME y " 3、重选择源码再编译"
   echo
   TIME r " 4、退出"
   echo
