@@ -136,6 +136,7 @@ export BUILD_PARTSH="${COMPILE_PATH}/diy-part.sh"
 export BUILD_SETTINGS="${COMPILE_PATH}/settings.ini"
 export CONFIG_FILE="${CONFIG_FILE}"
 export MYCONFIG_FILE="${COMPILE_PATH}/seed/${CONFIG_FILE}"
+TIME y "正在执行：判断文件是否缺失"
 curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o /tmp/first.sh
 if grep -q "TIME" "/tmp/first.sh"; then
   chmod +x /tmp/first.sh && source /tmp/first.sh
