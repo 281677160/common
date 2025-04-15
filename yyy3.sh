@@ -767,12 +767,13 @@ function main() {
 if [[ -f "${LICENSES_DOC}/buildzu.ini" ]]; then
   source ${LICENSES_DOC}/buildzu.ini
   echo "25"
+  echo "${SUCCESS_FAILED}"
 fi
 if [[ ! -d "${OPERATES_PATH}" ]]; then
   TIME y "正在执行：判断文件是否缺失"
   curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o /tmp/first.sh
   chmod +x /tmp/first.sh && source /tmp/first.sh
-  if [[ -n "${SUCCESS_FAILED}" ]]; then
+  if [[ -z "${SUCCESS_FAILED}" ]]; then
     echo "1"
     exit 0
   fi
