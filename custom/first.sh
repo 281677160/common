@@ -114,7 +114,7 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
       export TONGBU_YUANMA="1"
     else
       TIME r "同步上游仓库失败,注意网络环境,请重新再运行命令试试"
-      export TONGBU_YUANMA="2"
+      export TONGBU_YUANMA="1"
       exit 1
     fi
   else
@@ -204,7 +204,7 @@ TIME y "正在执行：判断文件是否缺失"
 Diy_one
 Diy_two
 Diy_three
-if [[ ! "${TONGBU_YUANMA}" == "2" ]]; then
+if [[ ! "${TONGBU_YUANMA}" == "1" ]]; then
   Diy_four
 fi
 }
