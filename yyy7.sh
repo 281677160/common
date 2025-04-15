@@ -376,17 +376,17 @@ if [[ ! -d "amlogic" ]]; then
   mkdir -p $GITHUB_WORKSPACE/amlogic
   TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
   exit 1
-elif [[ -d "amlogic" ]]; then
-  find $GITHUB_WORKSPACE/amlogic -type f -name "*.tar.gz" -size -2M -delete
-  sudo rm -rf $GITHUB_WORKSPACE/amlogic/*Identifier*
-  if [[ -z "$(find $FIRMWARE_PATH -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
-    TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
-    exit 1
-  fi
 elif [[ -d "amlogic/armvirt" ]]; then
   sudo rm -rf amlogic/armvirt
   if [[ -d "amlogic/armvirt" ]]; then
     TIME r "旧的打包程序存在，且无法删除,请重启ubuntu再来操作"
+    exit 1
+  fi
+elif [[ -d "amlogic" ]]; then
+  find $GITHUB_WORKSPACE/amlogic -type f -name "*.rootfs.tar.gz" -size -2M -delete
+  sudo rm -rf $GITHUB_WORKSPACE/amlogic/*Identifier*
+  if [[ -z "$(find $FIRMWARE_PATH -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
+    TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
     exit 1
   fi
 else
