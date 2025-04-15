@@ -383,7 +383,7 @@ elif [[ -d "amlogic" ]]; then
     TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
     exit 1
   fi
-elif [[ -d "amlogic" ]] && [[ -d "amlogic/armvirt" ]]; then
+elif [[ -d "amlogic/armvirt" ]]; then
   sudo rm -rf amlogic/armvirt
   if [[ -d "amlogic/armvirt" ]]; then
     TIME r "旧的打包程序存在，且无法删除,请重启ubuntu再来操作"
@@ -443,6 +443,26 @@ while :; do
     fi
 done
 
+echo -e "\n${BLUE}是否自动选择输入内核版本为最新版本：${NC}"
+PS6="请输入选项编号: "
+select auto_kernell in "自动选择最新版本内核" "无需选择最新版本内核"; do
+    case $REPLY in
+        1|2) 
+            echo -e "已选择: ${GREEN}$auto_kernell${NC}\n"
+            break
+            ;;
+        *) 
+            echo -e "${RED}无效选项，请重新输入！${NC}"
+            ;;
+    esac
+done
+
+if [[ "${auto_kernell}" == "无需选择最新版本内核" ]]; then
+    auto_kernel="false"
+else
+    auto_kernel="true"
+fi
+
 echo -e "\n${BLUE}设置rootfs大小(单位：MiB),比如：1024 或 512/2560${NC}"
 while :; do
     read -p "请输入打包机型: " openwrt_size
@@ -473,6 +493,7 @@ echo -e "▪ 打包机型\t\t: $openwrt_board"
 echo -e "▪ 内核版本\t\t: $openwrt_kernel"
 echo -e "▪ 分区大小\t\t: $openwrt_size"
 echo -e "▪ 内核仓库\t\t: $kernel_usage"
+echo -e "▪ 内核选择\t\t: $auto_kernell"
 
 echo -e "\n${BLUE}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N退出打包${NC}\n"
 read -p "确认选择" NNKC
