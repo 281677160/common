@@ -516,7 +516,7 @@ read -p "确认选择: " NNKC
 
 cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-default-rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
 cd $GITHUB_WORKSPACE/amlogic/armvirt
-sudo chmod +x remake
+sudo chmod 0777 remake
 sudo ./remake -b ${openwrt_board} -r ${kernel_repo} -u ${kernel_usage} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -n ${builder_name}
 }
 
