@@ -82,8 +82,8 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
         mv backups ${OPERATES_PATH}/backups
         rm -rf $shangyou
       else
-        cp -Rf shangyou/build ${OPERATES_PATH}
-        rm -rf shangyou
+        cp -Rf $shangyou/build ${OPERATES_PATH}
+        rm -rf $shangyou
       fi
       chmod -R +x ${OPERATES_PATH}
       for X in $(find "${OPERATES_PATH}" -name "settings.ini"); do
@@ -111,9 +111,10 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
         TIME g "同步上游仓库完成"
       fi
       TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
-      export TONGBU_YUANMA="YES"
+      export TONGBU_YUANMA="1"
     else
       TIME r "同步上游仓库失败,注意网络环境,请重新再运行命令试试"
+      export TONGBU_YUANMA="2"
       exit 1
     fi
   else
