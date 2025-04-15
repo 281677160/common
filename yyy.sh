@@ -86,6 +86,7 @@ fi
 
 function Ben_update() {
 if [[ ! -f "/etc/oprelyon" ]]; then
+  clear
   TIME y "首次使用本脚本，需要先安装依赖"
   TIME y "升级ubuntu插件和安装依赖，时间或者会比较长(取决于您的网络质量)，请耐心等待"
   TIME y "如果出现 YES OR NO 选择界面，直接按回车即可"
