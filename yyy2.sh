@@ -173,7 +173,7 @@ function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
 if [[ "${NUM_BER}" == "1" ]]; then
   clear
-  TIME y "正在执行：下载${SOURCE_CODE}-${LUCI_EDITION}源码中，请耐心等候..."
+  TIME y "正在执行：下载${SOURCE}-${LUCI_EDITION}源码中，请耐心等候..."
   tmpdir="$(mktemp -d)"
   if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
     rm -rf openwrt
@@ -188,7 +188,7 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   clear
   TIME g "开始执行编译固件"
   echo
-  TIME y "正在同步上游源码(${SOURCE_CODE}-${LUCI_EDITION})"
+  TIME y "正在同步上游源码(${SOURCE}-${LUCI_EDITION})"
   tmpdir="$(mktemp -d)"
   if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
     cd $HOME_PATH
