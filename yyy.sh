@@ -120,12 +120,11 @@ clear
 function Ben_variable() {
 cd ${GITHUB_WORKSPACE}
 export FOLDER_NAME="$FOLDER_NAME"
-if [[ -f "$OPERATES_PATH/$FOLDER_NAME/settings.ini" ]]; then
-  if [[ ! "${NUM_BER}" =~ (2|3) ]]; then
-    source $OPERATES_PATH/$FOLDER_NAME/settings.ini
-  else
-    MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "$OPERATES_PATH/$FOLDER_NAME/settings.ini" | awk -F'"' '{print $2}')"
-  fi
+export SETT_TINGS="$OPERATES_PATH/$FOLDER_NAME/settings.ini"
+if [[ -f "${SETT_TINGS}" ]] && [[ ! "${NUM_BER}" =~ (2|3) ]]; then
+  source ${SETT_TINGS}
+else
+  MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "${SETT_TINGS}" | awk -F'"' '{print $2}')"
 fi
 export COMPILE_PATH="$OPERATES_PATH/$FOLDER_NAME"
 export SOURCE_CODE="${SOURCE_CODE}"
