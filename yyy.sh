@@ -181,7 +181,7 @@ if [[ "${NUM_BER}" == "1" ]]; then
     rm -rf $tmpdir
     TIME g "源码下载完成"
   else
-    TIME r "源码下载错误,请检测网络"
+    TIME r "源码下载失败,请检测网络"
     exit 1
   fi
 elif [[ "${NUM_BER}" == "2" ]]; then
@@ -689,7 +689,7 @@ function menu2() {
   echo
   TIME r " 4、退出"
   echo
-  XUANZop="请输入数字"
+  XUANZop=" 请输入数字"
   echo
   while :; do
   read -p " ${XUANZop}：" menu_num
@@ -715,7 +715,7 @@ function menu2() {
   break
   ;;
   *)
-    XUANZop="请输入正确的数字编号"
+    XUANZop=" 请输入正确的数字编号"
   ;;
   esac
   done
@@ -741,8 +741,8 @@ function menu3() {
   else
     YMXZ=""
   fi
-  TIME y "请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
-  export YUMINGIP="请输入您的选择"
+  TIME y " 请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
+  export YUMINGIP=" 请输入您的选择"
   while :; do
   read -p "${YUMINGIP}：" YMXZ
   if [[ "${YMXZ}" =~ (W|w) ]]; then
@@ -761,7 +761,7 @@ function menu3() {
   case $CUrrenty in
   B)
     export FOLDER_NAME=$(cat /tmp/GITHUB_EVN |awk ''NR==${YMXZ}'')
-    TIME g "您选择了使用 ${FOLDER_NAME} 编译固件"
+    TIME g " 您选择了使用 ${FOLDER_NAME} 编译固件"
     export NUM_BER="1"
     Diy_main
   break
@@ -775,7 +775,7 @@ function menu3() {
   break
   ;;
   x)
-    export YUMINGIP="敬告,请输入正确选项"
+    export YUMINGIP=" 敬告,请输入正确选项"
   ;;
   esac
   done
