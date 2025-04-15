@@ -511,6 +511,8 @@ read -p "确认选择" NNKC
     esac
 
 cp -Rf $GITHUB_WORKSPACE/amlogic/$gender $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-rootfs.tar.gz
+cd $GITHUB_WORKSPACE/amlogic/armvirt
+sudo chmod +x remake
 sudo ./remake -b ${openwrt_board} -r ${kernel_repo} -u ${kernel_usage} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -n ${builder_name}
 }
 
