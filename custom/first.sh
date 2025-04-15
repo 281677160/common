@@ -129,6 +129,13 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
         sed -i '/KEEP_LATEST/d' "${X}"
         echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
       done
+      for X in $(find "${OPERATES_PATH}" -type d -name "relevance" |grep -v 'backups'); do 
+        rm -rf ${X}/{*.ini,*start}
+        echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
+        echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
+        echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
+        echo "$(date +%Y%m%d%H%M%S)" > ${X}/armsrstart
+      done
       if [[ -d "${OPERATES_PATH}/backups" ]]; then
         TIME g "同步上游仓库完成,operates文件夹内有个backups备份包,您以前的文件都存放在这里"
       else
@@ -156,6 +163,13 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
     cp -Rf shangyou/* repogx
     cp -Rf shangyou/.github/workflows/* repogx/.github/workflows
     cp -Rf backups repogx/backups
+    for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance" |grep -v 'backups'); do 
+      rm -rf ${X}/{*.ini,*start}
+      echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
+      echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
+      echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
+      echo "$(date +%Y%m%d%H%M%S)" > ${X}/armsrstart
+    done
     BANBEN_SHUOMING="同步上游于 $(date +%Y.%m%d.%H%M.%S)"
     chmod -R +x repogx
     cd repogx
