@@ -215,7 +215,6 @@ elif [[ "${NUM_BER}" == "3" ]]; then
   TIME y "正在执行：更新和安装feeds"
   ./scripts/feeds update -a > /dev/null 2>&1
   ./scripts/feeds install -a
-  cp -Rf ${MYCONFIG_FILE} ${HOME_PATH}/.config
 fi
 }
 
@@ -689,7 +688,7 @@ function menu2() {
   echo
   TIME r " 4、退出"
   echo
-  XUANZop=" 请输入数字"
+  XUANZop="请输入数字"
   echo
   while :; do
   read -p " ${XUANZop}：" menu_num
