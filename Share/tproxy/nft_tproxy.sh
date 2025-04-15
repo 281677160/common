@@ -204,7 +204,7 @@ fi
 
 if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|openwrt-23.05) ]]; then
   git clone https://github.com/padavanonly/immortalwrt-mt798x-24.10 mt798xmk
-  cp -r mt798xmk/package/boot/uboot-envtools package/boot/uboot-envtools
+  cp -r mt798xmk/package/boot package/boot
   cp -r mt798xmk/package/boot/uboot-mediatek package/boot/uboot-mediatek
   cp -r mt798xmk/target/linux/mediatek/image/mt7981.mk target/linux/mediatek/image/mt7981.mk
   cp -r mt798xmk/target/linux/mediatek/image/mt7986.mk target/linux/mediatek/image/mt7986.mk
