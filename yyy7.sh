@@ -452,7 +452,7 @@ PS3="请输入选项编号: "
 select auto_kernell in "自动选择最新版本内核" "无需选择最新版本内核"; do
     case $REPLY in
         1|2) 
-            echo -e "已选择: ${GREEN}$auto_kernell${NC}\n"
+            echo -e "已选择: ${GREEN}$auto_kernell${NC}"
             break
             ;;
         *) 
@@ -492,12 +492,12 @@ select kernel_usage in "stable" "flippy" "dev" "beta"; do
 done
 
 echo -e "\n${GREEN}==== 录入完成 ====${NC}"
-echo -e "▪ 固件名称\t\t: $gender"
-echo -e "▪ 打包机型\t\t: $openwrt_board"
-echo -e "▪ 内核版本\t\t: $openwrt_kernel"
-echo -e "▪ 分区大小\t\t: $openwrt_size"
-echo -e "▪ 内核仓库\t\t: $kernel_usage"
-echo -e "▪ 内核选择\t\t: $auto_kernell"
+echo -e "▪ 固件名称\t: $gender"
+echo -e "▪ 打包机型\t: $openwrt_board"
+echo -e "▪ 内核版本\t: $openwrt_kernel"
+echo -e "▪ 分区大小\t: $openwrt_size"
+echo -e "▪ 内核仓库\t: $kernel_usage"
+echo -e "▪ 内核选择\t: $auto_kernell"
 
 echo -e "\n${YELLOW}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N退出打包${NC}\n"
 read -p "确认选择: " NNKC
