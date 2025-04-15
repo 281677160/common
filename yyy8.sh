@@ -137,7 +137,12 @@ export BUILD_SETTINGS="${COMPILE_PATH}/settings.ini"
 export CONFIG_FILE="${CONFIG_FILE}"
 export MYCONFIG_FILE="${COMPILE_PATH}/seed/${CONFIG_FILE}"
 curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o /tmp/first.sh
-chmod +x /tmp/first.sh && source first.sh
+if grep -q "TIME" "/tmp/first.sh"; then
+  chmod +x /tmp/first.sh && source /tmp/first.sh
+else
+  TIME r "文件下载失败,请检查网络"
+  exit 1
+fi
 if [[ "${TONGBU_YUANMA}" == "YES" ]]; then
   exit 0
 else
