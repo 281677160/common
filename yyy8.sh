@@ -399,6 +399,7 @@ if [[ -d "${CLONE_DIR}" ]]; then
       TIME r "旧的打包程序存在，且无法删除,请重启ubuntu再来操作"
       exit 1
     fi
+  fi
 fi
 
 if [[ ! -d "amlogic" ]]; then
