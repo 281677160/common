@@ -136,10 +136,8 @@ export BUILD_PARTSH="${COMPILE_PATH}/diy-part.sh"
 export BUILD_SETTINGS="${COMPILE_PATH}/settings.ini"
 export CONFIG_FILE="${CONFIG_FILE}"
 export MYCONFIG_FILE="${COMPILE_PATH}/seed/${CONFIG_FILE}"
-curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o first.sh
-chmod -R +x first.sh
-source first.sh
-rm -rf first.sh
+curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o /tmp/first.sh
+chmod +x /tmp/first.sh && source first.sh
 if [[ "${TONGBU_YUANMA}" == "YES" ]]; then
   exit 0
 else
@@ -167,6 +165,7 @@ fi
 function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
 if [[ "${NUM_BER}" == "1" ]]; then
+  clear
   TIME y "正在执行：下载${SOURCE_CODE}-${LUCI_EDITION}源码中，请耐心等候..."
   tmpdir="$(mktemp -d)"
   if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
