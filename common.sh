@@ -359,7 +359,6 @@ cat >> "${KEEPD_PATH}" <<-EOF
 EOF
 
 cp -Rf "${HOME_PATH}/feeds.conf.default" "${LICENSES_DOC}/feeds.conf.default"
-cp -Rf "${DEFAULT_PATH}" "${LICENSES_DOC}/99-first-run"
 }
 
 
