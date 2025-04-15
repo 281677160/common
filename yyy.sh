@@ -152,7 +152,7 @@ fi
 function Ben_xiazai() {
 cd ${GITHUB_WORKSPACE}
 if [[ "${NUM_BER}" == "1" ]]; then
-  TIME y "正在执行：下载源码"
+  TIME y "正在执行：下载${SOURCE_CODE}-${LUCI_EDITION}源码中，请耐心等候..."
   tmpdir="$(mktemp -d)"
   if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
     rm -rf openwrt
@@ -167,7 +167,7 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   clear
   TIME g "开始执行编译固件"
   echo
-  TIME y "正在同步上游源码"
+  TIME y "正在同步上游源码(${SOURCE_CODE}-${LUCI_EDITION})"
   tmpdir="$(mktemp -d)"
   if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
     cd $HOME_PATH
@@ -183,7 +183,7 @@ elif [[ "${NUM_BER}" == "2" ]]; then
     exit 1
   fi
   cd ${HOME_PATH}
-  git pull
+  git pull > /dev/null 2>&1
 elif [[ "${NUM_BER}" == "3" ]]; then
   clear
   TIME g "开始执行编译固件"
@@ -192,7 +192,7 @@ elif [[ "${NUM_BER}" == "3" ]]; then
   cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
   git pull > /dev/null 2>&1
   TIME y "正在执行：更新和安装feeds"
-  ./scripts/feeds update -a
+  ./scripts/feeds update -a > /dev/null 2>&1
   ./scripts/feeds install -a
   cp -Rf ${MYCONFIG_FILE} ${HOME_PATH}/.config
 fi
@@ -515,10 +515,16 @@ read -p "确认选择: " NNKC
     ;;
     esac
 
-cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-default-rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
-cd $GITHUB_WORKSPACE/amlogic/armvirt
-sudo chmod 0777 remake
-sudo ./remake -b ${openwrt_board} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -r ${kernel_repo} -u ${kernel_usage}
+if [[ -f "$GITHUB_WORKSPACE/amlogic/armvirt/remake" ]]; then
+  cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-default-rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
+  cd $GITHUB_WORKSPACE/amlogic/armvirt
+  sudo chmod +x remake
+  sudo ./remake -b ${openwrt_board} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -r ${kernel_repo} -u ${kernel_usage}
+  TIME g "开始打包固件..."
+else
+  TIME r "未知原因打包程不存在,或上游改变了程序名称"
+  exit 1
+fi
 }
 
 
