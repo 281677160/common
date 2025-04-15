@@ -307,7 +307,6 @@ else
   compile_error="0"
 fi
 
-sleep 3
 if [[ "${compile_error}" == "1" ]]; then
   echo "
   SUCCESS_FAILED="breakdown"
