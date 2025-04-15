@@ -20,7 +20,7 @@ echo -e "\e[36m\e[0m${Color}${2}\e[0m"
 
 function Diy_one() {
 cd ${GITHUB_WORKSPACE}
-if [[ -d "build" ]]; then
+if [[ -d "build" ]] && [[ -z "${BENDI_VERSION}" ]]; then
   rm -rf ${OPERATES_PATH}
   cp -Rf build ${OPERATES_PATH}
 fi
