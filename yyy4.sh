@@ -382,13 +382,13 @@ fi
   
 if [[ ! -d "amlogic" ]]; then
   mkdir -p $GITHUB_WORKSPACE/amlogic
-  TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
+  TIME r "请用WinSCP工具将\"xxx-armvirt-64-default-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
   exit 1
 else
   find $GITHUB_WORKSPACE/amlogic -type f -name "*.rootfs.tar.gz" -size -2M -delete
   sudo rm -rf $GITHUB_WORKSPACE/amlogic/*Identifier*
   if [[ -z "$(find $GITHUB_WORKSPACE/amlogic -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
-    TIME r "请用WinSCP工具将\"xxx-armvirt-64-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
+    TIME r "请用WinSCP工具将\"xxx-armvirt-64-default-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
     exit 1
   fi
 fi
@@ -418,7 +418,7 @@ PS3="请输入选项编号: "
 select gender in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
     case $REPLY in
         1|2|3|4|5|6) 
-            echo -e "已选择: ${GREEN}$gender-armvirt-64-rootfs.tar.gz${NC}\n"
+            echo -e "已选择: ${GREEN}$gender-armvirt-64-default-rootfs.tar.gz${NC}\n"
             break
             ;;
         *) 
@@ -427,7 +427,7 @@ select gender in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
     esac
 done
 
-echo -e "\n${YELLOW}输入机型,比如：s905d 或 s905d_s905x2${NC}\n"
+echo -e "\n${YELLOW}输入机型,比如：s905d 或 s905d_s905x2${NC}"
 while :; do
     read -p "请输入打包机型: " openwrt_board
     if [[ -n "$openwrt_board" ]]; then
@@ -437,7 +437,7 @@ while :; do
     fi
 done
 
-echo -e "\n${YELLOW}输入内核版本,比如：5.10.172 或 5.15.97_6.1.16${NC}\n"
+echo -e "\n${YELLOW}输入内核版本,比如：5.10.172 或 5.15.97_6.1.16${NC}"
 while :; do
     read -p "请输入打包机型: " openwrt_kernel
     if [[ -n "$openwrt_kernel" ]]; then
@@ -514,7 +514,7 @@ read -p "确认选择: " NNKC
     ;;
     esac
 
-cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-rootfs.tar.gz
+cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-default-rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
 cd $GITHUB_WORKSPACE/amlogic/armvirt
 sudo chmod +x remake
 sudo ./remake -b ${openwrt_board} -r ${kernel_repo} -u ${kernel_usage} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -n ${builder_name}
