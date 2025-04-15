@@ -40,8 +40,10 @@ if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
       sed -i '/KEEP_LATEST/d' "${X}"
       echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
     done
+    curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o /tmp/common.sh
+    ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' /tmp/common.sh)"
     for X in $(find "${OPERATES_PATH}" -type d -name "relevance" |grep -v 'backups'); do 
-      rm -rf ${X}/{*.ini,*start}
+      rm -rf ${X}/{*.ini,*start,run_number}
       echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
       echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
       echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
@@ -136,7 +138,7 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
         echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
       done
       for X in $(find "${OPERATES_PATH}" -type d -name "relevance" |grep -v 'backups'); do 
-        rm -rf ${X}/{*.ini,*start}
+        rm -rf ${X}/{*.ini,*start,run_number}
         echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
         echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
         echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
@@ -169,7 +171,7 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
     cp -Rf shangyou/.github/workflows/* repogx/.github/workflows
     cp -Rf backups repogx/backups
     for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance" |grep -v 'backups'); do 
-      rm -rf ${X}/{*.ini,*start}
+      rm -rf ${X}/{*.ini,*start,run_number}
       echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
       echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
       echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
