@@ -99,6 +99,8 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
         sed -i '/KEEP_LATEST/d' "${X}"
         echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
       done
+      curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o /tmp/common.sh
+      ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' /tmp/common.sh)"
       for X in $(find "${OPERATES_PATH}" -type d -name "relevance" |grep -v 'backups'); do 
         rm -rf ${X}/{*.ini,*start,run_number}
         echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
