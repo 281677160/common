@@ -192,18 +192,19 @@ fi
 }
 
 function Diy_four() {
-rm -rf ${OPERATES_PATH}/common
-mkdir -p ${OPERATES_PATH}/common
-curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o ${OPERATES_PATH}/common/common.sh
-curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/upgrade.sh -o ${OPERATES_PATH}/common/upgrade.sh
-export COMMON_SH="${OPERATES_PATH}/common/common.sh"
-export UPGRADE_SH="${OPERATES_PATH}/common/upgrade.sh"
-export CONFIG_TXT="${OPERATES_PATH}/common/config.txt"
+LINSHI_COMMON="/tmp/common"
+rm -rf ${LINSHI_COMMON}
+mkdir -p ${LINSHI_COMMON}
+curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o ${LINSHI_COMMON}/common.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/upgrade.sh -o ${LINSHI_COMMON}/upgrade.sh
+export COMMON_SH="${LINSHI_COMMON}/common.sh"
+export UPGRADE_SH="${LINSHI_COMMON}/upgrade.sh"
+export CONFIG_TXT="${LINSHI_COMMON}/config.txt"
 if grep -q "TIME" "${COMMON_SH}" && grep -q "Diy_Part2" "${UPGRADE_SH}"; then
-  cp -Rf ${COMPILE_PATH} ${OPERATES_PATH}/common/${FOLDER_NAME}
-  export DIY_PT1_SH=${OPERATES_PATH}/common/${FOLDER_NAME}/diy-part.sh
-  export DIY_PT2_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/diy2-part.sh"
-  export TWO_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/two.sh"
+  cp -Rf ${COMPILE_PATH} ${LINSHI_COMMON}/${FOLDER_NAME}
+  export DIY_PT1_SH="${LINSHI_COMMON}/${FOLDER_NAME}/diy-part.sh"
+  export DIY_PT2_SH="${LINSHI_COMMON}/${FOLDER_NAME}/diy2-part.sh"
+  export TWO_SH="${LINSHI_COMMON}/${FOLDER_NAME}/two.sh"
 else
   TIME r "common文件下载失败"
   exit 1
@@ -218,10 +219,10 @@ echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
 
 echo '#!/bin/bash' > ${DIY_PT2_SH}
 grep -E '.*export.*=".*"' $DIY_PT1_SH >> ${DIY_PT2_SH}
-grep -E '.*export.*OpenClash_branch=".*"' $DIY_PT1_SH > /tmp/OpenClash
-grep -E '.*export.*Mandatory_theme=".*"' $DIY_PT1_SH >> /tmp/OpenClash
-grep -E '.*export.*Default_theme=".*"' $DIY_PT1_SH >> /tmp/OpenClash
-source /tmp/OpenClash
+grep -E '.*export.*OpenClash_branch=".*"' $DIY_PT1_SH > ${LINSHI_COMMON}/OpenClash
+grep -E '.*export.*Mandatory_theme=".*"' $DIY_PT1_SH >> ${LINSHI_COMMON}/OpenClash
+grep -E '.*export.*Default_theme=".*"' $DIY_PT1_SH >> ${LINSHI_COMMON}/OpenClash
+source ${LINSHI_COMMON}/OpenClash
 echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 echo "Mandatory_theme=${Mandatory_theme}" >> ${GITHUB_ENV}
 echo "Default_theme=${Default_theme}" >> ${GITHUB_ENV}
