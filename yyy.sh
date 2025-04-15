@@ -776,7 +776,7 @@ function main() {
 if [[ -n "$(grep -E 'success' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]] || \
 [[ -n "$(grep -E 'breakdown' ${LICENSES_DOC}/buildzu.ini 2>/dev/null)" ]]; then
   source ${LICENSES_DOC}/buildzu.ini
-  required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools")
+  required_dirs=("config" "include" "package" "scripts" "target" "toolchain" "tools" "build_dir")
   missing_flag=0
   for dir in "${required_dirs[@]}"; do
     if [[ ! -d "$HOME_PATH/$dir" ]]; then
