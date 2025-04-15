@@ -45,7 +45,6 @@ if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
       echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
       echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
       echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
-      echo "$(date +%Y%m%d%H%M%S)" > ${X}/armsrstart
     done
     TIME g "同步上游仓库完成"
     TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
@@ -141,7 +140,6 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
         echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
         echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
         echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
-        echo "$(date +%Y%m%d%H%M%S)" > ${X}/armsrstart
       done
       if [[ -d "${OPERATES_PATH}/backups" ]]; then
         TIME g "同步上游仓库完成,operates文件夹内有个backups备份包,您以前的文件都存放在这里"
