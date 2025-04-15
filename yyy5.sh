@@ -413,7 +413,7 @@ echo -e "${GREEN}\n==== 打包信息采集 ====${NC}\n"
 kernel_repo="ophub/kernel"
 builder_name="ophub"
 
-echo -e "\n${BLUE}请选择固件名称：${NC}"
+echo -e "\n${YELLOW}请选择固件名称：${NC}"
 PS3="请输入选项编号: "
 select gender in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
     case $REPLY in
@@ -427,7 +427,7 @@ select gender in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
     esac
 done
 
-echo -e "\n${BLUE}输入机型,比如：s905d 或 s905d_s905x2${NC}\n"
+echo -e "\n${YELLOW}输入机型,比如：s905d 或 s905d_s905x2${NC}\n"
 while :; do
     read -p "请输入打包机型: " openwrt_board
     if [[ -n "$openwrt_board" ]]; then
@@ -437,7 +437,7 @@ while :; do
     fi
 done
 
-echo -e "\n${BLUE}输入内核版本,比如：5.10.172 或 5.15.97_6.1.16${NC}\n"
+echo -e "\n${YELLOW}输入内核版本,比如：5.10.172 或 5.15.97_6.1.16${NC}\n"
 while :; do
     read -p "请输入打包机型: " openwrt_kernel
     if [[ -n "$openwrt_kernel" ]]; then
@@ -447,7 +447,7 @@ while :; do
     fi
 done
 
-echo -e "\n${BLUE}是否自动选择输入内核版本为最新版本：${NC}"
+echo -e "\n${YELLOW}是否自动选择输入内核版本为最新版本：${NC}"
 PS3="请输入选项编号: "
 select auto_kernell in "自动选择最新版本内核" "无需选择最新版本内核"; do
     case $REPLY in
@@ -467,7 +467,7 @@ else
     auto_kernel="true"
 fi
 
-echo -e "\n${BLUE}设置rootfs大小(单位：MiB),比如：1024 或 512/2560${NC}"
+echo -e "\n${YELLOW}设置rootfs大小(单位：MiB),比如：1024 或 512/2560${NC}"
 while :; do
     read -p "请输入打包机型: " openwrt_size
     if [[ -n "$openwrt_size" ]]; then
@@ -477,7 +477,7 @@ while :; do
     fi
 done
 
-echo -e "\n${BLUE}请选择内核仓库(内核的作者)：${NC}"
+echo -e "\n${YELLOW}请选择内核仓库(内核的作者)：${NC}"
 PS3="请输入选项编号: "
 select kernel_usage in "stable" "flippy" "dev" "beta"; do
     case $REPLY in
@@ -499,7 +499,7 @@ echo -e "▪ 分区大小\t\t: $openwrt_size"
 echo -e "▪ 内核仓库\t\t: $kernel_usage"
 echo -e "▪ 内核选择\t\t: $auto_kernell"
 
-echo -e "\n${BLUE}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N退出打包${NC}\n"
+echo -e "\n${YELLOW}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N退出打包${NC}\n"
 read -p "确认选择: " NNKC
     case $NNKC in
     [Qq])
@@ -514,7 +514,7 @@ read -p "确认选择: " NNKC
     ;;
     esac
 
-cp -Rf $GITHUB_WORKSPACE/amlogic/$gender $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-rootfs.tar.gz
+cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-rootfs.tar.gz
 cd $GITHUB_WORKSPACE/amlogic/armvirt
 sudo chmod +x remake
 sudo ./remake -b ${openwrt_board} -r ${kernel_repo} -u ${kernel_usage} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -n ${builder_name}
