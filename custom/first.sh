@@ -175,14 +175,14 @@ rm -rf ${OPERATES_PATH}/common
 mkdir -p ${OPERATES_PATH}/common
 curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o ${OPERATES_PATH}/common/common.sh
 curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/upgrade.sh -o ${OPERATES_PATH}/common/upgrade.sh
-COMMON_SH="${OPERATES_PATH}/common/common.sh"
-UPGRADE_SH="${OPERATES_PATH}/common/upgrade.sh"
-CONFIG_TXT="${OPERATES_PATH}/common/config.txt"
+export COMMON_SH="${OPERATES_PATH}/common/common.sh"
+export UPGRADE_SH="${OPERATES_PATH}/common/upgrade.sh"
+export CONFIG_TXT="${OPERATES_PATH}/common/config.txt"
 if grep -q "TIME" "${COMMON_SH}" && grep -q "Diy_Part2" "${UPGRADE_SH}"; then
   cp -Rf ${COMPILE_PATH} ${OPERATES_PATH}/common/${FOLDER_NAME}
-  DIY_PT1_SH=${OPERATES_PATH}/common/${FOLDER_NAME}/diy-part.sh
-  DIY_PT2_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/diy2-part.sh"
-  TWO_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/two.sh"
+  export DIY_PT1_SH=${OPERATES_PATH}/common/${FOLDER_NAME}/diy-part.sh
+  export DIY_PT2_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/diy2-part.sh"
+  export TWO_SH="${OPERATES_PATH}/common/${FOLDER_NAME}/two.sh"
 else
   TIME r "common文件下载失败"
   exit 1
@@ -194,8 +194,6 @@ echo "TWO_SH=${TWO_SH}" >> ${GITHUB_ENV}
 echo "COMMON_SH=${COMMON_SH}" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${UPGRADE_SH}" >> ${GITHUB_ENV}
 echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
-
-export COMMON_SH UPGRADE_SH CONFIG_TXT DIY_PT1_SH DIY_PT2_SH TWO_SH
 
 echo '#!/bin/bash' > ${DIY_PT2_SH}
 grep -E '.*export.*=".*"' $DIY_PT1_SH >> ${DIY_PT2_SH}
