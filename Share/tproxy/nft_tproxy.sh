@@ -202,7 +202,7 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
   rm -fr ${HOME_PATH}/feeds/luci/applications/luci-app-ntpc
 fi
 
-if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" == "openwrt-23.05" ]]; then
+if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|openwrt-23.05) ]]; then
   git clone https://github.com/281677160/mt798x mt798xmk
   rm -rf package/boot && cp -r mt798xmk/package/boot package/boot
   rm -rf target/linux/mediatek && cp -r mt798xmk/target/linux/mediatek target/linux/mediatek
