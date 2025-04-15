@@ -394,7 +394,7 @@ else
 fi
 
 if [[ -d "amlogic" ]]; then
-  if git clone https://github.com/ophub/amlogic-s9xxx-openwrt.git $$GITHUB_WORKSPACE/amlogic/armvirt; then
+  if git clone -q https://github.com/ophub/amlogic-s9xxx-openwrt.git $GITHUB_WORKSPACE/amlogic/armvirt; then
     echo ""
     mkdir -p $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt
   else
