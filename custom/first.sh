@@ -20,47 +20,9 @@ echo -e "\e[36m\e[0m${Color}${2}\e[0m"
 
 function Diy_one() {
 cd ${GITHUB_WORKSPACE}
-if [[ -n "${BENDI_VERSION}" ]] && [[ ! -d "${OPERATES_PATH}" ]]; then
-  TIME r "缺少编译主文件,正在同步上游仓库"
-  shangyou="$(mktemp -d)"
-  if git clone --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions ${shangyou}; then
-    cp -Rf $shangyou/build ${OPERATES_PATH}
-    rm -rf $shangyou
-    chmod -R +x ${OPERATES_PATH}
-    for X in $(find "${OPERATES_PATH}" -name "settings.ini"); do
-      sed -i '/SSH_ACTIONS/d' "${X}"
-      sed -i '/INFORMATION_NOTICE/d' "${X}"
-      sed -i '/UPLOAD_FIRMWARE/d' "${X}"
-      sed -i '/UPLOAD_RELEASE/d' "${X}"
-      sed -i '/CACHEWRTBUILD_SWITCH/d' "${X}"
-      sed -i '/COMPILATION_INFORMATION/d' "${X}"
-      sed -i '/UPDATE_FIRMWARE_ONLINE/d' "${X}"
-      sed -i '/RETAIN_DAYS/d' "${X}"
-      sed -i '/RETAIN_MINUTE/d' "${X}"
-      sed -i '/KEEP_LATEST/d' "${X}"
-      echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
-    done
-    curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o /tmp/common.sh
-    ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' /tmp/common.sh)"
-    for X in $(find "${OPERATES_PATH}" -type d -name "relevance" |grep -v 'backups'); do 
-      rm -rf ${X}/{*.ini,*start,run_number}
-      echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
-      echo "请勿修改和删除此文件夹内的任何文件" > ${X}/README
-      echo "$(date +%Y%m%d%H%M%S)" > ${X}/start
-    done
-    TIME g "同步上游仓库完成"
-    TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
-    export TONGBU_YUANMA="YES"
-    exit 0
-  else
-    TIME r "同步上游仓库失败,注意网络环境,请重新再运行命令试试"
-    exit 1
-  fi
-else
-  if [[ -d "build" ]]; then
-    rm -rf ${OPERATES_PATH}
-    cp -Rf build ${OPERATES_PATH}
-  fi
+if [[ -d "build" ]]; then
+  rm -rf ${OPERATES_PATH}
+  cp -Rf build ${OPERATES_PATH}
 fi
 }
 
@@ -150,7 +112,6 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
       fi
       TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
       export TONGBU_YUANMA="YES"
-      exit 0
     else
       TIME r "同步上游仓库失败,注意网络环境,请重新再运行命令试试"
       exit 1
