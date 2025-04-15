@@ -347,12 +347,13 @@ if [[ -n "$(ls -1 |grep -E 'armvirt')" ]] || [[ -n "$(ls -1 |grep -E 'armsr')" ]
   rm -rf $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
   cp -Rf *rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
   TIME g "[ Amlogic_Rockchip系列专用固件 ]顺利编译完成~~~"
+  TIME y "固件存放路径：$GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz"
 else
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" * > /dev/null 2>&1
   TIME g "[ ${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE} ]顺利编译完成~~~"
+  TIME y "固件存放路径：openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 fi
 cd ${HOME_PATH}
-TIME y "固件存放路径：openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 }
 
 function Ben_compiletwo() {
@@ -682,9 +683,7 @@ function menu3() {
   echo
   TIME g " 3、重选择源码再编译"
   echo
-  TIME y " 4、打包Amlogic/Rockchip固件(您要有armvirt_64的.tar.gz固件)"
-  echo
-  TIME r " 5、退出"
+  TIME r " 4、退出"
   echo
   XUANZop="请输入数字"
   echo
@@ -707,10 +706,6 @@ function menu3() {
   break
   ;;
   4)
-    Ben_packaging
-  break
-  ;;
-  5)
     echo
     exit 0
   break
@@ -727,8 +722,7 @@ cd ${GITHUB_WORKSPACE}
 clear
 echo
 TIME y " 1. 进行编译固件"
-TIME y " 2. 打包Amlogic/Rockchip固件(您要有armvirt_64的.tar.gz固件)"
-TIME r " 3. 退出程序"
+TIME r " 2. 退出程序"
 echo
 XUANZHEOP="请输入数字"
 echo
@@ -740,10 +734,6 @@ case $CHOOSE in
 break
 ;;
 2)
-  Ben_packaging
-break
-;;
-3)
   echo
   exit 0
 break
