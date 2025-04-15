@@ -767,6 +767,7 @@ if [[ -f "${LICENSES_DOC}/buildzu.ini" ]]; then
   source ${LICENSES_DOC}/buildzu.ini
 fi
 if [[ ! -d "${OPERATES_PATH}" ]]; then
+  TIME y "正在执行：判断文件是否缺失"
   curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o /tmp/first.sh
   chmod +x /tmp/first.sh && source /tmp/first.sh
   if [[ ! "${SUCCESS_FAILED}" == "success" ]] || [[ ! "${SUCCESS_FAILED}" == "breakdown" ]]; then
