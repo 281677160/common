@@ -35,6 +35,31 @@ sudo ./tmp/llvm.sh 18
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
 
+# 安装upx
+UPX_REV="5.0.0"
+cd /tmp
+curl -fsSL "https://github.com/upx/upx/releases/download/v${UPX_REV}/upx-$UPX_REV-amd64_linux.tar.xz" -o upx-$UPX_REV-amd64_linux.tar.xz
+sudo tar -Jxf "upx-$UPX_REV-amd64_linux.tar.xz"
+sudo rm -rf "/usr/bin/upx" "/usr/bin/upx-ucl"
+sudo cp -fp "upx-$UPX_REV-amd64_linux/upx" "/usr/bin/upx-ucl"
+sudo chmod 0755 "/usr/bin/upx-ucl"
+sudo ln -svf "/usr/bin/upx-ucl" "/usr/bin/upx"
+
+# 安装po2lmo
+${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip
+cd /tmp
+git clone --filter=blob:none --no-checkout "https://github.com/openwrt/luci.git" "po2lmo"
+pushd "po2lmo"
+git config core.sparseCheckout true
+echo "modules/luci-base/src" >> ".git/info/sparse-checkout"
+git checkout
+cd "modules/luci-base/src"
+sudo make po2lmo
+sudo strip "po2lmo"
+sudo rm -rf "/usr/bin/po2lmo"
+sudo cp -fp "po2lmo" "/usr/bin/po2lmo"
+popd
+
 gcc --version
 g++ --version
 clang --version
