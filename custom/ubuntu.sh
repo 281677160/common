@@ -30,8 +30,8 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 60
 
 # 安装clang
-wget -q https://apt.llvm.org/llvm.sh -O llvm.sh
-sudo chmod +x llvm.sh
+wget https://apt.llvm.org/llvm.sh
+chmod +x llvm.sh
 sudo ./llvm.sh 18
 sudo rm -rf llvm.sh
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
