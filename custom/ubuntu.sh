@@ -66,12 +66,12 @@ gcc --version
 g++ --version
 clang --version
 upx --version
-echo "依赖安装完毕"
 }
 
 function update_apt_source(){
 ${INS} autoremove --purge
 ${INS} clean
+echo "依赖安装完毕"
 }
 
 function main(){
