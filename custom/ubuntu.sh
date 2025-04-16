@@ -31,7 +31,7 @@ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 60
 
 # 安装clang
 wget -q https://apt.llvm.org/llvm.sh -O llvm.sh
-chmod +x llvm.sh
+sudo chmod +x llvm.sh
 sudo ./llvm.sh 18
 sudo rm -rf llvm.sh
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
@@ -39,9 +39,7 @@ sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 
 
 # 安装upx
 UPX_REV="5.0.0"
-sudo rm -rf upx-$UPX_REV-amd64_linux
-sudo rm -rf upx-$UPX_REV-amd64_linux.tar.xz
-curl -fLO "https://github.com/upx/upx/releases/download/v${UPX_REV}/upx-$UPX_REV-amd64_linux.tar.xz"
+curl -fsSL "https://github.com/upx/upx/releases/download/v${UPX_REV}/upx-$UPX_REV-amd64_linux.tar.xz" -o upx-$UPX_REV-amd64_linux.tar.xz
 sudo tar -Jxf "upx-$UPX_REV-amd64_linux.tar.xz"
 sudo rm -rf "/usr/bin/upx" "/usr/bin/upx-ucl"
 sudo cp -fp "upx-$UPX_REV-amd64_linux/upx" "/usr/bin/upx-ucl"
