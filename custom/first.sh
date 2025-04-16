@@ -183,7 +183,7 @@ echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
 
 echo '#!/bin/bash' > ${DIY_PT2_SH}
 grep -E '.*export.*=".*"' $DIY_PT1_SH >> ${DIY_PT2_SH}
-chmod -R +x ${LINSHI_COMMON}
+chmod +x ${DIY_PT2_SH}
 source ${DIY_PT2_SH}
 
 grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${DIY_PT2_SH}
@@ -197,6 +197,7 @@ echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 echo "Mandatory_theme=${Mandatory_theme}" >> ${GITHUB_ENV}
 echo "Default_theme=${Default_theme}" >> ${GITHUB_ENV}
 chmod -R +x ${OPERATES_PATH}
+chmod -R +x ${LINSHI_COMMON}
 }
 
 function Diy_memu() {
