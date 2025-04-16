@@ -122,12 +122,8 @@ function Ben_variable() {
 cd ${GITHUB_WORKSPACE}
 export FOLDER_NAME="$FOLDER_NAME"
 export SETT_TINGS="$OPERATES_PATH/$FOLDER_NAME/settings.ini"
-if [[ -f "${SETT_TINGS}" ]]; then
-  if [[ ! "${NUM_BER}" =~ (2|3) ]]; then
-    source ${SETT_TINGS}
-  else
-    MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "${SETT_TINGS}" | awk -F'"' '{print $2}')"
-  fi
+if [[ -f "${SETT_TINGS}" ]] && [[ "${NUM_BER}" == "1" ]]; then
+  source ${SETT_TINGS}
 fi
 echo "$MODIFY_CONFIGURATION"
 export COMPILE_PATH="$OPERATES_PATH/$FOLDER_NAME"
@@ -228,6 +224,7 @@ source $COMMON_SH && Diy_partsh
 
 function Ben_configuration() {
 cd ${HOME_PATH}
+MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "${SETT_TINGS}" | awk -F'"' '{print $2}')"
 if [[ "${Menuconfig_Config}" == "true" ]]; then
   TIME y "正在执行：选取插件等..."
   make menuconfig
