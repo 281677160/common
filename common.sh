@@ -93,7 +93,7 @@ MT798X)
 ;;
 esac
 
-export FILES_PATH="${HOME_PATH}/package/base-files/files"
+export FILES_PATH="${HOME_PATH}/package/base-files/files/etc/shadow"
 export REPAIR_PATH="${HOME_PATH}/package/base-files/files/etc/openwrt_release"
 export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
 export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
@@ -101,7 +101,6 @@ export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base
 export CLEAR_PATH="/tmp/Clear"
 export Upgrade_Date="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
 export Gujian_Date="$(date +%m.%d)"
-export UPGRADE_KEEP="$RAW_WEB/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
 export TARGET_MK="$RAW_WEB/include/target.mk"
 export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
 
@@ -121,7 +120,6 @@ echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
 echo "CLEAR_PATH=${CLEAR_PATH}" >> ${GITHUB_ENV}
 echo "Upgrade_Date=${Upgrade_Date}" >> ${GITHUB_ENV}
 echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
-echo "UPGRADE_KEEP=${UPGRADE_KEEP}" >> ${GITHUB_ENV}
 echo "TARGET_MK=${TARGET_MK}" >> ${GITHUB_ENV}
 echo "LICENSES_DOC=${LICENSES_DOC}" >> ${GITHUB_ENV}
 
@@ -159,8 +157,8 @@ fi
 sed -i "s/ZHUJI_MING/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
 sed -i "s/OPHUBOPENWRT/${DISTRIB_SOURCECODE}/g" "${DEFAULT_PATH}"
-sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
-grep -q "admin:" ${FILES_PATH}/etc/shadow && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}/etc/shadow
+sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}
+grep -q "admin:" ${FILES_PATH} && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}
 
 # 添加自定义插件源
 echo "${OpenClash_branch}"
