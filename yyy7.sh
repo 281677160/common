@@ -145,7 +145,7 @@ else
   TIME r "文件下载失败,请检查网络"
   exit 1
 fi
-if [[ "${TONGBU_YUANMA}" == "1" ]]; then
+if [[ "${TONGBU_YUANMA}" == "1" ]] && [[ -z "${SUCCESS_FAILED}" ]]; then
   exit 0
 else
   source $COMMON_SH && Diy_variable
