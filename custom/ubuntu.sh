@@ -37,7 +37,9 @@ sudo apt install clang lldb lld -y
 wget https://apt.llvm.org/llvm.sh
 sudo bash llvm.sh 18
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
+sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
 sudo update-alternatives --config clang
+sudo update-alternatives --config clang++
 sudo rm -rf llvm.sh
 
 
