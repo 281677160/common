@@ -101,7 +101,6 @@ export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base
 export CLEAR_PATH="/tmp/Clear"
 export Upgrade_Date="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
 export Gujian_Date="$(date +%m.%d)"
-export TARGET_MK="$RAW_WEB/include/target.mk"
 export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
 
 echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
@@ -120,7 +119,6 @@ echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
 echo "CLEAR_PATH=${CLEAR_PATH}" >> ${GITHUB_ENV}
 echo "Upgrade_Date=${Upgrade_Date}" >> ${GITHUB_ENV}
 echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
-echo "TARGET_MK=${TARGET_MK}" >> ${GITHUB_ENV}
 echo "LICENSES_DOC=${LICENSES_DOC}" >> ${GITHUB_ENV}
 
 # 启动编译时的变量文件
