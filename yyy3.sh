@@ -127,6 +127,7 @@ if [[ -f "${SETT_TINGS}" ]] && [[ ! "${NUM_BER}" =~ (2|3) ]]; then
 else
   MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "${SETT_TINGS}" | awk -F'"' '{print $2}')"
 fi
+echo "$MODIFY_CONFIGURATION"
 export COMPILE_PATH="$OPERATES_PATH/$FOLDER_NAME"
 export SOURCE_CODE="${SOURCE_CODE}"
 export REPO_BRANCH="${REPO_BRANCH}"
