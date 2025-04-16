@@ -255,9 +255,9 @@ fi
 function Ben_download() {
 TIME y "正在执行：下载DL文件,请耐心等候..."
 cd ${HOME_PATH}
-rm -rf "${op_log}"
-make -j8 download || make -j8 download V=s 2>&1 | tee $op_log
-if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'ERROR')" ]]; then
+rm -rf /tmp/build.log
+make -j8 download |& tee /tmp/build.log 2>&1
+if [[ -n "$(grep -E 'ERROR' /tmp/build.log)" ]]; then
   clear
   TIME r "下载DL失败，更换节点后再尝试下载？"
   QLMEUN="请更换节点后按[Y/y]回车继续尝试下载DL，或输入[N/n]回车,退出编译"
