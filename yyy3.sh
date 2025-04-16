@@ -307,6 +307,7 @@ if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]]; the
   SOURCE="${SOURCE}"
   FOLDER_NAME="${FOLDER_NAME}"
   REPO_BRANCH="${REPO_BRANCH}"
+  URL_JC="${REPO_URL}"
   LUCI_EDITION="${LUCI_EDITION}"
   TARGET_BOARD="${TARGET_BOARD}"
   MYCONFIG_FILE="${MYCONFIG_FILE}"
@@ -325,6 +326,7 @@ else
   SOURCE="${SOURCE}"
   FOLDER_NAME="${FOLDER_NAME}"
   REPO_BRANCH="${REPO_BRANCH}"
+  URL_JC="${REPO_URL}"
   LUCI_EDITION="${LUCI_EDITION}"
   TARGET_BOARD="${TARGET_BOARD}"
   MYCONFIG_FILE="${MYCONFIG_FILE}"
@@ -789,7 +791,9 @@ if [[ -n "${SUCCESS_FAILED}" ]]; then
       missing_flag=1
     fi
   done
-  if [[ $missing_flag -eq 0 ]] && [[ -n "$( grep -E "${TARGET_BOARD}" "$HOME_PATH/.config" 2>/dev/null)" ]]; then
+  
+  if [[ $missing_flag -eq 0 ]] && [[ -n "$( grep -E "${TARGET_BOARD}" "$HOME_PATH/.config" 2>/dev/null)" ]] && \
+  [[ -n "$( grep -E "${REPO_URL}" "$HOME_PATH/.git/config" 2>/dev/null)" ]] && [[ -n "$( grep -E "${REPO_BRANCH}" "$HOME_PATH/.git/config" 2>/dev/null)" ]]; then
     menu2
   else
     menu1
