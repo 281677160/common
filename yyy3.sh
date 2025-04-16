@@ -313,7 +313,6 @@ if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]]; the
   MYCONFIG_FILE="${MYCONFIG_FILE}"
   TARGET_PROFILE="${TARGET_PROFILE}"
   CONFIG_FILE="${CONFIG_FILE}"
-  ZZZ_PATH="${ZZZ_PATH}"
   " > ${LICENSES_DOC}/buildzu.ini
   sed -i 's/^[ ]*//g' ${LICENSES_DOC}/buildzu.ini
   TIME r "编译失败~~!"
@@ -332,7 +331,6 @@ else
   MYCONFIG_FILE="${MYCONFIG_FILE}"
   TARGET_PROFILE="${TARGET_PROFILE}"
   CONFIG_FILE="${CONFIG_FILE}"
-  ZZZ_PATH="${ZZZ_PATH}"
   " > ${LICENSES_DOC}/buildzu.ini
   sed -i 's/^[ ]*//g' ${LICENSES_DOC}/buildzu.ini
 fi
