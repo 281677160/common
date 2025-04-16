@@ -33,12 +33,12 @@ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 60
 # 安装clang
 ${INS} install -y clang-18 libclang-18-dev lld-18 liblld-18-dev
 for i in "clang-18" "clang++-18" "clang-cpp-18" "ld.lld-18" "ld64.lld-18" "llc-18" "lld-18" "lld-link-18" "opt-18" "wasm-ld-18"; do
-	sudo ln -svf "$i" "/usr/bin/${i%-18}"
+  sudo ln -svf "$i" "/usr/bin/${i%-18}"
 done
 
 ${INS} install -y llvm-18
 for i in "/usr/bin"/llvm-*-18; do
-	sudo ln -svf "$i" "${i%-18}"
+  sudo ln -svf "$i" "${i%-18}"
 done
 
 # 安装upx
