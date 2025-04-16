@@ -625,7 +625,6 @@ Ben_menu7
 }
 
 function Diy_main3() {
-Ben_variable
 Ben_config
 Ben_diskcapacity
 Ben_xiazai
