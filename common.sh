@@ -94,7 +94,6 @@ MT798X)
 esac
 
 export FILES_PATH="${HOME_PATH}/package/base-files/files/etc/shadow"
-export REPAIR_PATH="${HOME_PATH}/package/base-files/files/etc/openwrt_release"
 export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
 export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
 export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
@@ -112,7 +111,6 @@ echo "DISTRIB_SOURCECODE=${DISTRIB_SOURCECODE}" >> ${GITHUB_ENV}
 echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
 
 echo "FILES_PATH=${FILES_PATH}" >> ${GITHUB_ENV}
-echo "REPAIR_PATH=${REPAIR_PATH}" >> ${GITHUB_ENV}
 echo "DELETE=${DELETE}" >> ${GITHUB_ENV}
 echo "DEFAULT_PATH=${DEFAULT_PATH}" >> ${GITHUB_ENV}
 echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
