@@ -32,14 +32,14 @@ sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 
 # 安装clang
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-sudo add-apt-repository --yes "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main"
-${INS} update > /dev/null 2>&1
-sudo apt install clang-18 clang++-18 lldb-18 lld-18 libc++-18-dev libc++abi-18-dev
+sudo apt install build-essential gdb -y
+sudo apt install clang lldb lld -y
+wget https://apt.llvm.org/llvm.sh
+sudo bash llvm.sh 18
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
-sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
 sudo update-alternatives --config clang
-sudo update-alternatives --config clang++  
+sudo rm -rf llvm.sh
+
 
 # 安装upx
 UPX_REV="5.0.0"
