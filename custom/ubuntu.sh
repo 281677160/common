@@ -1,6 +1,5 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-3.0-only
- xyp="$PWD"
  
 function install_mustrelyon(){
 # 更新ubuntu源
@@ -70,7 +69,6 @@ sudo cp -fp "po2lmo" "/usr/bin/po2lmo"
 popd
 sudo rm -rf po2lmo
 
-cd $xyp
 gcc --version
 g++ --version
 clang --version
