@@ -182,6 +182,11 @@ fi
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
   gitcon https://github.com/openwrt/packages/tree/2db418f6707af1a938d6c033aa81946334c1a8bb/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
   gitcon https://github.com/coolsnowwolf/packages/tree/152022403f0ab2a85063ae1cd9687bd5240fe9b7/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
+  if [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
+    gitcon https://github.com/openwrt/openwrt/tree/202d404f743a49a50e253c54f43ebd47fd028496/tools/cmake ${HOME_PATH}/tools/cmake
+  else
+    gitcon https://github.com/openwrt/openwrt/tree/45082d4e51935bb3e8eab255dd69c87f6f9310b0/tools/cmake ${HOME_PATH}/tools/cmake
+  fi
   gitcon https://github.com/openwrt/packages/tree/47ea48c09d61610e2d599b94f66f90e21164db1c/lang/ruby ${HOME_PATH}/feeds/packages/lang/ruby
   gitcon https://github.com/openwrt/packages/tree/47ea48c09d61610e2d599b94f66f90e21164db1c/libs/yaml ${HOME_PATH}/feeds/packages/libs/yaml
 fi
