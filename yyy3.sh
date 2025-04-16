@@ -124,6 +124,8 @@ export FOLDER_NAME="$FOLDER_NAME"
 export SETT_TINGS="$OPERATES_PATH/$FOLDER_NAME/settings.ini"
 if [[ -f "${SETT_TINGS}" ]] && [[ "${NUM_BER}" == "1" ]]; then
   source ${SETT_TINGS}
+else
+  MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "${SETT_TINGS}" | awk -F'"' '{print $2}')"
 fi
 export COMPILE_PATH="$OPERATES_PATH/$FOLDER_NAME"
 export SOURCE_CODE="${SOURCE_CODE}"
@@ -151,9 +153,6 @@ fi
 }
 
 function Ben_config() {
-export SETT_TINGS="$OPERATES_PATH/$FOLDER_NAME/settings.ini"
-MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "${SETT_TINGS}" | awk -F'"' '{print $2}')"
-echo "$MODIFY_CONFIGURATION"
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   TIME g "是否需要增删插件?"
   read -t 30 -p "[输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
@@ -626,6 +625,7 @@ Ben_menu7
 }
 
 function Diy_main3() {
+Ben_variable
 Ben_config
 Ben_diskcapacity
 Ben_xiazai
