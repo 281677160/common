@@ -28,6 +28,7 @@ export GITHUB_WORKSPACE="/home/$USER"
 export HOME_PATH="${GITHUB_WORKSPACE}/openwrt"
 export OPERATES_PATH="${GITHUB_WORKSPACE}/operates"
 export GITHUB_ENV="/tmp/compile"
+export DIAN_GIT="${HOME_PATH}/.git/config"
 export BENDI_VERSION="1"
 export op_log="${OPERATES_PATH}/build.log"
 export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
@@ -791,7 +792,7 @@ if [[ -n "${SUCCESS_FAILED}" ]]; then
   done
   
   if [[ $missing_flag -eq 0 ]] && [[ -n "$( grep -E "${TARGET_BOARD}" "$HOME_PATH/.config" 2>/dev/null)" ]] && \
-  [[ -n "$( grep -E "${URL_JC}" "$HOME_PATH/.git/config" 2>/dev/null)" ]] && [[ -n "$( grep -E "${REPO_BRANCH}" "$HOME_PATH/.git/config" 2>/dev/null)" ]]; then
+  [[ -n "$( grep -E "${URL_JC}" "${DIAN_GIT}" 2>/dev/null)" ]] && [[ -n "$( grep -E "${REPO_BRANCH}" "${DIAN_GIT}" 2>/dev/null)" ]]; then
     menu2
   else
     menu1
