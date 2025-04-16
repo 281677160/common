@@ -190,9 +190,16 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   tmpdir="$(mktemp -d)"
   if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
     cd $HOME_PATH
-    for X in $(ls -a1 |grep -v "feeds\|dl\|build_dir\|staging_dir\|LICENSES\|.config"); do
-      rm -rf $X
-    done
+    find . -maxdepth 1 \
+      ! -name '.' \
+      ! -name 'feeds' \
+      ! -name 'dl' \
+      ! -name 'build_dir' \
+      ! -name 'staging_dir' \
+      ! -name 'LICENSES' \
+      ! -name '.config' \
+      ! -name '.config.old' \
+      -exec rm -rf {} +
     rsync -a $tmpdir/ $HOME_PATH/
     rm -rf $tmpdir
   else
