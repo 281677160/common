@@ -20,7 +20,7 @@ python2.7 python3 python3-pyelftools python3-setuptools qemu-utils rsync scons s
 swig texinfo uglifyjs unzip upx-ucl vim wget xmlto xxd zlib1g-dev
 
 # N1打包需要的依赖
-${INS} install rename pigz clang
+${INS} install rename pigz
 
 # 安装gcc-13
 sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
