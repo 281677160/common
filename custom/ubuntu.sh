@@ -31,26 +31,32 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 60
 
 # 安装clang
-cd /tmp
-wget -q https://apt.llvm.org/llvm.sh -O llvm.sh
-chmod +x llvm.sh
-sudo ./llvm.sh 18
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
-sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
+${INS} install -y clang-18 libclang-18-dev lld-18 liblld-18-dev
+for i in "clang-18" "clang++-18" "clang-cpp-18" "ld.lld-18" "ld64.lld-18" "llc-18" "lld-18" "lld-link-18" "opt-18" "wasm-ld-18"; do
+	sudo ln -svf "$i" "/usr/bin/${i%-18}"
+done
+
+${INS} install -y llvm-18
+for i in "/usr/bin"/llvm-*-18; do
+	sudo ln -svf "$i" "${i%-18}"
+done
 
 # 安装upx
 UPX_REV="5.0.0"
-cd /tmp
-curl -fsSL "https://github.com/upx/upx/releases/download/v${UPX_REV}/upx-$UPX_REV-amd64_linux.tar.xz" -o upx-$UPX_REV-amd64_linux.tar.xz
+sudo rm -rf upx-$UPX_REV-amd64_linux
+sudo rm -rf upx-$UPX_REV-amd64_linux.tar.xz
+curl -fLO "https://github.com/upx/upx/releases/download/v${UPX_REV}/upx-$UPX_REV-amd64_linux.tar.xz"
 sudo tar -Jxf "upx-$UPX_REV-amd64_linux.tar.xz"
 sudo rm -rf "/usr/bin/upx" "/usr/bin/upx-ucl"
 sudo cp -fp "upx-$UPX_REV-amd64_linux/upx" "/usr/bin/upx-ucl"
 sudo chmod 0755 "/usr/bin/upx-ucl"
 sudo ln -svf "/usr/bin/upx-ucl" "/usr/bin/upx"
+sudo rm -rf upx-$UPX_REV-amd64_linux
+sudo rm -rf upx-$UPX_REV-amd64_linux.tar.xz
 
 # 安装po2lmo
 ${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip
-cd /tmp
+sudo rm -rf po2lmo
 git clone --filter=blob:none --no-checkout "https://github.com/openwrt/luci.git" "po2lmo"
 pushd "po2lmo"
 git config core.sparseCheckout true
@@ -62,6 +68,7 @@ sudo strip "po2lmo"
 sudo rm -rf "/usr/bin/po2lmo"
 sudo cp -fp "po2lmo" "/usr/bin/po2lmo"
 popd
+sudo rm -rf po2lmo
 
 cd $xyp
 gcc --version
