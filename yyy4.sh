@@ -152,6 +152,7 @@ fi
 }
 
 function Ben_config() {
+MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "${SETT_TINGS}" | awk -F'"' '{print $2}')"
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   TIME g "是否需要增删插件?"
   read -t 30 -p "[输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
@@ -224,7 +225,6 @@ source $COMMON_SH && Diy_partsh
 
 function Ben_configuration() {
 cd ${HOME_PATH}
-MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "${SETT_TINGS}" | awk -F'"' '{print $2}')"
 if [[ "${Menuconfig_Config}" == "true" ]]; then
   TIME y "正在执行：选取插件等..."
   make menuconfig
