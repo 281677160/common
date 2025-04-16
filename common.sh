@@ -524,9 +524,7 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 function Diy_definition() {
 cd ${HOME_PATH}
-source "${TWO_SH}"
 source "${DIY_PT2_SH}"
-rm -rf "${TWO_SH}" "${DIY_PT2_SH}"
 
 # 获取源码文件的IP
 lan="/set network.\$1.netmask/a"
