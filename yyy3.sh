@@ -197,16 +197,15 @@ elif [[ "${NUM_BER}" == "2" ]]; then
     cp -Rf $tmpdir/.git $HOME_PATH/.git
     rm -rf $tmpdir
   else
-    TIME r "源码下载错误,请检测网络"
+    TIME r "源码下载失败,请检测网络"
     exit 1
   fi
   cd ${HOME_PATH}
   git pull > /dev/null 2>&1
 elif [[ "${NUM_BER}" == "3" ]]; then
   cd $HOME_PATH
-  cp -Rf ${LICENSES_DOC}/feeds.conf.default ${HOME_PATH}/feeds.conf.default
-  git pull > /dev/null 2>&1
   TIME y "正在执行：更新和安装feeds"
+  git pull > /dev/null 2>&1
   ./scripts/feeds update -a > /dev/null 2>&1
   ./scripts/feeds install -a
 fi
@@ -672,9 +671,11 @@ function menu2() {
   echo
   TIME y " 2、保留部分缓存(插件源码都重新下载),可改配置文件再编译"
   echo
-  TIME y " 3、重选择源码再编译"
+  TIME y " 3、放弃缓存,重新编译"
   echo
-  TIME r " 4、退出"
+  TIME y " 4、重选择源码编译"
+  echo
+  TIME r " 5、退出"
   echo
   XUANZop="请输入数字"
   echo
@@ -692,11 +693,16 @@ function menu2() {
   break
   ;;
   3)
+    export NUM_BER="1"
+    Diy_main
+  break
+  ;;
+  4)
     export NUM_BER=""
     menu3
   break
   ;;
-  4)
+  5)
     echo
     exit 0
   break
