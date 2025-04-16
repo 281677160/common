@@ -190,12 +190,10 @@ elif [[ "${NUM_BER}" == "2" ]]; then
   tmpdir="$(mktemp -d)"
   if git clone -b "${REPO_BRANCH}" --single-branch "${REPO_URL}" "${tmpdir}"; then
     cd $HOME_PATH
-    for X in $(ls -1 |grep -v "feeds\|dl\|build_dir\|staging_dir\|LICENSES"); do
+    for X in $(ls -a1 |grep -v "feeds\|dl\|build_dir\|staging_dir\|LICENSES\|.config"); do
       rm -rf $X
     done
-    cp -Rf $tmpdir/* $HOME_PATH
-    rm -rf $HOME_PATH/.git
-    cp -Rf $tmpdir/.git $HOME_PATH/.git
+    rsync -a $tmpdir/ $HOME_PATH/
     rm -rf $tmpdir
   else
     TIME r "源码下载失败,请检测网络"
