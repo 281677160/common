@@ -170,7 +170,6 @@ if grep -q "TIME" "${COMMON_SH}" && grep -q "Diy_Part2" "${UPGRADE_SH}"; then
   cp -Rf ${COMPILE_PATH} ${LINSHI_COMMON}/${FOLDER_NAME}
   export DIY_PT1_SH="${LINSHI_COMMON}/${FOLDER_NAME}/diy-part.sh"
   export DIY_PT2_SH="${LINSHI_COMMON}/${FOLDER_NAME}/diy2-part.sh"
-  export TWO_SH="${LINSHI_COMMON}/${FOLDER_NAME}/two.sh"
 else
   TIME r "common文件下载失败"
   exit 1
@@ -178,23 +177,22 @@ fi
 
 echo "DIY_PT1_SH=${DIY_PT1_SH}" >> ${GITHUB_ENV}
 echo "DIY_PT2_SH=${DIY_PT2_SH}" >> ${GITHUB_ENV}
-echo "TWO_SH=${TWO_SH}" >> ${GITHUB_ENV}
 echo "COMMON_SH=${COMMON_SH}" >> ${GITHUB_ENV}
 echo "UPGRADE_SH=${UPGRADE_SH}" >> ${GITHUB_ENV}
 echo "CONFIG_TXT=${CONFIG_TXT}" >> ${GITHUB_ENV}
-
-echo '#!/bin/bash' > ${TWO_SH}
-grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${TWO_SH}
-sed -i 's/\. |/.\/feeds |/g' ${TWO_SH}
-grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${TWO_SH}
-sed -i 's/\. |/.\/package |/g' ${TWO_SH}
-sed -i 's?./packagefeeds?./feeds?g' "${TWO_SH}"
-grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH > tmp && mv tmp $DIY_PT1_SH
 
 echo '#!/bin/bash' > ${DIY_PT2_SH}
 grep -E '.*export.*=".*"' $DIY_PT1_SH >> ${DIY_PT2_SH}
 chmod -R +x ${LINSHI_COMMON}
 source ${DIY_PT2_SH}
+
+grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${DIY_PT2_SH}
+sed -i 's/\. |/.\/feeds |/g' ${DIY_PT2_SH}
+grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH >> ${DIY_PT2_SH}
+sed -i 's/\. |/.\/package |/g' ${DIY_PT2_SH}
+sed -i 's?./packagefeeds?./feeds?g' ${DIY_PT2_SH}
+grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed -i' $DIY_PT1_SH > tmp && mv tmp $DIY_PT1_SH
+
 echo "OpenClash_branch=${OpenClash_branch}" >> ${GITHUB_ENV}
 echo "Mandatory_theme=${Mandatory_theme}" >> ${GITHUB_ENV}
 echo "Default_theme=${Default_theme}" >> ${GITHUB_ENV}
