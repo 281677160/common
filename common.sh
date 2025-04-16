@@ -357,8 +357,6 @@ cat >> "${KEEPD_PATH}" <<-EOF
 /www/luci-static/argon/background
 /etc/smartdns/custom.conf
 EOF
-
-cp -Rf "${HOME_PATH}/feeds.conf.default" "${LICENSES_DOC}/feeds.conf.default"
 }
 
 
