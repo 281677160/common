@@ -793,7 +793,7 @@ if [[ -n "${SUCCESS_FAILED}" ]]; then
   done
   
   if [[ $missing_flag -eq 0 ]] && [[ -n "$( grep -E "${TARGET_BOARD}" "$HOME_PATH/.config" 2>/dev/null)" ]] && \
-  [[ -n "$( grep -E "${REPO_URL}" "$HOME_PATH/.git/config" 2>/dev/null)" ]] && [[ -n "$( grep -E "${REPO_BRANCH}" "$HOME_PATH/.git/config" 2>/dev/null)" ]]; then
+  [[ -n "$( grep -E "${URL_JC}" "$HOME_PATH/.git/config" 2>/dev/null)" ]] && [[ -n "$( grep -E "${REPO_BRANCH}" "$HOME_PATH/.git/config" 2>/dev/null)" ]]; then
     menu2
   else
     menu1
