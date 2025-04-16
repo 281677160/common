@@ -20,7 +20,7 @@ python2.7 python3 python3-pyelftools python3-setuptools qemu-utils rsync scons s
 swig texinfo uglifyjs unzip upx-ucl vim wget xmlto xxd zlib1g-dev
 
 # N1打包需要的依赖
-${INS} install rename pigz
+${INS} install rename pigz clang
 
 # 安装gcc-13
 sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
@@ -30,21 +30,6 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 60
 sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
-
-# 安装clang
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-sudo add-apt-repository --yes "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main"
-sudo apt update
-sudo apt install -y clang-18 libclang-18-dev lld-18 liblld-18-dev
-for i in "clang-18" "clang++-18" "clang-cpp-18" "ld.lld-18" "ld64.lld-18" "llc-18" "lld-18" "lld-link-18" "opt-18" "wasm-ld-18"; do
-	sudo ln -svf "$i" "/usr/bin/${i%-18}"
-done
-
-sudo apt install -y llvm-18
-for i in "/usr/bin"/llvm-*-18; do
-	sudo ln -svf "$i" "${i%-18}"
-done
-
 
 # 安装upx
 UPX_REV="5.0.0"
