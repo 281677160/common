@@ -198,15 +198,10 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
 fi
 
 if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|openwrt-23.05) ]]; then
-  git clone https://github.com/padavanonly/immortalwrt-mt798x-24.10 mt798xmk
-  cp -r mt798xmk/package/boot package/boot
-  cp -r mt798xmk/package/boot/uboot-mediatek package/boot/uboot-mediatek
-  cp -r mt798xmk/target/linux/mediatek/image/mt7981.mk target/linux/mediatek/image/mt7981.mk
-  cp -r mt798xmk/target/linux/mediatek/image/mt7986.mk target/linux/mediatek/image/mt7986.mk
-  rm -rf target/linux/mediatek/mt7981 && cp -r mt798xmk/target/linux/mediatek/mt7981 target/linux/mediatek/mt7981
-  rm -rf target/linux/mediatek/mt7986 && cp -r mt798xmk/target/linux/mediatek/mt7986 target/linux/mediatek/mt7986
-  rm -rf target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek && cp -r mt798xmk/target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek
-  rm -rf mt798xmk
+  git clone -b main https://github.com/281677160/mt798x mt798xmk
+  rm -rf package/boot && cp -r mt798xmk/package/boot package/boot
+  rm -rf target/linux/mediatek && cp -r mt798xmk/target/linux/mediatek target/linux/mediatek
+  rm -rf package/boot/arm-trusted-firmware-stm32
   gitcon https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/network/services/hostapd package/network/services/hostapd
 fi
 
