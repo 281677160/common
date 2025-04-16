@@ -151,6 +151,7 @@ fi
 }
 
 function Ben_config() {
+export SETT_TINGS="$OPERATES_PATH/$FOLDER_NAME/settings.ini"
 MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "${SETT_TINGS}" | awk -F'"' '{print $2}')"
 echo "$MODIFY_CONFIGURATION"
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
