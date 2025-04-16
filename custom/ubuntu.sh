@@ -28,6 +28,8 @@ ${INS} update > /dev/null 2>&1
 ${INS} install gcc-13 g++-13
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 60
+sudo update-alternatives --config gcc
+sudo update-alternatives --config g++
 
 # 安装clang
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
@@ -36,6 +38,8 @@ ${INS} update > /dev/null 2>&1
 sudo apt install clang-18 clang++-18 lldb-18 lld-18 libc++-18-dev libc++abi-18-dev
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
+sudo update-alternatives --config clang
+sudo update-alternatives --config clang++  
 
 # 安装upx
 UPX_REV="5.0.0"
