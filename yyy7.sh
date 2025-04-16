@@ -322,7 +322,7 @@ if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]]; the
   " > ${LICENSES_DOC}/buildzu.ini
   sed -i 's/^[ ]*//g' ${LICENSES_DOC}/buildzu.ini
   TIME r "编译失败~~!"
-  TIME y "在[operates/common/build.log]可查看编译日志"
+  TIME y "在[operates/build.log]可查看编译日志"
   exit 1
 else
   echo "
