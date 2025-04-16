@@ -24,11 +24,17 @@ ${INS} install rename pigz clang
 
 # 安装gcc-13
 sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/ppa
 ${INS} update > /dev/null 2>&1
-${INS} install gcc-13
-${INS} install g++-13
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
+${INS} install gcc-13 g++-13
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 60
+
+wget -q https://apt.llvm.org/llvm.sh -O /tmp/llvm.sh
+chmod +x /tmp/llvm.sh
+sudo ./tmp/llvm.sh 18
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
+sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
+
 gcc --version
 g++ --version
 clang --version
