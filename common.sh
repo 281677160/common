@@ -450,15 +450,6 @@ fi
 # tproxy补丁
 source ${HOME_PATH}/build/common/Share/tproxy/nft_tproxy.sh
 
-# 降低luci-app-ssr-plus的shadowsocks-rust版本
-if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-   gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
-fi
-
-if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
-    gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
-fi
-
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
 fi
@@ -1223,6 +1214,18 @@ if [[ `grep -c "CONFIG_PACKAGE_dnsmasq_full_nftset=y" ${HOME_PATH}/.config` -eq 
     sed -i 's/CONFIG_PACKAGE_luci-app-passwall2_Nftables_Transparent_Proxy=y/# CONFIG_PACKAGE_luci-app-passwall2_Nftables_Transparent_Proxy is not set/g' ${HOME_PATH}/.config
     sed -i 's/CONFIG_PACKAGE_nftables-json=y/# CONFIG_PACKAGE_nftables-json is not set/g' ${HOME_PATH}/.config
     echo "" >>CHONGTU
+  fi
+fi
+
+if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
+  if [[ -n "$(grep -E "dns2socks-rust=y" ${HOME_PATH}/.config)" ]] || [[ -n "$(grep -E "rust-sslocal=y" ${HOME_PATH}/.config)" ]]; then
+    echo -e "\n# CONFIG_PACKAGE_dns2socks-rust is not set" >> ${HOME_PATH}/.config
+    echo -e "\n# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_DNS2SOCKS_RUST is not set" >> ${HOME_PATH}/.config
+    echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-sslocal is not set" >> ${HOME_PATH}/.config
+    echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-ssserver is not set" >> ${HOME_PATH}/.config
+    echo -e "\nCONFIG_PACKAGE_dns2socks=y" >> ${HOME_PATH}/.config
+    echo -e "\nCONFIG_PACKAGE_shadowsocks-rust-sslocal=y" >> ${HOME_PATH}/.config
+    echo -e "\nCONFIG_PACKAGE_shadowsocks-rust-ssserver=y" >> ${HOME_PATH}/.config
   fi
 fi
 
