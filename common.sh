@@ -299,11 +299,9 @@ fi
 # tproxy补丁
 bash <(curl -fsSL https://github.com/281677160/common/raw/main/Share/tproxy/nft_tproxy.sh)
 
-# 降低luci-app-ssr-plus的shadowsocks-rust版本
-#if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-#   gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
-#   gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/dnsproxy ${HOME_PATH}/feeds/packages/dnsproxy
-#fi
+if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
+   gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
+fi
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
     gitsvn https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
@@ -377,9 +375,6 @@ if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/uclient ${HOME_PATH}/package/libs/uclient
   rm -fr ${HOME_PATH}/feeds/packages/utils/owut
 fi
-sed -i 's/--set=llvm.download-ci-llvm=true/--set=source.crates-io.replace-with=mirror \\\
---set=source.mirror.registry=sparse+https:\/\/mirrors.bfsu.edu.cn\/crates.io-index\/ \\\
---set=llvm.download-ci-llvm=false/' ${HOME_PATH}/feeds/packages/lang/rust/Makefile
 }
 
 
