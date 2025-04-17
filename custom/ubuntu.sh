@@ -227,15 +227,6 @@ function install_dependencies() {
 		pip3 config set install.trusted-host "https://mirrors.aliyun.com"
 	fi
 
-	add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-	apt-get update
-	apt-get install gcc-${GCC_VERSION}
-	apt-get install g++-${GCC_VERSION}
-	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 60
-	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 60
-	update-alternatives --config gcc
-	update-alternatives --config g++
-
 	apt-get install -y $BPO_FLAG clang-18 libclang-18-dev lld-18 liblld-18-dev
 	for i in "clang-18" "clang++-18" "clang-cpp-18" "ld.lld-18" "ld64.lld-18" "llc-18" "lld-18" "lld-link-18" "opt-18" "wasm-ld-18"; do
 		ln -svf "$i" "/usr/bin/${i%-18}"
@@ -245,6 +236,15 @@ function install_dependencies() {
 	for i in "/usr/bin"/llvm-*-18; do
 		ln -svf "$i" "${i%-18}"
 	done
+
+ 	add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+	apt-get update
+	apt-get install gcc-${GCC_VERSION}
+	apt-get install g++-${GCC_VERSION}
+	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 60
+	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 60
+	update-alternatives --config gcc
+	update-alternatives --config g++
 
 	apt-get install -y $BPO_FLAG nodejs yarn
 	if [ -n "$CHN_NET" ]; then
