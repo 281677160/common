@@ -301,7 +301,7 @@ function install_dependencies() {
 
 	set +x
  
- 	go --version
+ 	go version
 	gcc --version
 	g++ --version
 	clang --version
