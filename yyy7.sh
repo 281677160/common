@@ -103,7 +103,7 @@ if [[ ! -f "/etc/oprelyon" ]]; then
         echo
     ;;
     esac
-  bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)
+  sudo bash -c 'bash <(curl -s https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
   if [[ $? -eq 0 ]];then
     sudo sh -c 'echo openwrt > /etc/oprelyon'
   fi
