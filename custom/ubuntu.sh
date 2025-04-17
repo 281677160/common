@@ -26,23 +26,13 @@ ${INS} install build-essential asciidoc binutils bzip2 curl gawk gettext git lib
 
 # 安装gcc-13
 sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/ppa
 ${INS} update > /dev/null 2>&1
 ${INS} install gcc-13 g++-13
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 60
 sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
-
-# 安装upx
-UPX_REV="5.0.0"
-curl -fsSL "https://github.com/upx/upx/releases/download/v${UPX_REV}/upx-$UPX_REV-amd64_linux.tar.xz" -o upx-$UPX_REV-amd64_linux.tar.xz
-sudo tar -Jxf "upx-$UPX_REV-amd64_linux.tar.xz"
-sudo rm -rf "/usr/bin/upx" "/usr/bin/upx-ucl"
-sudo cp -fp "upx-$UPX_REV-amd64_linux/upx" "/usr/bin/upx-ucl"
-sudo chmod 0755 "/usr/bin/upx-ucl"
-sudo ln -svf "/usr/bin/upx-ucl" "/usr/bin/upx"
-sudo rm -rf upx-$UPX_REV-amd64_linux
-sudo rm -rf upx-$UPX_REV-amd64_linux.tar.xz
 
 # 安装po2lmo
 ${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip
