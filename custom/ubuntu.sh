@@ -15,7 +15,8 @@ bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g
 genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
 libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
 libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf \
-python3 python3-pyelftools python3-setuptools python2.7 qemu-utils rsync scons squashfs-tools subversion \
+python3 python3-pyelftools python3-setuptools python2.7 libncurses-dev libssl-dev libgmp-dev \
+libexpat1-dev python3-pip libpython3-dev qemu-utils rsync scons squashfs-tools subversion \
 swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 
 # N1打包需要的依赖
@@ -30,7 +31,6 @@ ${INS} install g++-13
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
 
 # 安装po2lmo
-${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip libpython3-dev
 sudo rm -rf po2lmo
 git clone --filter=blob:none --no-checkout "https://github.com/openwrt/luci.git" "po2lmo"
 pushd "po2lmo"
