@@ -227,12 +227,15 @@ function install_dependencies() {
 		pip3 config set install.trusted-host "https://mirrors.aliyun.com"
 	fi
 
-	apt-get install -y $BPO_FLAG "gcc-$GCC_VERSION" "g++-$GCC_VERSION" "gcc-$GCC_VERSION-multilib" "g++-$GCC_VERSION-multilib"
-	for i in "gcc-$GCC_VERSION" "g++-$GCC_VERSION" "gcc-ar-$GCC_VERSION" "gcc-nm-$GCC_VERSION" "gcc-ranlib-$GCC_VERSION"; do
-		ln -svf "$i" "/usr/bin/${i%-$GCC_VERSION}"
-	done
-	ln -svf "/usr/bin/g++" "/usr/bin/c++"
-	[ -e "/usr/include/asm" ] || ln -svf "/usr/include/$(gcc -dumpmachine)/asm" "/usr/include/asm"
+	add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+	add-apt-repository --yes ppa:ubuntu-toolchain-r/ppa
+	apt-get update
+	apt-get install gcc-${GCC_VERSION}
+	apt-get install g++-${GCC_VERSION}
+	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 60
+	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 60
+	update-alternatives --config gcc
+	update-alternatives --config g++
 
 	apt-get install -y $BPO_FLAG clang-18 libclang-18-dev lld-18 liblld-18-dev
 	for i in "clang-18" "clang++-18" "clang-cpp-18" "ld.lld-18" "ld64.lld-18" "llc-18" "lld-18" "lld-link-18" "opt-18" "wasm-ld-18"; do
