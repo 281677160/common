@@ -1168,17 +1168,26 @@ if [[ `grep -c "CONFIG_PACKAGE_dnsmasq_full_nftset=y" ${HOME_PATH}/.config` -eq 
 fi
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-  if [[ -n "$(grep -E "dns2socks-rust=y" ${HOME_PATH}/.config)" ]] || [[ -n "$(grep -E "rust-sslocal=y" ${HOME_PATH}/.config)" ]]; then
+  if [[ -n "$(grep -E "Rust_Client=y" ${HOME_PATH}/.config)" ]]; then
     echo -e "\n# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Client is not set" >> ${HOME_PATH}/.config
+    echo -e "\nCONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Libev_Client=y" >> ${HOME_PATH}/.config
+  fi
+  if [[ -n "$(grep -E "Rust_Server=y" ${HOME_PATH}/.config)" ]]; then
+    echo -e "\n# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Server is not set" >> ${HOME_PATH}/.config
+    echo -e "\nCONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Libev_Server=y" >> ${HOME_PATH}/.config
+  fi
+  if [[ -n "$(grep -E "dns2socks-rust=y" ${HOME_PATH}/.config)" ]]; then
     echo -e "\n# CONFIG_PACKAGE_dns2socks-rust is not set" >> ${HOME_PATH}/.config
     echo -e "\n# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_DNS2SOCKS_RUST is not set" >> ${HOME_PATH}/.config
-    echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-sslocal is not set" >> ${HOME_PATH}/.config
-    echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-ssserver is not set" >> ${HOME_PATH}/.config
-    echo -e "\nCONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Libev_Client=y" >> ${HOME_PATH}/.config
     echo -e "\nCONFIG_PACKAGE_dns2socks=y" >> ${HOME_PATH}/.config
+  fi
+  if [[ -n "$(grep -E "rust-sslocal=y" ${HOME_PATH}/.config)" ]]; then
+    echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-sslocal is not set" >> ${HOME_PATH}/.config
     echo -e "\nCONFIG_PACKAGE_shadowsocksr-libev-ssr-local=y" >> ${HOME_PATH}/.config
+  fi
+  if [[ -n "$(grep -E "rust-ssserver=y" ${HOME_PATH}/.config)" ]]; then
+    echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-ssserver is not set" >> ${HOME_PATH}/.config
     echo -e "\nCONFIG_PACKAGE_shadowsocksr-libev-ssr-server=y" >> ${HOME_PATH}/.config
-    TIME r "提示:${REPO_BRANCH}分支编译luci-app-ssr-plus使用shadowsocks-rust会失败,已帮您换成shadowsocksr-libev"
   fi
 fi
 
