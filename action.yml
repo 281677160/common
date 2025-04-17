@@ -18,6 +18,7 @@ runs:
         mkdir -p "$UPLOAD/build/${FOLDER_NAME}/relevance"
         echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > $UPLOAD/build/${FOLDER_NAME}/relevance/start
         cp -Rf $COMPILE_PATH/relevance/settings.ini $UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
+        echo "ERRUN_NUMBER=${RUN_NUMBER}" >> $UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
         YML_PATH="$UPLOAD/.github/workflows/compile.yml"
         TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
         TARGET2="target: \\[${FOLDER_NAME}\\]"
