@@ -32,6 +32,8 @@ function check_system() {
 
 	case "$VERSION_CODENAME" in
 	"bionic")
+		GO_VERSION="1.24"
+		UPX_VERSION="5.0.0"
 		GCC_VERSION="13"
 		NODE_DISTRO="$VERSION_CODENAME"
 		NODE_KEY="nodesource.gpg.key"
@@ -43,29 +45,39 @@ function check_system() {
 		BPO_FLAG="-t $VERSION_CODENAME-backports"
 		DISTRO_PREFIX="debian-archive/"
 		DISTRO_SECUTIRY_PATH="buster/updates"
+		GO_VERSION="1.24"
+		UPX_VERSION="5.0.0"
 		GCC_VERSION="13"
 		UBUNTU_CODENAME="bionic"
 		VERSION_PACKAGE="lib32gcc1 python2"
 		;;
 	"focal"|\
 	"jammy")
+		GO_VERSION="1.24"
+		UPX_VERSION="5.0.0"
 		GCC_VERSION="13"
 		UBUNTU_CODENAME="$VERSION_CODENAME"
 		VERSION_PACKAGE="lib32gcc-s1 python2"
 		;;
 	"bullseye")
 		BPO_FLAG="-t $VERSION_CODENAME-backports"
+		GO_VERSION="1.24"
+		UPX_VERSION="5.0.0"
 		GCC_VERSION="13"
 		UBUNTU_CODENAME="focal"
 		VERSION_PACKAGE="lib32gcc-s1 python2"
 		;;
 	"bookworm")
 		BPO_FLAG="-t $VERSION_CODENAME-backports"
+		GO_VERSION="1.24"
+		UPX_VERSION="5.0.0"
 		GCC_VERSION="13"
 		UBUNTU_CODENAME="jammy"
 		VERSION_PACKAGE="lib32gcc-s1"
 		;;
 	"noble")
+		GO_VERSION="1.24"
+		UPX_VERSION="5.0.0"
 		GCC_VERSION="13"
 		UBUNTU_CODENAME="$VERSION_CODENAME"
 		VERSION_PACKAGE="lib32gcc-s1"
@@ -238,11 +250,10 @@ function install_dependencies() {
 		yarn config set registry "https://registry.npmmirror.com" --global
 	fi
 
-	GO_REV="1.24"
-	apt-get install -y $BPO_FLAG golang-$GO_REV-go
+	apt-get install -y $BPO_FLAG golang-$GO_VERSION-go
 	rm -rf "/usr/bin/go" "/usr/bin/gofmt"
-	ln -svf "/usr/lib/go-$GO_REV/bin/go" "/usr/bin/go"
-	ln -svf "/usr/lib/go-$GO_REV/bin/gofmt" "/usr/bin/gofmt"
+	ln -svf "/usr/lib/go-$GO_VERSION/bin/go" "/usr/bin/go"
+	ln -svf "/usr/lib/go-$GO_VERSION/bin/gofmt" "/usr/bin/gofmt"
 	if [ -n "$CHN_NET" ]; then
 		go env -w GOPROXY=https://goproxy.cn,direct
 	fi
@@ -258,14 +269,13 @@ function install_dependencies() {
 		exit 1
 	fi
 
-	UPX_REV="5.0.0"
-	curl -fLO "https://github.com/upx/upx/releases/download/v${UPX_REV}/upx-$UPX_REV-amd64_linux.tar.xz"
-	tar -Jxf "upx-$UPX_REV-amd64_linux.tar.xz"
+	curl -fLO "https://github.com/upx/upx/releases/download/v${UPX_VERSION}/upx-$UPX_VERSION-amd64_linux.tar.xz"
+	tar -Jxf "upx-$UPX_VERSION-amd64_linux.tar.xz"
 	rm -rf "/usr/bin/upx" "/usr/bin/upx-ucl"
-	cp -fp "upx-$UPX_REV-amd64_linux/upx" "/usr/bin/upx-ucl"
+	cp -fp "upx-$UPX_VERSION-amd64_linux/upx" "/usr/bin/upx-ucl"
 	chmod 0755 "/usr/bin/upx-ucl"
 	ln -svf "/usr/bin/upx-ucl" "/usr/bin/upx"
-	rm -rf upx-$UPX_REV-amd64_linux.tar.xz upx-$UPX_REV-amd64_linux/upx
+	rm -rf upx-$UPX_VERSION-amd64_linux.tar.xz upx-$UPX_VERSION-amd64_linux/upx
 
 	git clone --filter=blob:none --no-checkout "https://github.com/openwrt/openwrt.git" "padjffs2"
 	pushd "padjffs2"
