@@ -1189,6 +1189,18 @@ if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] ||
     echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-ssserver is not set" >> ${HOME_PATH}/.config
     echo -e "\nCONFIG_PACKAGE_shadowsocksr-libev-ssr-server=y" >> ${HOME_PATH}/.config
   fi
+  if [[ -n "$(grep -E "passwall2_INCLUDE_Shadowsocks_Rust_Client=y" ${HOME_PATH}/.config)" ]]; then
+    echo -e "\n# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Client is not set" >> ${HOME_PATH}/.config
+  fi
+  if [[ -n "$(grep -E "passwall2_INCLUDE_Shadowsocks_Rust_Server=y" ${HOME_PATH}/.config)" ]]; then
+    echo -e "\n# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Server is not set" >> ${HOME_PATH}/.config
+  fi
+  if [[ -n "$(grep -E "passwall_INCLUDE_Shadowsocks_Rust_Client=y" ${HOME_PATH}/.config)" ]]; then
+    echo -e "\n# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client is not set" >> ${HOME_PATH}/.config
+  fi
+   if [[ -n "$(grep -E "passwall_INCLUDE_Shadowsocks_Rust_Server=y" ${HOME_PATH}/.config)" ]]; then
+    echo -e "\n# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server is not set" >> ${HOME_PATH}/.config
+  fi 
 fi
 
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
