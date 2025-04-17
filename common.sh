@@ -302,6 +302,7 @@ bash <(curl -fsSL https://github.com/281677160/common/raw/main/Share/tproxy/nft_
 # 降低luci-app-ssr-plus的shadowsocks-rust版本
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
    gitsvn https://github.com/281677160/common/blob/main/Share/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
+   gitsvn https://github.com/coolsnowwolf/packages/tree/master/net/dnsproxy ${HOME_PATH}/feeds/packages/dnsproxy
 fi
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
