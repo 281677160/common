@@ -379,7 +379,7 @@ if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
 fi
 sed -i 's/--set=llvm.download-ci-llvm=true/--set=source.crates-io.replace-with=mirror \\\
 --set=source.mirror.registry=sparse+https:\/\/mirrors.bfsu.edu.cn\/crates.io-index\/ \\\
---set=llvm.download-ci-llvm=false/' package/feeds/packages/rust/Makefile
+--set=llvm.download-ci-llvm=false/' ${HOME_PATH}/feeds/packages/lang/rust/Makefile
 }
 
 
