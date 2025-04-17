@@ -201,7 +201,7 @@ function install_dependencies() {
 	__info_msg "Installing dependencies..."
 	set -x
 
-	apt full-upgrade -y $BPO_FLAG
+	apt-get full-upgrade -y $BPO_FLAG
 	apt-get install -y $BPO_FLAG ack antlr3 asciidoc autoconf automake autopoint binutils bison \
 		build-essential bzip2 ccache cmake cpio curl device-tree-compiler ecj fakeroot \
 		fastjar flex gawk gettext genisoimage git gnutls-dev gperf haveged help2man \
