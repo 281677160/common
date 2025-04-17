@@ -25,17 +25,15 @@ ${INS} install rename pigz clang
 ${INS} install build-essential asciidoc binutils bzip2 curl gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf
 
 # 安装gcc-13
-sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/ppa
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
 ${INS} update > /dev/null 2>&1
-${INS} install gcc-13 g++-13
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 60
-sudo update-alternatives --config gcc
-sudo update-alternatives --config g++
+${INS} install gcc-13
+${INS} install g++-13
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
 
 # 安装po2lmo
-${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip
+${INS} install libncurses-dev libssl-dev libgmp-dev libexpat1-dev python3-pip libpython3-dev
 sudo rm -rf po2lmo
 git clone --filter=blob:none --no-checkout "https://github.com/openwrt/luci.git" "po2lmo"
 pushd "po2lmo"
