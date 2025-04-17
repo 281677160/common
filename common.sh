@@ -377,6 +377,9 @@ if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/uclient ${HOME_PATH}/package/libs/uclient
   rm -fr ${HOME_PATH}/feeds/packages/utils/owut
 fi
+if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
+    gitsvn https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+ fi
 }
 
 
@@ -404,6 +407,9 @@ fi
 if [[ "${REPO_BRANCH}" =~ (main|master|openwrt-24.10) ]]; then
   gitsvn https://github.com/281677160/common/blob/main/Share/luci-app-nginx-pingos/Makefile ${HOME_PATH}/feeds/danshui/luci-app-nginx-pingos/Makefile
 fi
+if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
+    gitsvn https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+ fi
 }
 
 
