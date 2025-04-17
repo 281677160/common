@@ -238,7 +238,7 @@ function install_dependencies() {
 		yarn config set registry "https://registry.npmmirror.com" --global
 	fi
 
- GO_REV="1.24"
+	GO_REV="1.24"
 	apt-get install -y $BPO_FLAG golang-$GO_REV-go
 	rm -rf "/usr/bin/go" "/usr/bin/gofmt"
 	ln -svf "/usr/lib/go-$GO_REV/bin/go" "/usr/bin/go"
@@ -265,7 +265,7 @@ function install_dependencies() {
 	cp -fp "upx-$UPX_REV-amd64_linux/upx" "/usr/bin/upx-ucl"
 	chmod 0755 "/usr/bin/upx-ucl"
 	ln -svf "/usr/bin/upx-ucl" "/usr/bin/upx"
- rm -rf upx-$UPX_REV-amd64_linux.tar.xz upx-$UPX_REV-amd64_linux/upx
+	rm -rf upx-$UPX_REV-amd64_linux.tar.xz upx-$UPX_REV-amd64_linux/upx
 
 	git clone --filter=blob:none --no-checkout "https://github.com/openwrt/openwrt.git" "padjffs2"
 	pushd "padjffs2"
@@ -278,7 +278,7 @@ function install_dependencies() {
 	rm -rf "/usr/bin/padjffs2"
 	cp -fp "padjffs2" "/usr/bin/padjffs2"
 	popd
- rm -rf padjffs2
+	rm -rf padjffs2
 
 	git clone --filter=blob:none --no-checkout "https://github.com/openwrt/luci.git" "po2lmo"
 	pushd "po2lmo"
@@ -291,7 +291,7 @@ function install_dependencies() {
 	rm -rf "/usr/bin/po2lmo"
 	cp -fp "po2lmo" "/usr/bin/po2lmo"
 	popd
- rm -rf po2lmo
+	rm -rf po2lmo
  
 	curl -fL "https://build-scripts.immortalwrt.org/modify-firmware.sh" -o "/usr/bin/modify-firmware"
 	chmod 0755 "/usr/bin/modify-firmware"
@@ -300,6 +300,13 @@ function install_dependencies() {
 	rm -rf "$TMP_DIR"
 
 	set +x
+ 
+ 	go --version
+	gcc --version
+	g++ --version
+	clang --version
+	upx --version
+ 
 	__success_msg "All dependencies have been installed."
 }
 function main() {
