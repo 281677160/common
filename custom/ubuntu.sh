@@ -228,7 +228,6 @@ function install_dependencies() {
 	fi
 
 	add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-	add-apt-repository --yes ppa:ubuntu-toolchain-r/ppa
 	apt-get update
 	apt-get install gcc-${GCC_VERSION}
 	apt-get install g++-${GCC_VERSION}
