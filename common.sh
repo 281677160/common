@@ -364,8 +364,6 @@ if [[ -d "${HOME_PATH}/feeds/other/lean" ]]; then
   rm -rf ${HOME_PATH}/feeds/other/lean/vlmcsd
 fi
 if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
-  # luci-app-ssr-plus的shadowsocks-rust版本（1.23.0）编译错误，拉取1.22.0使用
-  gitsvn https://github.com/fw876/helloworld/blob/d6bc31754ac228422ee6f03a692568f7dcdd08c3/shadowsocks-rust/Makefile ${HOME_PATH}/feeds/danshui/luci-app-ssr-plus/shadowsocks-rust/Makefile
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/mbedtls ${HOME_PATH}/package/libs/mbedtls
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/ustream-ssl ${HOME_PATH}/package/libs/ustream-ssl
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/uclient ${HOME_PATH}/package/libs/uclient
@@ -398,9 +396,6 @@ fi
 if [[ "${REPO_BRANCH}" =~ (main|master|openwrt-24.10) ]]; then
   gitsvn https://github.com/281677160/common/blob/main/Share/luci-app-nginx-pingos/Makefile ${HOME_PATH}/feeds/danshui/luci-app-nginx-pingos/Makefile
 fi
-if [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-    gitsvn https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
- fi
 }
 
 
