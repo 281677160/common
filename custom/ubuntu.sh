@@ -285,7 +285,7 @@ function install_dependencies() {
 	echo "tools/padjffs2/src" >> ".git/info/sparse-checkout"
 	git checkout
 	cd "tools/padjffs2/src"
-	make
+	make padjffs2
 	strip "padjffs2"
 	rm -rf "/usr/bin/padjffs2"
 	cp -fp "padjffs2" "/usr/bin/padjffs2"
