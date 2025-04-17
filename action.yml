@@ -83,7 +83,11 @@ runs:
         fi
         TIME b "固件作者: ${GIT_ACTOR}"
         TIME b "仓库地址: ${GITHUB_LINK}"
-        TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${{github.workflow}}]工作流程）"
+        if [[ -n "${ERRUN_NUMBER}" ]]; then
+          TIME b "启动编号: 此工作流程由编号[#${ERRUN_NUMBER}]触发启动,本工作流程编号[${WAREHOUSE_MAN}仓库#${RUN_NUMBER}号]）"
+        else
+          TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${{github.workflow}}]工作流程）"
+        fi
         TIME b "编译时间: $(date +%Y年%m月%d号%H时%M分)"
         if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
           TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${amlogic_model}】固件"
