@@ -34,12 +34,13 @@ runs:
         fi
         
         if [[ "${{ github.event_name }}" == "push" ]] && [[ "${{ github.event.head_commit }}" != "null" ]]; then
-          echo "push"
+          #触发启动
           if [[ -f "${COMPILE_PATH}/relevance/settings.ini" ]]; then
             source ${COMPILE_PATH}/relevance/settings.ini
+            echo "ERRUN_NUMBER=${ERRUN_NUMBER}" >> ${GITHUB_ENV}
           fi
         elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-          echo "workflow_dispatch"
+          #手动启动
           if [[ -f "${COMPILE_PATH}/settings.ini" ]]; then
             SOURCE_CODE="$(grep '^SOURCE_CODE=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
             COMPILATION_INFORMATION="$(grep '^COMPILATION_INFORMATION=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
@@ -55,7 +56,7 @@ runs:
           CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
           UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
         else
-          echo "other"
+          #其他启动
           if [[ -f "${COMPILE_PATH}/settings.ini" ]]; then
             source ${COMPILE_PATH}/settings.ini
           fi
