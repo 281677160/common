@@ -22,6 +22,8 @@ swig texinfo uglifyjs unzip upx-ucl vim wget xmlto xxd zlib1g-dev
 # N1打包需要的依赖
 ${INS} install rename pigz clang
 
+${INS} install $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
+
 # 安装gcc-13
 sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
 ${INS} update > /dev/null 2>&1
