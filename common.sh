@@ -721,6 +721,9 @@ CONFIG_PACKAGE_kmod-fuse=y
 # CONFIG_PACKAGE_kmod-fs-ntfs is not set
 ' >> ${HOME_PATH}/.config
 gitsvn https://github.com/281677160/common/blob/main/Share/block/10-mount ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
+  if [[ "${SOURCE}" == "Lienol" ]] && [[ "${REPO_BRANCH}" == "19.07" ]]; then
+    sed -i '/CONFIG_PACKAGE_ntfs-3g=y/d' "${HOME_PATH}/.config"
+  fi
 fi
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
