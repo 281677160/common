@@ -84,7 +84,7 @@ runs:
         TIME b "固件作者: ${GIT_ACTOR}"
         TIME b "仓库地址: ${GITHUB_LINK}"
         if [[ -n "${ERRUN_NUMBER}" ]]; then
-          TIME b "启动编号: 此工作流程由编号[#${ERRUN_NUMBER}]触发启动,本工作流程编号[${WAREHOUSE_MAN}仓库#${RUN_NUMBER}号]）"
+          TIME b "启动编号: 此工作流程由[#${ERRUN_NUMBER}号${{github.workflow}}]触发启动,本工作流程编号[${WAREHOUSE_MAN}仓库#${RUN_NUMBER}号]）"
         else
           TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${{github.workflow}}]工作流程）"
         fi
