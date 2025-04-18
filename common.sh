@@ -299,8 +299,6 @@ fi
 # tproxy补丁
 bash <(curl -fsSL https://github.com/281677160/common/raw/main/Share/tproxy/nft_tproxy.sh)
 
-gitsvn https://github.com/openwrt/packages/tree/84d7eb7af28fa1095286ce410061ab11052dd0fa/net/shadowsocks-libev ${HOME_PATH}/feeds/packages/net/shadowsocks-libev
-
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
     gitsvn https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
@@ -378,10 +376,13 @@ function Diy_IMMORTALWRT() {
 cd ${HOME_PATH}
 if [[ "${REPO_BRANCH}" =~ (openwrt-18.06|openwrt-18.06-k5.4) ]]; then
   gitsvn https://github.com/openwrt/routing/tree/openwrt-21.02/bmx6 ${HOME_PATH}/feeds/routing/bmx6
-  gitsvn https://github.com/immortalwrt/immortalwrt/tree/openwrt-21.02/package/network/services/uhttpd ${HOME_PATH}/package/network/services/uhttpd
+  gitsvn https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05/package/network/services/uhttpd ${HOME_PATH}/package/network/services/uhttpd
   rm -rf ${HOME_PATH}/feeds/packages/net/shadowsocksr-libev
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-homeproxy
+fi
+if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
+  gitcon https://github.com/coolsnowwolf/packages/tree/152022403f0ab2a85063ae1cd9687bd5240fe9b7/net/dnsproxy ${HOME_PATH}/feeds/packages/net/dnsproxy
 fi
 }
 
