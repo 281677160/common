@@ -723,6 +723,7 @@ CONFIG_PACKAGE_kmod-fuse=y
 gitsvn https://github.com/281677160/common/blob/main/Share/block/10-mount ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
   if [[ "${SOURCE}" == "Lienol" ]] && [[ "${REPO_BRANCH}" == "19.07" ]]; then
     sed -i '/CONFIG_PACKAGE_ntfs-3g=y/d' "${HOME_PATH}/.config"
+    sed -i '/CONFIG_PACKAGE_NTFS-3G_HAS_PROBE=y/d' "${HOME_PATH}/.config"
   fi
 fi
 
@@ -1167,7 +1168,9 @@ if [[ `grep -c "CONFIG_PACKAGE_dnsmasq_full_nftset=y" ${HOME_PATH}/.config` -eq 
 fi
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-  sed -i '/NaiveProxy/d; /naiveproxy/d' ${HOME_PATH}/.config
+  if [[ ! "${REPO_BRANCH}" == "19.07" ]] || [[ ! "${REPO_BRANCH}" == *"22.03"* ]]; then
+    sed -i '/NaiveProxy/d; /naiveproxy/d' ${HOME_PATH}/.config
+  fi
   if [[ -n "$(grep -E "Rust_Client=y" ${HOME_PATH}/.config)" ]]; then
     echo -e "\n# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Client is not set" >> ${HOME_PATH}/.config
     echo -e "\nCONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Libev_Client=y" >> ${HOME_PATH}/.config
