@@ -462,8 +462,10 @@ while :; do
         if [[ -z "${aa}" ]]; then
           TIME r "文件名不能为空"
           shanchu_wenjian
+          break
         else
           TIME g " 删除${aa}文件夹"
+          break
         fi
     ;;
     esac
