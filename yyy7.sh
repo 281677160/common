@@ -887,50 +887,36 @@ function menu3() {
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 > /tmp/GITHUB_EVN
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   cd ${GITHUB_WORKSPACE}
+    YMXZQ=""
+    YMXZq=""
   if [[ "${SUCCESS_FAILED}" =~ (success|breakdown) ]]; then
     hx=",输入[Q/q]返回上一步"
-    YMXZy="Q"
-  else
-    YMXZy=""
+    YMXZQ="Q"
+    YMXZq="q"
   fi
   TIME y "请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
-  export YUMINGIP="请输入您的选择"
   while :; do
-  YMXZ=""
-  read -p "${YUMINGIP}：" YMXZ
-  if [[ "${YMXZ}" =~ (N|n) ]]; then
-    CUrrenty="N"
-  elif [[ "${YMXZ}" == "0" ]] || [[ -z "${YMXZ}" ]]; then
-    CUrrenty="x"
-  elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
-    CUrrenty="B"
-  elif [[ -n "${YMXZy}" ]]; then
-    CUrrenty="Q"
-  else
-    CUrrenty="x"
-  fi
-  case $CUrrenty in
-  B)
-    export FOLDER_NAME=$(cat /tmp/GITHUB_EVN |awk ''NR==${YMXZ}'')
-    TIME g "您选择了使用 ${FOLDER_NAME} 编译固件"
-    export NUM_BER="1"
-    Diy_main
-  break
-  ;;
-  N)
-    exit 0
-  break
-  ;;
-  Q)
-    menu2
-  break
-  ;;
-  *)
-    export YUMINGIP="敬告,请输入正确选项"
-  ;;
-  esac
+    read -p "请输入您的选择：" YMXZ
+    if [[ "${YMXZ}" == "$YMXZQ" ]]; then
+        menu2
+    elif [[ "${YMXZ}" == "$YMXZQ" ]]; then
+        menu2
+    elif [[ "${YMXZ}" =~ ^[Nn]$ ]]; then
+        exit 0
+    elif [[ -z "${YMXZ}" ]]; then
+        echo "敬告,请输入正确选项"
+    elif [[ "${YMXZ}" == "0" ]]; then
+        echo "敬告,请输入正确选项"
+    elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
+        echo "敬告,请输入正确选项"
+    else
+        export FOLDER_NAME=$(cat /tmp/GITHUB_EVN |awk ''NR==${YMXZ}'')
+        TIME g "您选择了使用 ${FOLDER_NAME} 编译固件"
+        export NUM_BER="1"
+        Diy_main
+        break
+    fi
   done
-}
 
 function main() {
 if [[ -f "${LICENSES_DOC}/buildzu.ini" ]]; then
