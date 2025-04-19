@@ -453,7 +453,52 @@ done
 }
 
 
+function shanchu_wenjian() {
+  echo
+  cd ${OPERATES_PATH}
+  XYZDS="$(ls -d */ |cut -d"/" -f1 |awk '$0=NR" "$0'| awk 'END {print}' |awk '{print $(1)}')"
+  ls -d */ |cut -d"/" -f1 > /tmp/GITHUB_EVN
+  ls -d */ |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
+  cd ${GITHUB_WORKSPACE}
+  YMX=""
+  TIME y " 请选择要删除的文件夹,前面对应的数值(1~X)，输入[N/n]则为退出程序"
+  export YUMINGIP=" 请输入您的选择"
+  while :; do
+  read -p "${YUMINGIP}：" YMXZ
+  if [[ "${YMX}" =~ (N|n) ]]; then
+    CUrrenty="N"
+  elif [[ "${YMX}" == "0" ]] || [[ -z "${YMX}" ]]; then
+    CUrrenty="x"
+  elif [[ "${YMX}" -le "${XYZDS}" ]]; then
+    CUrrenty="B"
+  else
+    CUrrenty="x"
+  fi
+  case $CUrrenty in
+  B)
+    SHANCHU_NAME=$(cat /tmp/GITHUB_EVN |awk ''NR==${YMX}'')
+    TIME g " 您选择了删除 ${SHANCHU_NAME} 文件夹"
+  break
+  ;;
+  N)
+    exit 0
+  break
+  ;;
+  x)
+    export YUMINGIP=" 敬告,请输入正确选项"
+  ;;
+  esac
+  done
 
+for i in ${SHANCHU_NAME}; do
+  if [[ -d "${OPERATES_PATH}/${i}" ]]; then
+    sudo rm -rf ${OPERATES_PATH}/${i}
+    TIME g "已删除[${i}]文件夹"
+  else
+    TIME r "[${i}]文件夹不存在"
+  fi
+done
+}
 
 function Ben_packaging() {
 # 固件打包程序,本地不能使用,不知何解
