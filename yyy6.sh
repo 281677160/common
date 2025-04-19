@@ -424,6 +424,7 @@ if git clone -q --depth 1 https://github.com/281677160/build-actions /tmp/action
   fi
 else
   echo -e "${RED}上游文件下载错误,请检查网络${NC}\n"
+  jianli_wenjian
 fi
 
 echo -e "\n${YELLOW}按Q回车返回主菜单,按N退出程序${NC}\n"
