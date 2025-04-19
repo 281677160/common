@@ -150,6 +150,7 @@ echo "${TONGBU_YUANMA}"
 if [[ "${TONGBU_YUANMA}" == "1" ]] && [[ -z "${SUCCESS_FAILED}" ]]; then
   exit 0
 else
+  echo "${SOURCE_CODE}"
   source $COMMON_SH && Diy_variable
 fi
 }
