@@ -475,9 +475,9 @@ bb=(${aa//,/ })
 for cc in ${bb[@]}; do
   if [[ -d "${OPERATES_PATH}/${cc}" ]]; then
     sudo rm -rf ${OPERATES_PATH}/${cc}
-    TIME y "已删除[${cc}]文件夹"
+    TIME y " 已删除[${cc}]文件夹"
   else
-    TIME r "[${cc}]文件夹不存在"
+    TIME r " [${cc}]文件夹不存在"
   fi
 done
 
