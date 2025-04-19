@@ -64,6 +64,8 @@ if [[ "${git_laqu}" == "1" ]]; then
       git sparse-checkout init --cone > /dev/null 2>&1
       git sparse-checkout set "${path_part}" > /dev/null 2>&1
       git checkout "${branch_name}" > /dev/null 2>&1
+      grep -rl 'include ../../luci.mk' . | xargs -r sed -i 's#include ../../luci.mk#include \$(TOPDIR)/feeds/luci/luci.mk#g'
+      grep -rl 'include ../../lang/' . | xargs -r sed -i 's#include ../../lang/#include \$(TOPDIR)/feeds/packages/lang/#g'
       rm -fr "${content}"
       mv "${path_part}" "${content}"
       if [[ $? -ne 0 ]]; then
