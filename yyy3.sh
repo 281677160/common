@@ -896,17 +896,11 @@ function menu3() {
   TIME y "请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
   while :; do
     read -p "请输入您的选择：" YMXZ
-    if [[ "${YMXZ}" =~ ^[Qq]$ ]]; then
-      if [[ "${YMXZQ}" == "Q" ]]; then
+    if [[ "${YMXZ}" -eq "${YMXZQ}" ]]; then
         menu2
-      else
-        echo "敬告,请输入正确选项"
-      fi
     elif [[ "${YMXZ}" =~ ^[Nn]$ ]]; then
         exit 0
     elif [[ -z "${YMXZ}" ]]; then
-        echo "敬告,请输入正确选项"
-    elif [[ "${YMXZ}" == "0" ]]; then
         echo "敬告,请输入正确选项"
     elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
         echo "敬告,请输入正确选项"
