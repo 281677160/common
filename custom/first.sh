@@ -60,6 +60,9 @@ elif [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
     TIME r "和上游版本不一致"
     SYNCHRONISE="NO"
     tongbu_message="和上游版本不一致"
+  else
+    TIME g "和上游版本一致"
+    SYNCHRONISE="YES"
   fi
 elif [[ ! -d "${COMPILE_PATH}/seed/${CONFIG_FILE}" ]]; then
   TIME r "缺少seed/${CONFIG_FILE}文件，请先建立seed/${CONFIG_FILE}文件"
@@ -113,6 +116,7 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
         TIME g "同步上游仓库完成"
       fi
       TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
+      echo "123"
       export TONGBU_YUANMA="1"
     else
       TIME r "同步上游仓库失败,注意网络环境,请重新再运行命令试试"
