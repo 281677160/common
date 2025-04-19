@@ -903,6 +903,7 @@ function menu3() {
         echo "敬告,请输入正确选项"
     elif [[ "${YMXZ}" -eq "${YMXZQ}" ]]; then
         menu2
+        break
     else
         export FOLDER_NAME=$(cat /tmp/GITHUB_EVN |awk ''NR==${YMXZ}'')
         TIME g "您选择了使用 ${FOLDER_NAME} 编译固件"
