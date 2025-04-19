@@ -122,10 +122,7 @@ function Ben_variable() {
 cd ${GITHUB_WORKSPACE}
 export FOLDER_NAME="$FOLDER_NAME"
 export SETT_TINGS="$OPERATES_PATH/$FOLDER_NAME/settings.ini"
-echo "${SETT_TINGS}"
-echo "${NUM_BER}"
 if [[ -f "${SETT_TINGS}" ]] && [[ "${NUM_BER}" == "1" ]]; then
-  echo "11111"
   source ${SETT_TINGS}
 else
   MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "${SETT_TINGS}" | awk -F'"' '{print $2}')"
@@ -148,11 +145,9 @@ else
   TIME r "文件下载失败,请检查网络"
   exit 1
 fi
-echo "${TONGBU_YUANMA}"
 if [[ "${TONGBU_YUANMA}" == "1" ]] && [[ -z "${SUCCESS_FAILED}" ]]; then
   exit 0
 else
-  echo "${SOURCE_CODE}"
   source $COMMON_SH && Diy_variable
 fi
 }
@@ -432,6 +427,7 @@ if git clone -q --depth 1 https://github.com/281677160/build-actions /tmp/action
     echo -e "${GREEN}$openwrt_wenjian文件夹建立完成！${NC}\n"
   fi
 else
+  clear
   echo -e "${RED}上游文件下载错误,请检查网络${NC}\n"
   jianli_wenjian
 fi
