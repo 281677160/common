@@ -303,7 +303,11 @@ fi
 
 TIME z "即将使用${cpunproc}线程进行编译固件,请耐心等候..."
 sleep 5
+
+# 开始编译固件
 make -j${cpunproc} || make -j1 V=s 2>&1 | tee $op_log
+
+# 检测编译结果
 if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]]; then
   echo "
   SUCCESS_FAILED="breakdown"
@@ -342,6 +346,7 @@ fi
 
 function Ben_firmware() {
 cd ${FIRMWARE_PATH}
+# 整理固件
 cp -Rf config.buildinfo ${MYCONFIG_FILE}
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename -v "s/^immortalwrt/openwrt/" * > /dev/null 2>&1
@@ -363,10 +368,9 @@ else
   TIME g "[ ${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE} ]顺利编译完成~~~"
   TIME y "固件存放路径：openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}"
 fi
-cd ${HOME_PATH}
-}
 
-function Ben_compiletwo() {
+cd ${HOME_PATH}
+# 计算结束时间
 TIME g "编译日期：$(date +'%Y年%m月%d号')"
 END_TIME=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
 SECONDS=$((END_TIME-START_TIME))
@@ -702,7 +706,6 @@ function Ben_menu7() {
 cd $HOME_PATH
 Ben_compile
 Ben_firmware
-Ben_compiletwo
 }
 
 
