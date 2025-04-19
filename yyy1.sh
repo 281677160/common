@@ -805,7 +805,9 @@ function menu2() {
   echo
   TIME y " 4、重选择源码编译"
   echo
-  TIME r " 5、退出"
+  TIME y " 5、返回主菜单"
+  echo
+  TIME r " 6、退出"
   echo
   XUANZop="请输入数字"
   echo
@@ -833,6 +835,11 @@ function menu2() {
   break
   ;;
   5)
+    export NUM_BER=""
+    menu1
+  break
+  ;;
+  6)
     echo
     exit 0
   break
