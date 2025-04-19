@@ -145,6 +145,7 @@ else
   TIME r "文件下载失败,请检查网络"
   exit 1
 fi
+echo "${TONGBU_YUANMA}"
 if [[ "${TONGBU_YUANMA}" == "1" ]] && [[ -z "${SUCCESS_FAILED}" ]]; then
   exit 0
 else
