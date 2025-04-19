@@ -901,16 +901,15 @@ function menu3() {
         exit 0
     elif [[ -z "${YMXZ}" ]]; then
         echo "敬告,请输入正确选项"
-    elif [[ "${YMXZ}" =~ ^[0-9]+$ ]]; then
-        if (( YMXZ > XYZDSZ )) ; then
-            export FOLDER_NAME=$(cat /tmp/GITHUB_EVN | awk ''NR==${YMXZ}'')
-            TIME g "您选择了使用 ${FOLDER_NAME} 编译固件"
-            export NUM_BER="1"
-            Diy_main
-            break
-        else
-            echo "敬告,请输入正确选项"
-        fi
+    elif [[ "$YMXZ" =~ ^[0-9]+$ ]]; then
+      if (( YMXZ >= 1 && YMXZ <= XYZDSZ )); then
+        export FOLDER_NAME=$(cat /tmp/GITHUB_EVN | awk ''NR==${YMXZ}'')
+        TIME g "您选择了使用 ${FOLDER_NAME} 编译固件"
+        Diy_main
+        break
+      else
+        echo "错误：输入的数值超出有效范围(1~${XYZDSZ})" >&2
+      fi
     elif [[ "${YMXZ}" == "${YMXZQ}" ]]; then
         menu2
         break
