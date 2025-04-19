@@ -889,27 +889,31 @@ function menu3() {
   cd ${GITHUB_WORKSPACE}
     YMXZQ=""
   if [[ "${SUCCESS_FAILED}" =~ (success|breakdown) ]]; then
-    hx=",输入[Q/q]返回上一步"
-    YMXZQ="Q"
+      YMXZQ="Q"
   fi
-  TIME y "请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
+  TIME y "请输入您要编译源码前面对应的数值(1~X)，输入[N/n]则为退出程序"
   while :; do
     read -p "请输入您的选择：" YMXZ
+    # 优先处理退出指令
     if [[ "${YMXZ}" =~ ^[Nn]$ ]]; then
         exit 0
     elif [[ -z "${YMXZ}" ]]; then
         echo "敬告,请输入正确选项"
-    elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
-        echo "敬告,请输入正确选项"
-    elif [[ "${YMXZ}" -eq "${YMXZQ}" ]]; then
+    elif [[ "${YMXZ}" =~ ^[0-9]+$ ]]; then
+        if (( YMXZ > XYZDSZ )); then
+            export FOLDER_NAME=$(cat /tmp/GITHUB_EVN | awk ''NR==${YMXZ}'')
+            TIME g "您选择了使用 ${FOLDER_NAME} 编译固件"
+            export NUM_BER="1"
+            Diy_main
+            break
+        else
+            echo "敬告,请输入正确选项"
+        fi
+    elif [[ "${YMXZ}" == "${YMXZQ}" ]]; then
         menu2
         break
     else
-        export FOLDER_NAME=$(cat /tmp/GITHUB_EVN |awk ''NR==${YMXZ}'')
-        TIME g "您选择了使用 ${FOLDER_NAME} 编译固件"
-        export NUM_BER="1"
-        Diy_main
-        break
+        echo "敬告,请输入正确选项"
     fi
   done
 }
