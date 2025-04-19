@@ -924,6 +924,7 @@ function menu3() {
 }
 
 function main() {
+echo "${SUCCESS_FAILED}"
 if [[ -f "${LICENSES_DOC}/buildzu.ini" ]]; then
   source ${LICENSES_DOC}/buildzu.ini
 fi
