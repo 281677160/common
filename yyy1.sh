@@ -427,7 +427,7 @@ if git clone -q --depth 1 https://github.com/281677160/build-actions /tmp/action
     echo -e "${RED}错误：${openwrt_wenjian}文件夹已存在,无法再次建立！${NC}\n"
   else
     cp -Rf /tmp/actions/build/$gender_wenjian ${OPERATES_PATH}/${openwrt_wenjian}
-    echo -e "${GREEN}$openwrt_wenjian$文件夹建立完成！{NC}\n"
+    echo -e "${GREEN}$openwrt_wenjian文件夹建立完成！${NC}\n"
   fi
 else
   echo -e "${RED}上游文件下载错误,请检查网络${NC}\n"
