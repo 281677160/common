@@ -888,7 +888,6 @@ function menu3() {
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   cd ${GITHUB_WORKSPACE}
     YMXZQ=""
-    YMXZq=""
   if [[ "${SUCCESS_FAILED}" =~ (success|breakdown) ]]; then
     hx=",输入[Q/q]返回上一步"
     YMXZQ="Q"
@@ -896,14 +895,14 @@ function menu3() {
   TIME y "请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
   while :; do
     read -p "请输入您的选择：" YMXZ
-    if [[ "${YMXZ}" -eq "${YMXZQ}" ]]; then
-        menu2
-    elif [[ "${YMXZ}" =~ ^[Nn]$ ]]; then
+    if [[ "${YMXZ}" =~ ^[Nn]$ ]]; then
         exit 0
     elif [[ -z "${YMXZ}" ]]; then
         echo "敬告,请输入正确选项"
     elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
         echo "敬告,请输入正确选项"
+    elif [[ "${YMXZ}" -eq "${YMXZQ}" ]]; then
+        menu2
     else
         export FOLDER_NAME=$(cat /tmp/GITHUB_EVN |awk ''NR==${YMXZ}'')
         TIME g "您选择了使用 ${FOLDER_NAME} 编译固件"
