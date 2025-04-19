@@ -409,7 +409,8 @@ while :; do
         echo -e "${GREEN}文件夹名称：$openwrt_wenjian${NC}\n"
         break
     else
-        echo -e "${RED}错误：机型不能为空！${NC}\n"
+        echo -e "${RED}错误：文件夹名称不能为空！${NC}\n"
+        break
     fi
 done
 
@@ -462,7 +463,6 @@ while :; do
     *)
         if [[ -z "${aa}" ]]; then
           TIME r "文件名不能为空"
-          shanchu_wenjian
           break
         else
           TIME g " 删除${aa}文件夹"
