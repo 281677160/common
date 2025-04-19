@@ -204,15 +204,12 @@ elif [[ "${NUM_BER}" == "2" ]]; then
     rsync -a $tmpdir/ $HOME_PATH/
     rm -rf $tmpdir
   else
-    TIME r "源码下载失败,请检测网络"
+    TIME r "源码下载失败,请检查网络"
     exit 1
   fi
-  cd ${HOME_PATH}
-  git pull > /dev/null 2>&1
 elif [[ "${NUM_BER}" == "3" ]]; then
   cd $HOME_PATH
   TIME y "正在执行：更新和安装feeds"
-  git pull > /dev/null 2>&1
   ./scripts/feeds update -a > /dev/null 2>&1
   ./scripts/feeds install -a
 fi
@@ -314,7 +311,7 @@ if [[ -f "${op_log}" ]] && [[ -n "$(cat "${op_log}" |grep -i 'Error 2')" ]]; the
   SOURCE="${SOURCE}"
   FOLDER_NAME="${FOLDER_NAME}"
   REPO_BRANCH="${REPO_BRANCH}"
-  URL_JC="${REPO_URL}"
+  REPO_URL="${REPO_URL}"
   LUCI_EDITION="${LUCI_EDITION}"
   TARGET_BOARD="${TARGET_BOARD}"
   MYCONFIG_FILE="${MYCONFIG_FILE}"
@@ -332,7 +329,7 @@ else
   SOURCE="${SOURCE}"
   FOLDER_NAME="${FOLDER_NAME}"
   REPO_BRANCH="${REPO_BRANCH}"
-  URL_JC="${REPO_URL}"
+  REPO_URL="${REPO_URL}"
   LUCI_EDITION="${LUCI_EDITION}"
   TARGET_BOARD="${TARGET_BOARD}"
   MYCONFIG_FILE="${MYCONFIG_FILE}"
@@ -798,7 +795,7 @@ if [[ -n "${SUCCESS_FAILED}" ]]; then
   done
   
   if [[ $missing_flag -eq 0 ]] && [[ -n "$( grep -E "${TARGET_BOARD}" "$HOME_PATH/.config" 2>/dev/null)" ]] && \
-  [[ -n "$( grep -E "${URL_JC}" "${DIAN_GIT}" 2>/dev/null)" ]] && [[ -n "$( grep -E "${REPO_BRANCH}" "${DIAN_GIT}" 2>/dev/null)" ]]; then
+  [[ -n "$( grep -E "${REPO_URL}" "${DIAN_GIT}" 2>/dev/null)" ]] && [[ -n "$( grep -E "${REPO_BRANCH}" "${DIAN_GIT}" 2>/dev/null)" ]]; then
     menu2
   else
     menu1
