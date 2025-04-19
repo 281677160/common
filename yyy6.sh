@@ -457,7 +457,7 @@ while :; do
     if [[ "${cc}" =~ ^[Nn]$ ]]; then
         exit 0
     elif [[ -z "${cc}" ]]; then
-        echo "警告：文件夹不能为空"
+        TIME r " 警告：文件夹名称不能为空"
     else
         TIME g " 选择删除[${cc}]文件夹"
         break
@@ -887,11 +887,10 @@ function menu3() {
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 > /tmp/GITHUB_EVN
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   cd ${GITHUB_WORKSPACE}
-    YMXZQ=""
-    YMXZq=""
+  YMXZQ="" && YMXZq=""
   if [[ "${SUCCESS_FAILED}" =~ (success|breakdown) ]]; then
       hx=",输入[Q/q]返回上一步"
-      YMXZQ="Q"
+      YMXZQ="Q\|q"
       YMXZq="q"
   fi
   TIME y "请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
@@ -900,7 +899,7 @@ function menu3() {
     if [[ "${YMXZ}" =~ ^[Nn]$ ]]; then
         exit 0
     elif [[ -z "${YMXZ}" ]]; then
-        echo "敬告,请输入正确选项"
+        TIME r "敬告,输入不能为空"
     elif [[ "$YMXZ" =~ ^[0-9]+$ ]]; then
       if (( YMXZ >= 1 && YMXZ <= XYZDSZ )); then
         export FOLDER_NAME=$(cat /tmp/GITHUB_EVN | awk ''NR==${YMXZ}'')
@@ -909,13 +908,13 @@ function menu3() {
         Diy_main
         break
       else
-        echo "错误：输入的数值超出有效范围(1~${XYZDSZ})" >&2
+        TIME r "敬告,请输入正确数值(1~${XYZDSZ})" >&2
       fi
-    elif [[ "${YMXZ}" =~ (${YMXZQ}|${YMXZq}) ]]; then
+    elif [[ "${YMXZ}" =~ (${YMXZQ}) ]]; then
         menu2
         break
     else
-        echo "敬告,请输入正确选项"
+        TIME r "敬告,请输入正确选项"
     fi
   done
 }
