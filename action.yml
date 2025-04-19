@@ -21,6 +21,13 @@ runs:
         cd $HOME_PATH
         bash $COMMON_SH Diy_menu3
 
+    - name: SSH远程连接文字提示
+      if: env.SSH_ACTION == 'true'
+      shell: bash
+      run: |
+        cd $HOME_PATH
+        echo -e "\033[33m正在执行:远程make menuconfig\033[0m"
+
     - name: SSH远程连接（make menuconfig）
       if: env.SSH_ACTION == 'true'
       uses: danshui-git/debugger-action@main
