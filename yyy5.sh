@@ -795,7 +795,7 @@ cd ${GITHUB_WORKSPACE}
 clear
 echo
 TIME y " 1. 进行编译固件"
-TIME y " 2. 创建或删除文件夹"
+TIME g " 2. 创建或删除文件夹"
 TIME r " 3. 退出程序"
 echo
 XUANZHEOP="请输入数字"
