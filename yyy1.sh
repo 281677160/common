@@ -123,6 +123,7 @@ cd ${GITHUB_WORKSPACE}
 export FOLDER_NAME="$FOLDER_NAME"
 export SETT_TINGS="$OPERATES_PATH/$FOLDER_NAME/settings.ini"
 if [[ -f "${SETT_TINGS}" ]] && [[ "${NUM_BER}" == "1" ]]; then
+  echo "11111"
   source ${SETT_TINGS}
 else
   MODIFY_CONFIGURATION="$(grep '^MODIFY_CONFIGURATION=' "${SETT_TINGS}" | awk -F'"' '{print $2}')"
