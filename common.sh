@@ -143,7 +143,7 @@ function Diy_checkout() {
 TIME y "正在执行：下载和整理应用,请耐心等候..."
 cd ${HOME_PATH}
 
-if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-13.05" ]]; then
+if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-23.05" ]]; then
   git reset --hard 86dfa171015d1dd94dc735ae0c57e9e2962914fa
 fi
 
