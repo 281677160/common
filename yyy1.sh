@@ -454,18 +454,27 @@ cd ${GITHUB_WORKSPACE}
 TIME y "请输入您要删除的文件名称,多个文件名的话请用英文的逗号分隔,输入[N/n]回车则退出"
 read -p "请输入：" aa
 while :; do
+    if [[ "${aa}" =~ (N|n) ]]; then
+      aa="N"
+    elif [[ -z "${aa}" ]]; then
+      aa="x"
+    elif [[ -n "${aa}" ]]; then
+      aa="B"
+    else
+      aa="x"
+    fi
     case $aa in
-    [Nn])
+    N)
         exit 0
         break
     ;;
-    *)
-        if [[ -z "${aa}" ]]; then
-          TIME r "文件名不能为空"
-        else
-          TIME g " 删除${aa}文件夹"
-          break
-        fi
+    B)
+        aa="${aa}"
+        TIME g "选择删除[${aa}]文件夹"
+        break
+    ;;
+    x)
+        echo "敬告,文件夹名称不能为空"
     ;;
     esac
 done
