@@ -142,6 +142,11 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 TIME y "正在执行：下载和整理应用,请耐心等候..."
 cd ${HOME_PATH}
+
+if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-13.05" ]]; then
+  git reset --hard 86dfa171015d1dd94dc735ae0c57e9e2962914fa
+fi
+
 # 增加一些应用
 mkdir -p "${LICENSES_DOC}"
 echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
