@@ -451,10 +451,10 @@ cd ${OPERATES_PATH}
 ls -d */ |cut -d"/" -f1 |awk '{print "  " $0}'
 cd ${GITHUB_WORKSPACE}
 TIME y "请输入您要删除的文件名称,多个文件名的话请用英文的逗号分隔,输入[N/n]回车则退出"
-while :; do
 read -p "请输入：" aa
+while :; do
+    case $aa in
     [Nn])
-        echo
         exit 0
         break
     ;;
