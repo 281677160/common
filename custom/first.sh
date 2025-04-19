@@ -48,6 +48,9 @@ elif [[ ! -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
   TIME r "缺少relevance/actions_version文件"
   SYNCHRONISE="NO"
   tongbu_message="缺少文件"
+elif [[ ! -f "${COMPILE_PATH}/seed/${CONFIG_FILE}" ]]; then
+  TIME r "缺少seed/${CONFIG_FILE}文件，请先建立seed/${CONFIG_FILE}文件"
+  exit 1
 elif [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o /tmp/common.sh
   if [[ -z "$( grep -E 'export' '/tmp/common.sh' 2>/dev/null)" ]]; then
@@ -63,9 +66,6 @@ elif [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
   else
     SYNCHRONISE="YES"
   fi
-elif [[ ! -d "${COMPILE_PATH}/seed/${CONFIG_FILE}" ]]; then
-  TIME r "缺少seed/${CONFIG_FILE}文件，请先建立seed/${CONFIG_FILE}文件"
-  exit 1
 else
   SYNCHRONISE="YES"
 fi
