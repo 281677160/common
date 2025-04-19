@@ -381,6 +381,80 @@ fi
 TIME r "提示：再次输入编译命令可进行二次编译"
 }
 
+
+
+
+
+
+
+
+function jianli_wenjian() {
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+echo -e "\n${YELLOW}请选择以什么文件夹为蓝本来建立新文件夹：${NC}"
+PS3="请输入选项编号: "
+select gender_wenjian in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
+    case $REPLY in
+        1|2|3|4|5|6) 
+            echo -e "已选择${GREEN}[$gender_wenjian]${NC}作为蓝本\n"
+            break
+            ;;
+        *) 
+            echo -e "${RED}无效选项，请重新输入！${NC}"
+            ;;
+    esac
+done
+
+echo -e "\n${YELLOW}请输入您要建立的文件夹名称${NC}"
+while :; do
+    read -p "请输入文件夹名称: " openwrt_wenjian
+    if [[ -n "$openwrt_wenjian" ]]; then
+        echo -e "${GREEN}文件夹名称：$openwrt_wenjian${NC}\n"
+        break
+    else
+        echo -e "${RED}错误：机型不能为空！${NC}\n"
+    fi
+done
+
+echo -e "\n${YELLOW}正在建立文件夹,请稍后...${NC}"
+sudo rm -rf /tmp/actions
+if git clone -q --depth 1 https://github.com/281677160/build-actions /tmp/actions; then
+  if [[ -d "${OPERATES_PATH}/${openwrt_wenjian}" ]]; then
+    echo -e "${RED}错误：${openwrt_wenjian}文件夹已存在,无法再次建立！${NC}\n"
+  else
+    cp -Rf /tmp/actions/build/$gender_wenjian ${OPERATES_PATH}/${openwrt_wenjian}
+    echo -e "${GREEN}$openwrt_wenjian$文件夹建立完成！{NC}\n"
+  fi
+else
+  echo -e "${RED}上游文件下载错误,请检查网络${NC}\n"
+fi
+
+echo -e "\n${YELLOW}按Q回车返回主菜单,按N退出程序${NC}\n"
+read -p "确认选择: " WNKC
+while :; do
+    case $WNKC in
+    [Qq])
+        main
+        break
+    ;;
+    [Nn])
+        exit 0
+        break
+    ;;
+    *)
+        echo "请输入正确的数字编号"
+    ;;
+    esac
+done
+}
+
+
+
+
 function Ben_packaging() {
 # 固件打包程序,本地不能使用,不知何解
 cd $GITHUB_WORKSPACE
@@ -520,18 +594,22 @@ echo -e "▪ 内核选择\t: $auto_kernell"
 
 echo -e "\n${YELLOW}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N退出打包${NC}\n"
 read -p "确认选择: " NNKC
+while :; do
     case $NNKC in
     [Qq])
         Ben_packaging
+        break
     ;;
     [Nn])
         echo
         exit 0
+        break
     ;;
     *)
-        echo
+        echo "请输入正确的数字编号"
     ;;
     esac
+done
 
 if [[ -f "$GITHUB_WORKSPACE/amlogic/armvirt/remake" ]]; then
   cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-default-rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
@@ -634,12 +712,56 @@ Ben_menu7
 }
 
 
+
+
+
+function wenjian() {
+cd ${GITHUB_WORKSPACE}
+clear
+echo
+TIME y " 1. 添加文件夹"
+TIME y " 2. 删除文件夹"
+TIME r " 3. 返回主目录"
+echo
+XUANZHEOP="请输入数字"
+echo
+while :; do
+read -p " ${XUANZHEOP}： " CHOOSE
+case $CHOOSE in
+1)
+  jianli_wenjian
+break
+;;
+2)
+  shanchu_wenjian
+break
+;;
+3)
+  main
+break
+;;
+*)
+   XUANZHEOP="请输入正确的数字编号"
+;;
+esac
+done
+}
+
+
+
+
+
+
+
+
+
 function menu1() {
 cd ${GITHUB_WORKSPACE}
 clear
 echo
 TIME y " 1. 进行编译固件"
-TIME r " 2. 退出程序"
+TIME y " 2. 创建或删除文件夹"
+TIME r " 3. 退出程序"
 echo
 XUANZHEOP="请输入数字"
 echo
@@ -651,6 +773,10 @@ case $CHOOSE in
 break
 ;;
 2)
+  wenjian
+break
+;;
+3)
   echo
   exit 0
 break
