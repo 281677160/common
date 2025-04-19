@@ -359,10 +359,10 @@ done
 
 if [[ -n "$(ls -1 |grep -E 'armvirt')" ]] || [[ -n "$(ls -1 |grep -E 'armsr')" ]]; then
   mkdir -p $GITHUB_WORKSPACE/amlogic
-  rm -rf $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
-  cp -Rf *rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
+  rm -rf $GITHUB_WORKSPACE/amlogic/${SOURCE}-${LUCI_EDITION}-armvirt-64-default-rootfs.tar.gz
+  cp -Rf *rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/${SOURCE}-${LUCI_EDITION}-armvirt-64-default-rootfs.tar.gz
   TIME g "[ Amlogic_Rockchip系列专用固件 ]顺利编译完成~~~"
-  TIME y "固件存放路径：$GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz"
+  TIME y "固件存放路径：$GITHUB_WORKSPACE/amlogic/${SOURCE}-${LUCI_EDITION}-armvirt-64-default-rootfs.tar.gz"
 else
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" * > /dev/null 2>&1
   TIME g "[ ${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE} ]顺利编译完成~~~"
