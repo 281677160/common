@@ -26,7 +26,7 @@ runs:
       shell: bash
       run: |
         cd $HOME_PATH
-        echo -e "\033[33m正在执行:远程make menuconfig\033[0m"
+        echo -e "\033[33m正在执行：远程make menuconfig\033[0m"
 
     - name: SSH远程连接（make menuconfig）
       if: env.SSH_ACTION == 'true'
