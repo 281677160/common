@@ -890,13 +890,13 @@ function menu3() {
     YMXZQ=""
     YMXZq=""
   if [[ "${SUCCESS_FAILED}" =~ (success|breakdown) ]]; then
+      hx=",输入[Q/q]返回上一步"
       YMXZQ="Q"
       YMXZq="q"
   fi
-  TIME y "请输入您要编译源码前面对应的数值(1~X)，输入[N/n]则为退出程序"
+  TIME y "请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
   while :; do
     read -p "请输入您的选择：" YMXZ
-    # 优先处理退出指令
     if [[ "${YMXZ}" =~ ^[Nn]$ ]]; then
         exit 0
     elif [[ -z "${YMXZ}" ]]; then
@@ -905,15 +905,13 @@ function menu3() {
       if (( YMXZ >= 1 && YMXZ <= XYZDSZ )); then
         export FOLDER_NAME=$(cat /tmp/GITHUB_EVN | awk ''NR==${YMXZ}'')
         TIME g "您选择了使用 ${FOLDER_NAME} 编译固件"
+        sleep 3
         Diy_main
         break
       else
         echo "错误：输入的数值超出有效范围(1~${XYZDSZ})" >&2
       fi
-    elif [[ "${YMXZ}" == "${YMXZQ}" ]]; then
-        menu2
-        break
-    elif [[ "${YMXZ}" == "${YMXZq}" ]]; then
+    elif [[ "${YMXZ}" =~ (${YMXZQ}|${YMXZq}) ]]; then
         menu2
         break
     else
