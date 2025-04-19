@@ -890,7 +890,7 @@ function menu3() {
   YMXZQ="" && YMXZq=""
   if [[ "${SUCCESS_FAILED}" =~ (success|breakdown) ]]; then
       hx=",输入[Q/q]返回上一步"
-      YMXZQ="Q\|q"
+      YMXZQ="Q|q"
       YMXZq="q"
   fi
   TIME y "请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
