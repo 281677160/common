@@ -410,7 +410,6 @@ while :; do
         break
     else
         echo -e "${RED}错误：文件夹名称不能为空！${NC}\n"
-        break
     fi
 done
 
@@ -463,7 +462,6 @@ while :; do
     *)
         if [[ -z "${aa}" ]]; then
           TIME r "文件名不能为空"
-          break
         else
           TIME g " 删除${aa}文件夹"
           break
