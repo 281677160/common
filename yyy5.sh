@@ -637,23 +637,21 @@ echo -e "▪ 内核选择\t: $auto_kernell"
 
 echo -e "\n${YELLOW}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N退出打包${NC}\n"
 read -p "确认选择: " NNKC
-while :; do
-    case $NNKC in
-    [Qq])
-        Ben_packaging
-        clear
-        break
-    ;;
-    [Nn])
-        echo
-        exit 0
-        break
-    ;;
-    *)
-        echo "请输入正确的数字编号"
-    ;;
-    esac
-done
+case $NNKC in
+  [Qq])
+    Ben_packaging
+    clear
+    break
+  ;;
+  [Nn])
+    exit 0
+    break
+  ;;
+  *)
+    echo
+    break
+  ;;
+esac
 
 if [[ -f "$GITHUB_WORKSPACE/amlogic/armvirt/remake" ]]; then
   cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-default-rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
