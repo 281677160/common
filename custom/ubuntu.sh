@@ -262,8 +262,6 @@ function install_dependencies() {
 
 	apt-get install gh -y
 
-	apt-get clean -y
-
 	if TMP_DIR="$(mktemp -d)"; then
 		pushd "$TMP_DIR"
 	else
@@ -312,7 +310,8 @@ function install_dependencies() {
 	rm -rf "$TMP_DIR"
 
 	set +x
- 
+ 	apt-get clean -y
+ 	apt-get autoremove --purge
  	go version
 	gcc --version
 	g++ --version
