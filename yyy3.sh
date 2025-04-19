@@ -452,13 +452,13 @@ cd ${OPERATES_PATH}
 ls -d */ |cut -d"/" -f1 |awk '{print "  " $0}'
 cd ${GITHUB_WORKSPACE}
 TIME y "请输入您要删除的文件名称,多个文件名的话请用英文的逗号分隔,输入[N/n]回车则退出"
-read -p "请输入：" aa
+read -p "请输入：" cc
 while :; do
-    if [[ "${aa}" =~ (N|n) ]]; then
+    if [[ "${cc}" =~ (N|n) ]]; then
       aa="N"
-    elif [[ -z "${aa}" ]]; then
+    elif [[ -z "${cc}" ]]; then
       aa="x"
-    elif [[ -n "${aa}" ]]; then
+    elif [[ -n "${cc}" ]]; then
       aa="B"
     else
       aa="x"
@@ -469,8 +469,8 @@ while :; do
         break
     ;;
     B)
-        aa="${aa}"
-        TIME g "选择删除[${aa}]文件夹"
+        cc="${cc}"
+        TIME g "选择删除[${cc}]文件夹"
         break
     ;;
     x)
@@ -479,13 +479,13 @@ while :; do
     esac
 done
 
-bb=(${aa//,/ })
-for cc in ${bb[@]}; do
-  if [[ -d "${OPERATES_PATH}/${cc}" ]]; then
-    sudo rm -rf ${OPERATES_PATH}/${cc}
-    TIME y " 已删除[${cc}]文件夹"
+bb=(${cc//,/ })
+for i in ${bb[@]}; do
+  if [[ -d "${OPERATES_PATH}/${i}" ]]; then
+    sudo rm -rf ${OPERATES_PATH}/${i}
+    TIME y " 已删除[${i}]文件夹"
   else
-    TIME r " [${cc}]文件夹不存在"
+    TIME r " [${i}]文件夹不存在"
   fi
 done
 
