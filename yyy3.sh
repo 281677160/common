@@ -432,7 +432,7 @@ read -p "确认选择: " WNKC
 while :; do
     case $WNKC in
     [Qq])
-        main1
+        menu1
         break
     ;;
     [Nn])
@@ -485,7 +485,7 @@ read -p "确认选择: " SNKC
 while :; do
     case $SNKC in
     [Qq])
-        main1
+        menu1
         break
     ;;
     [Nn])
@@ -778,7 +778,7 @@ break
 break
 ;;
 3)
-  main1
+  menu1
 break
 ;;
 *)
