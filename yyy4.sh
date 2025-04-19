@@ -122,6 +122,8 @@ function Ben_variable() {
 cd ${GITHUB_WORKSPACE}
 export FOLDER_NAME="$FOLDER_NAME"
 export SETT_TINGS="$OPERATES_PATH/$FOLDER_NAME/settings.ini"
+echo "${SETT_TINGS}"
+echo "${NUM_BER}"
 if [[ -f "${SETT_TINGS}" ]] && [[ "${NUM_BER}" == "1" ]]; then
   echo "11111"
   source ${SETT_TINGS}
@@ -908,6 +910,7 @@ function menu3() {
     elif [[ "$YMXZ" =~ ^[0-9]+$ ]]; then
       if (( YMXZ >= 1 && YMXZ <= XYZDSZ )); then
         export FOLDER_NAME=$(cat /tmp/GITHUB_EVN | awk ''NR==${YMXZ}'')
+        export NUM_BER="1"
         TIME g "您选择了使用 ${FOLDER_NAME} 编译固件"
         sleep 3
         Diy_main
