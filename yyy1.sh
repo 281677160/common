@@ -913,7 +913,7 @@ function menu3() {
         menu2
         break
     else
-        TIME r "敬告,请输入正确选项"
+        TIME r "敬告,请输入正确值"
     fi
   done
 }
