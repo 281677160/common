@@ -892,15 +892,16 @@ function menu3() {
   if [[ "${SUCCESS_FAILED}" =~ (success|breakdown) ]]; then
     hx=",输入[Q/q]返回上一步"
     YMXZQ="Q"
-    YMXZq="q"
   fi
   TIME y "请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
   while :; do
     read -p "请输入您的选择：" YMXZ
-    if [[ "${YMXZ}" == "$YMXZQ" ]]; then
+    if [[ "${YMXZ}" =~ ^[Qq]$ ]]; then
+      if [[ "${YMXZQ}" == "Q" ]]; then
         menu2
-    elif [[ "${YMXZ}" == "$YMXZQ" ]]; then
-        menu2
+      else
+        echo "敬告,请输入正确选项"
+      fi
     elif [[ "${YMXZ}" =~ ^[Nn]$ ]]; then
         exit 0
     elif [[ -z "${YMXZ}" ]]; then
