@@ -917,6 +917,7 @@ function menu3() {
         break
     fi
   done
+}
 
 function main() {
 if [[ -f "${LICENSES_DOC}/buildzu.ini" ]]; then
