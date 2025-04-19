@@ -721,7 +721,7 @@ clear
 echo
 TIME y " 1. 添加文件夹"
 TIME y " 2. 删除文件夹"
-TIME r " 3. 返回主目录"
+TIME r " 3. 返回主菜单"
 echo
 XUANZHEOP="请输入数字"
 echo
@@ -737,7 +737,7 @@ break
 break
 ;;
 3)
-  main
+  main1
 break
 ;;
 *)
