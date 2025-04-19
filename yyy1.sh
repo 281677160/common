@@ -454,6 +454,7 @@ cd ${GITHUB_WORKSPACE}
 TIME y "请输入您要删除的文件名称,多个文件名的话请用英文的逗号分隔,输入[N/n]回车则退出"
 read -p "请输入：" cc
 while :; do
+    aa=""
     if [[ "${cc}" =~ (N|n) ]]; then
       aa="N"
     elif [[ -z "${cc}" ]]; then
@@ -904,22 +905,23 @@ function menu3() {
   cd ${GITHUB_WORKSPACE}
   if [[ "${SUCCESS_FAILED}" =~ (success|breakdown) ]]; then
     hx=",输入[Q/q]返回上一步"
-    YMXZ="Q"
+    YMXZy="Q"
   else
-    YMXZ=""
+    YMXZy=""
   fi
   TIME y "请输入您要编译源码前面对应的数值(1~X)${hx}，输入[N/n]则为退出程序"
   export YUMINGIP="请输入您的选择"
   while :; do
+  YMXZ=""
   read -p "${YUMINGIP}：" YMXZ
   if [[ "${YMXZ}" =~ (N|n) ]]; then
     CUrrenty="N"
-  elif [[ "${YMXZ}" =~ (Q|q) ]]; then
-    CUrrenty="Q"
   elif [[ "${YMXZ}" == "0" ]] || [[ -z "${YMXZ}" ]]; then
     CUrrenty="x"
   elif [[ "${YMXZ}" -le "${XYZDSZ}" ]]; then
     CUrrenty="B"
+  elif [[ -n "${YMXZy}" ]]; then
+    CUrrenty="Q"
   else
     CUrrenty="x"
   fi
