@@ -370,7 +370,7 @@ else
 fi
 
 cd ${HOME_PATH}
-# 计算结束时间
+# 计算结编译束时间
 TIME g "编译日期：$(date +'%Y年%m月%d号')"
 END_TIME=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
 SECONDS=$((END_TIME-START_TIME))
@@ -641,6 +641,7 @@ while :; do
     case $NNKC in
     [Qq])
         Ben_packaging
+        clear
         break
     ;;
     [Nn])
@@ -657,9 +658,14 @@ done
 if [[ -f "$GITHUB_WORKSPACE/amlogic/armvirt/remake" ]]; then
   cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-default-rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   cd $GITHUB_WORKSPACE/amlogic/armvirt
-  sudo chmod +x remake
-  sudo ./remake -b ${openwrt_board} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -r ${kernel_repo} -u ${kernel_usage}
   TIME g "开始打包固件..."
+  sudo chmod +x remake
+  sudo ./remake -b ${openwrt_board} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -r ${kernel_repo} -u ${kernel_usage} -n ${builder_name}
+  if [[ $? -eq 0 ]];then
+    TIME g "打包完成，固件存放在[amlogic/armvirt/openwrt/out]文件夹"
+  else
+    TIME r "打包失败!"
+  fi
 else
   TIME r "未知原因打包程不存在,或上游改变了程序名称"
   exit 1
@@ -887,12 +893,11 @@ function menu3() {
   echo 
   echo
   cd ${OPERATES_PATH}
-  echo "${SUCCESS_FAILED}"
   XYZDSZ="$(ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR" "$0'| awk 'END {print}' |awk '{print $(1)}')"
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 > /tmp/GITHUB_EVN
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   cd ${GITHUB_WORKSPACE}
-  YMXZQ="yy"
+  YMXZQ="RyWy"
   if [[ "${SUCCESS_FAILED}" =~ (success|breakdown) ]]; then
       hx=",输入[Q/q]返回上一步"
       YMXZQ="Q|q"
@@ -925,7 +930,6 @@ function menu3() {
 }
 
 function main() {
-echo "${SUCCESS_FAILED}"
 if [[ -f "${LICENSES_DOC}/buildzu.ini" ]]; then
   source ${LICENSES_DOC}/buildzu.ini
 fi
