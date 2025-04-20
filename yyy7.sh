@@ -754,7 +754,7 @@ fi
 
 if [[ ! -d "${CLONE_DIR}" ]]; then
   TIME y "正在下载打包程序,请稍后..."
-  if git clone -q https://github.com/ophub/amlogic-s9xxx-openwrt.git $CLONE_DIR; then
+  if git clone -q --depth 1 https://github.com/ophub/amlogic-s9xxx-openwrt.git $CLONE_DIR; then
     echo "请勿修改和删除此文件夹内的任何文件" > $CLONE_DIR/请勿修改和删除此文件夹内的任何文件.txt
     mkdir -p $CLONE_DIR/openwrt-armvirt
   else
