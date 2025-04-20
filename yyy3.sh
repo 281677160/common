@@ -94,17 +94,15 @@ if [[ ! -f "/etc/oprelyonu" ]]; then
   TIME y "如果出现 YES OR NO 选择界面，直接按回车即可"
   TIME g "请确认是否继续进行,按任意键则继续,输入[N]后按回车则退出编译"
   read -p "确认选择:" elyou
-    case $elyou in
+  case "$elyou" in
     [Nn])
-        echo
+        TIME r "退出程序"
         exit 0
-        break
-    ;;
+        ;;
     *)
-        echo
-        break
-    ;;
-    esac
+        TIME g "开始安装依赖..."
+        ;;
+  esac
   sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
   if [[ $? -eq 0 ]];then
     sudo sh -c 'echo openwrt > /etc/oprelyonu'
