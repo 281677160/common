@@ -759,7 +759,7 @@ fi
 
 if [[ -f "${CLONE_DIR}/remake" ]]; then
   sudo rm -rf ${CLONE_DIR}/openwrt/out/*
-  sudo rm -rf ${CLONE_DIR}/*
+  sudo rm -rf ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   cp -Rf $GITHUB_WORKSPACE/amlogic/${rootfs_targz} ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   if [[ ! -f "${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz" ]]; then
     TIME r "armvirt-64-default-rootfs.tar.gz不存在,请检查amlogic文件夹内是否有${rootfs_targz}存在"
