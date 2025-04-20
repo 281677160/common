@@ -93,7 +93,7 @@ if [[ ! -f "/etc/oprelyonu" ]]; then
   TIME y "升级ubuntu插件和安装依赖，时间或者会比较长(取决于您的网络质量)，请耐心等待"
   TIME y "如果出现 YES OR NO 选择界面，直接按回车即可"
   TIME g "请确认是否继续进行,按任意键则继续,输入[N]后按回车则退出编译"
-read -n 1 -s -r -p "确认选择（按 N 退出/Q 执行其他操作，任意键继续）: " NNKC
+read -t 30 -n 1 -s -r -p "确认选择（按 N 退出/Q 执行其他操作，任意键继续）: " NNKC
 case ${NNKC} in
 [Nn])
     TIME r "退出程序"
