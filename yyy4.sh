@@ -717,7 +717,7 @@ if [[ -z "${kernel_usage}" ]]; then
 fi
 
 CLONE_DIR="$GITHUB_WORKSPACE/armvirt"
-if [[ -d "${CLONE_DIR}" ]]; then
+if [[ -d "${CLONE_DIR}/make-openwrt/openwrt-files/common-files" ]]; then
   TIME_THRESHOLD=86400
   LAST_MODIFIED=$(stat -c %Y "$CLONE_DIR" 2>/dev/null || echo 0)
   CURRENT_TIME=$(date +%s)
@@ -728,6 +728,12 @@ if [[ -d "${CLONE_DIR}" ]]; then
       TIME r "旧的打包程序存在,且无法删除,请重启ubuntu再来操作"
       exit 1
     fi
+  fi
+else
+  sudo rm -rf "$CLONE_DIR"
+  if [[ -d "${CLONE_DIR}" ]]; then
+    TIME r "旧的打包程序存在,且无法删除,请重启ubuntu再来操作"
+    exit 1
   fi
 fi
 if [[ ! -f "$GITHUB_WORKSPACE/amlogic/${rootfs_targz}" ]]; then
