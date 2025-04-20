@@ -520,7 +520,7 @@ if [[ -d "${CLONE_DIR}" ]]; then
   fi
 fi
 rm -rf $GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz
-wget -q --no-check-certificate https://github.com/281677160/autobuild/releases/download/targz/Lede-armvirt-64-default-rootfs.tar.gz -O $GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz
+wget https://github.com/281677160/autobuild/releases/download/targz/Lede-armvirt-64-default-rootfs.tar.gz -O $GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz
 if [[ ! -d "amlogic" ]]; then
   mkdir -p $GITHUB_WORKSPACE/amlogic
   TIME r "请用WinSCP工具将\"xxx-armvirt-64-default-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
@@ -818,7 +818,6 @@ break
 break
 ;;
 3)
-  Ben_update
   Ben_packaging
 break
 ;;
