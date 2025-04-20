@@ -561,38 +561,23 @@ builder_name="ophub"
 echo -e "\n${YELLOW}请选择固件名称：${NC}"
 PS3="请输入选项编号: "
 select gender_wenjian in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
+    # 强制校验输入是否为空或非数字
+    if [[ -z "$REPLY" ]] || ! [[ "$REPLY" =~ ^[0-9]+$ ]]; then
+        echo -e "${RED}输入不能为空或非数字，请重新输入！${NC}"
+        continue
+    fi
+
     case $REPLY in
         1|2|3|4|5|6)
             echo -e "已选择${GREEN}[$gender_wenjian]${NC}作为蓝本\n"
             break
             ;;
-        "")  # 显式处理空输入
-            echo -e "${RED}输入不能为空，请重新输入！${NC}"
-            ;;
         *)
             echo -e "${RED}无效选项，请重新输入！${NC}"
             ;;
     esac
 done
 
-
-
-
-PS3="请输入选项编号: "
-select gender in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
-    case $REPLY in
-        1|2|3|4|5|6)
-            echo -e "已选择: ${GREEN}$gender-armvirt-64-default-rootfs.tar.gz${NC}\n"
-            break
-            ;;
-        "")  # 显式处理空输入
-            echo -e "${RED}输入不能为空，请重新输入！${NC}"
-            ;;
-        *)
-            echo -e "${RED}无效选项，请重新输入！${NC}"
-            ;;
-    esac
-done
 
 echo -e "\n${YELLOW}输入机型,比如：s905d 或 s905d_s905x2${NC}"
 while :; do
