@@ -214,7 +214,7 @@ function install_dependencies() {
 		zlib1g-dev zstd xxd $VERSION_PACKAGE
 
 	# N1打包需要的依赖
-	apt-get install -y rename pigz
+	apt-get install -y rename pigz libfuse-dev
 
 	# fix broken http2 support for curl on buster
 	if [ "$VERSION_CODENAME" == "buster"]; then
