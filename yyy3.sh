@@ -563,7 +563,7 @@ while true; do
         continue
     fi
     index=$((REPLY-1))
-    echo -e "已选择${GREEN}[${options[index]}-armvirt-64-default-rootfs.tar.gz]${NC}\n"
+    echo -e "已选择: ${GREEN}[${options[index]}-armvirt-64-default-rootfs.tar.gz]${NC}\n"
     rootfs_targz="${options[index]}-armvirt-64-default-rootfs.tar.gz"
     break
 done
@@ -610,7 +610,7 @@ while true; do
         continue
     fi
     index=$((REPLY-1))
-    echo -e "已选择${GREEN}[${optionnk[index]}]${NC}\n"
+    echo -e "已选择: ${GREEN}[${optionnk[index]}]${NC}\n"
     auto_kernell="${optionnk[index]}"
     break
 done
@@ -652,7 +652,7 @@ while true; do
         continue
     fi
     index=$((REPLY-1))
-    echo -e "已选择${GREEN}[${optionck[index]}]${NC}\n"
+    echo -e "已选择: ${GREEN}[${optionck[index]}]${NC}\n"
     kernel_usage="${optionck[index]}"
     break
 done
