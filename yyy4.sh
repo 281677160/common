@@ -453,8 +453,8 @@ fi
 
 echo -e "\n${YELLOW}按Q回车返回主菜单,按N退出程序${NC}\n"
 while :; do
-read -p "请选择：" menufig
-  case ${menufig} in
+read -p "请选择：" SRNKC
+  case ${SRNKC} in
   [Qq])
       menu1
       break
@@ -499,21 +499,22 @@ for i in ${bb[@]}; do
 done
 
 TIME g "按Q回车返回主菜单,按N退出程序"
-read -p "确认选择: " SNKC
-case ${SNKC} in
-  [Nn])
-    TIME r "退出程序"
-    exit 0
-  ;;
+while :; do
+read -p "请选择：" SNTKC
+  case ${SNTKC} in
   [Qq])
-    menu1
-    clear
-    break
+      menu1
+      break
+  ;;
+  [Nn])
+      exit 1
+      break
   ;;
   *)
-    TIME g "开始打包固件..."
+      TIME r "请输入正确选项"
   ;;
-esac
+  esac
+done
 }
 
 function Ben_packaging() {
@@ -692,23 +693,28 @@ echo -e "▪ 分区大小\t: $openwrt_size"
 echo -e "▪ 内核仓库\t: $kernel_usage"
 echo -e "▪ 内核选择\t: $auto_kernell"
 
-echo -e "\n${YELLOW}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N回车退出打包${NC}\n"
-read -n 1 -s -r -p "确认选择: " NNKC
-case ${NNKC} in
-[Nn])
-    TIME r "退出程序"
-    exit 0
-    ;;
-[Qq])
-    clear
-    Ben_packaging
-    break
-    ;;
-*)
-    TIME g "开始打包固件..."
-    break
-    ;;
-esac
+echo -e "\n${YELLOW}检查信息是否正确,正确输入[Y/y]回车继续,重新输入则[Q/q]回车,[N/n]回车退出打包${NC}\n"
+while :; do
+read -p "请选择：" SNKC
+  case ${SNKC} in
+  [Yy])
+      TIME g "开始打包固件..."
+      break
+  ;;
+  [Qq])
+      clear
+      Ben_packaging
+      break
+  ;;
+  [Nn])
+      exit 1
+      break
+  ;;
+  *)
+      TIME r "请输入正确选项"
+  ;;
+  esac
+done
 
 if [[ -f "${CLONE_DIR}/remake" ]]; then
   cp -Rf $GITHUB_WORKSPACE/amlogic/${gender} ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
@@ -991,6 +997,9 @@ function menu3() {
 }
 
 function main() {
+if [[ ! -f "/etc/oprelyonu" ]]; then
+  Ben_update
+fi
 if [[ -f "${LICENSES_DOC}/buildzu.ini" ]]; then
   source ${LICENSES_DOC}/buildzu.ini
 fi
