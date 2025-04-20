@@ -505,7 +505,7 @@ done
 function Ben_packaging() {
 # 固件打包程序,本地不能使用,不知何解
 cd $GITHUB_WORKSPACE
-CLONE_DIR="$GITHUB_WORKSPACE/amlogic/armvirt"
+CLONE_DIR="$GITHUB_WORKSPACE/amlogic-s9xxx-openwrt"
 if [[ -d "${CLONE_DIR}" ]]; then
   TIME_THRESHOLD=86400
   LAST_MODIFIED=$(stat -c %Y "$CLONE_DIR" 2>/dev/null || echo 0)
@@ -657,14 +657,14 @@ case $NNKC in
   ;;
 esac
 
-if [[ -f "$GITHUB_WORKSPACE/amlogic/armvirt/remake" ]]; then
-  cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-default-rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/armvirt/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
-  cd $GITHUB_WORKSPACE/amlogic/armvirt
+if [[ -f "${CLONE_DIR}/remake" ]]; then
+  cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-default-rootfs.tar.gz ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
+  cd ${CLONE_DIR}
   TIME g "开始打包固件..."
   sudo chmod +x remake
   sudo ./remake -b ${openwrt_board} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -r ${kernel_repo} -u ${kernel_usage} -n ${builder_name}
   if [[ $? -eq 0 ]];then
-    TIME g "打包完成，固件存放在[amlogic/armvirt/openwrt/out]文件夹"
+    TIME g "打包完成，固件存放在[${CLONE_DIR}/openwrt/out]文件夹"
   else
     TIME r "打包失败!"
   fi
@@ -800,7 +800,8 @@ clear
 echo
 TIME y " 1. 进行编译固件"
 TIME g " 2. 创建或删除文件夹"
-TIME r " 3. 退出程序"
+TIME g " 3. 打包"
+TIME r " 4. 退出程序"
 echo
 XUANZHEOP="请输入数字"
 echo
@@ -816,6 +817,11 @@ break
 break
 ;;
 3)
+  Ben_update
+  Ben_packaging
+break
+;;
+4)
   echo
   exit 0
 break
