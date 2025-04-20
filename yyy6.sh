@@ -496,27 +496,26 @@ done
 
 TIME g "按Q回车返回主菜单,按N退出程序"
 read -p "确认选择: " SNKC
-while :; do
-    case $SNKC in
-    [Qq])
-        menu1
-        break
-    ;;
-    [Nn])
-        exit 0
-        break
-    ;;
-    *)
-        echo "请输入正确的数字编号"
-    ;;
-    esac
-done
+case ${SNKC} in
+  [Nn])
+    TIME r "退出程序"
+    exit 0
+  ;;
+  [Qq])
+    menu1
+    clear
+    break
+  ;;
+  *)
+    TIME g "开始打包固件..."
+  ;;
+esac
 }
 
 function Ben_packaging() {
 # 固件打包程序,本地不能使用,不知何解
 cd $GITHUB_WORKSPACE
-CLONE_DIR="$GITHUB_WORKSPACE/amlogic-s9xxx-openwrt"
+CLONE_DIR="$GITHUB_WORKSPACE/armvirt"
 if [[ -d "${CLONE_DIR}" ]]; then
   TIME_THRESHOLD=86400
   LAST_MODIFIED=$(stat -c %Y "$CLONE_DIR" 2>/dev/null || echo 0)
@@ -613,6 +612,7 @@ while :; do
     fi
 done
 
+echo -e "\n${YELLOW}是否开启自动使用最新版内核打包${NC}"
 optionnk=("自动使用最新版本内核" "无需使用最新版本内核")
 while true; do
     echo "请选择："
@@ -633,11 +633,11 @@ while true; do
     fi
     index=$((REPLY-1))
     echo -e "已选择${GREEN}[${optionnk[index]}]${NC}\n"
-    auto_kernel="${optionnk[index]}"
+    auto_kernell="${optionnk[index]}"
     break
 done
 
-if [[ "${auto_kernell}" == "无需选择最新版本内核" ]]; then
+if [[ "${auto_kernell}" == "无需使用最新版本内核" ]]; then
     auto_kernel="false"
 else
     auto_kernel="true"
@@ -687,24 +687,20 @@ echo -e "▪ 分区大小\t: $openwrt_size"
 echo -e "▪ 内核仓库\t: $kernel_usage"
 echo -e "▪ 内核选择\t: $auto_kernell"
 
-echo -e "\n${YELLOW}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N退出打包${NC}\n"
+echo -e "\n${YELLOW}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N回车退出打包${NC}\n"
 read -p "确认选择: " NNKC
-case $NNKC in
+case ${NNKC} in
   [Nn])
+    TIME r "退出程序"
     exit 0
-    break
   ;;
   [Qq])
     Ben_packaging
     clear
     break
-    ;;
-  "")
-    TIME g "开始打包固件..."
-    break
   ;;
   *)
-    echo "请输入正确选择"
+    TIME g "开始打包固件..."
   ;;
 esac
 
