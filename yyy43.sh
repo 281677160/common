@@ -108,9 +108,12 @@ if [[ ! -f "/etc/oprelyonu" ]]; then
   sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
   if [[ $? -eq 0 ]];then
     sudo sh -c 'echo openwrt > /etc/oprelyonu'
+  else
+    TIME r "依赖安装失败,请检查网络再来"
+    exit 1
   fi
 fi
-if [[ -f "/etc/ssh/sshd_config" ]] && [[ -z "$(grep -E 'ClientAliveInterval 30' /etc/ssh/sshd_config)" ]]; then
+if [[ -f "/etc/ssh/sshd_config" ]] && [[ -z "$(grep -E 'ClientAliveInterval 30' '/etc/ssh/sshd_config' 2>/dev/null)" ]]; then
   sudo sed -i '/ClientAliveInterval/d' /etc/ssh/sshd_config
   sudo sed -i '/ClientAliveCountMax/d' /etc/ssh/sshd_config
   sudo sh -c 'echo ClientAliveInterval 30 >> /etc/ssh/sshd_config'
