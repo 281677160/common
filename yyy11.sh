@@ -377,10 +377,15 @@ done
 
 if [[ -n "$(ls -1 |grep -E 'armvirt')" ]] || [[ -n "$(ls -1 |grep -E 'armsr')" ]]; then
   mkdir -p $GITHUB_WORKSPACE/amlogic
-  rm -rf $GITHUB_WORKSPACE/amlogic/${SOURCE}-${LUCI_EDITION}-armvirt-64-default-rootfs.tar.gz
-  cp -Rf *rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/${SOURCE}-${LUCI_EDITION}-armvirt-64-default-rootfs.tar.gz
+  rm -rf $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
+  cp -Rf *rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
+  rootfs_targz="${SOURCE}-armvirt-64-default-rootfs.tar.gz"
   TIME g "[ Amlogic_Rockchip系列专用固件 ]顺利编译完成~~~"
-  TIME y "固件存放路径：$GITHUB_WORKSPACE/amlogic/${SOURCE}-${LUCI_EDITION}-armvirt-64-default-rootfs.tar.gz"
+  TIME y "固件存放路径：amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz"
+  if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
+    TIME g "执行自动打包任务"
+    Ben_packaging2
+  fi
 else
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" * > /dev/null 2>&1
   TIME g "[ ${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE} ]顺利编译完成~~~"
@@ -530,47 +535,6 @@ done
 function Ben_packaging() {
 # 固件打包
 cd $GITHUB_WORKSPACE
-CLONE_DIR="$GITHUB_WORKSPACE/armvirt"
-if [[ -d "${CLONE_DIR}" ]]; then
-  TIME_THRESHOLD=86400
-  LAST_MODIFIED=$(stat -c %Y "$CLONE_DIR" 2>/dev/null || echo 0)
-  CURRENT_TIME=$(date +%s)
-  TIME_DIFF=$((CURRENT_TIME - LAST_MODIFIED))
-  if [ "$TIME_DIFF" -gt "$TIME_THRESHOLD" ]; then
-    sudo rm -rf "$CLONE_DIR"
-    if [[ -d "${CLONE_DIR}" ]]; then
-      TIME r "旧的打包程序存在,且无法删除,请重启ubuntu再来操作"
-      exit 1
-    fi
-  fi
-fi
-if [[ ! -f "$GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz" ]]; then
-  wget https://github.com/281677160/autobuild/releases/download/targz/Lede-armvirt-64-default-rootfs.tar.gz -O $GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz
-fi
-if [[ ! -d "amlogic" ]]; then
-  mkdir -p $GITHUB_WORKSPACE/amlogic
-  TIME r "请用WinSCP工具将\"xxx-armvirt-64-default-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
-  exit 1
-else
-  find $GITHUB_WORKSPACE/amlogic -type f -name "*.rootfs.tar.gz" -size -2M -delete
-  sudo rm -rf $GITHUB_WORKSPACE/amlogic/*Identifier*
-  if [[ -z "$(find $GITHUB_WORKSPACE/amlogic -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
-    TIME r "请用WinSCP工具将\"xxx-armvirt-64-default-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
-    exit 1
-  fi
-fi
-
-if [[ ! -d "${CLONE_DIR}" ]]; then
-  TIME y "正在下载打包程序,请稍后..."
-  if git clone -q https://github.com/ophub/amlogic-s9xxx-openwrt.git $CLONE_DIR; then
-    echo ""
-    mkdir -p $CLONE_DIR/openwrt-armvirt
-  else
-    TIME r "打包程序下载失败,请检查网络"
-    exit 1
-  fi
-fi
-
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -578,9 +542,6 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "${GREEN}\n==== 打包信息采集 ====${NC}\n"
-kernel_repo="ophub/kernel"
-builder_name="ophub"
-
 echo -e "\n${YELLOW}请选择固件源码：${NC}"
 options=("Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x")
 while true; do
@@ -602,14 +563,14 @@ while true; do
     fi
     index=$((REPLY-1))
     echo -e "已选择${GREEN}[${options[index]}-armvirt-64-default-rootfs.tar.gz]${NC}\n"
-    gender="${options[index]}-armvirt-64-default-rootfs.tar.gz"
+    rootfs_targz="${options[index]}-armvirt-64-default-rootfs.tar.gz"
     break
 done
 
 echo -e "\n${YELLOW}输入机型,比如：s905d 或 s905d_s905x2${NC}"
 while :; do
-    read -p "请输入打包机型: " openwrt_board
-    if [[ -n "$openwrt_board" ]]; then
+    read -p "请输入打包机型: " amlogic_model
+    if [[ -n "$amlogic_model" ]]; then
         echo -e "已设置: ${GREEN}$openwrt_board机型${NC}\n"
         break
     else
@@ -619,9 +580,9 @@ done
 
 echo -e "\n${YELLOW}输入内核版本,比如：5.15.180 或 6.1.134_6.12.23${NC}"
 while :; do
-    read -p "请输入内核版本: " openwrt_kernel
-    if [[ -n "$openwrt_kernel" ]]; then
-        echo -e "已设置内核版本: ${GREEN}$openwrt_kernel内核${NC}\n"
+    read -p "请输入内核版本: " amlogic_model
+    if [[ -n "$amlogic_model" ]]; then
+        echo -e "已设置内核版本: ${GREEN}$amlogic_model${NC}\n"
         break
     else
         echo -e "${RED}错误：内核版本不能为空！${NC}\n"
@@ -696,7 +657,7 @@ while true; do
 done
 
 echo -e "\n${GREEN}==== 录入完成 ====${NC}"
-echo -e "▪ 固件名称\t: $gender"
+echo -e "▪ 固件名称\t: $rootfs_targz"
 echo -e "▪ 打包机型\t: $openwrt_board"
 echo -e "▪ 内核版本\t: $openwrt_kernel"
 echo -e "▪ 分区大小\t: $openwrt_size"
@@ -709,6 +670,7 @@ read -p "请选择：" SNKC
   case ${SNKC} in
   [Yy])
       TIME g "开始打包固件..."
+      Ben_packaging2
       break
   ;;
   [Qq])
@@ -725,9 +687,60 @@ read -p "请选择：" SNKC
   ;;
   esac
 done
+}
+
+function Ben_packaging2() {
+kernel_repo="ophub/kernel"
+builder_name="ophub"
+openwrt_board="${amlogic_model}"
+openwrt_kernel="${amlogic_kernel}"
+auto_kernel="${auto_kernel}"
+rootfs_size="${openwrt_size}"
+kernel_usage="${kernel_usage}"
+
+CLONE_DIR="$GITHUB_WORKSPACE/armvirt"
+if [[ -d "${CLONE_DIR}" ]]; then
+  TIME_THRESHOLD=86400
+  LAST_MODIFIED=$(stat -c %Y "$CLONE_DIR" 2>/dev/null || echo 0)
+  CURRENT_TIME=$(date +%s)
+  TIME_DIFF=$((CURRENT_TIME - LAST_MODIFIED))
+  if [ "$TIME_DIFF" -gt "$TIME_THRESHOLD" ]; then
+    sudo rm -rf "$CLONE_DIR"
+    if [[ -d "${CLONE_DIR}" ]]; then
+      TIME r "旧的打包程序存在,且无法删除,请重启ubuntu再来操作"
+      exit 1
+    fi
+  fi
+fi
+if [[ ! -f "$GITHUB_WORKSPACE/amlogic/${rootfs_targz}" ]]; then
+  wget https://github.com/281677160/autobuild/releases/download/targz/${rootfs_targz} -O $GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz
+fi
+if [[ ! -d "amlogic" ]]; then
+  mkdir -p $GITHUB_WORKSPACE/amlogic
+  TIME r "请用工具将\"${rootfs_targz}\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
+  exit 1
+else
+  find $GITHUB_WORKSPACE/amlogic -type f -name "*.rootfs.tar.gz" -size -2M -delete
+  sudo rm -rf $GITHUB_WORKSPACE/amlogic/*Identifier*
+  if [[ -z "$(find $GITHUB_WORKSPACE/amlogic -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
+    TIME r "请用工具将\"${rootfs_targz}\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
+    exit 1
+  fi
+fi
+
+if [[ ! -d "${CLONE_DIR}" ]]; then
+  TIME y "正在下载打包程序,请稍后..."
+  if git clone -q https://github.com/ophub/amlogic-s9xxx-openwrt.git $CLONE_DIR; then
+    echo ""
+    mkdir -p $CLONE_DIR/openwrt-armvirt
+  else
+    TIME r "打包程序下载失败,请检查网络"
+    exit 1
+  fi
+fi
 
 if [[ -f "${CLONE_DIR}/remake" ]]; then
-  cp -Rf $GITHUB_WORKSPACE/amlogic/${gender} ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
+  cp -Rf $GITHUB_WORKSPACE/amlogic/${rootfs_targz} ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   cd ${CLONE_DIR}
   sudo chmod +x remake
   sudo ./remake -b ${openwrt_board} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -r ${kernel_repo} -u ${kernel_usage} -n ${builder_name}
