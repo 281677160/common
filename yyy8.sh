@@ -562,11 +562,14 @@ builder_name="ophub"
 echo -e "\n${YELLOW}请选择固件名称：${NC}"
 PS3="请输入选项编号: "
 select gender_wenjian in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
-    case $REPLY in
+    echo "$gender_wenjian"
+    echo "$REPLY"
+    echo "123"
     if [[ -z "$REPLY" ]] || ! [[ "$REPLY" =~ ^[0-9]+$ ]]; then
         echo -e "${RED}输入不能为空或非数字，请重新输入！${NC}"
         continue
     fi
+    case $REPLY in
         1|2|3|4|5|6)
             echo -e "已选择${GREEN}[$gender_wenjian]${NC}作为蓝本\n"
             break
