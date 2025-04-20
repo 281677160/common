@@ -399,6 +399,10 @@ NC='\033[0m'
 echo -e "\n${YELLOW}请选择以什么文件夹为蓝本来建立新文件夹：${NC}"
 PS3="请输入选项编号: "
 select gender_wenjian in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
+    if [[ -z "$REPLY" ]]; then
+        echo -e "${RED}输入不能为空，请重新输入！${NC}"
+        continue
+    fi
     case $REPLY in
         1|2|3|4|5|6) 
             echo -e "已选择${GREEN}[$gender_wenjian]${NC}作为蓝本\n"
@@ -557,6 +561,10 @@ builder_name="ophub"
 echo -e "\n${YELLOW}请选择固件名称：${NC}"
 PS3="请输入选项编号: "
 select gender in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
+    if [[ -z "$REPLY" ]]; then
+        echo -e "${RED}输入不能为空，请重新输入！${NC}"
+        continue
+    fi
     case $REPLY in
         1|2|3|4|5|6) 
             echo -e "已选择: ${GREEN}$gender-armvirt-64-default-rootfs.tar.gz${NC}\n"
@@ -571,8 +579,8 @@ done
 echo -e "\n${YELLOW}输入机型,比如：s905d 或 s905d_s905x2${NC}"
 while :; do
     read -p "请输入打包机型: " openwrt_board
-    openwrt_board=${openwrt_board:-"s905d"}
     if [[ -n "$openwrt_board" ]]; then
+        echo -e "已选择: ${GREEN}$openwrt_board机型${NC}\n"
         break
     else
         echo -e "${RED}错误：机型不能为空！${NC}\n"
@@ -582,8 +590,8 @@ done
 echo -e "\n${YELLOW}输入内核版本,比如：5.15.180 或 6.1.134_6.12.23${NC}"
 while :; do
     read -p "请输入内核版本: " openwrt_kernel
-    openwrt_kernel=${openwrt_kernel:-"6.1.134_6.12.23"}
     if [[ -n "$openwrt_kernel" ]]; then
+        echo -e "已设置内核版本: ${GREEN}$openwrt_kernel内核${NC}\n"
         break
     else
         echo -e "${RED}错误：内核版本不能为空！${NC}\n"
@@ -593,15 +601,17 @@ done
 echo -e "\n${YELLOW}是否自动选择输入内核版本为最新版本：${NC}"
 PS3="请输入选项编号: "
 select auto_kernell in "自动选择最新版本内核" "无需选择最新版本内核"; do
+    if [[ -z "$REPLY" ]]; then
+        echo -e "${RED}输入不能为空，请重新输入！${NC}"
+        continue
+    fi
     case $REPLY in
         1|2) 
             echo -e "已选择: ${GREEN}$auto_kernell${NC}"
             break
             ;;
-        *) 
-            auto_kernell=${auto_kernell:-"true"}
-            echo -e "已选择: ${GREEN}$auto_kernell${NC}"
-            break
+        *)
+            echo -e "${RED}无效选项，请重新输入！${NC}"
             ;;
     esac
 done
@@ -615,8 +625,8 @@ fi
 echo -e "\n${YELLOW}设置rootfs大小(单位：MiB),比如：1024 或 512/2560${NC}"
 while :; do
     read -p "请输入数值: " openwrt_size
-    openwrt_size=${openwrt_size:-"1024"}
     if [[ -n "$openwrt_size" ]]; then
+        echo -e "已设置rootfs: ${GREEN}$openwrt_size${NC}"
         break
     else
         echo -e "${RED}错误：数值不能为空！${NC}\n"
@@ -626,15 +636,17 @@ done
 echo -e "\n${YELLOW}请选择内核仓库(内核的作者)：${NC}"
 PS3="请输入选项编号: "
 select kernel_usage in "stable" "flippy" "dev" "beta"; do
+    if [[ -z "$REPLY" ]]; then
+        echo -e "${RED}输入不能为空，请重新输入！${NC}"
+        continue
+    fi
     case $REPLY in
         1|2|3|4) 
-            echo -e "已选择: ${GREEN}$kernel_usage${NC}\n"
+            echo -e "已选择: ${GREEN}$kernel_usage内核仓库${NC}\n"
             break
             ;;
         *) 
-            kernel_usage=${kernel_usage:-"stable"}
-            echo -e "已选择: ${GREEN}$kernel_usage${NC}\n"
-            break
+            echo -e "${RED}无效选项，请重新输入！${NC}"
             ;;
     esac
 done
@@ -650,25 +662,27 @@ echo -e "▪ 内核选择\t: $auto_kernell"
 echo -e "\n${YELLOW}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N退出打包${NC}\n"
 read -p "确认选择: " NNKC
 case $NNKC in
-  [Qq])
-    Ben_packaging
-    clear
-    break
-  ;;
   [Nn])
     exit 0
     break
   ;;
-  *)
-    echo
+  [Qq])
+    Ben_packaging
+    clear
     break
+    ;;
+  "")
+    TIME g "开始打包固件..."
+    break
+  ;;
+  *)
+    echo "请输入正确选择"
   ;;
 esac
 
 if [[ -f "${CLONE_DIR}/remake" ]]; then
   cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-default-rootfs.tar.gz ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   cd ${CLONE_DIR}
-  TIME g "开始打包固件..."
   sudo chmod +x remake
   sudo ./remake -b ${openwrt_board} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -r ${kernel_repo} -u ${kernel_usage} -n ${builder_name}
   if [[ $? -eq 0 ]];then
