@@ -622,9 +622,9 @@ fi
 
 echo -e "\n${YELLOW}设置rootfs大小(单位：MiB),比如：1024 或 512/2560 的类型${NC}"
 while :; do
-    read -p "请输入数值: " openwrt_size
-    if [[ -n "$openwrt_size" ]]; then
-        echo -e "已设置rootfs: ${GREEN}$openwrt_size${NC}"
+    read -p "请输入数值: " rootfs_size
+    if [[ -n "$rootfs_size" ]]; then
+        echo -e "已设置rootfs: ${GREEN}$rootfs_size${NC}"
         break
     else
         echo -e "${RED}错误：数值不能为空！${NC}\n"
@@ -660,7 +660,7 @@ echo -e "\n${GREEN}==== 录入完成 ====${NC}"
 echo -e "▪ 固件名称\t: $rootfs_targz"
 echo -e "▪ 打包机型\t: $amlogic_model"
 echo -e "▪ 内核版本\t: $amlogic_kernel"
-echo -e "▪ 分区大小\t: $openwrt_size"
+echo -e "▪ 分区大小\t: $rootfs_size"
 echo -e "▪ 内核仓库\t: $kernel_usage"
 echo -e "▪ 内核选择\t: $auto_kernell"
 
@@ -695,8 +695,26 @@ builder_name="ophub"
 openwrt_board="${amlogic_model}"
 openwrt_kernel="${amlogic_kernel}"
 auto_kernel="${auto_kernel}"
-rootfs_size="${openwrt_size}"
+openwrt_size="${rootfs_size}"
 kernel_usage="${kernel_usage}"
+
+if [[ -z "${openwrt_board}" ]]; then
+  TIME r "缺少机型"
+  exit 1
+fi
+if [[ -z "${openwrt_kernel}" ]]; then
+  TIME r "缺少内核"
+  exit 1
+fi
+if [[ -z "${auto_kernel}" ]]; then
+  auto_kernel="true"
+fi
+if [[ -z "${openwrt_size}" ]]; then
+  rootfs_size="1024"
+fi
+if [[ -z "${kernel_usage}" ]]; then
+  kernel_usage="stable"
+fi
 
 CLONE_DIR="$GITHUB_WORKSPACE/armvirt"
 if [[ -d "${CLONE_DIR}" ]]; then
@@ -722,7 +740,7 @@ if [[ ! -d "amlogic" ]]; then
 else
   find $GITHUB_WORKSPACE/amlogic -type f -name "*.rootfs.tar.gz" -size -2M -delete
   sudo rm -rf $GITHUB_WORKSPACE/amlogic/*Identifier*
-  if [[ -z "$(find $GITHUB_WORKSPACE/amlogic -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
+  if [[ ! -f "$GITHUB_WORKSPACE/amlogic/${rootfs_targz}" ]]; then
     TIME r "请用工具将\"${rootfs_targz}\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
     exit 1
   fi
@@ -739,10 +757,14 @@ if [[ ! -d "${CLONE_DIR}" ]]; then
   fi
 fi
 
-echo "${openwrt_board} -r ${kernel_repo} -u ${kernel_usage} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -n ${builder_name}"
-
 if [[ -f "${CLONE_DIR}/remake" ]]; then
+  sudo rm -rf ${CLONE_DIR}/openwrt/out/*
+  sudo rm -rf ${CLONE_DIR}/*
   cp -Rf $GITHUB_WORKSPACE/amlogic/${rootfs_targz} ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
+  if [[ ! -f "${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz" ]]; then
+    TIME r "armvirt-64-default-rootfs.tar.gz不存在,请检查amlogic文件夹内是否有${rootfs_targz}存在"
+    exit 1
+  fi
   cd ${CLONE_DIR}
   sudo chmod +x remake
   sudo ./remake -b ${openwrt_board} -r ${kernel_repo} -u ${kernel_usage} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -n ${builder_name}
