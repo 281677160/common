@@ -561,16 +561,15 @@ builder_name="ophub"
 echo -e "\n${YELLOW}请选择固件名称：${NC}"
 PS3="请输入选项编号: "
 select gender in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
-    if [[ -z "$REPLY" ]]; then
-        echo -e "${RED}输入不能为空，请重新输入！${NC}"
-        continue
-    fi
     case $REPLY in
         1|2|3|4|5|6) 
             echo -e "已选择: ${GREEN}$gender-armvirt-64-default-rootfs.tar.gz${NC}\n"
             break
             ;;
-        *) 
+        "")  # 显式处理空输入
+            echo -e "${RED}输入不能为空，请重新输入！${NC}"
+            ;;
+        *)
             echo -e "${RED}无效选项，请重新输入！${NC}"
             ;;
     esac
