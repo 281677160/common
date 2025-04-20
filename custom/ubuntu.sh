@@ -311,7 +311,7 @@ function install_dependencies() {
 
 	set +x
  	apt-get clean -y
- 	apt-get autoremove --purge
+ 	apt-get -y autoremove --purge
  	go version
 	gcc --version
 	g++ --version
