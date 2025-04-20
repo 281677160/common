@@ -565,6 +565,9 @@ select gender_wenjian in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x
     echo "$gender_wenjian"
     echo "$REPLY"
     echo "123"
+    if [[ -z "$gender_wenjian" ]]; then
+      echo "456"
+    fi
     if [[ -z "$REPLY" ]] || ! [[ "$REPLY" =~ ^[0-9]+$ ]]; then
         echo -e "${RED}输入不能为空或非数字，请重新输入！${NC}"
         continue
