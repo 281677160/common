@@ -513,7 +513,7 @@ esac
 }
 
 function Ben_packaging() {
-# 固件打包程序,本地不能使用,不知何解
+# 固件打包
 cd $GITHUB_WORKSPACE
 CLONE_DIR="$GITHUB_WORKSPACE/armvirt"
 if [[ -d "${CLONE_DIR}" ]]; then
@@ -524,7 +524,7 @@ if [[ -d "${CLONE_DIR}" ]]; then
   if [ "$TIME_DIFF" -gt "$TIME_THRESHOLD" ]; then
     sudo rm -rf "$CLONE_DIR"
     if [[ -d "${CLONE_DIR}" ]]; then
-      TIME r "旧的打包程序存在，且无法删除,请重启ubuntu再来操作"
+      TIME r "旧的打包程序存在,且无法删除,请重启ubuntu再来操作"
       exit 1
     fi
   fi
@@ -546,6 +546,7 @@ else
 fi
 
 if [[ ! -d "${CLONE_DIR}" ]]; then
+  TIME y "正在下载打包程序,请稍后..."
   if git clone -q https://github.com/ophub/amlogic-s9xxx-openwrt.git $CLONE_DIR; then
     echo ""
     mkdir -p $CLONE_DIR/openwrt-armvirt
@@ -701,6 +702,7 @@ case ${NNKC} in
   ;;
   *)
     TIME g "开始打包固件..."
+    break
   ;;
 esac
 
@@ -713,6 +715,7 @@ if [[ -f "${CLONE_DIR}/remake" ]]; then
     TIME g "打包完成，固件存放在[${CLONE_DIR}/openwrt/out]文件夹"
   else
     TIME r "打包失败!"
+    exit 1
   fi
 else
   TIME r "未知原因打包程不存在,或上游改变了程序名称"
