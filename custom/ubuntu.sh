@@ -215,6 +215,7 @@ function install_dependencies() {
 
 	# N1打包需要的和alist依赖
 	apt-get install -y rename pigz libfuse-dev
+        apt-get -y install $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
 	# fix broken http2 support for curl on buster
 	if [ "$VERSION_CODENAME" == "buster"]; then
