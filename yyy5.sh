@@ -397,21 +397,28 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "\n${YELLOW}请选择以什么文件夹为蓝本来建立新文件夹：${NC}"
-PS3="请输入选项编号："
-select gender_wenjian in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
+option=("Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x")
+while true; do
+    echo "请选择："
+    for i in "${!option[@]}"; do
+        echo "$((i+1))) ${option[i]}"
+    done
+    read -t 0.1 -r dummy
+    read -r -p "请输入选项编号: " REPLY
     if [[ -z "$REPLY" ]]; then
-        echo -e "${RED}输入不能为空，请重新输入！${NC}"
+        echo -e "${RED}错误：输入不能为空！${NC}"
+        continue
+    elif ! [[ "$REPLY" =~ ^[0-9]+$ ]]; then
+        echo -e "${RED}错误：必须输入数字！${NC}"
+        continue
+    elif (( REPLY < 1 || REPLY > ${#option[@]} )); then
+        echo -e "${RED}错误：无效选项编号！${NC}"
         continue
     fi
-    case $REPLY in
-        1|2|3|4|5|6) 
-            echo -e "已选择${GREEN}[$gender_wenjian]${NC}作为蓝本\n"
-            break
-            ;;
-        *) 
-            echo -e "${RED}无效选项，请重新输入！${NC}"
-            ;;
-    esac
+    index=$((REPLY-1))
+    echo -e "已选择${GREEN}[${option[index]}]${NC}作为蓝本\n"
+    gender_wenjian="${option[index]}"
+    break
 done
 
 echo -e "\n${YELLOW}请输入您要建立的文件夹名称${NC}"
@@ -559,21 +566,15 @@ echo -e "${GREEN}\n==== 打包信息采集 ====${NC}\n"
 kernel_repo="ophub/kernel"
 builder_name="ophub"
 
-echo -e "\n${YELLOW}请选择固件名称：${NC}"
+echo -e "\n${YELLOW}请选择固件源码：${NC}"
 options=("Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x")
-
 while true; do
-    # 动态生成菜单
-    echo "请选择蓝本："
+    echo "请选择："
     for i in "${!options[@]}"; do
         echo "$((i+1))) ${options[i]}"
     done
-    
-    # 读取输入（带超时强制清空）
-    read -t 0.1 -r dummy  # 清空输入缓冲区
+    read -t 0.1 -r dummy
     read -r -p "请输入选项编号: " REPLY
-    
-    # 输入验证
     if [[ -z "$REPLY" ]]; then
         echo -e "${RED}错误：输入不能为空！${NC}"
         continue
@@ -584,14 +585,11 @@ while true; do
         echo -e "${RED}错误：无效选项编号！${NC}"
         continue
     fi
-
-    # 成功选择
     index=$((REPLY-1))
-    echo -e "已选择${GREEN}[${options[index]}]${NC}作为蓝本\n"
+    echo -e "已选择${GREEN}[${options[index]}-armvirt-64-default-rootfs.tar.gz]${NC}\n"
+    gender="${options[index]}-armvirt-64-default-rootfs.tar.gz"
     break
 done
-
-
 
 echo -e "\n${YELLOW}输入机型,比如：s905d 或 s905d_s905x2${NC}"
 while :; do
@@ -615,22 +613,28 @@ while :; do
     fi
 done
 
-echo -e "\n${YELLOW}是否自动选择输入内核版本为最新版本：${NC}"
-PS3="请输入选项编号: "
-select auto_kernell in "自动选择最新版本内核" "无需选择最新版本内核"; do
+optionnk=("自动使用最新版本内核" "无需使用最新版本内核")
+while true; do
+    echo "请选择："
+    for i in "${!optionnk[@]}"; do
+        echo "$((i+1))) ${optionnk[i]}"
+    done
+    read -t 0.1 -r dummy
+    read -r -p "请输入选项编号: " REPLY
     if [[ -z "$REPLY" ]]; then
-        echo -e "${RED}输入不能为空，请重新输入！${NC}"
+        echo -e "${RED}错误：输入不能为空！${NC}"
+        continue
+    elif ! [[ "$REPLY" =~ ^[0-9]+$ ]]; then
+        echo -e "${RED}错误：必须输入数字！${NC}"
+        continue
+    elif (( REPLY < 1 || REPLY > ${#optionnk[@]} )); then
+        echo -e "${RED}错误：无效选项编号！${NC}"
         continue
     fi
-    case $REPLY in
-        1|2) 
-            echo -e "已选择: ${GREEN}$auto_kernell${NC}"
-            break
-            ;;
-        *)
-            echo -e "${RED}无效选项，请重新输入！${NC}"
-            ;;
-    esac
+    index=$((REPLY-1))
+    echo -e "已选择${GREEN}[${optionnk[index]}]${NC}\n"
+    auto_kernel="${optionnk[index]}"
+    break
 done
 
 if [[ "${auto_kernell}" == "无需选择最新版本内核" ]]; then
@@ -639,7 +643,7 @@ else
     auto_kernel="true"
 fi
 
-echo -e "\n${YELLOW}设置rootfs大小(单位：MiB),比如：1024 或 512/2560${NC}"
+echo -e "\n${YELLOW}设置rootfs大小(单位：MiB),比如：1024 或 512/2560 的类型${NC}"
 while :; do
     read -p "请输入数值: " openwrt_size
     if [[ -n "$openwrt_size" ]]; then
@@ -651,25 +655,32 @@ while :; do
 done
 
 echo -e "\n${YELLOW}请选择内核仓库(内核的作者)：${NC}"
-PS3="请输入选项编号: "
-select kernel_usage in "stable" "flippy" "dev" "beta"; do
+optionck=("stable" "flippy" "dev" "beta")
+while true; do
+    echo "请选择："
+    for i in "${!optionck[@]}"; do
+        echo "$((i+1))) ${optionck[i]}"
+    done
+    read -t 0.1 -r dummy
+    read -r -p "请输入选项编号: " REPLY
     if [[ -z "$REPLY" ]]; then
-        echo -e "${RED}输入不能为空，请重新输入！${NC}"
+        echo -e "${RED}错误：输入不能为空！${NC}"
+        continue
+    elif ! [[ "$REPLY" =~ ^[0-9]+$ ]]; then
+        echo -e "${RED}错误：必须输入数字！${NC}"
+        continue
+    elif (( REPLY < 1 || REPLY > ${#optionck[@]} )); then
+        echo -e "${RED}错误：无效选项编号！${NC}"
         continue
     fi
-    case $REPLY in
-        1|2|3|4) 
-            echo -e "已选择: ${GREEN}$kernel_usage内核仓库${NC}\n"
-            break
-            ;;
-        *) 
-            echo -e "${RED}无效选项，请重新输入！${NC}"
-            ;;
-    esac
+    index=$((REPLY-1))
+    echo -e "已选择${GREEN}[${optionck[index]}]${NC}\n"
+    kernel_usage="${optionck[index]}"
+    break
 done
 
 echo -e "\n${GREEN}==== 录入完成 ====${NC}"
-echo -e "▪ 固件名称\t: $gender-armvirt-64-default-rootfs.tar.gz"
+echo -e "▪ 固件名称\t: $gender"
 echo -e "▪ 打包机型\t: $openwrt_board"
 echo -e "▪ 内核版本\t: $openwrt_kernel"
 echo -e "▪ 分区大小\t: $openwrt_size"
@@ -698,7 +709,7 @@ case $NNKC in
 esac
 
 if [[ -f "${CLONE_DIR}/remake" ]]; then
-  cp -Rf $GITHUB_WORKSPACE/amlogic/${gender}-armvirt-64-default-rootfs.tar.gz ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
+  cp -Rf $GITHUB_WORKSPACE/amlogic/${gender} ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   cd ${CLONE_DIR}
   sudo chmod +x remake
   sudo ./remake -b ${openwrt_board} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -r ${kernel_repo} -u ${kernel_usage} -n ${builder_name}
