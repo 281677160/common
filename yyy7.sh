@@ -52,16 +52,24 @@ if [[ -n "$(echo "${PATH}" |grep -i 'windows')" ]]; then
   echo
   TIME r "您的ubuntu为Windows子系统,需要解决路径问题"
   read -p "输入[Y/y]回车解决路径问题，输入[N/n]回车则退出编译： " Bendi_Wsl
-  case ${Bendi_Wsl} in
-  [Yy])
-    bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/bendi/main/wsl.sh)"
-    exit 0
-  ;;
-  [Nn])
-    TIME y "退出编译openwrt固件"
-    exit 1
-  ;;
-  esac
+  while :; do
+    read -p "请选择：" YONU
+    case ${YONU} in
+    [Yy])
+        bash -c "$(curl -fsSL https://raw.githubusercontent.com/281677160/bendi/main/wsl.sh)"
+        exit 0
+        break
+    ;;
+    [Nn])
+        TIME y "退出编译openwrt固件"
+        exit 1
+        break
+    ;;
+    *)
+        TIME r "请输入正确选项"
+    ;;
+    esac
+  done
 fi
 }
 
@@ -71,18 +79,17 @@ available_size=$(df -h / | awk 'NR==2 {gsub("G", "", $4); print $4}')
 TIME y "磁盘总量为[${total_size}G]，可用[${available_size}G]"
 if [[ "${available_size}" -lt "20" ]];then
   TIME r "敬告：可用空间小于[ 20G ]编译容易出错,建议可用空间大于[ 20G ],是否继续?"
-  read -p "直接回车退出编译，按[Y/y]回车则继续编译： " KJYN
+  read -n 1 -s -r -p "按任意键退出编译，按[Y/y]则继续编译： " KJYN
   case ${KJYN} in
-  [Yy]) 
-    TIME y "可用空间太小严重影响编译,请满天神佛保佑您成功吧！"
-    sleep 2
-  ;;
+  [Yy])
+      TIME y "可用空间太小严重影响编译,请满天神佛保佑您成功吧！"
+      sleep 2
+      ;;
   *)
-    TIME y "您已取消编译,请清理Ubuntu空间或增加硬盘容量..."
-    exit 0
-  ;;
+      TIME y "您已取消编译,请清理Ubuntu空间或增加硬盘容量..."
+      exit 0
+      ;;
   esac
-fi
 }
 
 function Ben_update() {
@@ -92,19 +99,23 @@ if [[ ! -f "/etc/oprelyonu" ]]; then
   TIME y "首次使用本脚本，需要先安装依赖"
   TIME y "升级ubuntu插件和安装依赖，时间或者会比较长(取决于您的网络质量)，请耐心等待"
   TIME y "如果出现 YES OR NO 选择界面，直接按回车即可"
-  TIME g "请确认是否继续进行,按任意键则继续,输入[N]后按回车则退出编译"
-read -t 30 -n 1 -s -r -p "确认选择（按 N 退出/Q 执行其他操作，任意键继续）: " NNKC
-case ${NNKC} in
-[Nn])
-    TIME r "退出程序"
-    exit 0
+  TIME g "输入[Y/y]回车则继续，输入[N/n]回车则退出"
+  while :; do
+    read -p "请选择：" YONU
+    case ${YONU} in
+    [Yy])
+        TIME r "开始安装依赖..."
+        break
     ;;
-*)
-    TIME g "开始打包固件..."
+    [Nn])
+        exit 1
+        break
     ;;
-esac
-
-
+    *)
+        TIME r "请输入正确选项"
+    ;;
+    esac
+  done
   sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
   if [[ $? -eq 0 ]];then
     sudo sh -c 'echo openwrt > /etc/oprelyonu'
@@ -163,17 +174,15 @@ clear
 echo
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   TIME g "是否需要增删插件?"
-  read -t 30 -n 1 -s -r -p "[输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
+  read -t 30 -n 1 -s -r -p "按[Y/y]为需要，按任意键则为否，(不作处理,30秒自动跳过)： " Bendi_Diy
   case ${Bendi_Diy} in
   [Yy])
       Menuconfig_Config="true"
       TIME y "您执行增删插件命令,请耐心等待程序运行至窗口弹出进行插件配置!"
-      break
       ;;
   *)
       Menuconfig_Config="false"
       TIME r "您已关闭选择增删插件设置!"
-      break
       ;;
   esac
 fi
