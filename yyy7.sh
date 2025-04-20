@@ -93,15 +93,17 @@ if [[ ! -f "/etc/oprelyonu" ]]; then
   TIME y "升级ubuntu插件和安装依赖，时间或者会比较长(取决于您的网络质量)，请耐心等待"
   TIME y "如果出现 YES OR NO 选择界面，直接按回车即可"
   TIME g "请确认是否继续进行,按任意键则继续,输入[N]后按回车则退出编译"
-  read -p "确认选择:" elyou
-  case "$elyou" in
+  read -n 1 -s -r -p "确认选择:" elyou
+  case ${elyou} in
     [Nn])
         TIME r "退出程序"
         exit 0
-        ;;
-    *)
-        TIME g "开始安装依赖..."
-        ;;
+      break
+      ;;
+  *)
+      TIME g "开始安装依赖..."
+      break
+      ;;
   esac
   sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
   if [[ $? -eq 0 ]];then
@@ -161,16 +163,18 @@ clear
 echo
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
   TIME g "是否需要增删插件?"
-  read -t 30 -p "[输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
+  read -t 30 -n 1 -s -r -p "[输入[ Y/y ]回车确认，任意键则为否](不作处理,30秒自动跳过)： " Bendi_Diy
   case ${Bendi_Diy} in
   [Yy])
-    Menuconfig_Config="true"
-    TIME y "您执行增删插件命令,请耐心等待程序运行至窗口弹出进行插件配置!"
-  ;;
+      Menuconfig_Config="true"
+      TIME y "您执行增删插件命令,请耐心等待程序运行至窗口弹出进行插件配置!"
+      break
+      ;;
   *)
-    Menuconfig_Config="false"
-    TIME r "您已关闭选择增删插件设置!"
-  ;;
+      Menuconfig_Config="false"
+      TIME r "您已关闭选择增删插件设置!"
+      break
+      ;;
   esac
 fi
 }
@@ -448,21 +452,21 @@ else
 fi
 
 echo -e "\n${YELLOW}按Q回车返回主菜单,按N退出程序${NC}\n"
-read -p "确认选择: " WNKC
 while :; do
-    case $WNKC in
-    [Qq])
-        menu1
-        break
-    ;;
-    [Nn])
-        exit 0
-        break
-    ;;
-    *)
-        echo "请输入正确的数字编号"
-    ;;
-    esac
+read -p "请选择：" menufig
+  case ${menufig} in
+  [Qq])
+      menu1
+      break
+  ;;
+  [Nn])
+      exit 1
+      break
+  ;;
+  *)
+      TIME r "请输入正确选项"
+  ;;
+  esac
 done
 }
 
@@ -689,21 +693,21 @@ echo -e "▪ 内核仓库\t: $kernel_usage"
 echo -e "▪ 内核选择\t: $auto_kernell"
 
 echo -e "\n${YELLOW}检查信息是否正确,正确回车继续,不正确按Q回车重新输入,按N回车退出打包${NC}\n"
-read -p "确认选择: " NNKC
+read -n 1 -s -r -p "确认选择: " NNKC
 case ${NNKC} in
-  [Nn])
+[Nn])
     TIME r "退出程序"
     exit 0
-  ;;
-  [Qq])
+    ;;
+[Qq])
     clear
     Ben_packaging
     break
-  ;;
-  *)
+    ;;
+*)
     TIME g "开始打包固件..."
     break
-  ;;
+    ;;
 esac
 
 if [[ -f "${CLONE_DIR}/remake" ]]; then
