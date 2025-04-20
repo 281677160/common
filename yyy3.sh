@@ -912,7 +912,7 @@ clear
 echo
 TIME y " 1. 进行编译固件"
 TIME g " 2. 创建或删除文件夹"
-TIME g " 3. 打包"
+TIME y " 3. 打包aarch64系列固件"
 TIME r " 4. 退出程序"
 echo
 XUANZHEOP="请输入数字"
@@ -955,16 +955,12 @@ function menu2() {
   fi
   echo
   TIME y " 1、保留全部缓存,不再读取配置文件,只执行(make menuconfig)再编译"
-  echo
   TIME y " 2、保留部分缓存(插件源码都重新下载),可改配置文件再编译"
-  echo
   TIME y " 3、放弃缓存,重新编译"
-  echo
   TIME y " 4、重选择源码编译"
-  echo
-  TIME y " 5、返回主菜单"
-  echo
-  TIME r " 6、退出"
+  TIME y " 5. 打包aarch64系列固件"
+  TIME y " 6、返回主菜单"
+  TIME r " 7、退出"
   echo
   XUANZop="请输入数字"
   echo
@@ -992,11 +988,15 @@ function menu2() {
   break
   ;;
   5)
+    Ben_packaging
+  break
+  ;;
+  6)
     export NUM_BER=""
     menu1
   break
   ;;
-  6)
+  7)
     echo
     exit 0
   break
