@@ -830,9 +830,10 @@ function menu2() {
     TIME g " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}成功编译${TARGET_PROFILE}固件"
   else
     TIME r " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}编译${TARGET_PROFILE}固件失败"
+    TIME g " 需要注意的是,有些情况下编译失败,还保留缓存继续编译的话,会一直编译失败的"
   fi
   echo
-  TIME y " 1、保留全部缓存,不再次读取配置文件,只更改插件再编译"
+  TIME y " 1、保留全部缓存,不再读取配置文件,只执行(make menuconfig)再编译"
   echo
   TIME y " 2、保留部分缓存(插件源码都重新下载),可改配置文件再编译"
   echo
@@ -895,7 +896,7 @@ function menu3() {
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 > /tmp/GITHUB_EVN
   ls -d */ | grep -v 'common\|backups' |cut -d"/" -f1 |awk '$0=NR"、"$0'|awk '{print "  " $0}'
   cd ${GITHUB_WORKSPACE}
-  YMXZQ="RyWy"
+  YMXZQ="QpyZm"
   if [[ "${SUCCESS_FAILED}" =~ (success|breakdown) ]]; then
       hx=",输入[Q/q]返回上一步"
       YMXZQ="Q|q"
