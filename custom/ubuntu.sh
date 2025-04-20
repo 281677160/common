@@ -213,7 +213,7 @@ function install_dependencies() {
 		sharutils squashfs-tools subversion swig texinfo uglifyjs unzip vim wget xmlto \
 		zlib1g-dev zstd xxd $VERSION_PACKAGE
 
-	# N1打包需要的依赖
+	# N1打包需要的和alist依赖
 	apt-get install -y rename pigz libfuse-dev
 
 	# fix broken http2 support for curl on buster
