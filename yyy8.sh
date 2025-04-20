@@ -107,6 +107,7 @@ if [[ ! -f "/etc/oprelyonu" ]]; then
   if [[ $? -eq 0 ]];then
     sudo sh -c 'echo openwrt > /etc/oprelyonu'
   else
+    sudo rm -rf /etc/oprelyo*
     TIME r "依赖安装失败,请检查网络再来"
     exit 1
   fi
