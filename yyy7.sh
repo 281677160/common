@@ -695,8 +695,8 @@ case ${NNKC} in
     exit 0
   ;;
   [Qq])
-    Ben_packaging
     clear
+    Ben_packaging
     break
   ;;
   *)
