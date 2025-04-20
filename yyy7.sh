@@ -99,16 +99,11 @@ case ${NNKC} in
     TIME r "退出程序"
     exit 0
     ;;
-[Qq])
-    clear
-    Ben_packaging
-    break
-    ;;
 *)
     TIME g "开始打包固件..."
-    break
     ;;
 esac
+
 
   sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
   if [[ $? -eq 0 ]];then
