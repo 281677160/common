@@ -34,6 +34,7 @@ export op_log="${OPERATES_PATH}/build.log"
 export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
 export NUM_BER=""
 export SUCCESS_FAILED=""
+export rootfs_targz=""
 install -m 0755 /dev/null $GITHUB_ENV
 cd $GITHUB_WORKSPACE
 
@@ -631,7 +632,7 @@ while :; do
     fi
 done
 
-echo -e "\n${YELLOW}请选择内核仓库(内核的作者)：${NC}"
+echo -e "\n${YELLOW}请选择内核仓库(内核的作者,一般为stable)：${NC}"
 optionck=("stable" "flippy" "dev" "beta")
 while true; do
     echo "请选择："
@@ -736,9 +737,7 @@ else
     exit 1
   fi
 fi
-if [[ ! -f "$GITHUB_WORKSPACE/amlogic/${rootfs_targz}" ]]; then
-  wget https://github.com/281677160/autobuild/releases/download/targz/${rootfs_targz} -O $GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz
-fi
+
 if [[ ! -d "amlogic" ]]; then
   mkdir -p $GITHUB_WORKSPACE/amlogic
   TIME r "请用工具将\"${rootfs_targz}\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
