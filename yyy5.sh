@@ -93,18 +93,23 @@ if [[ ! -f "/etc/oprelyonu" ]]; then
   TIME y "升级ubuntu插件和安装依赖，时间或者会比较长(取决于您的网络质量)，请耐心等待"
   TIME y "如果出现 YES OR NO 选择界面，直接按回车即可"
   TIME g "请确认是否继续进行,按任意键则继续,输入[N]后按回车则退出编译"
-  read -n 1 -s -r -p "确认选择:" elyou
-  case ${elyou} in
-    [Nn])
-        TIME r "退出程序"
-        exit 0
-      break
-      ;;
-  *)
-      TIME g "开始安装依赖..."
-      break
-      ;;
-  esac
+read -n 1 -s -r -p "确认选择（按 N 退出/Q 执行其他操作，任意键继续）: " NNKC
+case ${NNKC} in
+[Nn])
+    TIME r "退出程序"
+    exit 0
+    ;;
+[Qq])
+    clear
+    Ben_packaging
+    break
+    ;;
+*)
+    TIME g "开始打包固件..."
+    break
+    ;;
+esac
+
   sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
   if [[ $? -eq 0 ]];then
     sudo sh -c 'echo openwrt > /etc/oprelyonu'
