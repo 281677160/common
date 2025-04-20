@@ -523,7 +523,7 @@ if [[ -d "${CLONE_DIR}" ]]; then
     fi
   fi
 fi
-if [[ ! -f "$GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz" ]]
+if [[ ! -f "$GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz" ]]; then
   wget https://github.com/281677160/autobuild/releases/download/targz/Lede-armvirt-64-default-rootfs.tar.gz -O $GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz
 fi
 if [[ ! -d "amlogic" ]]; then
