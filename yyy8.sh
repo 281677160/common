@@ -90,6 +90,7 @@ if [[ "${available_size}" -lt "20" ]];then
       exit 0
       ;;
   esac
+fi
 }
 
 function Ben_update() {
