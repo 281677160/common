@@ -571,6 +571,7 @@ done
 echo -e "\n${YELLOW}输入机型,比如：s905d 或 s905d_s905x2${NC}"
 while :; do
     read -p "请输入打包机型: " openwrt_board
+    openwrt_board=${openwrt_board:-"s905d"}
     if [[ -n "$openwrt_board" ]]; then
         break
     else
@@ -578,13 +579,14 @@ while :; do
     fi
 done
 
-echo -e "\n${YELLOW}输入内核版本,比如：5.10.172 或 5.15.97_6.1.16${NC}"
+echo -e "\n${YELLOW}输入内核版本,比如：5.15.180 或 6.1.134_6.12.23${NC}"
 while :; do
-    read -p "请输入打包机型: " openwrt_kernel
+    read -p "请输入内核版本: " openwrt_kernel
+    openwrt_kernel=${openwrt_kernel:-"6.1.134_6.12.23"}
     if [[ -n "$openwrt_kernel" ]]; then
         break
     else
-        echo -e "${RED}错误：机型不能为空！${NC}\n"
+        echo -e "${RED}错误：内核版本不能为空！${NC}\n"
     fi
 done
 
@@ -597,7 +599,9 @@ select auto_kernell in "自动选择最新版本内核" "无需选择最新版�
             break
             ;;
         *) 
-            echo -e "${RED}无效选项，请重新输入！${NC}"
+            auto_kernell=${auto_kernell:-"true"}
+            echo -e "已选择: ${GREEN}$auto_kernell${NC}"
+            break
             ;;
     esac
 done
@@ -610,11 +614,12 @@ fi
 
 echo -e "\n${YELLOW}设置rootfs大小(单位：MiB),比如：1024 或 512/2560${NC}"
 while :; do
-    read -p "请输入打包机型: " openwrt_size
+    read -p "请输入数值: " openwrt_size
+    openwrt_size=${openwrt_size:-"1024"}
     if [[ -n "$openwrt_size" ]]; then
         break
     else
-        echo -e "${RED}错误：机型不能为空！${NC}\n"
+        echo -e "${RED}错误：数值不能为空！${NC}\n"
     fi
 done
 
@@ -627,13 +632,15 @@ select kernel_usage in "stable" "flippy" "dev" "beta"; do
             break
             ;;
         *) 
-            echo -e "${RED}无效选项，请重新输入！${NC}"
+            kernel_usage=${kernel_usage:-"stable"}
+            echo -e "已选择: ${GREEN}$kernel_usage${NC}\n"
+            break
             ;;
     esac
 done
 
 echo -e "\n${GREEN}==== 录入完成 ====${NC}"
-echo -e "▪ 固件名称\t: $gender"
+echo -e "▪ 固件名称\t: $gender-armvirt-64-default-rootfs.tar.gz"
 echo -e "▪ 打包机型\t: $openwrt_board"
 echo -e "▪ 内核版本\t: $openwrt_kernel"
 echo -e "▪ 分区大小\t: $openwrt_size"
