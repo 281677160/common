@@ -86,7 +86,7 @@ fi
 }
 
 function Ben_update() {
-if [[ ! -f "/etc/oprelyon" ]]; then
+if [[ ! -f "/etc/oprelyonu" ]]; then
   clear
   echo
   TIME y "首次使用本脚本，需要先安装依赖"
