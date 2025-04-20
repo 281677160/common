@@ -594,7 +594,7 @@ echo -e "\n${YELLOW}输入机型,比如：s905d 或 s905d_s905x2${NC}"
 while :; do
     read -p "请输入打包机型: " openwrt_board
     if [[ -n "$openwrt_board" ]]; then
-        echo -e "已选择: ${GREEN}$openwrt_board机型${NC}\n"
+        echo -e "已设置: ${GREEN}$openwrt_board机型${NC}\n"
         break
     else
         echo -e "${RED}错误：机型不能为空！${NC}\n"
