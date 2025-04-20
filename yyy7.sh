@@ -98,9 +98,11 @@ if [[ ! -f "/etc/oprelyon" ]]; then
     [Nn])
         echo
         exit 0
+        break
     ;;
     *)
         echo
+        break
     ;;
     esac
   sudo bash -c 'bash <(curl -fsSL https://github.com/281677160/common/raw/main/custom/ubuntu.sh)'
