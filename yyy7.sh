@@ -523,8 +523,9 @@ if [[ -d "${CLONE_DIR}" ]]; then
     fi
   fi
 fi
-rm -rf $GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz
-wget https://github.com/281677160/autobuild/releases/download/targz/Lede-armvirt-64-default-rootfs.tar.gz -O $GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz
+if [[ ! -f "$GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz" ]]
+  wget https://github.com/281677160/autobuild/releases/download/targz/Lede-armvirt-64-default-rootfs.tar.gz -O $GITHUB_WORKSPACE/amlogic/Lede-armvirt-64-default-rootfs.tar.gz
+fi
 if [[ ! -d "amlogic" ]]; then
   mkdir -p $GITHUB_WORKSPACE/amlogic
   TIME r "请用WinSCP工具将\"xxx-armvirt-64-default-rootfs.tar.gz\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
@@ -561,13 +562,11 @@ builder_name="ophub"
 echo -e "\n${YELLOW}请选择固件名称：${NC}"
 PS3="请输入选项编号: "
 select gender_wenjian in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
-    # 强制校验输入是否为空或非数字
+    case $REPLY in
     if [[ -z "$REPLY" ]] || ! [[ "$REPLY" =~ ^[0-9]+$ ]]; then
         echo -e "${RED}输入不能为空或非数字，请重新输入！${NC}"
         continue
     fi
-
-    case $REPLY in
         1|2|3|4|5|6)
             echo -e "已选择${GREEN}[$gender_wenjian]${NC}作为蓝本\n"
             break
