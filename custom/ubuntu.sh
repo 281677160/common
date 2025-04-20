@@ -202,7 +202,7 @@ function install_dependencies() {
 	set -x
 
 	apt-get full-upgrade -y $BPO_FLAG
-	sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+	apt-get install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
 		bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
 		genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
 		libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
