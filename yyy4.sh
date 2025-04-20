@@ -560,28 +560,37 @@ kernel_repo="ophub/kernel"
 builder_name="ophub"
 
 echo -e "\n${YELLOW}请选择固件名称：${NC}"
-PS3="请输入选项编号: "
-select gender_wenjian in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
-    echo "$gender_wenjian"
-    echo "$REPLY"
-    echo "123"
-    if [[ -z "$gender_wenjian" ]]; then
-      echo "456"
-    fi
-    if [[ -z "$REPLY" ]] || ! [[ "$REPLY" =~ ^[0-9]+$ ]]; then
-        echo -e "${RED}输入不能为空或非数字，请重新输入！${NC}"
+options=("Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x")
+
+while true; do
+    # 动态生成菜单
+    echo "请选择蓝本："
+    for i in "${!options[@]}"; do
+        echo "$((i+1))) ${options[i]}"
+    done
+    
+    # 读取输入（带超时强制清空）
+    read -t 0.1 -r dummy  # 清空输入缓冲区
+    read -r -p "请输入选项编号: " REPLY
+    
+    # 输入验证
+    if [[ -z "$REPLY" ]]; then
+        echo -e "${RED}错误：输入不能为空！${NC}"
+        continue
+    elif ! [[ "$REPLY" =~ ^[0-9]+$ ]]; then
+        echo -e "${RED}错误：必须输入数字！${NC}"
+        continue
+    elif (( REPLY < 1 || REPLY > ${#options[@]} )); then
+        echo -e "${RED}错误：无效选项编号！${NC}"
         continue
     fi
-    case $REPLY in
-        1|2|3|4|5|6)
-            echo -e "已选择${GREEN}[$gender_wenjian]${NC}作为蓝本\n"
-            break
-            ;;
-        *)
-            echo -e "${RED}无效选项，请重新输入！${NC}"
-            ;;
-    esac
+
+    # 成功选择
+    index=$((REPLY-1))
+    echo -e "已选择${GREEN}[${options[index]}]${NC}作为蓝本\n"
+    break
 done
+
 
 
 echo -e "\n${YELLOW}输入机型,比如：s905d 或 s905d_s905x2${NC}"
