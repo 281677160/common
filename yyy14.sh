@@ -739,11 +739,13 @@ if [[ ! -d "${CLONE_DIR}" ]]; then
   fi
 fi
 
+echo "${openwrt_board} -r ${kernel_repo} -u ${kernel_usage} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -n ${builder_name}"
+
 if [[ -f "${CLONE_DIR}/remake" ]]; then
   cp -Rf $GITHUB_WORKSPACE/amlogic/${rootfs_targz} ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   cd ${CLONE_DIR}
   sudo chmod +x remake
-  sudo ./remake -b ${openwrt_board} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -r ${kernel_repo} -u ${kernel_usage} -n ${builder_name}
+  sudo ./remake -b ${openwrt_board} -r ${kernel_repo} -u ${kernel_usage} -k ${openwrt_kernel} -a ${auto_kernel} -s ${openwrt_size} -n ${builder_name}
   if [[ $? -eq 0 ]];then
     TIME g "打包完成，固件存放在[${CLONE_DIR}/openwrt/out]文件夹"
     exit 0
