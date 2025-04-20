@@ -397,7 +397,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "\n${YELLOW}请选择以什么文件夹为蓝本来建立新文件夹：${NC}"
-PS3="请输入选项编号: "
+PS3="请输入选项编号："
 select gender_wenjian in "Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x"; do
     if [[ -z "$REPLY" ]]; then
         echo -e "${RED}输入不能为空，请重新输入！${NC}"
