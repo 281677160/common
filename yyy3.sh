@@ -385,6 +385,7 @@ if [[ -n "$(ls -1 |grep -E 'armvirt')" ]] || [[ -n "$(ls -1 |grep -E 'armsr')" ]
   TIME y "固件存放路径：amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz"
   if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
     TIME g "执行自动打包任务"
+    sleep 3
     Ben_packaging2
   fi
 else
