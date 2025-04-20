@@ -571,7 +571,7 @@ echo -e "\n${YELLOW}输入机型,比如：s905d 或 s905d_s905x2${NC}"
 while :; do
     read -p "请输入打包机型: " amlogic_model
     if [[ -n "$amlogic_model" ]]; then
-        echo -e "已设置: ${GREEN}$openwrt_board机型${NC}\n"
+        echo -e "已设置: ${GREEN}$amlogic_model机型${NC}\n"
         break
     else
         echo -e "${RED}错误：机型不能为空！${NC}\n"
@@ -580,9 +580,9 @@ done
 
 echo -e "\n${YELLOW}输入内核版本,比如：5.15.180 或 6.1.134_6.12.23${NC}"
 while :; do
-    read -p "请输入内核版本: " amlogic_model
-    if [[ -n "$amlogic_model" ]]; then
-        echo -e "已设置内核版本: ${GREEN}$amlogic_model${NC}\n"
+    read -p "请输入内核版本: " amlogic_kernel
+    if [[ -n "$amlogic_kernel" ]]; then
+        echo -e "已设置内核版本: ${GREEN}$amlogic_kernel${NC}\n"
         break
     else
         echo -e "${RED}错误：内核版本不能为空！${NC}\n"
@@ -658,8 +658,8 @@ done
 
 echo -e "\n${GREEN}==== 录入完成 ====${NC}"
 echo -e "▪ 固件名称\t: $rootfs_targz"
-echo -e "▪ 打包机型\t: $openwrt_board"
-echo -e "▪ 内核版本\t: $openwrt_kernel"
+echo -e "▪ 打包机型\t: $amlogic_model"
+echo -e "▪ 内核版本\t: $amlogic_kernel"
 echo -e "▪ 分区大小\t: $openwrt_size"
 echo -e "▪ 内核仓库\t: $kernel_usage"
 echo -e "▪ 内核选择\t: $auto_kernell"
