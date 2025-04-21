@@ -484,7 +484,7 @@ while :; do
     fi
 done
 
-echo -e "\n${YELLOW}是否开启自动使用最新版内核${NC}"
+echo -e "${YELLOW}是否开启自动使用最新版内核${NC}"
 echo -e "\n${GREEN}比如您上面设置为[5.15.180]则会自动检测[5.15.x]的最新版本,如果[5.15.215]为最新则用此内核${NC}"
 optionnk=("是" "否")
 while true; do
@@ -997,11 +997,11 @@ function menu2() {
   fi
   echo
   TIME y " 1、保留全部缓存,${mydabao}不再读取配置文件,只执行(make menuconfig)再编译"
-  TIME b " 2、保留部分缓存(插件源码都重新下载),读取所有配置文件再编译"
+  TIME g " 2、保留部分缓存(插件源码都重新下载),读取所有配置文件再编译"
   TIME y " 3、放弃缓存,重新编译"
-  TIME b " 4、重选择源码编译"
+  TIME g " 4、重选择源码编译"
   TIME y " 5. 打包aarch64系列固件"
-  TIME b " 6、返回主菜单"
+  TIME g " 6、返回主菜单"
   TIME r " 7、退出"
   echo
   XUANZop="请输入数字"
