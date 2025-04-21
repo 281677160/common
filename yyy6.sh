@@ -368,6 +368,7 @@ function Ben_firmware() {
 cd ${FIRMWARE_PATH}
 # 整理固件
 cp -Rf config.buildinfo ${MYCONFIG_FILE}
+cp -Rf feeds.buildinfo ${LICENSES_DOC}/feeds.buildinfo
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename -v "s/^immortalwrt/openwrt/" * > /dev/null 2>&1
   sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
@@ -382,7 +383,7 @@ if [[ -n "$(ls -1 |grep -E 'armvirt')" ]] || [[ -n "$(ls -1 |grep -E 'armsr')" ]
   rm -rf $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
   cp -Rf *rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
   rootfs_targz="${SOURCE}-armvirt-64-default-rootfs.tar.gz"
-  echo "ROOTFS_TARGZ=armvirt" >>${LICENSES_DOC}/buildzu.ini
+  echo "ARMVIRT_TARGZ=armvirt" >>${LICENSES_DOC}/buildzu.ini
   TIME g "[ Amlogic_Rockchip系列专用固件 ]顺利编译完成~~~"
   TIME y "固件存放路径：amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz"
   if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
@@ -979,9 +980,12 @@ function menu2() {
     TIME r " 上回使用${SOURCE}-${LUCI_EDITION}源码${Font}${Blue}编译${TARGET_PROFILE}固件失败"
     TIME g " 需要注意的是,有些情况下编译失败,还保留缓存继续编译的话,会一直编译失败的"
   fi
+  if [[ "${ARMVIRT_TARGZ}" == "armvirt" ]]; then
+    mydabao="除了读取打包设置,"
+  fi
   echo
-  TIME y " 1、保留全部缓存,(除了打包设置)不再读取配置文件,只执行(make menuconfig)再编译"
-  TIME y " 2、保留部分缓存(插件源码都重新下载),可改配置文件再编译"
+  TIME y " 1、保留全部缓存,${mydabao}不再读取配置文件,只执行(make menuconfig)再编译"
+  TIME y " 2、保留部分缓存(插件源码都重新下载),读取所有配置文件再编译"
   TIME y " 3、放弃缓存,重新编译"
   TIME y " 4、重选择源码编译"
   TIME y " 5. 打包aarch64系列固件"
