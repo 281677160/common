@@ -385,9 +385,7 @@ if [[ -n "$(ls -1 |grep -E 'armvirt')" ]] || [[ -n "$(ls -1 |grep -E 'armsr')" ]
   TIME g "[ Amlogic_Rockchip系列专用固件 ]顺利编译完成~~~"
   TIME y "固件存放路径：amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz"
   if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
-    TIME g "执行自动打包任务"
-    sleep 3
-    Ben_packaging2
+    Ben_zidongdabao
   fi
 else
   rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" * > /dev/null 2>&1
@@ -409,6 +407,21 @@ else
   TIME g "编译总计用时 ${HOUR}时${MIN}分${SEC}秒"
 fi
 TIME r "提示：再次输入编译命令可进行二次编译"
+}
+
+function Ben_zidongdabao() {
+cd ${HOME_PATH}
+ZIDONG_DABAO="/tmp/zidong.sh"
+DIY_PT1_DABAO="${OPERATES_PATH}/${FOLDER_NAME}/diy-part.sh"
+echo '#!/bin/bash' > ${ZIDONG_DABAO}
+grep -E '.*export amlogic.*=".*"' $DIY_PT1_DABAO >> ${ZIDONG_DABAO}
+grep -E '.*export auto.*=".*"' $DIY_PT1_DABAO >> ${ZIDONG_DABAO}
+grep -E '.*export rootfs.*=".*"' $DIY_PT1_DABAO >> ${ZIDONG_DABAO}
+chmod +x ${ZIDONG_DABAO}
+source ${ZIDONG_DABAO}
+TIME g "执行自动打包任务"
+sleep 2
+Ben_packaging2
 }
 
 function jianli_wenjian() {
@@ -460,8 +473,18 @@ if git clone -q --depth 1 https://github.com/281677160/build-actions /tmp/action
   if [[ -d "${OPERATES_PATH}/${openwrt_wenjian}" ]]; then
     echo -e "${RED}错误：${openwrt_wenjian}文件夹已存在,无法再次建立！${NC}\n"
   else
-    cp -Rf /tmp/actions/build/$gender_wenjian ${OPERATES_PATH}/${openwrt_wenjian}
-    echo -e "${GREEN}$openwrt_wenjian文件夹建立完成！${NC}\n"
+    if [[ -d "/tmp/actions/build/$gender_wenjian" ]]; then
+      cp -Rf /tmp/actions/build/$gender_wenjian ${OPERATES_PATH}/${openwrt_wenjian}
+    else
+      TIME r "上游已经没有$gender_wenjian文件夹存在了,或下载上游过程出现错误！"
+      exit 1
+    fi
+    if [[ -d "${OPERATES_PATH}/${openwrt_wenjian}" ]]; then
+      echo -e "${GREEN}$openwrt_wenjian文件夹建立完成！${NC}\n"
+    else
+      TIME r "未知原因导致文件夹建立失败,请重试看看"
+      exit 1
+    fi
   fi
 else
   clear
