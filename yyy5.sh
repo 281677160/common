@@ -382,6 +382,7 @@ if [[ -n "$(ls -1 |grep -E 'armvirt')" ]] || [[ -n "$(ls -1 |grep -E 'armsr')" ]
   rm -rf $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
   cp -Rf *rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
   rootfs_targz="${SOURCE}-armvirt-64-default-rootfs.tar.gz"
+  echo "ROOTFS_TARGZ=armvirt" >>${LICENSES_DOC}/buildzu.ini
   TIME g "[ Amlogic_Rockchip系列专用固件 ]顺利编译完成~~~"
   TIME y "固件存放路径：amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz"
   if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
