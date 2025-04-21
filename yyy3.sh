@@ -106,6 +106,7 @@ if [[ ! -f "/etc/oprelyonu" ]]; then
     read -p "请选择：" YONU
     case ${YONU} in
     [Yy])
+        sudo rm -rf /etc/oprelyo*
         TIME g "开始安装依赖..."
         break
     ;;
