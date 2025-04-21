@@ -426,140 +426,6 @@ sleep 2
 Ben_packaging2
 }
 
-function jianli_wenjian() {
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-NC='\033[0m'
-
-echo -e "\n${YELLOW}请选择以什么文件夹为蓝本来建立新文件夹：${NC}"
-option=("Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x")
-while true; do
-    echo "请选择："
-    for i in "${!option[@]}"; do
-        echo "$((i+1))) ${option[i]}"
-    done
-    read -t 0.1 -r dummy
-    read -r -p "请输入选项编号: " REPLY
-    if [[ -z "$REPLY" ]]; then
-        echo -e "${RED}错误：输入不能为空！${NC}"
-        continue
-    elif ! [[ "$REPLY" =~ ^[0-9]+$ ]]; then
-        echo -e "${RED}错误：必须输入数字！${NC}"
-        continue
-    elif (( REPLY < 1 || REPLY > ${#option[@]} )); then
-        echo -e "${RED}错误：无效选项编号！${NC}"
-        continue
-    fi
-    index=$((REPLY-1))
-    echo -e "已选择${GREEN}[${option[index]}]${NC}作为蓝本\n"
-    gender_wenjian="${option[index]}"
-    break
-done
-
-echo -e "\n${YELLOW}请输入您要建立的文件夹名称${NC}"
-while :; do
-    read -p "请输入文件夹名称: " openwrt_wenjian
-    if [[ -n "$openwrt_wenjian" ]]; then
-        echo -e "${GREEN}文件夹名称：$openwrt_wenjian${NC}\n"
-        break
-    else
-        echo -e "${RED}错误：文件夹名称不能为空！${NC}\n"
-    fi
-done
-
-echo -e "\n${YELLOW}正在建立文件夹,请稍后...${NC}"
-sudo rm -rf /tmp/actions
-if git clone -q --depth 1 https://github.com/281677160/build-actions /tmp/actions; then
-  if [[ -d "${OPERATES_PATH}/${openwrt_wenjian}" ]]; then
-    echo -e "${RED}错误：${openwrt_wenjian}文件夹已存在,无法再次建立！${NC}\n"
-  else
-    if [[ -d "/tmp/actions/build/$gender_wenjian" ]]; then
-      cp -Rf /tmp/actions/build/$gender_wenjian ${OPERATES_PATH}/${openwrt_wenjian}
-    else
-      TIME r "上游已经没有$gender_wenjian文件夹存在了,或下载上游过程出现错误！"
-      exit 1
-    fi
-    if [[ -d "${OPERATES_PATH}/${openwrt_wenjian}" ]]; then
-      echo -e "${GREEN}$openwrt_wenjian文件夹建立完成！${NC}\n"
-    else
-      TIME r "未知原因导致文件夹建立失败,请重试看看"
-      exit 1
-    fi
-  fi
-else
-  clear
-  echo -e "${RED}上游文件下载错误,请检查网络${NC}\n"
-  jianli_wenjian
-fi
-
-echo -e "\n${YELLOW}按Q回车返回主菜单,按N退出程序${NC}\n"
-while :; do
-read -p "请选择：" SRNKC
-  case ${SRNKC} in
-  [Qq])
-      menu1
-      break
-  ;;
-  [Nn])
-      exit 1
-      break
-  ;;
-  *)
-      TIME r "请输入正确选项"
-  ;;
-  esac
-done
-}
-
-function shanchu_wenjian() {
-echo
-cd ${OPERATES_PATH}
-ls -d */ |cut -d"/" -f1 |awk '{print "  " $0}'
-cd ${GITHUB_WORKSPACE}
-TIME y "请输入您要删除的文件名称,多个文件名的话请用英文的逗号分隔,输入[N/n]回车则退出"
-while :; do
-    read -p "请输入：" cc
-    if [[ "${cc}" =~ ^[Nn]$ ]]; then
-        exit 0
-    elif [[ -z "${cc}" ]]; then
-        TIME r " 警告：文件夹名称不能为空"
-    else
-        TIME g " 选择删除[${cc}]文件夹"
-        break
-    fi
-done
-
-bb=(${cc//,/ })
-for i in ${bb[@]}; do
-  if [[ -d "${OPERATES_PATH}/${i}" ]]; then
-    sudo rm -rf ${OPERATES_PATH}/${i}
-    TIME y " 已删除[${i}]文件夹"
-  else
-    TIME r " [${i}]文件夹不存在"
-  fi
-done
-
-TIME g "按Q回车返回主菜单,按N退出程序"
-while :; do
-read -p "请选择：" SNTKC
-  case ${SNTKC} in
-  [Qq])
-      menu1
-      break
-  ;;
-  [Nn])
-      exit 1
-      break
-  ;;
-  *)
-      TIME r "请输入正确选项"
-  ;;
-  esac
-done
-}
-
 function Ben_packaging() {
 # 固件打包
 cd $GITHUB_WORKSPACE
@@ -811,6 +677,140 @@ else
   TIME r "未知原因打包程不存在,或上游改变了程序名称"
   exit 1
 fi
+}
+
+function jianli_wenjian() {
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+echo -e "\n${YELLOW}请选择以什么文件夹为蓝本来建立新文件夹：${NC}"
+option=("Lede" "Immortalwrt" "Lienol" "Official" "Xwrt" "Mt798x")
+while true; do
+    echo "请选择："
+    for i in "${!option[@]}"; do
+        echo "$((i+1))) ${option[i]}"
+    done
+    read -t 0.1 -r dummy
+    read -r -p "请输入选项编号: " REPLY
+    if [[ -z "$REPLY" ]]; then
+        echo -e "${RED}错误：输入不能为空！${NC}"
+        continue
+    elif ! [[ "$REPLY" =~ ^[0-9]+$ ]]; then
+        echo -e "${RED}错误：必须输入数字！${NC}"
+        continue
+    elif (( REPLY < 1 || REPLY > ${#option[@]} )); then
+        echo -e "${RED}错误：无效选项编号！${NC}"
+        continue
+    fi
+    index=$((REPLY-1))
+    echo -e "已选择${GREEN}[${option[index]}]${NC}作为蓝本\n"
+    gender_wenjian="${option[index]}"
+    break
+done
+
+echo -e "\n${YELLOW}请输入您要建立的文件夹名称${NC}"
+while :; do
+    read -p "请输入文件夹名称: " openwrt_wenjian
+    if [[ -n "$openwrt_wenjian" ]]; then
+        echo -e "${GREEN}文件夹名称：$openwrt_wenjian${NC}\n"
+        break
+    else
+        echo -e "${RED}错误：文件夹名称不能为空！${NC}\n"
+    fi
+done
+
+echo -e "\n${YELLOW}正在建立文件夹,请稍后...${NC}"
+sudo rm -rf /tmp/actions
+if git clone -q --depth 1 https://github.com/281677160/build-actions /tmp/actions; then
+  if [[ -d "${OPERATES_PATH}/${openwrt_wenjian}" ]]; then
+    echo -e "${RED}错误：${openwrt_wenjian}文件夹已存在,无法再次建立！${NC}\n"
+  else
+    if [[ -d "/tmp/actions/build/$gender_wenjian" ]]; then
+      cp -Rf /tmp/actions/build/$gender_wenjian ${OPERATES_PATH}/${openwrt_wenjian}
+    else
+      TIME r "上游已经没有$gender_wenjian文件夹存在了,或下载上游过程出现错误！"
+      exit 1
+    fi
+    if [[ -d "${OPERATES_PATH}/${openwrt_wenjian}" ]]; then
+      echo -e "${GREEN}$openwrt_wenjian文件夹建立完成！${NC}\n"
+    else
+      TIME r "未知原因导致文件夹建立失败,请重试看看"
+      exit 1
+    fi
+  fi
+else
+  clear
+  echo -e "${RED}上游文件下载错误,请检查网络${NC}\n"
+  jianli_wenjian
+fi
+
+echo -e "\n${YELLOW}按Q回车返回主菜单,按N退出程序${NC}\n"
+while :; do
+read -p "请选择：" SRNKC
+  case ${SRNKC} in
+  [Qq])
+      menu1
+      break
+  ;;
+  [Nn])
+      exit 1
+      break
+  ;;
+  *)
+      TIME r "请输入正确选项"
+  ;;
+  esac
+done
+}
+
+function shanchu_wenjian() {
+echo
+cd ${OPERATES_PATH}
+ls -d */ |cut -d"/" -f1 |awk '{print "  " $0}'
+cd ${GITHUB_WORKSPACE}
+TIME y "请输入您要删除的文件名称,多个文件名的话请用英文的逗号分隔,输入[N/n]回车则退出"
+while :; do
+    read -p "请输入：" cc
+    if [[ "${cc}" =~ ^[Nn]$ ]]; then
+        exit 0
+    elif [[ -z "${cc}" ]]; then
+        TIME r " 警告：文件夹名称不能为空"
+    else
+        TIME g " 选择删除[${cc}]文件夹"
+        break
+    fi
+done
+
+bb=(${cc//,/ })
+for i in ${bb[@]}; do
+  if [[ -d "${OPERATES_PATH}/${i}" ]]; then
+    sudo rm -rf ${OPERATES_PATH}/${i}
+    TIME y " 已删除[${i}]文件夹"
+  else
+    TIME r " [${i}]文件夹不存在"
+  fi
+done
+
+TIME g "按Q回车返回主菜单,按N退出程序"
+while :; do
+read -p "请选择：" SNTKC
+  case ${SNTKC} in
+  [Qq])
+      menu1
+      break
+  ;;
+  [Nn])
+      exit 1
+      break
+  ;;
+  *)
+      TIME r "请输入正确选项"
+  ;;
+  esac
+done
 }
 
 
