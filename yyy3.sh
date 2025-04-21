@@ -997,11 +997,11 @@ function menu2() {
   fi
   echo
   TIME y " 1、保留全部缓存,${mydabao}不再读取配置文件,只执行(make menuconfig)再编译"
-  TIME y " 2、保留部分缓存(插件源码都重新下载),读取所有配置文件再编译"
+  TIME b " 2、保留部分缓存(插件源码都重新下载),读取所有配置文件再编译"
   TIME y " 3、放弃缓存,重新编译"
-  TIME y " 4、重选择源码编译"
+  TIME b " 4、重选择源码编译"
   TIME y " 5. 打包aarch64系列固件"
-  TIME y " 6、返回主菜单"
+  TIME b " 6、返回主菜单"
   TIME r " 7、退出"
   echo
   XUANZop="请输入数字"
