@@ -428,7 +428,8 @@ Ben_packaging2
 
 function Ben_packaging() {
 # 固件打包
-cd $GITHUB_WORKSPACE
+cd ${GITHUB_WORKSPACE}
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -483,8 +484,9 @@ while :; do
     fi
 done
 
-echo -e "\n${YELLOW}是否开启自动使用最新版内核打包${NC}"
-optionnk=("自动使用最新版本内核" "无需使用最新版本内核")
+echo -e "\n${YELLOW}是否开启自动使用最新版内核${NC}"
+echo -e "\n${GREEN}比如您上面设置为[5.15.180]则会自动检测[5.15.x]的最新版本,如果[5.15.215]为最新则用此内核${NC}"
+optionnk=("是" "否")
 while true; do
     echo "请选择："
     for i in "${!optionnk[@]}"; do
@@ -508,13 +510,13 @@ while true; do
     break
 done
 
-if [[ "${auto_kernell}" == "无需使用最新版本内核" ]]; then
+if [[ "${auto_kernell}" == "否" ]]; then
     auto_kernel="false"
 else
     auto_kernel="true"
 fi
 
-echo -e "\n${YELLOW}设置rootfs大小(单位：MiB),比如：1024 或 512/2560 的类型${NC}"
+echo -e "\n${YELLOW}设置rootfs大小(单位：MiB),比如：1024 或 512/2560 的格式类型${NC}"
 while :; do
     read -p "请输入数值: " rootfs_size
     if [[ -n "$rootfs_size" ]]; then
@@ -584,6 +586,7 @@ done
 }
 
 function Ben_packaging2() {
+cd ${GITHUB_WORKSPACE}
 kernel_repo="ophub/kernel"
 builder_name="ophub"
 openwrt_board="${amlogic_model}"
@@ -593,11 +596,11 @@ openwrt_size="${rootfs_size}"
 kernel_usage="${kernel_usage}"
 
 if [[ -z "${openwrt_board}" ]]; then
-  TIME r "缺少机型"
+  TIME r "diy-part.sh文件缺少机型配置"
   exit 1
 fi
 if [[ -z "${openwrt_kernel}" ]]; then
-  TIME r "缺少内核"
+  TIME r "diy-part.sh文件缺少内核配置"
   exit 1
 fi
 if [[ -z "${auto_kernel}" ]]; then
@@ -616,6 +619,7 @@ echo "打包内核：${openwrt_kernel}"
 echo "是否最新内核：${auto_kernel}"
 echo "分区数值：${openwrt_size}"
 echo "内核仓库：${kernel_usage}"
+echo "固件名称：${rootfs_targz}"
 echo
 sleep 2
 
@@ -683,7 +687,7 @@ if [[ -f "${CLONE_DIR}/remake" ]]; then
     exit 1
   fi
 else
-  TIME r "未知原因打包程不存在,或上游改变了程序名称"
+  TIME r "未知原因打包程序文件不存在,或上游改变了程序文件名称"
   exit 1
 fi
 }
