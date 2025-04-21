@@ -860,7 +860,6 @@ Ben_firmware
 function Diy_main() {
 Ben_wslpath
 Ben_diskcapacity
-Ben_update
 Ben_variable
 Ben_config
 Ben_xiazai
