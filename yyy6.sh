@@ -176,12 +176,12 @@ function Ben_config() {
 clear
 echo
 if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
-  TIME g "是否需要增删插件?"
+  TIME g "是否需要增删插件,执行[make menuconfig]?"
   read -t 30 -n 1 -s -r -p "按[Y/y]为需要，按任意键则为否，(不作处理,30秒自动跳过)： " Bendi_Diy
   case ${Bendi_Diy} in
   [Yy])
       Menuconfig_Config="true"
-      TIME y "您执行增删插件命令,请耐心等待程序运行至窗口弹出进行插件配置!"
+      TIME y "您执行了[make menuconfig]命令,请耐心等待程序运行至窗口弹出进行插件配置!"
       ;;
   *)
       Menuconfig_Config="false"
