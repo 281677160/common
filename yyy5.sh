@@ -378,7 +378,7 @@ for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
 done
 
 if [[ -n "$(ls -1 |grep -E 'armvirt')" ]] || [[ -n "$(ls -1 |grep -E 'armsr')" ]]; then
-  mkdir -p $GITHUB_WORKSPACE/amlogic
+  [[ ! -d "$GITHUB_WORKSPACE/amlogic" ]] && mkdir -p $GITHUB_WORKSPACE/amlogic
   rm -rf $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
   cp -Rf *rootfs.tar.gz $GITHUB_WORKSPACE/amlogic/${SOURCE}-armvirt-64-default-rootfs.tar.gz
   rootfs_targz="${SOURCE}-armvirt-64-default-rootfs.tar.gz"
@@ -591,7 +591,6 @@ openwrt_kernel="${amlogic_kernel}"
 auto_kernel="${auto_kernel}"
 openwrt_size="${rootfs_size}"
 kernel_usage="${kernel_usage}"
-echo "${rootfs_targz}"
 
 if [[ -z "${openwrt_board}" ]]; then
   TIME r "缺少机型"
@@ -610,6 +609,15 @@ fi
 if [[ -z "${kernel_usage}" ]]; then
   kernel_usage="stable"
 fi
+
+echo
+echo "打包机型：${openwrt_board}"
+echo "打包内核：${openwrt_kernel}"
+echo "是否最新内核：${auto_kernel}"
+echo "分区数值：${openwrt_size}"
+echo "内核仓库：${kernel_usage}"
+echo
+sleep 2
 
 CLONE_DIR="$GITHUB_WORKSPACE/armvirt"
 if [[ -d "${CLONE_DIR}/make-openwrt/openwrt-files/common-files" ]]; then
@@ -633,7 +641,7 @@ else
 fi
 
 if [[ ! -f "$GITHUB_WORKSPACE/amlogic/${rootfs_targz}" ]]; then
-  mkdir -p $GITHUB_WORKSPACE/amlogic
+  [[ ! -d "$GITHUB_WORKSPACE/amlogic" ]] && mkdir -p $GITHUB_WORKSPACE/amlogic
   TIME r "请用工具将\"${rootfs_targz}\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
   exit 1
 else
