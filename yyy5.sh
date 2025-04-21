@@ -419,6 +419,7 @@ echo '#!/bin/bash' > ${ZIDONG_DABAO}
 grep -E '.*export amlogic.*=".*"' $DIY_PT1_DABAO >> ${ZIDONG_DABAO}
 grep -E '.*export auto.*=".*"' $DIY_PT1_DABAO >> ${ZIDONG_DABAO}
 grep -E '.*export rootfs.*=".*"' $DIY_PT1_DABAO >> ${ZIDONG_DABAO}
+grep -E '.*export kernel.*=".*"' $DIY_PT1_DABAO >> ${ZIDONG_DABAO}
 chmod +x ${ZIDONG_DABAO}
 source ${ZIDONG_DABAO}
 TIME g "执行自动打包任务"
@@ -591,6 +592,7 @@ openwrt_kernel="${amlogic_kernel}"
 auto_kernel="${auto_kernel}"
 openwrt_size="${rootfs_size}"
 kernel_usage="${kernel_usage}"
+echo "${rootfs_targz}"
 
 if [[ -z "${openwrt_board}" ]]; then
   TIME r "缺少机型"
@@ -631,7 +633,7 @@ else
   fi
 fi
 
-if [[ ! -d "amlogic" ]]; then
+if [[ ! -f "$GITHUB_WORKSPACE/amlogic/${rootfs_targz}" ]]; then
   mkdir -p $GITHUB_WORKSPACE/amlogic
   TIME r "请用工具将\"${rootfs_targz}\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
   exit 1
