@@ -694,6 +694,8 @@ fi
 }
 
 function jianli_wenjian() {
+clear
+echo
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -781,6 +783,7 @@ done
 }
 
 function shanchu_wenjian() {
+clear
 echo
 cd ${OPERATES_PATH}
 ls -d */ |cut -d"/" -f1 |awk '{print "  " $0}'
