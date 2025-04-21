@@ -274,7 +274,7 @@ function Ben_download() {
 TIME y "正在执行：下载DL文件,请耐心等候..."
 cd ${HOME_PATH}
 rm -rf /tmp/build.log
-make -j8 download |& tee /tmp/build.log 2>&1
+make -j8 download 2>&1 | tee /tmp/build.log
 if [[ -n "$(grep -E 'ERROR' /tmp/build.log)" ]]; then
   clear
   TIME r "下载DL失败，更换节点后再尝试下载？"
