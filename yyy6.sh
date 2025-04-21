@@ -301,7 +301,8 @@ fi
 
 function Ben_compile() {
 cd ${HOME_PATH}
-rm -rf "${op_log}"
+[[ -f "${op_log}" ]] && rm -rf "${op_log}"
+[[ ! -d "${LICENSES_DOC}" ]] && mkdir -p ${LICENSES_DOC}
 START_TIME=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`
 Model_Name="$(cat /proc/cpuinfo |grep 'model name' |awk 'END {print}' |cut -f2 -d: |sed 's/^[ ]*//g')"
 Cpu_Cores="$(cat /proc/cpuinfo | grep 'cpu cores' |awk 'END {print}' | cut -f2 -d: | sed 's/^[ ]*//g')"
@@ -367,7 +368,6 @@ function Ben_firmware() {
 cd ${FIRMWARE_PATH}
 # 整理固件
 cp -Rf config.buildinfo ${MYCONFIG_FILE}
-cp -Rf feeds.buildinfo ${LICENSES_DOC}/feeds.buildinfo
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename -v "s/^immortalwrt/openwrt/" * > /dev/null 2>&1
   sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
@@ -646,13 +646,13 @@ fi
 
 if [[ ! -f "$GITHUB_WORKSPACE/amlogic/${rootfs_targz}" ]]; then
   [[ ! -d "$GITHUB_WORKSPACE/amlogic" ]] && mkdir -p $GITHUB_WORKSPACE/amlogic
-  TIME r "请用工具将\"${rootfs_targz}\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
+  TIME r "请用工具将[${rootfs_targz}]固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
   exit 1
 else
   find $GITHUB_WORKSPACE/amlogic -type f -name "*.rootfs.tar.gz" -size -2M -delete
   sudo rm -rf $GITHUB_WORKSPACE/amlogic/*Identifier*
   if [[ ! -f "$GITHUB_WORKSPACE/amlogic/${rootfs_targz}" ]]; then
-    TIME r "请用工具将\"${rootfs_targz}\"固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
+    TIME r "请用工具将[${rootfs_targz}]固件存入[$GITHUB_WORKSPACE/amlogic]文件夹中"
     exit 1
   fi
 fi
@@ -669,7 +669,7 @@ if [[ ! -d "${CLONE_DIR}" ]]; then
 fi
 
 if [[ -f "${CLONE_DIR}/remake" ]]; then
-  sudo rm -rf ${CLONE_DIR}/openwrt/out/*
+  [[ -d "${CLONE_DIR}/openwrt/out" ]] && sudo rm -rf ${CLONE_DIR}/openwrt/out/*
   sudo rm -rf ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   cp -Rf $GITHUB_WORKSPACE/amlogic/${rootfs_targz} ${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz
   if [[ ! -f "${CLONE_DIR}/openwrt-armvirt/openwrt-armvirt-64-default-rootfs.tar.gz" ]]; then
