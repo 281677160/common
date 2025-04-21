@@ -185,7 +185,7 @@ if [[ "${MODIFY_CONFIGURATION}" == "true" ]]; then
       ;;
   *)
       Menuconfig_Config="false"
-      TIME r "您已关闭选择增删插件设置!"
+      TIME r "您已关闭了执行[make menuconfig]命令!"
       ;;
   esac
 fi
