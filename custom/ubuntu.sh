@@ -15,6 +15,8 @@ sudo apt-get install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
 }
 
 function update_apt_source(){
+sudo apt update
+sudo apt upgrade -y
 node --version
 yarn --version
 sudo apt-get autoremove -y --purge
