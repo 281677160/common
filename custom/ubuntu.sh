@@ -9,31 +9,6 @@ apt-get update -y
 # 升级ubuntu
 apt-get full-upgrade -y
 
-# 19.07
-apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libbz2-dev liblzma-dev sqlite3 libsqlite3-dev tk-dev uuid-dev libgdbm-compat-dev
-
-TMP_DIR="$(mktemp -d)"
-cd $TMP_DIR
-wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
-tar -xzf Python-2.7.18.tgz
-cp -Rf Python-2.7.18 /usr/local/Python-2.7.18
-cd /usr/local/Python-2.7.18
-./configure
-make
-make install
-cd $PWD_DIR
-
-cd $TMP_DIR
-wget https://www.python.org/ftp/python/3.6.15/Python-3.6.15.tgz
-tar -xzf Python-3.6.15.tgz
-cp -Rf Python-3.6.15 /usr/local/Python-3.6.15
-cd /usr/local/Python-3.6.15
-./configure
-make
-make install
-cd $PWD_DIR
-
-
 # 安装编译openwrt的依赖
 apt-get install -y ecj fastjar file gettext java-propose-classpath time xsltproc lib32gcc-s1
 apt-get install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
@@ -41,7 +16,7 @@ bzip2 ccache cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-mul
 genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
 libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
 libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf \
-python3-pip python3-cryptography python3-docutils python3-ply python3-pyelftools python3-requests
+python2 python3 python3-pip python3-cryptography python3-docutils python3-ply python3-pyelftools python3-requests
 python3-setuptools python3-distutils qemu-utils rsync scons squashfs-tools subversion swig \
 texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 
