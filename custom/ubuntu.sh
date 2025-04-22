@@ -9,39 +9,27 @@ apt-get update -y
 # 升级ubuntu
 apt-get full-upgrade -y
 
-# 安装gcc g++
-GCC_VERSION="13"
-add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-apt-get update
-apt-get install gcc-${GCC_VERSION}
-apt-get install g++-${GCC_VERSION}
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 60
-update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 60
-update-alternatives --config gcc
-update-alternatives --config g++
-
 # 19.07
 apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libbz2-dev liblzma-dev sqlite3 libsqlite3-dev tk-dev uuid-dev libgdbm-compat-dev
 
 TMP_DIR="$(mktemp -d)"
 cd $TMP_DIR
-wget -q https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz -O Python-2.7.18.tgz
+wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
 tar -xzf Python-2.7.18.tgz
-sudo cp -Rf Python-2.7.18  /usr/local/src/Python-2.7.18
-cd /usr/local/src/Python-2.7.18
+sudo cp -Rf Python-2.7.18 /usr/local/Python-2.7.18
+cd /usr/local/Python-2.7.18
 ./configure
 make
-sudo make altinstall
+make install
 cd $PWD_DIR
 
-cd $TMP_DIR
-wget -q https://www.python.org/ftp/python/3.6.15/Python-3.6.15.tgz -O Python-3.6.15.tgz
+wget https://www.python.org/ftp/python/3.6.15/Python-3.6.15.tgz
 tar -xzf Python-3.6.15.tgz
-sudo cp -Rf Python-3.6.15  /usr/local/src/Python-3.6.15
-cd /usr/local/src/Python-3.6.15
+sudo cp -Rf Python-3.6.15 /usr/local/Python-3.6.15
+cd /usr/local/Python-3.6.15
 ./configure
-make
-sudo make altinstall
+sudo make
+sudo make install
 cd $PWD_DIR
 
 
@@ -72,6 +60,17 @@ apt-get update -y
 apt-get install -y clang-18 lldb-18 lld-18 libc++-18-dev libc++abi-18-dev
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
 cd $PWD_DIR
+
+# 安装gcc g++
+GCC_VERSION="13"
+add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+apt-get update
+apt-get install gcc-${GCC_VERSION}
+apt-get install g++-${GCC_VERSION}
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 60
+update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 60
+update-alternatives --config gcc
+update-alternatives --config g++
 
 cd $TMP_DIR
 # 安装golang
