@@ -1,6 +1,16 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-3.0-only
 
+function get_ubuntu_version() {
+    if [ -f /etc/os-release ]; then
+        version_id=$(grep "VERSION_ID" /etc/os-release | cut -d '"' -f 2)
+        echo "$version_id"
+    else
+        echo "错误：非Ubuntu系统或缺少/etc/os-release文件" >&2
+        exit 1
+    fi
+}
+
 function install_mustrelyon(){
 # 更新ubuntu源
 apt-get update -y
@@ -18,7 +28,7 @@ python3 python3-pyelftools python3-distutils python3-setuptools qemu-utils rsync
 subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 
 # 19.07
-apt-get install -y ecj fastjar file gettext java-propose-classpath lib32gcc-s1 python2 python2.7-dev time xsltproc
+apt-get install -y ecj fastjar file gettext java-propose-classpath lib32gcc-s1 python2 python2.7-dev time xsltproc gh
 
 # alist依赖
 apt-get install -y libfuse-dev
@@ -26,47 +36,42 @@ apt-get install -y libfuse-dev
 # N1打包需要的依赖
 apt-get install -y rename pigz
 apt-get install -y $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
+}
 
+function install_tools() {
+    version=$1
+    case "$version" in
+        "18.04")
+            echo "[+] Ubuntu 18.04安装：clang-18 + golang-1.24 + gcc-13"
+            sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test  # 添加Toolchain PPA:ml-citation{ref="3,8" data="citationList"}
+            apt-get update -y && apt-get install -y clang-18  gcc-13 golang-1.24
+            ;;
+        "22.04")
+            echo "[+] Ubuntu 22.04安装：nodejs-22 + yarn + gcc-13"
+            curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+            sudo apt update && apt-get install -y nodejs clang-18 gcc-13 golang-1.24
+            curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/yarnkey.gpg
+            echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+            apt-get update -y && apt-get install -y yarn
+            ;;
+        "24.04")
+            echo "[+] Ubuntu 24.04安装：全组件(nodejs-22/yarn/clang-18/golang-1.24/gcc-13)"
+            curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+            sudo apt update && apt-get install -y nodejs clang-18 gcc-13 golang-1.24
+            curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/yarnkey.gpg
+            echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+            apt-get update -y && apt-get install -y yarn
+            ;;
+        *)
+            echo "[!] 不支持的版本：$version，仅支持18.04/22.04/24.04"
+            exit 2
+            ;;
+    esac
+}
+
+function install_miscellaneous() {
 TMP_DIR="$(mktemp -d)"
 cd $TMP_DIR
-
-# 安装clang
-wget https://apt.llvm.org/llvm.sh
-chmod +x llvm.sh
-./llvm.sh 18
-
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main"
-apt-get update -y
-apt-get install -y clang-18 lldb-18 lld-18 libc++-18-dev libc++abi-18-dev
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
-
-
-# 安装golang
-GO_VERSION="1.24"
-apt-get install -y golang-$GO_VERSION-go
-rm -rf "/usr/bin/go" "/usr/bin/gofmt"
-ln -svf "/usr/lib/go-$GO_VERSION/bin/go" "/usr/bin/go"
-ln -svf "/usr/lib/go-$GO_VERSION/bin/gofmt" "/usr/bin/gofmt"
-
-# 安装gcc g++
-GCC_VERSION="13"
-add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-apt-get update
-apt-get install gcc-${GCC_VERSION}
-apt-get install g++-${GCC_VERSION}
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 60
-update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 60
-update-alternatives --config gcc
-update-alternatives --config g++
-
-# 安装nodejs yarn
-curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
-apt-get install -y nodejs
-curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/yarnkey.gpg
-echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-apt-get update -y && apt-get install -y yarn gh
-
 # 安装UPX
 UPX_VERSION="5.0.0"
 curl -fLO "https://github.com/upx/upx/releases/download/v${UPX_VERSION}/upx-$UPX_VERSION-amd64_linux.tar.xz"
@@ -125,12 +130,22 @@ function main(){
 	if [[ -n "${BENDI_VERSION}" ]]; then
 		export BENDI_VERSION="1"
 		echo "开始升级ubuntu插件和安装依赖....."
+		current_version=$(get_ubuntu_version)
+		install_tools "$current_version"
+  		get_ubuntu_version
 		install_mustrelyon
+		install_miscellaneous
 		update_apt_source
+		echo "[√] 安装完成！"
 	else
                 echo "开始升级ubuntu插件和安装依赖....."
+		current_version=$(get_ubuntu_version)
+		install_tools "$current_version"
+		get_ubuntu_version
 		install_mustrelyon
+		install_miscellaneous
 		update_apt_source
+		echo "[√] 安装完成！"
 	fi
 }
 
