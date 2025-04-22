@@ -1,6 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-3.0-only
-PWD_DIR="$(PWD)"
+PWD_DIR="$(pwd)"
 
 function install_mustrelyon(){
 # 更新ubuntu源
