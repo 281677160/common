@@ -241,7 +241,7 @@ fi
 
 
 function Diy_update() {
-bash <(curl -fsSL https://raw.githubusercontent.com/clion007/openwrt-common/main/custom/ubuntu.sh)
+sudo bash <(curl -fsSL https://raw.githubusercontent.com/clion007/openwrt-common/main/custom/ubuntu.sh)
 if [[ $? -ne 0 ]];then
   TIME r "依赖安装失败，请检测网络后再次尝试!"
   exit 1
