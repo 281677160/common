@@ -19,17 +19,6 @@ if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/cront
 	rm -rf /etc/networkdetection
 fi
 
-if [[ -f "/usr/lib/os-release" ]]; then
-	sed -i 's?RELEASE=".*"?RELEASE="Customized_Information @ OpenWrt"?g' /usr/lib/os-release
-fi
-
-if [[ -f "/usr/share/ucode/luci/version.uc" ]]; then
-	sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
-	echo "export const revision = 'ZHUJI_MING - LUCI_EDITION', branch = '';" >> "/usr/share/ucode/luci/version.uc"
-fi
-
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='Customized_Information @ OpenWrt '" >> /etc/openwrt_release
 sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
 echo "DISTRIB_SOURCECODE='OPHUBOPENWRT'" >> /etc/openwrt_release
 sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
@@ -70,5 +59,3 @@ do
 	lmo_new_file="$(echo -e "$b"|sed "s/zh_Hans/zh-cn/g")"
 	[[ -f "$b" ]] && mv "$b" "${lmo_new_file}" 2>"/dev/null"
 done
-
-
