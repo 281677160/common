@@ -29,6 +29,7 @@ sudo make
 sudo make install
 cd ..
 
+
 # 安装编译openwrt的依赖
 apt-get install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
 bzip2 ccache cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
