@@ -16,9 +16,6 @@ sudo apt-get install -y $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
 
 function update_apt_source(){
 sudo apt-get autoremove -y --purge
-sudo apt update
-sudo apt upgrade -y
-sudo apt install libstdc++6
 node --version
 yarn --version
 sudo apt-get clean
