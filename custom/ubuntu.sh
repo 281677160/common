@@ -31,15 +31,13 @@ TMP_DIR="$(mktemp -d)"
 cd $TMP_DIR
 
 # 安装clang
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main"
-apt-get update -y
-apt-get install -y clang-18 lldb-18 lld-18 libc++-18-dev libc++abi-18-dev
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
-
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
 ./llvm.sh 18
+
+apt-get update -y
+apt-get install -y clang-18 lldb-18 lld-18 libc++-18-dev libc++abi-18-dev
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
 
 
 # 安装golang
