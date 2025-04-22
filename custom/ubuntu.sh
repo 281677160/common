@@ -27,20 +27,20 @@ TMP_DIR="$(mktemp -d)"
 cd $TMP_DIR
 wget -q https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz -O Python-2.7.18.tgz
 tar -xzf Python-2.7.18.tgz
-sudo cp -Rf Python-2.7.18  /usr/local/src/Python2.7
-cd /usr/local/src/Python2.7
-sudo ./configure
-sudo make -j8
+sudo cp -Rf Python-2.7.18  /usr/local/src/Python-2.7.18
+cd /usr/local/src/Python-2.7.18
+./configure
+make
 sudo make altinstall
 cd $PWD_DIR
 
 cd $TMP_DIR
-wget -q https://www.python.org/ftp/python/3.7.14/Python-3.7.14.tgz -O Python-3.7.14.tgz
-tar -xzf Python-3.7.14.tgz
-sudo cp -Rf Python-3.7.14  /usr/local/src/Python3.7
-cd /usr/local/src/Python3.7
-sudo ./configure
-sudo make -j8
+wget -q https://www.python.org/ftp/python/3.6.15/Python-3.6.15.tgz -O Python-3.6.15.tgz
+tar -xzf Python-3.6.15.tgz
+sudo cp -Rf Python-3.6.15  /usr/local/src/Python-3.6.15
+cd /usr/local/src/Python-3.6.15
+./configure
+make
 sudo make altinstall
 cd $PWD_DIR
 
