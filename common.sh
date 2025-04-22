@@ -261,7 +261,7 @@ else
   sudo sh -c 'echo openwrt > /etc/oprelyon'
   TIME b "全部依赖安装完毕"
 fi
-if [[ `gcc --version |grep -c "buntu 13"` -eq '0' ]]; then
+if [[ `gcc --version | grep -c "buntu 13"` -eq '0' ]]; then
   sudo add-apt-repository ppa:ubuntu-toolchain-r/test
   sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
   sudo apt-get install -y gcc-13 g++-13  
