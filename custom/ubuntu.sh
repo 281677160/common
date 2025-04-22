@@ -134,8 +134,6 @@ cd $PWD_DIR
 
 curl -fL "https://build-scripts.immortalwrt.org/modify-firmware.sh" -o "/usr/bin/modify-firmware"
 chmod 0755 "/usr/bin/modify-firmware"
-
-cd ~
 }
 
 function update_apt_source(){
