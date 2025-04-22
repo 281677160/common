@@ -119,6 +119,7 @@ function update_apt_source(){
 apt-get autoremove -y --purge
 apt-get clean -y
 
+python2.7 --version
 node -v
 yarn -v
 go version
