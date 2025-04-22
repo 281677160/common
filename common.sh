@@ -254,6 +254,26 @@ if [[ `gcc --version |grep -c "buntu 13"` -eq '0' ]]; then
   sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
   sudo apt-get install -y gcc-13 g++-13  
   sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
+  
+  # 查找新安装的 libstdc++ 位置
+  NEW_LIBSTDCPP=$(find /usr -name "libstdc++.so.6" | grep gcc-13 | head -n 1)
+  if [[ -n "$NEW_LIBSTDCPP" ]]; then
+    # 备份原来的库文件
+    sudo cp /lib/x86_64-linux-gnu/libstdc++.so.6 /lib/x86_64-linux-gnu/libstdc++.so.6.backup
+    # 创建符号链接
+    sudo ln -sf "$NEW_LIBSTDCPP" /lib/x86_64-linux-gnu/libstdc++.so.6
+    echo "已更新 libstdc++ 库链接"
+  else
+    echo "未找到 GCC-13 的 libstdc++ 库，请手动检查"
+  fi
+  
+  # 验证 GLIBCXX 版本
+  if strings /lib/x86_64-linux-gnu/libstdc++.so.6 | grep -q "GLIBCXX_3.4.32"; then
+    echo "已成功安装 GLIBCXX_3.4.32"
+  else
+    echo "未找到 GLIBCXX_3.4.32，可能需要进一步配置"
+  fi
+  
   gcc --version
 fi
 }
