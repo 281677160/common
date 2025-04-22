@@ -41,8 +41,9 @@ sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
 
 
 # 安装golang
-wget -q -O /tmp/go1.24.linux-amd64.tar.gz https://dl.google.com/go/go1.24.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf /tmp/go1.24.linux-amd64.tar.gz
+GO_VERSION="1.24"
+wget -q -O /tmp/go${GO_VERSION}.linux-amd64.tar.gz https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf /tmp/go${GO_VERSION}.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile.d/go.sh
 source /etc/profile.d/go.sh
 
