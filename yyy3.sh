@@ -1104,7 +1104,7 @@ if [[ -f "${LICENSES_DOC}/buildzu.ini" ]]; then
 fi
 if [[ ! -d "${OPERATES_PATH}" ]]; then
   TIME y "缺少编译主文件"
-  curl -fsSL https://github.com/281677160/common/raw/ceshi/custom/first.sh -o /tmp/first.sh
+  curl -fsSL https://github.com/281677160/common/raw/main/custom/first.sh -o /tmp/first.sh
   chmod +x /tmp/first.sh && source /tmp/first.sh
   if [[ -z "${SUCCESS_FAILED}" ]]; then
     exit 0
