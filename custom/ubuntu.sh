@@ -8,6 +8,19 @@ apt-get update -y
 # 升级ubuntu
 apt-get full-upgrade -y
 
+# 19.07
+echo "python2.7"
+wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
+tar -xzf Python-2.7.18.tgz
+apt-get install -y build-essential checkinstall
+apt-get install -y libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev python3-distutils
+cd Python-2.7.18
+./configure
+make
+make install
+cd ..
+apt-get install -y ecj fastjar file gettext java-propose-classpath time xsltproc lib32gcc-s1 python3-distutils
+
 # 安装编译openwrt的依赖
 apt-get install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
 bzip2 ccache cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
@@ -53,19 +66,6 @@ update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 60
 update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 60
 update-alternatives --config gcc
 update-alternatives --config g++
-
-# 19.07
-echo "python2.7"
-wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
-tar -xzf Python-2.7.18.tgz
-apt-get install -y build-essential checkinstall
-apt-get install -y libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev python3-distutils
-cd Python-2.7.18
-./configure
-make
-make install
-cd ..
-apt-get install -y ecj fastjar file gettext java-propose-classpath time xsltproc lib32gcc-s1 python3-distutils
 
 # 安装nodejs yarn
 curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
@@ -120,6 +120,7 @@ apt-get autoremove -y --purge
 apt-get clean -y
 
 python2.7 --version
+python3 --version
 node -v
 yarn -v
 go version
