@@ -23,6 +23,7 @@ make
 make install
 cd $PWD_DIR
 
+cd $TMP_DIR
 wget https://www.python.org/ftp/python/3.6.15/Python-3.6.15.tgz
 tar -xzf Python-3.6.15.tgz
 cp -Rf Python-3.6.15 /usr/local/Python-3.6.15
