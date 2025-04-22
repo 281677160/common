@@ -41,11 +41,10 @@ sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
 
 
 # 安装golang
-GO_VERSION="1.24"
-apt-get install -y golang-$GO_VERSION-go
-rm -rf "/usr/bin/go" "/usr/bin/gofmt"
-ln -svf "/usr/lib/go-$GO_VERSION/bin/go" "/usr/bin/go"
-ln -svf "/usr/lib/go-$GO_VERSION/bin/gofmt" "/usr/bin/gofmt"
+wget -q -O /tmp/go1.24.linux-amd64.tar.gz https://dl.google.com/go/go1.24.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf /tmp/go1.24.linux-amd64.tar.gz
+echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile.d/go.sh
+source /etc/profile.d/go.sh
 
 # 安装gcc g++
 GCC_VERSION="13"
