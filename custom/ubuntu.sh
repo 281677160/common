@@ -29,7 +29,7 @@ wget -q https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz -O Python-2.7
 tar -xzf Python-2.7.18.tgz
 sudo cp -Rf Python-2.7.18  /usr/local/src/Python2.7
 cd /usr/local/src/Python2.7
-sudo ./configure --enable-optimizations --with-lto --enable-shared
+sudo ./configure
 sudo make -j8
 sudo make altinstall
 cd $PWD_DIR
@@ -39,13 +39,10 @@ wget -q https://www.python.org/ftp/python/3.7.14/Python-3.7.14.tgz -O Python-3.7
 tar -xzf Python-3.7.14.tgz
 sudo cp -Rf Python-3.7.14  /usr/local/src/Python3.7
 cd /usr/local/src/Python3.7
-sudo ./configure --enable-optimizations --with-lto --enable-shared
+sudo ./configure
 sudo make -j8
 sudo make altinstall
 cd $PWD_DIR
-
-sudo update-alternatives --install /usr/bin/python3 python3 /usr/local/src/Python3.7
-sudo update-alternatives --install /usr/bin/python2 python2 /usr/local/src/Python2.7
 
 
 # 安装编译openwrt的依赖
