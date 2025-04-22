@@ -10,22 +10,23 @@ function Diy_Part1() {
         	if ! grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
 			sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
 		fi
-		echo "增加定时更新固件的插件完成"
+		echo "增加定时更新固件的插件下载完成"
 	else
-		echo "定时更新固件的插件下载失败"
+		echo "增加定时更新固件的插件下载失败"
 	fi
 }
 
 
 function Diy_Part2() {
 	export Update_tag="Update-${TARGET_BOARD}"
-	export In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
+	export In_Firmware_Info="${HOME_PATH}/package/base-files/files/etc/openwrt_update"
 	export Github_API1="https://ghfast.top/${GITHUB_LINK}/releases/download/${Update_tag}/zzz_api"
 	export Github_API2="${GITHUB_LINK}/releases/download/${Update_tag}/zzz_api"
 	export API_PATH="/tmp/Downloads/zzz_api"
 	export Release_download1="${GITHUB_LINK}/releases/download/${Update_tag}"
 	export Release_download2="https://ghfast.top/${GITHUB_LINK}/releases/download/${Update_tag}"
 	export Github_Release="${GITHUB_LINK}/releases/tag/${Update_tag}"
+        curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -o replace
 	
 	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 		export TARGET_PROFILE_ER="phicomm-k3"
@@ -118,7 +119,7 @@ Release_download1="${Release_download1}"
 Release_download2="${Release_download2}"
 EOF
 
-	cat ${HOME_PATH}/build/common/autoupdate/replace >> ${In_Firmware_Info}
+	cat replace >> ${In_Firmware_Info}
 	sudo chmod +x ${In_Firmware_Info}
 }
 
