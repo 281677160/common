@@ -1,5 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-3.0-only
+PWD_DIR="$(PWD)"
 
 function install_mustrelyon(){
 # 更新ubuntu源
@@ -8,29 +9,47 @@ apt-get update -y
 # 升级ubuntu
 apt-get full-upgrade -y
 
-# 19.07
-echo "python2.7"
-wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
-tar -xzf Python-2.7.18.tgz
-apt-get install -y build-essential checkinstall
-apt-get install -y libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev python3-distutils
-cd Python-2.7.18
-./configure
-make
-make install
-cd ..
-apt-get install -y ecj fastjar file gettext java-propose-classpath time xsltproc lib32gcc-s1
+# 安装gcc g++
+GCC_VERSION="13"
+add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+apt-get update
+apt-get install gcc-${GCC_VERSION}
+apt-get install g++-${GCC_VERSION}
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 60
+update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 60
+update-alternatives --config gcc
+update-alternatives --config g++
 
-wget https://www.python.org/ftp/python/3.6.15/Python-3.6.15.tgz
-tar -xzf Python-3.6.15.tgz
-cd Python-3.6.15
-./configure
-sudo make
-sudo make install
-cd ..
+# 19.07
+apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libbz2-dev liblzma-dev sqlite3 libsqlite3-dev tk-dev uuid-dev libgdbm-compat-dev
+
+TMP_DIR="$(mktemp -d)"
+cd $TMP_DIR
+
+wget -q https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz -O Python-2.7.18.tgz
+tar -xzf Python-2.7.18.tgz
+sudo cp -Rf Python-2.7.18  /usr/local/src/Python2.7
+cd /usr/local/src/Python2.7
+sudo ./configure --enable-optimizations --with-lto --enable-shared
+sudo make -j8
+sudo make altinstall
+cd $PWD_DIR
+
+wget -q https://www.python.org/ftp/python/3.7.14/Python-3.7.14.tgz -O Python-3.7.14.tgz
+tar -xzf Python-3.7.14.tgz
+sudo cp -Rf Python-3.7.14  /usr/local/src/Python3.7
+cd /usr/local/src/Python3.7
+sudo ./configure --enable-optimizations --with-lto --enable-shared
+sudo make -j8
+sudo make altinstall
+cd $PWD_DIR
+
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/local/src/Python3.7
+sudo update-alternatives --install /usr/bin/python2 python2 /usr/local/src/Python2.7
 
 
 # 安装编译openwrt的依赖
+apt-get install -y ecj fastjar file gettext java-propose-classpath time xsltproc lib32gcc-s1
 apt-get install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
 bzip2 ccache cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
 genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
@@ -46,9 +65,7 @@ apt-get install -y libfuse-dev
 apt-get install -y rename pigz gnupg
 apt-get install -y $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
-TMP_DIR="$(mktemp -d)"
 cd $TMP_DIR
-
 # 安装clang
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
@@ -56,25 +73,16 @@ chmod +x llvm.sh
 apt-get update -y
 apt-get install -y clang-18 lldb-18 lld-18 libc++-18-dev libc++abi-18-dev
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
+cd $PWD_DIR
 
-
+cd $TMP_DIR
 # 安装golang
 GO_VERSION="1.24.2"
 wget -q https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz -O /tmp/go${GO_VERSION}.linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf /tmp/go${GO_VERSION}.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' | sudo tee -a /etc/profile.d/go.sh
 source /etc/profile.d/go.sh
-
-# 安装gcc g++
-GCC_VERSION="13"
-add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-apt-get update
-apt-get install gcc-${GCC_VERSION}
-apt-get install g++-${GCC_VERSION}
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 60
-update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 60
-update-alternatives --config gcc
-update-alternatives --config g++
+cd $PWD_DIR
 
 # 安装nodejs yarn
 curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
@@ -83,6 +91,7 @@ curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo gpg --batch --yes --dea
 echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 apt-get update -y && apt-get install -y yarn gh
 
+cd $TMP_DIR
 # 安装UPX
 UPX_VERSION="5.0.0"
 curl -fLO "https://github.com/upx/upx/releases/download/v${UPX_VERSION}/upx-$UPX_VERSION-amd64_linux.tar.xz"
@@ -91,7 +100,9 @@ rm -rf "/usr/bin/upx" "/usr/bin/upx-ucl"
 cp -fp "upx-$UPX_VERSION-amd64_linux/upx" "/usr/bin/upx-ucl"
 chmod 0755 "/usr/bin/upx-ucl"
 ln -svf "/usr/bin/upx-ucl" "/usr/bin/upx"
+cd $PWD_DIR
 
+cd $TMP_DIR
 # 安装padjffs2
 git clone --filter=blob:none --no-checkout "https://github.com/openwrt/openwrt.git" "padjffs2"
 pushd "padjffs2"
@@ -104,7 +115,9 @@ strip "padjffs2"
 rm -rf "/usr/bin/padjffs2"
 cp -fp "padjffs2" "/usr/bin/padjffs2"
 popd
+cd $PWD_DIR
 
+cd $TMP_DIR
 # 安装po2lmo
 git clone --filter=blob:none --no-checkout "https://github.com/openwrt/luci.git" "po2lmo"
 pushd "po2lmo"
@@ -117,6 +130,7 @@ strip "po2lmo"
 rm -rf "/usr/bin/po2lmo"
 cp -fp "po2lmo" "/usr/bin/po2lmo"
 popd
+cd $PWD_DIR
 
 curl -fL "https://build-scripts.immortalwrt.org/modify-firmware.sh" -o "/usr/bin/modify-firmware"
 chmod 0755 "/usr/bin/modify-firmware"
