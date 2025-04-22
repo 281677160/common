@@ -35,6 +35,20 @@ wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
 ./llvm.sh 18
 
+wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+sudo add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main"
+apt-get update -y
+apt-get install -y clang-18 lldb-18 lld-18 libc++-18-dev libc++abi-18-dev
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
+
+
+# 安装golang
+GO_VERSION="1.24"
+apt-get install -y golang-$GO_VERSION-go
+rm -rf "/usr/bin/go" "/usr/bin/gofmt"
+ln -svf "/usr/lib/go-$GO_VERSION/bin/go" "/usr/bin/go"
+ln -svf "/usr/lib/go-$GO_VERSION/bin/gofmt" "/usr/bin/gofmt"
+
 # 安装gcc g++
 GCC_VERSION="13"
 add-apt-repository --yes ppa:ubuntu-toolchain-r/test
