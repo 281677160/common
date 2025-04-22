@@ -17,14 +17,11 @@ libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full
 python3 python3-pyelftools python3-distutils python3-setuptools qemu-utils rsync scons squashfs-tools \
 subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 
-# 19.07
-apt-get install -y ecj fastjar file gettext java-propose-classpath lib32gcc-s1 python2 python2.7-dev time xsltproc
-
 # alist依赖
 apt-get install -y libfuse-dev
 
 # N1打包需要的依赖
-apt-get install -y rename pigz
+apt-get install -y rename pigz gnupg
 apt-get install -y $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
 TMP_DIR="$(mktemp -d)"
@@ -34,7 +31,6 @@ cd $TMP_DIR
 wget https://apt.llvm.org/llvm.sh
 chmod +x llvm.sh
 ./llvm.sh 18
-
 apt-get update -y
 apt-get install -y clang-18 lldb-18 lld-18 libc++-18-dev libc++abi-18-dev
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
@@ -58,8 +54,21 @@ update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 60
 update-alternatives --config gcc
 update-alternatives --config g++
 
+# 19.07
+echo "python2.7"
+wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
+tar -xzf Python-2.7.18.tgz
+apt-get install -y build-essential checkinstall
+apt-get install -y libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
+cd Python-2.7.18
+./configure
+make
+make install
+cd ..
+apt-get install -y ecj fastjar file gettext java-propose-classpath time xsltproc lib32gcc-s1 python3-distutils
+
 # 安装nodejs yarn
-curl -fsSL https://deb.nodesource.com/setup_22.x | sudo bash -
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 apt-get install -y nodejs
 curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/yarnkey.gpg
 echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
