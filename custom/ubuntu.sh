@@ -18,6 +18,7 @@ function update_apt_source(){
 sudo apt-get autoremove -y --purge
 sudo apt update
 sudo apt upgrade -y
+sudo apt install libstdc++6
 node --version
 yarn --version
 sudo apt-get clean
