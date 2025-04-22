@@ -26,7 +26,7 @@ Compte=$(date +%Y年%m月%d号%H时%M分)
 
 function settings_variable() {
 cd ${GITHUB_WORKSPACE}
-bash <(curl -fsSL https://raw.githubusercontent.com/clion007/openwrt-common/main/custom/first.sh)
+sudo bash <(curl -fsSL https://raw.githubusercontent.com/clion007/openwrt-common/main/custom/first.sh)
 }
 
 function Diy_variable() {
