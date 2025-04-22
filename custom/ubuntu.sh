@@ -21,6 +21,14 @@ make install
 cd ..
 apt-get install -y ecj fastjar file gettext java-propose-classpath time xsltproc lib32gcc-s1
 
+wget https://www.python.org/ftp/python/3.6.15/Python-3.6.15.tgz
+tar -xzf Python-3.6.15.tgz
+cd Python-3.6.15
+./configure
+sudo make
+sudo make install
+cd ..
+
 # 安装编译openwrt的依赖
 apt-get install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
 bzip2 ccache cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
