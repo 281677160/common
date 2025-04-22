@@ -109,7 +109,7 @@ runs:
         else
           echo "INFORMATION_NOTICE=false" >> ${GITHUB_ENV}
         fi
-        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/custom/first.sh)
+        bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh)
 
     - name: 运行其他变量
       shell: bash
