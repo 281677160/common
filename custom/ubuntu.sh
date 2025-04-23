@@ -26,6 +26,8 @@ apt-get install -y libfuse-dev
 # N1打包需要的依赖
 apt-get install -y rename pigz clang gnupg
 apt-get install -y $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
+pip install mistune --upgrade
+pip install -U --force-reinstall scipy
 
 # 安装gcc g++
 GCC_VERSION="13"
