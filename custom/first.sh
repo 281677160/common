@@ -136,7 +136,9 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
     mkdir -p repogx/.github/workflows
     cp -Rf shangyou/* repogx
     cp -Rf shangyou/.github/workflows/* repogx/.github/workflows
-    cp -Rf backups repogx/backups
+    if [[ ! "${GIT_REPOSITORY}" == "281677160/build-actions" ]]; then
+      cp -Rf backups repogx/backups
+    fi
     for X in $(find "${GITHUB_WORKSPACE}/repogx" -type d -name "relevance" |grep -v 'backups'); do 
       rm -rf ${X}/{*.ini,*start,run_number}
       echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > ${X}/actions_version
