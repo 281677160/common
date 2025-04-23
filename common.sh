@@ -1196,10 +1196,10 @@ if [[ `grep -c "CONFIG_PACKAGE_dnsmasq_full_nftset=y" ${HOME_PATH}/.config` -eq 
 fi
 
 if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-  if [[ "${REPO_BRANCH}" == *"18.06"* ]]; then
-    sed -i '/Hysteria=y/d' ${HOME_PATH}/.config
-    echo -e "\n# CONFIG_PACKAGE_hysteria is not set" >> ${HOME_PATH}/.config
-  fi
+   #if [[ "${REPO_BRANCH}" == *"18.06"* ]]; then
+   # sed -i '/Hysteria=y/d' ${HOME_PATH}/.config
+   # echo -e "\n# CONFIG_PACKAGE_hysteria is not set" >> ${HOME_PATH}/.config
+   #fi
   #if [[ ! "${REPO_BRANCH}" == "19.07" ]] || [[ ! "${REPO_BRANCH}" == *"23.05"* ]]; then
   #  sed -i '/NaiveProxy/d' ${HOME_PATH}/.config
   #fi
