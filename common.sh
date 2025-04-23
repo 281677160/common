@@ -101,6 +101,8 @@ export CLEAR_PATH="/tmp/Clear"
 export Upgrade_Date="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
 export Gujian_Date="$(date +%m.%d)"
 export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
+export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
 
 echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
 echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
@@ -109,6 +111,7 @@ echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
 echo "DISTRIB_SOURCECODE=${DISTRIB_SOURCECODE}" >> ${GITHUB_ENV}
 echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
+echo "RAW_WEB=${RAW_WEB}" >> ${GITHUB_ENV}
 
 echo "FILES_PATH=${FILES_PATH}" >> ${GITHUB_ENV}
 echo "DELETE=${DELETE}" >> ${GITHUB_ENV}
@@ -142,7 +145,8 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 TIME y "正在执行：下载和整理应用,请耐心等候..."
 cd ${HOME_PATH}
-
+[[ ! -d "${LICENSES_DOC}" ]] && mkdir -p "${LICENSES_DOC}"
+curl -fsSL "${RAW_WEB}" -o "${LICENSES_DOC}/feeds.conf.default"
 # 增加一些应用
 echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
@@ -158,17 +162,17 @@ grep -q "admin:" ${FILES_PATH} && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${
 
 # 添加自定义插件源
 srcdir="$(mktemp -d)"
-if grep -q "src-git-full" "${HOME_PATH}/feeds.conf.default"; then
-  SRC_LIANJIE="$(grep -E '^src-git-full luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git-full luci (https?:\/\/[^;]+).*/\1/')"
+if grep -q "src-git-full" "${LICENSES_DOC}/feeds.conf.default"; then
+  SRC_LIANJIE="$(grep -E '^src-git-full luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/src-git-full luci (https?:\/\/[^;]+).*/\1/')"
   a=$(grep -E '^src-git-full luci https' "feeds.conf.default")
   if [[ -n "$(echo "$a" |grep -E '\;')" ]]; then
-    SRC_FENZHIHAO="$(grep -E '^src-git-full luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+    SRC_FENZHIHAO="$(grep -E '^src-git-full luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
   fi
 else
- SRC_LIANJIE="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
+ SRC_LIANJIE="$(grep -E '^src-git luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
   a=$(grep -E '^src-git luci https' "feeds.conf.default")
   if [[ -n "$(echo "$a" |grep -E '\;')" ]]; then
-    SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+    SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
   fi
 fi
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
