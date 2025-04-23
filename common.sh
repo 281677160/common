@@ -148,7 +148,7 @@ if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-23.05
 fi
 
 if [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]] && [[ "${REPO_BRANCH}" == "openwrt-23.05" ]]; then
-  git reset --hard 86dfa171015d1dd94dc735ae0c57e9e2962914fa
+  git reset --hard d7a0ace7a29b7b1ab51754f1e58fa220794c5805
 fi
 
 # 增加一些应用
