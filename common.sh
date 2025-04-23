@@ -143,14 +143,6 @@ function Diy_checkout() {
 TIME y "正在执行：下载和整理应用,请耐心等候..."
 cd ${HOME_PATH}
 
-if [[ "${SOURCE_CODE}" == "OFFICIAL" ]] && [[ "${REPO_BRANCH}" == "openwrt-23.05" ]]; then
-  git reset --hard 86dfa171015d1dd94dc735ae0c57e9e2962914fa
-fi
-
-if [[ "${SOURCE_CODE}" == "IMMORTALWRT" ]] && [[ "${REPO_BRANCH}" == "openwrt-23.05" ]]; then
-  git reset --hard d7a0ace7a29b7b1ab51754f1e58fa220794c5805
-fi
-
 # 增加一些应用
 echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
