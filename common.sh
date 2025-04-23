@@ -146,7 +146,9 @@ function Diy_checkout() {
 TIME y "正在执行：下载和整理应用,请耐心等候..."
 cd ${HOME_PATH}
 [[ ! -d "${LICENSES_DOC}" ]] && mkdir -p "${LICENSES_DOC}"
-curl -fsSL "${RAW_WEB}" -o "${LICENSES_DOC}/feeds.conf.default"
+if ! curl -fsSL "${RAW_WEB}" -o "${LICENSES_DOC}/feeds.conf.default"; then
+  wget -q ${RAW_WEB} -O ${LICENSES_DOC}/feeds.conf.default
+fi
 # 增加一些应用
 echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
