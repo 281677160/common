@@ -24,18 +24,8 @@ texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 apt-get install -y libfuse-dev
 
 # N1打包需要的依赖
-apt-get install -y rename pigz gnupg
+apt-get install -y rename pigz clang gnupg
 apt-get install -y $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
-
-cd $TMP_DIR
-# 安装clang
-wget https://apt.llvm.org/llvm.sh
-chmod +x llvm.sh
-./llvm.sh 18
-apt-get update -y
-apt-get install -y clang-18 lldb-18 lld-18 libc++-18-dev libc++abi-18-dev
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
-cd $PWD_DIR
 
 # 安装gcc g++
 GCC_VERSION="13"
