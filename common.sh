@@ -304,7 +304,7 @@ fi
 bash <(curl -fsSL https://github.com/281677160/common/raw/main/Share/tproxy/nft_tproxy.sh)
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
-    gitsvn https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+    gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
