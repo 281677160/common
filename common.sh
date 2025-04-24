@@ -303,9 +303,8 @@ fi
 # tproxy补丁
 bash <(curl -fsSL https://github.com/281677160/common/raw/main/Share/tproxy/nft_tproxy.sh)
 
-if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
-    gitsvn https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
-fi
+
+gitsvn https://github.com/coolsnowwolf/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/packr ${HOME_PATH}/feeds/packages/devel/packr
@@ -1191,72 +1190,6 @@ if [[ `grep -c "CONFIG_PACKAGE_dnsmasq_full_nftset=y" ${HOME_PATH}/.config` -eq 
     sed -i 's/CONFIG_PACKAGE_luci-app-passwall2_Nftables_Transparent_Proxy=y/# CONFIG_PACKAGE_luci-app-passwall2_Nftables_Transparent_Proxy is not set/g' ${HOME_PATH}/.config
     sed -i 's/CONFIG_PACKAGE_nftables-json=y/# CONFIG_PACKAGE_nftables-json is not set/g' ${HOME_PATH}/.config
   fi
-fi
-
-if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] || [[ "${REPO_BRANCH}" == *"21.02"* ]] || [[ "${REPO_BRANCH}" == *"22.03"* ]] || [[ "${REPO_BRANCH}" == *"23.05"* ]]; then
-   #if [[ "${REPO_BRANCH}" == *"18.06"* ]]; then
-   # sed -i '/Hysteria=y/d' ${HOME_PATH}/.config
-   # echo -e "\n# CONFIG_PACKAGE_hysteria is not set" >> ${HOME_PATH}/.config
-   #fi
-  #if [[ ! "${REPO_BRANCH}" == "19.07" ]] || [[ ! "${REPO_BRANCH}" == *"23.05"* ]]; then
-  #  sed -i '/NaiveProxy/d' ${HOME_PATH}/.config
-  #fi
-  if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
-    sed -i '/CONFIG_PACKAGE_kmod-fs-nfsd=y/d' ${HOME_PATH}/.config
-    sed -i '/CONFIG_PACKAGE_kmod-fs-nfs-common-rpcsec=y/d' ${HOME_PATH}/.config
-    sed -i '/CONFIG_PACKAGE_kmod-fs-nfs-common=y/d' ${HOME_PATH}/.config
-  fi
-  if [[ `grep -c "CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Client=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-    sed -i '/CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Libev_Client/d' ${HOME_PATH}/.config
-    sed -i '/CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Client/d' ${HOME_PATH}/.config
-    sed -i '/CONFIG_PACKAGE_shadowsocks-libev-ss-local/d' ${HOME_PATH}/.config
-    sed -i '/CONFIG_PACKAGE_shadowsocks-libev-ss-redir/d' ${HOME_PATH}/.config
-    echo -e "\nCONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Libev_Client=y" >> ${HOME_PATH}/.config
-    echo -e "\n# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Client is not set" >> ${HOME_PATH}/.config
-    echo -e "\nCONFIG_PACKAGE_shadowsocks-libev-ss-local=y" >> ${HOME_PATH}/.config
-    echo -e "\nCONFIG_PACKAGE_shadowsocks-libev-ss-redir=y" >> ${HOME_PATH}/.config
-  fi
-  if [[ `grep -c "CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Server=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-    sed -i '/CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Libev_Server/d' ${HOME_PATH}/.config
-    sed -i '/CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Server/d' ${HOME_PATH}/.config
-    sed -i '/CONFIG_PACKAGE_shadowsocks-rust-ssserver/d' ${HOME_PATH}/.config
-    echo -e "\nCONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Libev_Server=y" >> ${HOME_PATH}/.config
-    echo -e "\n# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Server is not set" >> ${HOME_PATH}/.config
-    echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-ssserver is not set" >> ${HOME_PATH}/.config
-  fi
-  if [[ `grep -c "CONFIG_PACKAGE_dns2socks-rust=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-    sed -i 's/CONFIG_PACKAGE_dns2socks-rust=y/# CONFIG_PACKAGE_dns2socks-rust is not set/g' ${HOME_PATH}/.config
-    sed -i 's/CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_DNS2SOCKS_RUST=y/# CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_DNS2SOCKS_RUST is not set/g' ${HOME_PATH}/.config
-    echo -e "\nCONFIG_PACKAGE_dns2socks=y" >> ${HOME_PATH}/.config
-  fi
-  if [[ `grep -c "CONFIG_PACKAGE_shadowsocks-rust-sslocal=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-    sed -i '/CONFIG_PACKAGE_shadowsocks-rust-sslocal=y/d' ${HOME_PATH}/.config
-    echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-sslocal is not set" >> ${HOME_PATH}/.config
-  fi
-  if [[ `grep -c "CONFIG_PACKAGE_shadowsocks-rust-ssserver=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-    sed -i '/CONFIG_PACKAGE_shadowsocks-rust-ssserver=y/d' ${HOME_PATH}/.config
-    echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-ssserver is not set" >> ${HOME_PATH}/.config
-  fi
-  if [[ `grep -c "CONFIG_PACKAGE_shadowsocks-rust-ssmanager=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-    sed -i '/CONFIG_PACKAGE_shadowsocks-rust-ssmanager=y/d' ${HOME_PATH}/.config
-    echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-ssmanager is not set" >> ${HOME_PATH}/.config
-  fi
-  if [[ `grep -c "CONFIG_PACKAGE_shadowsocks-rust-ssurl=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-    sed -i '/CONFIG_PACKAGE_shadowsocks-rust-ssurl=y/d' ${HOME_PATH}/.config
-    echo -e "\n# CONFIG_PACKAGE_shadowsocks-rust-ssurl is not set" >> ${HOME_PATH}/.config
-  fi
-  if [[ -n "$(grep -E "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Client=y" ${HOME_PATH}/.config)" ]]; then
-    sed -i 's/CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Client=y/# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Client is not set/g' ${HOME_PATH}/.config
-  fi
-  if [[ -n "$(grep -E "CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Server=y" ${HOME_PATH}/.config)" ]]; then
-    sed -i 's/CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Server=y/# CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Shadowsocks_Rust_Server is not set/g' ${HOME_PATH}/.config
-  fi
-  if [[ -n "$(grep -E "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client=y" ${HOME_PATH}/.config)" ]]; then
-    sed -i 's/CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client=y/# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client is not set/g' ${HOME_PATH}/.config
-  fi
-  if [[ -n "$(grep -E "CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server=y" ${HOME_PATH}/.config)" ]]; then
-    sed -i 's/CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server=y/# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server is not set/g' ${HOME_PATH}/.config
-  fi 
 fi
 
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
