@@ -29,16 +29,16 @@ function Diy_Part2() {
         if ! curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -o replace; then
 		wget -q https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -O replace
   	fi
-	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
+	if [[ "${TARGET_PROFILE}" == *"k3"* ]]; then
 		export TARGET_PROFILE_ER="phicomm-k3"
-	elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
+	elif [[ "${TARGET_PROFILE}" == *"k2p"* ]]; then
 		export TARGET_PROFILE_ER="phicomm-k2p"
-	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3g_v2) ]]; then
+	elif [[ "$TARGET_PROFILE" == *xiaomi* && "$TARGET_PROFILE" == *3g* && "$TARGET_PROFILE" == *v2* ]]; then
 		export TARGET_PROFILE_ER="xiaomi_mir3g-v2"
-	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
+	elif [[ "$TARGET_PROFILE" == *xiaomi* && "$TARGET_PROFILE" == *3g* ]]; then
 		export TARGET_PROFILE_ER="xiaomi_mir3g"
-	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3-pro" ]]; then
-		export TARGET_PROFILE_ER="xiaomi_mir3p"
+ 	elif [[ "$TARGET_PROFILE" == *xiaomi* && "$TARGET_PROFILE" == *3* && "$TARGET_PROFILE" == *pro* ]]; then
+		export TARGET_PROFILE_ER="xiaomi_mi3pro"
 	else
 		export TARGET_PROFILE_ER="${TARGET_PROFILE}"
 	fi
