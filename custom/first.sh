@@ -60,6 +60,7 @@ elif [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
   ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' /tmp/common.sh)"
   ACTIONS_VERSION2="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' ${COMPILE_PATH}/relevance/actions_version)"
   if [[ ! "${ACTIONS_VERSION1}" == "${ACTIONS_VERSION2}" ]]; then
+    sudo rm -rf /etc/oprelyo*
     TIME r "和上游版本不一致"
     SYNCHRONISE="NO"
     tongbu_message="和上游版本不一致"
