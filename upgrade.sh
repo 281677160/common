@@ -26,8 +26,9 @@ function Diy_Part2() {
 	export Release_download1="${GITHUB_LINK}/releases/download/${Update_tag}"
 	export Release_download2="https://ghfast.top/${GITHUB_LINK}/releases/download/${Update_tag}"
 	export Github_Release="${GITHUB_LINK}/releases/tag/${Update_tag}"
-        curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -o replace
-	
+        if ! curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -o replace; then
+		wget -q https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -O replace
+  	fi
 	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
 		export TARGET_PROFILE_ER="phicomm-k3"
 	elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
