@@ -19,6 +19,11 @@ if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/cront
 	rm -rf /etc/networkdetection
 fi
 
+if [[ -f "/usr/share/ucode/luci/version.uc" ]]; then
+	sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
+	echo "export const revision = 'ZHUJI_MING - LUCI_EDITION', branch = '';" >> "/usr/share/ucode/luci/version.uc"
+fi
+
 sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
 echo "DISTRIB_SOURCECODE='OPHUBOPENWRT'" >> /etc/openwrt_release
 sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
