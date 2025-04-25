@@ -3,6 +3,7 @@
 PWD_DIR="$(pwd)"
 
 function install_mustrelyon(){
+echo -e "\033[36m开始升级ubuntu插件和安装依赖.....\033[0m"
 # 更新ubuntu源
 apt-get update -y
 
@@ -116,16 +117,15 @@ gcc --version
 g++ --version
 clang --version
 upx --version
+echo -e "\033[32m全部依赖安装完毕!\033[0m"
 }
 
 function main(){
 	if [[ -n "${BENDI_VERSION}" ]]; then
 		export BENDI_VERSION="1"
-		echo "开始升级ubuntu插件和安装依赖....."
 		install_mustrelyon
 		update_apt_source
 	else
-                echo "开始升级ubuntu插件和安装依赖....."
 		install_mustrelyon
 		update_apt_source
 	fi
