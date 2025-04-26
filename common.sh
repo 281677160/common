@@ -355,6 +355,7 @@ EOF
 
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
+rm -rf ${HOME_PATH}/package/wwan/driver
 }
 
 
