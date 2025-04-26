@@ -3,166 +3,138 @@
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
 
-ACTIONS_VERSION="1.0.7"
-
-function TIME() {
+ACTIONS_VERSION="2.3.0"
 Compte=$(date +%Y年%m月%d号%H时%M分)
-  [[ -z "$1" ]] && {
-    echo -ne " "
-    } || {
-    case $1 in
+function TIME() {
+  case $1 in
     r) export Color="\e[31m";;
     g) export Color="\e[32m";;
     b) export Color="\e[34m";;
     y) export Color="\e[33m";;
     z) export Color="\e[35m";;
     l) export Color="\e[36m";;
-    esac
-      [[ $# -lt 2 ]] && echo -e "\e[36m\e[0m ${1}" || {
-        echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
-      }
-    }
+  esac
+echo
+echo -e "\e[36m\e[0m${Color}${2}\e[0m"
 }
 
-function settings_variable() {
-cd ${GITHUB_WORKSPACE}
-sudo bash <(curl -fsSL https://raw.githubusercontent.com/clion007/openwrt-common/main/custom/first.sh)
+function Diy_update() {
+# 先下载脚本到临时文件
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/ubuntu.sh -o /tmp/ubuntu_tmp.sh
+  
+  # 检查下载是否成功
+  if [[ $? -ne 0 ]]; then
+    TIME r "脚本下载失败，请检测网络后再次尝试!"
+    exit 1
+  fi
+  
+  # 添加执行权限并运行脚本
+  chmod +x /tmp/ubuntu_tmp.sh
+  sudo bash /tmp/ubuntu_tmp.sh
+
+if [[ $? -ne 0 ]];then
+  TIME r "依赖安装失败，请检测网络后再次尝试!"
+  exit 1
+else
+  sudo sh -c 'echo openwrt > /etc/oprelyon'
+  TIME b "全部依赖安装完毕"
+fi
+
+# 确保使用gcc-13
+if [[ `gcc --version | grep -c "buntu 13"` -eq '0' ]]; then
+  sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+  sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
+  sudo apt-get install -y gcc-13 g++-13  
+  sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13  
+  gcc --version
+fi
 }
 
 function Diy_variable() {
 # 读取变量
-if [[ -n "${BENDI_VERSION}" ]]; then
-  export start_path="${GITHUB_WORKSPACE}/operates/${FOLDER_NAME}/relevance/settings.ini"
-else
-  export start_path="${GITHUB_WORKSPACE}/build/${FOLDER_NAME}/relevance/settings.ini"
-fi
-
-if [[ -n "${INPUTS_REPO_BRANCH}" ]]; then
-  SOURCE_CODE="${SOURCE_CODE}"
-  REPO_BRANCH="${INPUTS_REPO_BRANCH}"
-  CONFIG_FILE="$(echo "${INPUTS_CONFIG_FILE}" |cut -d"/" -f2)"
-  CPU_SELECTION="${INPUTS_CPU_SELECTION}"
-  INFORMATION_NOTICE="${INPUTS_INFORMATION_NOTICE}"
-  UPLOAD_FIRMWARE="${INPUTS_UPLOAD_FIRMWARE}"
-  UPLOAD_RELEASE="${INPUTS_UPLOAD_RELEASE}"
-  CACHEWRTBUILD_SWITCH="${INPUTS_CACHEWRTBUILD_SWITCH}"
-  UPDATE_FIRMWARE_ONLINE="${INPUTS_UPDATE_FIRMWARE_ONLINE}"
-  COMPILATION_INFORMATION="${INPUTS_COMPILATION_INFORMATION}"
-  RETAIN_MINUTE="${RETAIN_MINUTE}"
-  KEEP_LATEST="${KEEP_LATEST}"
-  echo "SSH_ACTION=${INPUTS_SSH_ACTION}" >> ${GITHUB_ENV}
-  WAREHOUSE_MAN="${GIT_REPOSITORY##*/}"
-else
-  SOURCE_CODE="${SOURCE_CODE}"
-  REPO_BRANCH="${REPO_BRANCH}"
-  CONFIG_FILE="$(echo "${CONFIG_FILE}" |cut -d"/" -f2)"
-  CPU_SELECTION="${CPU_SELECTION}"
-  INFORMATION_NOTICE="${INFORMATION_NOTICE}"
-  UPLOAD_FIRMWARE="${UPLOAD_FIRMWARE}"
-  UPLOAD_RELEASE="${UPLOAD_RELEASE}"
-  CACHEWRTBUILD_SWITCH="${CACHEWRTBUILD_SWITCH}"
-  UPDATE_FIRMWARE_ONLINE="${UPDATE_FIRMWARE_ONLINE}"
-  COMPILATION_INFORMATION="${COMPILATION_INFORMATION}"
-  RETAIN_MINUTE="${RETAIN_MINUTE}"
-  KEEP_LATEST="${KEEP_LATEST}"
-  WAREHOUSE_MAN="${GIT_REPOSITORY##*/}"
-fi
-
-if [[ -n "$(echo "${CPU_SELECTION}" |grep -i 'E5\|默认\|false')" ]]; then
-  CPU_SELECTION="false"
-elif [[ -n "$(echo "${CPU_SELECTION}" |grep '8370')" ]]; then
-  CPU_SELECTION="8370"
-elif [[ -n "$(echo "${CPU_SELECTION}" |grep '8272')" ]]; then
-  CPU_SELECTION="8272"
-elif [[ -n "$(echo "${CPU_SELECTION}" |grep '8171')" ]]; then
-  CPU_SELECTION="8171"
-else
-  CPU_SELECTION="false"
-fi
-
-if [[ "${INFORMATION_NOTICE}" =~ (关闭|false) ]]; then
-  INFORMATION_NOTICE="false"
-elif [[ -n "$(echo "${INFORMATION_NOTICE}" |grep -i 'TG\|telegram')" ]]; then
-  INFORMATION_NOTICE="TG"
-elif [[ -n "$(echo "${INFORMATION_NOTICE}" |grep -i 'PUSH\|pushplus')" ]]; then
-  INFORMATION_NOTICE="PUSH"
-else
-  INFORMATION_NOTICE="false"
-fi
-  
-cat >"${start_path}" <<-EOF
-SOURCE_CODE="${SOURCE_CODE}"
-REPO_BRANCH="${REPO_BRANCH}"
-CONFIG_FILE="seed/${CONFIG_FILE}"
-CPU_SELECTION="${CPU_SELECTION}"
-INFORMATION_NOTICE="${INFORMATION_NOTICE}"
-UPLOAD_FIRMWARE="${UPLOAD_FIRMWARE}"
-UPLOAD_RELEASE="${UPLOAD_RELEASE}"
-CACHEWRTBUILD_SWITCH="${CACHEWRTBUILD_SWITCH}"
-UPDATE_FIRMWARE_ONLINE="${UPDATE_FIRMWARE_ONLINE}"
-COMPILATION_INFORMATION="${COMPILATION_INFORMATION}"
-RETAIN_MINUTE="${RETAIN_MINUTE}"
-KEEP_LATEST="${KEEP_LATEST}"
-EOF
-
-if [[ -n "${BENDI_VERSION}" ]]; then
-  echo "PACKAGING_FIRMWARE_BENDI=${PACKAGING_FIRMWARE}" >> "${start_path}"
-  echo "MODIFY_CONFIGURATION=${MODIFY_CONFIGURATION}" >> "${start_path}"
-  echo "WSL_ROUTEPATH=${WSL_ROUTEPATH}" >> "${start_path}"
-fi
-
-chmod -R +x ${start_path} && source ${start_path}
-
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
   export REPO_URL="https://github.com/coolsnowwolf/lede"
   export SOURCE="Lede"
-  export SOURCE_OWNER="Lean's"
-  export LUCI_EDITION="18.06"
-  export DIY_WORK="${FOLDER_NAME}master"
+  export SOURCE_OWNER="Lean"
+  export LUCI_EDITION="23.05"
+  export DISTRIB_SOURCECODE="lede"
+  export GENE_PATH="${HOME_PATH}/package/base-files/luci2/bin/config_generate"
 ;;
 LIENOL)
   export REPO_URL="https://github.com/Lienol/openwrt"
   export SOURCE="Lienol"
-  export SOURCE_OWNER="Lienol's"
+  export SOURCE_OWNER="Lienol"
+  export DISTRIB_SOURCECODE="lienol"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 IMMORTALWRT)
-  if [[ "${REPO_BRANCH}" == "mt798x" ]]; then
-    export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
-    export SOURCE="Immortalwrt"
-    export SOURCE_OWNER="hanwckf's"
-    export LUCI_EDITION="mt798x"
-    export DIY_WORK="hanwckf2102"
-    export REPO_BRANCH="openwrt-21.02"
-  else
-    export REPO_URL="https://github.com/immortalwrt/immortalwrt"
-    export SOURCE="Immortalwrt"
-    export SOURCE_OWNER="ctcgfw's"
-    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-    export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
-  fi
+  export REPO_URL="https://github.com/immortalwrt/immortalwrt"
+  export SOURCE="Immortalwrt"
+  export SOURCE_OWNER="ctcgfw"
+  export DISTRIB_SOURCECODE="immortalwrt"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 XWRT)
   export REPO_URL="https://github.com/x-wrt/x-wrt"
   export SOURCE="Xwrt"
-  export SOURCE_OWNER="ptpt52's"
-  export LUCI_EDITION="${REPO_BRANCH}"
-  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  export SOURCE_OWNER="ptpt52"
+  export DISTRIB_SOURCECODE="xwrt"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 OFFICIAL)
   export REPO_URL="https://github.com/openwrt/openwrt"
   export SOURCE="Official"
-  export SOURCE_OWNER="openwrt's"
+  export SOURCE_OWNER="openwrt"
+  export DISTRIB_SOURCECODE="official"
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+;;
+MT798X)
+  if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
+    export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
+    export SOURCE="Mt798x"
+    export SOURCE_OWNER="hanwckf"
+    export REPO_BRANCH="openwrt-21.02"
+    export DISTRIB_SOURCECODE="immortalwrt"
+    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  else
+    export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
+    export SOURCE="Mt798x"
+    export SOURCE_OWNER="padavanonly"
+    if [[ "${REPO_BRANCH}" == "2410" ]]; then
+      export LUCI_EDITION="24.10"
+    else
+      export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    fi
+    export DISTRIB_SOURCECODE="immortalwrt"
+    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  fi
 ;;
 *)
-  TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL"
+  if [[ -n "${BENDI_VERSION}" ]]; then
+    TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
+  else
+    TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL、MT798X"
+  fi
   exit 1
 ;;
 esac
+
+export FILES_PATH="${HOME_PATH}/package/base-files/files/etc/shadow"
+export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
+export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
+export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
+export CLEAR_PATH="/tmp/Clear"
+export Upgrade_Date="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
+export Gujian_Date="$(date +%m.%d)"
+export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
+export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
 
 export DIY_PART_SH="diy-part.sh"
 echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
@@ -184,21 +156,23 @@ echo "WAREHOUSE_MAN=${WAREHOUSE_MAN}" >> ${GITHUB_ENV}
 echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
 echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
 echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
+echo "DISTRIB_SOURCECODE=${DISTRIB_SOURCECODE}" >> ${GITHUB_ENV}
 echo "DIY_WORK=${DIY_WORK}" >> ${GITHUB_ENV}
 echo "svn=${GITHUB_WORKSPACE}/openwrt/build/common/custom/replace_file.sh" >> ${GITHUB_ENV}
 echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}" >> ${GITHUB_ENV}
-echo "FILES_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files" >> ${GITHUB_ENV}
-echo "REPAIR_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/openwrt_release" >> ${GITHUB_ENV}
-echo "DELETE=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/deletefile" >> ${GITHUB_ENV}
-echo "DEFAULT_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/etc/default-setting" >> ${GITHUB_ENV}
-echo "KEEPD_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential" >> ${GITHUB_ENV}
-echo "GENE_PATH=${GITHUB_WORKSPACE}/openwrt/package/base-files/files/bin/config_generate" >> ${GITHUB_ENV}
-echo "CLEAR_PATH=${GITHUB_WORKSPACE}/openwrt/Clear" >> ${GITHUB_ENV}
-echo "Upgrade_Date=`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`" >> ${GITHUB_ENV}
+echo "FILES_PATH=${FILES_PATH}" >> ${GITHUB_ENV}
+echo "DELETE=${DELETE}" >> ${GITHUB_ENV}
+echo "DEFAULT_PATH=${DEFAULT_PATH}" >> ${GITHUB_ENV}
+echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
+echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
+echo "CLEAR_PATH=${CLEAR_PATH}" >> ${GITHUB_ENV}
+echo "Upgrade_Date=${Upgrade_Date}" >> ${GITHUB_ENV}
 echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
 echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
 echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
-echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
+echo "Gujian_Date=${Gujian_Date}" >> ${GITHUB_ENV}
+echo "LICENSES_DOC=${HOME_PATH}/LICENSES/doc" >> ${GITHUB_ENV}
+echo "RAW_WEB=${RAW_WEB}" >> ${GITHUB_ENV}
 if [[ -n "${BENDI_VERSION}" ]]; then
   echo "PACKAGING_FIRMWARE_BENDI=${PACKAGING_FIRMWARE}" >> ${GITHUB_ENV}
   echo "MODIFY_CONFIGURATION=${MODIFY_CONFIGURATION}" >> ${GITHUB_ENV}
@@ -226,6 +200,179 @@ else
   GIT_BUILD="build/${FOLDER_NAME}"
 fi
 
+# 定义文件路径变量
+export FILES_PATH="${HOME_PATH}/package/base-files/files/etc/shadow"
+export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
+export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
+export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
+export CLEAR_PATH="/tmp/Clear"
+export Upgrade_Date="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
+export Gujian_Date="$(date +%m.%d)"
+export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
+export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
+
+# 检查自定义文件是否存在
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${CONFIG_FILE}名称的配置文件],请在[${FOLDER_NAME}/seed]文件夹内补齐"
+  echo
+  exit 1
+fi
+if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${DIY_PART_SH}" 2>/dev/null)" ]; then
+  TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${DIY_PART_SH}名称的自定义设置文件],请在[${FOLDER_NAME}]文件夹内补齐"
+  echo
+  exit 1
+fi
+
+case "${SOURCE_CODE}" in
+COOLSNOWWOLF)
+  export REPO_URL="https://github.com/coolsnowwolf/lede"
+  export SOURCE="Lede"
+  export SOURCE_OWNER="Lean"
+  export LUCI_EDITION="23.05"
+  export DISTRIB_SOURCECODE="lede"
+  export DIY_WORK="${FOLDER_NAME}master"
+;;
+LIENOL)
+  export REPO_URL="https://github.com/Lienol/openwrt"
+  export SOURCE="Lienol"
+  export SOURCE_OWNER="Lienol"
+  export DISTRIB_SOURCECODE="lienol"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+;;
+IMMORTALWRT)
+  export REPO_URL="https://github.com/immortalwrt/immortalwrt"
+  export SOURCE="Immortalwrt"
+  export SOURCE_OWNER="ctcgfw"
+  export DISTRIB_SOURCECODE="immortalwrt"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+;;
+XWRT)
+  export REPO_URL="https://github.com/x-wrt/x-wrt"
+  export SOURCE="Xwrt"
+  export SOURCE_OWNER="ptpt52"
+  export DISTRIB_SOURCECODE="xwrt"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+;;
+OFFICIAL)
+  export REPO_URL="https://github.com/openwrt/openwrt"
+  export SOURCE="Official"
+  export SOURCE_OWNER="openwrt"
+  export DISTRIB_SOURCECODE="official"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+;;
+MT798X)
+  if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
+    export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
+    export SOURCE="Mt798x"
+    export SOURCE_OWNER="hanwckf"
+    export REPO_BRANCH="openwrt-21.02"
+    export DISTRIB_SOURCECODE="immortalwrt"
+    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    export DIY_WORK="hanwckf2102"
+  else
+    export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
+    export SOURCE="Mt798x"
+    export SOURCE_OWNER="padavanonly"
+    if [[ "${REPO_BRANCH}" == "2410" ]]; then
+      export LUCI_EDITION="24.10"
+    else
+      export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    fi
+    export DISTRIB_SOURCECODE="immortalwrt"
+    export DIY_WORK="${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")"
+  fi
+;;
+*)
+  if [[ -n "${BENDI_VERSION}" ]]; then
+    TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
+  else
+    TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL、MT798X"
+  fi
+  exit 1
+;;
+esac
+
+export DIY_PART_SH="diy-part.sh"
+echo "DIY_PART_SH=${DIY_PART_SH}" >> ${GITHUB_ENV}
+echo "HOME_PATH=${GITHUB_WORKSPACE}/openwrt" >> ${GITHUB_ENV}
+echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
+echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
+echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
+echo "CONFIG_FILE=${CONFIG_FILE}" >> ${GITHUB_ENV}
+echo "CPU_SELECTION=${CPU_SELECTION}" >> ${GITHUB_ENV}
+echo "INFORMATION_NOTICE=${INFORMATION_NOTICE}" >> ${GITHUB_ENV}
+echo "UPLOAD_FIRMWARE=${UPLOAD_FIRMWARE}" >> ${GITHUB_ENV}
+echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> ${GITHUB_ENV}
+echo "CACHEWRTBUILD_SWITCH=${CACHEWRTBUILD_SWITCH}" >> ${GITHUB_ENV}
+echo "UPDATE_FIRMWARE_ONLINE=${UPDATE_FIRMWARE_ONLINE}" >> ${GITHUB_ENV}
+echo "COMPILATION_INFORMATION=${COMPILATION_INFORMATION}" >> ${GITHUB_ENV}
+echo "RETAIN_MINUTE=${RETAIN_MINUTE}" >> ${GITHUB_ENV}
+echo "KEEP_LATEST=${KEEP_LATEST}" >> ${GITHUB_ENV}
+echo "WAREHOUSE_MAN=${WAREHOUSE_MAN}" >> ${GITHUB_ENV}
+echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
+echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
+echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
+echo "DISTRIB_SOURCECODE=${DISTRIB_SOURCECODE}" >> ${GITHUB_ENV}
+echo "DIY_WORK=${DIY_WORK}" >> ${GITHUB_ENV}
+echo "svn=${GITHUB_WORKSPACE}/openwrt/build/common/custom/replace_file.sh" >> ${GITHUB_ENV}
+echo "BUILD_PATH=${GITHUB_WORKSPACE}/openwrt/build/${FOLDER_NAME}" >> ${GITHUB_ENV}
+echo "FILES_PATH=${FILES_PATH}" >> ${GITHUB_ENV}
+echo "DELETE=${DELETE}" >> ${GITHUB_ENV}
+echo "DEFAULT_PATH=${DEFAULT_PATH}" >> ${GITHUB_ENV}
+echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
+echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
+echo "CLEAR_PATH=${CLEAR_PATH}" >> ${GITHUB_ENV}
+echo "Upgrade_Date=${Upgrade_Date}" >> ${GITHUB_ENV}
+echo "Firmware_Date=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
+echo "Compte_Date=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
+echo "Tongzhi_Date=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
+echo "Gujian_Date=${Gujian_Date}" >> ${GITHUB_ENV}
+echo "LICENSES_DOC=${HOME_PATH}/LICENSES/doc" >> ${GITHUB_ENV}
+echo "RAW_WEB=${RAW_WEB}" >> ${GITHUB_ENV}
+if [[ -n "${BENDI_VERSION}" ]]; then
+  echo "PACKAGING_FIRMWARE_BENDI=${PACKAGING_FIRMWARE}" >> ${GITHUB_ENV}
+  echo "MODIFY_CONFIGURATION=${MODIFY_CONFIGURATION}" >> ${GITHUB_ENV}
+  echo "WSL_ROUTEPATH=${WSL_ROUTEPATH}" >> ${GITHUB_ENV}
+fi
+
+# 修改本地文件变量
+if [[ -n "${BENDI_VERSION}" ]]; then
+  GIT_BUILD="operates/${FOLDER_NAME}"
+  sed -i 's?=?=\"?g' "${GITHUB_ENV}"
+  sed -i '/=/ s/$/&\"/' "${GITHUB_ENV}"
+  source ${GITHUB_ENV}
+  # 升级gcc
+  if [[ `gcc --version |grep -c "buntu 13"` -eq '0' ]]; then
+    echo "安装使用gcc13版本,如若提示enter,请按回车键继续"
+    sleep 5
+    sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
+    sudo apt-get install -y gcc-13
+    sudo apt-get install -y g++-13
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 60 --slave /usr/bin/g++ g++ /usr/bin/g++-13
+    gcc --version
+  fi
+else
+  GIT_BUILD="build/${FOLDER_NAME}"
+fi
+
+# 定义文件路径变量
+export FILES_PATH="${HOME_PATH}/package/base-files/files/etc/shadow"
+export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
+export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
+export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
+export CLEAR_PATH="/tmp/Clear"
+export Upgrade_Date="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
+export Gujian_Date="$(date +%m.%d)"
+export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
+export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
+
 # 检查自定义文件是否存在
 if [ -z "$(ls -A "${GITHUB_WORKSPACE}/${GIT_BUILD}/${CONFIG_FILE}" 2>/dev/null)" ]; then
   TIME r "错误提示：编译脚本的[${FOLDER_NAME}文件夹内缺少${CONFIG_FILE}名称的配置文件],请在[${FOLDER_NAME}/seed]文件夹内补齐"
@@ -242,7 +389,7 @@ fi
 
 function Diy_update() {
 # 先下载脚本到临时文件
-  curl -fsSL https://raw.githubusercontent.com/clion007/openwrt-common/main/custom/ubuntu.sh -o /tmp/ubuntu_tmp.sh
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/ubuntu.sh -o /tmp/ubuntu_tmp.sh
   
   # 检查下载是否成功
   if [[ $? -ne 0 ]]; then
@@ -261,6 +408,8 @@ else
   sudo sh -c 'echo openwrt > /etc/oprelyon'
   TIME b "全部依赖安装完毕"
 fi
+
+# 确保使用gcc-13
 if [[ `gcc --version | grep -c "buntu 13"` -eq '0' ]]; then
   sudo add-apt-repository ppa:ubuntu-toolchain-r/test
   sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
@@ -317,12 +466,18 @@ fi
 
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
+TIME y "正在执行：下载和整理应用,请耐心等候..."
 cd ${HOME_PATH}
 [[ -d "${HOME_PATH}/doc" ]] && rm -rf ${HOME_PATH}/doc
 [[ ! -d "${HOME_PATH}/LICENSES/doc" ]] && mkdir -p "${HOME_PATH}/LICENSES/doc"
 [[ ! -d "${HOME_PATH}/build_logo" ]] && mkdir -p "${HOME_PATH}/build_logo"
 
 git pull
+
+# 获取官方feeds配置
+if ! curl -fsSL "${RAW_WEB}" -o "${LICENSES_DOC}/feeds.conf.default"; then
+  wget -q ${RAW_WEB} -O ${LICENSES_DOC}/feeds.conf.default
+fi
 
 sed -i '/281677160/d; /helloworld/d; /passwall/d; /OpenClash/d' "feeds.conf.default"
 cat feeds.conf.default|awk '!/^#/'|awk '!/^$/'|awk '!a[$1" "$2]++{print}' >uniq.conf
@@ -336,21 +491,145 @@ src-git passwall3 https://github.com/xiaorouji/openwrt-passwall-packages;main
 EOF
 ./scripts/feeds update -a
 
-if [[ -f "${HOME_PATH}/feeds/luci/modules/luci-mod-system/root/usr/share/luci/menu.d/luci-mod-system.json" ]]; then
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme2" >> "feeds.conf.default"
+# 判断主题分支
+srcdir="$(mktemp -d)"
+if grep -q "src-git-full" "${LICENSES_DOC}/feeds.conf.default"; then
+  SRC_LIANJIE="$(grep -E '^src-git-full luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/src-git-full luci (https?:\/\/[^;]+).*/\1/')"
+  a=$(grep -E '^src-git-full luci https' "feeds.conf.default")
+  if [[ -n "$(echo "$a" |grep -E '\;')" ]]; then
+    SRC_FENZHIHAO="$(grep -E '^src-git-full luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+  fi
 else
-  echo "src-git danshui2 https://github.com/281677160/openwrt-package.git;Theme1" >> "feeds.conf.default"
+ SRC_LIANJIE="$(grep -E '^src-git luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
+  a=$(grep -E '^src-git luci https' "feeds.conf.default")
+  if [[ -n "$(echo "$a" |grep -E '\;')" ]]; then
+    SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+  fi
 fi
-z="*luci-theme-argon*,*luci-app-argon-config*,*luci-theme-Butterfly*,*luci-theme-netgear*,*luci-theme-atmaterial*, \
+if [[ -n "${SRC_FENZHIHAO}" ]]; then
+  git clone --single-branch --depth=1 --branch=${SRC_FENZHIHAO} ${SRC_LIANJIE} ${srcdir}
+else
+  git clone --depth=1 ${SRC_LIANJIE} ${srcdir}
+fi
+if [[ -d "${srcdir}/modules/luci-mod-system" ]]; then
+  THEME_BRANCH="Theme2"
+  rm -rf ${srcdir}
+  svn_co https://github.com/281677160/luci-theme-argon/tree/master ${HOME_PATH}/package/luci-theme-argon
+  echo "已添加 master 分支的 argon 主题"
+else
+  THEME_BRANCH="Theme1"
+  rm -rf ${srcdir}
+  svn_co https://github.com/281677160/luci-theme-argon/tree/18.06 ${HOME_PATH}/package/luci-theme-argon
+  echo "已添加 18.06 分支的 argon 主题"
+fi
+
+# 添加自定义软件源
+echo "# 添加主要软件源" >> ${HOME_PATH}/feeds.conf.default
+echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
+
+# 根据LUCI版本添加对应的主题源
+echo "# 添加主题源，根据LUCI版本使用不同的主题分支" >> ${HOME_PATH}/feeds.conf.default
+echo "src-git dstheme https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
+
+# 添加OpenClash源
+if [[ "${OpenClash_branch}" == "1" ]]; then
+  echo "# 添加OpenClash主分支" >> ${HOME_PATH}/feeds.conf.default
+  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> ${HOME_PATH}/feeds.conf.default
+elif [[ "${OpenClash_branch}" == "2" ]]; then
+  echo "# 添加OpenClash开发分支" >> ${HOME_PATH}/feeds.conf.default
+  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> ${HOME_PATH}/feeds.conf.default
+fi
+
+# 更新feeds
+cd ${HOME_PATH}
+./scripts/feeds clean
+./scripts/feeds update -a > /dev/null 2>&1
+
+# 更新feeds后清理重复的主题和插件，确保使用我们自定义的版本
+cd ${HOME_PATH}
+echo "正在清理重复的主题和插件..."
+
+# 定义需要清理的主题和插件列表
+z="luci-theme-argon,luci-app-argon-config,luci-theme-Butterfly,luci-theme-netgear,luci-theme-atmaterial, \
 luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
 luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
-luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-wol,luci-app-openclash, \
+luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-openclash, \
 luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
-luci-app-ssr-plus,*luci-app-passwall*,luci-app-vssr,lua-maxminddb,v2dat,v2ray-geodata"
+luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,shadowsocksr-libev,v2dat,v2ray-geodata, \
+luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,luci-app-alist,alist"
+
+# 转换为数组并遍历清理
 t=(${z//,/ })
-for x in ${t[@]}; do \
-  find . -type d -name "${x}" |grep -v 'danshui\|freifunk\|helloworld\|passwall3' |xargs -i rm -rf {}; \
+for x in "${t[@]}"; do
+    # 查找并删除重复的主题和插件，但保留我们自定义的版本
+    # -prune -o 表示排除这些路径，不在这些路径中查找
+    find ./feeds ./package \
+        -path './feeds/danshui' -prune -o \
+        -path './feeds/dstheme' -prune -o \
+        -path './feeds/OpenClash' -prune -o \
+        -path './package/luci-theme-argon' -prune -o \
+        -name "$x" -type d -exec rm -rf {} +
 done
+
+echo "主题和插件清理完成，已保留自定义版本"
+
+# 根据主题分支增加对应的中文语言包和默认设置
+echo "正在安装默认设置和中文语言包..."
+
+# 检查是否已存在default-settings，如果不存在则根据主题分支安装对应版本
+if [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)" ]]; then
+  if [[ "${THEME_BRANCH}" == "Theme2" ]]; then
+    # 安装适用于新版LUCI的default-settings
+    echo "安装适用于新版LUCI的default-settings..."
+    svn_co https://github.com/281677160/common/tree/main/Share/default-settings ${HOME_PATH}/package/default-settings
+  elif [[ "${THEME_BRANCH}" == "Theme1" ]]; then
+    # 安装适用于旧版LUCI的default-settings
+    echo "安装适用于旧版LUCI的default-settings..."
+    svn_co https://github.com/281677160/common/tree/main/Share/default-setting ${HOME_PATH}/package/default-settings
+  fi
+  
+  # 修改target.mk，确保使用openssl而非wolfssl
+  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
+    echo "将libustream-wolfssl替换为libustream-openssl..."
+    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+  fi
+  
+  # 确保使用dnsmasq-full而非dnsmasq
+  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
+    echo "将dnsmasq替换为dnsmasq-full..."
+    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+  fi
+  
+  # 添加ca-bundle包
+  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
+    echo "添加ca-bundle包..."
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
+  fi
+  
+  # 添加default-settings和必要的luci包
+  if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
+    echo "添加default-settings和必要的luci包..."
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-base luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+  fi
+else
+  echo "default-settings已存在，跳过安装..."
+fi
+
+# 最后检查确保default-settings已添加到target.mk
+if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
+  echo "确保default-settings已添加到target.mk..."
+  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci ?g' "${HOME_PATH}/include/target.mk"
+fi
+
+# zzz-default-settings文件
+ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
+export ZZZ_PATH="${ZZZ_PATH}"
+if [[ -n "${ZZZ_PATH}" ]]; then
+  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+  sed -i '/exit 0$/d' "${ZZZ_PATH}"
+  sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
+  grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
+fi
 
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
