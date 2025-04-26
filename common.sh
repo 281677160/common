@@ -516,11 +516,31 @@ if [[ -d "${srcdir}/modules/luci-mod-system" ]]; then
   rm -rf ${srcdir}
   svn_co https://github.com/281677160/luci-theme-argon/tree/master ${HOME_PATH}/package/luci-theme-argon
   echo "已添加 master 分支的 argon 主题"
+  # 复制argon主题背景图片
+  if [[ -d "${GITHUB_WORKSPACE}/openwrt-builder/source/img" ]]; then
+    mkdir -p ${HOME_PATH}/package/luci-theme-argon/htdocs/luci-static/argon/background
+    cp -f ${GITHUB_WORKSPACE}/openwrt-builder/source/img/* ${HOME_PATH}/package/luci-theme-argon/htdocs/luci-static/argon/background/ 2>/dev/null
+    echo "已复制本地项目的 argon 主题背景图片"
+  elif [[ -d "${GITHUB_WORKSPACE}/openwrt-common/Share/argon/jpg" ]]; then
+    mkdir -p ${HOME_PATH}/package/luci-theme-argon/htdocs/luci-static/argon/background
+    cp -f ${GITHUB_WORKSPACE}/openwrt-common/Share/argon/jpg/* ${HOME_PATH}/package/luci-theme-argon/htdocs/luci-static/argon/background/ 2>/dev/null
+    echo "已复制默认的 argon 主题背景图片"
+  fi
 else
   THEME_BRANCH="Theme1"
   rm -rf ${srcdir}
   svn_co https://github.com/281677160/luci-theme-argon/tree/18.06 ${HOME_PATH}/package/luci-theme-argon
   echo "已添加 18.06 分支的 argon 主题"
+  # 复制argon主题背景图片
+  if [[ -d "${GITHUB_WORKSPACE}/openwrt-builder/source/img" ]]; then
+    mkdir -p ${HOME_PATH}/package/luci-theme-argon/htdocs/luci-static/argon/background
+    cp -f ${GITHUB_WORKSPACE}/openwrt-builder/source/img/* ${HOME_PATH}/package/luci-theme-argon/htdocs/luci-static/argon/background/ 2>/dev/null
+    echo "已复制本地项目的 argon 主题背景图片"
+  elif [[ -d "${GITHUB_WORKSPACE}/openwrt-common/Share/argon/jpg" ]]; then
+    mkdir -p ${HOME_PATH}/package/luci-theme-argon/htdocs/luci-static/argon/background
+    cp -f ${GITHUB_WORKSPACE}/openwrt-common/Share/argon/jpg/* ${HOME_PATH}/package/luci-theme-argon/htdocs/luci-static/argon/background/ 2>/dev/null
+    echo "已复制默认的 argon 主题背景图片"
+  fi
 fi
 
 # 添加自定义软件源
@@ -550,7 +570,7 @@ cd ${HOME_PATH}
 echo "正在清理重复的主题和插件..."
 
 # 定义需要清理的主题和插件列表
-z="luci-theme-argon,luci-app-argon-config,luci-theme-Butterfly,luci-theme-netgear,luci-theme-atmaterial, \
+z="luci-theme-Butterfly,luci-theme-netgear,luci-theme-atmaterial, \
 luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
 luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
 luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-openclash, \
@@ -1639,7 +1659,13 @@ fi
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
-  cp -rf ${GITHUB_WORKSPACE}/source/img/* ${HOME_PATH}/files/www/luci-static/argon/background/
+  if [[ -d "${GITHUB_WORKSPACE}/openwrt-builder/source/img" ]]; then
+    cp -rf ${GITHUB_WORKSPACE}/openwrt-builder/source/img/* ${HOME_PATH}/files/www/luci-static/argon/background/
+    echo "已复制本地项目的 argon 主题背景图片到 files 目录"
+  elif [[ -d "${GITHUB_WORKSPACE}/source/img" ]]; then
+    cp -rf ${GITHUB_WORKSPACE}/source/img/* ${HOME_PATH}/files/www/luci-static/argon/background/
+    echo "已复制 source/img 目录的 argon 主题背景图片"
+  fi
   if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon_new=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-theme-argon_new=y/# CONFIG_PACKAGE_luci-theme-argon_new is not set/g' ${HOME_PATH}/.config
     echo "TIME r \"您同时选择luci-theme-argon和luci-theme-argon_new，插件有冲突，相同功能插件只能二选一，已删除luci-theme-argon_new\"" >>CHONGTU
