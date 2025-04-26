@@ -6,38 +6,39 @@
 
 function Diy_Part1() {
 	find . -type d -name 'luci-app-autoupdate' | xargs -i rm -rf {}
-	git clone -b main https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate 2>/dev/null
-	if [[ `grep -c "luci-app-autoupdate" ${HOME_PATH}/include/target.mk` -eq '0' ]]; then
-		sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
-	fi
-	if [[ -d "${HOME_PATH}/package/luci-app-autoupdate" ]]; then
-		echo "增加定时更新固件的插件完成"
+        if git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/luci-app-autoupdate $HOME_PATH/package/luci-app-autoupdate; then
+        	if ! grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
+			sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=luci-app-autoupdate luci-app-ttyd ?g' ${HOME_PATH}/include/target.mk
+		fi
+		echo "增加定时更新固件的插件下载完成"
 	else
-		echo "插件源码下载失败"
+		echo "增加定时更新固件的插件下载失败"
 	fi
 }
 
 
 function Diy_Part2() {
 	export Update_tag="Update-${TARGET_BOARD}"
-	export In_Firmware_Info="$FILES_PATH/etc/openwrt_update"
-	export Github_API1="https://download.fastgit.org/${GIT_REPOSITORY}/releases/download/${Update_tag}/zzz_api"
-	export Github_API2="https://mirror.ghproxy.com/https://github.com/${GIT_REPOSITORY}/releases/download/${Update_tag}/zzz_api"
+	export In_Firmware_Info="${HOME_PATH}/package/base-files/files/etc/openwrt_update"
+	export Github_API1="https://ghfast.top/${GITHUB_LINK}/releases/download/${Update_tag}/zzz_api"
+	export Github_API2="${GITHUB_LINK}/releases/download/${Update_tag}/zzz_api"
 	export API_PATH="/tmp/Downloads/zzz_api"
 	export Release_download1="${GITHUB_LINK}/releases/download/${Update_tag}"
-	export Release_download2="https://mirror.ghproxy.com/${GITHUB_LINK}/releases/download/${Update_tag}"
+	export Release_download2="https://ghfast.top/${GITHUB_LINK}/releases/download/${Update_tag}"
 	export Github_Release="${GITHUB_LINK}/releases/tag/${Update_tag}"
-	
-	if [[ "${TARGET_PROFILE}" =~ (phicomm_k3|phicomm-k3) ]]; then
+        if ! curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -o replace; then
+		wget -q https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -O replace
+  	fi
+	if [[ "${TARGET_PROFILE}" == *"k3"* ]]; then
 		export TARGET_PROFILE_ER="phicomm-k3"
-	elif [[ "${TARGET_PROFILE}" =~ (k2p|phicomm_k2p|phicomm-k2p) ]]; then
+	elif [[ "${TARGET_PROFILE}" == *"k2p"* ]]; then
 		export TARGET_PROFILE_ER="phicomm-k2p"
-	elif [[ "${TARGET_PROFILE}" =~ (xiaomi_mi-router-3g-v2|xiaomi_mir3g_v2) ]]; then
+	elif [[ "$TARGET_PROFILE" == *xiaomi* && "$TARGET_PROFILE" == *3g* && "$TARGET_PROFILE" == *v2* ]]; then
 		export TARGET_PROFILE_ER="xiaomi_mir3g-v2"
-	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3g" ]]; then
+	elif [[ "$TARGET_PROFILE" == *xiaomi* && "$TARGET_PROFILE" == *3g* ]]; then
 		export TARGET_PROFILE_ER="xiaomi_mir3g"
-	elif [[ "${TARGET_PROFILE}" == "xiaomi_mi-router-3-pro" ]]; then
-		export TARGET_PROFILE_ER="xiaomi_mir3p"
+ 	elif [[ "$TARGET_PROFILE" == *xiaomi* && "$TARGET_PROFILE" == *3* && "$TARGET_PROFILE" == *pro* ]]; then
+		export TARGET_PROFILE_ER="xiaomi_mi3pro"
 	else
 		export TARGET_PROFILE_ER="${TARGET_PROFILE}"
 	fi
@@ -119,7 +120,7 @@ Release_download1="${Release_download1}"
 Release_download2="${Release_download2}"
 EOF
 
-	cat ${HOME_PATH}/build/common/autoupdate/replace >> ${In_Firmware_Info}
+	cat replace >> ${In_Firmware_Info}
 	sudo chmod +x ${In_Firmware_Info}
 }
 
