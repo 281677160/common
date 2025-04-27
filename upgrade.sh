@@ -80,7 +80,6 @@ function Diy_Part2() {
 	fi
 	
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}"
-	export LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
 	
 	if [[ "${TARGET_BOARD}" == "x86" ]]; then
 		echo "AutoBuild_Uefi=${AutoBuild_Uefi}" >> ${GITHUB_ENV}
