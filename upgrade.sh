@@ -2,7 +2,7 @@
 # https://github.com/Hyy2001X/AutoBuild-Actions
 # AutoBuild Module by Hyy2001
 # AutoBuild Functions
-
+Version=V8.0
 
 function Diy_Part1() {
 	find . -type d -name 'luci-app-autoupdate' | xargs -i rm -rf {}
@@ -75,10 +75,6 @@ function Diy_Part2() {
 	;;
 	esac
 	
-	if [[ -f "${HOME_PATH}/package/luci-app-autoupdate/root/usr/bin/AutoUpdate" ]]; then
-		export AutoUpdate_Version=$(grep -Eo "Version=V[0-9.]+" "${HOME_PATH}/package/luci-app-autoupdate/root/usr/bin/AutoUpdate" |grep -Eo [0-9.]+)
-	fi
-	
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}"
 	
 	if [[ "${TARGET_BOARD}" == "x86" ]]; then
@@ -90,7 +86,7 @@ function Diy_Part2() {
 	
 	echo "Update_tag=${Update_tag}" >> ${GITHUB_ENV}
 	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
-	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
+	echo "AutoUpdate_Version=${Version}" >> ${GITHUB_ENV}
 	echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
 	echo "Github_Release=${Github_Release}" >> ${GITHUB_ENV}
 
