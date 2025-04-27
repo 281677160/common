@@ -84,7 +84,6 @@ function Diy_Part2() {
 		echo "AutoBuild_Firmware=${AutoBuild_Firmware}" >> ${GITHUB_ENV}
 	fi
 	
-	echo "Update_tag=${Update_tag}" >> ${GITHUB_ENV}
 	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
 	echo "AutoUpdate_Version=${Version}" >> ${GITHUB_ENV}
 	echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
@@ -113,17 +112,16 @@ EOF
 function Diy_Part3() {
 	BIN_PATH="${HOME_PATH}/bin/Firmware"
 	echo "BIN_PATH=${BIN_PATH}" >> ${GITHUB_ENV}
- 	[[ -f "${GITHUB_ENV}" ]] && source ${GITHUB_ENV}
 	[[ ! -d "${BIN_PATH}" ]] && mkdir -p "${BIN_PATH}" || rm -rf "${BIN_PATH}"/*
 	
 	cd "${FIRMWARE_PATH}"
-	if [[ `ls -1 |grep -c ".img"` -ge '1' ]] && [[ `ls -1 |grep -c ".img.gz"` -eq '0' ]]; then
+ 	if [[ -n "$(ls -1 | grep -E '.img')" ]] && [[ -z "$(ls -1 | grep -E '.img.gz')" ]]; then
 		gzip -f9n *.img
 	fi
 	
 	case "${TARGET_BOARD}" in
 	x86)
-		if [[ `ls -1 | grep -c "efi"` -ge '1' ]]; then
+		if [[ -n "$(ls -1 | grep -E 'efi')" ]]; then
 			EFI_ZHONGZHUAN="$(ls -1 |grep -Eo ".*squashfs.*efi.*img.gz")"
 			if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
 		  		EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} |cut -c1-3)"
@@ -136,7 +134,7 @@ function Diy_Part3() {
 			echo "没有uefi格式固件"
 		fi
 		
-		if [[ `ls -1 | grep -c "squashfs"` -ge '1' ]]; then
+  		if [[ -n "$(ls -1 | grep -E 'squashfs')" ]]; then
 			LEGA_ZHONGZHUAN="$(ls -1 |grep -Eo ".*squashfs.*img.gz" |grep -v ".vm\|.vb\|.vh\|.qco\|efi\|root")"
 			if [[ -f "${LEGA_ZHONGZHUAN}" ]]; then
 				LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} |cut -c1-3)"
@@ -150,7 +148,7 @@ function Diy_Part3() {
 		fi
 	;;
 	*)
-		if [[ `ls -1 | grep -c "sysupgrade"` -ge '1' ]]; then
+  		if [[ -n "$(ls -1 | grep -E 'sysupgrade')" ]]; then
 			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*sysupgrade.*${Firmware_SFX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
 		elif [[ `ls -1 | grep -c "squashfs"` -ge '1' ]]; then
 			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*squashfs.*${Firmware_SFX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
@@ -166,5 +164,7 @@ function Diy_Part3() {
 		fi
 	;;
 	esac
+	cd ${BIN_PATH}
+ 	ls -1
 	cd ${HOME_PATH}
 }
