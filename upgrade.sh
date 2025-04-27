@@ -18,14 +18,10 @@ function Diy_Part1() {
 
 
 function Diy_Part2() {
-	export Update_tag="Update-${TARGET_BOARD}"
 	export In_Firmware_Info="${HOME_PATH}/package/base-files/files/etc/openwrt_update"
-	export Github_API1="https://ghfast.top/${GITHUB_LINK}/releases/download/${Update_tag}/zzz_api"
-	export Github_API2="${GITHUB_LINK}/releases/download/${Update_tag}/zzz_api"
-	export API_PATH="/tmp/Downloads/zzz_api"
-	export Release_download1="${GITHUB_LINK}/releases/download/${Update_tag}"
-	export Release_download2="https://ghfast.top/${GITHUB_LINK}/releases/download/${Update_tag}"
-	export Github_Release="${GITHUB_LINK}/releases/tag/${Update_tag}"
+	export Release_download1="https://ghfast.top/${GITHUB_LINK}/releases/download/Update-${TARGET_BOARD}"
+	export Release_download2="${GITHUB_LINK}/releases/download/Update-${TARGET_BOARD}"
+	export Github_Release="${GITHUB_LINK}/releases/tag/Update-${TARGET_BOARD}"
         if ! curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -o replace; then
 		wget -q https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -O replace
   	fi
@@ -85,7 +81,6 @@ function Diy_Part2() {
 	
 	export Openwrt_Version="${SOURCE}-${TARGET_PROFILE_ER}-${Upgrade_Date}"
 	export LOCAL_FIRMW="${LUCI_EDITION}-${SOURCE}"
-	export CLOUD_CHAZHAO="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}"
 	
 	if [[ "${TARGET_BOARD}" == "x86" ]]; then
 		echo "AutoBuild_Uefi=${AutoBuild_Uefi}" >> ${GITHUB_ENV}
@@ -104,17 +99,13 @@ function Diy_Part2() {
 cat >"${In_Firmware_Info}" <<-EOF
 GITHUB_LINK=${GITHUB_LINK}
 CURRENT_Version=${Openwrt_Version}
-SOURCE="${SOURCE}"
 LUCI_EDITION="${LUCI_EDITION}"
+SOURCE="${SOURCE}"
 DEFAULT_Device="${TARGET_PROFILE_ER}"
 Firmware_SFX="${Firmware_SFX}"
 TARGET_BOARD="${TARGET_BOARD}"
-CLOUD_CHAZHAO="${CLOUD_CHAZHAO}"
 Download_Path="/tmp/Downloads"
 Version="${AutoUpdate_Version}"
-API_PATH="${API_PATH}"
-Github_API1="${Github_API1}"
-Github_API2="${Github_API2}"
 Github_Release="${Github_Release}"
 Release_download1="${Release_download1}"
 Release_download2="${Release_download2}"
