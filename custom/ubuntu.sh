@@ -35,9 +35,9 @@ pip install -U --force-reinstall scipy
 # 安装gcc g++
 GCC_VERSION="13"
 add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-apt-get update
-apt-get install gcc-${GCC_VERSION}
-apt-get install g++-${GCC_VERSION}
+apt-get update -y
+apt-get install -y gcc-${GCC_VERSION}
+apt-get install -y g++-${GCC_VERSION}
 update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 60
 update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 60
 update-alternatives --config gcc
