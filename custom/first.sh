@@ -52,7 +52,7 @@ elif [[ ! -f "${COMPILE_PATH}/seed/${CONFIG_FILE}" ]]; then
   TIME r "缺少seed/${CONFIG_FILE}文件，请先建立seed/${CONFIG_FILE}文件"
   exit 1
 elif [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o /tmp/common.sh
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o /tmp/common.sh
   if [[ -z "$( grep -E 'export' '/tmp/common.sh' 2>/dev/null)" ]]; then
     TIME r "对比版本号文件下载失败,请检查网络"
     exit 1
@@ -103,7 +103,7 @@ if [[ "${SYNCHRONISE}" == "NO" ]]; then
         echo 'PACKAGING_FIRMWARE="true"           # 自动把aarch64系列固件,打包成.img格式（true=开启）（false=关闭）' >> "${X}"
         echo 'MODIFY_CONFIGURATION="true"         # 是否每次都询问您要不要设置自定义文件（true=开启）（false=关闭）' >> "${X}"
       done
-      curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o /tmp/common.sh
+      curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o /tmp/common.sh
       ACTIONS_VERSION1="$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' /tmp/common.sh)"
       for X in $(find "${OPERATES_PATH}" -type d -name "relevance" |grep -v 'backups'); do 
         rm -rf ${X}/{*.ini,*start,run_number}
@@ -167,8 +167,8 @@ function Diy_four() {
 LINSHI_COMMON="/tmp/common"
 rm -rf ${LINSHI_COMMON}
 mkdir -p ${LINSHI_COMMON}
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o ${LINSHI_COMMON}/common.sh
-curl -fsSL https://raw.githubusercontent.com/281677160/common/main/upgrade.sh -o ${LINSHI_COMMON}/upgrade.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/common.sh -o ${LINSHI_COMMON}/common.sh
+curl -fsSL https://raw.githubusercontent.com/281677160/common/ceshi/upgrade.sh -o ${LINSHI_COMMON}/upgrade.sh
 export COMMON_SH="${LINSHI_COMMON}/common.sh"
 export UPGRADE_SH="${LINSHI_COMMON}/upgrade.sh"
 export CONFIG_TXT="${LINSHI_COMMON}/config.txt"
