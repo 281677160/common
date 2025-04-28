@@ -94,7 +94,7 @@ function Diy_Part2() {
 		echo "AutoBuild_Firmware=${AutoBuild_Firmware}" >> ${GITHUB_ENV}
 	fi
 	
-	echo "Update_tag=${Update_tag}" >> ${GITHUB_ENV}
+	echo "UPDATE_TAG=${UPDATE_TAG}" >> ${GITHUB_ENV}
 	echo "Firmware_SFX=${Firmware_SFX}" >> ${GITHUB_ENV}
 	echo "AutoUpdate_Version=${AutoUpdate_Version}" >> ${GITHUB_ENV}
 	echo "Openwrt_Version=${Openwrt_Version}" >> ${GITHUB_ENV}
