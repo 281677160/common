@@ -18,14 +18,14 @@ function Diy_Part1() {
 
 
 function Diy_Part2() {
-	export Update_tag="Update-${TARGET_BOARD}"
+	export UPDATE_TAG="Update-${TARGET_BOARD}"
 	export In_Firmware_Info="${HOME_PATH}/package/base-files/files/etc/openwrt_update"
-	export Github_API1="https://ghfast.top/${GITHUB_LINK}/releases/download/${Update_tag}/zzz_api"
-	export Github_API2="${GITHUB_LINK}/releases/download/${Update_tag}/zzz_api"
+	export Github_API1="https://ghfast.top/${GITHUB_LINK}/releases/download/${UPDATE_TAG}/zzz_api"
+	export Github_API2="${GITHUB_LINK}/releases/download/${UPDATE_TAG}/zzz_api"
 	export API_PATH="/tmp/Downloads/zzz_api"
-	export Release_download1="${GITHUB_LINK}/releases/download/${Update_tag}"
-	export Release_download2="https://ghfast.top/${GITHUB_LINK}/releases/download/${Update_tag}"
-	export Github_Release="${GITHUB_LINK}/releases/tag/${Update_tag}"
+	export Release_download1="${GITHUB_LINK}/releases/download/${UPDATE_TAG}"
+	export Release_download2="https://ghfast.top/${GITHUB_LINK}/releases/download/${UPDATE_TAG}"
+	export Github_Release="${GITHUB_LINK}/releases/tag/${UPDATE_TAG}"
         if ! curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -o replace; then
 		wget -q https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -O replace
   	fi
