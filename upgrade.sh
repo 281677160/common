@@ -18,10 +18,11 @@ function Diy_Part1() {
 
 
 function Diy_Part2() {
+	export UPDATE_TAG="Update-${TARGET_BOARD}"
 	export FILESETC_UPDATE="${HOME_PATH}/package/base-files/files/etc/openwrt_update"
-	export RELEASE_DOWNLOAD1="https://ghfast.top/${GITHUB_LINK}/releases/download/Update-${TARGET_BOARD}"
-	export RELEASE_DOWNLOAD2="${GITHUB_LINK}/releases/download/Update-${TARGET_BOARD}"
-	export GITHUB_RELEASE="${GITHUB_LINK}/releases/tag/Update-${TARGET_BOARD}"
+	export RELEASE_DOWNLOAD1="https://ghfast.top/${GITHUB_LINK}/releases/download/${UPDATE_TAG}"
+	export RELEASE_DOWNLOAD2="${GITHUB_LINK}/releases/download/${UPDATE_TAG}"
+	export GITHUB_RELEASE="${GITHUB_LINK}/releases/tag/${UPDATE_TAG}"
         if ! curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -o replace; then
 		wget -q https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -O replace
   	fi
@@ -83,7 +84,8 @@ function Diy_Part2() {
 	else
 		echo "AUTOBUILD_FIRMWARE=${AUTOBUILD_FIRMWARE}" >> ${GITHUB_ENV}
 	fi
-	
+
+ 	echo "UPDATE_TAG=${UPDATE_TAG}" >> ${GITHUB_ENV}
 	echo "FIRMWARE_SUFFIX=${FIRMWARE_SUFFIX}" >> ${GITHUB_ENV}
 	echo "AUTOUPDATE_VERSION=${AUTOUPDATE_VERSION}" >> ${GITHUB_ENV}
 	echo "FIRMWARE_VERSION=${FIRMWARE_VERSION}" >> ${GITHUB_ENV}
