@@ -2,7 +2,7 @@
 # https://github.com/Hyy2001X/AutoBuild-Actions
 # AutoBuild Module by Hyy2001
 # AutoBuild Functions
-Version=V8.0
+AUTOUPDATE_VERSION=8.0
 
 function Diy_Part1() {
 	find . -type d -name 'luci-app-autoupdate' | xargs -i rm -rf {}
@@ -85,7 +85,7 @@ function Diy_Part2() {
 	fi
 	
 	echo "FIRMWARE_SUFFIX=${FIRMWARE_SUFFIX}" >> ${GITHUB_ENV}
-	echo "AutoUpdate_Version=${Version}" >> ${GITHUB_ENV}
+	echo "AUTOUPDATE_VERSION=${AUTOUPDATE_VERSION}" >> ${GITHUB_ENV}
 	echo "FIRMWARE_VERSION=${FIRMWARE_VERSION}" >> ${GITHUB_ENV}
 	echo "GITHUB_RELEASE=${GITHUB_RELEASE}" >> ${GITHUB_ENV}
 
