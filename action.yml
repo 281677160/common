@@ -9,7 +9,7 @@ runs:
       uses: ncipollo/release-action@v1
       with:
         name: AutoUpdate
-        tag: ${{ env.Update_tag }}
+        tag: ${{ env.UPDATE_TAG }}
         token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
         body: ${{ env.Tongzhi_Date }}
@@ -21,9 +21,9 @@ runs:
       run: |
         mkdir -p Github_Api
         cd Github_Api
-        curl -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.Update_tag }} -o zzz_api
+        curl -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.UPDATE_TAG }} -o zzz_api
         if ! grep -q "browser_download_url" zzz_api; then
-          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${Update_tag} > zzz_api
+          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/${GIT_REPOSITORY}/releases/tags/${UPDATE_TAG} > zzz_api
         fi
         
     - name: 发送[在线更新固件]至云端3
@@ -31,7 +31,7 @@ runs:
       uses: ncipollo/release-action@v1
       with:
         name: AutoUpdate-${{ env.TARGET_BOARD }}
-        tag: ${{ env.Update_tag }}
+        tag: ${{ env.UPDATE_TAG }}
         token: ${{ env.REPO_TOKEN }}
         artifacts: "Github_Api/*"
         allowUpdates: true
