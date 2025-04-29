@@ -146,7 +146,7 @@ function Diy_Part3() {
 	*)
   		if [[ -n "$(ls -1 | grep -E 'sysupgrade')" ]]; then
 			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*sysupgrade.*${FIRMWARE_SUFFIX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
-		elif [[ `ls -1 | grep -c "squashfs"` -ge '1' ]]; then
+		elif [[ -n "$(ls -1 | grep -E 'squashfs')" ]]; then
 			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*squashfs.*${FIRMWARE_SUFFIX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
    		else
      			UP_ZHONGZHUAN="NO"
