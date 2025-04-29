@@ -20,17 +20,9 @@ runs:
         cp -Rf $COMPILE_PATH/relevance/settings.ini $UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
         echo "ERRUN_NUMBER=${RUN_NUMBER}" >> $UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
         YML_PATH="$UPLOAD/.github/workflows/compile.yml"
-        TARGET1="$(grep 'target: \[' "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v '^#' |sed 's/\[/\\&/' |sed 's/\]/\\&/')"
-        TARGET2="target: \\[${FOLDER_NAME}\\]"
-        PATHS1="$(grep -Eo "\- '.*'" "${YML_PATH}" |sed 's/^[ ]*//g' |grep -v "^#" |awk 'NR==1')"
-        PATHS2="- 'build/${FOLDER_NAME}/relevance/start'"
-        if [[ -n "${PATHS1}" ]] && [[ -n "${TARGET1}" ]]; then
-          sed -i "s?${PATHS1}?${PATHS2}?g" "${YML_PATH}"
-          sed -i "s?${TARGET1}?${TARGET2}?g" "${YML_PATH}"
-        else
-          echo "获取变量失败,请勿胡乱修改compile.yml文件"
-          exit 1
-        fi
+        sed -i "/branches:/,/^ *[^ ]/s/- .*/- ${GIT_REFNAME}/" "${YML_PATH}"
+        sed -i "/paths:/,/^ *[^ ]/s/- .*/- 'build/${FOLDER_NAME}/relevance/start'/" "${YML_PATH}"
+        sed -i "/matrix:/,/^ *[^ ]/s/target.*/target: [${FOLDER_NAME}]/" "${YML_PATH}"
         chmod -R +x $UPLOAD
         cd $UPLOAD
         git add .
