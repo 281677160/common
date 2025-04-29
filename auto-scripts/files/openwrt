@@ -191,7 +191,7 @@ menu() {
   read -p " ${XUANZHEOP}： " CHOOSE
   case $CHOOSE in
     1)
-      replace -u
+      AutoUpgrade -u
     break
     ;;
     2)
