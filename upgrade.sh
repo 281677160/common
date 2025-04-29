@@ -23,6 +23,7 @@ function Diy_Part2() {
 	export RELEASE_DOWNLOAD1="https://ghfast.top/${GITHUB_LINK}/releases/download/${UPDATE_TAG}"
 	export RELEASE_DOWNLOAD2="${GITHUB_LINK}/releases/download/${UPDATE_TAG}"
 	export GITHUB_RELEASE="${GITHUB_LINK}/releases/tag/${UPDATE_TAG}"
+ 	tee ${FILESETC_UPDATE} && chmod +x ${FILESETC_UPDATE}
         if ! curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -o replace; then
 		wget -q https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -O replace
   	fi
@@ -92,7 +93,7 @@ function Diy_Part2() {
 	echo "GITHUB_RELEASE=${GITHUB_RELEASE}" >> ${GITHUB_ENV}
 
 
-	echo "GITHUB_LINK=${GITHUB_LINK}" > ${FILESETC_UPDATE}
+	echo "GITHUB_LINK=${GITHUB_LINK}" >> ${FILESETC_UPDATE}
  	echo "FIRMWARE_VERSION=${FIRMWARE_VERSION}" >> ${FILESETC_UPDATE}
  	echo "LUCI_EDITION=${LUCI_EDITION}" >> ${FILESETC_UPDATE}
  	echo "SOURCE=${SOURCE}" >> ${FILESETC_UPDATE}
@@ -103,7 +104,6 @@ function Diy_Part2() {
  	echo "RELEASE_DOWNLOAD1=${RELEASE_DOWNLOAD1}" >> ${FILESETC_UPDATE}
  	echo "RELEASE_DOWNLOAD2=${RELEASE_DOWNLOAD2}" >> ${FILESETC_UPDATE}
 	cat replace >> ${FILESETC_UPDATE}
-	sudo chmod +x ${FILESETC_UPDATE}
 }
 
 function Diy_Part3() {
