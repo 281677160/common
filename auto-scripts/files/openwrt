@@ -222,7 +222,7 @@ menu() {
     done
 }
 
-if [[ -f '/usr/bin/replace' ]]; then
+if [[ -f '/usr/bin/AutoUpgrade' ]]; then
   menu "$@"
 else
   menu2 "$@"
