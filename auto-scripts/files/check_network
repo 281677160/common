@@ -38,6 +38,11 @@ check_network() {
         echo "$(date): Network is down. Restarting network services..." >> /var/log/network_check.log
         /etc/init.d/network restart
         /etc/init.d/dnsmasq restart
+        grep -q "network_check" "/etc/crontabs/root" && sed -i '/network_check/d' /etc/crontabs/root
+        /etc/init.d/cron restart
         reboot -f
+    else
+        grep -q "network_check" "/etc/crontabs/root" && sed -i '/network_check/d' /etc/crontabs/root
+        /etc/init.d/cron restart
     fi
 }
