@@ -78,7 +78,7 @@ if [ -f '/etc/index.htm' ]; then
     if grep -q "(<%=pcdata(ver.luciversion)%>)" "/etc/index.htm"; then
         sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "/etc/index.htm"
     fi
-elif [ -n "${luci_web}" ] && grep -q "(<%=pcdata(ver.luciversion)%>)" "${luci_web}"; then
+elif [ -f "${luci_web}" ] && grep -q "(<%=pcdata(ver.luciversion)%>)" "${luci_web}"; then
     sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "${luci_web}"
 fi
 
