@@ -33,11 +33,6 @@ grep -q "helloworld" /etc/opkg/distfeeds.conf && sed -i '/helloworld/d' /etc/opk
 grep -q "passwall" /etc/opkg/distfeeds.conf && sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 grep -q "openwrt_x" /etc/opkg/distfeeds.conf && sed -i '/openwrt_x/d' /etc/opkg/distfeeds.conf
 
-# 如果存在 /etc/networkdetection 且未在 crontab 中，则删除
-if [ -f "/etc/networkdetection" ] && [ `grep -c "networkdetection" /etc/crontabs/root` -eq 0 ]; then
-    rm -rf /etc/networkdetection
-fi
-
 # 如果存在 /usr/share/ucode/luci/version.uc，则进行修改
 if [ -f "/usr/share/ucode/luci/version.uc" ]; then
     sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
