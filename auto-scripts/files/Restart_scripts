@@ -3,17 +3,26 @@
 START=99
 
 start() {
+    echo "Starting services..."
     /etc/init.d/system restart
     /etc/init.d/uhttpd restart
     /etc/init.d/network restart
     /etc/init.d/dnsmasq restart
+
+    # 重新加载无线配置
     [ -f "/etc/config/wireless" ] && wifi reload
+
+    # 清理 LuCI 缓存
     rm -rf /tmp/luci-*cache* > /dev/null 2>&1
-    if [[ `grep -c "/tmp/luci-\*cache\*" /etc/crontabs/root` -eq '0' ]]; then
-      echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
-      /etc/init.d/cron restart
+
+    # 确保每周一凌晨1点清理 LuCI 缓存
+    if ! grep -q "/tmp/luci-\*cache\*" /etc/crontabs/root; then
+        echo "0 1 * * 1 rm -rf /tmp/luci-*cache* > /dev/null 2>&1" >> /etc/crontabs/root
+        /etc/init.d/cron restart
     fi
-    /etc/scripts_reboot
+
+    # 执行自定义脚本
+    [ -f "/etc/scripts_reboot" ] && /etc/scripts_reboot
 }
 
 stop() {
