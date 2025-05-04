@@ -1,13 +1,31 @@
 #!/bin/sh
 
+# 设置目录权限
 chmod -R 0755 /etc/init.d /usr/share
+# 创建或更新 crontab 文件
 touch /etc/crontabs/root
 
-ARCHIB="$(grep 'DISTRIB_ARCH' /etc/openwrt_release|cut -d= -f2|tr -d "'")"
-DISTRIBID="$(grep 'DISTRIB_ID' /etc/openwrt_release|cut -d= -f2|tr -d "'")"
-grep -q "x86_64" /etc/banner && sed -i "s?x86_64?$ARCHIB?g" /etc/banner
-[[ "${DISTRIBID}" == "ImmortalWrt" ]] && sed -i "s?DISTRIB_ID='ImmortalWrt'?DISTRIB_ID='OpenWrt'?g" /etc/openwrt_release
-[[ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]] && sed -i 's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
+# 获取系统架构信息
+ARCHIB="$(grep 'DISTRIB_ARCH' /etc/openwrt_release | cut -d= -f2 | tr -d "'")"
+# 获取系统发行版 ID
+DISTRIBID="$(grep 'DISTRIB_ID' /etc/openwrt_release | cut -d= -f2 | tr -d "'")"
+
+# 如果 /etc/banner 中包含 x86_64，则替换为实际架构信息
+if grep -q "x86_64" /etc/banner; then
+    sed -i "s?x86_64?$ARCHIB?g" /etc/banner
+fi
+
+# 如果系统发行版 ID 是 ImmortalWrt，则修改为 OpenWrt
+if [ "${DISTRIBID}" = "ImmortalWrt" ]; then
+    sed -i "s?DISTRIB_ID='ImmortalWrt'?DISTRIB_ID='OpenWrt'?g" /etc/openwrt_release
+fi
+
+# 如果存在 /usr/lib/lua/luci/controller/ttyd.lua，则进行修改
+if [ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]; then
+    sed -i's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
+fi
+
+# 从 /etc/opkg/distfeeds.conf 中删除特定的内容
 grep -q "danshui" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
 grep -q "dstheme" /etc/opkg/distfeeds.conf && sed -i '/dstheme/d' /etc/opkg/distfeeds.conf
 grep -q "OpenClash" /etc/opkg/distfeeds.conf && sed -i '/OpenClash/d' /etc/opkg/distfeeds.conf
@@ -15,52 +33,67 @@ grep -q "helloworld" /etc/opkg/distfeeds.conf && sed -i '/helloworld/d' /etc/opk
 grep -q "passwall" /etc/opkg/distfeeds.conf && sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 grep -q "openwrt_x" /etc/opkg/distfeeds.conf && sed -i '/openwrt_x/d' /etc/opkg/distfeeds.conf
 
-if [[ -f "/etc/networkdetection" ]] && [[ `grep -c "networkdetection" /etc/crontabs/root` -eq '0' ]]; then
-	rm -rf /etc/networkdetection
+# 如果存在 /etc/networkdetection 且未在 crontab 中，则删除
+if [ -f "/etc/networkdetection" ] && [ `grep -c "networkdetection" /etc/crontabs/root` -eq 0 ]; then
+    rm -rf /etc/networkdetection
 fi
 
-if [[ -f "/usr/share/ucode/luci/version.uc" ]]; then
-	sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
-	echo "export const revision = 'ZHUJI_MING - LUCI_EDITION', branch = '';" >> "/usr/share/ucode/luci/version.uc"
+# 如果存在 /usr/share/ucode/luci/version.uc，则进行修改
+if [ -f "/usr/share/ucode/luci/version.uc" ]; then
+    sed -i '/export const revision/d' "/usr/share/ucode/luci/version.uc"
+    echo "export const revision = 'ZHUJI_MING - LUCI_EDITION', branch = '';" >> "/usr/share/ucode/luci/version.uc"
 fi
 
+# 从 /etc/openwrt_release 中删除 DISTRIB_SOURCECODE 行并添加新的
 sed -i '/DISTRIB_SOURCECODE/d' /etc/openwrt_release
 echo "DISTRIB_SOURCECODE='OPHUBOPENWRT'" >> /etc/openwrt_release
+
+# 从 /usr/lib/lua/luci/version.lua 中删除 luciversion 和 luciname 行并添加新的
 sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
 echo "luciversion    = \"LUCI_EDITION\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"ZHUJI_MING\"" >> /usr/lib/lua/luci/version.lua
 
+# 设置 opkg 镜像地址
 opkg_mirror="https://mirrors.vsean.net/openwrt"
+# 设置 distfeed 列表文件路径
 distfeedlist="/etc/apk/repositories.d/distfeeds.list"
-if [[ -f "${distfeedlist}" ]] && grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
-	sed -i.bak "s,http.*\/downloads.openwrt.org,$opkg_mirror,g" "$distfeedlist"
-	grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
+
+# 根据不同条件修改 distfeed 列表或 opkg 配置
+if [ -f "${distfeedlist}" ] && grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
+    sed -i.bak "s,http.*\/downloads.openwrt.org,$opkg_mirror,g" "$distfeedlist"
+    grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
 elif grep -q "19.07" /etc/opkg/distfeeds.conf && grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
-	sed -i.bak "s|http.*\/downloads.openwrt.org/releases/19.07-SNAPSHOT|https://mirrors.ustc.edu.cn/openwrt/releases/19.07.10|g" /etc/opkg/distfeeds.conf
-	grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
+    sed -i.bak "s|http.*\/downloads.openwrt.org/releases/19.07-SNAPSHOT|https://mirrors.ustc.edu.cn/openwrt/releases/19.07.10|g" /etc/opkg/distfeeds.conf
+    grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
 elif grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
-	sed -i.bak "s,http.*\/downloads.openwrt.org,$opkg_mirror,g" /etc/opkg/distfeeds.conf
-	grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
+    sed -i.bak "s,http.*\/downloads.openwrt.org,$opkg_mirror,g" /etc/opkg/distfeeds.conf
+    grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
 fi
 
+# 设置 luci web 文件路径
 luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
-if [[ -f '/etc/index.htm' ]]; then
-	sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "/etc/index.htm"
+
+# 根据 /etc/index.htm 是否存在进行不同的修改
+if [ -f '/etc/index.htm' ]; then
+    sed -i's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "/etc/index.htm"
 else
-	sed -i 's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "${luci_web}"
-fi
-if [[ -f '/etc/index.htm' ]] && [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "/etc/index.htm"` -eq '1' ]]; then
-	sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "/etc/index.htm"
-elif [[ `grep -c "(<%=pcdata(ver.luciversion)%>)" "${luci_web}"` -eq '1' ]]; then
-	sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "${luci_web}"
+    sed -i's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "${luci_web}"
 fi
 
-sed -i 's?=== WARNING! =====================================?=================== WARNING! =====================?g' /etc/profile
+# 根据不同条件修改 /etc/index.htm 或 luci_web 文件
+if [ -f '/etc/index.htm' ] && [ `grep -c "(<%=pcdata(ver.luciversion)%>)" "/etc/index.htm"` -eq 1 ]; then
+    sed -i's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "/etc/index.htm"
+elif [ `grep -c "(<%=pcdata(ver.luciversion)%>)" "${luci_web}"` -eq 1 ]; then
+    sed -i's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "${luci_web}"
+fi
 
-lmo_file="$({ find "/usr/lib/lua/luci/i18n" |grep "zh_Hans.lmo"; } 2>"/dev/null")"
-for b in ${lmo_file}
-do
-	lmo_new_file="$(echo -e "$b"|sed "s/zh_Hans/zh-cn/g")"
-	[[ -f "$b" ]] && mv "$b" "${lmo_new_file}" 2>"/dev/null"
+# 修改 /etc/profile 文件
+sed -i's?=== WARNING! =====================================?=================== WARNING! =====================?g' /etc/profile
+
+# 处理语言文件
+lmo_files=$(find "/usr/lib/lua/luci/i18n" -type f -name "zh_Hans.lmo" 2>/dev/null)
+for lmo_file in $lmo_files; do
+    lmo_new_file="$(echo -e "$lmo_file" | sed "s/zh_Hans/zh-cn/g")"
+    [ -f "$lmo_file" ] && mv "$lmo_file" "${lmo_new_file}" 2>/dev/null
 done
