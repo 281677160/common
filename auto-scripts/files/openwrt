@@ -11,219 +11,162 @@ RedBG="\033[41;37m"
 OK="${Green}[OK]${Font}"
 ERROR="${Red}[ERROR]${Font}"
 
-function ECHOY() {
-  echo
-  echo -e "${Yellow} $1 ${Font}"
-  echo
+# 打印函数
+function TIME() {
+    case $1 in
+       z)
+          echo
+          echo -e "\033[31m${2}\033[0m"
+       ;;
+       g)
+          echo
+          echo -e "\033[32m${2}\033[0m"
+       ;;
+       b)
+          echo
+          echo -e "\033[34m${2}\033[0m"
+       ;;
+       y)
+          echo
+          echo -e "\033[33m${2}\033[0m"
+       ;;
+    esac
 }
-function ECHOR() {
-  echo -e "${Red} $1 ${Font}"
-}
-function ECHOB() {
-  echo
-  echo -e "${Blue} $1 ${Font}"
-  echo
-}
-function ECHOYY() {
-  echo -e "${Yellow} $1 ${Font}"
-}
-function ECHOG() {
-  echo
-  echo -e "${Green} $1 ${Font}"
-}
-function print_ok() {
-  echo
-  echo -e " ${OK} ${Blue} $1 ${Font}"
-  echo
-}
-function print_error() {
-  echo
-  echo -e "${ERROR} ${RedBG} $1 ${Font}"
-  echo
-}
+
 judge() {
-  if [[ 0 -eq $? ]]; then
-    print_ok "$1 完成,正在为您重启系统"
+  if [ $? -eq 0 ]; then
+    print_ok "$1 完成,系统正在重启中..."
     reboot -f
   else
     print_error "$1 失败"
-    exit 0
+    exit 1
   fi
 }
 
-function xiugai_ip() {
-  echo
-  export YUMING="请输入您想要更改成的后台IP(tian xie ni de IP)"
-  echo
+# 修改后台IP并清空密码
+modify_ip_and_clear_password() {
+  TIME b "请输入您想要更改成的后台IP (格式: x.x.x.x)"
   while :; do
-  domainy=""
-  read -p " ${YUMING}：" domain
-  if [[ -n "${domain}" ]] && [[ "$(echo ${domain} |grep -Eoc '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')" == '1' ]]; then
-    domainy="Y"
-  fi
-  case $domainy in
-  Y)
-    export domain="${domain}"
-    uci set network.lan.ipaddr="${domain}"
-    uci commit network
-    ECHOG "您的IP为：${domain}"
-    ECHOY "正在为您清空密码"
-    [[ `grep -c "admin" /etc/shadow` -eq '1' ]] && passwd -d admin
-    passwd -d root
-    judge
-  break
-  ;;
-  *)
-    export YUMING="敬告：请输入正确格式的IP"
-  ;;
-  esac
+    read -p "IP地址： " ip
+    if [ -n "$ip" ] && echo "$ip" | grep -Eoq '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'; then
+      uci set network.lan.ipaddr="$ip"
+      uci commit network
+      TIME g "您的IP已修改为：$ip"
+      clear_password
+      judge "修改IP和清空密码"
+      break
+    else
+      TIME z "请输入正确的IP地址格式"
+    fi
   done
 }
 
-function qingkong_mima() {
-while :; do
-read -p "否清空密码(shi fou qing kong mi ma)[Y/n]：" YN
-case ${YN} in
-[Yy])
-    [[ `grep -c "admin" /etc/shadow` -eq '1' ]] && passwd -d admin
-    passwd -d root
-    judge
-break
-;;
-[Nn])
-    ECHOR "退出操作(tui chu)"
-    exit 0
-break
-;;
-*)
-    ECHOR "输入正确选择[Y/n]"
-;;
-esac
-done
+# 清空密码
+clear_password() {
+  while :; do
+    read -p "是否清空密码？[Y/n]： " choice
+    case $choice in
+      [Yy])
+        grep -q "admin:" "/etc/shadow" && passwd -d admin
+        passwd -d root
+        judge "清空密码"
+        break
+        ;;
+      [Nn])
+        TIME z "退出操作"
+        exit 0
+        ;;
+      *)
+        TIME z "请输入正确的选择 [Y/n]"
+        ;;
+    esac
+  done
 }
 
-function re_boot() {
-echo
-while :; do
-read -p "是否重启系统(shi fou chong qi xi tong)[Y/n]：" YN
-case ${YN} in
-[Yy]) 
-    ECHOG "系统重启中，稍后自行登录openwrt后台"
-    reboot -f
-    judge
-break
-;;
-[Nn])
-    ECHOR "退出操作(tui chu)"
-    exit 0
-break
-;;
-*)
-    ECHOR "输入正确选择[Y/n]"
-;;
-esac
-done
+# 重启系统
+reboot_system() {
+  while :; do
+    read -p "是否重启系统？[Y/n]： " choice
+    case $choice in
+      [Yy])
+        TIME g "系统正在重启，请稍后登录后台"
+        reboot -f
+        break
+        ;;
+      [Nn])
+        TIME z "退出操作"
+        exit 0
+        ;;
+      *)
+        TIME z "请输入正确的选择 [Y/n]"
+        ;;
+    esac
+  done
 }
 
-function first_boot() {
-  echo
-  echo
-  ECHOR "是否恢复出厂设置?按[Y/y]执行,按[N/n]退出"
+# 恢复出厂设置
+restore_factory_settings() {
+  TIME z "是否恢复出厂设置？按[Y/y]执行，按[N/n]退出"
   firstboot
-  judge
 }
 
-menu2() {
+# 在线更新固件或转换固件
+upgrade_firmware() {
+  TIME b "正在执行在线更新或转换固件操作..."
+  AutoUpgrade -u
+}
+
+# 菜单函数
+show_menu() {
   clear
-  echo  
-  ECHOB "  请选择执行命令编码"
-  ECHOYY " 1. 修改后台IP和清空密码(xiu gai IP)"
-  ECHOY " 2. 清空密码(qing kong mi ma)"
-  ECHOYY " 3. 重启系统(chong qi xi tong)"
-  ECHOY " 4. 恢复出厂设置(hui fu chu chang she zhi)"
-  ECHOYY " 5. 退出(tui chu)"
-  echo
-  XUANZHEOP="请输入数字"
+  TIME b "请选择执行命令编码"
+  TIME y "1. 修改后台IP和清空密码"
+  TIME y "2. 清空密码"
+  TIME y "3. 重启系统"
+  TIME y "4. 恢复出厂设置"
+  TIME y "5. 退出程序"
+
   while :; do
-  read -p " ${XUANZHEOP}： " CHOOSE
-  case $CHOOSE in
-    1)
-      xiugai_ip
-    break
-    ;;
-    2)
-      qingkong_mima
-    break
-    ;;
-    3)
-      re_boot
-    break
-    ;;
-    4)
-      first_boot
-    break
-    ;;
-    5)
-      ECHOR "您选择了退出程序"
-      exit 0
-    break
-    ;;
-    *)
-      XUANZHEOP="请输入正确的数字编号"
-    ;;
+    read -p "请输入数字： " choice
+    case $choice in
+      1) modify_ip_and_clear_password ;;
+      2) clear_password ;;
+      3) reboot_system ;;
+      4) restore_factory_settings ;;
+      5) TIME z "您选择了退出程序" && exit 0 ;;
+      *) TIME z "请输入正确的数字编号" ;;
     esac
-    done
+  done
 }
 
-menu() {
+# 带有固件更新选项的菜单函数
+show_menu_with_upgrade() {
   clear
-  echo  
-  ECHOB "  请选择执行命令编码"
-  ECHOY " 1. 在线更新固件或转换其他作者固件(zai xian sheng ji gu jian)"
-  ECHOYY " 2. 修改后台IP和清空密码(xiu gai IP)"
-  ECHOY " 3. 清空密码(qing kong mi ma)"
-  ECHOYY " 4. 重启系统(chong qi xi tong)"
-  ECHOY " 5. 恢复出厂设置(hui fu chu chang she zhi)"
-  ECHOYY " 6. 退出(tui chu)"
-  echo
-  XUANZHEOP="请输入数字"
+  TIME b "请选择执行命令编码"
+  TIME y "1. 在线更新固件或转换其他作者固件"
+  TIME y "2. 修改后台IP和清空密码"
+  TIME y "3. 清空密码"
+  TIME y "4. 重启系统"
+  TIME y "5. 恢复出厂设置"
+  TIME y "6. 退出程序"
+
   while :; do
-  read -p " ${XUANZHEOP}： " CHOOSE
-  case $CHOOSE in
-    1)
-      AutoUpgrade -u
-    break
-    ;;
-    2)
-      xiugai_ip
-    break
-    ;;
-    3)
-      qingkong_mima
-    break
-    ;;
-    4)
-      re_boot
-    break
-    ;;
-    5)
-      first_boot
-    break
-    ;;
-    6)
-      ECHOR "您选择了退出程序"
-      exit 0
-    break
-    ;;
-    *)
-      XUANZHEOP="请输入正确的数字编号"
-    ;;
+    read -p "请输入数字： " choice
+    case $choice in
+      1) upgrade_firmware ;;
+      2) modify_ip_and_clear_password ;;
+      3) clear_password ;;
+      4) reboot_system ;;
+      5) restore_factory_settings ;;
+      6) TIME z "您选择了退出程序" && exit 0 ;;
+      *) TIME z "请输入正确的数字编号" ;;
     esac
-    done
+  done
 }
 
-if [[ -f '/usr/bin/AutoUpgrade' ]]; then
-  menu "$@"
+# 主程序入口
+if [ -f '/usr/bin/AutoUpgrade' ]; then
+  show_menu_with_upgrade
 else
-  menu2 "$@"
+  show_menu
 fi
