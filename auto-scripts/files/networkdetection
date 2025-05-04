@@ -38,5 +38,6 @@ check_network() {
         echo "$(date): Network is down. Restarting network services..." >> /var/log/network_check.log
         /etc/init.d/network restart
         /etc/init.d/dnsmasq restart
+        reboot -f
     fi
 }
