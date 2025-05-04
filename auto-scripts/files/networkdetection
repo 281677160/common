@@ -1,47 +1,42 @@
-#!/bin/sh
+#!/bin/sh /etc/rc.common
 
-rm -rf /tmp/baidu.html > /dev/null 2>&1
-curl --connect-timeout 9 -o /tmp/baidu.html -s -w %{time_namelookup}: https://www.baidu.com > /dev/null 2>&1
-if [[ -f /tmp/baidu.html ]] && [[ `grep -c "百度一下" /tmp/baidu.html` -ge '1' ]]; then
-  rm -rf /tmp/baidu.html
-else
-  wangluo1='1'
-  rm -rf /tmp/baidu.html
-fi
+START=99
 
-rm -rf /tmp/taobao.html > /dev/null 2>&1
-curl --connect-timeout 9 -o /tmp/taobao.html -s -w %{time_namelookup}: https://www.taobao.com > /dev/null 2>&1
-if [[ -f /tmp/taobao.html ]] && [[ `grep -c "淘宝" /tmp/taobao.html` -ge '1' ]]; then
-  rm -rf /tmp/taobao.html
-else
-  wangluo2='2'
-  rm -rf /tmp/taobao.html
-fi
+start() {
+    echo "Starting network check service..."
+    /etc/init.d/check_network enable
+}
 
-rm -rf /tmp/google.html > /dev/null 2>&1
-curl --connect-timeout 9 -o /tmp/google.html -s -w %{time_namelookup}: https://www.google.com > /dev/null 2>&1
-if [[ -f /tmp/google.html ]] && [[ `grep -c "google" /tmp/google.html` -ge '1' ]]; then
-  rm -rf /tmp/google.html
-else
-  wangluo3='3'
-  rm -rf /tmp/google.html
-fi
+stop() {
+    echo "Stopping network check service..."
+    /etc/init.d/check_network disable
+}
 
-if [[ "${wangluo1}" == "1" ]] && [[ "${wangluo2}" == "2" ]] && [[ "${wangluo3}" == "3" ]]; then
-  echo "[没检测到网络，重启系统于$(date "+%Y年%m月%d日%H时%M分%S秒")]" >> /tmp/networkdetection.log
-  /etc/init.d/uhttpd restart
-  /etc/init.d/network restart
-  /etc/init.d/dnsmasq restart
-  /etc/init.d/system restart
-  sed -i '/networkdetection/d' /etc/crontabs/root >/dev/null 2>&1
-  /etc/init.d/cron restart
-  rm -rf /etc/networkdetection
-  reboot -f
-else
-  echo "[$(date "+%Y年%m月%d日%H时%M分%S秒")-网络正常]" >> /tmp/networkdetection.log
-  sed -i '/networkdetection/d' /etc/crontabs/root >/dev/null 2>&1
-  /etc/init.d/cron restart
-  rm -rf /etc/networkdetection
-fi
+check_network() {
+    # 定义要检测的 DNS 服务器列表
+    DNS_SERVERS=("8.8.8.8" "1.1.1.1" "119.29.29.29" "223.5.5.5")
 
-exit 0
+    # 初始化网络状态标志
+    network_up=0
+
+    # 遍历 DNS 服务器列表
+    for dns in "${DNS_SERVERS[@]}"; do
+        # 尝试向每个 DNS 服务器发送 ping 请求
+        ping -c 3 "$dns" > /dev/null 2>&1
+
+        if [ $? -eq 0 ]; then
+            echo "$(date): Network is up via $dns." >> /var/log/network_check.log
+            network_up=1
+            break  # 如果有一个 DNS 服务器响应，则退出循环
+        else
+            echo "$(date): Network check failed via $dns." >> /var/log/network_check.log
+        fi
+    done
+
+    # 如果所有 DNS 服务器都无法响应，则认为网络不可用
+    if [ $network_up -eq 0 ]; then
+        echo "$(date): Network is down. Restarting network services..." >> /var/log/network_check.log
+        /etc/init.d/network restart
+        /etc/init.d/dnsmasq restart
+    fi
+}
