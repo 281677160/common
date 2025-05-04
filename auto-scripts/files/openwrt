@@ -13,7 +13,7 @@ function TIME() {
        ;;
        b)
           echo
-          echo -e "\033[34m${2}\033[0m"
+          echo -e "\033[36m${2}\033[0m"
        ;;
        y)
           echo
@@ -24,10 +24,10 @@ function TIME() {
 
 judge() {
   if [ $? -eq 0 ]; then
-    print_ok "$1 完成,系统正在重启中..."
+    TIME b "执行 $1 完成,系统正在重启中..."
     reboot -f
   else
-    print_error "$1 失败"
+    TIME z "执行 $1 失败"
     exit 1
   fi
 }
