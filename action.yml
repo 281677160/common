@@ -4,20 +4,17 @@ runs:
   using: "composite"
   steps:
     - name: 公告
-      if: env.SendMessage != 'true'
+      if: ${{ env.SendMessage != 'true' }}
       shell: bash
       run: |
         cd $HOME_PATH
         function TIME() {
-          case $1 in
-            r) export Color="\e[31m";;
-            g) export Color="\e[32m";;
-            b) export Color="\e[34m";;
-            y) export Color="\e[33m";;
-            z) export Color="\e[35m";;
-            l) export Color="\e[36m";;
-          esac
-        echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
+          local color_map=(
+            [r]="\e[31m" [g]="\e[32m" [b]="\e[34m"
+            [y]="\e[33m" [z]="\e[35m" [l]="\e[36m"
+          )
+          local color=${color_map[$1]:-"\e[36m"}
+          echo -e "\e[36m\e[0m ${color}${2}\e[0m"
         }
         echo
         TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
@@ -28,35 +25,31 @@ runs:
           TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作"
         fi
         echo
-  
+
     - name: 编译信息
-      if: env.SendMessage == 'true'
+      if: ${{ env.SendMessage == 'true' }}
       shell: bash
       run: |
         cd ${HOME_PATH}
         function TIME() {
-          case $1 in
-            r) export Color="\e[31m";;
-            g) export Color="\e[32m";;
-            b) export Color="\e[34m";;
-            y) export Color="\e[33m";;
-            z) export Color="\e[35m";;
-            l) export Color="\e[36m";;
-          esac
-        echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
+          local color_map=(
+            [r]="\e[31m" [g]="\e[32m" [b]="\e[34m"
+            [y]="\e[33m" [z]="\e[35m" [l]="\e[36m"
+          )
+          local color=${color_map[$1]:-"\e[36m"}
+          echo -e "\e[36m\e[0m ${color}${2}\e[0m"
         }
 
         Plug_in1="$(grep -Eo "CONFIG_PACKAGE_luci-app-.*=y|CONFIG_PACKAGE_luci-theme-.*=y" $HOME_PATH/.config |grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic\|_USE' |sed 's/=y//' |sed 's/CONFIG_PACKAGE_//g')"
         Plug_in2="$(echo "${Plug_in1}" |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
         echo "${Plug_in2}" >Plug-in
 
-        if [[ `grep -c "CONFIG_GRUB_EFI_IMAGES=y" $HOME_PATH/.config` -eq '1' ]]; then
+        if [[ $(grep -c "CONFIG_GRUB_EFI_IMAGES=y" $HOME_PATH/.config) -eq 1 ]]; then
           export EFI_NO="1"
         else
           export EFI_NO="0"
         fi
 
-        echo
         TIME b "编译源码: ${SOURCE}"
         TIME b "源码链接: ${REPO_URL}"
         TIME b "源码分支: ${REPO_BRANCH}"
@@ -155,7 +148,7 @@ runs:
         echo
         TIME z " 系统空间      类型   总数  已用  可用 使用率"
         df -hT $PWD
-        
+
         if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
           echo
           echo
