@@ -7,30 +7,44 @@ runs:
       id: gitpush
       shell: bash
       run: |
-        cd ${GITHUB_WORKSPACE}
-        tmpdir="$(mktemp -d)" && UPLOAD="$GITHUB_WORKSPACE/${tmpdir#*.}"
+        # 定义临时目录
+        tmpdir="$(mktemp -d)"
+        UPLOAD="$GITHUB_WORKSPACE/${tmpdir#*.}"
+
+        # 克隆仓库
         git clone -b ${GIT_REFNAME} https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git $UPLOAD
-        [[ -d "$UPLOAD/build/${FOLDER_NAME}" ]] && rm -rf $UPLOAD/build/${FOLDER_NAME}
-        cp -Rf $CONFIG_TXT $MYCONFIG_FILE
-        cp -Rf $COMPILE_PATH $UPLOAD/build/$FOLDER_NAME
-        [[ -d "$UPLOAD/build/common" ]] && rm -rf $UPLOAD/build/common
-        cp -Rf $GITHUB_WORKSPACE/.github/workflows/compile.yml $UPLOAD/.github/workflows/compile.yml
+
+        # 清理和复制文件
+        [[ -d "$UPLOAD/build/${FOLDER_NAME}" ]] && rm -rf "$UPLOAD/build/${FOLDER_NAME}"
+        cp -Rf "$CONFIG_TXT" "$MYCONFIG_FILE"
+        cp -Rf "$COMPILE_PATH" "$UPLOAD/build/$FOLDER_NAME"
+        [[ -d "$UPLOAD/build/common" ]] && rm -rf "$UPLOAD/build/common"
+        cp -Rf "$GITHUB_WORKSPACE/.github/workflows/compile.yml" "$UPLOAD/.github/workflows/compile.yml"
+
+        # 创建相关目录和文件
         mkdir -p "$UPLOAD/build/${FOLDER_NAME}/relevance"
-        echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > $UPLOAD/build/${FOLDER_NAME}/relevance/start
-        cp -Rf $COMPILE_PATH/relevance/settings.ini $UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
-        echo "ERRUN_NUMBER=${RUN_NUMBER}" >> $UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini
+        echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > "$UPLOAD/build/${FOLDER_NAME}/relevance/start"
+        cp -Rf "$COMPILE_PATH/relevance/settings.ini" "$UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini"
+        echo "ERRUN_NUMBER=${RUN_NUMBER}" >> "$UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini"
+
+        # 修改编译配置文件
         YML_PATH="$UPLOAD/.github/workflows/compile.yml"
         PATHS="build/${FOLDER_NAME}/relevance/start"
-        sed -i "/branches:/,/paths:/s/- .*/- ${GIT_REFNAME}/" "${YML_PATH}"
-        sed -i "/paths:/,/matrix:/s@- .*@- '${PATHS//@/\\@}'@" "${YML_PATH}"
-        sed -i "/matrix:/,/^ *target:/s/target:.*/  target: [${FOLDER_NAME}]/" "${YML_PATH}"
-        chmod -R +x $UPLOAD
-        cd $UPLOAD
+        sed -i "/branches:/,/paths:/s/- .*/- ${GIT_REFNAME}/" "$YML_PATH"
+        sed -i "/paths:/,/matrix:/s@- .*@- '${PATHS//@/\\@}'@" "$YML_PATH"
+        sed -i "/matrix:/,/^ *target:/s/target:.*/  target: [${FOLDER_NAME}]/" "$YML_PATH"
+
+        # 提交并推送
+        chmod -R +x "$UPLOAD"
+        cd "$UPLOAD"
         git add .
         git commit -m "编译-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
         git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${GIT_REFNAME}
+
+        # 检查推送结果
         if [[ $? -ne 0 ]]; then
           echo -e "\033[31m 触发编译失败,请勿胡乱修改compile.yml文件 \033[0m"
+          exit 1
         else
           echo -e "\033[33m 触发编译${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}成功 \033[0m"
         fi
@@ -39,19 +53,17 @@ runs:
       if: steps.gitpush.outcome == 'success'
       shell: bash
       run: |
-        cd ${GITHUB_WORKSPACE}
-        echo "TZ_Message=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
-        
+        echo "TZ_Message=$(date +%Y年%m月%d号%H时%M分)" >> "${GITHUB_ENV}"
+
     - name: Telegram或pushplus信息通知
       if: env.PUSH_PLUS_TOKEN && env.INFORMATION_NOTICE == 'PUSH' && steps.gitpush.outcome == 'success' || env.TELEGRAM_BOT_TOKEN && env.INFORMATION_NOTICE == 'TG' && steps.gitpush.outcome == 'success'
       shell: bash
       run: |
-        cd ${GITHUB_WORKSPACE}
         if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{env.TELEGRAM_CHAT_ID}}", "text":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}，编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💐"}' https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage
+          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{env.TELEGRAM_CHAT_ID}}", "text":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}，编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💐"}' "https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage"
         fi
         if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💐"}' https://www.pushplus.plus/send
+          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💐"}' "https://www.pushplus.plus/send"
         fi
 branding:
   icon: "terminal"
