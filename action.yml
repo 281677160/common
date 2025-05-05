@@ -3,20 +3,25 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
+    # 公告步骤
     - name: 公告
-      if: ${{ env.SendMessage != 'true' }}
+      if: env.SendMessage != 'true'
       shell: bash
       run: |
-        cd $HOME_PATH
-        function TIME() {
-          local color_map=(
-            [r]="\e[31m" [g]="\e[32m" [b]="\e[34m"
-            [y]="\e[33m" [z]="\e[35m" [l]="\e[36m"
-          )
-          local color=${color_map[$1]:-"\e[36m"}
-          echo -e "\e[36m\e[0m ${color}${2}\e[0m"
+        cd "$HOME_PATH"
+        # 定义颜色输出函数
+        TIME() {
+          case $1 in
+            r) Color="\e[31m" ;;
+            g) Color="\e[32m" ;;
+            b) Color="\e[34m" ;;
+            y) Color="\e[33m" ;;
+            z) Color="\e[35m" ;;
+            l) Color="\e[36m" ;;
+          esac
+          echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
         }
-        echo
+
         TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
         TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
         if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
@@ -25,31 +30,45 @@ runs:
           TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作"
         fi
         echo
-
+    # 编译信息步骤
     - name: 编译信息
-      if: ${{ env.SendMessage == 'true' }}
+      if: env.SendMessage == 'true'
       shell: bash
       run: |
-        cd ${HOME_PATH}
-        function TIME() {
-          local color_map=(
-            [r]="\e[31m" [g]="\e[32m" [b]="\e[34m"
-            [y]="\e[33m" [z]="\e[35m" [l]="\e[36m"
-          )
-          local color=${color_map[$1]:-"\e[36m"}
-          echo -e "\e[36m\e[0m ${color}${2}\e[0m"
+        cd "$HOME_PATH"
+        # 复用颜色输出函数
+        TIME() {
+          case $1 in
+            r) Color="\e[31m" ;;
+            g) Color="\e[32m" ;;
+            b) Color="\e[34m" ;;
+            y) Color="\e[33m" ;;
+            z) Color="\e[35m" ;;
+            l) Color="\e[36m" ;;
+          esac
+          echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
         }
 
-        Plug_in1="$(grep -Eo "CONFIG_PACKAGE_luci-app-.*=y|CONFIG_PACKAGE_luci-theme-.*=y" $HOME_PATH/.config |grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic\|_USE' |sed 's/=y//' |sed 's/CONFIG_PACKAGE_//g')"
-        Plug_in2="$(echo "${Plug_in1}" |sed 's/^/、/g' |sed 's/$/\"/g' |awk '$0=NR$0' |sed 's/^/TIME g \"       /g')"
-        echo "${Plug_in2}" >Plug-in
+        # 提取插件信息
+        Plug_in1=$(grep -Eo "CONFIG_PACKAGE_luci-app-.*=y|CONFIG_PACKAGE_luci-theme-.*=y" "$HOME_PATH/.config" |
+                    grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic\|_USE' |
+                    sed 's/=y//' |
+                    sed 's/CONFIG_PACKAGE_//g')
+        Plug_in2=$(echo "${Plug_in1}" |
+                    sed 's/^/、/g' |
+                    sed 's/$/"/g' |
+                    awk '$0=NR$0' |
+                    sed 's/^/TIME g "       /g')
+        echo "${Plug_in2}" > Plug-in
 
-        if [[ $(grep -c "CONFIG_GRUB_EFI_IMAGES=y" $HOME_PATH/.config) -eq 1 ]]; then
+        # 判断EFI相关
+        if grep -q "CONFIG_GRUB_EFI_IMAGES=y" "$HOME_PATH/.config"; then
           export EFI_NO="1"
         else
           export EFI_NO="0"
         fi
 
+        echo
         TIME b "编译源码: ${SOURCE}"
         TIME b "源码链接: ${REPO_URL}"
         TIME b "源码分支: ${REPO_BRANCH}"
@@ -58,17 +77,17 @@ runs:
         if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
           TIME b "编译机型: aarch64系列"
           if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
-             TIME g "打包机型: ${amlogic_model}"
-             TIME g "打包内核: ${amlogic_kernel}"
-             TIME g "分区数据: ${openwrt_size}"
-             if [[ "${auto_kernel}" == "true" ]]; then
-               TIME g "自动检测最新内核: 是"
-             else
-               TIME g "自动检测最新内核: 不是"
-             fi
+            TIME g "打包机型: ${amlogic_model}"
+            TIME g "打包内核: ${amlogic_kernel}"
+            TIME g "分区数据: ${openwrt_size}"
+            if [[ "${auto_kernel}" == "true" ]]; then
+              TIME g "自动检测最新内核: 是"
+            else
+              TIME g "自动检测最新内核: 不是"
+            fi
           else
-             TIME b "内核版本: ${LINUX_KERNEL}"
-             TIME r "自动打包: 没开启自动打包设置"
+            TIME b "内核版本: ${LINUX_KERNEL}"
+            TIME r "自动打包: 没开启自动打包设置"
           fi
         else
           TIME b "内核版本: ${LINUX_KERNEL}"
@@ -89,7 +108,7 @@ runs:
         fi
         echo
         echo
-        if [[ ${INFORMATION_NOTICE} == "TG" ]] || [[ ${INFORMATION_NOTICE} == "PUSH" ]]; then
+        if [[ ${INFORMATION_NOTICE} == "TG" || ${INFORMATION_NOTICE} == "PUSH" ]]; then
           TIME y "pushplus/Telegram通知: 开启"
         else
           TIME r "pushplus/Telegram通知: 关闭"
@@ -147,15 +166,15 @@ runs:
         fi
         echo
         TIME z " 系统空间      类型   总数  已用  可用 使用率"
-        df -hT $PWD
+        df -hT "$PWD"
 
         if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
           echo
           echo
           TIME r "	      已选插件列表"
-          chmod -R +x ${HOME_PATH}/Plug-in
-          source ${HOME_PATH}/Plug-in
-          rm -rf ${HOME_PATH}/{Plug-in,Plug-2}
+          chmod -R +x "${HOME_PATH}/Plug-in"
+          source "${HOME_PATH}/Plug-in"
+          rm -rf "${HOME_PATH}/{Plug-in,Plug-2}"
           echo
         fi
 branding:
