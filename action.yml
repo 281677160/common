@@ -3,18 +3,20 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
+    # 检查rootfs.tar.gz是否存在
     - name: 检查rootfs.tar.gz是否存在
       shell: bash
       run: |
-        cd $HOME_PATH
-        if [[ -n "$(find $FIRMWARE_PATH -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
+        cd "${HOME_PATH}"
+        if [[ -n "$(find "${FIRMWARE_PATH}" -maxdepth 1 -name '*rootfs.tar.gz' -print -quit)" ]]; then
           mkdir -p "${HOME_PATH}/targz"
-          cp -Rf ${FIRMWARE_PATH}/*rootfs.tar.gz ${HOME_PATH}/targz/${SOURCE}-armvirt-64-default-rootfs.tar.gz
+          cp -Rf "${FIRMWARE_PATH}"/*rootfs.tar.gz "${HOME_PATH}/targz/${SOURCE}-armvirt-64-default-rootfs.tar.gz"
         else
           echo -e "\033[31m 没发现armvirt-64-default-rootfs.tar.gz包存在 \033[0m"
-          echo "PACKAGING_FIRMWARE=false" >> ${GITHUB_ENV}
+          echo "PACKAGING_FIRMWARE=false" >> "${GITHUB_ENV}"
         fi
-        
+
+    # 将rootfs.tar.gz发布到releases的targz
     - name: 将rootfs.tar.gz发布releases的targz
       if: env.TARGET_BOARD
       uses: ncipollo/release-action@v1
@@ -27,6 +29,7 @@ runs:
         replacesArtifacts: true
         body: aarch64系列打包使用的rootfs.tar.gz包
 
+    # 打包aarch64系列固件
     - name: 打包aarch64系列固件
       id: dabao
       if: env.PACKAGING_FIRMWARE == 'true'
@@ -41,23 +44,25 @@ runs:
         openwrt_size: ${{ env.openwrt_size }}
         builder_name: ${{ env.builder_name }}
 
+    # 打包信息
     - name: 打包信息
       if: steps.dabao.outcome == 'success'
       shell: bash
       run: |
-        cd $HOME_PATH
-        echo "DABAO_MESSAGE=、打包" >> ${GITHUB_ENV}
+        cd "${HOME_PATH}"
+        echo "DABAO_MESSAGE=、打包" >> "${GITHUB_ENV}"
 
+    # 打包后的固件放回原位
     - name: 打包后的固件放回原位
       if: steps.dabao.outcome == 'success' && env.PACKAGING_FIRMWARE == 'true'
       shell: bash
       run: |
-        cd $HOME_PATH
+        cd "${HOME_PATH}"
         if [[ -d "${PACKAGED_OUTPUTPATH}" ]]; then
-          cp -Rf $FIRMWARE_PATH/* $PACKAGED_OUTPUTPATH
+          cp -Rf "${FIRMWARE_PATH}"/* "${PACKAGED_OUTPUTPATH}" || { echo "复制文件失败"; exit 1; }
         fi
-        echo "FIRMWARE_PATH=$PACKAGED_OUTPUTPATH" >> ${GITHUB_ENV}
-        echo "TARGET_PROFILE_IMG=aarch64-img" >> ${GITHUB_ENV}
+        echo "FIRMWARE_PATH=${PACKAGED_OUTPUTPATH}" >> "${GITHUB_ENV}"
+        echo "TARGET_PROFILE_IMG=aarch64-img" >> "${GITHUB_ENV}"
 branding:
   icon: "terminal"
   color: "gray-dark"
