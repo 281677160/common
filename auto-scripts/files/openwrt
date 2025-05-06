@@ -4,20 +4,20 @@
 function TIME() {
     case $1 in
        z)
-          echo
           echo -e "\033[31m${2}\033[0m"
+          echo
        ;;
        g)
-          echo
           echo -e "\033[32m${2}\033[0m"
+          echo
        ;;
        b)
-          echo
           echo -e "\033[36m${2}\033[0m"
+          echo
        ;;
        y)
-          echo
           echo -e "\033[33m${2}\033[0m"
+          echo
        ;;
     esac
 }
@@ -34,6 +34,8 @@ judge() {
 
 # 修改后台IP并清空密码
 modify_ip_and_clear_password() {
+  clear
+  echo
   TIME b "请输入您想要更改成的后台IP (格式: x.x.x.x)"
   while :; do
     read -p "IP地址： " ip
@@ -52,6 +54,8 @@ modify_ip_and_clear_password() {
 
 # 清空密码
 clear_password() {
+  clear
+  echo
   while :; do
     read -p "是否清空密码？[Y/n]： " choice
     case $choice in
@@ -74,6 +78,8 @@ clear_password() {
 
 # 重启系统
 reboot_system() {
+  clear
+  echo
   while :; do
     read -p "是否重启系统？[Y/n]： " choice
     case $choice in
@@ -95,6 +101,8 @@ reboot_system() {
 
 # 恢复出厂设置
 restore_factory_settings() {
+  clear
+  echo
   TIME z "是否恢复出厂设置？按[Y/y]执行，按[N/n]退出"
   firstboot
 }
@@ -108,6 +116,7 @@ upgrade_firmware() {
 # 菜单函数
 show_menu() {
   clear
+  echo
   TIME b "请选择执行命令编码"
   TIME y "1. 修改后台IP和清空密码"
   TIME y "2. 清空密码"
@@ -131,6 +140,7 @@ show_menu() {
 # 带有固件更新选项的菜单函数
 show_menu_with_upgrade() {
   clear
+  echo
   TIME b "请选择执行命令编码"
   TIME y "1. 在线更新固件或转换其他作者固件"
   TIME y "2. 修改后台IP和清空密码"
