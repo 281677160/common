@@ -18,7 +18,7 @@ define Package/auto-scripts/description
   1. /etc/uci-defaults/99-first-run (runs once on first boot)
   2. /etc/init.d/restart_scripts (runs on every reboot, auto-enabled)
   3. /usr/bin/openwrt (runs openwrt)
-  4. /etc/init.d/check_network (runs check_network)
+  4. /usr/bin/check_network (runs check_network)
   5. /etc/scripts_reboot (runs scripts_reboot)
 endef
 
@@ -37,10 +37,8 @@ define Package/auto-scripts/install
 	ln -s ../init.d/restart_scripts $(1)/etc/rc.d/S99restart_scripts
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) ./files/openwrt $(1)/usr/bin/openwrt
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/check_network $(1)/etc/init.d/check_network
-	$(INSTALL_DIR) $(1)/etc/rc.d
-	ln -s ../init.d/check_network $(1)/etc/rc.d/S99check_network
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) ./files/check_network $(1)/usr/bin/check_network
 	$(INSTALL_DIR) $(1)/etc
 	$(INSTALL_BIN) ./files/scripts_reboot $(1)/etc/scripts_reboot
 endef
