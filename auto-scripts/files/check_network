@@ -13,14 +13,11 @@ stop() {
 }
 
 check_network() {
-    # 定义要检测的 DNS 服务器列表
-    DNS_SERVERS=("8.8.8.8" "1.1.1.1" "119.29.29.29" "223.5.5.5")
-
     # 初始化网络状态标志
     network_up=0
 
     # 遍历 DNS 服务器列表
-    for dns in "${DNS_SERVERS[@]}"; do
+    for dns in "8.8.8.8" "1.1.1.1" "119.29.29.29" "223.5.5.5"; do
         # 尝试向每个 DNS 服务器发送 ping 请求
         ping -c 3 "$dns" > /dev/null 2>&1
 
