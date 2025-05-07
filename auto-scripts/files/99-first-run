@@ -85,15 +85,14 @@ fi
 # 修改 /etc/profile 文件
 sed -i's?=== WARNING! =====================================?=================== WARNING! =====================?g' /etc/profile
 
-set system.@system[0].timezone="CST-8"
-set system.@system[0].zonename="Asia/Shanghai"
-delete system.ntp.server
-add_list system.ntp.server="ntp.tencent.com"
-add_list system.ntp.server="ntp1.aliyun.com"
-add_list system.ntp.server="ntp.ntsc.ac.cn"
-add_list system.ntp.server="cn.ntp.org.cn"
-set system.@imm_init[0].system_chn="1"
-commit system
+uci set system.@system[0].timezone='CST-8'
+uci set system.@system[0].zonename='Asia/Shanghai'
+uci delete system.ntp.server
+uci add_list system.ntp.server='ntp.tencent.com'
+uci add_list system.ntp.server='ntp1.aliyun.com'
+uci add_list system.ntp.server='ntp.ntsc.ac.cn'
+uci add_list system.ntp.server='cn.ntp.org.cn'
+uci commit system
 
 # 处理语言文件
 lmo_files=$(find "/usr/lib/lua/luci/i18n" -type f -name "zh_Hans.lmo" 2>/dev/null)
