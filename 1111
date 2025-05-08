@@ -4,9 +4,9 @@
     TELEGRAM_BOT_TOKEN: 
     TELEGRAM_CHAT_ID: 
     TZ: Asia/Shanghai
-    FOLDER_NAME: Lede
-    SOURCE_CODE: COOLSNOWWOLF
-    REPO_BRANCH: master
+    FOLDER_NAME: Official
+    SOURCE_CODE: OFFICIAL
+    REPO_BRANCH: openwrt-19.07
     INFORMATION_NOTICE: false
     RETAIN_MINUTE: 10080
     KEEP_LATEST: 30
@@ -18,26 +18,40 @@
     GITHUB_LINK: https://github.com/281677160/autobuild
     GIT_ACTOR: 281677160
     WAREHOUSE_MAN: autobuild
-    RUN_NUMBER: 194
+    RUN_NUMBER: 171
     GIT_REFNAME: main
     COMPILATION_INFORMATION: true
     CONFIG_FILE: x86_64
     HOME_PATH: /home/runner/work/autobuild/autobuild/openwrt
     OPERATES_PATH: /home/runner/work/autobuild/autobuild/operates
-    COMPILE_PATH: /home/runner/work/autobuild/autobuild/operates/Lede
-    BUILD_DIY: /home/runner/work/autobuild/autobuild/operates/Lede/diy
-    BUILD_FILES: /home/runner/work/autobuild/autobuild/operates/Lede/files
-    BUILD_PATCHES: /home/runner/work/autobuild/autobuild/operates/Lede/patches
-    BUILD_PARTSH: /home/runner/work/autobuild/autobuild/operates/Lede/diy-part.sh
-    BUILD_SETTINGS: /home/runner/work/autobuild/autobuild/operates/Lede/settings.ini
-    MYCONFIG_FILE: /home/runner/work/autobuild/autobuild/operates/Lede/seed/x86_64
-    DIY_WORK: Ledemaster
-    LUCI_EDITION: 23.05
-    DIY_PT1_SH: /tmp/common/Lede/diy-part.sh
-    DIY_PT2_SH: /tmp/common/Lede/diy2-part.sh
+    COMPILE_PATH: /home/runner/work/autobuild/autobuild/operates/Official
+    BUILD_DIY: /home/runner/work/autobuild/autobuild/operates/Official/diy
+    BUILD_FILES: /home/runner/work/autobuild/autobuild/operates/Official/files
+    BUILD_PATCHES: /home/runner/work/autobuild/autobuild/operates/Official/patches
+    BUILD_PARTSH: /home/runner/work/autobuild/autobuild/operates/Official/diy-part.sh
+    BUILD_SETTINGS: /home/runner/work/autobuild/autobuild/operates/Official/settings.ini
+    MYCONFIG_FILE: /home/runner/work/autobuild/autobuild/operates/Official/seed/x86_64
+    DIY_WORK: Official1907
+    DIY_PT1_SH: /tmp/common/Official/diy-part.sh
+    DIY_PT2_SH: /tmp/common/Official/diy2-part.sh
     COMMON_SH: /tmp/common/common.sh
     UPGRADE_SH: /tmp/common/upgrade.sh
     CONFIG_TXT: /tmp/common/config.txt
     OpenClash_branch: 0
     Mandatory_theme: argon
     Default_theme: argon
+    REPO_URL: https://github.com/openwrt/openwrt
+    SOURCE: Official
+    SOURCE_OWNER: openwrt
+    LUCI_EDITION: 19.07
+    DISTRIB_SOURCECODE: official
+    GENE_PATH: /home/runner/work/autobuild/autobuild/openwrt/package/base-files/files/bin/config_generate
+    RAW_WEB: https://raw.githubusercontent.com/openwrt/openwrt/openwrt-19.07/feeds.conf.default
+    FILES_PATH: /home/runner/work/autobuild/autobuild/openwrt/package/base-files/files/etc/shadow
+    DELETE: /home/runner/work/autobuild/autobuild/openwrt/package/base-files/files/etc/deletefile
+    DEFAULT_PATH: /home/runner/work/autobuild/autobuild/openwrt/package/auto-scripts/files/99-first-run
+    KEEPD_PATH: /home/runner/work/autobuild/autobuild/openwrt/package/base-files/files/lib/upgrade/keep.d/base-files-essential
+    CLEAR_PATH: /tmp/Clear
+    UPGRADE_DATE: 1746714667
+    Gujian_Date: 05.08
+    LICENSES_DOC: /home/runner/work/autobuild/autobuild/openwrt/LICENSES/doc
