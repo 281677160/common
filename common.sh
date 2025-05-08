@@ -203,36 +203,20 @@ fi
 # 增加中文语言包
 if [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)" ]] && [[ "${THEME_BRANCH}" == "Theme2" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-settings ${HOME_PATH}/package/default-settings
-  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-  fi
   if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
   fi
   if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-base luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
   fi
 elif [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)" ]] && [[ "${THEME_BRANCH}" == "Theme1" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-setting ${HOME_PATH}/package/default-settings
-  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-  fi
   if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
   fi
   if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-fs luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
   fi
-fi
-
-if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
-  sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci ?g' "${HOME_PATH}/include/target.mk"
 fi
 
 # zzz-default-settings文件
