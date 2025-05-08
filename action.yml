@@ -19,12 +19,15 @@ runs:
       if: ${{ steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' }}
       shell: bash
       run: |
-        mkdir -p Github_Api
-        cd Github_Api
+        mkdir -p $GITHUB_WORKSPACE/API
+        cd $GITHUB_WORKSPACE/API
+        echo "AUTO_API=$GITHUB_WORKSPACE/API/zzz_api" >> $GITHUB_ENV
         curl -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.UPDATE_TAG }}" -o zzz_api
-        if ! grep -q "browser_download_url" zzz_api; then
+        if ! grep -q "${{ env.FIRMWARE_VERSION }}" zzz_api; then
           echo "未找到固件信息，尝试重新获取..."
-          curl -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" "https://api.github.com/repos/${{ env.GIT_REPOSITORY }}/releases/tags/${{ env.UPDATE_TAG }}" -o zzz_api
+          wget -O zzz_api https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.UPDATE_TAG }}
+        else
+          echo "获取api成功"
         fi
 
     - name: 发送[在线更新固件]至云端2
@@ -34,8 +37,20 @@ runs:
         name: AutoUpdate-${{ env.TARGET_BOARD }}
         tag: ${{ env.UPDATE_TAG }}
         token: ${{ env.REPO_TOKEN }}
-        artifacts: "Github_Api/*"
+        artifacts: "API/*"
         allowUpdates: true
+        body: ${{ env.Tongzhi_Date }}
+
+    - name: 发送[在线更新固件]至云端3
+      if: steps.yunduan.outcome == 'success'
+      uses: ncipollo/release-action@v1
+      with:
+        name: rootfs.tar.gz
+        tag: targz
+        token: ${{ env.REPO_TOKEN }}
+        artifacts: ${{ env.AUTO_API }}
+        allowUpdates: true
+        replacesArtifacts: true
         body: ${{ env.Tongzhi_Date }}
 
     - name: 发送[在线更新固件]至云端3
