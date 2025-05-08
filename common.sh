@@ -19,78 +19,108 @@ echo -e "\e[36m\e[0m${Color}${2}\e[0m"
 }
 
 function Diy_variable() {
-  case "${SOURCE_CODE}" in
-    COOLSNOWWOLF)
-      export REPO_URL="https://github.com/coolsnowwolf/lede"
-      SOURCE="Lede" SOURCE_OWNER="Lean" DISTRIB_SOURCECODE="lede"
-      GENE_PATH="${HOME_PATH}/package/base-files/luci2/bin/config_generate"
-      LUCI_EDITION="23.05"
-      ;;
-    LIENOL)
-      export REPO_URL="https://github.com/Lienol/openwrt"
-      SOURCE="Lienol" SOURCE_OWNER="Lienol" DISTRIB_SOURCECODE="lienol"
-      ;;
-    IMMORTALWRT)
-      export REPO_URL="https://github.com/immortalwrt/immortalwrt"
-      SOURCE="Immortalwrt" SOURCE_OWNER="ctcgfw" DISTRIB_SOURCECODE="immortalwrt"
-      ;;
-    XWRT)
-      export REPO_URL="https://github.com/x-wrt/x-wrt"
-      SOURCE="Xwrt" SOURCE_OWNER="ptpt52" DISTRIB_SOURCECODE="xwrt"
-      ;;
-    OFFICIAL)
-      export REPO_URL="https://github.com/openwrt/openwrt"
-      SOURCE="Official" SOURCE_OWNER="openwrt" DISTRIB_SOURCECODE="official"
-      ;;
-    MT798X)
-      if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
-        export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
-        SOURCE="Mt798x" SOURCE_OWNER="hanwckf" REPO_BRANCH="openwrt-21.02"
-        DISTRIB_SOURCECODE="immortalwrt"
-      else
-        export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
-        SOURCE="Mt798x" SOURCE_OWNER="padavanonly"
-        [[ "${REPO_BRRANCH}" == "2410" ]] && LUCI_EDITION="24.10"
-      fi
-      DISTRIB_SOURCECODE="immortalwrt"
-      ;;
-    *)
-      if [[ -n "${BENDI_VERSION}" ]]; then
-        echo "ERROR: 请配置[operates]文件夹后重新编译"
-      else
-        echo "ERROR: 不支持的源码类型: ${SOURCE_CODE}"
-      fi
-      exit 1
-      ;;
-  esac
+# 读取变量
+case "${SOURCE_CODE}" in
+COOLSNOWWOLF)
+  export REPO_URL="https://github.com/coolsnowwolf/lede"
+  export SOURCE="Lede"
+  export SOURCE_OWNER="Lean"
+  export LUCI_EDITION="23.05"
+  export DISTRIB_SOURCECODE="lede"
+  export GENE_PATH="${HOME_PATH}/package/base-files/luci2/bin/config_generate"
+;;
+LIENOL)
+  export REPO_URL="https://github.com/Lienol/openwrt"
+  export SOURCE="Lienol"
+  export SOURCE_OWNER="Lienol"
+  export DISTRIB_SOURCECODE="lienol"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+;;
+IMMORTALWRT)
+  export REPO_URL="https://github.com/immortalwrt/immortalwrt"
+  export SOURCE="Immortalwrt"
+  export SOURCE_OWNER="ctcgfw"
+  export DISTRIB_SOURCECODE="immortalwrt"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+;;
+XWRT)
+  export REPO_URL="https://github.com/x-wrt/x-wrt"
+  export SOURCE="Xwrt"
+  export SOURCE_OWNER="ptpt52"
+  export DISTRIB_SOURCECODE="xwrt"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+;;
+OFFICIAL)
+  export REPO_URL="https://github.com/openwrt/openwrt"
+  export SOURCE="Official"
+  export SOURCE_OWNER="openwrt"
+  export DISTRIB_SOURCECODE="official"
+  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+;;
+MT798X)
+  if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
+    export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
+    export SOURCE="Mt798x"
+    export SOURCE_OWNER="hanwckf"
+    export REPO_BRANCH="openwrt-21.02"
+    export DISTRIB_SOURCECODE="immortalwrt"
+    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  else
+    export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
+    export SOURCE="Mt798x"
+    export SOURCE_OWNER="padavanonly"
+    if [[ "${REPO_BRANCH}" == "2410" ]]; then
+      export LUCI_EDITION="24.10"
+    else
+      export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    fi
+    export DISTRIB_SOURCECODE="immortalwrt"
+    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  fi
+;;
+*)
+  if [[ -n "${BENDI_VERSION}" ]]; then
+    TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
+  else
+    TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL"
+  fi
+  exit 1
+;;
+esac
 
-  # 设置公共默认值
-  : "${GENE_PATH:=${HOME_PATH}/package/base-files/files/bin/config_generate}"
-  : "${LUCI_EDITION:=$(echo "${REPO_BRANCH}" | sed 's/openwrt-//g')}"
-  : "${DISTRIB_SOURCECODE:=immortalwrt}"
+export FILES_PATH="${HOME_PATH}/package/base-files/files/etc/shadow"
+export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
+export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
+export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
+export CLEAR_PATH="/tmp/Clear"
+export UPGRADE_DATE="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
+export Gujian_Date="$(date +%m.%d)"
+export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
+export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
 
-  # 公共变量计算
-  export CON_TENTCOM="$(cut -d'/' -f4-5 <<<"${REPO_URL}")"
-  export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
-  export FILES_PATH="${HOME_PATH}/package/base-files/files/etc/shadow"
-  export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
-  export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
-  export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
-  export CLEAR_PATH="/tmp/Clear" UPGRADE_DATE="$(date +%s)"
-  export Gujian_Date="$(date +%m.%d)" LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
+echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
+echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
+echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
+echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
+echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
+echo "DISTRIB_SOURCECODE=${DISTRIB_SOURCECODE}" >> ${GITHUB_ENV}
+echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
+echo "RAW_WEB=${RAW_WEB}" >> ${GITHUB_ENV}
 
-  # 批量导出到环境文件
-  vars=(
-    REPO_URL REPO_BRANCH SOURCE SOURCE_OWNER LUCI_EDITION
-    DISTRIB_SOURCECODE GENE_PATH RAW_WEB FILES_PATH DELETE
-    DEFAULT_PATH KEEPD_PATH CLEAR_PATH UPGRADE_DATE
-    Gujian_Date LICENSES_DOC
-  )
-  for var in "${vars[@]}"; do
-    echo "${var}=${!var}" >> "${GITHUB_ENV}"
-  done
-}
-
+echo "FILES_PATH=${FILES_PATH}" >> ${GITHUB_ENV}
+echo "DELETE=${DELETE}" >> ${GITHUB_ENV}
+echo "DEFAULT_PATH=${DEFAULT_PATH}" >> ${GITHUB_ENV}
+echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
+echo "CLEAR_PATH=${CLEAR_PATH}" >> ${GITHUB_ENV}
+echo "UPGRADE_DATE=${UPGRADE_DATE}" >> ${GITHUB_ENV}
+echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
+echo "LICENSES_DOC=${LICENSES_DOC}" >> ${GITHUB_ENV}
 
 # 启动编译时的变量文件
 if [[ -z "${BENDI_VERSION}" ]]; then
@@ -109,7 +139,6 @@ KEEP_LATEST="${KEEP_LATEST}"
 EOF
 fi
 }
-
 
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
