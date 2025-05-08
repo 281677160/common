@@ -158,7 +158,6 @@ function Diy_Part3() {
 		fi
 	;;
 	esac
-	cd ${BIN_PATH}
- 	ls -1
+ 	ls -1 $BIN_PATH
 	cd ${HOME_PATH}
 }
