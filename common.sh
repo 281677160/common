@@ -1314,144 +1314,136 @@ fi
 
 
 function gitsvn() {
-    # 定义基本路径
-    cd "${HOME_PATH}"
-    local A="${1%.git}"  # 输入的GitHub URL
-    local B="$2"         # 文件投放路径
-    local branch_name=""
-    local path_part=""
-    local url=""
-    local file_name=""
-    local parent_dir=""
-    local git_laqu=""
+local url="${1%.git}"
+local route="$2"
+local HOME_PATH="$(pwd)"
+local tmpdir="$(mktemp -d)"
+local base_url=""
+local repo_name=""
+local branch=""
+local path_after_branch=""
+local last_part=""
+local files_name=""
+local download_url=""
+local parent_dir=""
+local store_away=""
 
-    # 检查输入路径是否有效
-    if [[ -z "$B" ]]; then
-        echo "未设置文件投放路径"
-        exit 1
-    fi
+if [[ "$url" == *"tree"* ]]; then
+    base_url=$(echo "$url" | sed 's|/tree/.*||')
+    repo_name=$(echo "$base_url" | awk -F'/' '{print $5}')
+    branch=$(echo "$url" | awk -F'/tree/' '{print $2}' | cut -d'/' -f1)
+    path_after_branch=$(echo "$url" | sed -n "s|.*/tree/$branch||p" | sed 's|^/||')
+    last_part=$(echo "$path_after_branch" | awk -F'/' '{print $NF}')
+    [[ -n "$path_after_branch" ]] && path_name="$tmpdir/$path_after_branch" || path_name="$tmpdir"
+    [[ -n "$last_part" ]] && files_name="$last_part" || files_name="$repo_name"
+    [[ -z "$repo_name" ]] && { echo "错误链接,仓库名为空"; return 1; }
+elif [[ "$url" == *"blob"* ]]; then
+    base_url=$(echo "$url" | sed 's|/blob/.*||')
+    repo_name=$(echo "$base_url" | awk -F'/' '{print $5}')
+    branch=$(echo "$url" | awk -F'/blob/' '{print $2}' | cut -d'/' -f1)
+    path_after_branch=$(echo "$url" | sed -n "s|.*/blob/$branch||p" | sed 's|^/||')
+    download_url="https://raw.githubusercontent.com/${base_url#*https://github.com/}/$branch/$path_after_branch"
+    parent_dir="${path_after_branch%/*}"
+    [[ -n "$path_after_branch" ]] && files_name="$path_after_branch" || { echo "错误链接,文件名为空"; return 1; }
+elif [[ "$url" == *"https://github.com"* ]]; then
+    base_url="$url"
+    repo_name=$(echo "$base_url" | awk -F'/' '{print $5}')
+    path_name="$tmpdir"
+    [[ -n "$repo_name" ]] && files_name="$repo_name" || { echo "错误链接,仓库名为空"; return 1; }
+else
+    echo "无效的github链接"
+    return 1
+fi
 
-    # 根据输入路径计算目标路径
-    if [[ "$B" == *"openwrt"* ]]; then
-        local content="${HOME_PATH}/${B#*openwrt/}"
-        local wenjianjia="${B#*openwrt/}"
-    elif [[ "$B" == *"./"* ]]; then
-        local content="${HOME_PATH}/${B#*./}"
-        local wenjianjia="${B#*./}"
+if [[ "$route" == "all" ]]; then
+    store_away="$HOME_PATH/"
+elif [[ "$route" == *"openwrt"* ]]; then
+    store_away="$HOME_PATH/${route#*openwrt/}"
+elif [[ "$route" == *"./"* ]]; then
+    store_away="$HOME_PATH/${route#*./}"
+elif [[ -n "$route" ]]; then
+    store_away="$HOME_PATH/$route"
+else
+    store_away="$HOME_PATH/$files_name"
+fi
+
+if [[ "$url" == *"tree"* ]] && [[ -n "$path_after_branch" ]]; then
+    if git clone -q --no-checkout "$base_url" "$tmpdir"; then
+        cd "$tmpdir"
+        git sparse-checkout init --cone > /dev/null 2>&1
+        git sparse-checkout set "$path_after_branch" > /dev/null 2>&1
+        git checkout "$branch" > /dev/null 2>&1
+        grep -rl 'include ../../luci.mk' . | xargs -r sed -i 's#include ../../luci.mk#include \$(TOPDIR)/feeds/luci/luci.mk#g'
+        grep -rl 'include ../../lang/' . | xargs -r sed -i 's#include ../../lang/#include \$(TOPDIR)/feeds/packages/lang/#g'
+        if [[ "$route" == "all" ]]; then
+            find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
+            target="$HOME_PATH/${item}"
+            if [ -e "$target" ]; then
+                rm -rf "$target"
+            fi
+            done
+            cp -r "$path_name"/* "$store_away"
+        else
+            rm -rf "$store_away" && cp -r "$path_name" "$store_away"
+        fi
+        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
+        cd "$HOME_PATH"
     else
-        local content="${HOME_PATH}/$B"
-        local wenjianjia="${B}"
+        echo "$files_name文件下载失败"
+        return 1
     fi
-
-    # 解析GitHub URL
-    if [[ "$A" =~ tree/([^/]+)(/(.*))? ]]; then
-        branch_name="${BASH_REMATCH[1]}"
-        path_part="${BASH_REMATCH[3]:-}"
-    elif [[ "$A" =~ blob/([^/]+)(/(.*))? ]]; then
-        branch_name="${BASH_REMATCH[1]}"
-        path_part="${BASH_REMATCH[3]:-}"
-        local ck_name="$(echo "${A}" | cut -d"/" -f4-5)"
-    elif [[ "$A" == *"github.com"* ]]; then
-        branch_name="1"
+elif [[ "$url" == *"tree"* ]] && [[ -n "$branch" ]]; then
+    if git clone -q --single-branch --depth=1 --branch="$branch" "$base_url" "$tmpdir"; then
+        if [[ "$route" == "all" ]]; then
+            find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
+            target="$HOME_PATH/${item}"
+            if [ -e "$target" ]; then
+                rm -rf "$target"
+            fi
+            done
+            cp -r "$path_name"/* "$store_away"
+        else
+            rm -rf "$store_away" && cp -r "$path_name" "$store_away"
+        fi
+        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
     else
-        echo "无效的GitHub URL格式"
-        exit 1
+        echo "$files_name文件下载失败"
+        return 1
     fi
-
-    # 根据解析结果设置URL和文件名
-    if [[ "$A" == *"tree"* ]] && [[ -n "${path_part}" ]]; then
-        url="${A%%/tree/*}"
-        file_name="${A##*/}"
-        git_laqu="1"
-    elif [[ "$A" == *"tree"* ]] && [[ -n "${branch_name}" ]] && [[ -z "${path_part}" ]]; then
-        url="${A%%/tree/*}"
-        file_name="$(echo "${A}" | cut -d"/" -f5)"
-        git_laqu="2"
-    elif [[ "${branch_name}" == "1" ]]; then
-        url="${A}"
-        file_name="$(echo "${A}" | cut -d"/" -f5)"
-        git_laqu="3"
-    elif [[ "$A" == *"blob"* ]]; then
-        url="https://raw.githubusercontent.com/${ck_name}/${branch_name}/${path_part}"
-        file_name="${path_part}"
-        parent_dir="${wenjianjia%/*}"
-        git_laqu="4"
+elif [[ "$url" == *"blob"* ]]; then
+    if [[ -n "$(echo "$parent_dir" | grep -E '/')" ]]; then
+        [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
     fi
-
-    # 创建临时目录
-    local tmpdir="$(mktemp -d)"
-    local C="${HOME_PATH}/${tmpdir#*.}"
-    rm -fr "${tmpdir}"
-
-    # 根据git_laqu执行不同的操作
-    case "${git_laqu}" in
-        1)
-            if git clone -q --no-checkout "$url" "$C"; then
-                cd "${C}"
-                git sparse-checkout init --cone > /dev/null 2>&1
-                git sparse-checkout set "${path_part}" > /dev/null 2>&1
-                git checkout "${branch_name}" > /dev/null 2>&1
-                # 替换路径中的特定字符串
-                grep -rl 'include ../../luci.mk' . | xargs -r sed -i 's#include ../../luci.mk#include \$(TOPDIR)/feeds/luci/luci.mk#g'
-                grep -rl 'include ../../lang/' . | xargs -r sed -i 's#include ../../lang/#include \$(TOPDIR)/feeds/packages/lang/#g'
-                # 移动文件到目标路径
-                rm -fr "${content}"
-                mv "${path_part}" "${content}"
-                if [[ $? -ne 0 ]]; then
-                    echo "${file_name}文件投放失败,请检查投放路径是否正确"
-                    exit 1
-                else
-                    echo "${file_name}文件下载完成"
-                fi
-            else
-                echo "${file_name}文件下载失败"
-                exit 1
+    if curl -fsSL "$download_url" -o "$store_away"; then
+        echo "$files_name 文件下载成功"
+    else
+        echo "$files_name文件下载失败"
+        return 1
+    fi
+elif [[ "$url" == *"https://github.com"* ]]; then
+    if git clone -q --depth 1 "$base_url" "$tmpdir"; then
+        if [[ "$route" == "all" ]]; then
+            find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
+            target="$HOME_PATH/${item}"
+            if [ -e "$target" ]; then
+                rm -rf "$target"
             fi
-            ;;
-        2)
-            rm -fr "${content}"
-            if git clone -q --single-branch --depth=1 --branch=${branch_name} ${url} ${content}; then
-                echo "${file_name}文件下载完成"
-            else
-                echo "${file_name}文件下载失败"
-                exit 1
-            fi
-            ;;
-        3)
-            rm -fr "${content}"
-            if git clone -q --depth 1 "${url}" "${content}"; then
-                echo "${file_name}文件下载完成"
-            else
-                echo "${file_name}文件下载失败"
-                exit 1
-            fi
-            ;;
-        4)
-            [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
-            if curl -fsSL "${url}" -o "${content}"; then
-                if [[ -s "${content}" ]]; then
-                    echo "${file_name}文件下载完成"
-                    chmod +x "${content}"
-                else
-                    echo "${file_name}文件下载失败"
-                    exit 1
-                fi
-            else
-                echo "${file_name}文件下载失败"
-                exit 1
-            fi
-            ;;
-        *)
-            echo "未知的操作类型"
-            exit 1
-            ;;
-    esac
-
-    # 清理临时目录
-    cd "${HOME_PATH}"
-    rm -fr "$C"
+            done
+            cp -r "$path_name"/* "$store_away"
+        else
+            rm -rf "$store_away" && cp -r "$path_name" "$store_away"
+        fi
+        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
+    else
+        echo "$files_name文件下载失败"
+        return 1
+    fi
+else
+    echo "无效的github链接"
+    return 1
+fi
+rm -rf "$tmpdir"
 }
-
 
 
 
