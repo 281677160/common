@@ -4,6 +4,7 @@
 url="https://github.com/coolsnowwolf/lede/tree/master/package/firmware/armbian-firmware"
 https://github.com/coolsnowwolf/lede/blob/master/package/firmware/armbian-firmware/Makefile
 # url="https://github.com/coolsnowwolf/lede"
+tmpdir="$(mktemp -d)
 
 # 判断URL中是否包含tree
 if [[ "$url" == *"tree"* ]]; then
@@ -70,6 +71,8 @@ else
     return
 fi
 
+if [[ "$B" == "all" ]]; then
+    store_away="$HOME_PATH/"
 if [[ "$B" == *"openwrt"* ]]; then
     store_away="$HOME_PATH/${B#*openwrt/}"
 elif [[ "$B" == *"./"* ]]; then
@@ -81,7 +84,6 @@ else
 fi
 
 if [[ "$url" == *"tree"* ]] && [[ -n "$path_after_branch" ]]; then
-    tmpdir="$(mktemp -d)
     if git clone -q --no-checkout "$base_url" "$tmpdir"; then
         cd "$tmpdir"
         git sparse-checkout init --cone > /dev/null 2>&1
