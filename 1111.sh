@@ -110,7 +110,7 @@ if [[ "$url" == *"tree"* ]] && [[ -n "$path_after_branch" ]]; then
         grep -rl 'include ../../lang/' . | xargs -r sed -i 's#include ../../lang/#include \$(TOPDIR)/feeds/packages/lang/#g'
         
         # 复制文件到目标位置
-        if [[ "$B" == "all" ]]; then
+        if [[ "$route" == "all" ]]; then
             find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
             target="$HOME_PATH/${item}"
             if [ -e "$target" ]; then
@@ -132,7 +132,7 @@ elif [[ "$url" == *"tree"* ]]; then
     path_name="$tmpdir"
     if git clone -q --single-branch --depth=1 --branch="$branch" "$base_url" "$tmpdir"; then
         # 复制文件到目标位置
-        if [[ "$B" == "all" ]]; then
+        if [[ "$route" == "all" ]]; then
             find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
             target="$HOME_PATH/${item}"
             if [ -e "$target" ]; then
@@ -163,7 +163,7 @@ elif [[ "$url" == *"https://github.com"* ]]; then
     path_name="$tmpdir"
     if git clone -q --depth 1 "$base_url" "$tmpdir"; then
         # 复制文件到目标位置
-        if [[ "$B" == "all" ]]; then
+        if [[ "$route" == "all" ]]; then
             find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
             target="$HOME_PATH/${item}"
             if [ -e "$target" ]; then
