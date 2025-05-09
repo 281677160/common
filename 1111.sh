@@ -107,16 +107,16 @@ elif [[ "$url" == *"tree"* ]] && [[ -n "$branch" ]]; then
         echo "$files_name文件下载失败"
         return
     fi
-elif [[ "$url" == *"https://github.com"* ]]; then
-    [[ "$B" == "all" ]] && path_name="$tmpdir/*" || path_name="$tmpdir"
-    if ! git clone -q --depth 1 $base_url $tmpdir; then
-        echo "$files_name文件下载失败"
-        return
-    fi
 elif [[ "$url" == *"blob"* ]]; then
     parent_dir="${store_away%/*}"
     [[ ! -d "$parent_dir" ]] && mkdir -p "$parent_dir"
     if ! curl -fsSL $branch -o $store_away; then
+        echo "$files_name文件下载失败"
+        return
+    fi
+elif [[ "$url" == *"https://github.com"* ]]; then
+    [[ "$B" == "all" ]] && path_name="$tmpdir/*" || path_name="$tmpdir"
+    if ! git clone -q --depth 1 $base_url $tmpdir; then
         echo "$files_name文件下载失败"
         return
     fi
