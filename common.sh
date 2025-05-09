@@ -1316,7 +1316,6 @@ fi
 function gitsvn() {
 local url="${1%.git}"
 local route="$2"
-local HOME_PATH="$(pwd)"
 local tmpdir="$(mktemp -d)"
 local base_url=""
 local repo_name=""
