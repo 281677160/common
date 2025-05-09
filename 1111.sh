@@ -64,7 +64,7 @@ elif [[ "$url" == *"https://github.com"* ]]; then
     echo "last_part: $last_part"
 
     # 确定文件名称
-    [[ -n "$last_part" ]] && files_name="$last_part" || { echo "错误链接,仓库为空"; return; }
+    [[ -n "$last_part" ]] && files_name="$last_part" || { echo "错误链接,仓库名为空"; return; }
 else
     echo "无效的github链接"
     return
