@@ -269,6 +269,8 @@ done
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-qmodem
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/quectel_cm-5G
 fi
 
 if [[ "${REPO_BRANCH}" =~ ^(2410|(openwrt-)?(24\.10))$ ]]; then
