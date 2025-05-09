@@ -68,4 +68,27 @@ elif [[ "$url" == *"https://github.com"* ]]; then
 else
     echo "无效的github链接"
     return
-fi    
+fi
+
+if [[ "$B" == *"openwrt"* ]]; then
+    store_away="$HOME_PATH/${B#*openwrt/}"
+elif [[ "$B" == *"./"* ]]; then
+    store_away="$HOME_PATH/${B#*./}"
+elif [[ -n "$B" ]]; then
+    store_away="$HOME_PATH/$B"
+else
+    store_away="$HOME_PATH/$files_name"
+fi
+
+if [[ "$url" == *"tree"* ]] && [[ -n "$path_after_branch" ]]; then
+    tmpdir="$(mktemp -d)
+    if git clone -q --no-checkout "$base_url" "$tmpdir"; then
+        cd "$tmpdir"
+        git sparse-checkout init --cone > /dev/null 2>&1
+        git sparse-checkout set "$path_after_branch" > /dev/null 2>&1
+        git checkout "$branch" > /dev/null 2>&1
+        # 替换路径中的特定字符串
+        grep -rl 'include ../../luci.mk' . | xargs -r sed -i 's#include ../../luci.mk#include \$(TOPDIR)/feeds/luci/luci.mk#g'
+        grep -rl 'include ../../lang/' . | xargs -r sed -i 's#include ../../lang/#include \$(TOPDIR)/feeds/packages/lang/#g'
+        
+
