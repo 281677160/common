@@ -5,7 +5,7 @@ url="https://github.com/coolsnowwolf/lede/tree/master/package/firmware/armbian-f
 # https://github.com/coolsnowwolf/lede/blob/master/package/firmware/armbian-firmware/Makefile
 # url="https://github.com/coolsnowwolf/lede"
 HOME_PATH="$(pwd)"
-tmpdir="$(mktemp -d)
+tmpdir="$(mktemp -d)"
 
 # 判断URL中是否包含tree
 if [[ "$url" == *"tree"* ]]; then
