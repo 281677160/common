@@ -57,7 +57,7 @@ elif [[ "$url" == *"blob"* ]]; then
     base_url="https://raw.githubusercontent.com/$ck_name/$branch/$path_after_branch"
 
     # 确定文件名称
-    [[ -n "$path_files_branch" ]] && files_name="$path_files_branch" || { echo "错误链接,文件为空"; return; }
+    [[ -n "$path_files_branch" ]] && files_name="$path_files_branch" || echo "错误链接,文件名为空" && return
 elif [[ "$url" == *"https://github.com"* ]]; then
     # 不包含tree的情况
     base_url="$url"
@@ -68,7 +68,7 @@ elif [[ "$url" == *"https://github.com"* ]]; then
     echo "last_part: $last_part"
 
     # 确定文件名称
-    [[ -n "$last_part" ]] && files_name="$last_part" || { echo "错误链接,仓库名为空"; return; }
+    [[ -n "$last_part" ]] && files_name="$last_part" || echo "错误链接,仓库名为空" && return
 else
     echo "无效的github链接"
     return
