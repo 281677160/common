@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function Diy_firmware() {
+function catenate() {
 gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/firmware/armbian-firmware
 gitsvn https://github.com/coolsnowwolf/lede/blob/master/package/firmware/armbian-firmware/Makefile ./package/firmware/armbian-firmware/Makefile
 gitsvn https://github.com/coolsnowwolf/lede.git all
@@ -184,3 +184,5 @@ else
     exit 1
 fi
 }
+
+catenate
