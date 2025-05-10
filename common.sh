@@ -3,7 +3,7 @@
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
 
-ACTIONS_VERSION="2.3.0"
+ACTIONS_VERSION="2.4.0"
 
 function TIME() {
   case $1 in
