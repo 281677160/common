@@ -15,7 +15,7 @@ function TIME() {
     l) local Color="\033[0;31m";;
     *) local Color="\033[0;0m";;
   esac
-echo -e "${Color}$2\033[0m\n"
+echo -e "\n${Color}$2\033[0m\n"
 }
 
 function Diy_variable() {
