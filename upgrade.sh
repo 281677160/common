@@ -111,7 +111,6 @@ function Diy_Part3() {
 	[[ ! -d "${BIN_PATH}" ]] && mkdir -p "${BIN_PATH}" || rm -rf "${BIN_PATH}"/*
 	
 	cd "${FIRMWARE_PATH}"
-	ls -1
  	if [[ -n "$(ls -1 | grep -E '.img')" ]] && [[ -z "$(ls -1 | grep -E '.img.gz')" ]]; then
 		gzip -f9n *.img
 	fi
@@ -158,6 +157,7 @@ function Diy_Part3() {
 		fi
 	;;
 	esac
+ 	echo -e "\n\033[0;32m远程更新固件\033[0m"
  	ls -1 $BIN_PATH
 	cd ${HOME_PATH}
 }
