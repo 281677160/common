@@ -8,11 +8,11 @@ ACTIONS_VERSION="2.3.0"
 function TIME() {
   case $1 in
     r) local Color="\033[0;31m";;
-    g) local Color="\033[0;31m";;
-    b) local Color="\033[0;31m";;
-    y) local Color="\033[0;31m";;
-    z) local Color="\033[0;31m";;
-    l) local Color="\033[0;31m";;
+    g) local Color="\033[0;32m";;
+    y) local Color="\033[0;33m";;
+    b) local Color="\033[0;34m";;
+    z) local Color="\033[0;35m";;
+    l) local Color="\033[0;36m";;
     *) local Color="\033[0;0m";;
   esac
 echo -e "\n$Color$2\033[0m"
