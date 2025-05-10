@@ -7,13 +7,13 @@ ACTIONS_VERSION="2.3.0"
 Compte=$(date +%Y年%m月%d号%H时%M分)
 function TIME() {
   case $1 in
-    r) export Color="\e[31m";;
-    g) export Color="\e[32m";;
-    b) export Color="\e[34m";;
-    y) export Color="\e[33m";;
-    z) export Color="\e[35m";;
-    l) export Color="\e[36m";;
-    *) export Color="\e[0m";;
+    r) local Color="\e[31m";;
+    g) local Color="\e[32m";;
+    b) local Color="\e[34m";;
+    y) local Color="\e[33m";;
+    z) local Color="\e[35m";;
+    l) local Color="\e[36m";;
+    *) local Color="\e[0m";;
   esac
 echo
 echo -e "\e[36m\e[0m${Color}${2}\e[0m"
