@@ -7,16 +7,15 @@ ACTIONS_VERSION="2.3.0"
 
 function TIME() {
   case $1 in
-    r) local Color="\e[31m";;
-    g) local Color="\e[32m";;
-    b) local Color="\e[34m";;
-    y) local Color="\e[33m";;
-    z) local Color="\e[35m";;
-    l) local Color="\e[36m";;
-    *) local Color="\e[0m";;
+    r) local Color="\033[0;31m";;
+    g) local Color="\033[0;31m";;
+    b) local Color="\033[0;31m";;
+    y) local Color="\033[0;31m";;
+    z) local Color="\033[0;31m";;
+    l) local Color="\033[0;31m";;
+    *) local Color="\033[0;0m";;
   esac
-echo
-echo -e "\e[36m\e[0m${Color}${2}\e[0m"
+echo -e "${Color}$2\033[0m\n"
 }
 
 function Diy_variable() {
