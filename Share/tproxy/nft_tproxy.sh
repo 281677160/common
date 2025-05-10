@@ -56,15 +56,10 @@ if [[ `grep -c "kmod-netlink-diag" $iproutemk` -eq '0' ]] && \
    sed -i "${ax}s?.*?  DEPENDS:=+libnl-tiny +(PACKAGE_devlink||PACKAGE_rdma):libmnl +(PACKAGE_tc||PACKAGE_ip-full):libelf +PACKAGE_ip-full:libcap +kmod-netlink-diag?" ${iproutemk}
 fi
 
-if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/19.07/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/19.07/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
-fi
-
 if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
   curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/openwrt-21.02/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
   curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/openwrt-21.02/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
-  gitsvn https://github.com/immortalwrt/packages/tree/openwrt-23.05/devel/gn ${HOME_PATH}/feeds/packages/devel/gn
+  rm -rf ${HOME_PATH}/feeds/packages/devel/gn
 fi
 
 if [[ "${REPO_BRANCH}" == "openwrt-18.06-k5.4" ]]; then
@@ -79,6 +74,8 @@ fi
 
 # 19.07补丁
 if [[ "${REPO_BRANCH}" == *"19.07"* ]]; then
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/19.07/include/netfilter.mk -o ${HOME_PATH}/include/netfilter.mk
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/tproxy/19.07/package/kernel/linux/modules/netfilter.mk -o ${HOME_PATH}/package/kernel/linux/modules/netfilter.mk
   gitsvn https://github.com/openwrt/packages/tree/2db418f6707af1a938d6c033aa81946334c1a8bb/libs/libcap ${HOME_PATH}/feeds/packages/libs/libcap
   gitsvn https://github.com/coolsnowwolf/packages/tree/152022403f0ab2a85063ae1cd9687bd5240fe9b7/net/kcptun ${HOME_PATH}/feeds/packages/net/kcptun
   if [[ "${SOURCE_CODE}" == "OFFICIAL" ]]; then
