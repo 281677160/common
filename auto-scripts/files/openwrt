@@ -4,21 +4,15 @@
 function TIME() {
     case $1 in
        z)
-          echo -e "\033[31m${2}\033[0m"
-          echo
-       ;;
+          echo -e "\033[0;31m$2\033[0m\n";;
        g)
-          echo -e "\033[32m${2}\033[0m"
-          echo
-       ;;
+          echo -e "\033[0;32m$2\033[0m\n";;
        b)
-          echo -e "\033[36m${2}\033[0m"
-          echo
-       ;;
+          echo -e "\033[0;36m$2\033[0m\n";;
        y)
-          echo -e "\033[33m${2}\033[0m"
-          echo
-       ;;
+          echo -e "\033[0;33m$2\033[0m\n";;
+       *) # 原色
+          echo -e "\033[0;0m$2\033[0m\n";;
     esac
 }
 
@@ -111,6 +105,7 @@ restore_factory_settings() {
 upgrade_firmware() {
   TIME b "正在执行在线更新或转换固件操作..."
   AutoUpgrade -u
+  exit 0
 }
 
 # 菜单函数
