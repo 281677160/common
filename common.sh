@@ -13,6 +13,7 @@ function TIME() {
     y) export Color="\e[33m";;
     z) export Color="\e[35m";;
     l) export Color="\e[36m";;
+    *) export Color="\e[0m";;
   esac
 echo
 echo -e "\e[36m\e[0m${Color}${2}\e[0m"
