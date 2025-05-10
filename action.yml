@@ -6,21 +6,20 @@ runs:
     - name: 密匙检测
       shell: bash
       run: |
-        cd ${GITHUB_WORKSPACE}
+        cd "$GITHUB_WORKSPACE"
         if [[ -z "${{ env.REPO_TOKEN }}" ]]; then
           echo -e "\033[31m 您没有设置仓库密匙，请按教程设置好密匙再来 \033[0m\n"
           echo -e "\033[31m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
           exit 1
-        elif [[ -n "${{ env.REPO_TOKEN }}" ]]; then
-          curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/281677160/common/releases/tags/API > mishi
-          if [[ -z "$(grep -E "assets" mishi)" ]] && [[ -z "$(grep -E "users" mishi)" ]]; then
-            echo -e "\033[31m 您的密匙不正确或已过期，请按教程设置好密匙再来 \033[0m\n"
-            echo -e "\033[31m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
-            exit 1
-            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git config --global user.name "github-actions[bot]"
-          fi
         fi
+        curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/281677160/common/releases/tags/API > mishi
+        if ! grep -E "assets|users" mishi &> /dev/null; then
+          echo -e "\033[31m 您的密匙不正确或已过期，请按教程设置好密匙再来 \033[0m\n"
+          echo -e "\033[31m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
+          exit 1
+        fi
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
 branding:
   icon: "terminal"
   color: "gray-dark"
