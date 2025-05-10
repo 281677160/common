@@ -9,25 +9,12 @@ runs:
       shell: bash
       run: |
         cd "$HOME_PATH"
-        # 定义颜色输出函数
-        TIME() {
-          case $1 in
-            r) Color="\e[31m" ;;
-            g) Color="\e[32m" ;;
-            b) Color="\e[34m" ;;
-            y) Color="\e[33m" ;;
-            z) Color="\e[35m" ;;
-            l) Color="\e[36m" ;;
-          esac
-          echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
-        }
-
-        TIME y "第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取"
-        TIME y "拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率"
+        echo -e "\n\033[0;33m第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取\033[0m"
+        echo -e "\n\033[0;33m拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率\033[0m"
         if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-          TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP、清空密码、还原出厂设置和在线更新固件操作"
+          echo -e "\n\033[0;31mSSH连接固件输入命令'openwrt'可进行修改后台IP、清空密码、还原出厂设置和在线更新固件操作\033[0m"
         else
-          TIME r "SSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作"
+          echo -e "\n\033[0;31mSSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作\033[0m"
         fi
         echo
     # 编译信息步骤
@@ -37,16 +24,17 @@ runs:
       run: |
         cd "$HOME_PATH"
         # 复用颜色输出函数
-        TIME() {
+        function TIME() {
           case $1 in
-            r) Color="\e[31m" ;;
-            g) Color="\e[32m" ;;
-            b) Color="\e[34m" ;;
-            y) Color="\e[33m" ;;
-            z) Color="\e[35m" ;;
-            l) Color="\e[36m" ;;
+            r) local Color="\033[0;31m";;
+            g) local Color="\033[0;32m";;
+            y) local Color="\033[0;33m";;
+            b) local Color="\033[0;34m";;
+            z) local Color="\033[0;35m";;
+            l) local Color="\033[0;36m";;
+            *) local Color="\033[0;0m";;
           esac
-          echo -e "\e[36m\e[0m ${Color}${2}\e[0m"
+        echo -e "\n$Color$2\033[0m"
         }
 
         # 提取插件信息
