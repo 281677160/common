@@ -4,7 +4,7 @@
 # matrix.target=${FOLDER_NAME}
 
 ACTIONS_VERSION="2.3.0"
-Compte=$(date +%Y年%m月%d号%H时%M分)
+
 function TIME() {
   case $1 in
     r) local Color="\e[31m";;
