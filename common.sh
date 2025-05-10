@@ -119,7 +119,7 @@ echo "DEFAULT_PATH=${DEFAULT_PATH}" >> ${GITHUB_ENV}
 echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
 echo "CLEAR_PATH=${CLEAR_PATH}" >> ${GITHUB_ENV}
 echo "UPGRADE_DATE=${UPGRADE_DATE}" >> ${GITHUB_ENV}
-echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
+echo "GUJIAN_DATE=$(date +%m.%d)" >> ${GITHUB_ENV}
 echo "LICENSES_DOC=${LICENSES_DOC}" >> ${GITHUB_ENV}
 
 # 启动编译时的变量文件
@@ -1310,7 +1310,7 @@ for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
 done
 
 if [[ -z "$(ls -1 |grep -E 'armvirt')" ]] || [[ -z "$(ls -1 |grep -E 'armsr')" ]]; then
-  rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
+  rename -v "s/^openwrt/${GUJIAN_DATE}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
 fi
 }
 
