@@ -43,7 +43,7 @@ runs:
         counter=1
         grep -E '^CONFIG_PACKAGE_luci-(app|theme)-[^_]+=y$' "$HOME_PATH/.config" | while IFS='=' read -r line _; do
           package_name="${line#CONFIG_PACKAGE_}"
-          echo "TIME g \"$counter、$package_name\" |sed 's/^/      /'" >> "$OUTPUT_FILE"
+          echo "TIME g \"$counter、$package_name\" |sed 's/^/         /'" >> "$OUTPUT_FILE"
           counter=$((counter + 1))
         done
 
