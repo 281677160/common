@@ -54,33 +54,10 @@ opkg_mirror="https://mirrors.vsean.net/openwrt"
 # 设置 distfeed 列表文件路径
 distfeedlist="/etc/apk/repositories.d/distfeeds.list"
 
-# 根据不同条件修改 distfeed 列表或 opkg 配置
-if [ -f "${distfeedlist}" ] && grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
-    sed -i.bak "s,http.*\/downloads.openwrt.org,$opkg_mirror,g" "$distfeedlist"
-    grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
-elif grep -q "19.07" /etc/opkg/distfeeds.conf && grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
-    sed -i.bak "s|http.*\/downloads.openwrt.org/releases/19.07-SNAPSHOT|https://mirrors.ustc.edu.cn/openwrt/releases/19.07.10|g" /etc/opkg/distfeeds.conf
-    grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
-elif grep -q "openwrt.org" /etc/opkg/distfeeds.conf; then
-    sed -i.bak "s,http.*\/downloads.openwrt.org,$opkg_mirror,g" /etc/opkg/distfeeds.conf
-    grep -q "check_signature" /etc/opkg.conf && sed -i '/check_signature/d' /etc/opkg.conf
-fi
-
 # 根据 /etc/index.htm 是否存在进行不同的修改
 luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
-if [ -f '/etc/index.htm' ]; then
-    sed -i's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "/etc/index.htm"
-else
-    sed -i's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "${luci_web}"
-fi
-
-if [ -f '/etc/index.htm' ]; then
-    if grep -q "(<%=pcdata(ver.luciversion)%>)" "/etc/index.htm"; then
-        sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "/etc/index.htm"
-    fi
-elif [ -f "${luci_web}" ] && grep -q "(<%=pcdata(ver.luciversion)%>)" "${luci_web}"; then
-    sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "${luci_web}"
-fi
+[ -f "$luci_web" ] && sed -i's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "$luci_web"
+[ -f "$luci_web" ] && sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "$luci_web"
 
 # 修改 /etc/profile 文件
 sed -i 's?.*= WARNING! =.*?================== WARNING! ======================?g' /etc/profile
