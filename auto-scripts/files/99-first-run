@@ -70,10 +70,3 @@ uci add_list system.ntp.server='ntp1.aliyun.com'
 uci add_list system.ntp.server='ntp.ntsc.ac.cn'
 uci add_list system.ntp.server='cn.ntp.org.cn'
 uci commit system
-
-# 处理语言文件
-lmo_files=$(find "/usr/lib/lua/luci/i18n" -type f -name "zh_Hans.lmo" 2>/dev/null)
-for lmo_file in $lmo_files; do
-    lmo_new_file="$(echo -e "$lmo_file" | sed "s/zh_Hans/zh-cn/g")"
-    [ -f "$lmo_file" ] && mv "$lmo_file" "${lmo_new_file}" 2>/dev/null
-done
