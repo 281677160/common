@@ -38,16 +38,14 @@ runs:
         }
 
         # 提取插件信息
-        Plug_in1=$(grep -Eo "CONFIG_PACKAGE_luci-app-.*=y|CONFIG_PACKAGE_luci-theme-.*=y" "$HOME_PATH/.config" |
-                    grep -v 'INCLUDE\|_Proxy\|_static\|_dynamic\|_USE' |
-                    sed 's/=y//' |
-                    sed 's/CONFIG_PACKAGE_//g')
-        Plug_in2=$(echo "${Plug_in1}" |
-                    sed 's/^/、/g' |
-                    sed 's/$/"/g' |
-                    awk '$0=NR$0' |
-                    sed 's/^/TIME g "       /g')
-        echo "${Plug_in2}" > Plug-in
+        OUTPUT_FILE="/tmp/CONFIG_PACKAGE"
+        > "$OUTPUT_FILE"
+        counter=1
+        grep -E '^CONFIG_PACKAGE_luci-(app|theme)-[^_]+=y$' "$HOME_PATH/.config" | while IFS='=' read -r line _; do
+          package_name="${line#CONFIG_PACKAGE_}"
+          echo "TIME g \"$counter、$package_name\"" >> "$OUTPUT_FILE"
+          counter=$((counter + 1))
+        done
 
         # 判断EFI相关
         if grep -q "CONFIG_GRUB_EFI_IMAGES=y" "$HOME_PATH/.config"; then
@@ -156,13 +154,13 @@ runs:
         TIME z " 系统空间      类型   总数  已用  可用 使用率"
         df -hT "$PWD"
 
-        if [ -n "$(ls -A "${HOME_PATH}/Plug-in" 2>/dev/null)" ]; then
+        if [ -f "/tmp/CONFIG_PACKAGE" ]; then
           echo
           echo
           TIME r "	      已选插件列表"
-          chmod -R +x "${HOME_PATH}/Plug-in"
-          source "${HOME_PATH}/Plug-in"
-          rm -rf "${HOME_PATH}/{Plug-in,Plug-2}"
+          chmod -R +x "/tmp/CONFIG_PACKAGE"
+          source "/tmp/CONFIG_PACKAGE"
+          rm -rf "/tmp/CONFIG_PACKAGE"
           echo
         fi
 branding:
