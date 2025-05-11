@@ -83,7 +83,7 @@ elif [ -f "${luci_web}" ] && grep -q "(<%=pcdata(ver.luciversion)%>)" "${luci_we
 fi
 
 # 修改 /etc/profile 文件
-sed -i's?=== WARNING! =====================================?=================== WARNING! =====================?g' /etc/profile
+sed -i 's?.*= WARNING! =.*?================== WARNING! ======================?g' /etc/profile
 
 uci set system.@system[0].timezone='CST-8'
 uci set system.@system[0].zonename='Asia/Shanghai'
