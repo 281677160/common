@@ -93,6 +93,7 @@ function Diy_Part2() {
 	echo "GITHUB_RELEASE=${GITHUB_RELEASE}" >> ${GITHUB_ENV}
 
 
+	# 写入openwrt_update文件
 	echo "GITHUB_LINK=\"${GITHUB_LINK}\"" > ${FILESETC_UPDATE}
  	echo "FIRMWARE_VERSION=\"${FIRMWARE_VERSION}\"" >> ${FILESETC_UPDATE}
  	echo "LUCI_EDITION=\"${LUCI_EDITION}\"" >> ${FILESETC_UPDATE}
