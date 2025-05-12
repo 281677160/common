@@ -58,11 +58,6 @@ echo "luciversion    = \"LUCI_EDITION\"" >> /usr/lib/lua/luci/version.lua
 sed -i '/luciname/d' /usr/lib/lua/luci/version.lua
 echo "luciname    = \"ZHUJI_MING\"" >> /usr/lib/lua/luci/version.lua
 
-# 设置 opkg 镜像地址
-opkg_mirror="https://mirrors.vsean.net/openwrt"
-# 设置 distfeed 列表文件路径
-distfeedlist="/etc/apk/repositories.d/distfeeds.list"
-
 # 根据 /etc/index.htm 是否存在进行不同的修改
 luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
 [ -f "$luci_web" ] && sed -i's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "$luci_web"
