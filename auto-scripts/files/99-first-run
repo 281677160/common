@@ -20,11 +20,6 @@ if [ "${DISTRIBID}" = "ImmortalWrt" ]; then
     sed -i "s?DISTRIB_ID='ImmortalWrt'?DISTRIB_ID='OpenWrt'?g" /etc/openwrt_release
 fi
 
-# 如果存在 /usr/lib/lua/luci/controller/ttyd.lua，则进行修改
-if [ -f "/usr/lib/lua/luci/controller/ttyd.lua" ]; then
-    sed -i's?services?system?g' "/usr/lib/lua/luci/controller/ttyd.lua"
-fi
-
 # 从 /etc/opkg/distfeeds.conf 中删除特定的内容
 if [ -f "/etc/apk/repositories.d/distfeeds.list" ]; then
     grep -q "danshui" /etc/apk/repositories.d/distfeeds.list && sed -i '/danshui/d' /etc/apk/repositories.d/distfeeds.list
