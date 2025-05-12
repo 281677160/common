@@ -27,6 +27,7 @@ if [ -f "/etc/apk/repositories.d/distfeeds.list" ]; then
     grep -q "OpenClash" /etc/apk/repositories.d/distfeeds.list && sed -i '/OpenClash/d' /etc/apk/repositories.d/distfeeds.list
     grep -q "helloworld" /etc/apk/repositories.d/distfeeds.list && ssed -i '/helloworld/d' /etc/apk/repositories.d/distfeeds.list
     grep -q "passwall" /etc/apk/repositories.d/distfeeds.list && sed -i '/passwall/d' /etc/apk/repositories.d/distfeeds.list
+    grep -q "x" /etc/apk/repositories.d/distfeeds.list && sed -i '/x\/packages/d' /etc/apk/repositories.d/distfeeds.list
 else
     grep -q "danshui" /etc/opkg/distfeeds.conf && sed -i '/danshui/d' /etc/opkg/distfeeds.conf
     grep -q "dstheme" /etc/opkg/distfeeds.conf && sed -i '/dstheme/d' /etc/opkg/distfeeds.conf
