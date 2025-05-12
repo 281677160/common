@@ -118,8 +118,6 @@ if [[ -z "${BENDI_VERSION}" ]]; then
     echo "${var}=${!var}" >> "${COMPILE_PATH}/relevance/settings.ini"
   done
 fi
-
-cat "${COMPILE_PATH}/relevance/settings.ini"
 }
 
 function Diy_checkout() {
