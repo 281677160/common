@@ -22,65 +22,65 @@ function Diy_variable() {
 # 读取变量
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
-  export REPO_URL="https://github.com/coolsnowwolf/lede"
-  export SOURCE="Lede"
-  export SOURCE_OWNER="Lean"
-  export LUCI_EDITION="23.05"
-  export DISTRIB_SOURCECODE="lede"
-  export GENE_PATH="${HOME_PATH}/package/base-files/luci2/bin/config_generate"
+  variable REPO_URL="https://github.com/coolsnowwolf/lede"
+  variable SOURCE="Lede"
+  variable SOURCE_OWNER="Lean"
+  variable LUCI_EDITION="23.05"
+  variable DISTRIB_SOURCECODE="lede"
+  variable GENE_PATH="${HOME_PATH}/package/base-files/luci2/bin/config_generate"
 ;;
 LIENOL)
-  export REPO_URL="https://github.com/Lienol/openwrt"
-  export SOURCE="Lienol"
-  export SOURCE_OWNER="Lienol"
-  export DISTRIB_SOURCECODE="lienol"
-  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  variable REPO_URL="https://github.com/Lienol/openwrt"
+  variable SOURCE="Lienol"
+  variable SOURCE_OWNER="Lienol"
+  variable DISTRIB_SOURCECODE="lienol"
+  variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 IMMORTALWRT)
-  export REPO_URL="https://github.com/immortalwrt/immortalwrt"
-  export SOURCE="Immortalwrt"
-  export SOURCE_OWNER="ctcgfw"
-  export DISTRIB_SOURCECODE="immortalwrt"
-  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  variable REPO_URL="https://github.com/immortalwrt/immortalwrt"
+  variable SOURCE="Immortalwrt"
+  variable SOURCE_OWNER="ctcgfw"
+  variable DISTRIB_SOURCECODE="immortalwrt"
+  variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 XWRT)
-  export REPO_URL="https://github.com/x-wrt/x-wrt"
-  export SOURCE="Xwrt"
-  export SOURCE_OWNER="ptpt52"
-  export DISTRIB_SOURCECODE="xwrt"
-  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  variable REPO_URL="https://github.com/x-wrt/x-wrt"
+  variable SOURCE="Xwrt"
+  variable SOURCE_OWNER="ptpt52"
+  variable DISTRIB_SOURCECODE="xwrt"
+  variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 OFFICIAL)
-  export REPO_URL="https://github.com/openwrt/openwrt"
-  export SOURCE="Official"
-  export SOURCE_OWNER="openwrt"
-  export DISTRIB_SOURCECODE="official"
-  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  variable REPO_URL="https://github.com/openwrt/openwrt"
+  variable SOURCE="Official"
+  variable SOURCE_OWNER="openwrt"
+  variable DISTRIB_SOURCECODE="official"
+  variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 MT798X)
   if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
-    export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
-    export SOURCE="Mt798x"
-    export SOURCE_OWNER="hanwckf"
-    export REPO_BRANCH="openwrt-21.02"
-    export DISTRIB_SOURCECODE="immortalwrt"
-    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+    variable REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
+    variable SOURCE="Mt798x"
+    variable SOURCE_OWNER="hanwckf"
+    variable REPO_BRANCH="openwrt-21.02"
+    variable DISTRIB_SOURCECODE="immortalwrt"
+    variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
   else
-    export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
-    export SOURCE="Mt798x"
-    export SOURCE_OWNER="padavanonly"
+    variable REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
+    variable SOURCE="Mt798x"
+    variable SOURCE_OWNER="padavanonly"
     if [[ "${REPO_BRANCH}" == "2410" ]]; then
-      export LUCI_EDITION="24.10"
+      variable LUCI_EDITION="24.10"
     else
-      export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+      variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     fi
-    export DISTRIB_SOURCECODE="immortalwrt"
-    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+    variable DISTRIB_SOURCECODE="immortalwrt"
+    variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
   fi
 ;;
 *)
@@ -93,34 +93,16 @@ MT798X)
 ;;
 esac
 
-export FILES_PATH="${HOME_PATH}/package/base-files/files/etc/shadow"
-export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
-export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
-export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
-export CLEAR_PATH="/tmp/Clear"
-export UPGRADE_DATE="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
-export GUJIAN_DATE="$(date +%m.%d)"
-export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
-export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
-
-echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
-echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
-echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
-echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
-echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
-echo "DISTRIB_SOURCECODE=${DISTRIB_SOURCECODE}" >> ${GITHUB_ENV}
-echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
-echo "RAW_WEB=${RAW_WEB}" >> ${GITHUB_ENV}
-
-echo "FILES_PATH=${FILES_PATH}" >> ${GITHUB_ENV}
-echo "DELETE=${DELETE}" >> ${GITHUB_ENV}
-echo "DEFAULT_PATH=${DEFAULT_PATH}" >> ${GITHUB_ENV}
-echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
-echo "CLEAR_PATH=${CLEAR_PATH}" >> ${GITHUB_ENV}
-echo "UPGRADE_DATE=${UPGRADE_DATE}" >> ${GITHUB_ENV}
-echo "GUJIAN_DATE=${GUJIAN_DATE}" >> ${GITHUB_ENV}
-echo "LICENSES_DOC=${LICENSES_DOC}" >> ${GITHUB_ENV}
+variable FILES_PATH="${HOME_PATH}/package/base-files/files/etc/shadow"
+variable DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
+variable DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
+variable KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
+variable CLEAR_PATH="/tmp/Clear"
+variable UPGRADE_DATE="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
+variable GUJIAN_DATE="$(date +%m.%d)"
+variable LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
+variable CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+variable RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
 
 # 启动编译时的变量文件
 if [[ -z "${BENDI_VERSION}" ]]; then
@@ -231,10 +213,8 @@ elif [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)
 fi
 
 # zzz-default-settings文件
-ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
-export ZZZ_PATH="${ZZZ_PATH}"
+variable ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
 if [[ -n "${ZZZ_PATH}" ]]; then
-  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
   sed -i '/exit 0$/d' "${ZZZ_PATH}"
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
   grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
@@ -461,24 +441,24 @@ function Diy_profile() {
 cd ${HOME_PATH}
 make defconfig > /dev/null 2>&1
 TIME y "正在执行：识别源码编译为何机型"
-export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
-export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
-export TARGET_PROFILE_DG="$(awk -F '[="]+' '/TARGET_PROFILE/{print $2}' ${HOME_PATH}/.config)"
+variable TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
+variable TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
+variable TARGET_PROFILE_DG="$(awk -F '[="]+' '/TARGET_PROFILE/{print $2}' ${HOME_PATH}/.config)"
 if [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*64.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="x86-64"
+  variable TARGET_PROFILE="x86-64"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="x86-32"
+  variable TARGET_PROFILE="x86-32"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*phicomm.*n1=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="phicomm_n1"
+  variable TARGET_PROFILE="phicomm_n1"
 elif [[ -n "$(grep -Eo 'armvirt=y' $HOME_PATH/.config)" ]] || [[ -n "$(grep -Eo 'armsr=y' $HOME_PATH/.config)" ]]; then
-  export TARGET_PROFILE="aarch_64"
+  variable TARGET_PROFILE="aarch_64"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+  variable TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
 else
-  export TARGET_PROFILE="${TARGET_PROFILE_DG}"
+  variable TARGET_PROFILE="${TARGET_PROFILE_DG}"
 fi
-export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+variable FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+variable TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
 echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
 echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
@@ -858,11 +838,11 @@ if [[ "${Delete_unnecessary_items}" == "1" ]]; then
   sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
 fi
 
-export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
+variable patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
 if [[ "${TARGET_BOARD}" == "armvirt" ]]; then
-  export KERNEL_patc="config-${Replace_Kernel}"
+  variable KERNEL_patc="config-${Replace_Kernel}"
 else
-  export KERNEL_patc="patches-${Replace_Kernel}"
+  variable KERNEL_patc="patches-${Replace_Kernel}"
 fi
 if [[ "${Replace_Kernel}" == "0" ]]; then
   echo "不进行,内核更换"
@@ -974,10 +954,10 @@ KERNEL_PATCH="$(grep -Eo "KERNEL_PATCHVER.*[0-9.]+" "${HOME_PATH}/target/linux/$
 KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
   if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
 LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-[0-9.]+" "${HOME_PATH}/include/${KERNEL_VERSINO}"  |grep -Eo "[0-9.]+")"
-  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
+  [[ -z ${LINUX_KERNEL} ]] && variable LINUX_KERNEL="nono"
 else
   LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-${KERNEL_PATCH}.[0-9]+" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "[0-9.]+")"
-  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
+  [[ -z ${LINUX_KERNEL} ]] && variable LINUX_KERNEL="nono"
 fi
 echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 }
@@ -1450,6 +1430,14 @@ else
     return 1
 fi
 rm -rf "$tmpdir"
+}
+
+variable() {
+local overall=$1
+local var_name="${overall%%=*}"
+local var_value="${overall#*=}"
+export $var_name="$var_value"
+echo "$var_name=$var_value" >> ${GITHUB_ENV}
 }
 
 
