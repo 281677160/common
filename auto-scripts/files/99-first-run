@@ -69,3 +69,6 @@ uci add_list system.ntp.server='ntp1.aliyun.com'
 uci add_list system.ntp.server='ntp.ntsc.ac.cn'
 uci add_list system.ntp.server='cn.ntp.org.cn'
 uci commit system
+
+
+
