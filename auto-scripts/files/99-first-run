@@ -15,11 +15,6 @@ if grep -q "x86_64" /etc/banner; then
     sed -i "s?x86_64?$ARCHIB?g" /etc/banner
 fi
 
-# 如果系统发行版 ID 是 ImmortalWrt，则修改为 OpenWrt
-if [ "${DISTRIBID}" = "ImmortalWrt" ]; then
-    sed -i "s?DISTRIB_ID='ImmortalWrt'?DISTRIB_ID='OpenWrt'?g" /etc/openwrt_release
-fi
-
 # 从 /etc/opkg/distfeeds.conf 中删除特定的内容
 if [ -f "/etc/apk/repositories.d/distfeeds.list" ]; then
     grep -q "danshui" /etc/apk/repositories.d/distfeeds.list && sed -i '/danshui/d' /etc/apk/repositories.d/distfeeds.list
