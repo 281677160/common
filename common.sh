@@ -1432,7 +1432,7 @@ fi
 rm -rf "$tmpdir"
 }
 
-variable() {
+function variable() {
 local overall=$1
 local var_name="${overall%%=*}"
 local var_value="${overall#*=}"
