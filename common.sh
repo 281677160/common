@@ -230,6 +230,7 @@ cd ${HOME_PATH}
 
 
 # 更新feeds后再次修改补充
+echo "......"
 cd ${HOME_PATH}
 z="luci-theme-argon,luci-app-argon-config,luci-theme-Butterfly,luci-theme-netgear,luci-theme-atmaterial, \
 luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
@@ -440,9 +441,9 @@ fi
 
 
 function Diy_profile() {
+TIME y "正在执行：识别源码编译为何机型"
 cd ${HOME_PATH}
 make defconfig > /dev/null 2>&1
-TIME y "正在执行：识别源码编译为何机型"
 variable TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
 variable TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
 variable TARGET_PROFILE_DG="$(awk -F '[="]+' '/TARGET_PROFILE/{print $2}' ${HOME_PATH}/.config)"
@@ -461,7 +462,7 @@ else
 fi
 variable FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 variable TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-echo "正在编译：${TARGET_PROFILE}"
+TIME g "正在编译：${TARGET_PROFILE}"
 }
 
 
@@ -962,8 +963,8 @@ echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 
 
 function Diy_prevent() {
-cd ${HOME_PATH}
 TIME y "正在执行：判断插件有否冲突减少编译错误"
+cd ${HOME_PATH}
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-server=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-vpnd=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-app-ipsec-vpnd=y/# CONFIG_PACKAGE_luci-app-ipsec-vpnd is not set/g' ${HOME_PATH}/.config
