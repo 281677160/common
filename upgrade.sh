@@ -42,8 +42,18 @@ function Diy_Part2() {
 	fi
 	
 	case "${TARGET_BOARD}" in
-	ramips | reltek | ath* | ipq* | bcm47xx | bmips | kirkwood | mediatek)
+	ramips | reltek | ath* | ipq* | bmips | kirkwood | mediatek |bcm4908 |gemini |lantiq |layerscape |qualcommax |qualcommbe |siflower |silicon)
 		export FIRMWARE_SUFFIX=".bin"
+		export AUTOBUILD_FIRMWARE="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}-sysupgrade"
+	;;
+ 	bcm47xx)
+		if [[ echo "${TARGET_PROFILE}" |grep -E "asus" ]]; then
+			export FIRMWARE_SUFFIX=".trx"
+		elif [[ echo "${TARGET_PROFILE}" |grep -E "netgear" ]]; then
+			export FIRMWARE_SUFFIX=".chk"
+		else
+			export FIRMWARE_SUFFIX=".bin"
+		fi
 		export AUTOBUILD_FIRMWARE="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}-sysupgrade"
 	;;
 	x86)
@@ -51,7 +61,7 @@ function Diy_Part2() {
 		export AUTOBUILD_UEFI="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}-uefi"
 		export AUTOBUILD_LEGACY="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}-legacy"
 	;;
-	rockchip | bcm27xx | mxs | sunxi | zynq)
+	rockchip | bcm27xx | mxs | sunxi | zynq |loongarch64 |omap |sifiveu |tegra)
 		export FIRMWARE_SUFFIX=".img.gz"
 		export AUTOBUILD_FIRMWARE="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}-legacy"
 	;;
@@ -147,12 +157,14 @@ function Diy_Part3() {
 			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*sysupgrade.*${FIRMWARE_SUFFIX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
 		elif [[ -n "$(ls -1 | grep -E 'squashfs')" ]]; then
 			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*squashfs.*${FIRMWARE_SUFFIX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
+   		elif [[ -n "$(ls -1 | grep -E 'combined')" ]]; then
+			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*combined.*${FIRMWARE_SUFFIX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
+      		elif [[ -n "$(ls -1 | grep -E 'sdcard')" ]]; then
+			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*sdcard.*${FIRMWARE_SUFFIX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
    		else
-     			UP_ZHONGZHUAN="NO"
+     			echo "没找到在线升级可用的${FIRMWARE_SUFFIX}格式固件，或者没适配该机型"
 		fi
-		if [[ "${UP_ZHONGZHUAN}" == "NO" ]]; then
-			echo "没找到在线升级可用的${FIRMWARE_SUFFIX}格式固件，或者没适配该机型"
-		else
+		if [[ -n "${UP_ZHONGZHUAN}" ]]; then
    			MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
 			cp -Rf "${UP_ZHONGZHUAN}" "${BIN_PATH}/${AUTOBUILD_FIRMWARE}-${MD5}${FIRMWARE_SUFFIX}"
 		fi
