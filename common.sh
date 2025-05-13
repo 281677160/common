@@ -161,6 +161,10 @@ if [[ -n "${SRC_FENZHIHAO}" ]]; then
 else
   git clone --depth=1 ${SRC_LIANJIE} ${srcdir}
 fi
+if [[ $? -ne 0 ]];then
+  TIME r "文件下载失败"
+  exit 1
+fi
 if [[ -d "${srcdir}/modules/luci-mod-system" ]]; then
   THEME_BRANCH="Theme2"
   rm -rf ${srcdir}
