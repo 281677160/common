@@ -83,7 +83,6 @@ function Diy_Part2() {
 		else
 			export FIRMWARE_SUFFIX=".trx"
 		fi
-		export FIRMWARE_SUFFIX=".trx"
 		export AUTOBUILD_FIRMWARE="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}-sysupgrade"
 	;;
 	octeon | oxnas | pistachio)
