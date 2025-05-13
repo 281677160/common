@@ -74,6 +74,15 @@ function Diy_Part2() {
 		esac
 	;;
 	bcm53xx)
+ 		if [[ echo "${TARGET_PROFILE}" |grep -E "|mr32\|tplink\|dlink" ]]; then
+			export FIRMWARE_SUFFIX=".bin"
+   		elif [[ echo "${TARGET_PROFILE}" |grep -E "luxul" ]]; then
+			export FIRMWARE_SUFFIX=".lxl"
+		elif [[ echo "${TARGET_PROFILE}" |grep -E "netgear" ]]; then
+			export FIRMWARE_SUFFIX=".chk"
+		else
+			export FIRMWARE_SUFFIX=".trx"
+		fi
 		export FIRMWARE_SUFFIX=".trx"
 		export AUTOBUILD_FIRMWARE="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}-sysupgrade"
 	;;
