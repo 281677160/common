@@ -164,7 +164,7 @@ function Diy_Part3() {
    		else
      			echo "没找到在线升级可用的${FIRMWARE_SUFFIX}格式固件，或者没适配该机型"
 		fi
-		if [[ -n "${UP_ZHONGZHUAN}" ]]; then
+		if [[ -f "${UP_ZHONGZHUAN}" ]]; then
    			MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
 			cp -Rf "${UP_ZHONGZHUAN}" "${BIN_PATH}/${AUTOBUILD_FIRMWARE}-${MD5}${FIRMWARE_SUFFIX}"
 		fi
