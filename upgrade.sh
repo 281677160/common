@@ -47,9 +47,9 @@ function Diy_Part2() {
 		export AUTOBUILD_FIRMWARE="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}-sysupgrade"
 	;;
  	bcm47xx)
-		if [[ echo "${TARGET_PROFILE}" |grep -E "asus" ]]; then
+          	if echo "$TARGET_PROFILE" | grep -Eq 'asus'; then
 			export FIRMWARE_SUFFIX=".trx"
-		elif [[ echo "${TARGET_PROFILE}" |grep -E "netgear" ]]; then
+             	elif echo "$TARGET_PROFILE" | grep -Eq 'netgear'; then
 			export FIRMWARE_SUFFIX=".chk"
 		else
 			export FIRMWARE_SUFFIX=".bin"
@@ -74,11 +74,11 @@ function Diy_Part2() {
 		esac
 	;;
 	bcm53xx)
- 		if [[ echo "${TARGET_PROFILE}" |grep -E "|mr32\|tplink\|dlink" ]]; then
+ 		if echo "$TARGET_PROFILE" | grep -Eq 'mr32|tplink|dlink'; then
 			export FIRMWARE_SUFFIX=".bin"
-   		elif [[ echo "${TARGET_PROFILE}" |grep -E "luxul" ]]; then
+     		elif echo "$TARGET_PROFILE" | grep -Eq 'luxul'; then
 			export FIRMWARE_SUFFIX=".lxl"
-		elif [[ echo "${TARGET_PROFILE}" |grep -E "netgear" ]]; then
+        	elif echo "$TARGET_PROFILE" | grep -Eq 'netgear'; then
 			export FIRMWARE_SUFFIX=".chk"
 		else
 			export FIRMWARE_SUFFIX=".trx"
