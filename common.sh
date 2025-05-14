@@ -304,14 +304,14 @@ fi
 
 # 定时更新固件的插件包
 if grep -q "armvirt=y" $MYCONFIG_FILE || grep -q "armsr=y" $MYCONFIG_FILE; then
-  find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
+  find "${HOME_PATH}" -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?luci-app-autoupdate ??g' ${HOME_PATH}/include/target.mk
   fi
 elif [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
     source ${UPGRADE_SH} && Diy_Part1
 else
-  find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
+  find "${HOME_PATH}" -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?luci-app-autoupdate ??g' ${HOME_PATH}/include/target.mk
   fi
@@ -470,7 +470,7 @@ function Diy_management() {
 cd ${HOME_PATH}
 # 机型为aarch_64的时,修改cpufreq代码适配Armvirt
 if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
-  for X in $(find . -type d -name "luci-app-cpufreq"); do \
+  for X in $(find "${HOME_PATH}" -type d -name "luci-app-cpufreq"); do \
     [[ -d "$X" ]] && \
     sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' "$X/Makefile"; \
   done
