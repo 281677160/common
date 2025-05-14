@@ -873,9 +873,8 @@ echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 echo "builder_name=ophub" >> ${GITHUB_ENV}
 
 # adguardhome增加核心
-# 获取基础架构标识
 weizhicpu=""
-ARCH_TYPE=$(grep "CONFIG_ARCH=\"" .config | cut -d '"' -f 2)
+ARCH_TYPE=$(grep "CONFIG_ARCH=\"" "${HOME_PATH}/.config" | cut -d '"' -f 2)
 # 层级式判断架构类型
 case "$ARCH_TYPE" in
     "x86_64")
