@@ -18,13 +18,12 @@ runs:
 
     # 将rootfs.tar.gz发布到releases的targz
     - name: 将rootfs.tar.gz发布releases的targz
-      if: env.TARGET_BOARD
       uses: ncipollo/release-action@v1
       with:
         name: rootfs.tar.gz
         tag: targz
         token: ${{ env.REPO_TOKEN }}
-        artifacts: openwrt/targz/*rootfs.tar.gz
+        artifacts: ${{ env.HOME_PATH }}/targz/*rootfs.tar.gz
         allowUpdates: true
         replacesArtifacts: true
         body: armsr_rootfs_tar_gz打包使用的rootfs.tar.gz包
