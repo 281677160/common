@@ -951,7 +951,9 @@ if [[ -n "${Arch}" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   fi
     rm -rf ${HOME_PATH}/{AdGuardHome_${Arch}.tar.gz,AdGuardHome}
 else
-  [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
+  if [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && [[ ! "${AdGuardHome_Core}" == "1" ]]; then
+    rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
+  fi
 fi
 
 # 源码内核版本号
