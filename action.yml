@@ -34,7 +34,7 @@ runs:
       if: env.PACKAGING_FIRMWARE == 'true'
       uses: ophub/amlogic-s9xxx-openwrt@main
       with:
-        openwrt_path: ${{ env.HOME_PATH }}/targz/*rootfs.tar.gz
+        openwrt_path: openwrt/targz/*rootfs.tar.gz
         openwrt_board: ${{ env.amlogic_model }}
         openwrt_kernel: ${{ env.amlogic_kernel }}
         auto_kernel: ${{ env.auto_kernel }}
