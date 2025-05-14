@@ -230,7 +230,6 @@ cd ${HOME_PATH}
 
 
 # 更新feeds后再次修改补充
-echo "......"
 cd ${HOME_PATH}
 z="luci-theme-argon,luci-app-argon-config,luci-theme-Butterfly,luci-theme-netgear,luci-theme-atmaterial, \
 luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
