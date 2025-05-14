@@ -59,7 +59,7 @@ runs:
       run: |
         cd "${HOME_PATH}"
         if [[ -d "${PACKAGED_OUTPUTPATH}" ]]; then
-          cp -Rf "${FIRMWARE_PATH}"/* "${PACKAGED_OUTPUTPATH}" || { echo "复制文件失败"; exit 1; }
+          cp -Rf "${FIRMWARE_PATH}"/* "${PACKAGED_OUTPUTPATH}"
         fi
         echo "FIRMWARE_PATH=${PACKAGED_OUTPUTPATH}" >> "${GITHUB_ENV}"
         echo "TARGET_PROFILE_IMG=${TARGET_BOARD}-img" >> "${GITHUB_ENV}"
