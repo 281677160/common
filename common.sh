@@ -462,7 +462,7 @@ else
 fi
 variable FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
 variable TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-echo "正在编译：${TARGET_PROFILE}\n"
+echo "正在编译：${TARGET_PROFILE} \n"
 }
 
 
