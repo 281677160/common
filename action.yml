@@ -38,7 +38,7 @@ runs:
         cd $HOME_PATH
         bash $COMMON_SH Diy_menu4
 
-    - name: 机型为aarch_64的时,改变是远程更新为打包设置
+    - name: 机型为armsr_rootfs_tar_gz的时,改变是远程更新为打包设置
       shell: bash
       run: |
         cd $HOME_PATH
