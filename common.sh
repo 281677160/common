@@ -243,10 +243,10 @@ IFS=',' read -ra t <<< "$z"  # 更健壮的数组分割方式
 for x in "${t[@]}"; do
     find "${HOME_PATH}/feeds" "${HOME_PATH}/package" \
         $ \
-            -path "${base_dir}/feeds/danshui" -prune -o \
-            -path "${base_dir}/feeds/dstheme" -prune -o \
-            -path "${base_dir}/feeds/OpenClash" -prune -o \
-            -path "${base_dir}/package/luci-theme-argon" -prune \
+            -path "${HOME_PATH}/feeds/danshui" -prune -o \
+            -path "${HOME_PATH}/feeds/dstheme" -prune -o \
+            -path "${HOME_PATH}/feeds/OpenClash" -prune -o \
+            -path "${HOME_PATH}/package/luci-theme-argon" -prune \
         $ -o \
         -name "$x" -type d -exec rm -rf {} +
 done
