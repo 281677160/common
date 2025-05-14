@@ -872,7 +872,6 @@ echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 echo "builder_name=ophub" >> ${GITHUB_ENV}
 
 # adguardhome增加核心
-weizhicpu=""
 ARCH_TYPE=$(grep "CONFIG_ARCH=\"" "${HOME_PATH}/.config" | cut -d '"' -f 2)
 # 层级式判断架构类型
 case "$ARCH_TYPE" in
@@ -900,10 +899,12 @@ case "$ARCH_TYPE" in
             echo "CPU架构：armv5"
         fi ;;
     "mips" | "mipsel" | "mips64" | "mips64el")
-        if [[ "${ARCH_TYPE}" == "mips64el" ]]; then
-            abi="64le"
-        elif grep -q "CONFIG_64BIT=y" .config; then
-            abi="64"
+        if grep -q "CONFIG_64BIT=y" .config; then
+            if [[ "${ARCH_TYPE}" == "mips64el" ]]; then
+                abi="64le"
+            elif grep -q "CONFIG_64BIT=y" .config; then
+                abi="64"
+            fi
         fi
         if grep -q "CONFIG_SOFT_FLOAT=y" .config; then
             suffix="_softfloat"
@@ -920,10 +921,10 @@ case "$ARCH_TYPE" in
         fi ;;
     *)
         echo "未知架构类型"
-        weizhicpu="1" ;;
+        Arch="" ;;
 esac
 
-if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
+if [[ -n "${Arch}" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   echo "正在执行：给adguardhome下载核心"
   rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
   wget -q https://github.com/281677160/common/releases/download/API/AdGuardHome.api -O AdGuardHome.api
