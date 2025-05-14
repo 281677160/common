@@ -1293,7 +1293,7 @@ for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
 done
 echo -e "\n\033[0;32m整理后的文件\033[0m"
 ls -1
-if [[ -z "$(ls -1 |grep -E 'armvirt')" ]] || [[ -z "$(ls -1 |grep -E 'armsr')" ]]; then
+if ! echo "$TARGET_BOARD" | grep -Eq 'armvirt|armsr'; then
   echo -e "\n\033[0;32m更改固件名称\033[0m"
   rename -v "s/^openwrt/${GUJIAN_DATE}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
 fi
