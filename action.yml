@@ -62,7 +62,7 @@ runs:
           cp -Rf "${FIRMWARE_PATH}"/* "${PACKAGED_OUTPUTPATH}" || { echo "复制文件失败"; exit 1; }
         fi
         echo "FIRMWARE_PATH=${PACKAGED_OUTPUTPATH}" >> "${GITHUB_ENV}"
-        echo "TARGET_PROFILE_IMG=aarch64-img" >> "${GITHUB_ENV}"
+        echo "TARGET_PROFILE_IMG=${TARGET_BOARD}-img" >> "${GITHUB_ENV}"
 branding:
   icon: "terminal"
   color: "gray-dark"
