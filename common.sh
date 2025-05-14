@@ -468,7 +468,7 @@ echo -e "正在编译：${TARGET_PROFILE}\n"
 
 function Diy_management() {
 cd ${HOME_PATH}
-# 机型为aarch_64的时,修改cpufreq代码适配Armvirt
+# 机型为armsr_rootfs_tar_gz的时,修改cpufreq代码适配Armvirt
 if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
   for X in $(find "${HOME_PATH}" -type d -name "luci-app-cpufreq"); do \
     [[ -d "$X" ]] && \
