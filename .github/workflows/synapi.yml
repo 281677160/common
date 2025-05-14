@@ -51,10 +51,7 @@ jobs:
           curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/ophub/kernel/releases/tags/kernel_dev > dev.api
         fi
         
-        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest -o AdGuardHome.api
-        if [[ $? -ne 0 ]]; then
-          curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
-        fi
+        curl https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest -o AdGuardHome.api
 
         curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/tindy2013/subconverter/releases/latest -o tindy2013.api
         if [[ $? -ne 0 ]]; then
