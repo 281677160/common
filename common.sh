@@ -885,13 +885,13 @@ case "$ARCH_TYPE" in
         Arch="linux_arm64"
         echo "CPU架构：arm64" ;;
     "arm")
-        if grep -q "CONFIG_ARM_V8=y" .config; then
+        if grep -q "CONFIG_ARM_V8=y" "${HOME_PATH}/.config"; then
             Arch="linux_arm64"
             echo "CPU架构：arm64"
-        elif grep -q "CONFIG_arm_v7=y" .config; then
+        elif grep -q "CONFIG_arm_v7=y" "${HOME_PATH}/.config"; then
             Arch="linux_armv7"
             echo "CPU架构：armv7"
-        elif grep -q "CONFIG_VFP=y" .config; then
+        elif grep -q "CONFIG_VFP=y" "${HOME_PATH}/.config"; then
             Arch="linux_armv6"
             echo "CPU架构：armv6"
         else
@@ -899,14 +899,14 @@ case "$ARCH_TYPE" in
             echo "CPU架构：armv5"
         fi ;;
     "mips" | "mipsel" | "mips64" | "mips64el")
-        if grep -q "CONFIG_64BIT=y" .config; then
+        if grep -q "CONFIG_64BIT=y" "${HOME_PATH}/.config"; then
             if [[ "${ARCH_TYPE}" == "mips64el" ]]; then
                 abi="64le"
-            elif grep -q "CONFIG_64BIT=y" .config; then
+            elif grep -q "CONFIG_64BIT=y" "${HOME_PATH}/.config"; then
                 abi="64"
             fi
         fi
-        if grep -q "CONFIG_SOFT_FLOAT=y" .config; then
+        if grep -q "CONFIG_SOFT_FLOAT=y" "${HOME_PATH}/.config"; then
             suffix="_softfloat"
         else
             suffix=""
@@ -914,7 +914,7 @@ case "$ARCH_TYPE" in
         Arch="linux_${ARCH_TYPE}${abi}${suffix}"
         echo "CPU架构：${ARCH_TYPE}${abi}${suffix}" ;;
     "riscv" | "riscv64")
-        if grep -q "CONFIG_64BIT=y" .config; then
+        if grep -q "CONFIG_64BIT=y" "${HOME_PATH}/.config"; then
             Arch="linux_riscv64"
         else
             Arch="linux_riscv32"
