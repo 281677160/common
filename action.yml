@@ -54,7 +54,7 @@ runs:
 
     # 打包后的固件放回原位
     - name: 打包后的固件放回原位
-      if: steps.dabao.outcome == 'success' && env.PACKAGING_FIRMWARE == 'true'
+      if: steps.dabao.outcome == 'success'
       shell: bash
       run: |
         cd "${HOME_PATH}"
