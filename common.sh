@@ -239,15 +239,13 @@ luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-o
 luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
 luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,shadowsocksr-libev,v2dat,v2ray-geodata, \
 luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,luci-app-alist,alist"
-IFS=',' read -ra t <<< "$z"  # 更健壮的数组分割方式 
+t=(${z//,/ })
 for x in "${t[@]}"; do
     find "${HOME_PATH}/feeds" "${HOME_PATH}/package" \
-        $ \
-            -path "${HOME_PATH}/feeds/danshui" -prune -o \
-            -path "${HOME_PATH}/feeds/dstheme" -prune -o \
-            -path "${HOME_PATH}/feeds/OpenClash" -prune -o \
-            -path "${HOME_PATH}/package/luci-theme-argon" -prune \
-        $ -o \
+        -path "${HOME_PATH}/feeds/danshui" -prune -o \
+        -path "${HOME_PATH}/feeds/dstheme" -prune -o \
+        -path "${HOME_PATH}/feeds/OpenClash" -prune -o \
+        -path "${HOME_PATH}/package/luci-theme-argon" -prune -o \
         -name "$x" -type d -exec rm -rf {} +
 done
 
