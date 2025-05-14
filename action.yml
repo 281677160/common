@@ -27,7 +27,7 @@ runs:
         artifacts: openwrt/targz/*rootfs.tar.gz
         allowUpdates: true
         replacesArtifacts: true
-        body: aarch64系列打包使用的rootfs.tar.gz包
+        body: armsr_rootfs_tar_gz打包使用的rootfs.tar.gz包
 
     # 打包aarch64系列固件
     - name: 打包aarch64系列固件
