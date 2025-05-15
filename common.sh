@@ -929,10 +929,10 @@ KERNEL_PATCH="$(awk -F'[:=]' '/KERNEL_PATCHVER/{print $NF; exit}' "${HOME_PATH}/
 KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
 if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
   variable LINUX_KERNEL="$(grep -oP "LINUX_KERNEL_HASH-\K${KERNEL_PATCH}\.[0-9]+" "${HOME_PATH}/include/${KERNEL_VERSINO}")"
-  [[ -z ${LINUX_KERNEL} ]] && variable LINUX_KERNEL="nono"
+  [[ -z ${LINUX_KERNEL} ]] && variable LINUX_KERNEL="$KERNEL_PATCH"
 else
   variable LINUX_KERNEL="$(grep -oP "LINUX_KERNEL_HASH-\K${KERNEL_PATCH}\.[0-9]+" "${HOME_PATH}/include/kernel-version.mk")"
-  [[ -z ${LINUX_KERNEL} ]] && variable LINUX_KERNEL="nono"
+  [[ -z ${LINUX_KERNEL} ]] && variable LINUX_KERNEL="$KERNEL_PATCH"
 fi
 }
 
