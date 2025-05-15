@@ -182,6 +182,7 @@ Diy_three() {
 
 # 第四个自定义函数
 Diy_four() {
+    cd "${GITHUB_WORKSPACE}"
     LINSHI_COMMON="/tmp/common"
     rm -rf "${LINSHI_COMMON}"
     mkdir -p "${LINSHI_COMMON}"
