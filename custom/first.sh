@@ -136,6 +136,7 @@ Diy_three() {
                 exit 1
             fi
         else
+            cd "${GITHUB_WORKSPACE}"
             git clone -b "${GIT_REFNAME}" https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
             git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
             find . -type d -name "backups" -exec sudo rm -rf {} \;
@@ -145,7 +146,7 @@ Diy_three() {
             cd repogx
             rm -rf *
             git rm --cache *
-            cd ../
+            cd "${GITHUB_WORKSPACE}"
             mkdir -p repogx/.github/workflows
             cp -Rf shangyou/* repogx
             cp -Rf shangyou/.github/workflows/* repogx/.github/workflows
