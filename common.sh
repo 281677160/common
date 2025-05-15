@@ -1255,10 +1255,10 @@ fi
 # 编译完毕后,整理固件
 cd ${FIRMWARE_PATH}
 mkdir -p ipk
-cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
+cp -Rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
 sudo tar -czf ipk.tar.gz ipk && sync && sudo rm -rf ipk
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
-  rename -v "s/^immortalwrt/openwrt/" *
+  rename "s/^immortalwrt/openwrt/" *
   sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
 fi
 echo -e "\n\033[0;32m整理前的全部文件\033[0m"
