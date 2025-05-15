@@ -1475,21 +1475,13 @@ Diy_prevent
 
 case "$1" in
   "Diy_menu")
-    Diy_menu
-    ;;
+    Diy_menu ;;
   "Diy_menu2")
-    Diy_menu2
-    ;;
+    Diy_menu2 ;;
   "Diy_menu3")
-    Diy_menu3
-    ;;
+    Diy_menu3 ;;
   "Diy_menu4")
-    Diy_menu4
-    ;;
+    Diy_menu4 ;;
   "Diy_menu5")
-    Diy_menu5
-    ;;
-  *)
-    echo ""
-    ;;
+    Diy_menu5 ;;
 esac
