@@ -133,7 +133,7 @@ runs:
       shell: bash
       run: |
         cd "$GITHUB_WORKSPACE"
-        bash $COMMON_SH Diy_variable
+        bash $COMMON_SH Diy_menu6
         
 branding:
   icon: "terminal"
