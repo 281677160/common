@@ -182,7 +182,6 @@ fi
 # zzz-default-settings文件
 variable ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
 if [[ -n "${ZZZ_PATH}" ]]; then
-  sed -i '/exit 0$/d' "${ZZZ_PATH}"
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
   grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 fi
@@ -1233,9 +1232,7 @@ sed -i '/^$/d' "${CONFIG_TXT}"
 
 # 前面修改的文件改回去
 sed -i -E '/^\t/! s/^ +//' "${DEFAULT_PATH}"
-[[ -z "$( grep -E 'exit 0' "$DEFAULT_PATH" 2>/dev/null)" ]] && sed -i '$a\exit 0' "${DEFAULT_PATH}"
-sed -i -E '/^\t/! s/^ +//' "${ZZZ_PATH}"
-[[ -z "$( grep -E 'exit 0' "$ZZZ_PATH" 2>/dev/null)" ]] && sed -i '$a\exit 0' "${ZZZ_PATH}"
+! grep -q "exit 0" "$DEFAULT_PATH" && sed -i '$a\exit 0' "${DEFAULT_PATH}"
 }
 
 
