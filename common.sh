@@ -535,14 +535,9 @@ fi
 if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
   echo "不进行,个性签名设置"
 elif [[ -n "${Customized_Information}" ]]; then
-  sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
-cat >> "${ZZZ_PATH}" <<-EOF
-    [[ -f "/usr/lib/os-release" ]] && sed -i 's?RELEASE=".*"?RELEASE="Customized_Information @ OpenWrt"?g' /usr/lib/os-release
-    sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-    echo "DISTRIB_DESCRIPTION='Customized_Information @ OpenWrt '" >> /etc/openwrt_release
-EOF
-  Customized_Informat="${Customized_Information}"
-  sed -i "s?Customized_Information?${Customized_Informat}?g" "${ZZZ_PATH}"
+  echo  "[ -f '/usr/lib/os-release' ] && sed -i 's?RELEASE=.*?RELEASE=\"${Customized_Information} @ OpenWrt\"?g' /usr/lib/os-release" >> "${DEFAULT_PATH}"
+  echo  "sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release" >> "${DEFAULT_PATH}"
+  echo  "echo \"DISTRIB_DESCRIPTION='${Customized_Information} @ OpenWrt '\" >> /etc/openwrt_release" >> "${DEFAULT_PATH}"
   echo "个性签名[${Customized_Informat}]增加完成"
 fi
 
