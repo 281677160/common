@@ -128,7 +128,7 @@ runs:
       shell: bash
       run: |
         cd "$GITHUB_WORKSPACE"
-        source "$COMMON_SH" && Diy_variable &> /dev/null
+        bash $COMMON_SH Diy_variable
         
 branding:
   icon: "terminal"
