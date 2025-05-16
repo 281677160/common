@@ -1444,4 +1444,6 @@ case "$1" in
     Diy_menu4 ;;
   "Diy_menu5")
     Diy_menu5 ;;
+  "Diy_variable")
+    Diy_variable ;;
 esac
