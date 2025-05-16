@@ -119,6 +119,10 @@ runs:
             ;;
         esac
         bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh)
+        if [[ $? -ne 0 ]];then
+            echo -e "\033[31m first.sh文件运行失败 \033[0m\n"
+            exit 1
+        fi
 
     - name: 运行其他变量
       shell: bash
