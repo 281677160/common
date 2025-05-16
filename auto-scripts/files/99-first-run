@@ -50,7 +50,7 @@ echo "luciname    = \"ZHUJI_MING\"" >> /usr/lib/lua/luci/version.lua
 
 # 根据 /etc/index.htm 是否存在进行不同的修改
 luci_web=/usr/lib/lua/luci/view/admin_status/index.htm
-[ -f "$luci_web" ] && sed -i's#localtime  = .*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "$luci_web"
+[ -f "$luci_web" ] && sed -i's#localtime.*=.*#localtime  = os.date("%Y-%m-%d") .. " " .. os.date("%X") .. " " .. translate(os.date("%A")),#g' "$luci_web"
 [ -f "$luci_web" ] && sed -i 's?(<%=pcdata(ver.luciversion)%>)?- <%=pcdata(ver.luciversion)%>?g' "$luci_web"
 
 # 修改 /etc/profile 文件
