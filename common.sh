@@ -1433,6 +1433,10 @@ Diy_definition
 Diy_prevent
 }
 
+function Diy_menu6() {
+Diy_variable
+}
+
 case "$1" in
   "Diy_menu")
     Diy_menu ;;
@@ -1444,6 +1448,6 @@ case "$1" in
     Diy_menu4 ;;
   "Diy_menu5")
     Diy_menu5 ;;
-  "Diy_variable")
-    Diy_variable ;;
+  "Diy_menu6")
+    Diy_menu6 ;;
 esac
