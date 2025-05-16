@@ -18,6 +18,11 @@ function TIME() {
 echo -e "\n$Color$2\033[0m"
 }
 
+function variable() {
+export $1
+echo "$1" >> ${GITHUB_ENV}
+}
+
 function Diy_variable() {
 # 读取变量
 case "${SOURCE_CODE}" in
@@ -1396,11 +1401,6 @@ else
     return 1
 fi
 rm -rf "$tmpdir"
-}
-
-function variable() {
-export $1
-echo "$1" >> ${GITHUB_ENV}
 }
 
 
