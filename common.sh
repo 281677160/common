@@ -1256,15 +1256,15 @@ if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename "s/^immortalwrt/openwrt/" *
   sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
 fi
-echo -e "\n\033[0;32m整理前的全部文件\033[0m"
+TIME g "整理前的全部文件"
 ls -1
 for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
   rm -rf *"$X"*
 done
-echo -e "\n\033[0;32m整理后的文件\033[0m"
+TIME g "整理后的文件"
 ls -1
 if ! echo "$TARGET_BOARD" | grep -Eq 'armvirt|armsr'; then
-  echo -e "\n\033[0;32m更改固件名称\033[0m"
+  TIME g "更改固件名称"
   rename -v "s/^openwrt/${GUJIAN_DATE}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
 fi
 }
