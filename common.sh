@@ -865,7 +865,7 @@ case "$ARCH_TYPE" in
         if grep -q "CONFIG_64BIT=y" "${HOME_PATH}/.config"; then
             if [[ "${ARCH_TYPE}" == "mips64el" ]]; then
                 abi="64le"
-            elif grep -q "CONFIG_64BIT=y" "${HOME_PATH}/.config"; then
+            else
                 abi="64"
             fi
         fi
