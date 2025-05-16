@@ -532,6 +532,14 @@ else
   echo "不进行,系统默认主题替换"
 fi
 
+if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
+  echo "不进行,个性签名设置"
+elif [[ -n "${Customized_Information}" ]]; then
+  echo "[ -f '/usr/lib/os-release' ] && sed -i \"s?RELEASE=.*?RELEASE=\\\"${Customized_Information} @ OpenWrt\\\"?g\" '/usr/lib/os-release'" >> "${DEFAULT_PATH}"
+  echo "sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release" >> "${DEFAULT_PATH}"
+  echo "echo \"DISTRIB_DESCRIPTION='${Customized_Information} @ OpenWrt '\" >> /etc/openwrt_release" >> "${DEFAULT_PATH}"
+  echo "个性签名[${Customized_Informat}]增加完成"
+fi
 
 if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
   echo "CONFIG_TARGET_KERNEL_PARTSIZE=${Kernel_partition_size}" >> ${HOME_PATH}/.config
