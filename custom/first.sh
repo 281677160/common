@@ -60,7 +60,7 @@ Diy_two() {
 
     if [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
         curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o /tmp/common.sh
-        if [[ -z "$(grep -E 'export' '/tmp/common.sh' 2>/dev/null)" ]]; then
+        if ! grep -E "bash|then" "/tmp/common.sh" &> /dev/null; then
             TIME r "对比版本号文件下载失败，请检查网络"
             exit 1
         fi
@@ -114,6 +114,10 @@ Diy_three() {
                 done
 
                 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o /tmp/common.sh
+                if ! grep -E "bash|then" "/tmp/common.sh" &> /dev/null; then
+                    TIME r "对比版本号文件下载失败，请检查网络"
+                    exit 1
+                fi
                 ACTIONS_VERSION1=$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' /tmp/common.sh)
                 local relevance_dirs=($(find "${OPERATES_PATH}" -type d -name "relevance" | grep -v 'backups'))
                 for X in "${relevance_dirs[@]}"; do
@@ -192,7 +196,7 @@ Diy_four() {
     export UPGRADE_SH="${LINSHI_COMMON}/upgrade.sh"
     export CONFIG_TXT="${LINSHI_COMMON}/config.txt"
 
-    if grep -q "TIME" "${COMMON_SH}" && grep -q "Diy_Part2" "${UPGRADE_SH}"; then
+    if grep -E "bash|then" "${COMMON_SH}" && grep -E "bash|then" "${UPGRADE_SH}"; then
         cp -Rf "${COMPILE_PATH}" "${LINSHI_COMMON}/${FOLDER_NAME}"
         export DIY_PT1_SH="${LINSHI_COMMON}/${FOLDER_NAME}/diy-part.sh"
         export DIY_PT2_SH="${LINSHI_COMMON}/${FOLDER_NAME}/diy2-part.sh"
