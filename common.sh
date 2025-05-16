@@ -633,7 +633,7 @@ else
 fi
 
 if [[ "${OpenClash_branch}" =~ (1|2) ]]; then
-  CLASH_BRANCH="$(grep -E '^src-git OpenClash https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+  CLASH_BRANCH=$(grep -Po '^src-git(?:-full)?\s+OpenClash\s+[^;\s]+;\K[^\s]+' "${HOME_PATH}/feeds.conf.default" || echo "")
   echo -e "\nCONFIG_PACKAGE_luci-app-openclash=y" >> ${HOME_PATH}/.config
   echo "增加luci-app-openclash(${CLASH_BRANCH})完成"
 else
