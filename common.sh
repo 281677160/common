@@ -1434,7 +1434,7 @@ Diy_prevent
 }
 
 function Diy_menu6() {
-Diy_variable
+Diy_variable > /dev/null 2>&1
 }
 
 case "$1" in
