@@ -465,10 +465,8 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 
 function Diy_definition() {
-echo "0"
 cd ${HOME_PATH}
-bash "${DIY_PT2_SH}"
-echo "1"
+source "${DIY_PT2_SH}"
 # 获取源码文件的IP
 lan="/set network.\$1.netmask/a"
 ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |grep -v 'addr_offset' |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
@@ -1442,3 +1440,15 @@ Diy_prevent
 function Diy_menu6() {
 Diy_variable
 }
+
+case "${1}" in
+  "Diy_menu") Diy_menu ;;
+  "Diy_menu2") Diy_menu2 ;;
+  "Diy_menu3") Diy_menu3 ;;
+  "Diy_menu4") Diy_menu4 ;;
+  "Diy_menu5") Diy_menu5 ;;
+  "Diy_menu6") Diy_menu6 ;;
+  *) 
+    echo ""
+    ;;
+esac
