@@ -1493,7 +1493,7 @@ Diy_variable
 cmd="${1:-}"
 echo "$cmd"
 
-case "${1:-}" in
+case "${cmd}" in
   "Diy_menu") Diy_menu ;;
   "Diy_menu2") Diy_menu2 ;;
   "Diy_menu3") Diy_menu3 ;;
