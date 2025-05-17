@@ -200,7 +200,7 @@ Diy_four() {
     grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' "$DIY_PT1_SH" >> "${DIY_PT2_SH}"
     sed -i 's/\. |/.\/feeds |/g' "${DIY_PT2_SH}"
     grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' "$DIY_PT1_SH" >> "${DIY_PT2_SH}"
-    sed -i 's/\. |/$HOME_PATH\/package |/g' "${DIY_PT2_SH}"
+    sed -i "s/\. |/$HOME_PATH\/package |/g" "${DIY_PT2_SH}"
     sed -i 's?packagefeeds?feeds?g' "${DIY_PT2_SH}"
     grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed -i' "$DIY_PT1_SH" > tmp && mv tmp "$DIY_PT1_SH"
 
