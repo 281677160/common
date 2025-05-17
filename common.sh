@@ -690,7 +690,8 @@ CONFIG_PACKAGE_kmod-fs-vfat=y
 CONFIG_PACKAGE_kmod-fuse=y
 # CONFIG_PACKAGE_kmod-fs-ntfs is not set
 ' >> ${HOME_PATH}/.config
-gitsvn https://github.com/281677160/common/blob/main/Share/block/10-mount ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
+[[ ! -d "${HOME_PATH}/files/etc/hotplug.d/block" ]] && mkdir -p "${HOME_PATH}/files/etc/hotplug.d/block"
+cp -Rf /tmp/common/Share/block/10-mount ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
   if [[ "${SOURCE}" == "Lienol" ]] && [[ "${REPO_BRANCH}" == "19.07" ]]; then
     sed -i '/CONFIG_PACKAGE_ntfs-3g=y/d' "${HOME_PATH}/.config"
     sed -i '/CONFIG_PACKAGE_NTFS-3G_HAS_PROBE=y/d' "${HOME_PATH}/.config"
@@ -1062,8 +1063,8 @@ fi
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   pmg="$(date +%M | grep -o '.$').jpg"
-  [[ ! -d "mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background" ]] && mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
-  wget -q https://raw.githubusercontent.com/281677160/common/main/Share/argon/jpg/${pmg} -O ${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg
+  [[ ! -d "${HOME_PATH}/files/www/luci-static/argon/background" ]] && mkdir -p "${HOME_PATH}/files/www/luci-static/argon/background"
+  cp -Rf /tmp/common/Share/argon/jpg/${pmg} ${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg
   if [[ $? -ne 0 ]]; then
     echo "拉取文件错误,请检测网络"
     exit 1
