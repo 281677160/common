@@ -143,7 +143,9 @@ Diy_three() {
             git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
             [[ -d "repogx/backups" ]] && rm -rf "repogx/backups"
             [[ -d "backups" ]] && rm -rf "backups"
-            cp -Rf repogx backups
+            mkdir -p backups
+            cp -Rf repogx/* backups
+            cp -Rf repogx/.github/workflows backups/workflows
             cd repogx
             rm -rf *
             git rm --cache *
