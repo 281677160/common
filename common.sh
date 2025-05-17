@@ -136,7 +136,10 @@ TIME y "正在执行：下载和整理应用,请耐心等候..."
 cd ${HOME_PATH}
 [[ ! -d "${LICENSES_DOC}" ]] && mkdir -p "${LICENSES_DOC}"
 if ! curl -fsSL "${RAW_WEB}" -o "${LICENSES_DOC}/feeds.conf.default"; then
-  wget -q ${RAW_WEB} -O ${LICENSES_DOC}/feeds.conf.default
+  if ! wget -q ${RAW_WEB} -O ${LICENSES_DOC}/feeds.conf.default; then
+    TIME r "文件下载失败,请检查网络"
+    exit 1
+  fi
 fi
 # 增加一些应用
 echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
@@ -158,7 +161,7 @@ else
   git clone --depth=1 ${SRC_LIANJIE} ${srcdir}
 fi
 if [[ $? -ne 0 ]];then
-  TIME r "文件下载失败"
+  TIME r "文件下载失败,请检查网络"
   exit 1
 fi
 if [[ -d "${srcdir}/modules/luci-mod-system" ]]; then
@@ -1307,12 +1310,12 @@ elif [[ "$url" == *"blob"* ]]; then
     path_after_branch=$(echo "$url" | sed -n "s|.*/blob/$branch||p" | sed 's|^/||')
     download_url="https://raw.githubusercontent.com/${base_url#*https://github.com/}/$branch/$path_after_branch"
     parent_dir="${path_after_branch%/*}"
-    [[ -n "$path_after_branch" ]] && files_name="$path_after_branch" || { echo "错误链接,文件名为空"; return 1; }
+    [[ -n "$path_after_branch" ]] && files_name="$path_after_branch" || { echo "错误链接,文件名为空"; exit 1; }
 elif [[ "$url" == *"https://github.com"* ]]; then
     base_url="$url"
     repo_name=$(echo "$base_url" | awk -F'/' '{print $5}')
     path_name="$tmpdir"
-    [[ -n "$repo_name" ]] && files_name="$repo_name" || { echo "错误链接,仓库名为空"; return 1; }
+    [[ -n "$repo_name" ]] && files_name="$repo_name" || { echo "错误链接,仓库名为空"; exit 1; }
 else
     echo "无效的github链接"
     return 1
@@ -1349,11 +1352,11 @@ if [[ "$url" == *"tree"* ]] && [[ -n "$path_after_branch" ]]; then
         else
             rm -rf "$store_away" && cp -r "$path_name" "$store_away"
         fi
-        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
+        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; exit 1; }
         cd "$HOME_PATH"
     else
         echo "$files_name文件下载失败"
-        return 1
+        exit 1
     fi
 elif [[ "$url" == *"tree"* ]] && [[ -n "$branch" ]]; then
     if git clone -q --single-branch --depth=1 --branch="$branch" "$base_url" "$tmpdir"; then
@@ -1368,10 +1371,10 @@ elif [[ "$url" == *"tree"* ]] && [[ -n "$branch" ]]; then
         else
             rm -rf "$store_away" && cp -r "$path_name" "$store_away"
         fi
-        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
+        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; exit 1; }
     else
         echo "$files_name文件下载失败"
-        return 1
+        exit 1
     fi
 elif [[ "$url" == *"blob"* ]]; then
     if [[ -n "$(echo "$parent_dir" | grep -E '/')" ]]; then
@@ -1381,7 +1384,7 @@ elif [[ "$url" == *"blob"* ]]; then
         echo "$files_name 文件下载成功"
     else
         echo "$files_name文件下载失败"
-        return 1
+        exit 1
     fi
 elif [[ "$url" == *"https://github.com"* ]]; then
     if git clone -q --depth 1 "$base_url" "$tmpdir"; then
@@ -1396,14 +1399,14 @@ elif [[ "$url" == *"https://github.com"* ]]; then
         else
             rm -rf "$store_away" && cp -r "$path_name" "$store_away"
         fi
-        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
+        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; exit 1; }
     else
         echo "$files_name文件下载失败"
-        return 1
+        exit 1
     fi
 else
     echo "无效的github链接"
-    return 1
+    exit 1
 fi
 rm -rf "$tmpdir"
 }
