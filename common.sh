@@ -19,12 +19,12 @@ function TIME() {
 echo -e "\n${Color}${2}\033[0m"
 }
 
-function variable() {
+variable() {
 local overall="$1"
 local var_name="${overall%%=*}"
 local var_value="${overall#*=}"
 export "$var_name"="$var_value"
-echo "$var_name=$var_value" >> ${GITHUB_ENV}
+echo "$var_name=$var_value" >> "${GITHUB_ENV}"
 }
 
 function Diy_variable() {
@@ -113,7 +113,7 @@ variable RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH
 # 启动编译时的变量文件
 
   echo -n > "${COMPILE_PATH}/relevance/settings.ini"
-  chmod +x ${COMPILE_PATH}/relevance/settings.ini
+  chmod +x "${COMPILE_PATH}/relevance/settings.ini"
   VARIABLES=(
   "SOURCE_CODE" "REPO_BRANCH" "CONFIG_FILE"
   "INFORMATION_NOTICE" "UPLOAD_FIRMWARE" "UPLOAD_RELEASE"
@@ -128,48 +128,48 @@ variable RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 TIME y "正在执行：下载和整理应用,请耐心等候..."
-cd ${HOME_PATH}
+cd "${HOME_PATH}"
 [[ ! -d "${LICENSES_DOC}" ]] && mkdir -p "${LICENSES_DOC}"
 if ! curl -fsSL "${RAW_WEB}" -o "${LICENSES_DOC}/feeds.conf.default"; then
-  wget -q ${RAW_WEB} -O ${LICENSES_DOC}/feeds.conf.default
+  wget -q "${RAW_WEB}" -O "${LICENSES_DOC}/feeds.conf.default"
 fi
 # 增加一些应用
 echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
-gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
+gitsvn https://github.com/281677160/common/tree/main/auto-scripts "${HOME_PATH}/package/auto-scripts"
 
 sed -i "s/ZHUJI_MING/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
 sed -i "s/OPHUBOPENWRT/${DISTRIB_SOURCECODE}/g" "${DEFAULT_PATH}"
 sed -i 's/root:.*/root::0:0:99999:7:::/g' ${FILES_PATH}
-grep -q "admin:" ${FILES_PATH} && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${FILES_PATH}
+grep -q "admin:" ${FILES_PATH} && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' "${FILES_PATH}"
 
 # 添加自定义插件源
 srcdir="$(mktemp -d)"
-SRC_LIANJIE=$(grep -Po '^src-git(?:-full)?\s+luci\s+\Khttps?://[^;\s]+' "${LICENSES_DOC}/feeds.conf.default")
-SRC_FENZHIHAO=$(grep -Po '^src-git(?:-full)?\s+luci\s+[^;\s]+;\K[^\s]+' "${LICENSES_DOC}/feeds.conf.default" || echo "")
+SRC_LIANJIE="$(grep -Po '^src-git(?:-full)?\s+luci\s+\Khttps?://[^;\s]+' "${LICENSES_DOC}/feeds.conf.default")"
+SRC_FENZHIHAO="$(grep -Po '^src-git(?:-full)?\s+luci\s+[^;\s]+;\K[^\s]+' "${LICENSES_DOC}/feeds.conf.default" || echo "")"
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
-  git clone --single-branch --depth=1 --branch=${SRC_FENZHIHAO} ${SRC_LIANJIE} ${srcdir}
+  git clone --single-branch --depth=1 --branch="${SRC_FENZHIHAO}" "${SRC_LIANJIE}" "${srcdir}"
 else
-  git clone --depth=1 ${SRC_LIANJIE} ${srcdir}
+  git clone --depth=1 "${SRC_LIANJIE}" "${srcdir}"
 fi
-if [[ $? -ne 0 ]];then
+if [[ "$?" -ne "0" ]];then
   TIME r "文件下载失败"
   exit 1
 fi
 if [[ -d "${srcdir}/modules/luci-mod-system" ]]; then
   THEME_BRANCH="Theme2"
   rm -rf ${srcdir}
-  gitsvn https://github.com/281677160/luci-theme-argon/tree/master ${HOME_PATH}/package/luci-theme-argon
+  gitsvn https://github.com/281677160/luci-theme-argon/tree/master "${HOME_PATH}/package/luci-theme-argon"
 else
   THEME_BRANCH="Theme1"
   rm -rf ${srcdir}
-  gitsvn https://github.com/281677160/luci-theme-argon/tree/18.06 ${HOME_PATH}/package/luci-theme-argon
+  gitsvn https://github.com/281677160/luci-theme-argon/tree/18.06 "${HOME_PATH}/package/luci-theme-argon"
 fi
 
-echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
-echo "src-git dstheme https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
-[[ "${OpenClash_branch}" == "1" ]] && echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> ${HOME_PATH}/feeds.conf.default
-[[ "${OpenClash_branch}" == "2" ]] && echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> ${HOME_PATH}/feeds.conf.default
+echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> "${HOME_PATH}/feeds.conf.default"
+echo "src-git dstheme https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> "${HOME_PATH}/feeds.conf.default"
+[[ "${OpenClash_branch}" == "1" ]] && echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> "${HOME_PATH}/feeds.conf.default"
+[[ "${OpenClash_branch}" == "2" ]] && echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> "${HOME_PATH}/feeds.conf.default"
 
 # 增加中文语言包
 if [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)" ]] && [[ "${THEME_BRANCH}" == "Theme2" ]]; then
@@ -193,13 +193,13 @@ fi
 
 
 # 更新feeds
-cd ${HOME_PATH}
+cd "${HOME_PATH}"
 ./scripts/feeds clean
 ./scripts/feeds update -a > /dev/null 2>&1
 
 
 # 更新feeds后再次修改补充
-cd ${HOME_PATH}
+cd "${HOME_PATH}"
 z="luci-theme-argon,luci-app-argon-config,luci-theme-Butterfly,luci-theme-netgear,luci-theme-atmaterial, \
 luci-theme-rosy,luci-theme-darkmatter,luci-theme-infinityfreedom,luci-theme-design,luci-app-design-config, \
 luci-theme-bootstrap-mod,luci-theme-freifunk-generic,luci-theme-opentomato,luci-theme-kucat, \
@@ -207,7 +207,7 @@ luci-app-eqos,adguardhome,luci-app-adguardhome,mosdns,luci-app-mosdns,luci-app-o
 luci-app-gost,gost,luci-app-smartdns,smartdns,luci-app-wizard,luci-app-msd_lite,msd_lite, \
 luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,shadowsocksr-libev,v2dat,v2ray-geodata, \
 luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,luci-app-alist,alist"
-t=(${z//,/ })
+t="(${z//,/ })"
 for x in "${t[@]}"; do
     find "${HOME_PATH}/feeds" "${HOME_PATH}/package" \
         -path "${HOME_PATH}/feeds/danshui" -prune -o \
@@ -237,19 +237,19 @@ fi
 
 
 # 更新golang和node版本
-gitsvn https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
-gitsvn https://github.com/sbwml/feeds_packages_lang_node-prebuilt ${HOME_PATH}/feeds/packages/lang/node
+gitsvn https://github.com/sbwml/packages_lang_golang "${HOME_PATH}/feeds/packages/lang/golang"
+gitsvn https://github.com/sbwml/feeds_packages_lang_node-prebuilt "${HOME_PATH}/feeds/packages/lang/node"
 
 # store插件依赖
 if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services" ]] && [[ ! -d "${HOME_PATH}//package/network/services/ddnsto" ]]; then
-  mv ${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services/* ${HOME_PATH}/package/network/services
+  mv ${HOME_PATH}/feeds/danshui/relevance/nas-packages/network/services/* "${HOME_PATH}/package/network/services"
 fi
 if [[ -d "${HOME_PATH}/feeds/danshui/relevance/nas-packages/multimedia/ffmpeg-remux" ]] && [[ ! -d "${HOME_PATH}/feeds/packages/multimedia/ffmpeg-remux" ]]; then
-  mv ${HOME_PATH}/feeds/danshui/relevance/nas-packages/multimedia/ffmpeg-remux ${HOME_PATH}/feeds/packages/multimedia/ffmpeg-remux
+  mv ${HOME_PATH}/feeds/danshui/relevance/nas-packages/multimedia/ffmpeg-remux "${HOME_PATH}/feeds/packages/multimedia/ffmpeg-remux"
 fi
 
 # tproxy补丁
-bash <(curl -fsSL https://github.com/281677160/common/raw/main/Share/tproxy/nft_tproxy.sh)
+#bash <(curl -fsSL https://github.com/281677160/common/raw/main/Share/tproxy/nft_tproxy.sh)
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
     gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
