@@ -1448,7 +1448,7 @@ case "${1:-}" in
   "Diy_menu3") Diy_menu3 ;;
   "Diy_menu4") Diy_menu4 ;;
   "Diy_menu5") Diy_menu5 ;;
-  "Diy_menu5") Diy_menu6 ;;
+  "Diy_menu6") Diy_menu6 ;;
   *) 
     echo "Usage: $0 {Diy_menu|Diy_menu2|Diy_menu3|Diy_menu4|Diy_menu5|Diy_menu6}" >&2
     exit 1
