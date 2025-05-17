@@ -1302,7 +1302,7 @@ if [[ "$url" == *"tree"* ]]; then
     last_part=$(echo "$path_after_branch" | awk -F'/' '{print $NF}')
     [[ -n "$path_after_branch" ]] && path_name="$tmpdir/$path_after_branch" || path_name="$tmpdir"
     [[ -n "$last_part" ]] && files_name="$last_part" || files_name="$repo_name"
-    [[ -z "$repo_name" ]] && { echo "错误链接,仓库名为空"; return 1; }
+    [[ -z "$repo_name" ]] && { echo "错误链接,仓库名为空"; exit 1; }
 elif [[ "$url" == *"blob"* ]]; then
     base_url=$(echo "$url" | sed 's|/blob/.*||')
     repo_name=$(echo "$base_url" | awk -F'/' '{print $5}')
@@ -1318,7 +1318,7 @@ elif [[ "$url" == *"https://github.com"* ]]; then
     [[ -n "$repo_name" ]] && files_name="$repo_name" || { echo "错误链接,仓库名为空"; exit 1; }
 else
     echo "无效的github链接"
-    return 1
+    exit 1
 fi
 
 if [[ "$route" == "all" ]]; then
