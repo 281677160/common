@@ -112,7 +112,6 @@ variable RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH
 
 # 启动编译时的变量文件
 
-if [[ "${BENDI_VERSION}" != "1" ]]; then
   echo -n > "${COMPILE_PATH}/relevance/settings.ini"
   chmod +x ${COMPILE_PATH}/relevance/settings.ini
   VARIABLES=(
@@ -124,7 +123,6 @@ if [[ "${BENDI_VERSION}" != "1" ]]; then
   for var in "${VARIABLES[@]}"; do
     echo "${var}=${!var}" >> "${COMPILE_PATH}/relevance/settings.ini"
   done
-fi
 }
 
 function Diy_checkout() {
