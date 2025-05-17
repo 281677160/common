@@ -84,11 +84,7 @@ MT798X)
   "2410")
     variable REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
     variable SOURCE_OWNER="padavanonly"
-    if [[ "${REPO_BRANCH}" == "2410" ]]; then
-      variable LUCI_EDITION="24.10"
-    else
-      variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-    fi
+    variable LUCI_EDITION="24.10"
   ;;
   esac
 ;;
