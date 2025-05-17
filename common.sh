@@ -19,8 +19,11 @@ echo -e "\n$Color$2\033[0m"
 }
 
 function variable() {
-export "$1"
-echo "$1" >> ${GITHUB_ENV}
+local overall=$1
+local var_name="${overall%%=*}"
+local var_value="${overall#*=}"
+export "$var_name=$var_value"
+echo "$var_name=$var_value" >> ${GITHUB_ENV}
 }
 
 function Diy_variable() {
