@@ -1,22 +1,21 @@
 #!/bin/bash
-set -euo pipefail
 # https://github.com/281677160/build-actions
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
 
 ACTIONS_VERSION="2.4.0"
-
+Compte=$(date +%Y年%m月%d号%H时%M分)
 function TIME() {
   case $1 in
-    r) local Color="\033[0;31m";;
-    g) local Color="\033[0;32m";;
-    y) local Color="\033[0;33m";;
-    b) local Color="\033[0;34m";;
-    z) local Color="\033[0;35m";;
-    l) local Color="\033[0;36m";;
-    *) local Color="\033[0;0m";;
+    r) export Color="\e[31m";;
+    g) export Color="\e[32m";;
+    b) export Color="\e[34m";;
+    y) export Color="\e[33m";;
+    z) export Color="\e[35m";;
+    l) export Color="\e[36m";;
   esac
-echo -e "\n$Color$2\033[0m"
+echo
+echo -e "\e[36m\e[0m${Color}${2}\e[0m"
 }
 
 function Diy_variable() {
@@ -62,8 +61,34 @@ OFFICIAL)
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
+MT798X)
+  if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
+    export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
+    export SOURCE="Mt798x"
+    export SOURCE_OWNER="hanwckf"
+    export REPO_BRANCH="openwrt-21.02"
+    export DISTRIB_SOURCECODE="immortalwrt"
+    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  else
+    export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
+    export SOURCE="Mt798x"
+    export SOURCE_OWNER="padavanonly"
+    if [[ "${REPO_BRANCH}" == "2410" ]]; then
+      export LUCI_EDITION="24.10"
+    else
+      export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    fi
+    export DISTRIB_SOURCECODE="immortalwrt"
+    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  fi
+;;
 *)
+  if [[ -n "${BENDI_VERSION}" ]]; then
+    TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
+  else
     TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL"
+  fi
   exit 1
 ;;
 esac
@@ -74,7 +99,7 @@ export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
 export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
 export CLEAR_PATH="/tmp/Clear"
 export UPGRADE_DATE="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
-export GUJIAN_DATE="$(date +%m.%d)"
+export Gujian_Date="$(date +%m.%d)"
 export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
 export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
 export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
@@ -94,10 +119,11 @@ echo "DEFAULT_PATH=${DEFAULT_PATH}" >> ${GITHUB_ENV}
 echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
 echo "CLEAR_PATH=${CLEAR_PATH}" >> ${GITHUB_ENV}
 echo "UPGRADE_DATE=${UPGRADE_DATE}" >> ${GITHUB_ENV}
-echo "GUJIAN_DATE=${GUJIAN_DATE}" >> ${GITHUB_ENV}
+echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
 echo "LICENSES_DOC=${LICENSES_DOC}" >> ${GITHUB_ENV}
 
 # 启动编译时的变量文件
+if [[ -z "${BENDI_VERSION}" ]]; then
 cat >"${COMPILE_PATH}/relevance/settings.ini" <<-EOF
 SOURCE_CODE="${SOURCE_CODE}"
 REPO_BRANCH="${REPO_BRANCH}"
@@ -111,6 +137,7 @@ COMPILATION_INFORMATION="${COMPILATION_INFORMATION}"
 RETAIN_MINUTE="${RETAIN_MINUTE}"
 KEEP_LATEST="${KEEP_LATEST}"
 EOF
+fi
 }
 
 function Diy_checkout() {
@@ -242,8 +269,6 @@ done
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
-  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-qmodem
-  rm -rf ${HOME_PATH}/feeds/danshui/relevance/quectel_cm-5G
 fi
 
 if [[ "${REPO_BRANCH}" =~ ^(2410|(openwrt-)?(24\.10))$ ]]; then
@@ -850,12 +875,6 @@ fi
 
 cat >> "${HOME_PATH}/.config" <<-EOF
 CONFIG_PACKAGE_luci=y
-CONFIG_PACKAGE_luci-base=y
-CONFIG_PACKAGE_luci-mod-admin-full=y
-CONFIG_PACKAGE_luci-lib-nixio=y
-CONFIG_PACKAGE_luci-lib-jsonc=y
-CONFIG_PACKAGE_luci-lib-uci=y
-CONFIG_PACKAGE_luci-i18n-base-zh-cn=y
 CONFIG_PACKAGE_default-settings=y
 CONFIG_PACKAGE_default-settings-chn=y
 EOF
@@ -1283,150 +1302,156 @@ if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename -v "s/^immortalwrt/openwrt/" *
   sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
 fi
-echo -e "\n\033[0;32m整理前的全部文件\033[0m"
-ls -1
+
 for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
   rm -rf *"$X"*
 done
-echo -e "\n\033[0;32m整理后的文件\033[0m"
-ls -1
+
 if [[ -z "$(ls -1 |grep -E 'armvirt')" ]] || [[ -z "$(ls -1 |grep -E 'armsr')" ]]; then
-  echo -e "\n\033[0;32m更改固件名称\033[0m"
-  rename -v "s/^openwrt/${GUJIAN_DATE}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
+  rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
 fi
 }
 
 
 function gitsvn() {
-local url="${1%.git}"
-local route="$2"
-local tmpdir="$(mktemp -d)"
-local base_url=""
-local repo_name=""
-local branch=""
-local path_after_branch=""
-local last_part=""
-local files_name=""
-local download_url=""
-local parent_dir=""
-local store_away=""
+    # 定义基本路径
+    cd "${HOME_PATH}"
+    local A="${1%.git}"  # 输入的GitHub URL
+    local B="$2"         # 文件投放路径
+    local branch_name=""
+    local path_part=""
+    local url=""
+    local file_name=""
+    local parent_dir=""
+    local git_laqu=""
 
-if [[ "$url" == *"tree"* ]]; then
-    base_url=$(echo "$url" | sed 's|/tree/.*||')
-    repo_name=$(echo "$base_url" | awk -F'/' '{print $5}')
-    branch=$(echo "$url" | awk -F'/tree/' '{print $2}' | cut -d'/' -f1)
-    path_after_branch=$(echo "$url" | sed -n "s|.*/tree/$branch||p" | sed 's|^/||')
-    last_part=$(echo "$path_after_branch" | awk -F'/' '{print $NF}')
-    [[ -n "$path_after_branch" ]] && path_name="$tmpdir/$path_after_branch" || path_name="$tmpdir"
-    [[ -n "$last_part" ]] && files_name="$last_part" || files_name="$repo_name"
-    [[ -z "$repo_name" ]] && { echo "错误链接,仓库名为空"; return 1; }
-elif [[ "$url" == *"blob"* ]]; then
-    base_url=$(echo "$url" | sed 's|/blob/.*||')
-    repo_name=$(echo "$base_url" | awk -F'/' '{print $5}')
-    branch=$(echo "$url" | awk -F'/blob/' '{print $2}' | cut -d'/' -f1)
-    path_after_branch=$(echo "$url" | sed -n "s|.*/blob/$branch||p" | sed 's|^/||')
-    download_url="https://raw.githubusercontent.com/${base_url#*https://github.com/}/$branch/$path_after_branch"
-    parent_dir="${path_after_branch%/*}"
-    [[ -n "$path_after_branch" ]] && files_name="$path_after_branch" || { echo "错误链接,文件名为空"; return 1; }
-elif [[ "$url" == *"https://github.com"* ]]; then
-    base_url="$url"
-    repo_name=$(echo "$base_url" | awk -F'/' '{print $5}')
-    path_name="$tmpdir"
-    [[ -n "$repo_name" ]] && files_name="$repo_name" || { echo "错误链接,仓库名为空"; return 1; }
-else
-    echo "无效的github链接"
-    return 1
-fi
+    # 检查输入路径是否有效
+    if [[ -z "$B" ]]; then
+        echo "未设置文件投放路径"
+        exit 1
+    fi
 
-if [[ "$route" == "all" ]]; then
-    store_away="$HOME_PATH/"
-elif [[ "$route" == *"openwrt"* ]]; then
-    store_away="$HOME_PATH/${route#*openwrt/}"
-elif [[ "$route" == *"./"* ]]; then
-    store_away="$HOME_PATH/${route#*./}"
-elif [[ -n "$route" ]]; then
-    store_away="$HOME_PATH/$route"
-else
-    store_away="$HOME_PATH/$files_name"
-fi
+    # 根据输入路径计算目标路径
+    if [[ "$B" == *"openwrt"* ]]; then
+        local content="${HOME_PATH}/${B#*openwrt/}"
+        local wenjianjia="${B#*openwrt/}"
+    elif [[ "$B" == *"./"* ]]; then
+        local content="${HOME_PATH}/${B#*./}"
+        local wenjianjia="${B#*./}"
+    else
+        local content="${HOME_PATH}/$B"
+        local wenjianjia="${B}"
+    fi
 
-if [[ "$url" == *"tree"* ]] && [[ -n "$path_after_branch" ]]; then
-    if git clone -q --no-checkout "$base_url" "$tmpdir"; then
-        cd "$tmpdir"
-        git sparse-checkout init --cone > /dev/null 2>&1
-        git sparse-checkout set "$path_after_branch" > /dev/null 2>&1
-        git checkout "$branch" > /dev/null 2>&1
-        grep -rl 'include ../../luci.mk' . | xargs -r sed -i 's#include ../../luci.mk#include \$(TOPDIR)/feeds/luci/luci.mk#g'
-        grep -rl 'include ../../lang/' . | xargs -r sed -i 's#include ../../lang/#include \$(TOPDIR)/feeds/packages/lang/#g'
-        if [[ "$route" == "all" ]]; then
-            find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
-            target="$HOME_PATH/${item}"
-            if [ -e "$target" ]; then
-                rm -rf "$target"
+    # 解析GitHub URL
+    if [[ "$A" =~ tree/([^/]+)(/(.*))? ]]; then
+        branch_name="${BASH_REMATCH[1]}"
+        path_part="${BASH_REMATCH[3]:-}"
+    elif [[ "$A" =~ blob/([^/]+)(/(.*))? ]]; then
+        branch_name="${BASH_REMATCH[1]}"
+        path_part="${BASH_REMATCH[3]:-}"
+        local ck_name="$(echo "${A}" | cut -d"/" -f4-5)"
+    elif [[ "$A" == *"github.com"* ]]; then
+        branch_name="1"
+    else
+        echo "无效的GitHub URL格式"
+        exit 1
+    fi
+
+    # 根据解析结果设置URL和文件名
+    if [[ "$A" == *"tree"* ]] && [[ -n "${path_part}" ]]; then
+        url="${A%%/tree/*}"
+        file_name="${A##*/}"
+        git_laqu="1"
+    elif [[ "$A" == *"tree"* ]] && [[ -n "${branch_name}" ]] && [[ -z "${path_part}" ]]; then
+        url="${A%%/tree/*}"
+        file_name="$(echo "${A}" | cut -d"/" -f5)"
+        git_laqu="2"
+    elif [[ "${branch_name}" == "1" ]]; then
+        url="${A}"
+        file_name="$(echo "${A}" | cut -d"/" -f5)"
+        git_laqu="3"
+    elif [[ "$A" == *"blob"* ]]; then
+        url="https://raw.githubusercontent.com/${ck_name}/${branch_name}/${path_part}"
+        file_name="${path_part}"
+        parent_dir="${wenjianjia%/*}"
+        git_laqu="4"
+    fi
+
+    # 创建临时目录
+    local tmpdir="$(mktemp -d)"
+    local C="${HOME_PATH}/${tmpdir#*.}"
+    rm -fr "${tmpdir}"
+
+    # 根据git_laqu执行不同的操作
+    case "${git_laqu}" in
+        1)
+            if git clone -q --no-checkout "$url" "$C"; then
+                cd "${C}"
+                git sparse-checkout init --cone > /dev/null 2>&1
+                git sparse-checkout set "${path_part}" > /dev/null 2>&1
+                git checkout "${branch_name}" > /dev/null 2>&1
+                # 替换路径中的特定字符串
+                grep -rl 'include ../../luci.mk' . | xargs -r sed -i 's#include ../../luci.mk#include \$(TOPDIR)/feeds/luci/luci.mk#g'
+                grep -rl 'include ../../lang/' . | xargs -r sed -i 's#include ../../lang/#include \$(TOPDIR)/feeds/packages/lang/#g'
+                # 移动文件到目标路径
+                rm -fr "${content}"
+                mv "${path_part}" "${content}"
+                if [[ $? -ne 0 ]]; then
+                    echo "${file_name}文件投放失败,请检查投放路径是否正确"
+                    exit 1
+                else
+                    echo "${file_name}文件下载完成"
+                fi
+            else
+                echo "${file_name}文件下载失败"
+                exit 1
             fi
-            done
-            cp -r "$path_name"/* "$store_away"
-        else
-            rm -rf "$store_away" && cp -r "$path_name" "$store_away"
-        fi
-        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
-        cd "$HOME_PATH"
-    else
-        echo "$files_name文件下载失败"
-        return 1
-    fi
-elif [[ "$url" == *"tree"* ]] && [[ -n "$branch" ]]; then
-    if git clone -q --single-branch --depth=1 --branch="$branch" "$base_url" "$tmpdir"; then
-        if [[ "$route" == "all" ]]; then
-            find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
-            target="$HOME_PATH/${item}"
-            if [ -e "$target" ]; then
-                rm -rf "$target"
+            ;;
+        2)
+            rm -fr "${content}"
+            if git clone -q --single-branch --depth=1 --branch=${branch_name} ${url} ${content}; then
+                echo "${file_name}文件下载完成"
+            else
+                echo "${file_name}文件下载失败"
+                exit 1
             fi
-            done
-            cp -r "$path_name"/* "$store_away"
-        else
-            rm -rf "$store_away" && cp -r "$path_name" "$store_away"
-        fi
-        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
-    else
-        echo "$files_name文件下载失败"
-        return 1
-    fi
-elif [[ "$url" == *"blob"* ]]; then
-    if [[ -n "$(echo "$parent_dir" | grep -E '/')" ]]; then
-        [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
-    fi
-    if curl -fsSL "$download_url" -o "$store_away"; then
-        echo "$files_name 文件下载成功"
-    else
-        echo "$files_name文件下载失败"
-        return 1
-    fi
-elif [[ "$url" == *"https://github.com"* ]]; then
-    if git clone -q --depth 1 "$base_url" "$tmpdir"; then
-        if [[ "$route" == "all" ]]; then
-            find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
-            target="$HOME_PATH/${item}"
-            if [ -e "$target" ]; then
-                rm -rf "$target"
+            ;;
+        3)
+            rm -fr "${content}"
+            if git clone -q --depth 1 "${url}" "${content}"; then
+                echo "${file_name}文件下载完成"
+            else
+                echo "${file_name}文件下载失败"
+                exit 1
             fi
-            done
-            cp -r "$path_name"/* "$store_away"
-        else
-            rm -rf "$store_away" && cp -r "$path_name" "$store_away"
-        fi
-        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
-    else
-        echo "$files_name文件下载失败"
-        return 1
-    fi
-else
-    echo "无效的github链接"
-    return 1
-fi
-rm -rf "$tmpdir"
+            ;;
+        4)
+            [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
+            if curl -fsSL "${url}" -o "${content}"; then
+                if [[ -s "${content}" ]]; then
+                    echo "${file_name}文件下载完成"
+                    chmod +x "${content}"
+                else
+                    echo "${file_name}文件下载失败"
+                    exit 1
+                fi
+            else
+                echo "${file_name}文件下载失败"
+                exit 1
+            fi
+            ;;
+        *)
+            echo "未知的操作类型"
+            exit 1
+            ;;
+    esac
+
+    # 清理临时目录
+    cd "${HOME_PATH}"
+    rm -fr "$C"
 }
+
 
 
 
@@ -1462,18 +1487,26 @@ function Diy_menu6() {
 Diy_variable
 }
 
-cmd="${1:-}"
-echo "$cmd"
-
-case "${cmd}" in
-  "Diy_menu") Diy_menu ;;
-  "Diy_menu2") Diy_menu2 ;;
-  "Diy_menu3") Diy_menu3 ;;
-  "Diy_menu4") Diy_menu4 ;;
-  "Diy_menu5") Diy_menu5 ;;
-  "Diy_menu6") Diy_menu6 ;;
-  *) 
-    echo "Usage: $0 {Diy_menu|Diy_menu2|Diy_menu3|Diy_menu4|Diy_menu5|Diy_menu6}" >&2
-    exit 1
+case "$1" in
+  "Diy_menu")
+    Diy_menu
+    ;;
+  "Diy_menu2")
+    Diy_menu2
+    ;;
+  "Diy_menu3")
+    Diy_menu3
+    ;;
+  "Diy_menu4")
+    Diy_menu4
+    ;;
+  "Diy_menu5")
+    Diy_menu5
+    ;;
+  "Diy_menu6")
+    Diy_menu6
+    ;;
+  *)
+    echo ""
     ;;
 esac
