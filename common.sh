@@ -124,7 +124,6 @@ echo "GUJIAN_DATE=${GUJIAN_DATE}" >> ${GITHUB_ENV}
 echo "LICENSES_DOC=${LICENSES_DOC}" >> ${GITHUB_ENV}
 
 # 启动编译时的变量文件
-if [[ -z "${BENDI_VERSION}" ]]; then
 cat >"${COMPILE_PATH}/relevance/settings.ini" <<-EOF
 SOURCE_CODE="${SOURCE_CODE}"
 REPO_BRANCH="${REPO_BRANCH}"
@@ -138,7 +137,6 @@ COMPILATION_INFORMATION="${COMPILATION_INFORMATION}"
 RETAIN_MINUTE="${RETAIN_MINUTE}"
 KEEP_LATEST="${KEEP_LATEST}"
 EOF
-fi
 }
 
 function Diy_checkout() {
