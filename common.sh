@@ -458,36 +458,40 @@ fi
 
 
 function Diy_profile() {
-TIME y "正在执行：识别源码编译为何机型"
 cd ${HOME_PATH}
 make defconfig > /dev/null 2>&1
-variable TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
-variable TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
-variable TARGET_PROFILE_DG="$(awk -F '[="]+' '/TARGET_PROFILE/{print $2}' ${HOME_PATH}/.config)"
+TIME y "正在执行：识别源码编译为何机型"
+export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
+export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
+export TARGET_PROFILE_DG="$(awk -F '[="]+' '/TARGET_PROFILE/{print $2}' ${HOME_PATH}/.config)"
 if [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*64.*=y' ${HOME_PATH}/.config)" ]]; then
-  variable TARGET_PROFILE="x86-64"
+  export TARGET_PROFILE="x86-64"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*=y' ${HOME_PATH}/.config)" ]]; then
-  variable TARGET_PROFILE="x86-32"
+  export TARGET_PROFILE="x86-32"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*phicomm.*n1=y' ${HOME_PATH}/.config)" ]]; then
-  variable TARGET_PROFILE="phicomm_n1"
-elif grep -Eq "TARGET_armvirt=y|TARGET_armsr=y" "$HOME_PATH/.config"; then
-  variable TARGET_PROFILE="armsr_rootfs_tar_gz"
+  export TARGET_PROFILE="phicomm_n1"
+elif [[ -n "$(grep -Eo 'armvirt=y' $HOME_PATH/.config)" ]] || [[ -n "$(grep -Eo 'armsr=y' $HOME_PATH/.config)" ]]; then
+  export TARGET_PROFILE="aarch_64"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*=y' ${HOME_PATH}/.config)" ]]; then
-  variable TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
 else
-  variable TARGET_PROFILE="${TARGET_PROFILE_DG}"
+  export TARGET_PROFILE="${TARGET_PROFILE_DG}"
 fi
-variable FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-variable TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-echo -e "正在编译：${TARGET_PROFILE}\n"
+export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
+echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
+echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
+echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
+echo "正在编译：${TARGET_PROFILE}"
 }
 
 
 function Diy_management() {
 cd ${HOME_PATH}
-# 机型为armsr_rootfs_tar_gz的时,修改cpufreq代码适配Armvirt
+# 机型为aarch_64的时,修改cpufreq代码适配Armvirt
 if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
-  for X in $(find "${HOME_PATH}" -type d -name "luci-app-cpufreq"); do \
+  for X in $(find . -type d -name "luci-app-cpufreq"); do \
     [[ -d "$X" ]] && \
     sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' "$X/Makefile"; \
   done
@@ -585,10 +589,15 @@ fi
 if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
   echo "不进行,个性签名设置"
 elif [[ -n "${Customized_Information}" ]]; then
-  echo "[ -f '/usr/lib/os-release' ] && sed -i \"s?RELEASE=.*?RELEASE=\\\"${Customized_Information} @ OpenWrt\\\"?g\" '/usr/lib/os-release'" >> "${DEFAULT_PATH}"
-  echo "sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release" >> "${DEFAULT_PATH}"
-  echo "echo \"DISTRIB_DESCRIPTION='${Customized_Information} @ OpenWrt '\" >> /etc/openwrt_release" >> "${DEFAULT_PATH}"
-  echo "个性签名[${Customized_Information}]增加完成"
+  sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
+cat >> "${ZZZ_PATH}" <<-EOF
+    [[ -f "/usr/lib/os-release" ]] && sed -i 's?RELEASE=".*"?RELEASE="Customized_Information @ OpenWrt"?g' /usr/lib/os-release
+    sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+    echo "DISTRIB_DESCRIPTION='Customized_Information @ OpenWrt '" >> /etc/openwrt_release
+EOF
+  Customized_Informat="${Customized_Information}"
+  sed -i "s?Customized_Information?${Customized_Informat}?g" "${ZZZ_PATH}"
+  echo "个性签名[${Customized_Informat}]增加完成"
 fi
 
 if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
@@ -691,7 +700,7 @@ else
 fi
 
 if [[ "${OpenClash_branch}" =~ (1|2) ]]; then
-  CLASH_BRANCH=$(grep -Po '^src-git(?:-full)?\s+OpenClash\s+[^;\s]+;\K[^\s]+' "${HOME_PATH}/feeds.conf.default" || echo "")
+  CLASH_BRANCH="$(grep -E '^src-git OpenClash https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
   echo -e "\nCONFIG_PACKAGE_luci-app-openclash=y" >> ${HOME_PATH}/.config
   echo "增加luci-app-openclash(${CLASH_BRANCH})完成"
 else
@@ -849,11 +858,11 @@ if [[ "${Delete_unnecessary_items}" == "1" ]]; then
   sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
 fi
 
-variable patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
+export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
 if [[ "${TARGET_BOARD}" == "armvirt" ]]; then
-  variable KERNEL_patc="config-${Replace_Kernel}"
+  export KERNEL_patc="config-${Replace_Kernel}"
 else
-  variable KERNEL_patc="patches-${Replace_Kernel}"
+  export KERNEL_patc="patches-${Replace_Kernel}"
 fi
 if [[ "${Replace_Kernel}" == "0" ]]; then
   echo "不进行,内核更换"
@@ -869,9 +878,11 @@ fi
 cat >> "${HOME_PATH}/.config" <<-EOF
 CONFIG_PACKAGE_luci=y
 CONFIG_PACKAGE_luci-base=y
-CONFIG_PACKAGE_luci-compat=y
+CONFIG_PACKAGE_luci-mod-admin-full=y
+CONFIG_PACKAGE_luci-lib-nixio=y
+CONFIG_PACKAGE_luci-lib-jsonc=y
+CONFIG_PACKAGE_luci-lib-uci=y
 CONFIG_PACKAGE_luci-i18n-base-zh-cn=y
-CONFIG_PACKAGE_luci-lib-ipkg=y
 CONFIG_PACKAGE_default-settings=y
 CONFIG_PACKAGE_default-settings-chn=y
 EOF
