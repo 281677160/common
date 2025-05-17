@@ -1486,23 +1486,16 @@ Diy_definition
 Diy_prevent
 }
 
-case "$1" in
-  "Diy_menu")
-    Diy_menu
-    ;;
-  "Diy_menu2")
-    Diy_menu2
-    ;;
-  "Diy_menu3")
-    Diy_menu3
-    ;;
-  "Diy_menu4")
-    Diy_menu4
-    ;;
-  "Diy_menu5")
-    Diy_menu5
-    ;;
-  *)
-    echo ""
+
+local cmd="${1:-}"
+case "$cmd" in
+  "Diy_menu") Diy_menu ;;
+  "Diy_menu2") Diy_menu2 ;;
+  "Diy_menu3") Diy_menu3 ;;
+  "Diy_menu4") Diy_menu4 ;;
+  "Diy_menu5") Diy_menu5 ;;
+  *) 
+    echo "Usage: $0 {Diy_menu|Diy_menu2|Diy_menu3|Diy_menu4|Diy_menu5}" >&2
+    exit 1
     ;;
 esac
