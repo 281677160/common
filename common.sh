@@ -897,59 +897,52 @@ echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 echo "builder_name=ophub" >> ${GITHUB_ENV}
 
 # adguardhome增加核心
-ARCH_TYPE=$(grep "CONFIG_ARCH=\"" "${HOME_PATH}/.config" | cut -d '"' -f 2)
-# 层级式判断架构类型
-case "$ARCH_TYPE" in
-    "x86_64")
-        Arch="linux_amd64"
-        echo "CPU架构：amd64" ;;
-    "i386")
-        Arch="linux_386"
-        echo "CPU架构：X86 32" ;;
-    "aarch64")
-        Arch="linux_arm64"
-        echo "CPU架构：arm64" ;;
-    "arm")
-        if grep -q "CONFIG_ARM_V8=y" "${HOME_PATH}/.config"; then
-            Arch="linux_arm64"
-            echo "CPU架构：arm64"
-        elif grep -q "CONFIG_arm_v7=y" "${HOME_PATH}/.config"; then
-            Arch="linux_armv7"
-            echo "CPU架构：armv7"
-        elif grep -q "CONFIG_VFP=y" "${HOME_PATH}/.config"; then
-            Arch="linux_armv6"
-            echo "CPU架构：armv6"
-        else
-            Arch="linux_armv5"
-            echo "CPU架构：armv5"
-        fi ;;
-    "mips" | "mipsel" | "mips64" | "mips64el")
-        if grep -q "CONFIG_64BIT=y" "${HOME_PATH}/.config"; then
-            if [[ "${ARCH_TYPE}" == "mips64el" ]]; then
-                abi="64le"
-            else
-                abi="64"
-            fi
-        fi
-        if grep -q "CONFIG_SOFT_FLOAT=y" "${HOME_PATH}/.config"; then
-            suffix="_softfloat"
-        else
-            suffix=""
-        fi
-        Arch="linux_${ARCH_TYPE}${abi}${suffix}"
-        echo "CPU架构：${ARCH_TYPE}${abi}${suffix}" ;;
-    "riscv" | "riscv64")
-        if grep -q "CONFIG_64BIT=y" "${HOME_PATH}/.config"; then
-            Arch="linux_riscv64"
-        else
-            Arch="linux_riscv32"
-        fi ;;
-    *)
-        echo "未知架构类型"
-        Arch="" ;;
-esac
+if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_amd64"
+  Archclash="linux-amd64"
+  echo "CPU架构：amd64"
+elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_386"
+  Archclash="linux-386"
+  echo "CPU架构：X86 32"
+elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_arm64"
+  Archclash="linux-arm64"
+  echo "CPU架构：arm64"
+elif [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_armv7"
+  Archclash="linux-armv7"
+  echo "CPU架构：armv7"
+elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep "CONFIG_TARGET_ARCH_PACKAGES" "${HOME_PATH}/.config" |grep -c "vfp"` -eq '1' ]]; then
+  Arch="linux_armv6"
+  Archclash="linux-armv6"
+  echo "CPU架构：armv6"
+elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep "CONFIG_TARGET_ARCH_PACKAGES" "${HOME_PATH}/.config" |grep -c "vfp"` -eq '0' ]]; then
+  Arch="linux_armv5"
+  Archclash="linux-armv5"
+  echo "CPU架构：armv6"
+elif [[ `grep -c "CONFIG_ARCH=\"mips\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_mips_softfloat"
+  Archclash="linux-mips-softfloat"
+  echo "CPU架构：mips"
+elif [[ `grep -c "CONFIG_ARCH=\"mips64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_mips64_softfloat"
+  Archclash="linux-mips64"
+  echo "CPU架构：mips64"
+elif [[ `grep -c "CONFIG_ARCH=\"mipsel\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_mipsle_softfloat"
+  Archclash="linux-mipsle-softfloat"
+  echo "CPU架构：mipsel"
+elif [[ `grep -c "CONFIG_ARCH=\"mips64el\"" ${HOME_PATH}/.config` -eq '1' ]]; then
+  Arch="linux_mips64le_softfloat"
+  Archclash="linux-mips64le"
+  echo "CPU架构：mips64el"
+else
+  echo "不了解您的CPU为何架构"
+  weizhicpu="1"
+fi
 
-if [[ -n "${Arch}" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
+if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   echo "正在执行：给adguardhome下载核心"
   rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
   wget -q https://github.com/281677160/common/releases/download/API/AdGuardHome.api -O AdGuardHome.api
@@ -976,27 +969,26 @@ if [[ -n "${Arch}" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   fi
     rm -rf ${HOME_PATH}/{AdGuardHome_${Arch}.tar.gz,AdGuardHome}
 else
-  if [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && [[ ! "${AdGuardHome_Core}" == "1" ]]; then
-    rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
-  fi
+  [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
 fi
 
 # 源码内核版本号
-KERNEL_PATCH="$(awk -F'[:=]' '/KERNEL_PATCHVER/{print $NF; exit}' "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile")"
+KERNEL_PATCH="$(grep -Eo "KERNEL_PATCHVER.*[0-9.]+" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
 KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
-if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
-  variable LINUX_KERNEL="$(grep -oP "LINUX_KERNEL_HASH-\K${KERNEL_PATCH}\.[0-9]+" "${HOME_PATH}/include/${KERNEL_VERSINO}")"
-  [[ -z ${LINUX_KERNEL} ]] && variable LINUX_KERNEL="$KERNEL_PATCH"
+  if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
+LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-[0-9.]+" "${HOME_PATH}/include/${KERNEL_VERSINO}"  |grep -Eo "[0-9.]+")"
+  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
 else
-  variable LINUX_KERNEL="$(grep -oP "LINUX_KERNEL_HASH-\K${KERNEL_PATCH}\.[0-9]+" "${HOME_PATH}/include/kernel-version.mk")"
-  [[ -z ${LINUX_KERNEL} ]] && variable LINUX_KERNEL="$KERNEL_PATCH"
+  LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-${KERNEL_PATCH}.[0-9]+" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "[0-9.]+")"
+  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
 fi
+echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 }
 
 
 function Diy_prevent() {
-TIME y "正在执行：判断插件有否冲突减少编译错误"
 cd ${HOME_PATH}
+TIME y "正在执行：判断插件有否冲突减少编译错误"
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-server=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-vpnd=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-app-ipsec-vpnd=y/# CONFIG_PACKAGE_luci-app-ipsec-vpnd is not set/g' ${HOME_PATH}/.config
@@ -1117,9 +1109,9 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-dockerman=y" ${HOME_PATH}/.config` -eq '
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  pmg="$(date +%M | grep -o '.$').jpg"
-  [[ ! -d "mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background" ]] && mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
-  wget -q https://raw.githubusercontent.com/281677160/common/main/Share/argon/jpg/${pmg} -O ${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg
+  pmg="$(echo "$(date +%M)" | sed 's/^.//g')"
+  mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
+  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/argon/jpg/${pmg}.jpg -o ${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg
   if [[ $? -ne 0 ]]; then
     echo "拉取文件错误,请检测网络"
     exit 1
@@ -1264,8 +1256,6 @@ if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] ||
   fi 
 fi
 
-! grep -q "CONFIG_PACKAGE_auto-scripts=y" "${HOME_PATH}/.config" && echo "CONFIG_PACKAGE_auto-scripts=y" >> "${HOME_PATH}/.config"
-
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   PARTSIZE="$(grep -Eo "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
   if [[ "${PARTSIZE}" -lt "950" ]];then
@@ -1298,7 +1288,9 @@ sed -i '/^$/d' "${CONFIG_TXT}"
 
 # 前面修改的文件改回去
 sed -i -E '/^\t/! s/^ +//' "${DEFAULT_PATH}"
-! grep -q "exit 0" "$DEFAULT_PATH" && sed -i '$a\exit 0' "${DEFAULT_PATH}"
+[[ -z "$( grep -E 'exit 0' "$DEFAULT_PATH" 2>/dev/null)" ]] && sed -i '$a\exit 0' "${DEFAULT_PATH}"
+sed -i -E '/^\t/! s/^ +//' "${ZZZ_PATH}"
+[[ -z "$( grep -E 'exit 0' "$ZZZ_PATH" 2>/dev/null)" ]] && sed -i '$a\exit 0' "${ZZZ_PATH}"
 }
 
 
@@ -1312,21 +1304,21 @@ fi
 # 编译完毕后,整理固件
 cd ${FIRMWARE_PATH}
 mkdir -p ipk
-cp -Rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
+cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
 sudo tar -czf ipk.tar.gz ipk && sync && sudo rm -rf ipk
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
-  rename "s/^immortalwrt/openwrt/" *
+  rename -v "s/^immortalwrt/openwrt/" *
   sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
 fi
-TIME g "整理前的全部文件"
+echo -e "\n\033[0;32m整理前的全部文件\033[0m"
 ls -1
 for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
   rm -rf *"$X"*
 done
-TIME g "整理后的文件"
+echo -e "\n\033[0;32m整理后的文件\033[0m"
 ls -1
-if ! echo "$TARGET_BOARD" | grep -Eq 'armvirt|armsr'; then
-  TIME g "更改固件名称"
+if [[ -z "$(ls -1 |grep -E 'armvirt')" ]] || [[ -z "$(ls -1 |grep -E 'armsr')" ]]; then
+  echo -e "\n\033[0;32m更改固件名称\033[0m"
   rename -v "s/^openwrt/${GUJIAN_DATE}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
 fi
 }
@@ -1493,21 +1485,23 @@ Diy_definition
 Diy_prevent
 }
 
-function Diy_menu6() {
-Diy_variable
-}
-
 case "$1" in
   "Diy_menu")
-    Diy_menu ;;
+    Diy_menu
+    ;;
   "Diy_menu2")
-    Diy_menu2 ;;
+    Diy_menu2
+    ;;
   "Diy_menu3")
-    Diy_menu3 ;;
+    Diy_menu3
+    ;;
   "Diy_menu4")
-    Diy_menu4 ;;
+    Diy_menu4
+    ;;
   "Diy_menu5")
-    Diy_menu5 ;;
-  "Diy_menu6")
-    Diy_menu6 ;;
+    Diy_menu5
+    ;;
+  *)
+    echo ""
+    ;;
 esac
