@@ -1441,14 +1441,15 @@ function Diy_menu6() {
 Diy_variable
 }
 
-case "${1}" in
-  "Diy_menu") Diy_menu ;;
-  "Diy_menu2") Diy_menu2 ;;
-  "Diy_menu3") Diy_menu3 ;;
-  "Diy_menu4") Diy_menu4 ;;
-  "Diy_menu5") Diy_menu5 ;;
-  "Diy_menu6") Diy_menu6 ;;
-  *) 
-    echo ""
-    ;;
-esac
+if [[ "${BENDI_VERSION}" == "2" ]]; then
+  case "${1}" in
+    "Diy_menu") Diy_menu ;;
+    "Diy_menu2") Diy_menu2 ;;
+    "Diy_menu3") Diy_menu3 ;;
+    "Diy_menu4") Diy_menu4 ;;
+    "Diy_menu5") Diy_menu5 ;;
+    "Diy_menu6") Diy_menu6 ;;
+    *) 
+      echo "不支持${1}" ;;
+  esac
+fi
