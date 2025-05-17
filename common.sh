@@ -465,9 +465,10 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 
 
 function Diy_definition() {
+echo "0"
 cd ${HOME_PATH}
 source "${DIY_PT2_SH}"
-
+echo "1"
 # 获取源码文件的IP
 lan="/set network.\$1.netmask/a"
 ipadd="$(grep "ipaddr:-" "${GENE_PATH}" |grep -v 'addr_offset' |grep -Eo "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")"
@@ -497,7 +498,7 @@ elif [[ -n "${Ipv4_ipaddr}" ]]; then
      TIME r "因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了"
    fi
 fi
-
+echo "2"
 if [[ "${Netmask_netm}" == "0" ]] || [[ -z "${Netmask_netm}" ]]; then
   echo "不进行,子网掩码修改"
 elif [[ -n "${Netmask_netm}" ]]; then
