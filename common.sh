@@ -21,10 +21,8 @@ echo -e "\n${Color}${2}\033[0m"
 
 function variable() {
 local overall="$1"
-local var_name="${overall%%=*}"
-local var_value="${overall#*=}"
-export "${overall}"
 echo "${overall}" >> "${GITHUB_ENV}"
+[[ -f "${GITHUB_ENV}" ]] && source "${GITHUB_ENV}"
 }
 
 function Diy_variable() {
