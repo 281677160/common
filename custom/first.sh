@@ -7,17 +7,17 @@ export TONGBU_YUANMA=""
 export SYNCHRONISE=""
 
 # 颜色输出函数
-TIME() {
-    case $1 in
-        r) Color="\e[31m" ;;
-        g) Color="\e[32m" ;;
-        b) Color="\e[34m" ;;
-        y) Color="\e[33m" ;;
-        z) Color="\e[35m" ;;
-        l) Color="\e[36m" ;;
-    esac
-    echo
-    echo -e "\e[36m\e[0m${Color}${2}\e[0m"
+function TIME() {
+  case "$1" in
+    r) local Color="\033[0;31m";;
+    g) local Color="\033[0;32m";;
+    y) local Color="\033[0;33m";;
+    b) local Color="\033[0;34m";;
+    z) local Color="\033[0;35m";;
+    l) local Color="\033[0;36m";;
+    *) local Color="\033[0;0m";;
+  esac
+echo -e "\n${Color}${2}\033[0m"
 }
 
 # 第一个自定义函数
