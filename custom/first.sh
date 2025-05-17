@@ -60,7 +60,7 @@ Diy_two() {
 
     if [[ -f "${COMPILE_PATH}/relevance/actions_version" ]]; then
         curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o /tmp/common.sh
-        if ! grep -E "bash|then" "/tmp/common.sh" &> /dev/null; then
+        if [[ -z "$(grep -E 'export' '/tmp/common.sh' 2>/dev/null)" ]]; then
             TIME r "对比版本号文件下载失败，请检查网络"
             exit 1
         fi
@@ -114,10 +114,6 @@ Diy_three() {
                 done
 
                 curl -fsSL https://raw.githubusercontent.com/281677160/common/main/common.sh -o /tmp/common.sh
-                if ! grep -E "bash|then" "/tmp/common.sh" &> /dev/null; then
-                    TIME r "对比版本号文件下载失败，请检查网络"
-                    exit 1
-                fi
                 ACTIONS_VERSION1=$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' /tmp/common.sh)
                 local relevance_dirs=($(find "${OPERATES_PATH}" -type d -name "relevance" | grep -v 'backups'))
                 for X in "${relevance_dirs[@]}"; do
@@ -140,7 +136,6 @@ Diy_three() {
                 exit 1
             fi
         else
-            cd "${GITHUB_WORKSPACE}"
             git clone -b "${GIT_REFNAME}" https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
             git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
             find . -type d -name "backups" -exec sudo rm -rf {} \;
@@ -150,7 +145,7 @@ Diy_three() {
             cd repogx
             rm -rf *
             git rm --cache *
-            cd "${GITHUB_WORKSPACE}"
+            cd ../
             mkdir -p repogx/.github/workflows
             cp -Rf shangyou/* repogx
             cp -Rf shangyou/.github/workflows/* repogx/.github/workflows
@@ -186,7 +181,6 @@ Diy_three() {
 
 # 第四个自定义函数
 Diy_four() {
-    cd "${GITHUB_WORKSPACE}"
     LINSHI_COMMON="/tmp/common"
     rm -rf "${LINSHI_COMMON}"
     mkdir -p "${LINSHI_COMMON}"
@@ -196,7 +190,7 @@ Diy_four() {
     export UPGRADE_SH="${LINSHI_COMMON}/upgrade.sh"
     export CONFIG_TXT="${LINSHI_COMMON}/config.txt"
 
-    if grep -E "bash|then" "${COMMON_SH}" && grep -E "bash|then" "${UPGRADE_SH}"; then
+    if grep -q "TIME" "${COMMON_SH}" && grep -q "Diy_Part2" "${UPGRADE_SH}"; then
         cp -Rf "${COMPILE_PATH}" "${LINSHI_COMMON}/${FOLDER_NAME}"
         export DIY_PT1_SH="${LINSHI_COMMON}/${FOLDER_NAME}/diy-part.sh"
         export DIY_PT2_SH="${LINSHI_COMMON}/${FOLDER_NAME}/diy2-part.sh"
