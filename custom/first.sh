@@ -24,6 +24,10 @@ echo -e "\n${Color}${2}\033[0m"
 Diy_one() {
     cd "${GITHUB_WORKSPACE}"
     export LINSHI_COMMON="/tmp/common"
+    if [[ ! -d "${LINSHI_COMMON}" ]]; then
+      TIME r "对比版本号文件下载失败，请检查网络"
+      exit 1
+    fi
     export COMMON_SH="${LINSHI_COMMON}/common.sh"
     export UPGRADE_SH="${LINSHI_COMMON}/upgrade.sh"
     export CONFIG_TXT="${LINSHI_COMMON}/config.txt"
