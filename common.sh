@@ -7,7 +7,7 @@ set -euo pipefail
 ACTIONS_VERSION="2.4.0"
 
 function TIME() {
-  case $1 in
+  case "$1" in
     r) local Color="\033[0;31m";;
     g) local Color="\033[0;32m";;
     y) local Color="\033[0;33m";;
@@ -23,7 +23,7 @@ function variable() {
 local overall="$1"
 local var_name="${overall%%=*}"
 local var_value="${overall#*=}"
-export "$var_name=$var_value"
+export "$var_name"="$var_value"
 echo "$var_name=$var_value" >> ${GITHUB_ENV}
 }
 
