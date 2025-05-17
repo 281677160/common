@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # https://github.com/281677160/build-actions
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
