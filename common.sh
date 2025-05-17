@@ -86,6 +86,11 @@ MT798X)
     variable SOURCE_OWNER="padavanonly"
     variable LUCI_EDITION="24.10"
   ;;
+  "openwrt-23.05")
+    variable REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
+    variable SOURCE_OWNER="padavanonly"
+    variable LUCI_EDITION="23.05
+  ;;
   esac
 ;;
 *)
