@@ -23,8 +23,8 @@ function variable() {
 local overall="$1"
 local var_name="${overall%%=*}"
 local var_value="${overall#*=}"
-export $var_name="$var_value"
-echo "$var_name=$var_value" >> "${GITHUB_ENV}"
+export "${overall}"
+echo "${overall}" >> "${GITHUB_ENV}"
 }
 
 function Diy_variable() {
