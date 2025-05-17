@@ -79,7 +79,7 @@ MT798X)
     variable REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
     variable SOURCE_OWNER="hanwckf"
     variable REPO_BRANCH="openwrt-21.02"
-    variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    variable LUCI_EDITION="21.02"
   ;;
   "2410")
     variable REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
