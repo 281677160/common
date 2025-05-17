@@ -72,26 +72,26 @@ OFFICIAL)
   variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 MT798X)
-  if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
+  variable SOURCE="Mt798x"
+  variable DISTRIB_SOURCECODE="immortalwrt"
+  variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  case "${REPO_BRANCH}" in
+  "hanwckf-21.02")
     variable REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
-    variable SOURCE="Mt798x"
     variable SOURCE_OWNER="hanwckf"
     variable REPO_BRANCH="openwrt-21.02"
-    variable DISTRIB_SOURCECODE="immortalwrt"
     variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-    variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
-  else
+  ;;
+  "2410")
     variable REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
-    variable SOURCE="Mt798x"
     variable SOURCE_OWNER="padavanonly"
     if [[ "${REPO_BRANCH}" == "2410" ]]; then
       variable LUCI_EDITION="24.10"
     else
       variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     fi
-    variable DISTRIB_SOURCECODE="immortalwrt"
-    variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
-  fi
+  ;;
+  esac
 ;;
 *)
   if [[ -n "${BENDI_VERSION}" ]]; then
