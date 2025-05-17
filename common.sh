@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 # https://github.com/281677160/build-actions
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
@@ -92,7 +93,7 @@ MT798X)
   fi
 ;;
 *)
-  if [[ -n "${BENDI_VERSION}" ]]; then
+  if [[ "${BENDI_VERSION}" == "1" ]]; then
     TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
   else
     TIME r "不支持${SOURCE_CODE}此源码，当前只支持COOLSNOWWOLF、LIENOL、IMMORTALWRT、XWRT、OFFICIAL"
@@ -114,7 +115,7 @@ variable RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH
 
 # 启动编译时的变量文件
 
-if [[ -z "${BENDI_VERSION}" ]]; then
+if [[ "${BENDI_VERSION}" == "2" ]]; then
   echo -n > "${COMPILE_PATH}/relevance/settings.ini"
   chmod +x ${COMPILE_PATH}/relevance/settings.ini
   VARIABLES=(
@@ -1441,17 +1442,16 @@ function Diy_menu6() {
 Diy_variable
 }
 
-case "$1" in
-  "Diy_menu")
-    Diy_menu ;;
-  "Diy_menu2")
-    Diy_menu2 ;;
-  "Diy_menu3")
-    Diy_menu3 ;;
-  "Diy_menu4")
-    Diy_menu4 ;;
-  "Diy_menu5")
-    Diy_menu5 ;;
-  "Diy_menu6")
-    Diy_menu6 ;;
+case "${1:-}" in
+  "Diy_menu") Diy_menu ;;
+  "Diy_menu2") Diy_menu2 ;;
+  "Diy_menu3") Diy_menu3 ;;
+  "Diy_menu4") Diy_menu4 ;;
+  "Diy_menu5") Diy_menu5 ;;
+  "Diy_menu6") Diy_menu6 ;;
+  *) 
+    echo "Usage: $0 {Diy_menu|Diy_menu2|Diy_menu3|Diy_menu4|Diy_menu5|Diy_menu6}" >&2
+    exit 1
+    ;;
 esac
+
