@@ -1487,7 +1487,6 @@ Diy_prevent
 }
 
 function Diy_menu6() {
-cd $HOME_PATH
 Diy_variable
 }
 
