@@ -5,6 +5,7 @@ set -euo pipefail
 # matrix.target=${FOLDER_NAME}
 
 ACTIONS_VERSION="2.4.0"
+BENDI_VERSION="${BENDI_VERSION}"
 
 function TIME() {
   case $1 in
