@@ -110,7 +110,7 @@ runs:
           echo "INFORMATION_NOTICE=false" >> ${GITHUB_ENV}
         fi
 
-    - name: 运行first.sh
+    - name: 检查编译脚本和对比版本号
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
