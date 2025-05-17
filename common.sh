@@ -5,7 +5,6 @@ set -euo pipefail
 # matrix.target=${FOLDER_NAME}
 
 ACTIONS_VERSION="2.4.0"
-BENDI_VERSION="${BENDI_VERSION}"
 
 function TIME() {
   case $1 in
@@ -112,7 +111,7 @@ variable RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH
 
 # 启动编译时的变量文件
 
-if [[ -z "${BENDI_VERSION}" ]]; then
+if [[ "${BENDI_VERSION}" != "1" ]]; then
   echo -n > "${COMPILE_PATH}/relevance/settings.ini"
   chmod +x ${COMPILE_PATH}/relevance/settings.ini
   VARIABLES=(
