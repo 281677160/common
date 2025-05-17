@@ -109,7 +109,21 @@ runs:
         else
           echo "INFORMATION_NOTICE=false" >> ${GITHUB_ENV}
         fi
-        wget -q https://raw.githubusercontent.com/281677160/common/main/custom/first.sh -O /tmp/first.sh
+
+    - name: 运行first.sh
+      shell: bash
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        if ! wget -q https://raw.githubusercontent.com/281677160/common/main/custom/first.sh -O /tmp/first.sh; then
+           if ! curl -fsSL https://raw.githubusercontent.com/281677160/common/main/custom/first.sh -o /tmp/first.sh; then
+              echo -e "\033[31m 检测文件下载失败，请注意网络 \033[0m\n"
+              exit 1
+           fi
+        fi
+        if ! grep -E "bash|then" "/tmp/first.sh" &> /dev/null; then
+           echo -e "\033[31m 检测文件下载失败，请注意网络 \033[0m\n"
+           exit 1
+        fi
         sudo chmod +x /tmp/first.sh
         source /tmp/first.sh
 
@@ -118,7 +132,6 @@ runs:
       run: |
         cd ${GITHUB_WORKSPACE}
         bash $COMMON_SH Diy_menu6
-        echo "$COMMON_SH"
 branding:
   icon: "terminal"
   color: "gray-dark"
