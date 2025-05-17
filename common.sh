@@ -19,7 +19,7 @@ echo -e "\n$Color$2\033[0m"
 }
 
 function variable() {
-export $1
+export "$1"
 echo "$1" >> ${GITHUB_ENV}
 }
 
