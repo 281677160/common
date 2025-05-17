@@ -88,7 +88,7 @@ Diy_two() {
 Diy_three() {
     cd "${GITHUB_WORKSPACE}"
     if [[ "$SYNCHRONISE" == "NO" ]]; then
-        if [[ -n "${BENDI_VERSION}" ]]; then
+        if [[ "${BENDI_VERSION}" == "1" ]]; then
             TIME r "${tongbu_message}，正在同步上游仓库"
             shangyou=$(mktemp -d)
             if git clone --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions "${shangyou}"; then
@@ -141,17 +141,15 @@ Diy_three() {
         else
             git clone -b "${GIT_REFNAME}" https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
             git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
-            find . -type d -name "backups" -exec sudo rm -rf {} \;
+            [[ -d "repogx/backups" ]] && rm -rf "repogx/backups"
+            [[ -d "backups" ]] && rm -rf "backups"
             mkdir -p backups
-            cp -Rf repogx/* backups
-            cp -Rf repogx/.github/workflows backups/workflows
+            rsync -a repogx/ backups/
             cd repogx
             rm -rf *
             git rm --cache *
             cd "${GITHUB_WORKSPACE}"
-            mkdir -p repogx/.github/workflows
-            cp -Rf shangyou/* repogx
-            cp -Rf shangyou/.github/workflows/* repogx/.github/workflows
+            rsync -a shangyou/ repogx/
             if [[ "$GIT_REPOSITORY" != "281677160/build-actions" ]]; then
                 cp -Rf backups repogx/backups
             fi
