@@ -1441,7 +1441,7 @@ Diy_prevent
 function Diy_menu6() {
 Diy_variable
 }
-
+echo "${1:-}"
 case "${1:-}" in
   "Diy_menu") Diy_menu ;;
   "Diy_menu2") Diy_menu2 ;;
