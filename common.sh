@@ -1,86 +1,94 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # https://github.com/281677160/build-actions
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
 
 ACTIONS_VERSION="2.4.0"
-Compte=$(date +%Y年%m月%d号%H时%M分)
+
 function TIME() {
   case $1 in
-    r) export Color="\e[31m";;
-    g) export Color="\e[32m";;
-    b) export Color="\e[34m";;
-    y) export Color="\e[33m";;
-    z) export Color="\e[35m";;
-    l) export Color="\e[36m";;
+    r) local Color="\033[0;31m";;
+    g) local Color="\033[0;32m";;
+    y) local Color="\033[0;33m";;
+    b) local Color="\033[0;34m";;
+    z) local Color="\033[0;35m";;
+    l) local Color="\033[0;36m";;
+    *) local Color="\033[0;0m";;
   esac
-echo
-echo -e "\e[36m\e[0m${Color}${2}\e[0m"
+echo -e "\n$Color$2\033[0m"
+}
+
+function variable() {
+local overall=$1
+local var_name="${overall%%=*}"
+local var_value="${overall#*=}"
+export $var_name="$var_value"
+echo "$var_name=$var_value" >> ${GITHUB_ENV}
 }
 
 function Diy_variable() {
 # 读取变量
 case "${SOURCE_CODE}" in
 COOLSNOWWOLF)
-  export REPO_URL="https://github.com/coolsnowwolf/lede"
-  export SOURCE="Lede"
-  export SOURCE_OWNER="Lean"
-  export LUCI_EDITION="23.05"
-  export DISTRIB_SOURCECODE="lede"
-  export GENE_PATH="${HOME_PATH}/package/base-files/luci2/bin/config_generate"
+  variable REPO_URL="https://github.com/coolsnowwolf/lede"
+  variable SOURCE="Lede"
+  variable SOURCE_OWNER="Lean"
+  variable LUCI_EDITION="23.05"
+  variable DISTRIB_SOURCECODE="lede"
+  variable GENE_PATH="${HOME_PATH}/package/base-files/luci2/bin/config_generate"
 ;;
 LIENOL)
-  export REPO_URL="https://github.com/Lienol/openwrt"
-  export SOURCE="Lienol"
-  export SOURCE_OWNER="Lienol"
-  export DISTRIB_SOURCECODE="lienol"
-  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  variable REPO_URL="https://github.com/Lienol/openwrt"
+  variable SOURCE="Lienol"
+  variable SOURCE_OWNER="Lienol"
+  variable DISTRIB_SOURCECODE="lienol"
+  variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 IMMORTALWRT)
-  export REPO_URL="https://github.com/immortalwrt/immortalwrt"
-  export SOURCE="Immortalwrt"
-  export SOURCE_OWNER="ctcgfw"
-  export DISTRIB_SOURCECODE="immortalwrt"
-  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  variable REPO_URL="https://github.com/immortalwrt/immortalwrt"
+  variable SOURCE="Immortalwrt"
+  variable SOURCE_OWNER="ctcgfw"
+  variable DISTRIB_SOURCECODE="immortalwrt"
+  variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 XWRT)
-  export REPO_URL="https://github.com/x-wrt/x-wrt"
-  export SOURCE="Xwrt"
-  export SOURCE_OWNER="ptpt52"
-  export DISTRIB_SOURCECODE="xwrt"
-  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  variable REPO_URL="https://github.com/x-wrt/x-wrt"
+  variable SOURCE="Xwrt"
+  variable SOURCE_OWNER="ptpt52"
+  variable DISTRIB_SOURCECODE="xwrt"
+  variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 OFFICIAL)
-  export REPO_URL="https://github.com/openwrt/openwrt"
-  export SOURCE="Official"
-  export SOURCE_OWNER="openwrt"
-  export DISTRIB_SOURCECODE="official"
-  export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-  export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+  variable REPO_URL="https://github.com/openwrt/openwrt"
+  variable SOURCE="Official"
+  variable SOURCE_OWNER="openwrt"
+  variable DISTRIB_SOURCECODE="official"
+  variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+  variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
 MT798X)
   if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
-    export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
-    export SOURCE="Mt798x"
-    export SOURCE_OWNER="hanwckf"
-    export REPO_BRANCH="openwrt-21.02"
-    export DISTRIB_SOURCECODE="immortalwrt"
-    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+    variable REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
+    variable SOURCE="Mt798x"
+    variable SOURCE_OWNER="hanwckf"
+    variable REPO_BRANCH="openwrt-21.02"
+    variable DISTRIB_SOURCECODE="immortalwrt"
+    variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+    variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
   else
-    export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
-    export SOURCE="Mt798x"
-    export SOURCE_OWNER="padavanonly"
+    variable REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
+    variable SOURCE="Mt798x"
+    variable SOURCE_OWNER="padavanonly"
     if [[ "${REPO_BRANCH}" == "2410" ]]; then
-      export LUCI_EDITION="24.10"
+      variable LUCI_EDITION="24.10"
     else
-      export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
+      variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     fi
-    export DISTRIB_SOURCECODE="immortalwrt"
-    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
+    variable DISTRIB_SOURCECODE="immortalwrt"
+    variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
   fi
 ;;
 *)
@@ -93,50 +101,31 @@ MT798X)
 ;;
 esac
 
-export FILES_PATH="${HOME_PATH}/package/base-files/files/etc/shadow"
-export DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
-export DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
-export KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
-export CLEAR_PATH="/tmp/Clear"
-export UPGRADE_DATE="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
-export Gujian_Date="$(date +%m.%d)"
-export LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
-export CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-export RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
-
-echo "REPO_URL=${REPO_URL}" >> ${GITHUB_ENV}
-echo "REPO_BRANCH=${REPO_BRANCH}" >> ${GITHUB_ENV}
-echo "SOURCE=${SOURCE}" >> ${GITHUB_ENV}
-echo "SOURCE_OWNER=${SOURCE_OWNER}" >> ${GITHUB_ENV}
-echo "LUCI_EDITION=${LUCI_EDITION}" >> ${GITHUB_ENV}
-echo "DISTRIB_SOURCECODE=${DISTRIB_SOURCECODE}" >> ${GITHUB_ENV}
-echo "GENE_PATH=${GENE_PATH}" >> ${GITHUB_ENV}
-echo "RAW_WEB=${RAW_WEB}" >> ${GITHUB_ENV}
-
-echo "FILES_PATH=${FILES_PATH}" >> ${GITHUB_ENV}
-echo "DELETE=${DELETE}" >> ${GITHUB_ENV}
-echo "DEFAULT_PATH=${DEFAULT_PATH}" >> ${GITHUB_ENV}
-echo "KEEPD_PATH=${KEEPD_PATH}" >> ${GITHUB_ENV}
-echo "CLEAR_PATH=${CLEAR_PATH}" >> ${GITHUB_ENV}
-echo "UPGRADE_DATE=${UPGRADE_DATE}" >> ${GITHUB_ENV}
-echo "Gujian_Date=$(date +%m.%d)" >> ${GITHUB_ENV}
-echo "LICENSES_DOC=${LICENSES_DOC}" >> ${GITHUB_ENV}
+variable FILES_PATH="${HOME_PATH}/package/base-files/files/etc/shadow"
+variable DELETE="${HOME_PATH}/package/base-files/files/etc/deletefile"
+variable DEFAULT_PATH="${HOME_PATH}/package/auto-scripts/files/99-first-run"
+variable KEEPD_PATH="${HOME_PATH}/package/base-files/files/lib/upgrade/keep.d/base-files-essential"
+variable CLEAR_PATH="/tmp/Clear"
+variable UPGRADE_DATE="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
+variable GUJIAN_DATE="$(date +%m.%d)"
+variable LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
+variable CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
+variable RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
 
 # 启动编译时的变量文件
+
 if [[ -z "${BENDI_VERSION}" ]]; then
-cat >"${COMPILE_PATH}/relevance/settings.ini" <<-EOF
-SOURCE_CODE="${SOURCE_CODE}"
-REPO_BRANCH="${REPO_BRANCH}"
-CONFIG_FILE="${CONFIG_FILE}"
-INFORMATION_NOTICE="${INFORMATION_NOTICE}"
-UPLOAD_FIRMWARE="${UPLOAD_FIRMWARE}"
-UPLOAD_RELEASE="${UPLOAD_RELEASE}"
-CACHEWRTBUILD_SWITCH="${CACHEWRTBUILD_SWITCH}"
-UPDATE_FIRMWARE_ONLINE="${UPDATE_FIRMWARE_ONLINE}"
-COMPILATION_INFORMATION="${COMPILATION_INFORMATION}"
-RETAIN_MINUTE="${RETAIN_MINUTE}"
-KEEP_LATEST="${KEEP_LATEST}"
-EOF
+  echo -n > "${COMPILE_PATH}/relevance/settings.ini"
+  chmod +x ${COMPILE_PATH}/relevance/settings.ini
+  VARIABLES=(
+  "SOURCE_CODE" "REPO_BRANCH" "CONFIG_FILE"
+  "INFORMATION_NOTICE" "UPLOAD_FIRMWARE" "UPLOAD_RELEASE"
+  "CACHEWRTBUILD_SWITCH" "UPDATE_FIRMWARE_ONLINE"
+  "COMPILATION_INFORMATION" "RETAIN_MINUTE" "KEEP_LATEST"
+  )
+  for var in "${VARIABLES[@]}"; do
+    echo "${var}=${!var}" >> "${COMPILE_PATH}/relevance/settings.ini"
+  done
 fi
 }
 
@@ -151,9 +140,6 @@ fi
 # 增加一些应用
 echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
-if ! grep -q "auto-scripts" "${HOME_PATH}/Config.in"; then
-  echo 'source "package/auto-scripts/Config.in"' >> ${HOME_PATH}/Config.in
-fi
 
 sed -i "s/ZHUJI_MING/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
@@ -163,23 +149,16 @@ grep -q "admin:" ${FILES_PATH} && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${
 
 # 添加自定义插件源
 srcdir="$(mktemp -d)"
-if grep -q "src-git-full" "${LICENSES_DOC}/feeds.conf.default"; then
-  SRC_LIANJIE="$(grep -E '^src-git-full luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/src-git-full luci (https?:\/\/[^;]+).*/\1/')"
-  a=$(grep -E '^src-git-full luci https' "feeds.conf.default")
-  if [[ -n "$(echo "$a" |grep -E '\;')" ]]; then
-    SRC_FENZHIHAO="$(grep -E '^src-git-full luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
-  fi
-else
- SRC_LIANJIE="$(grep -E '^src-git luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
-  a=$(grep -E '^src-git luci https' "feeds.conf.default")
-  if [[ -n "$(echo "$a" |grep -E '\;')" ]]; then
-    SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
-  fi
-fi
+SRC_LIANJIE=$(grep -Po '^src-git(?:-full)?\s+luci\s+\Khttps?://[^;\s]+' "${LICENSES_DOC}/feeds.conf.default")
+SRC_FENZHIHAO=$(grep -Po '^src-git(?:-full)?\s+luci\s+[^;\s]+;\K[^\s]+' "${LICENSES_DOC}/feeds.conf.default" || echo "")
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
   git clone --single-branch --depth=1 --branch=${SRC_FENZHIHAO} ${SRC_LIANJIE} ${srcdir}
 else
   git clone --depth=1 ${SRC_LIANJIE} ${srcdir}
+fi
+if [[ $? -ne 0 ]];then
+  TIME r "文件下载失败"
+  exit 1
 fi
 if [[ -d "${srcdir}/modules/luci-mod-system" ]]; then
   THEME_BRANCH="Theme2"
@@ -193,49 +172,25 @@ fi
 
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
 echo "src-git dstheme https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
-if [[ "${OpenClash_branch}" == "1" ]]; then
-  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> ${HOME_PATH}/feeds.conf.default
-elif [[ "${OpenClash_branch}" == "2" ]]; then
-  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> ${HOME_PATH}/feeds.conf.default
-fi
+[[ "${OpenClash_branch}" == "1" ]] && echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> ${HOME_PATH}/feeds.conf.default
+[[ "${OpenClash_branch}" == "2" ]] && echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> ${HOME_PATH}/feeds.conf.default
 
 # 增加中文语言包
 if [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)" ]] && [[ "${THEME_BRANCH}" == "Theme2" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-settings ${HOME_PATH}/package/default-settings
-  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-base luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
-  fi
+  grep -qw "libustream-wolfssl" "${HOME_PATH}/include/target.mk" && sed -i 's?\<libustream-wolfssl\>?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+  ! grep -qw "dnsmasq-full" "${HOME_PATH}/include/target.mk" && sed -i 's?\<dnsmasq\>?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+  ! grep -qw "default-settings" "${HOME_PATH}/include/target.mk" && sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings?g' "${HOME_PATH}/include/target.mk"
 elif [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)" ]] && [[ "${THEME_BRANCH}" == "Theme1" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-setting ${HOME_PATH}/package/default-settings
-  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
-  fi
-  if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
-    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-fs luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
-  fi
+  grep -qw "libustream-wolfssl" "${HOME_PATH}/include/target.mk" && sed -i 's?\<libustream-wolfssl\>?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+  ! grep -qw "dnsmasq-full" "${HOME_PATH}/include/target.mk" && sed -i 's?\<dnsmasq\>?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+  ! grep -qw "default-settings" "${HOME_PATH}/include/target.mk" && sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings?g' "${HOME_PATH}/include/target.mk"
 fi
 
 # zzz-default-settings文件
-ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
-export ZZZ_PATH="${ZZZ_PATH}"
+variable ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
 if [[ -n "${ZZZ_PATH}" ]]; then
-  echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
-  sed -i '/exit 0$/d' "${ZZZ_PATH}"
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
   grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 fi
@@ -258,17 +213,19 @@ luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,shadowsocksr-libev,v2dat,
 luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,luci-app-alist,alist"
 t=(${z//,/ })
 for x in "${t[@]}"; do
-    find ./feeds ./package \
-        -path './feeds/danshui' -prune -o \
-        -path './feeds/dstheme' -prune -o \
-        -path './feeds/OpenClash' -prune -o \
-        -path './package/luci-theme-argon' -prune -o \
+    find "${HOME_PATH}/feeds" "${HOME_PATH}/package" \
+        -path "${HOME_PATH}/feeds/danshui" -prune -o \
+        -path "${HOME_PATH}/feeds/dstheme" -prune -o \
+        -path "${HOME_PATH}/feeds/OpenClash" -prune -o \
+        -path "${HOME_PATH}/package/luci-theme-argon" -prune -o \
         -name "$x" -type d -exec rm -rf {} +
 done
 
 
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-qmodem
+  rm -rf ${HOME_PATH}/feeds/danshui/relevance/quectel_cm-5G
 fi
 
 if [[ "${REPO_BRANCH}" =~ ^(2410|(openwrt-)?(24\.10))$ ]]; then
@@ -319,14 +276,14 @@ fi
 
 # 定时更新固件的插件包
 if grep -q "armvirt=y" $MYCONFIG_FILE || grep -q "armsr=y" $MYCONFIG_FILE; then
-  find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
+  find "${HOME_PATH}" -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?luci-app-autoupdate ??g' ${HOME_PATH}/include/target.mk
   fi
 elif [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
     source ${UPGRADE_SH} && Diy_Part1
 else
-  find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
+  find "${HOME_PATH}" -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?luci-app-autoupdate ??g' ${HOME_PATH}/include/target.mk
   fi
@@ -456,40 +413,36 @@ fi
 
 
 function Diy_profile() {
+TIME y "正在执行：识别源码编译为何机型"
 cd ${HOME_PATH}
 make defconfig > /dev/null 2>&1
-TIME y "正在执行：识别源码编译为何机型"
-export TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
-export TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
-export TARGET_PROFILE_DG="$(awk -F '[="]+' '/TARGET_PROFILE/{print $2}' ${HOME_PATH}/.config)"
+variable TARGET_BOARD="$(awk -F '[="]+' '/TARGET_BOARD/{print $2}' ${HOME_PATH}/.config)"
+variable TARGET_SUBTARGET="$(awk -F '[="]+' '/TARGET_SUBTARGET/{print $2}' ${HOME_PATH}/.config)"
+variable TARGET_PROFILE_DG="$(awk -F '[="]+' '/TARGET_PROFILE/{print $2}' ${HOME_PATH}/.config)"
 if [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*64.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="x86-64"
+  variable TARGET_PROFILE="x86-64"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*x86.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="x86-32"
+  variable TARGET_PROFILE="x86-32"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*phicomm.*n1=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="phicomm_n1"
-elif [[ -n "$(grep -Eo 'armvirt=y' $HOME_PATH/.config)" ]] || [[ -n "$(grep -Eo 'armsr=y' $HOME_PATH/.config)" ]]; then
-  export TARGET_PROFILE="aarch_64"
+  variable TARGET_PROFILE="phicomm_n1"
+elif grep -Eq "TARGET_armvirt=y|TARGET_armsr=y" "$HOME_PATH/.config"; then
+  variable TARGET_PROFILE="armsr_rootfs_tar_gz"
 elif [[ -n "$(grep -Eo 'CONFIG_TARGET.*DEVICE.*=y' ${HOME_PATH}/.config)" ]]; then
-  export TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
+  variable TARGET_PROFILE="$(grep -Eo "CONFIG_TARGET.*DEVICE.*=y" ${HOME_PATH}/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')"
 else
-  export TARGET_PROFILE="${TARGET_PROFILE_DG}"
+  variable TARGET_PROFILE="${TARGET_PROFILE_DG}"
 fi
-export FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-export TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
-echo "TARGET_BOARD=${TARGET_BOARD}" >> ${GITHUB_ENV}
-echo "TARGET_SUBTARGET=${TARGET_SUBTARGET}" >> ${GITHUB_ENV}
-echo "TARGET_PROFILE=${TARGET_PROFILE}" >> ${GITHUB_ENV}
-echo "FIRMWARE_PATH=${FIRMWARE_PATH}" >> ${GITHUB_ENV}
-echo "正在编译：${TARGET_PROFILE}"
+variable FIRMWARE_PATH=${HOME_PATH}/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+variable TARGET_OPENWRT=openwrt/bin/targets/${TARGET_BOARD}/${TARGET_SUBTARGET}
+echo -e "正在编译：${TARGET_PROFILE}\n"
 }
 
 
 function Diy_management() {
 cd ${HOME_PATH}
-# 机型为aarch_64的时,修改cpufreq代码适配Armvirt
+# 机型为armsr_rootfs_tar_gz的时,修改cpufreq代码适配Armvirt
 if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
-  for X in $(find . -type d -name "luci-app-cpufreq"); do \
+  for X in $(find "${HOME_PATH}" -type d -name "luci-app-cpufreq"); do \
     [[ -d "$X" ]] && \
     sed -i 's/LUCI_DEPENDS.*/LUCI_DEPENDS:=\@\(arm\|\|aarch64\)/g' "$X/Makefile"; \
   done
@@ -587,15 +540,10 @@ fi
 if [[ "${Customized_Information}" == "0" ]] || [[ -z "${Customized_Information}" ]]; then
   echo "不进行,个性签名设置"
 elif [[ -n "${Customized_Information}" ]]; then
-  sed -i '/DISTRIB_DESCRIPTION/d' "${ZZZ_PATH}"
-cat >> "${ZZZ_PATH}" <<-EOF
-    [[ -f "/usr/lib/os-release" ]] && sed -i 's?RELEASE=".*"?RELEASE="Customized_Information @ OpenWrt"?g' /usr/lib/os-release
-    sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-    echo "DISTRIB_DESCRIPTION='Customized_Information @ OpenWrt '" >> /etc/openwrt_release
-EOF
-  Customized_Informat="${Customized_Information}"
-  sed -i "s?Customized_Information?${Customized_Informat}?g" "${ZZZ_PATH}"
-  echo "个性签名[${Customized_Informat}]增加完成"
+  echo "[ -f '/usr/lib/os-release' ] && sed -i \"s?RELEASE=.*?RELEASE=\\\"${Customized_Information} @ OpenWrt\\\"?g\" '/usr/lib/os-release'" >> "${DEFAULT_PATH}"
+  echo "sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release" >> "${DEFAULT_PATH}"
+  echo "echo \"DISTRIB_DESCRIPTION='${Customized_Information} @ OpenWrt '\" >> /etc/openwrt_release" >> "${DEFAULT_PATH}"
+  echo "个性签名[${Customized_Information}]增加完成"
 fi
 
 if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
@@ -698,7 +646,7 @@ else
 fi
 
 if [[ "${OpenClash_branch}" =~ (1|2) ]]; then
-  CLASH_BRANCH="$(grep -E '^src-git OpenClash https' "${HOME_PATH}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+  CLASH_BRANCH=$(grep -Po '^src-git(?:-full)?\s+OpenClash\s+[^;\s]+;\K[^\s]+' "${HOME_PATH}/feeds.conf.default" || echo "")
   echo -e "\nCONFIG_PACKAGE_luci-app-openclash=y" >> ${HOME_PATH}/.config
   echo "增加luci-app-openclash(${CLASH_BRANCH})完成"
 else
@@ -856,11 +804,11 @@ if [[ "${Delete_unnecessary_items}" == "1" ]]; then
   sed -i "s|^TARGET_|# TARGET_|g; s|# TARGET_DEVICES += ${TARGET_PROFILE}|TARGET_DEVICES += ${TARGET_PROFILE}|" ${HOME_PATH}/target/linux/${TARGET_BOARD}/image/Makefile
 fi
 
-export patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
+variable patchverl="$(grep "KERNEL_PATCHVER" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9]+\.[0-9]+")"
 if [[ "${TARGET_BOARD}" == "armvirt" ]]; then
-  export KERNEL_patc="config-${Replace_Kernel}"
+  variable KERNEL_patc="config-${Replace_Kernel}"
 else
-  export KERNEL_patc="patches-${Replace_Kernel}"
+  variable KERNEL_patc="patches-${Replace_Kernel}"
 fi
 if [[ "${Replace_Kernel}" == "0" ]]; then
   echo "不进行,内核更换"
@@ -875,6 +823,10 @@ fi
 
 cat >> "${HOME_PATH}/.config" <<-EOF
 CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_luci-base=y
+CONFIG_PACKAGE_luci-compat=y
+CONFIG_PACKAGE_luci-i18n-base-zh-cn=y
+CONFIG_PACKAGE_luci-lib-ipkg=y
 CONFIG_PACKAGE_default-settings=y
 CONFIG_PACKAGE_default-settings-chn=y
 EOF
@@ -889,52 +841,59 @@ echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
 echo "builder_name=ophub" >> ${GITHUB_ENV}
 
 # adguardhome增加核心
-if [[ `grep -c "CONFIG_ARCH=\"x86_64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_amd64"
-  Archclash="linux-amd64"
-  echo "CPU架构：amd64"
-elif [[ `grep -c "CONFIG_ARCH=\"i386\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_386"
-  Archclash="linux-386"
-  echo "CPU架构：X86 32"
-elif [[ `grep -c "CONFIG_ARCH=\"aarch64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_arm64"
-  Archclash="linux-arm64"
-  echo "CPU架构：arm64"
-elif [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_armv7"
-  Archclash="linux-armv7"
-  echo "CPU架构：armv7"
-elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep "CONFIG_TARGET_ARCH_PACKAGES" "${HOME_PATH}/.config" |grep -c "vfp"` -eq '1' ]]; then
-  Arch="linux_armv6"
-  Archclash="linux-armv6"
-  echo "CPU架构：armv6"
-elif [[ `grep -c "CONFIG_ARCH=\"arm\"" ${HOME_PATH}/.config` -eq '1' ]] && [[ `grep -c "CONFIG_arm_v7=y" ${HOME_PATH}/.config` -eq '0' ]] && [[ `grep "CONFIG_TARGET_ARCH_PACKAGES" "${HOME_PATH}/.config" |grep -c "vfp"` -eq '0' ]]; then
-  Arch="linux_armv5"
-  Archclash="linux-armv5"
-  echo "CPU架构：armv6"
-elif [[ `grep -c "CONFIG_ARCH=\"mips\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_mips_softfloat"
-  Archclash="linux-mips-softfloat"
-  echo "CPU架构：mips"
-elif [[ `grep -c "CONFIG_ARCH=\"mips64\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_mips64_softfloat"
-  Archclash="linux-mips64"
-  echo "CPU架构：mips64"
-elif [[ `grep -c "CONFIG_ARCH=\"mipsel\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_mipsle_softfloat"
-  Archclash="linux-mipsle-softfloat"
-  echo "CPU架构：mipsel"
-elif [[ `grep -c "CONFIG_ARCH=\"mips64el\"" ${HOME_PATH}/.config` -eq '1' ]]; then
-  Arch="linux_mips64le_softfloat"
-  Archclash="linux-mips64le"
-  echo "CPU架构：mips64el"
-else
-  echo "不了解您的CPU为何架构"
-  weizhicpu="1"
-fi
+ARCH_TYPE=$(grep "CONFIG_ARCH=\"" "${HOME_PATH}/.config" | cut -d '"' -f 2)
+# 层级式判断架构类型
+case "$ARCH_TYPE" in
+    "x86_64")
+        Arch="linux_amd64"
+        echo "CPU架构：amd64" ;;
+    "i386")
+        Arch="linux_386"
+        echo "CPU架构：X86 32" ;;
+    "aarch64")
+        Arch="linux_arm64"
+        echo "CPU架构：arm64" ;;
+    "arm")
+        if grep -q "CONFIG_ARM_V8=y" "${HOME_PATH}/.config"; then
+            Arch="linux_arm64"
+            echo "CPU架构：arm64"
+        elif grep -q "CONFIG_arm_v7=y" "${HOME_PATH}/.config"; then
+            Arch="linux_armv7"
+            echo "CPU架构：armv7"
+        elif grep -q "CONFIG_VFP=y" "${HOME_PATH}/.config"; then
+            Arch="linux_armv6"
+            echo "CPU架构：armv6"
+        else
+            Arch="linux_armv5"
+            echo "CPU架构：armv5"
+        fi ;;
+    "mips" | "mipsel" | "mips64" | "mips64el")
+        if grep -q "CONFIG_64BIT=y" "${HOME_PATH}/.config"; then
+            if [[ "${ARCH_TYPE}" == "mips64el" ]]; then
+                abi="64le"
+            else
+                abi="64"
+            fi
+        fi
+        if grep -q "CONFIG_SOFT_FLOAT=y" "${HOME_PATH}/.config"; then
+            suffix="_softfloat"
+        else
+            suffix=""
+        fi
+        Arch="linux_${ARCH_TYPE}${abi}${suffix}"
+        echo "CPU架构：${ARCH_TYPE}${abi}${suffix}" ;;
+    "riscv" | "riscv64")
+        if grep -q "CONFIG_64BIT=y" "${HOME_PATH}/.config"; then
+            Arch="linux_riscv64"
+        else
+            Arch="linux_riscv32"
+        fi ;;
+    *)
+        echo "未知架构类型"
+        Arch="" ;;
+esac
 
-if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
+if [[ -n "${Arch}" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   echo "正在执行：给adguardhome下载核心"
   rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
   wget -q https://github.com/281677160/common/releases/download/API/AdGuardHome.api -O AdGuardHome.api
@@ -961,26 +920,27 @@ if [[ ! "${weizhicpu}" == "1" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   fi
     rm -rf ${HOME_PATH}/{AdGuardHome_${Arch}.tar.gz,AdGuardHome}
 else
-  [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
+  if [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && [[ ! "${AdGuardHome_Core}" == "1" ]]; then
+    rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
+  fi
 fi
 
 # 源码内核版本号
-KERNEL_PATCH="$(grep -Eo "KERNEL_PATCHVER.*[0-9.]+" "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile" |grep -Eo "[0-9.]+")"
+KERNEL_PATCH="$(awk -F'[:=]' '/KERNEL_PATCHVER/{print $NF; exit}' "${HOME_PATH}/target/linux/${TARGET_BOARD}/Makefile")"
 KERNEL_VERSINO="kernel-${KERNEL_PATCH}"
-  if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
-LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-[0-9.]+" "${HOME_PATH}/include/${KERNEL_VERSINO}"  |grep -Eo "[0-9.]+")"
-  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
+if [[ -f "${HOME_PATH}/include/${KERNEL_VERSINO}" ]]; then
+  variable LINUX_KERNEL="$(grep -oP "LINUX_KERNEL_HASH-\K${KERNEL_PATCH}\.[0-9]+" "${HOME_PATH}/include/${KERNEL_VERSINO}")"
+  [[ -z ${LINUX_KERNEL} ]] && variable LINUX_KERNEL="$KERNEL_PATCH"
 else
-  LINUX_KERNEL="$(grep -Eo "LINUX_KERNEL_HASH-${KERNEL_PATCH}.[0-9]+" "${HOME_PATH}/include/kernel-version.mk" |grep -Eo "[0-9.]+")"
-  [[ -z ${LINUX_KERNEL} ]] && export LINUX_KERNEL="nono"
+  variable LINUX_KERNEL="$(grep -oP "LINUX_KERNEL_HASH-\K${KERNEL_PATCH}\.[0-9]+" "${HOME_PATH}/include/kernel-version.mk")"
+  [[ -z ${LINUX_KERNEL} ]] && variable LINUX_KERNEL="$KERNEL_PATCH"
 fi
-echo "LINUX_KERNEL=${LINUX_KERNEL}" >> ${GITHUB_ENV}
 }
 
 
 function Diy_prevent() {
-cd ${HOME_PATH}
 TIME y "正在执行：判断插件有否冲突减少编译错误"
+cd ${HOME_PATH}
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-server=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   if [[ `grep -c "CONFIG_PACKAGE_luci-app-ipsec-vpnd=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-app-ipsec-vpnd=y/# CONFIG_PACKAGE_luci-app-ipsec-vpnd is not set/g' ${HOME_PATH}/.config
@@ -1101,9 +1061,9 @@ if [[ `grep -c "CONFIG_PACKAGE_luci-app-dockerman=y" ${HOME_PATH}/.config` -eq '
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  pmg="$(echo "$(date +%M)" | sed 's/^.//g')"
-  mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
-  curl -fsSL https://raw.githubusercontent.com/281677160/common/main/Share/argon/jpg/${pmg}.jpg -o ${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg
+  pmg="$(date +%M | grep -o '.$').jpg"
+  [[ ! -d "mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background" ]] && mkdir -p ${HOME_PATH}/files/www/luci-static/argon/background
+  wget -q https://raw.githubusercontent.com/281677160/common/main/Share/argon/jpg/${pmg} -O ${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg
   if [[ $? -ne 0 ]]; then
     echo "拉取文件错误,请检测网络"
     exit 1
@@ -1248,6 +1208,8 @@ if [[ "${REPO_BRANCH}" == *"18.06"* ]] || [[ "${REPO_BRANCH}" == *"19.07"* ]] ||
   fi 
 fi
 
+! grep -q "CONFIG_PACKAGE_auto-scripts=y" "${HOME_PATH}/.config" && echo "CONFIG_PACKAGE_auto-scripts=y" >> "${HOME_PATH}/.config"
+
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   PARTSIZE="$(grep -Eo "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
   if [[ "${PARTSIZE}" -lt "950" ]];then
@@ -1280,9 +1242,7 @@ sed -i '/^$/d' "${CONFIG_TXT}"
 
 # 前面修改的文件改回去
 sed -i -E '/^\t/! s/^ +//' "${DEFAULT_PATH}"
-[[ -z "$( grep -E 'exit 0' "$DEFAULT_PATH" 2>/dev/null)" ]] && sed -i '$a\exit 0' "${DEFAULT_PATH}"
-sed -i -E '/^\t/! s/^ +//' "${ZZZ_PATH}"
-[[ -z "$( grep -E 'exit 0' "$ZZZ_PATH" 2>/dev/null)" ]] && sed -i '$a\exit 0' "${ZZZ_PATH}"
+! grep -q "exit 0" "$DEFAULT_PATH" && sed -i '$a\exit 0' "${DEFAULT_PATH}"
 }
 
 
@@ -1296,162 +1256,156 @@ fi
 # 编译完毕后,整理固件
 cd ${FIRMWARE_PATH}
 mkdir -p ipk
-cp -rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
+cp -Rf $(find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk") ipk/ && sync
 sudo tar -czf ipk.tar.gz ipk && sync && sudo rm -rf ipk
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
-  rename -v "s/^immortalwrt/openwrt/" *
+  rename "s/^immortalwrt/openwrt/" *
   sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
 fi
-
+TIME g "整理前的全部文件"
+ls -1
 for X in $(cat ${CLEAR_PATH} |sed "s/.*${TARGET_BOARD}//g"); do
   rm -rf *"$X"*
 done
-
-if [[ -z "$(ls -1 |grep -E 'armvirt')" ]] || [[ -z "$(ls -1 |grep -E 'armsr')" ]]; then
-  rename -v "s/^openwrt/${Gujian_Date}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
+TIME g "整理后的文件"
+ls -1
+if ! echo "$TARGET_BOARD" | grep -Eq 'armvirt|armsr'; then
+  TIME g "更改固件名称"
+  rename -v "s/^openwrt/${GUJIAN_DATE}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
 fi
 }
 
 
 function gitsvn() {
-    # 定义基本路径
-    cd "${HOME_PATH}"
-    local A="${1%.git}"  # 输入的GitHub URL
-    local B="$2"         # 文件投放路径
-    local branch_name=""
-    local path_part=""
-    local url=""
-    local file_name=""
-    local parent_dir=""
-    local git_laqu=""
+local url="${1%.git}"
+local route="$2"
+local tmpdir="$(mktemp -d)"
+local base_url=""
+local repo_name=""
+local branch=""
+local path_after_branch=""
+local last_part=""
+local files_name=""
+local download_url=""
+local parent_dir=""
+local store_away=""
 
-    # 检查输入路径是否有效
-    if [[ -z "$B" ]]; then
-        echo "未设置文件投放路径"
-        exit 1
-    fi
+if [[ "$url" == *"tree"* ]]; then
+    base_url=$(echo "$url" | sed 's|/tree/.*||')
+    repo_name=$(echo "$base_url" | awk -F'/' '{print $5}')
+    branch=$(echo "$url" | awk -F'/tree/' '{print $2}' | cut -d'/' -f1)
+    path_after_branch=$(echo "$url" | sed -n "s|.*/tree/$branch||p" | sed 's|^/||')
+    last_part=$(echo "$path_after_branch" | awk -F'/' '{print $NF}')
+    [[ -n "$path_after_branch" ]] && path_name="$tmpdir/$path_after_branch" || path_name="$tmpdir"
+    [[ -n "$last_part" ]] && files_name="$last_part" || files_name="$repo_name"
+    [[ -z "$repo_name" ]] && { echo "错误链接,仓库名为空"; return 1; }
+elif [[ "$url" == *"blob"* ]]; then
+    base_url=$(echo "$url" | sed 's|/blob/.*||')
+    repo_name=$(echo "$base_url" | awk -F'/' '{print $5}')
+    branch=$(echo "$url" | awk -F'/blob/' '{print $2}' | cut -d'/' -f1)
+    path_after_branch=$(echo "$url" | sed -n "s|.*/blob/$branch||p" | sed 's|^/||')
+    download_url="https://raw.githubusercontent.com/${base_url#*https://github.com/}/$branch/$path_after_branch"
+    parent_dir="${path_after_branch%/*}"
+    [[ -n "$path_after_branch" ]] && files_name="$path_after_branch" || { echo "错误链接,文件名为空"; return 1; }
+elif [[ "$url" == *"https://github.com"* ]]; then
+    base_url="$url"
+    repo_name=$(echo "$base_url" | awk -F'/' '{print $5}')
+    path_name="$tmpdir"
+    [[ -n "$repo_name" ]] && files_name="$repo_name" || { echo "错误链接,仓库名为空"; return 1; }
+else
+    echo "无效的github链接"
+    return 1
+fi
 
-    # 根据输入路径计算目标路径
-    if [[ "$B" == *"openwrt"* ]]; then
-        local content="${HOME_PATH}/${B#*openwrt/}"
-        local wenjianjia="${B#*openwrt/}"
-    elif [[ "$B" == *"./"* ]]; then
-        local content="${HOME_PATH}/${B#*./}"
-        local wenjianjia="${B#*./}"
+if [[ "$route" == "all" ]]; then
+    store_away="$HOME_PATH/"
+elif [[ "$route" == *"openwrt"* ]]; then
+    store_away="$HOME_PATH/${route#*openwrt/}"
+elif [[ "$route" == *"./"* ]]; then
+    store_away="$HOME_PATH/${route#*./}"
+elif [[ -n "$route" ]]; then
+    store_away="$HOME_PATH/$route"
+else
+    store_away="$HOME_PATH/$files_name"
+fi
+
+if [[ "$url" == *"tree"* ]] && [[ -n "$path_after_branch" ]]; then
+    if git clone -q --no-checkout "$base_url" "$tmpdir"; then
+        cd "$tmpdir"
+        git sparse-checkout init --cone > /dev/null 2>&1
+        git sparse-checkout set "$path_after_branch" > /dev/null 2>&1
+        git checkout "$branch" > /dev/null 2>&1
+        grep -rl 'include ../../luci.mk' . | xargs -r sed -i 's#include ../../luci.mk#include \$(TOPDIR)/feeds/luci/luci.mk#g'
+        grep -rl 'include ../../lang/' . | xargs -r sed -i 's#include ../../lang/#include \$(TOPDIR)/feeds/packages/lang/#g'
+        if [[ "$route" == "all" ]]; then
+            find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
+            target="$HOME_PATH/${item}"
+            if [ -e "$target" ]; then
+                rm -rf "$target"
+            fi
+            done
+            cp -r "$path_name"/* "$store_away"
+        else
+            rm -rf "$store_away" && cp -r "$path_name" "$store_away"
+        fi
+        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
+        cd "$HOME_PATH"
     else
-        local content="${HOME_PATH}/$B"
-        local wenjianjia="${B}"
+        echo "$files_name文件下载失败"
+        return 1
     fi
-
-    # 解析GitHub URL
-    if [[ "$A" =~ tree/([^/]+)(/(.*))? ]]; then
-        branch_name="${BASH_REMATCH[1]}"
-        path_part="${BASH_REMATCH[3]:-}"
-    elif [[ "$A" =~ blob/([^/]+)(/(.*))? ]]; then
-        branch_name="${BASH_REMATCH[1]}"
-        path_part="${BASH_REMATCH[3]:-}"
-        local ck_name="$(echo "${A}" | cut -d"/" -f4-5)"
-    elif [[ "$A" == *"github.com"* ]]; then
-        branch_name="1"
+elif [[ "$url" == *"tree"* ]] && [[ -n "$branch" ]]; then
+    if git clone -q --single-branch --depth=1 --branch="$branch" "$base_url" "$tmpdir"; then
+        if [[ "$route" == "all" ]]; then
+            find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
+            target="$HOME_PATH/${item}"
+            if [ -e "$target" ]; then
+                rm -rf "$target"
+            fi
+            done
+            cp -r "$path_name"/* "$store_away"
+        else
+            rm -rf "$store_away" && cp -r "$path_name" "$store_away"
+        fi
+        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
     else
-        echo "无效的GitHub URL格式"
-        exit 1
+        echo "$files_name文件下载失败"
+        return 1
     fi
-
-    # 根据解析结果设置URL和文件名
-    if [[ "$A" == *"tree"* ]] && [[ -n "${path_part}" ]]; then
-        url="${A%%/tree/*}"
-        file_name="${A##*/}"
-        git_laqu="1"
-    elif [[ "$A" == *"tree"* ]] && [[ -n "${branch_name}" ]] && [[ -z "${path_part}" ]]; then
-        url="${A%%/tree/*}"
-        file_name="$(echo "${A}" | cut -d"/" -f5)"
-        git_laqu="2"
-    elif [[ "${branch_name}" == "1" ]]; then
-        url="${A}"
-        file_name="$(echo "${A}" | cut -d"/" -f5)"
-        git_laqu="3"
-    elif [[ "$A" == *"blob"* ]]; then
-        url="https://raw.githubusercontent.com/${ck_name}/${branch_name}/${path_part}"
-        file_name="${path_part}"
-        parent_dir="${wenjianjia%/*}"
-        git_laqu="4"
+elif [[ "$url" == *"blob"* ]]; then
+    if [[ -n "$(echo "$parent_dir" | grep -E '/')" ]]; then
+        [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
     fi
-
-    # 创建临时目录
-    local tmpdir="$(mktemp -d)"
-    local C="${HOME_PATH}/${tmpdir#*.}"
-    rm -fr "${tmpdir}"
-
-    # 根据git_laqu执行不同的操作
-    case "${git_laqu}" in
-        1)
-            if git clone -q --no-checkout "$url" "$C"; then
-                cd "${C}"
-                git sparse-checkout init --cone > /dev/null 2>&1
-                git sparse-checkout set "${path_part}" > /dev/null 2>&1
-                git checkout "${branch_name}" > /dev/null 2>&1
-                # 替换路径中的特定字符串
-                grep -rl 'include ../../luci.mk' . | xargs -r sed -i 's#include ../../luci.mk#include \$(TOPDIR)/feeds/luci/luci.mk#g'
-                grep -rl 'include ../../lang/' . | xargs -r sed -i 's#include ../../lang/#include \$(TOPDIR)/feeds/packages/lang/#g'
-                # 移动文件到目标路径
-                rm -fr "${content}"
-                mv "${path_part}" "${content}"
-                if [[ $? -ne 0 ]]; then
-                    echo "${file_name}文件投放失败,请检查投放路径是否正确"
-                    exit 1
-                else
-                    echo "${file_name}文件下载完成"
-                fi
-            else
-                echo "${file_name}文件下载失败"
-                exit 1
+    if curl -fsSL "$download_url" -o "$store_away"; then
+        echo "$files_name 文件下载成功"
+    else
+        echo "$files_name文件下载失败"
+        return 1
+    fi
+elif [[ "$url" == *"https://github.com"* ]]; then
+    if git clone -q --depth 1 "$base_url" "$tmpdir"; then
+        if [[ "$route" == "all" ]]; then
+            find "$path_name" -mindepth 1 -printf '%P\n' | while read -r item; do
+            target="$HOME_PATH/${item}"
+            if [ -e "$target" ]; then
+                rm -rf "$target"
             fi
-            ;;
-        2)
-            rm -fr "${content}"
-            if git clone -q --single-branch --depth=1 --branch=${branch_name} ${url} ${content}; then
-                echo "${file_name}文件下载完成"
-            else
-                echo "${file_name}文件下载失败"
-                exit 1
-            fi
-            ;;
-        3)
-            rm -fr "${content}"
-            if git clone -q --depth 1 "${url}" "${content}"; then
-                echo "${file_name}文件下载完成"
-            else
-                echo "${file_name}文件下载失败"
-                exit 1
-            fi
-            ;;
-        4)
-            [[ ! -d "${parent_dir}" ]] && mkdir -p "${parent_dir}"
-            if curl -fsSL "${url}" -o "${content}"; then
-                if [[ -s "${content}" ]]; then
-                    echo "${file_name}文件下载完成"
-                    chmod +x "${content}"
-                else
-                    echo "${file_name}文件下载失败"
-                    exit 1
-                fi
-            else
-                echo "${file_name}文件下载失败"
-                exit 1
-            fi
-            ;;
-        *)
-            echo "未知的操作类型"
-            exit 1
-            ;;
-    esac
-
-    # 清理临时目录
-    cd "${HOME_PATH}"
-    rm -fr "$C"
+            done
+            cp -r "$path_name"/* "$store_away"
+        else
+            rm -rf "$store_away" && cp -r "$path_name" "$store_away"
+        fi
+        [[ $? -eq 0 ]] && echo "$files_name文件下载完成" || { echo "$files_name文件下载失败"; return 1; }
+    else
+        echo "$files_name文件下载失败"
+        return 1
+    fi
+else
+    echo "无效的github链接"
+    return 1
+fi
+rm -rf "$tmpdir"
 }
-
 
 
 
@@ -1489,24 +1443,15 @@ Diy_variable
 
 case "$1" in
   "Diy_menu")
-    Diy_menu
-    ;;
+    Diy_menu ;;
   "Diy_menu2")
-    Diy_menu2
-    ;;
+    Diy_menu2 ;;
   "Diy_menu3")
-    Diy_menu3
-    ;;
+    Diy_menu3 ;;
   "Diy_menu4")
-    Diy_menu4
-    ;;
+    Diy_menu4 ;;
   "Diy_menu5")
-    Diy_menu5
-    ;;
+    Diy_menu5 ;;
   "Diy_menu6")
-    Diy_menu6
-    ;;
-  *)
-    echo ""
-    ;;
+    Diy_menu6 ;;
 esac
