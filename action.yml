@@ -110,7 +110,7 @@ runs:
         fi
         wget -q https://raw.githubusercontent.com/281677160/common/main/custom/first.sh -O /tmp/first.sh
         sudo chmod +x /tmp/first.sh
-        ./tmp/first.sh
+        source /tmp/first.sh
 
     - name: 运行其他变量
       shell: bash
