@@ -62,28 +62,6 @@ OFFICIAL)
   export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
   export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
 ;;
-MT798X)
-  if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
-    export REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
-    export SOURCE="Mt798x"
-    export SOURCE_OWNER="hanwckf"
-    export REPO_BRANCH="openwrt-21.02"
-    export DISTRIB_SOURCECODE="immortalwrt"
-    export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
-  else
-    export REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
-    export SOURCE="Mt798x"
-    export SOURCE_OWNER="padavanonly"
-    if [[ "${REPO_BRANCH}" == "2410" ]]; then
-      export LUCI_EDITION="24.10"
-    else
-      export LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-    fi
-    export DISTRIB_SOURCECODE="immortalwrt"
-    export GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
-  fi
-;;
 *)
   if [[ -n "${BENDI_VERSION}" ]]; then
     TIME r "因刚同步上游文件,请设置好[operates]文件夹内的配置后，再次使用命令编译"
