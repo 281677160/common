@@ -1,5 +1,4 @@
 #!/bin/bash
-set -euo pipefail
 # https://github.com/281677160/build-actions
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
@@ -1443,7 +1442,7 @@ function Diy_menu6() {
 Diy_variable
 }
 
-case "${1:-}" in
+case "${1}" in
   "Diy_menu") Diy_menu ;;
   "Diy_menu2") Diy_menu2 ;;
   "Diy_menu3") Diy_menu3 ;;
@@ -1451,8 +1450,7 @@ case "${1:-}" in
   "Diy_menu5") Diy_menu5 ;;
   "Diy_menu6") Diy_menu6 ;;
   *) 
-    echo "Usage: $0 {Diy_menu|Diy_menu2|Diy_menu3|Diy_menu4|Diy_menu5|Diy_menu6}" >&2
-    exit 1
+    echo ""
     ;;
 esac
 
