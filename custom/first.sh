@@ -23,12 +23,7 @@ echo -e "\n${Color}${2}\033[0m"
 # 第一个自定义函数
 Diy_one() {
     cd "${GITHUB_WORKSPACE}"
-    LINSHI_COMMON="/tmp/common"
-    [[ -d "${LINSHI_COMMON}" ]] && rm -rf "${LINSHI_COMMON}"
-    if ! git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/common "${LINSHI_COMMON}"; then
-      TIME r "对比版本号文件下载失败，请检查网络"
-      exit 1
-    fi
+    export LINSHI_COMMON=/tmp/common
     export COMMON_SH="${LINSHI_COMMON}/common.sh"
     export UPGRADE_SH="${LINSHI_COMMON}/upgrade.sh"
     export CONFIG_TXT="${LINSHI_COMMON}/config.txt"
