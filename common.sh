@@ -200,7 +200,7 @@ fi
 # 更新feeds
 cd ${HOME_PATH}
 ./scripts/feeds clean
-./scripts/feeds update -a > /dev/null 2>&1
+./scripts/feeds update -a
 
 
 # 更新feeds后再次修改补充
