@@ -116,7 +116,7 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        bash $COMMON_SH Diy_menu6
+        source $COMMON_SH && Diy_variable
         echo "$COMMON_SH"
 branding:
   icon: "terminal"
