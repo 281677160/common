@@ -1487,8 +1487,7 @@ Diy_prevent
 }
 
 
-local cmd="${1:-}"
-case "$cmd" in
+case "${1:-}" in
   "Diy_menu") Diy_menu ;;
   "Diy_menu2") Diy_menu2 ;;
   "Diy_menu3") Diy_menu3 ;;
