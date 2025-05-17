@@ -23,7 +23,7 @@ echo -e "\n${Color}${2}\033[0m"
 # 第一个自定义函数
 Diy_one() {
     cd "${GITHUB_WORKSPACE}"
-    export LINSHI_COMMON=/tmp/common
+    export LINSHI_COMMON="/tmp/common"
     export COMMON_SH="${LINSHI_COMMON}/common.sh"
     export UPGRADE_SH="${LINSHI_COMMON}/upgrade.sh"
     export CONFIG_TXT="${LINSHI_COMMON}/config.txt"
