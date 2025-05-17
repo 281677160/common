@@ -34,7 +34,7 @@ Diy_one() {
     export CONFIG_TXT="${LINSHI_COMMON}/config.txt"
     export ACTIONS_VERSION1=$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' "${COMMON_SH}")
     
-    if [[ -d "build" ]] && [[ "${BENDI_VERSION}" != "1" ]]; then
+    if [[ -d "build" ]] && [[ "${BENDI_VERSION}" == "2" ]]; then
         rm -rf "${OPERATES_PATH}"
         cp -Rf build "${OPERATES_PATH}"
     fi
