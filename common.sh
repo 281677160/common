@@ -467,7 +467,7 @@ rm -rf ${HOME_PATH}/files/{LICENSE,README}
 function Diy_definition() {
 echo "0"
 cd ${HOME_PATH}
-cd ${HOME_PATH} && source "${DIY_PT2_SH}"
+bash "${DIY_PT2_SH}"
 echo "1"
 # 获取源码文件的IP
 lan="/set network.\$1.netmask/a"
