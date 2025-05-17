@@ -496,7 +496,7 @@ elif [[ -n "${Ipv4_ipaddr}" ]]; then
      TIME r "因IP获取有错误，后台IP更换不成功，请检查IP是否填写正确，如果填写正确，那就是获取不了源码内的IP了"
    fi
 fi
-echo "2"
+
 if [[ "${Netmask_netm}" == "0" ]] || [[ -z "${Netmask_netm}" ]]; then
   echo "不进行,子网掩码修改"
 elif [[ -n "${Netmask_netm}" ]]; then
