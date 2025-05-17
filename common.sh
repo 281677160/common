@@ -151,6 +151,9 @@ fi
 # 增加一些应用
 echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
 gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
+if ! grep -q "auto-scripts" "${HOME_PATH}/Config.in"; then
+  echo 'source "package/auto-scripts/Config.in"' >> ${HOME_PATH}/Config.in
+fi
 
 sed -i "s/ZHUJI_MING/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
@@ -160,16 +163,23 @@ grep -q "admin:" ${FILES_PATH} && sed -i 's/admin:.*/admin::0:0:99999:7:::/g' ${
 
 # 添加自定义插件源
 srcdir="$(mktemp -d)"
-SRC_LIANJIE=$(grep -Po '^src-git(?:-full)?\s+luci\s+\Khttps?://[^;\s]+' "${LICENSES_DOC}/feeds.conf.default")
-SRC_FENZHIHAO=$(grep -Po '^src-git(?:-full)?\s+luci\s+[^;\s]+;\K[^\s]+' "${LICENSES_DOC}/feeds.conf.default" || echo "")
+if grep -q "src-git-full" "${LICENSES_DOC}/feeds.conf.default"; then
+  SRC_LIANJIE="$(grep -E '^src-git-full luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/src-git-full luci (https?:\/\/[^;]+).*/\1/')"
+  a=$(grep -E '^src-git-full luci https' "feeds.conf.default")
+  if [[ -n "$(echo "$a" |grep -E '\;')" ]]; then
+    SRC_FENZHIHAO="$(grep -E '^src-git-full luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+  fi
+else
+ SRC_LIANJIE="$(grep -E '^src-git luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/src-git luci (https?:\/\/[^;]+).*/\1/')"
+  a=$(grep -E '^src-git luci https' "feeds.conf.default")
+  if [[ -n "$(echo "$a" |grep -E '\;')" ]]; then
+    SRC_FENZHIHAO="$(grep -E '^src-git luci https' "${LICENSES_DOC}/feeds.conf.default" | sed -E 's/.*;(.+)/\1/')"
+  fi
+fi
 if [[ -n "${SRC_FENZHIHAO}" ]]; then
   git clone --single-branch --depth=1 --branch=${SRC_FENZHIHAO} ${SRC_LIANJIE} ${srcdir}
 else
   git clone --depth=1 ${SRC_LIANJIE} ${srcdir}
-fi
-if [[ $? -ne 0 ]];then
-  TIME r "文件下载失败"
-  exit 1
 fi
 if [[ -d "${srcdir}/modules/luci-mod-system" ]]; then
   THEME_BRANCH="Theme2"
@@ -183,20 +193,41 @@ fi
 
 echo "src-git danshui https://github.com/281677160/openwrt-package.git;$SOURCE" >> ${HOME_PATH}/feeds.conf.default
 echo "src-git dstheme https://github.com/281677160/openwrt-package.git;$THEME_BRANCH" >> ${HOME_PATH}/feeds.conf.default
-[[ "${OpenClash_branch}" == "1" ]] && echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> ${HOME_PATH}/feeds.conf.default
-[[ "${OpenClash_branch}" == "2" ]] && echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> ${HOME_PATH}/feeds.conf.default
+if [[ "${OpenClash_branch}" == "1" ]]; then
+  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;master" >> ${HOME_PATH}/feeds.conf.default
+elif [[ "${OpenClash_branch}" == "2" ]]; then
+  echo "src-git OpenClash https://github.com/vernesong/OpenClash.git;dev" >> ${HOME_PATH}/feeds.conf.default
+fi
 
 # 增加中文语言包
 if [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)" ]] && [[ "${THEME_BRANCH}" == "Theme2" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-settings ${HOME_PATH}/package/default-settings
-  grep -qw "libustream-wolfssl" "${HOME_PATH}/include/target.mk" && sed -i 's?\<libustream-wolfssl\>?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-  ! grep -qw "dnsmasq-full" "${HOME_PATH}/include/target.mk" && sed -i 's?\<dnsmasq\>?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-  ! grep -qw "default-settings" "${HOME_PATH}/include/target.mk" && sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings?g' "${HOME_PATH}/include/target.mk"
+  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-base luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+  fi
 elif [[ -z "$(find "$HOME_PATH/package" -type d -name "default-settings" -print)" ]] && [[ "${THEME_BRANCH}" == "Theme1" ]]; then
   gitsvn https://github.com/281677160/common/tree/main/Share/default-setting ${HOME_PATH}/package/default-settings
-  grep -qw "libustream-wolfssl" "${HOME_PATH}/include/target.mk" && sed -i 's?\<libustream-wolfssl\>?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
-  ! grep -qw "dnsmasq-full" "${HOME_PATH}/include/target.mk" && sed -i 's?\<dnsmasq\>?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
-  ! grep -qw "default-settings" "${HOME_PATH}/include/target.mk" && sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings?g' "${HOME_PATH}/include/target.mk"
+  if grep -q "libustream-wolfssl" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?libustream-wolfssl?libustream-openssl?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "dnsmasq-full" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?dnsmasq?dnsmasq-full?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "ca-bundle" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=ca-bundle ?g' "${HOME_PATH}/include/target.mk"
+  fi
+  if ! grep -q "default-settings" "${HOME_PATH}/include/target.mk"; then
+    sed -i 's?DEFAULT_PACKAGES:=?DEFAULT_PACKAGES:=default-settings luci luci-compat luci-lib-fs luci-lib-ipkg ?g' "${HOME_PATH}/include/target.mk"
+  fi
 fi
 
 # zzz-default-settings文件
@@ -204,6 +235,7 @@ ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/e
 export ZZZ_PATH="${ZZZ_PATH}"
 if [[ -n "${ZZZ_PATH}" ]]; then
   echo "ZZZ_PATH=${ZZZ_PATH}" >> ${GITHUB_ENV}
+  sed -i '/exit 0$/d' "${ZZZ_PATH}"
   sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
   grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 fi
@@ -226,11 +258,11 @@ luci-app-ssr-plus,luci-app-passwall,luci-app-passwall2,shadowsocksr-libev,v2dat,
 luci-app-wechatpush,v2ray-core,v2ray-plugin,v2raya,xray-core,xray-plugin,luci-app-alist,alist"
 t=(${z//,/ })
 for x in "${t[@]}"; do
-    find "${HOME_PATH}/feeds" "${HOME_PATH}/package" \
-        -path "${HOME_PATH}/feeds/danshui" -prune -o \
-        -path "${HOME_PATH}/feeds/dstheme" -prune -o \
-        -path "${HOME_PATH}/feeds/OpenClash" -prune -o \
-        -path "${HOME_PATH}/package/luci-theme-argon" -prune -o \
+    find ./feeds ./package \
+        -path './feeds/danshui' -prune -o \
+        -path './feeds/dstheme' -prune -o \
+        -path './feeds/OpenClash' -prune -o \
+        -path './package/luci-theme-argon' -prune -o \
         -name "$x" -type d -exec rm -rf {} +
 done
 
@@ -289,14 +321,14 @@ fi
 
 # 定时更新固件的插件包
 if grep -q "armvirt=y" $MYCONFIG_FILE || grep -q "armsr=y" $MYCONFIG_FILE; then
-  find "${HOME_PATH}" -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
+  find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?luci-app-autoupdate ??g' ${HOME_PATH}/include/target.mk
   fi
 elif [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
     source ${UPGRADE_SH} && Diy_Part1
 else
-  find "${HOME_PATH}" -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
+  find . -type d -name "luci-app-autoupdate" |xargs -i rm -rf {}
   if grep -q "luci-app-autoupdate" "${HOME_PATH}/include/target.mk"; then
     sed -i 's?luci-app-autoupdate ??g' ${HOME_PATH}/include/target.mk
   fi
