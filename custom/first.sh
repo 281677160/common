@@ -25,7 +25,7 @@ Diy_one() {
     cd "${GITHUB_WORKSPACE}"
     LINSHI_COMMON="/tmp/common"
     [[ -d "${LINSHI_COMMON}" ]] && rm -rf "${LINSHI_COMMON}"
-    if ! git clone --single-branch --depth=1 --branch=main https://github.com/281677160/common "${LINSHI_COMMON}"; then
+    if ! git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/common "${LINSHI_COMMON}"; then
       TIME r "对比版本号文件下载失败，请检查网络"
       exit 1
     fi
