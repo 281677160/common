@@ -26,9 +26,11 @@ Diy_one() {
       TIME r "缺少对比版本号文件"
       exit 1
     fi
+    
     # 更改LINSHI_COMMON变量时,需要同步修改本地编译文件
     export LINSHI_COMMON="/tmp/common"
     echo "LINSHI_COMMON=${LINSHI_COMMON}" >> "${GITHUB_ENV}"
+    
     export COMMON_SH="${LINSHI_COMMON}/common.sh"
     export UPGRADE_SH="${LINSHI_COMMON}/upgrade.sh"
     export CONFIG_TXT="${LINSHI_COMMON}/config.txt"
