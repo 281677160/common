@@ -7,7 +7,7 @@ runs:
       shell: bash
       run: |
         cd "$GITHUB_WORKSPACE"
-        if [[ -z "${{ env.REPO_TOKEN }}" ]]; then
+        if [ -z "${{ env.REPO_TOKEN }}" ]; then
           echo -e "\033[31m 您没有设置仓库密匙，请按教程设置好密匙再来 \033[0m\n"
           echo -e "\033[32m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
           exit 1
@@ -27,19 +27,19 @@ runs:
       run: |
         cd ${GITHUB_WORKSPACE}
         
-        if [[ -d "build" ]]; then
+        if [ -d "build" ]; then
           rm -rf operates
           cp -Rf build ${GITHUB_WORKSPACE}/operates
           COMPILE_PATH="$GITHUB_WORKSPACE/operates/${FOLDER_NAME}"
         fi
         
-        if [[ "${{ github.event_name }}" == "push" ]] && [[ "${{ github.event.head_commit }}" != "null" ]]; then
+        if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.event.head_commit }}" != "null" ]; then
           #触发启动
           if [[ -f "${COMPILE_PATH}/relevance/settings.ini" ]]; then
             source ${COMPILE_PATH}/relevance/settings.ini
             echo "ERRUN_NUMBER=${ERRUN_NUMBER}" >> ${GITHUB_ENV}
           fi
-        elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+        elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
           #手动启动
           if [ -f "${COMPILE_PATH}/settings.ini" ]; then
             SOURCE_CODE="$(grep '^SOURCE_CODE=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
@@ -57,7 +57,7 @@ runs:
           UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
         else
           #其他启动
-          if [[ -f "${COMPILE_PATH}/settings.ini" ]]; then
+          if [ -f "${COMPILE_PATH}/settings.ini" ]; then
             source ${COMPILE_PATH}/settings.ini
           fi
         fi
