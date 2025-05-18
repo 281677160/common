@@ -48,7 +48,8 @@ Diy_two() {
     for dir in "${required_dirs[@]}"; do
         if [[ ! -d "$dir" ]]; then
             SYNCHRONISE="NO"
-            # 缺少主文件operates
+            [[ "${BENDI_VERSION}" == "2" ]] && TIME r "缺少编译主文件bulid,正在同步上游仓库..."
+            # 本地编译缺少主文件operates
             return
         fi
     done
