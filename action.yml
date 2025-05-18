@@ -7,7 +7,6 @@ runs:
       id: gitpush
       shell: bash
       run: |
-        # 定义临时目录
         cd ${GITHUB_WORKSPACE}
         tmpdir="$(mktemp -d)"
         UPLOAD="$GITHUB_WORKSPACE/${tmpdir#*.}"
@@ -55,13 +54,14 @@ runs:
           echo -e "\033[31m 触发编译失败,请勿胡乱修改compile.yml文件 \033[0m"
           exit 1
         else
-          echo -e "\033[33m 触发编译${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}成功 \033[0m"
+          echo -e "\033[32m 触发编译${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}成功 \033[0m"
         fi
 
     - name: 信息通知的时间
       if: steps.gitpush.outcome == 'success'
       shell: bash
       run: |
+        cd ${GITHUB_WORKSPACE}
         echo "TZ_Message=$(date +%Y年%m月%d号%H时%M分)" >> "${GITHUB_ENV}"
 
     - name: Telegram或pushplus信息通知
