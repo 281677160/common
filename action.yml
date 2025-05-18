@@ -38,11 +38,12 @@ runs:
         sed -i "/matrix:/,/^ *target:/s/target:.*/  target: [${FOLDER_NAME}]/" "$YML_PATH"
 
         # 提交并推送
+        BANBEN_SHUOMING="编译-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
         chmod -R +x "$UPLOAD"
         cd "$UPLOAD"
         git status
         git add .
-        git commit -m "编译-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
+        git commit -m "${BANBEN_SHUOMING}"
         PUSH_SUCCESS=false
         for i in {1..3}; do
           echo "尝试推送 (${i}/3)..."
