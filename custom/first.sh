@@ -48,7 +48,6 @@ Diy_two() {
     for dir in "${required_dirs[@]}"; do
         if [[ ! -d "$dir" ]]; then
             SYNCHRONISE="NO"
-            tongbu_message="缺少编译必要文件夹"
             return
         fi
     done
@@ -85,7 +84,7 @@ Diy_three() {
     cd "${GITHUB_WORKSPACE}"
     if [[ "$SYNCHRONISE" == "NO" ]]; then
         if [[ "${BENDI_VERSION}" == "1" ]]; then
-            TIME r "${tongbu_message}，正在同步上游仓库"
+            [[ -d "${OPERATES_PATH}" ]] && TIME r "${tongbu_message}，正在同步上游仓库"
             shangyou=$(mktemp -d)
             if git clone --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions "${shangyou}"; then
                 if [[ -d "${OPERATES_PATH}" ]]; then
