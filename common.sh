@@ -104,7 +104,6 @@ variable UPGRADE_DATE="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
 variable GUJIAN_DATE="$(date +%m.%d)"
 variable LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
 variable CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-variable LINSHI_COMMON="/tmp/common"
 variable RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
 
 # 启动编译时的变量文件
