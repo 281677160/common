@@ -38,7 +38,8 @@ runs:
         cd $HOME_PATH
         bash $COMMON_SH Diy_menu4
 
-    - name: 删除所有匹配的旧缓存
+    - name: 清理所有缓存
+      if: env.CLEAR_CACHEWRTBUILD == 'true'
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
