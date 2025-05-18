@@ -139,7 +139,7 @@ if ! curl -fsSL "${RAW_WEB}" -o "${LICENSES_DOC}/feeds.conf.default"; then
   fi
 fi
 # 增加一些应用
-echo '#!/bin/sh' > "${DELETE}" && sudo chmod +x "${DELETE}"
+echo '#!/bin/sh' > "${DELETE}" && chmod +x "${DELETE}"
 gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
 
 sed -i "s/ZHUJI_MING/${SOURCE}/g" "${DEFAULT_PATH}"
