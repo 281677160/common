@@ -48,6 +48,7 @@ Diy_two() {
     for dir in "${required_dirs[@]}"; do
         if [[ ! -d "$dir" ]]; then
             SYNCHRONISE="NO"
+            # 缺少主文件operates
             return
         fi
     done
