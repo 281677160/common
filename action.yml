@@ -1,5 +1,8 @@
 name: 'My Composite Action'
 description: 'Combines multiple steps with conditional messages and build information'
+branding:  # 移到这里，与 runs 同级
+  icon: terminal
+  color: gray-dark
 runs:
   using: "composite"
   steps:
@@ -137,6 +140,3 @@ runs:
           rm -f "/tmp/CONFIG_PACKAGE"  # 使用 -f 避免错误
           echo
         fi
-  branding:
-    icon: terminal
-    color: gray-dark
