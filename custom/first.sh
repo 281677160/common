@@ -25,7 +25,7 @@ Diy_one() {
     cd "${GITHUB_WORKSPACE}"
     export LINSHI_COMMON="/tmp/common"
     if [[ ! -d "${LINSHI_COMMON}" ]]; then
-      TIME r "对比版本号文件下载失败，请检查网络"
+      TIME r "缺少对比版本号文件"
       exit 1
     fi
     export COMMON_SH="${LINSHI_COMMON}/common.sh"
