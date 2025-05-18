@@ -135,6 +135,9 @@ Diy_three() {
             fi
         else
             git clone -b "${GIT_REFNAME}" https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
+            cd repogx
+            git reset --hard HEAD
+            cd "${GITHUB_WORKSPACE}"
             git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
             [[ -d "repogx/backups" ]] && rm -rf "repogx/backups"
             [[ -d "backups" ]] && rm -rf "backups"
@@ -159,16 +162,28 @@ Diy_three() {
                 echo "$(date +%Y%m%d%H%M%S)" > "${X}/armsrstart"
             done
 
-            BANBEN_SHUOMING="同步上游于 $(date +%Y.%m%d.%H%M.%S)"
             chmod -R +x repogx
             cd repogx
+            git status
             git add .
-            git commit -m "${BANBEN_SHUOMING}"
-            git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${GIT_REFNAME}
-            if [[ $? -ne 0 ]]; then
-                TIME r "同步上游仓库失败，请注意密匙是否正确"
+            git commit -m "同步上游于 $(date +%Y.%m%d.%H%M.%S)"
+            PUSH_SUCCESS=false
+            for i in {1..3}; do
+              echo "尝试推送 (${i}/3)..."
+              if git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${GIT_REFNAME}; then
+                PUSH_SUCCESS=true
+                break
+              else
+                echo "推送失败，等待2秒后重试..."
+                sleep 2
+              fi
+            done
+
+            # 检查推送结果
+            if [ "$PUSH_SUCCESS" = false ]; then
+              TIME r "同步上游仓库失败，请注意密匙是否正确"
             else
-                TIME g "同步上游仓库完成，请重新设置好文件再继续编译"
+              TIME g "同步上游仓库完成，请重新设置好文件再继续编译"
             fi
             exit 1
         fi
