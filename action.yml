@@ -8,7 +8,7 @@ runs:
       shell: bash
       run: |
         # 定义临时目录
-        cd $GITHUB_WORKSPACE}
+        cd ${GITHUB_WORKSPACE}
         tmpdir="$(mktemp -d)"
         UPLOAD="$GITHUB_WORKSPACE/${tmpdir#*.}"
 
@@ -16,7 +16,7 @@ runs:
         git clone -b ${GIT_REFNAME} https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git $UPLOAD
         cd $UPLOAD
         git reset --hard HEAD
-        cd $GITHUB_WORKSPACE}
+        cd ${GITHUB_WORKSPACE}
 
         # 清理和复制文件
         [[ -d "$UPLOAD/build/${FOLDER_NAME}" ]] && rm -rf "$UPLOAD/build/${FOLDER_NAME}"
