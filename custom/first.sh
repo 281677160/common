@@ -62,7 +62,7 @@ Diy_two() {
             else
                 TIME r "缺少 $file 文件"
                 SYNCHRONISE="NO"
-                tongbu_message="缺少文件"
+                tongbu_message="缺少$file文件"
                 return
             fi
         fi
