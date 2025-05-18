@@ -124,7 +124,6 @@ fi
 
 function Diy_feedsconf() {
 local LICENSES_DOC="${GITHUB_WORKSPACE}/openwrt/LICENSES/doc"
-cd "${GITHUB_WORKSPACE}/openwrt"
 [[ ! -d "${LICENSES_DOC}" ]] && mkdir -p "${LICENSES_DOC}"
 cp -Rf ${GITHUB_WORKSPACE}/openwrt/feeds.conf.default ${LICENSES_DOC}/feeds.conf.default
 if [[ ! -f "${LICENSES_DOC}/feeds.conf.default" ]]; then
