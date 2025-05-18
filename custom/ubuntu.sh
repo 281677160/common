@@ -28,10 +28,6 @@ apt-get install -y libfuse-dev
 apt-get install -y rename pigz clang gnupg
 apt-get install -y $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
-# 修改21.02编译gn失败
-pip install mistune --upgrade
-pip install -U --force-reinstall scipy
-
 # 安装gcc g++
 GCC_VERSION="13"
 add-apt-repository --yes ppa:ubuntu-toolchain-r/test
