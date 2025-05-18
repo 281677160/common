@@ -135,10 +135,10 @@ Diy_three() {
             fi
         else
             git clone -b "${GIT_REFNAME}" https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
+            git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
             cd repogx
             git reset --hard HEAD
             cd "${GITHUB_WORKSPACE}"
-            git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
             [[ -d "repogx/backups" ]] && rm -rf "repogx/backups"
             [[ -d "backups" ]] && rm -rf "backups"
             mkdir -p backups
@@ -161,12 +161,13 @@ Diy_three() {
                 echo "$(date +%Y%m%d%H%M%S)" > "${X}/start"
                 echo "$(date +%Y%m%d%H%M%S)" > "${X}/armsrstart"
             done
-
+            
+            BANBEN_SHUOMING="同步上游于 $(date +%Y.%m%d.%H%M.%S)"
             chmod -R +x repogx
             cd repogx
             git status
             git add .
-            git commit -m "同步上游于 $(date +%Y.%m%d.%H%M.%S)"
+            git commit -m "${BANBEN_SHUOMING}"
             PUSH_SUCCESS=false
             for i in {1..3}; do
               echo "尝试推送 (${i}/3)..."
