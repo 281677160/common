@@ -7,7 +7,7 @@ inputs:
   repo-token:
     description: '访问仓库的 token'
     required: true
-    default: ${{ secrets.REPO_TOKEN }}
+    default: ${{ github.token }}
   git-repository:
     description: 'Git 仓库名称'
     required: true
@@ -66,7 +66,7 @@ runs:
         
         # 克隆仓库
         log_info "克隆仓库 ${{ inputs.git-repository }} 分支 ${{ inputs.git-refname }}..."
-        git clone -b "${{ inputs.git-refname }}" "https://user:${{ inputs.repo-token }}@github.com/${{ inputs.git-repository }}.git" "$UPLOAD"
+        git clone -b "${{ inputs.git-refname }}" "https://user:${{ env.REPO_TOKEN }}@github.com/${{ inputs.git-repository }}.git" "$UPLOAD"
         cd "$UPLOAD"
         git reset --hard HEAD
         cd "${{ github.workspace }}"
@@ -127,7 +127,7 @@ runs:
         
         for i in {1..3}; do
           echo "尝试推送 (${i}/3)..."
-          if git push --force "https://${{ inputs.repo-token }}@github.com/${{ inputs.git-repository }}" HEAD:${{ inputs.git-refname }}; then
+          if git push --force "https://${{ env.REPO_TOKEN }}@github.com/${{ inputs.git-repository }}" HEAD:${{ inputs.git-refname }}; then
             PUSH_SUCCESS=true
             break
           else
