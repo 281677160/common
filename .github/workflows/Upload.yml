@@ -62,7 +62,15 @@ jobs:
         branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/2410/24.10/' |sed 's/^/="/' |sed 's/$/-Mt798x"/')
         echo "$branches" >>$GITHUB_WORKSPACE/123
 
-        cat $GITHUB_WORKSPACE/123 |sed '/^$/d' |awk '$0=NR$0' |sed 's/^/R/' |sed s/[[:space:]]//g >$GITHUB_WORKSPACE/repogx/autoupdate/replace 
+        cat $GITHUB_WORKSPACE/123 |sed '/^$/d' |awk '$0=NR$0' |sed 's/^/R/' |sed s/[[:space:]]//g > $GITHUB_WORKSPACE/repogx/autoupdate/replace
+
+    - name: 下载API
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest -o $GITHUB_WORKSPACE/repogx/language/AdGuardHome.api
+        if ! grep -E "assets" "$GITHUB_WORKSPACE/repogx/language/AdGuardHome.api"; then
+          curl https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > $GITHUB_WORKSPACE/repogx/language/AdGuardHome.api
+        fi
         
     - name: Upload
       continue-on-error: true
