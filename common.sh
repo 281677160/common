@@ -896,7 +896,6 @@ case "$ARCH_TYPE" in
 esac
 
 if [[ -n "${Arch}" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
-  echo "正在执行：给adguardhome下载核心"
   rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
   if [[ ! -f "$LINSHI_COMMON/language/AdGuardHome.api" ]]; then
     if ! wget -q https://github.com/281677160/common/releases/download/API/AdGuardHome.api -O "$LINSHI_COMMON/language/AdGuardHome.api"; then
@@ -908,18 +907,16 @@ if [[ -n "${Arch}" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
     wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_${Arch}.tar.gz
     if [[ -f "AdGuardHome_${Arch}.tar.gz" ]]; then
       tar -zxf AdGuardHome_${Arch}.tar.gz -C ${HOME_PATH}
-      echo "AdGuardHome核心下载成功"
-    else
-      echo "AdGuardHome核心下载失败"
     fi
     mkdir -p ${HOME_PATH}/files/usr/bin
     if [[ -f "${HOME_PATH}/AdGuardHome/AdGuardHome" ]]; then
       mv -f ${HOME_PATH}/AdGuardHome ${HOME_PATH}/files/usr/bin/
       chmod +x ${HOME_PATH}/files/usr/bin/AdGuardHome/AdGuardHome
-      echo "增加AdGuardHome核心完成"
       echo -e "\nCONFIG_PACKAGE_luci-app-adguardhome=y" >> ${HOME_PATH}/.config
+      echo "增加luci-app-adguardhome和下载AdGuardHome核心完成"
     else
-      echo "增加AdGuardHome核心失败"
+      echo -e "\nCONFIG_PACKAGE_luci-app-adguardhome=y" >> ${HOME_PATH}/.config
+      echo "下载AdGuardHome核心失败"
     fi
     rm -rf ${HOME_PATH}/{AdGuardHome_${Arch}.tar.gz,AdGuardHome}
   fi
