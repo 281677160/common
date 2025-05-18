@@ -111,7 +111,6 @@ variable CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
 variable RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
 
 # 启动编译时的变量文件
-
 if [[ "${BENDI_VERSION}" == "2" ]]; then
   echo -n > "${COMPILE_PATH}/relevance/settings.ini"
   chmod +x ${COMPILE_PATH}/relevance/settings.ini
@@ -236,8 +235,8 @@ if [[ "${REPO_BRANCH}" =~ ^(2410|(openwrt-)?(24\.10))$ ]]; then
 fi
 
 if [[ ! -d "${HOME_PATH}/package/network/config/firewall4" ]]; then
-    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
-    rm -rf ${HOME_PATH}/feeds/danshui/luci-app-homeproxy
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
+  rm -rf ${HOME_PATH}/feeds/danshui/luci-app-homeproxy
 fi
 
 
@@ -257,7 +256,7 @@ fi
 bash /tmp/common/Share/tproxy/nft_tproxy.sh
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/lang/rust" ]]; then
-    gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
+  gitsvn https://github.com/openwrt/packages/tree/openwrt-23.05/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 
 if [[ ! -d "${HOME_PATH}/feeds/packages/devel/packr" ]]; then
