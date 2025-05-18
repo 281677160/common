@@ -41,13 +41,13 @@ runs:
           fi
         elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
           #手动启动
-          if [[ -f "${COMPILE_PATH}/settings.ini" ]]; then
-            SOURCE_CODE="$(grep '^SOURCE_CODE=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
-            COMPILATION_INFORMATION="$(grep '^COMPILATION_INFORMATION=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
+          if [ -f "${COMPILE_PATH}/settings.ini" ]; then
+            [ -d "operates" ] && SOURCE_CODE="$(grep '^SOURCE_CODE=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
+            [ -d "operates" ] && COMPILATION_INFORMATION="$(grep '^COMPILATION_INFORMATION=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
           fi
           REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
           CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"
-          INFORMATION_NOTICE="${{ github.event.inputs.FOLDER_NAME }}"
+          INFORMATION_NOTICE="${{ github.event.inputs.INFORMATION_NOTICE }}"
           RETAIN_MINUTE="${{ github.event.inputs.RETAIN_MINUTE }}"
           KEEP_LATEST="${{ github.event.inputs.KEEP_LATEST }}"
           SSH_ACTION="${{ github.event.inputs.SSH_ACTION }}"
