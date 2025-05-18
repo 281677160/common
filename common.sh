@@ -127,6 +127,10 @@ local LICENSES_DOC="${GITHUB_WORKSPACE}/openwrt/LICENSES/doc"
 cd "${GITHUB_WORKSPACE}/openwrt"
 [[ ! -d "${LICENSES_DOC}" ]] && mkdir -p "${LICENSES_DOC}"
 cp -Rf ${GITHUB_WORKSPACE}/openwrt/feeds.conf.default ${LICENSES_DOC}/feeds.conf.default
+if [[ ! -f "${LICENSES_DOC}/feeds.conf.default" ]]; then
+  TIME r "文件下载失败,请检查网络"
+  exit 1
+fi
 }
 
 function Diy_checkout() {
