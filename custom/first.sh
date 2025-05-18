@@ -3,7 +3,6 @@
 # common Module by 28677160
 # matrix.target=${FOLDER_NAME}
 
-export TONGBU_YUANMA=""
 export SYNCHRONISE=""
 
 # 颜色输出函数
@@ -212,9 +211,7 @@ Diy_memu() {
     Diy_one
     Diy_two
     Diy_three
-    if [[ "$TONGBU_YUANMA" != "1" ]]; then
-        Diy_four
-    fi
+    Diy_four
 }
 
 Diy_memu "$@"
