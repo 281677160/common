@@ -56,10 +56,10 @@ runs:
           echo "$CACHE_IDS" | while read -r cache_id; do
             curl -X DELETE -s -H "Authorization: token $REPO_TOKEN" \
               "https://api.github.com/repos/$GIT_REPOSITORY/actions/caches/$cache_id"
-            echo -e "\n\033[32m已清理缓存 ID: $cache_id\033[0m"
+            echo -e "\033[32m已清理缓存 ID: $cache_id\033[0m"
           done
         else
-          echo -e "\n\033[36m没有缓存,无需清理\033[0m"
+          echo -e "\033[36m没有缓存,无需清理\033[0m"
         fi
 
     - name: 机型为armsr_rootfs_tar_gz的时,改变是远程更新为打包设置
