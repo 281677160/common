@@ -458,7 +458,7 @@ fi
 
 # 正在执行插件语言修改
 if [[ ! -d "${HOME_PATH}/feeds/luci/modules/luci-mod-system" ]]; then
-  bash /tmp/common/language/zh-cn.sh
+  cd "${HOME_PATH}" && bash "$LINSHI_COMMON/language/zh-cn.sh"
 fi
 # files文件夹删除LICENSE,README
 [[ -d "${HOME_PATH}/files" ]] && sudo chmod +x ${HOME_PATH}/files
@@ -693,7 +693,7 @@ CONFIG_PACKAGE_kmod-fuse=y
 # CONFIG_PACKAGE_kmod-fs-ntfs is not set
 ' >> ${HOME_PATH}/.config
 [[ ! -d "${HOME_PATH}/files/etc/hotplug.d/block" ]] && mkdir -p "${HOME_PATH}/files/etc/hotplug.d/block"
-cp -Rf /tmp/common/Share/block/10-mount ${HOME_PATH}/files/etc/hotplug.d/block/10-mount
+cp -Rf "$LINSHI_COMMON/Share/block/10-mount" "${HOME_PATH}/files/etc/hotplug.d/block/10-mount"
   if [[ "${SOURCE}" == "Lienol" ]] && [[ "${REPO_BRANCH}" == "19.07" ]]; then
     sed -i '/CONFIG_PACKAGE_ntfs-3g=y/d' "${HOME_PATH}/.config"
     sed -i '/CONFIG_PACKAGE_NTFS-3G_HAS_PROBE=y/d' "${HOME_PATH}/.config"
@@ -1066,7 +1066,7 @@ fi
 if [[ `grep -c "CONFIG_PACKAGE_luci-theme-argon=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   pmg="$(date +%M | grep -o '.$').jpg"
   [[ ! -d "${HOME_PATH}/files/www/luci-static/argon/background" ]] && mkdir -p "${HOME_PATH}/files/www/luci-static/argon/background"
-  cp -Rf /tmp/common/Share/argon/jpg/${pmg} ${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg
+  cp -Rf "$LINSHI_COMMON/Share/argon/jpg/${pmg}" "${HOME_PATH}/files/www/luci-static/argon/background/argon.jpg"
   if [[ $? -ne 0 ]]; then
     echo "拉取文件错误,请检测网络"
     exit 1
