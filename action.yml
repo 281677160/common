@@ -41,6 +41,8 @@ runs:
     - name: 删除所有匹配的旧缓存
       shell: bash
       run: |
+        cd ${GITHUB_WORKSPACE}
+        echo -e "\n\033[33m正在执行：清理缓存\033[0m"
         set -euo pipefail
         CACHES=$(curl -s -H "Authorization: token $REPO_TOKEN" \
           "https://api.github.com/repos/$GIT_REPOSITORY/actions/caches?per_page=100" \
@@ -52,7 +54,7 @@ runs:
           echo "$CACHE_IDS" | while read -r cache_id; do
             curl -X DELETE -s -H "Authorization: token $REPO_TOKEN" \
               "https://api.github.com/repos/$GIT_REPOSITORY/actions/caches/$cache_id"
-            echo "已删除缓存 ID: $cache_id"
+            echo "已清理缓存 ID: $cache_id"
           done
         else
           echo "没有发现任何缓存存在"
