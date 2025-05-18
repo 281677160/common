@@ -94,7 +94,7 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        case "${INFORMATION_NOTICE,,}" in
+        case "${INFORMATION_NOTICE}" in
           *"关闭"*|*"false"*)
             echo "INFORMATION_NOTICE=false" >> "$GITHUB_ENV"
             ;;
