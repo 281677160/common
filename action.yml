@@ -38,7 +38,6 @@ runs:
         sed -i "/matrix:/,/^ *target:/s/target:.*/  target: [${FOLDER_NAME}]/" "$YML_PATH"
 
         # 提交并推送
-        log_info "提交并推送更改..."
         chmod -R +x "$UPLOAD"
         cd "$UPLOAD"
         git status
