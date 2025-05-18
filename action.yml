@@ -96,6 +96,16 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
+        case "${{ env.CACHEWRTBUILD_SWITCH }}" in
+          *"false"*)
+            echo "CACHEWRTBUILD_SWITCH=true" >> "$GITHUB_ENV"
+            echo "CLEAR_CACHEWRTBUILD=true" >> "$GITHUB_ENV"
+            ;;
+          *)
+            echo "CACHEWRTBUILD_SWITCH=true" >> "$GITHUB_ENV"
+            ;;
+        esac
+        
         case "${{ env.INFORMATION_NOTICE }}" in
           *"tg"*|*"TG"*|*"telegram"*|*"Telegram"*)
             echo "INFORMATION_NOTICE=TG" >> "$GITHUB_ENV"
