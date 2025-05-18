@@ -3,7 +3,6 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    # 公告步骤
     - name: 公告
       if: env.SendMessage != 'true'
       shell: bash
@@ -17,7 +16,7 @@ runs:
           echo -e "\n\033[0;31mSSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作\033[0m"
         fi
         echo
-    # 编译信息步骤
+
     - name: 编译信息
       if: env.SendMessage == 'true'
       shell: bash
