@@ -134,7 +134,7 @@ Diy_three() {
                 exit 1
             fi
         else
-            git clone -b "${GIT_REFNAME}" https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
+            git clone --depth=1 -b "${GIT_REFNAME}" https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
             git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
             cd repogx
             git reset --hard HEAD
@@ -165,18 +165,34 @@ Diy_three() {
             BANBEN_SHUOMING="同步上游于 $(date +%Y.%m%d.%H%M.%S)"
             chmod -R +x repogx
             cd repogx
+            find "$UPLOAD" -type f -size +100M -exec rm -f {} \; || true
             git status
             git add .
             git commit -m "${BANBEN_SHUOMING}"
             PUSH_SUCCESS=false
-            for i in {1..3}; do
-              echo "尝试推送 (${i}/3)..."
+            RETRY_COUNT=0
+            MAX_RETRIES=5
+            while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+              RETRY_COUNT=$((RETRY_COUNT+1))
+              echo "尝试推送 (${RETRY_COUNT}/${MAX_RETRIES})..."
+              # 每次重试前重置HEAD并重新添加文件
+              if [ $RETRY_COUNT -gt 1 ]; then
+                echo "重置HEAD并重新添加文件..."
+                git reset --hard HEAD
+                git add .
+              fi
               if git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${GIT_REFNAME}; then
                 PUSH_SUCCESS=true
                 break
               else
-                echo "推送失败，等待2秒后重试..."
-                sleep 2
+                echo "推送失败，尝试恢复..."
+                # 清除可能损坏的缓存
+                git gc --prune=now
+                git remote prune origin
+                # 增加随机延迟，避免持续峰值请求
+                DELAY=$((RANDOM % 5 + 2))
+                echo "等待${DELAY}秒后重试..."
+                sleep $DELAY
               fi
             done
 
