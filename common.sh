@@ -196,10 +196,7 @@ fi
 
 # zzz-default-settings文件
 variable ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
-if [[ -n "${ZZZ_PATH}" ]]; then
-  sed -i "s?main.lang=.*?main.lang='zh_cn'?g" "${ZZZ_PATH}"
-  grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
-fi
+[[ -n "${ZZZ_PATH}" ]] && grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 
 
 # 更新feeds
