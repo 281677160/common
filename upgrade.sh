@@ -20,8 +20,8 @@ function Diy_Part1() {
 function Diy_Part2() {
 	export UPDATE_TAG="Update-${TARGET_BOARD}"
 	export FILESETC_UPDATE="${HOME_PATH}/package/base-files/files/etc/openwrt_update"
-	export RELEASE_DOWNLOAD1="https://ghfast.top/\${GITHUB_LINK}/releases/download/${UPDATE_TAG}"
-	export RELEASE_DOWNLOAD2="\${GITHUB_LINK}/releases/download/${UPDATE_TAG}"
+	export RELEASE_DOWNLOAD1="https://ghfast.top/\$GITHUB_LINK/releases/download/${UPDATE_TAG}"
+	export RELEASE_DOWNLOAD2="\$GITHUB_LINK/releases/download/${UPDATE_TAG}"
 	export GITHUB_RELEASE="${GITHUB_LINK}/releases/tag/${UPDATE_TAG}"
  	tee ${FILESETC_UPDATE} && chmod +x ${FILESETC_UPDATE}
         if [[ ! -f "$LINSHI_COMMON/autoupdate/replace" ]]; then
