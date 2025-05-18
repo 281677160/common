@@ -94,14 +94,11 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        case "${INFORMATION_NOTICE}" in
-          *"关闭"*|*"false"*)
-            echo "INFORMATION_NOTICE=false" >> "$GITHUB_ENV"
-            ;;
-          *"tg"*|*"telegram"*)
+        case "${{ env.INFORMATION_NOTICE }}" in
+          *"tg"*|*"TG"*|*"telegram"*|*"Telegram"*)
             echo "INFORMATION_NOTICE=TG" >> "$GITHUB_ENV"
             ;;
-          *"push"*|*"pushplus"*)
+          *"push"*|*"PUSH"*|*"pushplus"*|*"Pushplus"*)
             echo "INFORMATION_NOTICE=PUSH" >> "$GITHUB_ENV"
             ;;
           *)
