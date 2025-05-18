@@ -38,6 +38,26 @@ runs:
         cd $HOME_PATH
         bash $COMMON_SH Diy_menu4
 
+    - name: 删除所有匹配的旧缓存
+      shell: bash
+      run: |
+        set -euo pipefail
+        CACHES=$(curl -s -H "Authorization: token $REPO_TOKEN" \
+          "https://api.github.com/repos/$GIT_REPOSITORY/actions/caches?per_page=100" \
+          | jq -r --arg regex "$CACHE_KEY_REGEX" '.actions_caches[] |
+            select(.key | test($regex)) |
+            {id: .id, key: .key, created_at: .created_at}')
+        CACHE_IDS=$(echo "$CACHES" | jq -r '.id')
+        if [ -n "$CACHE_IDS" ]; then
+          echo "$CACHE_IDS" | while read -r cache_id; do
+            curl -X DELETE -s -H "Authorization: token $REPO_TOKEN" \
+              "https://api.github.com/repos/$GIT_REPOSITORY/actions/caches/$cache_id"
+            echo "已删除缓存 ID: $cache_id"
+          done
+        else
+          echo "没有发现任何缓存存在"
+        fi
+
     - name: 机型为armsr_rootfs_tar_gz的时,改变是远程更新为打包设置
       shell: bash
       run: |
