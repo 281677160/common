@@ -461,7 +461,7 @@ fi
 
 # 正在执行插件语言修改
 if [[ ! -d "${HOME_PATH}/feeds/luci/modules/luci-mod-system" ]]; then
-  bash <(curl -fsSL https://raw.githubusercontent.com/281677160/common/main/language/zh-cn.sh)
+  bash /tmp/common/language/zh-cn.sh
 fi
 # files文件夹删除LICENSE,README
 [[ -d "${HOME_PATH}/files" ]] && sudo chmod +x ${HOME_PATH}/files
