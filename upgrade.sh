@@ -24,8 +24,9 @@ function Diy_Part2() {
 	export RELEASE_DOWNLOAD2="\${GITHUB_LINK}/releases/download/${UPDATE_TAG}"
 	export GITHUB_RELEASE="${GITHUB_LINK}/releases/tag/${UPDATE_TAG}"
  	tee ${FILESETC_UPDATE} && chmod +x ${FILESETC_UPDATE}
-        if ! curl -fsSL https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -o replace; then
-		wget -q https://raw.githubusercontent.com/281677160/common/main/autoupdate/replace -O replace
+        if [[ ! -f "$LINSHI_COMMON/autoupdate/replace" ]]; then
+		echo -e "\n\033[0;31m缺少autoupdate/replace文件\033[0m"
+   		exit 1
   	fi
 	if [[ "${TARGET_PROFILE}" == *"k3"* ]]; then
 		export TARGET_PROFILE_ER="phicomm-k3"
@@ -121,7 +122,7 @@ function Diy_Part2() {
  	echo "TARGET_BOARD=\"${TARGET_BOARD}\"" >> ${FILESETC_UPDATE}
  	echo "RELEASE_DOWNLOAD1=\"${RELEASE_DOWNLOAD1}\"" >> ${FILESETC_UPDATE}
  	echo "RELEASE_DOWNLOAD2=\"${RELEASE_DOWNLOAD2}\"" >> ${FILESETC_UPDATE}
-	cat replace >> ${FILESETC_UPDATE}
+	cat "$LINSHI_COMMON/autoupdate/replace" >> ${FILESETC_UPDATE}
 }
 
 function Diy_Part3() {
