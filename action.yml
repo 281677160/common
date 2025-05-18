@@ -119,7 +119,7 @@ runs:
         cd ${GITHUB_WORKSPACE}
         [ -d "/tmp/common" ] && rm -rf "/tmp/common"
         if ! git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/common "/tmp/common"; then
-            TIME r "对比版本号文件下载失败，请检查网络"
+            echo -e "\033[31m 对比版本号文件下载失败，请检查网络再来 \033[0m\n"
             exit 1
         fi
         chmod -R +x /tmp/common
