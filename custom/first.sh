@@ -23,6 +23,7 @@ echo -e "\n${Color}${2}\033[0m"
 Diy_one() {
     cd "${GITHUB_WORKSPACE}"
     export LINSHI_COMMON="/tmp/common"
+    echo "LINSHI_COMMON=${LINSHI_COMMON}" >> "${GITHUB_ENV}"
     if [[ ! -d "${LINSHI_COMMON}" ]]; then
       TIME r "缺少对比版本号文件"
       exit 1
