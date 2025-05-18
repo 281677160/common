@@ -22,6 +22,7 @@ echo -e "\n${Color}${2}\033[0m"
 # 第一个自定义函数
 Diy_one() {
     cd "${GITHUB_WORKSPACE}"
+    # 更改LINSHI_COMMON变量时,需要同步修改本地编译文件
     export LINSHI_COMMON="/tmp/common"
     echo "LINSHI_COMMON=${LINSHI_COMMON}" >> "${GITHUB_ENV}"
     if [[ ! -d "${LINSHI_COMMON}" ]]; then
