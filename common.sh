@@ -122,6 +122,13 @@ if [[ "${BENDI_VERSION}" == "2" ]]; then
 fi
 }
 
+function Diy_feedsconf() {
+local LICENSES_DOC="${GITHUB_WORKSPACE}/openwrt/LICENSES/doc"
+cd "${GITHUB_WORKSPACE}/openwrt"
+[[ ! -d "${LICENSES_DOC}" ]] && mkdir -p "${LICENSES_DOC}"
+cp -Rf ${GITHUB_WORKSPACE}/openwrt/feeds.conf.default ${LICENSES_DOC}/feeds.conf.default
+}
+
 function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 TIME y "正在执行：下载和整理应用,请耐心等候..."
@@ -303,7 +310,7 @@ EOF
 
 function Diy_COOLSNOWWOLF() {
 cd ${HOME_PATH}
-rm -rf ${HOME_PATH}/package/wwan/driver
+#rm -rf ${HOME_PATH}/package/wwan/driver
 }
 
 
