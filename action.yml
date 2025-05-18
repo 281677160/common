@@ -39,6 +39,7 @@ runs:
         bash $COMMON_SH Diy_menu4
 
     - name: 清理所有缓存
+      continue-on-error: true
       if: env.CLEAR_CACHEWRTBUILD == 'true'
       shell: bash
       run: |
