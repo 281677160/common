@@ -94,12 +94,6 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
-        echo "DIY_WORK=${FOLDER_NAME}$(echo "${LUCI_EDITION}" |sed "s/\.//g" |sed "s/\-//g")" >> ${GITHUB_ENV}
-        if [[ "${SOURCE_CODE}" == "COOLSNOWWOLF" ]]; then
-          echo "LUCI_EDITION=23.05" >> ${GITHUB_ENV}
-        fi
-
         if [[ "${INFORMATION_NOTICE}" =~ (关闭|false) ]]; then
           echo "INFORMATION_NOTICE=false" >> ${GITHUB_ENV}
         elif [[ -n "$(echo "${INFORMATION_NOTICE}" |grep -i 'TG\|telegram')" ]]; then
