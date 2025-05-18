@@ -465,7 +465,6 @@ fi
 rm -rf ${HOME_PATH}/files/{LICENSE,README}
 }
 
-
 function Diy_definition() {
 cd ${HOME_PATH}
 source "${DIY_PT2_SH}"
@@ -899,29 +898,31 @@ esac
 if [[ -n "${Arch}" ]] && [[ "${AdGuardHome_Core}" == "1" ]]; then
   echo "正在执行：给adguardhome下载核心"
   rm -rf ${HOME_PATH}/AdGuardHome && rm -rf ${HOME_PATH}/files/usr/bin
-  wget -q https://github.com/281677160/common/releases/download/API/AdGuardHome.api -O AdGuardHome.api
-  if [[ $? -ne 0 ]];then
-    curl -fsSL https://github.com/281677160/common/releases/download/API/AdGuardHome.api -o AdGuardHome.api
+  if [[ ! -f "$LINSHI_COMMON/language/AdGuardHome.api" ]]; then
+    if ! wget -q https://github.com/281677160/common/releases/download/API/AdGuardHome.api -O "$LINSHI_COMMON/language/AdGuardHome.api"; then
+      TIME r "AdGuardHome.api下载失败"
+    fi
   fi
-  latest_ver="$(grep -E 'tag_name' 'AdGuardHome.api' |grep -E 'v[0-9.]+' -o 2>/dev/null)"
-  rm -rf AdGuardHome.api
-  wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_${Arch}.tar.gz
-  if [[ -f "AdGuardHome_${Arch}.tar.gz" ]]; then
-    tar -zxf AdGuardHome_${Arch}.tar.gz -C ${HOME_PATH}
-    echo "AdGuardHome核心下载成功"
-  else
-    echo "AdGuardHome核心下载失败"
-  fi
-  mkdir -p ${HOME_PATH}/files/usr/bin
-  if [[ -f "${HOME_PATH}/AdGuardHome/AdGuardHome" ]]; then
-    mv -f ${HOME_PATH}/AdGuardHome ${HOME_PATH}/files/usr/bin/
-    sudo chmod +x ${HOME_PATH}/files/usr/bin/AdGuardHome/AdGuardHome
-    echo "增加AdGuardHome核心完成"
-    echo -e "\nCONFIG_PACKAGE_luci-app-adguardhome=y" >> ${HOME_PATH}/.config
-  else
-    echo "增加AdGuardHome核心失败"
-  fi
+  if [[ -f "$LINSHI_COMMON/language/AdGuardHome.api" ]]; then
+    latest_ver="$(grep -E 'tag_name' "$LINSHI_COMMON/language/AdGuardHome.api" |grep -E 'v[0-9.]+' -o 2>/dev/null)"
+    wget -q https://github.com/AdguardTeam/AdGuardHome/releases/download/${latest_ver}/AdGuardHome_${Arch}.tar.gz
+    if [[ -f "AdGuardHome_${Arch}.tar.gz" ]]; then
+      tar -zxf AdGuardHome_${Arch}.tar.gz -C ${HOME_PATH}
+      echo "AdGuardHome核心下载成功"
+    else
+      echo "AdGuardHome核心下载失败"
+    fi
+    mkdir -p ${HOME_PATH}/files/usr/bin
+    if [[ -f "${HOME_PATH}/AdGuardHome/AdGuardHome" ]]; then
+      mv -f ${HOME_PATH}/AdGuardHome ${HOME_PATH}/files/usr/bin/
+      chmod +x ${HOME_PATH}/files/usr/bin/AdGuardHome/AdGuardHome
+      echo "增加AdGuardHome核心完成"
+      echo -e "\nCONFIG_PACKAGE_luci-app-adguardhome=y" >> ${HOME_PATH}/.config
+    else
+      echo "增加AdGuardHome核心失败"
+    fi
     rm -rf ${HOME_PATH}/{AdGuardHome_${Arch}.tar.gz,AdGuardHome}
+  fi
 else
   if [[ -f "${HOME_PATH}/files/usr/bin/AdGuardHome" ]] && [[ ! "${AdGuardHome_Core}" == "1" ]]; then
     rm -rf ${HOME_PATH}/files/usr/bin/AdGuardHome
