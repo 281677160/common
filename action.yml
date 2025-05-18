@@ -42,8 +42,8 @@ runs:
         elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
           #手动启动
           if [ -f "${COMPILE_PATH}/settings.ini" ]; then
-            [ -d "operates" ] && SOURCE_CODE="$(grep '^SOURCE_CODE=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
-            [ -d "operates" ] && COMPILATION_INFORMATION="$(grep '^COMPILATION_INFORMATION=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
+            SOURCE_CODE="$(grep '^SOURCE_CODE=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
+            COMPILATION_INFORMATION="$(grep '^COMPILATION_INFORMATION=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
           fi
           REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
           CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"
