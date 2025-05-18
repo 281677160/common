@@ -1,5 +1,46 @@
-name: 'My Composite Action'
-description: 'Combines multiple steps'
+name: '触发编译工作流'
+description: '通过推送代码到指定仓库分支触发编译流程'
+inputs:
+  git-refname:
+    description: 'Git 分支名称'
+    required: true
+  repo-token:
+    description: '访问仓库的 token'
+    required: true
+    default: ${{ github.token }}
+  git-repository:
+    description: 'Git 仓库名称'
+    required: true
+  folder-name:
+    description: '固件文件夹名称'
+    required: true
+  config-txt:
+    description: '配置文件路径'
+    required: true
+  myconfig-file:
+    description: '目标配置文件路径'
+    required: true
+  compile-path:
+    description: '编译文件路径'
+    required: true
+  source:
+    description: '源码标识'
+    required: true
+  repo-branch:
+    description: '仓库分支'
+    required: true
+  config-file:
+    description: '配置文件标识'
+    required: true
+  run-number:
+    description: '运行编号'
+    required: true
+  luci-edition:
+    description: 'LuCI 版本'
+    required: true
+  target-profile:
+    description: '目标设备配置'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -7,54 +48,101 @@ runs:
       id: gitpush
       shell: bash
       run: |
-        cd ${GITHUB_WORKSPACE}
+        set -euo pipefail
+        
+        # 定义颜色输出函数
+        log_info() { echo -e "\033[32mINFO: $1\033[0m"; }
+        log_warn() { echo -e "\033[33mWARN: $1\033[0m"; }
+        log_error() { echo -e "\033[31mERROR: $1\033[0m"; }
+        
+        log_info "开始触发编译流程..."
+        
+        cd "${{ github.workspace }}"
+        
+        # 创建临时目录
+        log_info "创建临时工作目录..."
         tmpdir="$(mktemp -d)"
-        UPLOAD="$GITHUB_WORKSPACE/${tmpdir#*.}"
-
+        UPLOAD="${{ github.workspace }}/${tmpdir#*.}"
+        
         # 克隆仓库
-        git clone -b ${GIT_REFNAME} https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git $UPLOAD
-        cd $UPLOAD
+        log_info "克隆仓库 ${{ inputs.git-repository }} 分支 ${{ inputs.git-refname }}..."
+        git clone -b "${{ inputs.git-refname }}" "https://user:${{ inputs.repo-token }}@github.com/${{ inputs.git-repository }}.git" "$UPLOAD"
+        cd "$UPLOAD"
         git reset --hard HEAD
-        cd ${GITHUB_WORKSPACE}
-
+        cd "${{ github.workspace }}"
+        
         # 清理和复制文件
-        [[ -d "$UPLOAD/build/${FOLDER_NAME}" ]] && rm -rf "$UPLOAD/build/${FOLDER_NAME}"
-        cp -Rf "$CONFIG_TXT" "$MYCONFIG_FILE"
-        cp -Rf "$COMPILE_PATH" "$UPLOAD/build/$FOLDER_NAME"
-        [[ -d "$UPLOAD/build/common" ]] && rm -rf "$UPLOAD/build/common"
-        cp -Rf "$GITHUB_WORKSPACE/.github/workflows/compile.yml" "$UPLOAD/.github/workflows/compile.yml"
-
+        log_info "准备编译文件..."
+        if [[ -d "$UPLOAD/build/${{ inputs.folder-name }}" ]]; then
+          log_info "清理旧的编译目录..."
+          rm -rf "$UPLOAD/build/${{ inputs.folder-name }}"
+        fi
+        
+        log_info "复制配置文件..."
+        cp -Rf "${{ inputs.config-txt }}" "${{ inputs.myconfig-file }}"
+        
+        log_info "复制编译文件..."
+        cp -Rf "${{ inputs.compile-path }}" "$UPLOAD/build/${{ inputs.folder-name }}"
+        
+        if [[ -d "$UPLOAD/build/common" ]]; then
+          log_info "清理公共文件目录..."
+          rm -rf "$UPLOAD/build/common"
+        fi
+        
+        log_info "更新编译工作流配置..."
+        cp -Rf "${{ github.workspace }}/.github/workflows/compile.yml" "$UPLOAD/.github/workflows/compile.yml"
+        
         # 创建相关目录和文件
-        mkdir -p "$UPLOAD/build/${FOLDER_NAME}/relevance"
-        echo "${SOURCE}-${REPO_BRANCH}-${CONFIG_FILE}-$(date +%Y年%m月%d号%H时%M分%S秒)" > "$UPLOAD/build/${FOLDER_NAME}/relevance/start"
-        cp -Rf "$COMPILE_PATH/relevance/settings.ini" "$UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini"
-        echo "ERRUN_NUMBER=${RUN_NUMBER}" >> "$UPLOAD/build/${FOLDER_NAME}/relevance/settings.ini"
-
+        log_info "创建编译相关文件..."
+        mkdir -p "$UPLOAD/build/${{ inputs.folder-name }}/relevance"
+        echo "${{ inputs.source }}-${{ inputs.repo-branch }}-${{ inputs.config-file }}-$(date +%Y年%m月%d号%H时%M分%S秒)" > "$UPLOAD/build/${{ inputs.folder-name }}/relevance/start"
+        cp -Rf "${{ inputs.compile-path }}/relevance/settings.ini" "$UPLOAD/build/${{ inputs.folder-name }}/relevance/settings.ini"
+        echo "ERRUN_NUMBER=${{ inputs.run-number }}" >> "$UPLOAD/build/${{ inputs.folder-name }}/relevance/settings.ini"
+        
         # 修改编译配置文件
+        log_info "更新编译配置文件..."
         YML_PATH="$UPLOAD/.github/workflows/compile.yml"
-        PATHS="build/${FOLDER_NAME}/relevance/start"
-        sed -i "/branches:/,/paths:/s/- .*/- ${GIT_REFNAME}/" "$YML_PATH"
+        PATHS="build/${{ inputs.folder-name }}/relevance/start"
+        
+        # 使用更健壮的sed命令
+        sed -i "/branches:/,/paths:/s|- .*|- ${{ inputs.git-refname }}|" "$YML_PATH"
         sed -i "/paths:/,/matrix:/s@- .*@- '${PATHS//@/\\@}'@" "$YML_PATH"
-        sed -i "/matrix:/,/^ *target:/s/target:.*/  target: [${FOLDER_NAME}]/" "$YML_PATH"
-
+        sed -i "/matrix:/,/^ *target:/s/target:.*/  target: [${{ inputs.folder-name }}]/" "$YML_PATH"
+        
         # 提交并推送
+        log_info "提交并推送更改..."
         chmod -R +x "$UPLOAD"
         cd "$UPLOAD"
+        
+        git status
+        
+        log_info "添加更改到暂存区..."
         git add .
-        git commit -m "编译-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
-        git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${GIT_REFNAME} || {
-          for i in {1..3}; do
+        
+        log_info "提交更改..."
+        git commit -m "编译-${{ inputs.folder-name }}-${{ inputs.luci-edition }}-${{ inputs.target-profile }}固件"
+        
+        log_info "推送更改到远程仓库..."
+        PUSH_SUCCESS=false
+        
+        for i in {1..3}; do
+          echo "尝试推送 (${i}/3)..."
+          if git push --force "https://${{ inputs.repo-token }}@github.com/${{ inputs.git-repository }}" HEAD:${{ inputs.git-refname }}; then
+            PUSH_SUCCESS=true
+            break
+          else
+            log_warn "推送失败，等待2秒后重试..."
             sleep 2
-            git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${GIT_REFNAME} && break
-          done
-        }
-
+          fi
+        done
+        
         # 检查推送结果
-        if [[ $? -ne 0 ]]; then
-          echo -e "\033[31m 触发编译失败,请勿胡乱修改compile.yml文件 \033[0m"
+        if [ "$PUSH_SUCCESS" = false ]; then
+          log_error "触发编译失败,请勿胡乱修改compile.yml文件"
           exit 1
         else
-          echo -e "\033[32m 触发编译${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}成功 \033[0m"
+          log_info "触发编译${{ inputs.folder-name }}-${{ inputs.luci-edition }}-${{ inputs.target-profile }}成功"
+          echo "compile-triggered=true" >> $GITHUB_ENV
         fi
 
     - name: 信息通知的时间
