@@ -1452,6 +1452,7 @@ if [[ "${BENDI_VERSION}" == "2" ]]; then
     "Diy_menu4") Diy_menu4 ;;
     "Diy_menu5") Diy_menu5 ;;
     "Diy_menu6") Diy_menu6 ;;
+    "Diy_feedsconf") Diy_feedsconf ;;
     *) 
       echo "不支持${1}" ;;
   esac
