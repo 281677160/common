@@ -66,5 +66,7 @@ uci -q batch <<-EOF
 	add_list system.ntp.server="cn.ntp.org.cn"
 	set system.@imm_init[0].system_chn="1"
 	commit system
+	set luci.main.lang=zh_cn
+	commit luci
 EOF
 
