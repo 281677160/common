@@ -47,7 +47,6 @@ Diy_two() {
 
     for dir in "${required_dirs[@]}"; do
         if [[ ! -d "$dir" ]]; then
-            TIME r "缺少 $dir 文件夹"
             SYNCHRONISE="NO"
             tongbu_message="缺少编译必要文件夹"
             return
@@ -60,7 +59,6 @@ Diy_two() {
                 TIME r "缺少 seed/${CONFIG_FILE} 文件，请先建立该文件"
                 exit 1
             else
-                TIME r "缺少 $file 文件"
                 SYNCHRONISE="NO"
                 tongbu_message="缺少$file文件"
                 return
@@ -72,7 +70,6 @@ Diy_two() {
         ACTIONS_VERSION2=$(sed -nE 's/^[[:space:]]*ACTIONS_VERSION[[:space:]]*=[[:space:]]*"?([0-9.]+)"?.*/\1/p' "${COMPILE_PATH}/relevance/actions_version")
         if [[ "$ACTIONS_VERSION1" != "$ACTIONS_VERSION2" ]]; then
             sudo rm -rf /etc/oprelyo*
-            TIME r "和上游版本不一致"
             SYNCHRONISE="NO"
             tongbu_message="和上游版本不一致"
         else
