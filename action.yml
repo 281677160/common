@@ -7,7 +7,7 @@ inputs:
   repo-token:
     description: '访问仓库的 token'
     required: true
-    default: ${{ env.REPO_TOKEN }}
+    default: ${{ secrets.REPO_TOKEN }}
   git-repository:
     description: 'Git 仓库名称'
     required: true
