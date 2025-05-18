@@ -129,10 +129,9 @@ Diy_three() {
                     TIME g "同步上游仓库完成"
                 fi
                 TIME r "因刚同步上游文件，请设置好 [operates] 文件夹内的配置后，再次使用命令编译"
-                export TONGBU_YUANMA="1"
+                exit 1
             else
                 TIME r "同步上游仓库失败，注意网络环境，请重新再运行命令试试"
-                export TONGBU_YUANMA="1"
                 exit 1
             fi
         else
