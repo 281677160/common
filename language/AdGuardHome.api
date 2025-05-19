@@ -64,7 +64,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 11120899,
-      "download_count": 661,
+      "download_count": 665,
       "created_at": "2025-04-22T12:23:29Z",
       "updated_at": "2025-04-22T12:23:30Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_darwin_amd64.zip"
@@ -99,7 +99,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 10544992,
-      "download_count": 302,
+      "download_count": 306,
       "created_at": "2025-04-22T12:23:31Z",
       "updated_at": "2025-04-22T12:23:32Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_darwin_arm64.zip"
@@ -169,7 +169,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 10906339,
-      "download_count": 299,
+      "download_count": 300,
       "created_at": "2025-04-22T12:23:33Z",
       "updated_at": "2025-04-22T12:23:35Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_freebsd_amd64.tar.gz"
@@ -344,7 +344,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 2460494,
-      "download_count": 3569,
+      "download_count": 3610,
       "created_at": "2025-04-22T12:23:41Z",
       "updated_at": "2025-04-22T12:23:42Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_frontend.tar.gz"
@@ -414,7 +414,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 11092172,
-      "download_count": 16744,
+      "download_count": 16837,
       "created_at": "2025-04-22T12:23:44Z",
       "updated_at": "2025-04-22T12:23:45Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_linux_amd64.tar.gz"
@@ -449,7 +449,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 10265237,
-      "download_count": 6754,
+      "download_count": 6788,
       "created_at": "2025-04-22T12:23:46Z",
       "updated_at": "2025-04-22T12:23:50Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_linux_arm64.tar.gz"
@@ -554,7 +554,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 10512215,
-      "download_count": 760,
+      "download_count": 769,
       "created_at": "2025-04-22T12:23:53Z",
       "updated_at": "2025-04-22T12:23:54Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_linux_armv7.tar.gz"
@@ -589,7 +589,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 9908018,
-      "download_count": 57,
+      "download_count": 59,
       "created_at": "2025-04-22T12:23:55Z",
       "updated_at": "2025-04-22T12:23:56Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_linux_mips64le_softfloat.tar.gz"
@@ -659,7 +659,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 10301120,
-      "download_count": 25749,
+      "download_count": 26033,
       "created_at": "2025-04-22T12:23:58Z",
       "updated_at": "2025-04-22T12:24:06Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_linux_mipsle_softfloat.tar.gz"
@@ -799,7 +799,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 10889721,
-      "download_count": 91,
+      "download_count": 96,
       "created_at": "2025-04-22T12:24:09Z",
       "updated_at": "2025-04-22T12:24:11Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_openbsd_amd64.tar.gz"
@@ -869,7 +869,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 10396424,
-      "download_count": 514,
+      "download_count": 516,
       "created_at": "2025-04-22T12:24:13Z",
       "updated_at": "2025-04-22T12:24:15Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_windows_386.zip"
@@ -904,7 +904,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 10608308,
-      "download_count": 2165,
+      "download_count": 2181,
       "created_at": "2025-04-22T12:24:15Z",
       "updated_at": "2025-04-22T12:24:26Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_windows_amd64.zip"
@@ -939,7 +939,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 9727749,
-      "download_count": 381,
+      "download_count": 385,
       "created_at": "2025-04-22T12:24:26Z",
       "updated_at": "2025-04-22T12:24:27Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/AdGuardHome_windows_arm64.zip"
@@ -974,7 +974,7 @@
       "content_type": "application/octet-stream",
       "state": "uploaded",
       "size": 2622,
-      "download_count": 428,
+      "download_count": 432,
       "created_at": "2025-04-22T12:24:28Z",
       "updated_at": "2025-04-22T12:24:28Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.61/checksums.txt"
