@@ -138,7 +138,7 @@ function Diy_Part3() {
 	case "${TARGET_BOARD}" in
 	x86)
 		if [[ -n "$(ls -1 | grep -E 'efi')" ]]; then
-			EFI_ZHONGZHUAN="$(ls -1 |grep -Eo ".*squashfs.*efi.*img.gz")"
+			EFI_ZHONGZHUAN="$(ls -1 |grep -Eo ".*squashfs.*efi.*img.gz" |grep -v ".vm\|.vb\|.vh\|.qco\|ext4\|root\|factory\|kernel")"
 			if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
 		  		EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} |cut -c1-3)"
 		  		cp -Rf "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AUTOBUILD_UEFI}-${EFIMD5}${FIRMWARE_SUFFIX}"
@@ -150,7 +150,7 @@ function Diy_Part3() {
 		fi
 		
   		if [[ -n "$(ls -1 | grep -E 'squashfs')" ]]; then
-			LEGA_ZHONGZHUAN="$(ls -1 |grep -Eo ".*squashfs.*img.gz" |grep -v ".vm\|.vb\|.vh\|.qco\|efi\|root")"
+			LEGA_ZHONGZHUAN="$(ls -1 |grep -Eo ".*squashfs.*img.gz" |grep -v ".vm\|.vb\|.vh\|.qco\|efi\|ext4\|root\|factory\|kernel")"
 			if [[ -f "${LEGA_ZHONGZHUAN}" ]]; then
 				LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} |cut -c1-3)"
 				cp -Rf "${LEGA_ZHONGZHUAN}" "${BIN_PATH}/${AUTOBUILD_LEGACY}-${LEGAMD5}${FIRMWARE_SUFFIX}"
@@ -163,13 +163,13 @@ function Diy_Part3() {
 	;;
 	*)
   		if [[ -n "$(ls -1 | grep -E 'sysupgrade')" ]]; then
-			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*sysupgrade.*${FIRMWARE_SUFFIX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
+			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*sysupgrade.*${FIRMWARE_SUFFIX}" |grep -v ".vm\|.vb\|.vh\|.qco\|efi\|ext4\|root\|factory\|kernel")"
 		elif [[ -n "$(ls -1 | grep -E 'squashfs')" ]]; then
-			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*squashfs.*${FIRMWARE_SUFFIX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
+			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*squashfs.*${FIRMWARE_SUFFIX}" |grep -v ".vm\|.vb\|.vh\|.qco\|efi\|ext4\|root\|factory\|kernel")"
    		elif [[ -n "$(ls -1 | grep -E 'combined')" ]]; then
-			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*combined.*${FIRMWARE_SUFFIX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
+			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*combined.*${FIRMWARE_SUFFIX}" |grep -v ".vm\|.vb\|.vh\|.qco\|efi\|ext4\|root\|factory\|kernel")"
       		elif [[ -n "$(ls -1 | grep -E 'sdcard')" ]]; then
-			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*sdcard.*${FIRMWARE_SUFFIX}" |grep -v "rootfs\|ext4\|factory\|kernel")"
+			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*${TARGET_PROFILE}.*sdcard.*${FIRMWARE_SUFFIX}" |grep -v ".vm\|.vb\|.vh\|.qco\|efi\|ext4\|root\|factory\|kernel")"
    		else
      			echo "没找到在线升级可用的${FIRMWARE_SUFFIX}格式固件，或者没适配该机型"
 		fi
