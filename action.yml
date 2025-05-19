@@ -64,7 +64,11 @@ runs:
       shell: bash
       run: |
         cd ${{ env.HOME_PATH }}
-        echo "YUNDUAN_MESSAGE=、发送云端" >> $GITHUB_ENV
+        if [[ "$YUNDUAN_API" == "false" ]]; then
+          echo "YUNDUAN_MESSAGE=、云端信息获取失败,在线更新将不能获取最新信息,不过固件发送云端" >> $GITHUB_ENV
+        else
+          echo "YUNDUAN_MESSAGE=、发送云端固件" >> $GITHUB_ENV
+        fi
 
 branding:
   icon: "terminal"
