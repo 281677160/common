@@ -165,7 +165,6 @@ Diy_three() {
                 echo "ACTIONS_VERSION=${ACTIONS_VERSION1}" > "${X}/actions_version"
                 echo "请勿修改和删除此文件夹内的任何文件" > "${X}/README"
                 echo "$(date +%Y%m%d%H%M%S)" > "${X}/start"
-                echo "$(date +%Y%m%d%H%M%S)" > "${X}/armsrstart"
             done
             
             BANBEN_SHUOMING="同步上游于 $(date +%Y.%m%d.%H%M.%S)"
