@@ -12,7 +12,7 @@ runs:
         tag: ${{ env.UPDATE_TAG }}
         token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
-        body: ${{ env.Tongzhi_Date }}
+        body: ${{ env.TONGZHI_DATE }}
         artifacts: "${{ env.BIN_PATH }}/*"
 
     - name: 检查云端固件信息
@@ -39,7 +39,7 @@ runs:
         token: ${{ env.REPO_TOKEN }}
         artifacts: "API/*"
         allowUpdates: true
-        body: ${{ env.Tongzhi_Date }}
+        body: ${{ env.TONGZHI_DATE }}
 
     - name: 发送[在线更新固件]至云端3
       if: steps.yunduan.outcome == 'success'
@@ -51,7 +51,7 @@ runs:
         artifacts: ${{ env.AUTO_API }}
         allowUpdates: true
         replacesArtifacts: true
-        body: ${{ env.Tongzhi_Date }}
+        body: ${{ env.TONGZHI_DATE }}
 
     - name: 发送[在线更新固件]至云端3
       if: ${{ steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' }}
