@@ -61,6 +61,7 @@ runs:
         else
           echo -e "\033[36m没有缓存,无需清理\033[0m"
         fi
+        echo
 
     - name: 机型为armsr_rootfs_tar_gz的时,改变是远程更新为打包设置
       shell: bash
