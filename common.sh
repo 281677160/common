@@ -207,7 +207,7 @@ variable ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -
 cd ${HOME_PATH}
 ./scripts/feeds clean
 if [[ "${BENDI_VERSION}" == "2" ]]; then
-  ./scripts/feeds update -a -q &>/dev/null
+  ./scripts/feeds update -a -q
 else
   ./scripts/feeds update -a
 fi
@@ -390,7 +390,7 @@ TIME y "正在执行：自定义文件"
 cd ${HOME_PATH}
 # 运行自定义文件
 ${DIY_PT1_SH}
-./scripts/feeds update -a
+./scripts/feeds update -a -q
 }
 
 
@@ -415,7 +415,7 @@ if [[ ! "${Default_theme}" == "0" ]] && [[ -n "${Default_theme}" ]]; then
 fi
 
 # 更新和安装feeds
-./scripts/feeds install -a -q &>/dev/null
+./scripts/feeds install -a -q
 ./scripts/feeds install -a
 
 # 使用自定义配置文件
