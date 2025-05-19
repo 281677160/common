@@ -21,7 +21,7 @@ runs:
       if: env.UPLOAD_FIRMWARE == 'true'
       uses: actions/upload-artifact@main
       with:
-        name: ${{ env.SHANGCHUAN_MINGCHEN }}-firmware-${{ env.Firmware_Date }}
+        name: ${{ env.SHANGCHUAN_MINGCHEN }}-firmware-${{ env.FIRMWARE_DATE }}
         path: ${{ env.FIRMWARE_PATH }}
 
     - name: 上传信息
@@ -37,10 +37,10 @@ runs:
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.SHANGCHUAN_MINGCHEN }}
-        tag: a${{ env.date }}
+        tag: a${{ env.DATE }}
         token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
-        body: ${{ env.Tongzhi_Date }}
+        body: ${{ env.TONGZHI_DATE }}
         artifacts: "${{ env.FIRMWARE_PATH }}/*"
 
     - name: 发布固件到 Github Releases
@@ -49,12 +49,12 @@ runs:
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.amlogic_model }}
-        tag: a${{ env.date }}
+        tag: a${{ env.DATE }}
         token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
         artifacts: "${{ env.FIRMWARE_PATH }}/*"
         body: |
-          发布日期：${{ env.date_tg }}
+          发布日期：${{ env.FIRMWARE_DATE }}
           固件源码：${{ env.SOURCE }}
           内核仓库：${{ env.kernel_usage }}
           写入EMMC：Login to OpenWrt → System → Amlogic Service → Install OpenWrt
