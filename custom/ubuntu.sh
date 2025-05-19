@@ -11,7 +11,7 @@ apt-get update -y
 apt-get full-upgrade -y
 
 # 安装编译openwrt的依赖
-# apt-get install -y ecj fastjar file gettext java-propose-classpath time xsltproc lib32gcc-s1
+apt-get install -y ecj fastjar file gettext java-propose-classpath time xsltproc lib32gcc-s1
 apt-get install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
 bzip2 ccache cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
 genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
@@ -25,7 +25,8 @@ texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 apt-get install -y libfuse-dev
 
 # N1打包需要的依赖
-apt-get install -y rename pigz clang gnupg
+apt-get install -y rename pigz clang gnupg snapd
+sudo snap install jq
 apt-get install -y $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
 # 安装gcc g++
