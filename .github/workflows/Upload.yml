@@ -69,7 +69,7 @@ jobs:
         cd ${GITHUB_WORKSPACE}
         curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest -o $GITHUB_WORKSPACE/repogx/language/AdGuardHome.api
         if ! grep -E "assets" "$GITHUB_WORKSPACE/repogx/language/AdGuardHome.api"; then
-          curl https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > $GITHUB_WORKSPACE/repogx/language/AdGuardHome.api
+          wget https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest -O $GITHUB_WORKSPACE/repogx/language/AdGuardHome.api
         fi
         
     - name: Upload
