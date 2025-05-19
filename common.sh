@@ -1278,6 +1278,10 @@ if ! echo "$TARGET_BOARD" | grep -Eq 'armvirt|armsr'; then
   TIME g "更改固件名称"
   rename -v "s/^openwrt/${GUJIAN_DATE}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
 fi
+
+echo "DATE=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
+echo "TONGZHI_DATE=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
+echo "FIRMWARE_DATE=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
 }
 
 
