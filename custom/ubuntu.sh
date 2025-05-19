@@ -26,7 +26,7 @@ apt-get install -y libfuse-dev
 
 # N1打包需要的依赖
 apt-get install -y rename pigz clang gnupg snapd
-sudo snap install jq
+snap install jq
 apt-get install -y $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
 # 安装gcc g++
