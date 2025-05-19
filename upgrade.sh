@@ -23,7 +23,6 @@ function Diy_Part2() {
 	export RELEASE_DOWNLOAD1="https://ghfast.top/\$GITHUB_LINK/releases/download/${UPDATE_TAG}"
 	export RELEASE_DOWNLOAD2="\$GITHUB_LINK/releases/download/${UPDATE_TAG}"
 	export GITHUB_RELEASE="${GITHUB_LINK}/releases/tag/${UPDATE_TAG}"
-	install -m 0755 /dev/null "${FILESETC_UPDATE}"
         if [[ ! -f "$LINSHI_COMMON/autoupdate/replace" ]]; then
 		echo -e "\n\033[0;31m缺少autoupdate/replace文件\033[0m"
    		exit 1
@@ -113,7 +112,8 @@ function Diy_Part2() {
 
 
 	# 写入openwrt_update文件
-	echo "GITHUB_LINK=\"${GITHUB_LINK}\"" > ${FILESETC_UPDATE}
+	install -m 0755 /dev/null "${FILESETC_UPDATE}"
+	echo "GITHUB_LINK=\"${GITHUB_LINK}\"" >> ${FILESETC_UPDATE}
  	echo "FIRMWARE_VERSION=\"${FIRMWARE_VERSION}\"" >> ${FILESETC_UPDATE}
  	echo "LUCI_EDITION=\"${LUCI_EDITION}\"" >> ${FILESETC_UPDATE}
  	echo "SOURCE=\"${SOURCE}\"" >> ${FILESETC_UPDATE}
