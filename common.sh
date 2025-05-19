@@ -104,7 +104,6 @@ variable UPGRADE_DATE="`date -d "$(date +'%Y-%m-%d %H:%M:%S')" +%s`"
 variable GUJIAN_DATE="$(date +%m.%d)"
 variable LICENSES_DOC="${HOME_PATH}/LICENSES/doc"
 variable CON_TENTCOM="$(echo "${REPO_URL}" |cut -d"/" -f4-5)"
-variable RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH}/feeds.conf.default"
 
 # 启动编译时的变量文件
 if [[ "${BENDI_VERSION}" == "2" ]]; then
@@ -135,13 +134,6 @@ function Diy_checkout() {
 # 下载源码后，进行源码微调和增加插件源
 TIME y "正在执行：下载和整理应用,请耐心等候..."
 cd ${HOME_PATH}
-[[ ! -d "${LICENSES_DOC}" ]] && mkdir -p "${LICENSES_DOC}"
-if ! curl -fsSL "${RAW_WEB}" -o "${LICENSES_DOC}/feeds.conf.default"; then
-  if ! wget -q ${RAW_WEB} -O ${LICENSES_DOC}/feeds.conf.default; then
-    TIME r "文件下载失败,请检查网络"
-    exit 1
-  fi
-fi
 # 增加一些应用
 echo '#!/bin/sh' > "${DELETE}" && chmod +x "${DELETE}"
 if [[ -d "${LINSHI_COMMON}/auto-scripts" ]]; then
