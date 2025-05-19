@@ -152,7 +152,9 @@ Diy_three() {
             rm -rf *
             git rm --cache *
             cd "${GITHUB_WORKSPACE}"
-            rsync -a shangyou/ repogx/
+            mkdir -p repogx/.github/workflows
+            cp -Rf shangyou/* repogx
+            cp -Rf shangyou/.github/workflows/* repogx/.github/workflows
             if [[ "$GIT_REPOSITORY" != "281677160/build-actions" ]]; then
                 cp -Rf backups repogx/backups
             fi
