@@ -144,7 +144,12 @@ if ! curl -fsSL "${RAW_WEB}" -o "${LICENSES_DOC}/feeds.conf.default"; then
 fi
 # 增加一些应用
 echo '#!/bin/sh' > "${DELETE}" && chmod +x "${DELETE}"
-gitsvn https://github.com/281677160/common/tree/main/auto-scripts ${HOME_PATH}/package/auto-scripts
+if [[ -d "${LINSHI_COMMON}/auto-scripts" ]]; then
+  cp -Rf "$LINSHI_COMMON/auto-scripts" "${HOME_PATH}/package/auto-scripts"
+else
+  TIME r "缺少auto-scripts文件"
+  exit 1
+fi
 
 sed -i "s/ZHUJI_MING/${SOURCE}/g" "${DEFAULT_PATH}"
 sed -i "s/LUCI_EDITION/${LUCI_EDITION}/g" "${DEFAULT_PATH}"
