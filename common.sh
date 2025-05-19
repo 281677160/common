@@ -108,8 +108,7 @@ variable RAW_WEB="https://raw.githubusercontent.com/${CON_TENTCOM}/${REPO_BRANCH
 
 # 启动编译时的变量文件
 if [[ "${BENDI_VERSION}" == "2" ]]; then
-  echo -n > "${COMPILE_PATH}/relevance/settings.ini"
-  chmod +x ${COMPILE_PATH}/relevance/settings.ini
+  install -m 0755 /dev/null "${COMPILE_PATH}/relevance/settings.ini"
   VARIABLES=(
   "SOURCE_CODE" "REPO_BRANCH" "CONFIG_FILE"
   "INFORMATION_NOTICE" "UPLOAD_FIRMWARE" "UPLOAD_RELEASE"
