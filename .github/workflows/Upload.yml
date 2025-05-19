@@ -34,9 +34,9 @@ jobs:
       if: env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
-        git clone -b ${{github.ref_name}} https://github.com/${{github.repository}}.git $GITHUB_WORKSPACE/repogx
+        git clone --depth=1 -b ${{github.ref_name}} https://github.com/${{github.repository}}.git $GITHUB_WORKSPACE/repogx
         mkdir -p $GITHUB_WORKSPACE/repogx/autoupdate
-        echo "" >$GITHUB_WORKSPACE/123
+        echo -n > $GITHUB_WORKSPACE/123
         
         branches_raw=$(git ls-remote --heads https://github.com/coolsnowwolf/lede.git | grep refs/heads/)
         branches=$(echo "$branches_raw" | awk -F'refs/heads/' '{print $2}' | sed 's/\^{}//' |sed 's/openwrt-//g' |sed 's/master/23.05/g' |sed 's/^/="/' |sed 's/$/-Lede"/')
