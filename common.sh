@@ -206,7 +206,7 @@ variable ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -
 # 更新feeds
 cd ${HOME_PATH}
 ./scripts/feeds clean
-./scripts/feeds update -a > /dev/null 2>&1
+./scripts/feeds update -a -q &>/dev/null
 
 
 # 更新feeds后再次修改补充
