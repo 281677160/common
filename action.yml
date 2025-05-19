@@ -122,13 +122,14 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        [ -d "/tmp/common" ] && rm -rf "/tmp/common"
-        if ! git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/common "/tmp/common"; then
+        LINSHI_COMMON="/tmp/common"
+        [ -d "${LINSHI_COMMON}" ] && rm -rf "${LINSHI_COMMON}"
+        if ! git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/common "${LINSHI_COMMON}"; then
             echo -e "\033[31m 对比版本号文件下载失败，请检查网络再来 \033[0m\n"
             exit 1
         fi
-        chmod -R +x /tmp/common
-        source /tmp/common/custom/first.sh
+        chmod -R +x "${LINSHI_COMMON}"
+        source "${LINSHI_COMMON}/custom/first.sh"
 
     - name: 运行其他变量
       shell: bash
