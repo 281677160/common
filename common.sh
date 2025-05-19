@@ -206,7 +206,11 @@ variable ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -
 # 更新feeds
 cd ${HOME_PATH}
 ./scripts/feeds clean
-./scripts/feeds update -a -q &>/dev/null
+if [[ "${BENDI_VERSION}" == "2" ]]; then
+  ./scripts/feeds update -a -q &>/dev/null
+else
+  ./scripts/feeds update -a
+fi
 
 
 # 更新feeds后再次修改补充
