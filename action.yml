@@ -19,19 +19,25 @@ runs:
       if: ${{ steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' }}
       shell: bash
       run: |
+        echo "YUNDUAN_API=false" >> $GITHUB_ENV
         mkdir -p $GITHUB_WORKSPACE/API
         cd $GITHUB_WORKSPACE/API
         echo "AUTO_API=$GITHUB_WORKSPACE/API/zzz_api" >> $GITHUB_ENV
         curl -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.UPDATE_TAG }}" -o zzz_api
         if ! grep -q "${{ env.FIRMWARE_VERSION }}" zzz_api; then
-          echo "未找到固件信息，尝试重新获取..."
-          wget -O zzz_api https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.UPDATE_TAG }}
+          if ! wget -O zzz_api https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.UPDATE_TAG }}; then
+            echo "获取api失败,在线更新将不能获取到最新版本信息"
+          else
+            echo "YUNDUAN_API=true" >> $GITHUB_ENV
+            echo "获取api成功"
+          fi
         else
+          echo "YUNDUAN_API=true" >> $GITHUB_ENV
           echo "获取api成功"
         fi
 
     - name: 发送[在线更新固件]至云端2
-      if: ${{ steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' }}
+      if: ${{ env.YUNDUAN_API == 'true' }}
       uses: ncipollo/release-action@v1
       with:
         name: AutoUpdate-${{ env.TARGET_BOARD }}
@@ -42,7 +48,7 @@ runs:
         body: ${{ env.TONGZHI_DATE }}
 
     - name: 发送[在线更新固件]至云端3
-      if: steps.yunduan.outcome == 'success'
+      if: ${{ env.YUNDUAN_API == 'true' }}
       uses: ncipollo/release-action@v1
       with:
         name: rootfs.tar.gz
