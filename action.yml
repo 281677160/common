@@ -61,7 +61,11 @@ runs:
           cp -Rf "${FIRMWARE_PATH}"/* "${PACKAGED_OUTPUTPATH}"
         fi
         echo "FIRMWARE_PATH=${PACKAGED_OUTPUTPATH}" >> "${GITHUB_ENV}"
-        echo "TARGET_PROFILE_IMG=${TARGET_BOARD}-img" >> "${GITHUB_ENV}"
+        if [[ -n "${TARGET_BOARD}" ]]; then
+          echo "TARGET_PROFILE_IMG=${TARGET_BOARD}-img" >> "${GITHUB_ENV}"
+        else
+          echo "TARGET_PROFILE_IMG=img" >> "${GITHUB_ENV}"
+        fi
 branding:
   icon: "terminal"
   color: "gray-dark"
