@@ -43,8 +43,8 @@ runs:
       if: env.CLEAR_CACHEWRTBUILD == 'true'
       shell: bash
       run: |
-        cd ${GITHUB_WORKSPACE}
-        echo -e "\n\033[33m正在执行：清理缓存\033[0m"
+        echo
+        echo -e "\033[33m正在执行：清理缓存\033[0m"
         set -euo pipefail
         CACHES=$(curl -s -H "Authorization: token $REPO_TOKEN" \
           "https://api.github.com/repos/$GIT_REPOSITORY/actions/caches?per_page=100" \
