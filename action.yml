@@ -48,7 +48,7 @@ runs:
         set -euo pipefail
         CACHES=$(curl -s -H "Authorization: token $REPO_TOKEN" \
           "https://api.github.com/repos/$GIT_REPOSITORY/actions/caches?per_page=100" \
-          | jq -r --arg regex "$CACHE_KEY_REGEX" '.actions_caches[] |
+          | jq -r --arg regex ".*-cache-openwr" '.actions_caches[] |
             select(.key | test($regex)) |
             {id: .id, key: .key, created_at: .created_at}')
         CACHE_IDS=$(echo "$CACHES" | jq -r '.id')
