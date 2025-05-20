@@ -51,8 +51,8 @@ runs:
       if: ${{ env.YUNDUAN_API == 'true' }}
       uses: ncipollo/release-action@v1
       with:
-        name: rootfs.tar.gz
-        tag: targz
+        name: AutoUpdate-${{ env.TARGET_BOARD }}
+        tag: ${{ env.UPDATE_TAG }}
         token: ${{ env.REPO_TOKEN }}
         artifacts: ${{ env.AUTO_API }}
         allowUpdates: true
