@@ -92,7 +92,7 @@ runs:
 
         echo "CACHE_KEY_REGEX=.*-cache-openwr" >> ${GITHUB_ENV}
 
-    - name: 整理个别变量
+    - name: 整理缓存和通知的变量
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
