@@ -200,7 +200,7 @@ cd ${HOME_PATH}
 if [[ "${BENDI_VERSION}" == "2" ]]; then
   ./scripts/feeds update -a &>/dev/null
 else
-  ./scripts/feeds update -a 2>&1 | tee /tmp/build.log
+  ./scripts/feeds update -a
 fi
 
 
