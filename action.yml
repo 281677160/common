@@ -14,8 +14,9 @@ runs:
           echo "SHANGCHUAN_MINGCHEN=${{ env.SOURCE }}-${{ env.LUCI_EDITION }}-${{ env.TARGET_PROFILE }}" >> ${GITHUB_ENV}
           echo "RR_RELEASE=a" >> ${GITHUB_ENV}
         fi
-        [[ -z "${DATE}" ]] && echo "DATE=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
-        [[ -z "${FIRMWARE_DATE}" ]] && echo "FIRMWARE_DATE=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
+        [ -z "${DATE}" ] && echo "DATE=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
+        [ -z "${TONGZHI_DATE}" ] && echo "TONGZHI_DATE=$(date +%Y年%m月%d日)" >> ${GITHUB_ENV}
+        [ -z "${FIRMWARE_DATE}" ] && echo "FIRMWARE_DATE=$(date +%Y-%m%d-%H%M)" >> ${GITHUB_ENV}
         echo "TZ_Message=$(date +%Y年%m月%d号%H时%M分)" >> ${GITHUB_ENV}
   
     - name: 上传固件在 github Artifacts
