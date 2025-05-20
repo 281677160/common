@@ -193,7 +193,6 @@ fi
 variable ZZZ_PATH="$(find "$HOME_PATH/package" -name "*-default-settings" -not -path "A/exclude_dir/*" -print)"
 [[ -n "${ZZZ_PATH}" ]] && grep -q "openwrt_banner" "${ZZZ_PATH}" && sed -i '/openwrt_banner/d' "${ZZZ_PATH}"
 
-
 # 更新feeds
 cd ${HOME_PATH}
 ./scripts/feeds clean
@@ -202,7 +201,6 @@ if [[ "${BENDI_VERSION}" == "2" ]]; then
 else
   ./scripts/feeds update -a
 fi
-
 
 # 更新feeds后再次修改补充
 cd ${HOME_PATH}
@@ -223,7 +221,6 @@ for x in "${t[@]}"; do
         -name "$x" -type d -exec rm -rf {} +
 done
 
-
 if [[ ! "${REPO_BRANCH}" =~ ^(main|master|(openwrt-)?(24\.10))$ ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-fancontrol
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-qmodem
@@ -240,7 +237,6 @@ if [[ ! -d "${HOME_PATH}/package/network/config/firewall4" ]]; then
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-nikki
   rm -rf ${HOME_PATH}/feeds/danshui/luci-app-homeproxy
 fi
-
 
 # 更新golang和node版本
 gitsvn https://github.com/sbwml/packages_lang_golang ${HOME_PATH}/feeds/packages/lang/golang
