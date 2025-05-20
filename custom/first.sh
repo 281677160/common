@@ -28,7 +28,9 @@ Diy_one() {
     
     if [[ ! -d "${LINSHI_COMMON}" ]]; then
       TIME r "缺少对比版本号文件"
-      exit 1
+      SYNCHRONISE="NO"
+      Diy_three
+      Diy_four
     fi
     
     export COMMON_SH="${LINSHI_COMMON}/common.sh"
