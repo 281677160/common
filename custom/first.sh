@@ -140,8 +140,19 @@ Diy_three() {
                 exit 1
             fi
         else
+            rm -rf repogx shangyou
             git clone --depth=1 -b "${GIT_REFNAME}" https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
-            git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou
+            if git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou; then
+              git clone --depth=1 https://github.com/281677160/build-actions shangyou
+            fi
+            if [ ! -d "repogx" ]; then
+              TIME r "同步上游仓库失败，请注意密匙制作时候勾选是否正确"
+              exit 1
+            fi
+            if [ ! -d "shangyou" ]; then
+              TIME r "下载上游仓库失败,请重新尝试看看"
+              exit 1
+            fi
             cd repogx
             git reset --hard HEAD
             cd "${GITHUB_WORKSPACE}"
