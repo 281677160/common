@@ -24,6 +24,7 @@ runs:
           echo -e "\033[32m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
           exit 1
         fi
+        [ -d "mishi" ] && rm -rf mishi
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
 branding:
