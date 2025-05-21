@@ -12,9 +12,10 @@ runs:
           echo -e "\033[32m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
           exit 1
         fi
-        curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/281677160/common/releases/tags/API > mishi
-        if ! grep -E "assets|users" mishi &> /dev/null; then
-          echo -e "\033[31m 您的密匙不正确或已过期，请按教程设置好密匙再来 \033[0m\n"
+        rm -rf mishi
+        git clone --depth=1 -b "${{ github.ref_name }}" https://user:${{ env.REPO_TOKEN }}@github.com/${{github.repository}}.git mishi
+        if [ -d "mishi" ] && grep -qE "name" "mishi/.github/workflows/compile.yml"; then
+          echo -e "\033[31m 您的密匙不错误或已过期，或制作的时候勾选不正确，请按教程设置好密匙再来 \033[0m\n"
           echo -e "\033[32m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
           exit 1
         fi
