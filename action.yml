@@ -17,11 +17,10 @@ runs:
           echo -e "\033[32m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
           exit 1
         fi
-        rm -rf mishi
+        [ -d "mishi" ] && rm -rf mishi
         git clone --depth=1 -b "${{ github.ref_name }}" https://user:${{ env.REPO_TOKEN }}@github.com/${{github.repository}}.git mishi
-        ls -a mishi
         if [ -z "$(ls -a mishi)" ]; then
-          echo -e "\033[31m 您的密匙不错误或已过期，或制作的时候勾选不正确，请按教程设置好密匙再来 \033[0m\n"
+          echo -e "\033[31m 您的密匙错误或已过期，或制作的时候勾选不正确，请按教程设置好密匙再来 \033[0m\n"
           echo -e "\033[32m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
           exit 1
         fi
