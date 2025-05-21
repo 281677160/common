@@ -123,7 +123,7 @@ runs:
         LINSHI_COMMON="/tmp/common"
         [ -d "${LINSHI_COMMON}" ] && rm -rf "${LINSHI_COMMON}"
         if ! git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/common "${LINSHI_COMMON}"; then
-            git clone --depth=1 -b main https://github.com/281677160/common "${LINSHI_COMMON}"
+            git clone --depth=1 https://github.com/281677160/common "${LINSHI_COMMON}"
         fi
         if [ -f "${LINSHI_COMMON}/custom/first.sh" ] && grep -qE "bash" "${LINSHI_COMMON}/custom/first.sh"; then
           chmod -R +x "${LINSHI_COMMON}"
