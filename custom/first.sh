@@ -142,7 +142,7 @@ Diy_three() {
         else
             rm -rf repogx shangyou
             git clone --depth=1 -b "${GIT_REFNAME}" https://user:${REPO_TOKEN}@github.com/${GIT_REPOSITORY}.git repogx
-            if git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou; then
+            if ! git clone -q --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions shangyou; then
               git clone --depth=1 https://github.com/281677160/build-actions shangyou
             fi
             if [ ! -d "repogx" ]; then
