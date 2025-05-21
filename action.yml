@@ -3,6 +3,11 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
+    - name: 密匙token
+      shell: bash
+      run: |
+        echo "GIT_REFNAME=${{ github.ref_name }}" >> ${GITHUB_ENV}
+      
     - name: 密匙检测
       shell: bash
       run: |
@@ -13,7 +18,7 @@ runs:
           exit 1
         fi
         rm -rf mishi
-        git clone --depth=1 -b "${{ github.ref_name }}" https://user:${{ env.REPO_TOKEN }}@github.com/${{github.repository}}.git mishi
+        git clone --depth=1 -b "${{ env.GIT_REFNAME }}" https://user:${{ env.REPO_TOKEN }}@github.com/${{ env.GIT_REPOSITORY }}.git mishi
         if [ -d "mishi" ] && grep -qE "name" "mishi/.github/workflows/compile.yml"; then
           echo -e "\033[31m 您的密匙不错误或已过期，或制作的时候勾选不正确，请按教程设置好密匙再来 \033[0m\n"
           echo -e "\033[32m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
