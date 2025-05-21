@@ -3,11 +3,6 @@ description: 'Combines multiple steps'
 runs:
   using: "composite"
   steps:
-    - name: 密匙token
-      shell: bash
-      run: |
-        echo "GIT_REFNAME=${{ github.ref_name }}" >> ${GITHUB_ENV}
-      
     - name: 密匙检测
       shell: bash
       run: |
