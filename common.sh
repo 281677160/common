@@ -1207,13 +1207,15 @@ fi
 ! grep -q "CONFIG_PACKAGE_auto-scripts=y" "${HOME_PATH}/.config" && echo "CONFIG_PACKAGE_auto-scripts=y" >> "${HOME_PATH}/.config"
 
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  PARTSIZE="$(grep -Eo "CONFIG_TARGET_ROOTFS_PARTSIZE=[0-9]+" ${HOME_PATH}/.config |cut -f2 -d=)"
+  PARTSIZE=$(awk -F= '/^CONFIG_TARGET_ROOTFS_PARTSIZE=/{print $2}' ${HOME_PATH}/.config)
   CONSIZE="950"
   if [[ "${PARTSIZE}" -lt "${CONSIZE}" ]];then
     sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${HOME_PATH}/.config
     echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=950" >> ${HOME_PATH}/.config
-    TIME r "EXT4提示：请注意，您选择了ext4安装的固件格式,而检测到您的分配的固件系统分区过小"
-    TIME r "为避免编译出错,已自动帮您修改成950M"
+    TIME r "EXT4提示：分区大小${PARTSIZE}M小于推荐值950M"
+    TIME r "已自动调整为950M"
+  elif [[ "${PARTSIZE}" -gt "${CONSIZE}" ]];then
+    TIME g "${PARTSIZE}"
   fi
 fi
 
