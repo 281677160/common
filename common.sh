@@ -1020,8 +1020,16 @@ if [[ `grep -c "CONFIG_PACKAGE_wpad-openssl=y" ${HOME_PATH}/.config` -eq '1' ]];
 fi
 
 if [[ `grep -c "CONFIG_PACKAGE_ntfs3-mount=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_PACKAGE_ntfs-mount=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_PACKAGE_antfs-mount=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_antfs-mount=y/# CONFIG_PACKAGE_antfs-mount is not set/g' ${HOME_PATH}/.config
+    sed -i 's/CONFIG_PACKAGE_ntfs-3g=y/# CONFIG_PACKAGE_ntfs-3g is not set/g' ${HOME_PATH}/.config
+    sed -i 's/CONFIG_PACKAGE_NTFS-3G_HAS_PROBE=y/# CONFIG_PACKAGE_NTFS-3G_HAS_PROBE is not set/g' ${HOME_PATH}/.config
+  fi
+fi
+
+if [[ `grep -c "CONFIG_PACKAGE_antfs-mount=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_PACKAGE_ntfs3-mount=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+    sed -i 's/CONFIG_PACKAGE_ntfs3-mount=y/# CONFIG_PACKAGE_ntfs3-mount is not set/g' ${HOME_PATH}/.config
     sed -i 's/CONFIG_PACKAGE_ntfs-3g=y/# CONFIG_PACKAGE_ntfs-3g is not set/g' ${HOME_PATH}/.config
     sed -i 's/CONFIG_PACKAGE_NTFS-3G_HAS_PROBE=y/# CONFIG_PACKAGE_NTFS-3G_HAS_PROBE is not set/g' ${HOME_PATH}/.config
   fi
