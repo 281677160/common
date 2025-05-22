@@ -690,10 +690,6 @@ CONFIG_PACKAGE_kmod-fuse=y
 ' >> ${HOME_PATH}/.config
 [[ ! -d "${HOME_PATH}/files/etc/hotplug.d/block" ]] && mkdir -p "${HOME_PATH}/files/etc/hotplug.d/block"
 cp -Rf "$LINSHI_COMMON/Share/block/10-mount" "${HOME_PATH}/files/etc/hotplug.d/block/10-mount"
-  if [[ "${SOURCE}" == "Lienol" ]] && [[ "${REPO_BRANCH}" == "19.07" ]]; then
-    sed -i '/CONFIG_PACKAGE_ntfs-3g=y/d' "${HOME_PATH}/.config"
-    sed -i '/CONFIG_PACKAGE_NTFS-3G_HAS_PROBE=y/d' "${HOME_PATH}/.config"
-  fi
 fi
 
 if [[ "${Enable_IPV6_function}" == "1" ]]; then
@@ -1021,9 +1017,11 @@ if [[ `grep -c "CONFIG_PACKAGE_wpad-openssl=y" ${HOME_PATH}/.config` -eq '1' ]];
   fi
 fi
 
-if [[ `grep -c "CONFIG_PACKAGE_antfs-mount=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  if [[ `grep -c "CONFIG_PACKAGE_ntfs3-mount=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+if [[ `grep -c "CONFIG_PACKAGE_ntfs3-mount=y" ${HOME_PATH}/.config` -eq '1' ]]; then
+  if [[ `grep -c "CONFIG_PACKAGE_ntfs-3g=y" ${HOME_PATH}/.config` -eq '1' ]] || [[ `grep -c "CONFIG_PACKAGE_ntfs-mount=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_antfs-mount=y/# CONFIG_PACKAGE_antfs-mount is not set/g' ${HOME_PATH}/.config
+    sed -i 's/CONFIG_PACKAGE_ntfs-3g=y/# CONFIG_PACKAGE_ntfs-3g is not set/g' ${HOME_PATH}/.config
+    sed -i 's/CONFIG_PACKAGE_NTFS-3G_HAS_PROBE=y/# CONFIG_PACKAGE_NTFS-3G_HAS_PROBE is not set/g' ${HOME_PATH}/.config
   fi
 fi
 
