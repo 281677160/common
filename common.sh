@@ -543,6 +543,7 @@ elif [[ -n "${Customized_Information}" ]]; then
 fi
 
 if [[ -n "${Kernel_partition_size}" ]] && [[ "${Kernel_partition_size}" != "0" ]]; then
+  Kernel_partition_size=$(echo "${Kernel_partition_size}" | grep -o -E '[0-9]+')
   echo "CONFIG_TARGET_KERNEL_PARTSIZE=${Kernel_partition_size}" >> ${HOME_PATH}/.config
   echo "内核分区设置完成，大小为：${Kernel_partition_size}MB"
 else
@@ -550,6 +551,7 @@ else
 fi
 
 if [[ -n "${Rootfs_partition_size}" ]] && [[ "${Rootfs_partition_size}" != "0" ]]; then
+  Rootfs_partition_size=$(echo "${Rootfs_partition_size}" | grep -o -E '[0-9]+')
   echo "CONFIG_TARGET_ROOTFS_PARTSIZE=${Rootfs_partition_size}" >> ${HOME_PATH}/.config
   echo "系统分区设置完成，大小为：${Rootfs_partition_size}MB"
 else
