@@ -1208,11 +1208,16 @@ fi
 
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   PARTSIZE=$(awk -F= '/^CONFIG_TARGET_ROOTFS_PARTSIZE=/{print $2}' ${HOME_PATH}/.config)
-  echo "$PARTSIZE"
+  
+  # 确保PARTSIZE是纯数字
+  if ! [[ "${PARTSIZE}" =~ ^[0-9]+$ ]]; then
+    echo "ERROR: PARTSIZE is not a valid number. Current value is: ${PARTSIZE}"
+  fi
+
   CONSIZE="950"
-  if [[ "${PARTSIZE}" -gt "${CONSIZE}" ]];then
+  if [[ "${PARTSIZE}" -gt "${CONSIZE}" ]]; then
     TIME g "${PARTSIZE}"
-  elif [[ "${PARTSIZE}" -lt "${CONSIZE}" ]];then
+  elif [[ "${PARTSIZE}" -lt "${CONSIZE}" ]]; then
     sed -i '/CONFIG_TARGET_ROOTFS_PARTSIZE/d' ${HOME_PATH}/.config
     echo -e "\nCONFIG_TARGET_ROOTFS_PARTSIZE=950" >> ${HOME_PATH}/.config
     TIME r "EXT4提示：分区大小${PARTSIZE}M小于推荐值950M"
