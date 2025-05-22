@@ -1207,8 +1207,12 @@ fi
 ! grep -q "CONFIG_PACKAGE_auto-scripts=y" "${HOME_PATH}/.config" && echo "CONFIG_PACKAGE_auto-scripts=y" >> "${HOME_PATH}/.config"
 
 if [[ `grep -c "CONFIG_TARGET_ROOTFS_EXT4FS=y" ${HOME_PATH}/.config` -eq '1' ]]; then
-  PARTSIZE=$(awk -F= '/^CONFIG_TARGET_ROOTFS_PARTSIZE=/{print $2}' ${HOME_PATH}/.config)
-  
+  # 获取PARTSIZE并去除多余的空格和换行符
+  PARTSIZE=$(awk -F= '/^CONFIG_TARGET_ROOTFS_PARTSIZE=/{print $2}' ${HOME_PATH}/.config | tr -d '[:space:]')
+
+  # 将PARTSIZE转换为整数，忽略非数字字符
+  PARTSIZE=$(echo "${PARTSIZE}" | grep -o -E '[0-9]+')
+
   # 确保PARTSIZE是纯数字
   if ! [[ "${PARTSIZE}" =~ ^[0-9]+$ ]]; then
     echo "ERROR: PARTSIZE is not a valid number. Current value is: ${PARTSIZE}"
