@@ -35,7 +35,7 @@ runs:
         PATHS="build/${FOLDER_NAME}/relevance/start"
         sed -i "/branches:/,/paths:/s|- .*|- ${GIT_REFNAME}|" "$YML_PATH"
         sed -i "/paths:/,/matrix:/s@- .*@- '${PATHS//@/\\@}'@" "$YML_PATH"
-        sed -i "/matrix:/,/^ *target:/s/target:.*/  target: [${FOLDER_NAME}]/" "$YML_PATH"
+        sed -i "/matrix:/,/^ *target:/s/target:.*/target: [${FOLDER_NAME}]/" "$YML_PATH"
 
         # 提交并推送
         BANBEN_SHUOMING="编译-${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}固件"
