@@ -3,11 +3,6 @@
 PWD_DIR="$(pwd)"
 
 function install_mustrelyon(){
-if [[ "${BENDI_VERSION}" == "2" ]]; then
-  rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
-  docker image prune --all --force
-fi
-
 echo -e "\033[36m开始升级ubuntu插件和安装依赖.....\033[0m"
 # 更新ubuntu源
 apt-get update -y
