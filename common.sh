@@ -827,13 +827,13 @@ CONFIG_PACKAGE_default-settings-chn=y
 EOF
 
 # 晶晨CPU机型自定义机型,内核,分区
-echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
-echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
-echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
-echo "openwrt_size=${rootfs_size}" >> ${GITHUB_ENV}
-echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
-echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
-echo "builder_name=ophub" >> ${GITHUB_ENV}
+[[ -n "${amlogic_model}" ]] && echo "amlogic_model=${amlogic_model}" >> ${GITHUB_ENV}
+[[ -n "${amlogic_kernel}" ]] && echo "amlogic_kernel=${amlogic_kernel}" >> ${GITHUB_ENV}
+[[ -n "${auto_kernel}" ]] && echo "auto_kernel=${auto_kernel}" >> ${GITHUB_ENV}
+[[ -n "${rootfs_size}" ]] && echo "openwrt_size=${rootfs_size}" >> ${GITHUB_ENV}
+[[ -n "${amlogic_model}" ]] && echo "kernel_repo=ophub/kernel" >> ${GITHUB_ENV}
+[[ -n "${kernel_usage}" ]] && echo "kernel_usage=${kernel_usage}" >> ${GITHUB_ENV}
+[[ -n "${amlogic_model}" ]] && echo "builder_name=ophub" >> ${GITHUB_ENV}
 
 # adguardhome增加核心
 ARCH_TYPE=$(grep "CONFIG_ARCH=\"" "${HOME_PATH}/.config" | cut -d '"' -f 2)
