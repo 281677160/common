@@ -4,6 +4,7 @@ PWD_DIR="$(pwd)"
 
 function install_mustrelyon(){
 if [[ "${BENDI_VERSION}" == "2" ]]; then
+  rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
   docker image prune --all --force
 fi
 
