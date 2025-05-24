@@ -53,8 +53,8 @@ Diy_two() {
     for dir in "${required_dirs[@]}"; do
         if [[ ! -d "$dir" ]]; then
             SYNCHRONISE="NO"
-            [[ "${BENDI_VERSION}" == "2" ]] && TIME r "缺少编译主文件bulid,正在同步上游仓库..."
-            [[ "${BENDI_VERSION}" == "1" ]] && TIME r "缺少编译主文件operates,正在同步上游仓库..."
+            [[ "${BENDI_VERSION}" == "2" ]] && TIME r "缺少编译主文件bulid，正在同步上游仓库..."
+            [[ "${BENDI_VERSION}" == "1" ]] && TIME r "缺少编译主文件operates，正在同步上游仓库..."
             return
         fi
     done
@@ -67,6 +67,7 @@ Diy_two() {
             else
                 SYNCHRONISE="NO"
                 tongbu_message="缺少$file文件"
+                TIME r "缺少$file文件，正在同步上游仓库..."
                 return
             fi
         fi
@@ -78,7 +79,7 @@ Diy_two() {
             sudo rm -rf /etc/oprelyo*
             SYNCHRONISE="NO"
             tongbu_message="和上游版本不一致"
-            TIME r "和上游版本不一致,正在同步上游仓库..."
+            TIME r "和上游版本不一致，正在同步上游仓库..."
         else
             SYNCHRONISE="YES"
         fi
