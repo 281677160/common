@@ -37,6 +37,8 @@ jobs:
         fi
 
         curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/281677160/common/releases/tags/API > mishi.api
+
+        curl -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/281677160/autobuild/actions/runs?status=completed > completed.api
         
     - name: 发布API
       uses: ncipollo/release-action@main
