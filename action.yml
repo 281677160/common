@@ -132,7 +132,7 @@ runs:
         fi
         echo "3"
         echo "${LINSHI_COMMON}"
-        if [ -f "${LINSHI_COMMON}/custom/first.sh" ] && grep -qE "bash" "${LINSHI_COMMON}/custom/first.sh"; then
+        if [ -f "${LINSHI_COMMON}/custom/first.sh" ]; then
           chmod -R +x "${LINSHI_COMMON}"
           source "${LINSHI_COMMON}/custom/first.sh"
         else
