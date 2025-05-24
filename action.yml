@@ -45,7 +45,7 @@ runs:
           exit 1
         fi
         if [[ -z "${openwrt_size}" ]]; then
-          echo -e "\033[31m openwrt_size值不存在 \033[0m"
+          echo -e "\033[31m rootfs_size值不存在 \033[0m"
           exit 1
         fi
         if [[ -z "${kernel_usage}" ]]; then
