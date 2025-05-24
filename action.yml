@@ -139,7 +139,15 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        bash $COMMON_SH Diy_menu6
+        echo "${COMMON_SH}"
+        if [ -f "${COMMON_SH}" ] && grep -qE "bash" "${COMMON_SH}"; then
+          chmod +x "${COMMON_SH}"
+          bash $COMMON_SH Diy_menu6
+        else
+          echo -e "\033[31m 对比版本号文件下载失败，请检查网络再来 \033[0m\n"
+          exit 1
+        fi
+        
 branding:
   icon: "terminal"
   color: "gray-dark"
