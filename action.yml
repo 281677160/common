@@ -139,7 +139,6 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        echo "${COMMON_SH}"
         if [ -f "${COMMON_SH}" ] && grep -qE "bash" "${COMMON_SH}"; then
           chmod +x "${COMMON_SH}"
           bash $COMMON_SH Diy_menu6
