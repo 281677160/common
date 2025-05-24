@@ -54,7 +54,7 @@ Diy_two() {
         if [[ ! -d "$dir" ]]; then
             SYNCHRONISE="NO"
             [[ "${BENDI_VERSION}" == "2" ]] && TIME r "缺少编译主文件bulid,正在同步上游仓库..."
-            # 本地编译缺少主文件operates
+            [[ "${BENDI_VERSION}" == "1" ]] && TIME r "缺少编译主文件operates,正在同步上游仓库..."
             return
         fi
     done
@@ -78,6 +78,7 @@ Diy_two() {
             sudo rm -rf /etc/oprelyo*
             SYNCHRONISE="NO"
             tongbu_message="和上游版本不一致"
+            TIME r "和上游版本不一致,正在同步上游仓库..."
         else
             SYNCHRONISE="YES"
         fi
@@ -91,7 +92,6 @@ Diy_three() {
     cd "${GITHUB_WORKSPACE}"
     if [[ "$SYNCHRONISE" == "NO" ]]; then
         if [[ "${BENDI_VERSION}" == "1" ]]; then
-            [[ -d "${OPERATES_PATH}" ]] && TIME r "${tongbu_message}，正在同步上游仓库"
             shangyou=$(mktemp -d)
             if git clone --single-branch --depth=1 --branch=main https://github.com/281677160/build-actions "${shangyou}"; then
                 if [[ -d "${OPERATES_PATH}" ]]; then
