@@ -3,6 +3,10 @@
 PWD_DIR="$(pwd)"
 
 function install_mustrelyon(){
+if [[ "${BENDI_VERSION}" == "2" ]]; then
+  docker image prune --all --force
+fi
+
 echo -e "\033[36m开始升级ubuntu插件和安装依赖.....\033[0m"
 # 更新ubuntu源
 apt-get update -y
