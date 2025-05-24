@@ -28,6 +28,31 @@ runs:
         replacesArtifacts: true
         body: armsr_rootfs_tar_gz打包使用的rootfs.tar.gz包
 
+    - name: 检查变量是否存在
+      shell: bash
+      run: |
+        cd "${HOME_PATH}"
+        if [[ -z "${amlogic_model}" ]]; then
+          echo -e "\033[31m amlogic_model值不存在 \033[0m"
+          exit 1
+        fi
+        if [[ -z "${amlogic_kernel}" ]]; then
+          echo -e "\033[31m amlogic_kernel值不存在 \033[0m"
+          exit 1
+        fi
+        if [[ -z "${auto_kernel}" ]]; then
+          echo -e "\033[31m auto_kernel值不存在 \033[0m"
+          exit 1
+        fi
+        if [[ -z "${openwrt_size}" ]]; then
+          echo -e "\033[31m openwrt_size值不存在 \033[0m"
+          exit 1
+        fi
+        if [[ -z "${kernel_usage}" ]]; then
+          echo -e "\033[31m kernel_usage值不存在 \033[0m"
+          exit 1
+        fi
+
     # 打包armsr_rootfs_tar_gz
     - name: 打包aarch64系列固件
       id: dabao
