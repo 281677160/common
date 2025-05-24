@@ -25,9 +25,8 @@ texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 apt-get install -y libfuse-dev
 
 # N1打包需要的依赖
-apt-get install -y rename pigz clang gnupg snapd bc
+apt-get install -y rename pigz clang gnupg snapd
 snap install jq
-yum install bc
 apt-get install -y $(curl -fsSL https://tinyurl.com/ubuntu2204-make-openwrt)
 
 # 安装gcc g++
