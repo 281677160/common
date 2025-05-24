@@ -16,6 +16,16 @@ runs:
           echo "PACKAGING_FIRMWARE=false" >> "${GITHUB_ENV}"
         fi
 
+    - name: 检查变量是否存在
+      shell: bash
+      run: |
+        cd "${HOME_PATH}"
+        [[ -z "${amlogic_model}" ]] && echo "amlogic_model值不存在" && exit 1
+        [[ -z "${amlogic_kernel}" ]] && echo "amlogic_kernel值不存在" && exit 1
+        [[ -z "${auto_kernel}" ]] && echo "auto_kernel=值不存在" && exit 1
+        [[ -z "${rootfs_size}" ]] && echo "openwrt_size值不存在" && exit 1
+        [[ -z "${kernel_usage}" ]] && echo "kernel_usage值不存在" && exit 1
+
     # 将rootfs.tar.gz发布到releases的targz
     - name: 将rootfs.tar.gz发布releases的targz
       uses: ncipollo/release-action@v1
