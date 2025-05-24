@@ -239,19 +239,18 @@ Diy_four() {
     echo "CONFIG_TXT=${CONFIG_TXT}" >> "${GITHUB_ENV}"
 
     echo '#!/bin/bash' > "${DIY_PT2_SH}"
-    if grep -q "export" "$DIY_PT1_SH"; then
-      grep -E '.*export.*=".*"' "$DIY_PT1_SH" >> "${DIY_PT2_SH}"
+    if grep -q "export" "${DIY_PT1_SH}"; then
+      grep -E '.*export.*=".*"' "${DIY_PT1_SH}" >> "${DIY_PT2_SH}"
     fi
     chmod +x "${DIY_PT2_SH}"
     source "${DIY_PT2_SH}"
 
-    if grep -q "grep -rl" "$DIY_PT1_SH" && grep -q "xargs -r sed" "$DIY_PT1_SH"; then
-      grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' "$DIY_PT1_SH" >> "${DIY_PT2_SH}"
+    if [[ -n "$(grep -Eo "grep -rl.*xargs -r sed -i" "${DIY_PT1_SH}")" ]]; then
+      grep -E 'grep -rl.*xargs -r sed -i' "${DIY_PT1_SH}" >> "${DIY_PT2_SH}"
       sed -i 's/\. |/${HOME_PATH}\/feeds |/g' "${DIY_PT2_SH}"
-      grep -E 'grep -rl '.*'.*|.*xargs -r sed -i' "$DIY_PT1_SH" >> "${DIY_PT2_SH}"
+      grep -E 'grep -rl.*xargs -r sed -i' "${DIY_PT1_SH}" >> "${DIY_PT2_SH}"
       sed -i 's/\. |/${HOME_PATH}\/package |/g' "${DIY_PT2_SH}"
-      sed -i 's?packagefeeds?feeds?g' "${DIY_PT2_SH}"
-      grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed -i' "$DIY_PT1_SH" > tmp && mv tmp "$DIY_PT1_SH"
+      grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed -i' "${DIY_PT1_SH}" > tmp && mv tmp "${DIY_PT1_SH}"
     fi
 
     echo "OpenClash_branch=${OpenClash_branch}" >> "${GITHUB_ENV}"
