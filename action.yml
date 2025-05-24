@@ -23,7 +23,7 @@ runs:
         [[ -z "${amlogic_model}" ]] && echo "amlogic_model值不存在" && exit 1
         [[ -z "${amlogic_kernel}" ]] && echo "amlogic_kernel值不存在" && exit 1
         [[ -z "${auto_kernel}" ]] && echo "auto_kernel=值不存在" && exit 1
-        [[ -z "${rootfs_size}" ]] && echo "openwrt_size值不存在" && exit 1
+        [[ -z "${openwrt_size}" ]] && echo "openwrt_size值不存在" && exit 1
         [[ -z "${kernel_usage}" ]] && echo "kernel_usage值不存在" && exit 1
 
     # 将rootfs.tar.gz发布到releases的targz
