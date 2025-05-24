@@ -252,7 +252,7 @@ Diy_four() {
       sed -i 's/\. |/${HOME_PATH}\/package |/g' "${DIY_PT2_SH}"
       grep -vE '^[[:space:]]*grep -rl '.*'.*|.*xargs -r sed -i' "${DIY_PT1_SH}" > tmp && mv tmp "${DIY_PT1_SH}"
     fi
-    cat "${DIY_PT2_SH}"
+
     echo "OpenClash_branch=${OpenClash_branch}" >> "${GITHUB_ENV}"
     echo "Mandatory_theme=${Mandatory_theme}" >> "${GITHUB_ENV}"
     echo "Default_theme=${Default_theme}" >> "${GITHUB_ENV}"
