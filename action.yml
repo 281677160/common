@@ -33,7 +33,11 @@ runs:
       shell: bash
       run: |
         cd "${HOME_PATH}"
-        echo "${{ steps.targz.outcome }}"
+        if [[ "${BENDI_VERSION}" == "2" ]] && [[ "${{ steps.targz.outcome }}" == "success" ]]; then
+          echo -e "\033[32m ${SOURCE}-armvirt-64-default-rootfs.tar.gz已发布到名称为targz的releases \033[0m\n"
+          echo -e "\033[33m 您可以随时再次打包使用 \033[0m\n"
+        fi
+        
         if [[ -z "${amlogic_model}" ]]; then
           echo -e "\033[31m amlogic_model值不存在 \033[0m"
           exit 1
