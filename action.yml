@@ -33,7 +33,7 @@ runs:
       shell: bash
       run: |
         cd "${HOME_PATH}"
-        echo ${{ steps.targz.outcome }}
+        echo "${{ steps.targz.outcome }}"
         if [[ -z "${amlogic_model}" ]]; then
           echo -e "\033[31m amlogic_model值不存在 \033[0m"
           exit 1
