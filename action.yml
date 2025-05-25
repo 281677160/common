@@ -19,6 +19,7 @@ runs:
     # 将rootfs.tar.gz发布到releases的targz
     - name: 将rootfs.tar.gz发布releases的targz
       id: targz
+      if: env.BENDI_VERSION == '2'
       uses: ncipollo/release-action@v1
       with:
         name: rootfs.tar.gz
