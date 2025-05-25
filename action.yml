@@ -18,6 +18,7 @@ runs:
 
     # 将rootfs.tar.gz发布到releases的targz
     - name: 将rootfs.tar.gz发布releases的targz
+      id: targz
       uses: ncipollo/release-action@v1
       with:
         name: rootfs.tar.gz
@@ -32,6 +33,7 @@ runs:
       shell: bash
       run: |
         cd "${HOME_PATH}"
+        echo ${{ steps.targz.outcome }}
         if [[ -z "${amlogic_model}" ]]; then
           echo -e "\033[31m amlogic_model值不存在 \033[0m"
           exit 1
