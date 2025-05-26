@@ -19,6 +19,8 @@ runs:
       if: ${{ steps.yunduan.outcome == 'success' && env.UPDATE_FIRMWARE_ONLINE == 'true' }}
       shell: bash
       run: |
+        cd ${GITHUB_WORKSPACE}
+        sleep 5
         echo "YUNDUAN_API=false" >> $GITHUB_ENV
         mkdir -p $GITHUB_WORKSPACE/API
         cd $GITHUB_WORKSPACE/API
@@ -35,19 +37,9 @@ runs:
           echo "YUNDUAN_API=true" >> $GITHUB_ENV
           echo "获取api成功"
         fi
+        sleep 5
 
     - name: 发送[在线更新固件]至云端2
-      if: ${{ env.YUNDUAN_API == 'true' }}
-      uses: ncipollo/release-action@v1
-      with:
-        name: AutoUpdate-${{ env.TARGET_BOARD }}
-        tag: ${{ env.UPDATE_TAG }}
-        token: ${{ env.REPO_TOKEN }}
-        artifacts: "API/*"
-        allowUpdates: true
-        body: ${{ env.TONGZHI_DATE }}
-
-    - name: 发送[在线更新固件]至云端3
       if: ${{ env.YUNDUAN_API == 'true' }}
       uses: ncipollo/release-action@v1
       with:
