@@ -20,6 +20,7 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
+        sleep 2
         echo "YUNDUAN_API=false" >> $GITHUB_ENV
         mkdir -p $GITHUB_WORKSPACE/API
         cd $GITHUB_WORKSPACE/API
@@ -36,6 +37,7 @@ runs:
           echo "YUNDUAN_API=true" >> $GITHUB_ENV
           echo "获取api成功"
         fi
+        sleep 2
 
     - name: 发送[在线更新固件]至云端2
       if: ${{ env.YUNDUAN_API == 'true' }}
