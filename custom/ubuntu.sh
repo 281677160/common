@@ -114,7 +114,7 @@ gcc --version
 g++ --version
 clang --version
 upx --version
-echo "当前 GitHub CLI 版本：$(gh --version)"
+echo "GitHub CLI：$(gh --version)"
 echo -e "\033[32m全部依赖安装完毕!\033[0m"
 }
 
