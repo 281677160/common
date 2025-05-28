@@ -7,7 +7,6 @@ ASSETS=$(curl -s -H "Authorization: token $REPO_TOKEN" \
 
 # 检查是否有符合条件的文件
 if [ -z "$ASSETS" ]; then
-  echo "没有找到符合条件的固件。"
   exit 0
 fi
 
