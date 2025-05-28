@@ -38,7 +38,7 @@ jobs:
 
         curl -s -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" https://api.github.com/repos/281677160/common/releases/tags/API > mishi.api
 
-        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/281677160/autobuild/releases/tags/Update-x86/assets -o x86.api
+        curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/281677160/autobuild/releases/tags/Update-x86 -o x86.api
         
     - name: 发布API
       uses: ncipollo/release-action@main
