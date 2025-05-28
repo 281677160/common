@@ -20,8 +20,8 @@ function Diy_Part1() {
 function Diy_Part2() {
 	export UPDATE_TAG="Update-${TARGET_BOARD}"
 	export FILESETC_UPDATE="${HOME_PATH}/package/base-files/files/etc/openwrt_update"
-	export RELEASE_DOWNLOAD1="https://ghfast.top/\$GITHUB_LINK/releases/download/${UPDATE_TAG}"
-	export RELEASE_DOWNLOAD2="\$GITHUB_LINK/releases/download/${UPDATE_TAG}"
+	export GitHub_Proxy="https://ghfast.top"
+	export RELEASE_DOWNLOAD="\$GITHUB_LINK/releases/download/${UPDATE_TAG}"
 	export GITHUB_RELEASE="${GITHUB_LINK}/releases/tag/${UPDATE_TAG}"
         if [[ ! -f "$LINSHI_COMMON/autoupdate/replace" ]]; then
 		echo -e "\n\033[0;31m缺少autoupdate/replace文件\033[0m"
@@ -120,8 +120,8 @@ function Diy_Part2() {
    	echo "DEVICE_MODEL=\"${TARGET_PROFILE_ER}\"" >> ${FILESETC_UPDATE}
  	echo "FIRMWARE_SUFFIX=\"${FIRMWARE_SUFFIX}\"" >> ${FILESETC_UPDATE}
  	echo "TARGET_BOARD=\"${TARGET_BOARD}\"" >> ${FILESETC_UPDATE}
- 	echo "RELEASE_DOWNLOAD1=\"${RELEASE_DOWNLOAD1}\"" >> ${FILESETC_UPDATE}
- 	echo "RELEASE_DOWNLOAD2=\"${RELEASE_DOWNLOAD2}\"" >> ${FILESETC_UPDATE}
+ 	echo "GitHub_Proxy=\"${GitHub_Proxy}\"" >> ${FILESETC_UPDATE}
+ 	echo "RELEASE_DOWNLOAD=\"${RELEASE_DOWNLOAD}\"" >> ${FILESETC_UPDATE}
 	cat "$LINSHI_COMMON/autoupdate/replace" >> ${FILESETC_UPDATE}
 }
 
