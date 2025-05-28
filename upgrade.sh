@@ -96,12 +96,17 @@ function Diy_Part2() {
 	esac
 	
 	export FIRMWARE_VERSION="${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}"
-	
+
 	if [[ "${TARGET_BOARD}" == "x86" ]]; then
-		echo "AUTOBUILD_UEFI=${AUTOBUILD_UEFI}" >> ${GITHUB_ENV}
+ 		echo "AUTOBUILD_UEFI=${AUTOBUILD_UEFI}" >> ${GITHUB_ENV}
 		echo "AUTOBUILD_LEGACY=${AUTOBUILD_LEGACY}" >> ${GITHUB_ENV}
+  		BOOT_TYPE="legacy"
+	elif [[ "${FIRMWARE_SUFFIX}" == ".img.gz" ]]; then
+		echo "AUTOBUILD_FIRMWARE=${AUTOBUILD_FIRMWARE}" >> ${GITHUB_ENV}
+  		BOOT_TYPE="legacy"
 	else
 		echo "AUTOBUILD_FIRMWARE=${AUTOBUILD_FIRMWARE}" >> ${GITHUB_ENV}
+  		BOOT_TYPE="sysupgrade"
 	fi
 
  	echo "UPDATE_TAG=${UPDATE_TAG}" >> ${GITHUB_ENV}
@@ -123,6 +128,13 @@ function Diy_Part2() {
  	echo "GitHub_Proxy=\"${GitHub_Proxy}\"" >> ${FILESETC_UPDATE}
  	echo "RELEASE_DOWNLOAD=\"${RELEASE_DOWNLOAD}\"" >> ${FILESETC_UPDATE}
 	cat "$LINSHI_COMMON/autoupdate/replace" >> ${FILESETC_UPDATE}
+
+ 	# 写入del_assets文件
+	install -m 0755 /dev/null "${GITHUB_WORKSPACE}/del_assets"
+  	echo "UPDATE_TAG=\"${UPDATE_TAG}\"" >> "${GITHUB_WORKSPACE}/del_assets"
+  	echo "BOOT_TYPE=\"${BOOT_TYPE}\"" >> "${GITHUB_WORKSPACE}/del_assets"
+	echo "FIRMWARE_SUFFIX=\"${FIRMWARE_SUFFIX}\"" >> "${GITHUB_WORKSPACE}/del_assets"
+ 	echo "FIRMWARE_PROFILEER=\"${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}\"" >> "${GITHUB_WORKSPACE}/del_assets"
 }
 
 function Diy_Part3() {
@@ -142,11 +154,10 @@ function Diy_Part3() {
 			if [[ -f "${EFI_ZHONGZHUAN}" ]]; then
 		  		EFIMD5="$(md5sum ${EFI_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${EFI_ZHONGZHUAN} |cut -c1-3)"
 		  		cp -Rf "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AUTOBUILD_UEFI}-${EFIMD5}${FIRMWARE_SUFFIX}"
+      				echo "BOOT_UEFI=\"uefi\"" >> "${GITHUB_WORKSPACE}/del_assets"
 			else
 				echo "没找到在线升级可用的${FIRMWARE_SUFFIX}格式固件"
 			fi
-		else
-			echo "没有uefi格式固件"
 		fi
 		
   		if [[ -n "$(ls -1 | grep -E 'squashfs')" ]]; then
