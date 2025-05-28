@@ -23,4 +23,4 @@ for asset in "${sorted_assets[@]:1}"; do
     "https://api.github.com/repos/$GIT_REPOSITORY/releases/assets/$asset_id"
 done
 
-echo "操作完成。"
+exit 0
