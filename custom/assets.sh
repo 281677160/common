@@ -5,8 +5,11 @@ ASSETS=$(curl -s -H "Authorization: token $REPO_TOKEN" \
   "https://api.github.com/repos/$GIT_REPOSITORY/releases/tags/$UPDATE_TAG" \
   | jq -r --arg regex "$FIRMWARE_PROFILEER-.*-$BOOT_TYPE-.*$FIRMWARE_SUFFIX" '.assets[] | select(.name | test($regex)) | "\(.id) \(.name) \(.updated_at)"')
 
-# 检查是否有符合条件的文件
-if [ -z "$ASSETS" ]; then
+# 计算符合条件的文件数量
+COUNT=$(echo "$ASSETS" | grep -c '^')
+
+# 检查是否有符合条件的文件（至少2个才继续，否则退出）
+if [ "$COUNT" -lt 2 ]; then
   exit 0
 fi
 
