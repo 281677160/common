@@ -3,6 +3,19 @@ description: 'Combines multiple steps to update firmware online'
 runs:
   using: "composite"
   steps:
+    - name: 清理旧固件
+      shell: bash
+      run: |
+        cd ${GITHUB_WORKSPACE}
+        if [[ -f "del_assets" ]]; then
+          chmod +x "del_assets"
+          cat "del_assets"
+          source "del_assets"
+          chmod -R +x "${LINSHI_COMMON}"
+          [[ -n "${BOOT_TYPE}" ]] && source "${LINSHI_COMMON}/custom/ASSETS.sh"
+          [[ -n "${BOOT_UEFI}" ]] && source "${LINSHI_COMMON}/custom/ASSETS.sh"
+        fi
+
     - name: 发送[在线更新固件]至云端1
       id: yunduan
       if: ${{ env.UPDATE_FIRMWARE_ONLINE == 'true' }}
