@@ -1263,12 +1263,26 @@ if [ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]; then
 fi
 # 编译完毕后,整理固件
 cd ${FIRMWARE_PATH}
-mkdir -p ipk
-find ${HOME_PATH}/bin/packages/ -type f -name "*.ipk" -exec mv {} ipk/ \;
-sync
-tar -czf ipk.tar.gz ipk
-sync
-rm -rf ipk
+# 打包所有ipk或者apk插件
+if find "${HOME_PATH}/bin/packages/" -type f -name "*.ipk" | grep -q .; then
+    mkdir -p ipk
+    find "${HOME_PATH}/bin/packages/" -type f -name "*.ipk" -exec mv {} ipk/ \;
+elif find "${HOME_PATH}/bin/packages/" -type f -name "*.apk" | grep -q .; then
+    mkdir -p apk
+    find "${HOME_PATH}/bin/packages/" -type f -name "*.apk" -exec mv {} apk/ \;
+fi
+if [ -d "ipk" ]; then
+    sync
+    tar -czf ipk.tar.gz ipk
+    sync
+    rm -rf ipk
+elif [ -d "apk" ]; then
+    sync
+    tar -czf apk.tar.gz apk
+    sync
+    rm -rf apk
+fi
+
 if [[ -n "$(ls -1 |grep -E 'immortalwrt')" ]]; then
   rename "s/^immortalwrt/openwrt/" *
   sed -i 's/immortalwrt/openwrt/g' `egrep "immortalwrt" -rl ./`
