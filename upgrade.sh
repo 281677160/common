@@ -160,6 +160,18 @@ function Diy_Part3() {
 				echo "没找到在线升级可用的efi${FIRMWARE_SUFFIX}格式固件"
 			fi
 		fi
+  		
+  		if [[ -n "$(ls -1 | grep -E 'squashfs')" ]]; then
+			UP_ZHONGZHUAN="$(ls -1 |grep -Eo ".*squashfs.*img.gz" |grep -v ".vm\|.vb\|.vh\|.qco\|efi\|ext4\|root\|factory\|kernel")"
+			if [[ -f "${UP_ZHONGZHUAN}" ]]; then
+   				MD5="$(md5sum ${UP_ZHONGZHUAN} | cut -c1-3)$(sha256sum ${UP_ZHONGZHUAN} | cut -c1-3)"
+				cp -Rf "${UP_ZHONGZHUAN}" "${BIN_PATH}/${AUTOBUILD_FIRMWARE}-${MD5}${FIRMWARE_SUFFIX}"
+			else
+				echo "没找到在线升级可用的${FIRMWARE_SUFFIX}格式固件"
+			fi
+		else
+			echo "没有squashfs格式固件"
+		fi
 	;;
 	*)
   		if [[ -n "$(ls -1 | grep -E 'sysupgrade')" ]]; then
