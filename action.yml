@@ -53,31 +53,31 @@ runs:
           echo "尝试推送 (${RETRY_COUNT}/${MAX_RETRIES})..."
           # 每次重试前重置HEAD并重新添加文件
           if [ $RETRY_COUNT -gt 1 ]; then
-            echo "重置HEAD并重新添加文件..."
-            git reset --hard HEAD
-            git add .
+             echo "重置HEAD并重新添加文件..."
+             git reset --hard HEAD
+             git add .
           fi
           if git push --force "https://${REPO_TOKEN}@github.com/${GIT_REPOSITORY}" HEAD:${GIT_REFNAME}; then
-            PUSH_SUCCESS=true
-            break
+             PUSH_SUCCESS=true
+             break
           else
-            echo "推送失败，尝试恢复..."
-            # 清除可能损坏的缓存
-            git gc --prune=now
-            git remote prune origin
-            # 增加随机延迟，避免持续峰值请求
-            DELAY=$((RANDOM % 5 + 2))
-            echo "等待${DELAY}秒后重试..."
-            sleep $DELAY
+             echo "推送失败，尝试恢复..."
+             # 清除可能损坏的缓存
+             git gc --prune=now
+             git remote prune origin
+             # 增加随机延迟，避免持续峰值请求
+             DELAY=$((RANDOM % 5 + 2))
+             echo "等待${DELAY}秒后重试..."
+             sleep $DELAY
           fi
         done
 
         # 检查推送结果
         if [ "$PUSH_SUCCESS" = false ]; then
-          echo -e "\033[31m 触发编译失败,请勿胡乱修改compile.yml文件 \033[0m"
-          exit 1
+           echo -e "\033[31m 触发编译失败,请勿胡乱修改compile.yml文件 \033[0m"
+           exit 1
         else
-          echo -e "\033[32m 触发编译${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}成功 \033[0m"
+           echo -e "\033[32m 触发编译${FOLDER_NAME}-${LUCI_EDITION}-${TARGET_PROFILE}成功 \033[0m"
         fi
 
     - name: 信息通知的时间
@@ -92,10 +92,10 @@ runs:
       shell: bash
       run: |
         if [[ "${{ env.INFORMATION_NOTICE }}" == "TG" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{env.TELEGRAM_CHAT_ID}}", "text":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}，编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💐"}' "https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage"
+           curl -s -X POST -H "Content-Type: application/json" -d '{"chat_id":"${{env.TELEGRAM_CHAT_ID}}", "text":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}，编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💐"}' "https://api.telegram.org/bot${{env.TELEGRAM_BOT_TOKEN}}/sendMessage"
         fi
         if [[ "${{ env.INFORMATION_NOTICE }}" == "PUSH" ]]; then
-          curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💐"}' "https://www.pushplus.plus/send"
+           curl -s -X POST -H "Content-Type: application/json" -d '{"token":"${{env.PUSH_PLUS_TOKEN}}","title":"触发启动${{env.SOURCE}}-${{env.LUCI_EDITION}}","content":"编译${{env.TARGET_PROFILE}}固件，请耐心等待...... 😋，(${{env.WAREHOUSE_MAN}}-#${{env.RUN_NUMBER}})，${{env.TZ_Message}}💐"}' "https://www.pushplus.plus/send"
         fi
 branding:
   icon: "terminal"
