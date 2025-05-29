@@ -63,7 +63,7 @@ runs:
                else
                  TIME g "自动检测最新内核: 不是"
                fi
-          else
+           else
              TIME b "内核版本: ${LINUX_KERNEL}"
              TIME r "自动打包: 没开启自动打包设置"
           fi
