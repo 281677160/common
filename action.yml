@@ -111,9 +111,9 @@ runs:
         fi
         if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
            if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
-              TIME y "aarch64系列固件自动打包成 .img 固件: 开启"
+              TIME y "armsr_rootfs_tar_gz固件自动打包成 .img 固件: 开启"
            else
-              TIME r "aarch64系列固件自动打包成 .img 固件: 关闭"
+              TIME r "armsr_rootfs_tar_gz固件自动打包成 .img 固件: 关闭"
            fi
         else
            if [[ ${UPDATE_FIRMWARE_ONLINE} == "true" ]]; then
