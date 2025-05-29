@@ -157,20 +157,8 @@ function Diy_Part3() {
 		  		cp -Rf "${EFI_ZHONGZHUAN}" "${BIN_PATH}/${AUTOBUILD_FIRMWARE_UEFI}-${EFIMD5}${FIRMWARE_SUFFIX}"
       				echo "BOOT_UEFI=\"uefi\"" >> "${GITHUB_WORKSPACE}/del_assets"
 			else
-				echo "没找到在线升级可用的${FIRMWARE_SUFFIX}格式固件"
+				echo "没找到在线升级可用的efi${FIRMWARE_SUFFIX}格式固件"
 			fi
-		fi
-		
-  		if [[ -n "$(ls -1 | grep -E 'squashfs')" ]]; then
-			LEGA_ZHONGZHUAN="$(ls -1 |grep -Eo ".*squashfs.*img.gz" |grep -v ".vm\|.vb\|.vh\|.qco\|efi\|ext4\|root\|factory\|kernel")"
-			if [[ -f "${LEGA_ZHONGZHUAN}" ]]; then
-				LEGAMD5="$(md5sum ${LEGA_ZHONGZHUAN} |cut -c1-3)$(sha256sum ${LEGA_ZHONGZHUAN} |cut -c1-3)"
-				cp -Rf "${LEGA_ZHONGZHUAN}" "${BIN_PATH}/${AUTOBUILD_FIRMWARE}-${LEGAMD5}${FIRMWARE_SUFFIX}"
-			else
-				echo "没找到在线升级可用的${FIRMWARE_SUFFIX}格式固件"
-			fi
-		else
-			echo "没有squashfs格式固件"
 		fi
 	;;
 	*)
