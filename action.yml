@@ -45,9 +45,11 @@ runs:
         if ! curl -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.UPDATE_TAG }}" -o zzz_api; then
             wget -O zzz_api https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.UPDATE_TAG }}
         fi
-        if ! grep -q "${{ env.FIRMWARE_VERSION }}" zzz_api; then
+        if grep -q "${{ env.FIRMWARE_VERSION }}" zzz_api; then
            echo "YUNDUAN_API=true" >> $GITHUB_ENV
            echo "获取api成功"
+        else
+           echo "获取api失败,在线更新将不能获取到最新版本信息"
         fi
         sleep 2
 
