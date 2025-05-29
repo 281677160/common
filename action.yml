@@ -127,8 +127,7 @@ runs:
            TIME l "定时自动更新信息"
            TIME z "插件版本: ${AUTOUPDATE_VERSION}"
            if [[ ${TARGET_BOARD} == "x86" ]]; then
-              TIME b "传统固件: ${AUTOBUILD_LEGACY}${FIRMWARE_SUFFIX}"
-              grep -q "CONFIG_GRUB_EFI_IMAGES=y" "$HOME_PATH/.config" && TIME b "UEFI固件: ${AUTOBUILD_UEFI}${FIRMWARE_SUFFIX}"
+              grep -q "CONFIG_GRUB_EFI_IMAGES=y" "$HOME_PATH/.config" && TIME b "UEFI固件: ${AUTOBUILD_FIRMWARE_UEFI}${FIRMWARE_SUFFIX}"
            else
               TIME b "固件名称: ${AUTOBUILD_FIRMWARE}${FIRMWARE_SUFFIX}"
            fi
