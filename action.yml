@@ -8,6 +8,7 @@ runs:
       run: |
         cd ${GITHUB_WORKSPACE}
         if [[ -f "del_assets" ]]; then
+           cat "del_assets"
            chmod +x "del_assets"
            source "del_assets"
            chmod -R +x "${LINSHI_COMMON}"
