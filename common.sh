@@ -1278,8 +1278,9 @@ done
 TIME g "整理后的文件"
 ls -1
 if ! echo "$TARGET_BOARD" | grep -Eq 'armvirt|armsr'; then
-  TIME g "更改固件名称"
-  rename -v "s/^openwrt/${GUJIAN_DATE}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
+  rename "s/^openwrt/${GUJIAN_DATE}-${SOURCE}-${LUCI_EDITION}-${LINUX_KERNEL}/" *
+  TIME g "更改名称后的固件，也是最终上传使用的"
+  ls -1
 fi
 
 echo "DATE=$(date "+%Y%m%d%H%M%S")" >> ${GITHUB_ENV}
