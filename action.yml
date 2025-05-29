@@ -12,13 +12,7 @@ runs:
            chmod +x "del_assets"
            source "del_assets"
            chmod -R +x "${LINSHI_COMMON}"
-           if [[ -n "${BOOT_TYPE}" ]]; then
-              source "${LINSHI_COMMON}/custom/assets.sh"
-           fi
-           if [[ -n "${BOOT_UEFI}" ]]; then
-              BOOT_TYPE="uefi"
-              source "${LINSHI_COMMON}/custom/assets.sh"
-           fi
+           source "${LINSHI_COMMON}/custom/assets.sh"
         fi
 
     - name: 发送[在线更新固件]至云端1
