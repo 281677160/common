@@ -16,7 +16,7 @@ runs:
               source "${LINSHI_COMMON}/custom/assets.sh"
            fi
            if [[ -n "${BOOT_UEFI}" ]]; then
-              BOOT_TYPE="${BOOT_UEFI}"
+              BOOT_TYPE="uefi"
               source "${LINSHI_COMMON}/custom/assets.sh"
            fi
         fi
