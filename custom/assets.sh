@@ -9,6 +9,8 @@ ASSETS=$(curl -s -H "Authorization: token $REPO_TOKEN" \
 # 计算符合条件的文件数量
 COUNT=$(echo "$ASSETS" | grep -c '^')
 
+echo "$COUNT"
+
 # 检查是否有符合条件的文件（至少2个才继续，否则退出）
 if [ "$COUNT" -lt 2 ]; then
   exit 0
@@ -28,11 +30,13 @@ done
 }
 
 if [ -n "$BOOT_TYPE" ]; then
+  echo "$BOOT_TYPE"
   DEL_FIRMWARE="$FIRMWARE_PROFILEER-.*-$BOOT_TYPE-.*$FIRMWARE_SUFFIX"
   del_type
 fi
 
 if [ -n "$BOOT_UEFI" ]; then
+  echo "$BOOT_UEFI"
   DEL_FIRMWARE="$FIRMWARE_PROFILEER-.*-$BOOT_UEFI-.*$FIRMWARE_SUFFIX"
   del_type
 fi
