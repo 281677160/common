@@ -8,6 +8,8 @@ ASSETS=$(curl -s -H "Authorization: token $REPO_TOKEN" \
 # 计算符合条件的文件数量
 COUNT=$(echo "$ASSETS" | grep -c '^')
 
+echo "111"
+
 # 检查是否有符合条件的文件（至少2个才继续，否则退出）
 if [ "$COUNT" -lt 2 ]; then
   exit 0
