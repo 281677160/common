@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function del_type() {
+function del_assets() {
 # 获取Release中的所有文件
 ASSETS=$(curl -s -H "Authorization: token $REPO_TOKEN" \
   "https://api.github.com/repos/$GIT_REPOSITORY/releases/tags/$UPDATE_TAG" \
@@ -29,10 +29,10 @@ done
 
 if [ -n "$BOOT_TYPE" ]; then
   DEL_FIRMWARE="$FIRMWARE_PROFILEER-.*-$BOOT_TYPE-.*$FIRMWARE_SUFFIX"
-  del_type
+  del_assets
 fi
 
 if [ -n "$BOOT_UEFI" ]; then
   DEL_FIRMWARE="$FIRMWARE_PROFILEER-.*-$BOOT_UEFI-.*$FIRMWARE_SUFFIX"
-  del_type
+  del_assets
 fi
