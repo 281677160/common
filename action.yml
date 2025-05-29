@@ -8,18 +8,18 @@ runs:
       run: |
         cd "$GITHUB_WORKSPACE"
         if [[ -z "${{ env.REPO_TOKEN }}" ]]; then
-          echo -e "\033[31m 您没有设置仓库密匙，请按教程设置好密匙再来 \033[0m\n"
-          echo -e "\033[32m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
-          exit 1
+           echo -e "\033[31m 您没有设置仓库密匙，请按教程设置好密匙再来 \033[0m\n"
+           echo -e "\033[32m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
+           exit 1
         fi
-        [ -d "mishi" ] && rm -rf mishi
+        [[ -d "mishi" ]] && rm -rf mishi
         git clone --depth=1 -b "${{ github.ref_name }}" https://user:${{ env.REPO_TOKEN }}@github.com/${{github.repository}}.git mishi
         if [ -z "$(ls -1 mishi)" ]; then
-          echo -e "\033[31m 您的密匙错误或已过期，或制作的时候勾选不正确，请按教程设置好密匙再来 \033[0m\n"
-          echo -e "\033[32m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
-          exit 1
+           echo -e "\033[31m 您的密匙错误或已过期，或制作的时候勾选不正确，请按教程设置好密匙再来 \033[0m\n"
+           echo -e "\033[32m REPO_TOKEN密匙制作教程：https://git.io/jm.md \033[0m\n"
+           exit 1
         fi
-        [ -d "mishi" ] && rm -rf mishi
+        [[ -d "mishi" ]] && rm -rf mishi
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         echo "BENDI_VERSION=2" >> ${GITHUB_ENV}
@@ -30,38 +30,38 @@ runs:
         cd ${GITHUB_WORKSPACE}
         
         if [[ -d "build" ]]; then
-          rm -rf operates
-          cp -Rf build ${GITHUB_WORKSPACE}/operates
-          COMPILE_PATH="$GITHUB_WORKSPACE/operates/${FOLDER_NAME}"
+           rm -rf operates
+           cp -Rf build ${GITHUB_WORKSPACE}/operates
+           COMPILE_PATH="$GITHUB_WORKSPACE/operates/${FOLDER_NAME}"
         fi
         
         if [[ "${{ github.event_name }}" == "push" ]] && [[ "${{ github.event.head_commit }}" != "null" ]]; then
           #触发启动
-          if [[ -f "${COMPILE_PATH}/relevance/settings.ini" ]]; then
-            source ${COMPILE_PATH}/relevance/settings.ini
-            echo "ERRUN_NUMBER=${ERRUN_NUMBER}" >> ${GITHUB_ENV}
-          fi
+           if [[ -f "${COMPILE_PATH}/relevance/settings.ini" ]]; then
+              source ${COMPILE_PATH}/relevance/settings.ini
+              echo "ERRUN_NUMBER=${ERRUN_NUMBER}" >> ${GITHUB_ENV}
+           fi
         elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-          #手动启动
-          if [ -f "${COMPILE_PATH}/settings.ini" ]; then
-            SOURCE_CODE="$(grep '^SOURCE_CODE=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
-            COMPILATION_INFORMATION="$(grep '^COMPILATION_INFORMATION=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
-          fi
-          REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
-          CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"
-          INFORMATION_NOTICE="${{ github.event.inputs.INFORMATION_NOTICE }}"
-          KEEP_WORKFLOWS="${{ github.event.inputs.KEEP_WORKFLOWS }}"
-          KEEP_RELESAES="${{ github.event.inputs.KEEP_RELESAES }}"
-          SSH_ACTION="${{ github.event.inputs.SSH_ACTION }}"
-          UPLOAD_FIRMWARE="${{ github.event.inputs.UPLOAD_FIRMWARE }}"
-          UPLOAD_RELEASE="${{ github.event.inputs.UPLOAD_RELEASE }}"
-          CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
-          UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
+           #手动启动
+           if [ -f "${COMPILE_PATH}/settings.ini" ]; then
+              SOURCE_CODE="$(grep '^SOURCE_CODE=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
+              COMPILATION_INFORMATION="$(grep '^COMPILATION_INFORMATION=' "${COMPILE_PATH}/settings.ini" | awk -F'"' '{print $2}')"
+           fi
+           REPO_BRANCH="${{ github.event.inputs.REPO_BRANCH }}"
+           CONFIG_FILE="${{ github.event.inputs.CONFIG_FILE }}"
+           INFORMATION_NOTICE="${{ github.event.inputs.INFORMATION_NOTICE }}"
+           KEEP_WORKFLOWS="${{ github.event.inputs.KEEP_WORKFLOWS }}"
+           KEEP_RELESAES="${{ github.event.inputs.KEEP_RELESAES }}"
+           SSH_ACTION="${{ github.event.inputs.SSH_ACTION }}"
+           UPLOAD_FIRMWARE="${{ github.event.inputs.UPLOAD_FIRMWARE }}"
+           UPLOAD_RELEASE="${{ github.event.inputs.UPLOAD_RELEASE }}"
+           CACHEWRTBUILD_SWITCH="${{ github.event.inputs.CACHEWRTBUILD_SWITCH }}"
+           UPDATE_FIRMWARE_ONLINE="${{ github.event.inputs.UPDATE_FIRMWARE_ONLINE }}"
         else
-          #其他启动
-          if [[ -f "${COMPILE_PATH}/settings.ini" ]]; then
-            source ${COMPILE_PATH}/settings.ini
-          fi
+           #其他启动
+           if [[ -f "${COMPILE_PATH}/settings.ini" ]]; then
+              source ${COMPILE_PATH}/settings.ini
+           fi
         fi
         
         echo "SOURCE_CODE=${SOURCE_CODE}" >> ${GITHUB_ENV}
@@ -128,11 +128,11 @@ runs:
             git clone --depth=1 https://github.com/281677160/common "${LINSHI_COMMON}"
         fi
         if [ -f "${LINSHI_COMMON}/custom/first.sh" ] && grep -qE "bash" "${LINSHI_COMMON}/custom/first.sh"; then
-          chmod -R +x "${LINSHI_COMMON}"
-          source "${LINSHI_COMMON}/custom/first.sh"
+           chmod -R +x "${LINSHI_COMMON}"
+           source "${LINSHI_COMMON}/custom/first.sh"
         else
-          echo -e "\033[31m 对比版本号文件下载失败，请检查网络再来 \033[0m\n"
-          exit 1
+           echo -e "\033[31m 对比版本号文件下载失败，请检查网络再来 \033[0m\n"
+           exit 1
         fi
         
     - name: 运行其他变量
@@ -140,11 +140,11 @@ runs:
       run: |
         cd ${GITHUB_WORKSPACE}
         if [ -f "${COMMON_SH}" ] && grep -qE "bash" "${COMMON_SH}"; then
-          chmod +x "${COMMON_SH}"
-          bash $COMMON_SH Diy_menu6
+           chmod +x "${COMMON_SH}"
+           bash $COMMON_SH Diy_menu6
         else
-          echo -e "\033[31m 对比版本号文件下载失败，请检查网络再来 \033[0m\n"
-          exit 1
+           echo -e "\033[31m 对比版本号文件下载失败，请检查网络再来 \033[0m\n"
+           exit 1
         fi
         
 branding:
