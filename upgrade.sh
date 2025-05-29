@@ -98,9 +98,8 @@ function Diy_Part2() {
 	export FIRMWARE_VERSION="${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}"
 
 	if [[ "${TARGET_BOARD}" == "x86" ]]; then
- 		BOOT_UEFI="uefi"
    		BOOT_TYPE="legacy"
- 		echo "AUTOBUILD_FIRMWARE_UEFI=${AUTOBUILD_FIRMWARE_UEFI}-${BOOT_UEFI}" >> ${GITHUB_ENV}
+ 		echo "AUTOBUILD_FIRMWARE_UEFI=${AUTOBUILD_FIRMWARE_UEFI}-uefi" >> ${GITHUB_ENV}
 		echo "AUTOBUILD_FIRMWARE=${AUTOBUILD_FIRMWARE}-${BOOT_TYPE}" >> ${GITHUB_ENV}
 	elif [[ "${FIRMWARE_SUFFIX}" == ".img.gz" ]]; then
    		BOOT_TYPE="legacy"
