@@ -44,15 +44,15 @@ runs:
         echo "AUTO_API=$GITHUB_WORKSPACE/API/zzz_api" >> $GITHUB_ENV
         curl -H "Authorization: Bearer ${{ env.REPO_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.UPDATE_TAG }}" -o zzz_api
         if ! grep -q "${{ env.FIRMWARE_VERSION }}" zzz_api; then
-          if ! wget -O zzz_api https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.UPDATE_TAG }}; then
-            echo "获取api失败,在线更新将不能获取到最新版本信息"
-          else
-            echo "YUNDUAN_API=true" >> $GITHUB_ENV
-            echo "获取api成功"
-          fi
+           if ! wget -O zzz_api https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.UPDATE_TAG }}; then
+              echo "获取api失败,在线更新将不能获取到最新版本信息"
+           else
+              echo "YUNDUAN_API=true" >> $GITHUB_ENV
+              echo "获取api成功"
+           fi
         else
-          echo "YUNDUAN_API=true" >> $GITHUB_ENV
-          echo "获取api成功"
+           echo "YUNDUAN_API=true" >> $GITHUB_ENV
+           echo "获取api成功"
         fi
         sleep 2
 
@@ -74,9 +74,9 @@ runs:
       run: |
         cd ${GITHUB_WORKSPACE}
         if [[ "${YUNDUAN_API}" == "false" ]]; then
-          echo "YUNDUAN_MESSAGE=、云端信息获取失败,在线更新将不能获取最新信息,不过固件发送云端则成功" >> $GITHUB_ENV
+           echo "YUNDUAN_MESSAGE=、云端信息获取失败,在线更新将不能获取最新信息,不过固件发送云端则成功" >> $GITHUB_ENV
         else
-          echo "YUNDUAN_MESSAGE=、发送云端固件" >> $GITHUB_ENV
+           echo "YUNDUAN_MESSAGE=、发送云端固件" >> $GITHUB_ENV
         fi
 
 branding:
