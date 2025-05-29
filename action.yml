@@ -11,9 +11,9 @@ runs:
         echo -e "\n\033[0;33m第一次用我仓库的，请不要拉取任何插件，先SSH进入固件配置那里看过我脚本实在是没有你要的插件才再拉取\033[0m"
         echo -e "\n\033[0;33m拉取插件应该单独拉取某一个你需要的插件，别一下子就拉取别人一个插件包，这样容易增加编译失败概率\033[0m"
         if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-          echo -e "\n\033[0;31mSSH连接固件输入命令'openwrt'可进行修改后台IP、清空密码、还原出厂设置和在线更新固件操作\033[0m"
+           echo -e "\n\033[0;31mSSH连接固件输入命令'openwrt'可进行修改后台IP、清空密码、还原出厂设置和在线更新固件操作\033[0m"
         else
-          echo -e "\n\033[0;31mSSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作\033[0m"
+           echo -e "\n\033[0;31mSSH连接固件输入命令'openwrt'可进行修改后台IP，清空密码和还原出厂设置操作\033[0m"
         fi
         echo
 
@@ -25,13 +25,13 @@ runs:
         # 复用颜色输出函数
         function TIME() {
           case "$1" in
-            r) local Color="\033[0;31m";;
-            g) local Color="\033[0;32m";;
-            y) local Color="\033[0;33m";;
-            b) local Color="\033[0;34m";;
-            z) local Color="\033[0;35m";;
-            l) local Color="\033[0;36m";;
-            *) local Color="\033[0;0m";;
+             r) local Color="\033[0;31m";;
+             g) local Color="\033[0;32m";;
+             y) local Color="\033[0;33m";;
+             b) local Color="\033[0;34m";;
+             z) local Color="\033[0;35m";;
+             l) local Color="\033[0;36m";;
+             *) local Color="\033[0;0m";;
           esac
         echo -e "${Color}${2}\033[0m"
         }
@@ -41,9 +41,9 @@ runs:
         > "$OUTPUT_FILE"
         counter=1
         grep -E '^CONFIG_PACKAGE_luci-(app|theme)-[^_]+=y$' "$HOME_PATH/.config" | while IFS='=' read -r line _; do
-          package_name="${line#CONFIG_PACKAGE_}"
-          echo "TIME g \"$counter、$package_name\" |sed 's/^/         /'" >> "$OUTPUT_FILE"
-          counter=$((counter + 1))
+           package_name="${line#CONFIG_PACKAGE_}"
+           echo "TIME g \"$counter、$package_name\" |sed 's/^/         /'" >> "$OUTPUT_FILE"
+           counter=$((counter + 1))
         done
 
         echo
@@ -53,107 +53,107 @@ runs:
         TIME b "源码作者: ${SOURCE_OWNER}"
         TIME b "Luci版本: ${LUCI_EDITION}"
         if [[ "${TARGET_PROFILE}" == "aarch_64" ]]; then
-          TIME b "编译机型: aarch64系列"
-          if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
-            TIME g "打包机型: ${amlogic_model}"
-            TIME g "打包内核: ${amlogic_kernel}"
-            TIME g "分区数据: ${openwrt_size}"
-            if [[ "${auto_kernel}" == "true" ]]; then
-              TIME g "自动检测最新内核: 是"
-            else
-              TIME g "自动检测最新内核: 不是"
-            fi
+           TIME b "编译机型: aarch64系列"
+           if [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
+              TIME g "打包机型: ${amlogic_model}"
+              TIME g "打包内核: ${amlogic_kernel}"
+              TIME g "分区数据: ${openwrt_size}"
+              if [[ "${auto_kernel}" == "true" ]]; then
+                 TIME g "自动检测最新内核: 是"
+               else
+                 TIME g "自动检测最新内核: 不是"
+               fi
           else
-            TIME b "内核版本: ${LINUX_KERNEL}"
-            TIME r "自动打包: 没开启自动打包设置"
+             TIME b "内核版本: ${LINUX_KERNEL}"
+             TIME r "自动打包: 没开启自动打包设置"
           fi
         else
-          TIME b "内核版本: ${LINUX_KERNEL}"
-          TIME b "编译机型: ${TARGET_PROFILE}"
+           TIME b "内核版本: ${LINUX_KERNEL}"
+           TIME b "编译机型: ${TARGET_PROFILE}"
         fi
         TIME b "固件作者: ${GIT_ACTOR}"
         TIME b "仓库地址: ${GITHUB_LINK}"
         if [[ -n "${ERRUN_NUMBER}" ]]; then
-          TIME b "启动编号: 此工作流程由[#${ERRUN_NUMBER}号${{github.workflow}}]触发启动,本工作流程编号[${WAREHOUSE_MAN}仓库#${RUN_NUMBER}号]）"
+           TIME b "启动编号: 此工作流程由[#${ERRUN_NUMBER}号${{github.workflow}}]触发启动,本工作流程编号[${WAREHOUSE_MAN}仓库#${RUN_NUMBER}号]）"
         else
-          TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${{github.workflow}}]工作流程）"
+           TIME b "启动编号: #${RUN_NUMBER}（${WAREHOUSE_MAN}仓库第${RUN_NUMBER}次启动[${{github.workflow}}]工作流程）"
         fi
         TIME b "编译时间: $(date +%Y年%m月%d号%H时%M分)"
         if [[ "${SOURCE_CODE}" == "AMLOGIC" && "${PACKAGING_FIRMWARE}" == "true" ]]; then
-          TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${amlogic_model}】固件"
+           TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${amlogic_model}】固件"
         else
-          TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${TARGET_PROFILE}】固件"
+           TIME g "友情提示：您当前使用【${FOLDER_NAME}】文件夹编译【${TARGET_PROFILE}】固件"
         fi
         echo
         echo
         if [[ ${INFORMATION_NOTICE} == "TG" || ${INFORMATION_NOTICE} == "PUSH" ]]; then
-          TIME y "pushplus/Telegram通知: 开启"
+           TIME y "pushplus/Telegram通知: 开启"
         else
-          TIME r "pushplus/Telegram通知: 关闭"
+           TIME r "pushplus/Telegram通知: 关闭"
         fi
         if [[ ${UPLOAD_FIRMWARE} == "true" ]]; then
-          TIME y "上传固件在github actions: 开启"
+           TIME y "上传固件在github actions: 开启"
         else
-          TIME r "上传固件在github actions: 关闭"
+           TIME r "上传固件在github actions: 关闭"
         fi
         if [[ ${UPLOAD_RELEASE} == "true" ]]; then
-          TIME y "发布固件(Release): 开启"
+           TIME y "发布固件(Release): 开启"
         else
-          TIME r "发布固件(Release): 关闭"
+           TIME r "发布固件(Release): 关闭"
         fi
         if [[ ${CACHEWRTBUILD_SWITCH} == "true" ]]; then
-          TIME y "是否开启缓存加速: 开启"
+           TIME y "是否开启缓存加速: 开启"
         else
-          TIME r "是否开启缓存加速: 关闭"
+           TIME r "是否开启缓存加速: 关闭"
         fi
         if [[ ${COMPILATION_INFORMATION} == "true" ]]; then
-          TIME y "编译信息显示: 开启"
+           TIME y "编译信息显示: 开启"
         fi
         if [[ "${TARGET_BOARD}" =~ (armvirt|armsr) ]]; then
-          if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
-            TIME y "aarch64系列固件自动打包成 .img 固件: 开启"
-          else
-            TIME r "aarch64系列固件自动打包成 .img 固件: 关闭"
-          fi
+           if [[ ${PACKAGING_FIRMWARE} == "true" ]]; then
+              TIME y "aarch64系列固件自动打包成 .img 固件: 开启"
+           else
+              TIME r "aarch64系列固件自动打包成 .img 固件: 关闭"
+           fi
         else
-          if [[ ${UPDATE_FIRMWARE_ONLINE} == "true" ]]; then
-            TIME y "把定时自动更新插件编译进固件: 开启"
-          else
-            TIME r "把定时自动更新插件编译进固件: 关闭"
-          fi
+           if [[ ${UPDATE_FIRMWARE_ONLINE} == "true" ]]; then
+              TIME y "把定时自动更新插件编译进固件: 开启"
+           else
+              TIME r "把定时自动更新插件编译进固件: 关闭"
+           fi
         fi
         if [[ "${UPDATE_FIRMWARE_ONLINE}" == "true" ]]; then
-          echo
-          TIME l "定时自动更新信息"
-          TIME z "插件版本: ${AUTOUPDATE_VERSION}"
-          if [[ ${TARGET_BOARD} == "x86" ]]; then
-            TIME b "传统固件: ${AUTOBUILD_LEGACY}${FIRMWARE_SUFFIX}"
-            grep -q "CONFIG_GRUB_EFI_IMAGES=y" "$HOME_PATH/.config" && TIME b "UEFI固件: ${AUTOBUILD_UEFI}${FIRMWARE_SUFFIX}"
-          else
-            TIME b "固件名称: ${AUTOBUILD_FIRMWARE}${FIRMWARE_SUFFIX}"
-          fi
-          TIME b "固件后缀: ${FIRMWARE_SUFFIX}"
-          TIME b "固件版本: ${FIRMWARE_VERSION}"
-          TIME b "云端路径: ${GITHUB_RELEASE}"
-          TIME g "《编译成功后，会自动把固件发布到指定地址，然后才会生成云端路径》"
-          TIME g "《普通的那个发布固件跟云端的发布路径是两码事，如果你不需要普通发布的可以不用打开发布功能》"
-          TIME g "修改IP、DNS、网关或者在线更新，请输入命令：openwrt"
-          echo
+           echo
+           TIME l "定时自动更新信息"
+           TIME z "插件版本: ${AUTOUPDATE_VERSION}"
+           if [[ ${TARGET_BOARD} == "x86" ]]; then
+              TIME b "传统固件: ${AUTOBUILD_LEGACY}${FIRMWARE_SUFFIX}"
+              grep -q "CONFIG_GRUB_EFI_IMAGES=y" "$HOME_PATH/.config" && TIME b "UEFI固件: ${AUTOBUILD_UEFI}${FIRMWARE_SUFFIX}"
+           else
+              TIME b "固件名称: ${AUTOBUILD_FIRMWARE}${FIRMWARE_SUFFIX}"
+           fi
+           TIME b "固件后缀: ${FIRMWARE_SUFFIX}"
+           TIME b "固件版本: ${FIRMWARE_VERSION}"
+           TIME b "云端路径: ${GITHUB_RELEASE}"
+           TIME g "《编译成功后，会自动把固件发布到指定地址，然后才会生成云端路径》"
+           TIME g "《普通的那个发布固件跟云端的发布路径是两码事，如果你不需要普通发布的可以不用打开发布功能》"
+           TIME g "修改IP、DNS、网关或者在线更新，请输入命令：openwrt"
+           echo
         else
-          echo
+           echo
         fi
         echo
         TIME z " 系统空间      类型   总数  已用  可用 使用率"
         df -hT "$PWD"
 
         if [ -f "/tmp/CONFIG_PACKAGE" ]; then
-          echo
-          echo
-          TIME r "	      已选插件列表"
-          chmod -R +x "/tmp/CONFIG_PACKAGE"
-          . "/tmp/CONFIG_PACKAGE"
-          rm -f "/tmp/CONFIG_PACKAGE"
-          echo
+           echo
+           echo
+           TIME r "	      已选插件列表"
+           chmod -R +x "/tmp/CONFIG_PACKAGE"
+           . "/tmp/CONFIG_PACKAGE"
+           rm -f "/tmp/CONFIG_PACKAGE"
+           echo
         fi
 branding:
   icon: "terminal"
