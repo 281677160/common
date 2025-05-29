@@ -20,7 +20,7 @@ readarray -t sorted_assets < <(echo "$ASSETS" | sort -k3,3 -r)
 for asset in "${sorted_assets[@]:1}"; do
   asset_id=$(echo "$asset" | awk '{print $1}')
   asset_name=$(echo "$asset" | awk '{print $2}')
-  echo "删除固件: $asset_name (ID: $asset_id)"
+  echo "删除旧的远程更新固件: $asset_name (ID: $asset_id)"
   curl -X DELETE -s -H "Authorization: token $REPO_TOKEN" \
     "https://api.github.com/repos/$GIT_REPOSITORY/releases/assets/$asset_id"
 done
