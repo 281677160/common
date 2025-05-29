@@ -1,14 +1,13 @@
 #!/bin/bash
 
+function del_type() {
 # 获取Release中的所有文件
 ASSETS=$(curl -s -H "Authorization: token $REPO_TOKEN" \
   "https://api.github.com/repos/$GIT_REPOSITORY/releases/tags/$UPDATE_TAG" \
-  | jq -r --arg regex "$FIRMWARE_PROFILEER-.*-$BOOT_TYPE-.*$FIRMWARE_SUFFIX" '.assets[] | select(.name | test($regex)) | "\(.id) \(.name) \(.updated_at)"')
+  | jq -r --arg regex "$DEL_FIRMWARE" '.assets[] | select(.name | test($regex)) | "\(.id) \(.name) \(.updated_at)"')
 
 # 计算符合条件的文件数量
 COUNT=$(echo "$ASSETS" | grep -c '^')
-
-echo "111"
 
 # 检查是否有符合条件的文件（至少2个才继续，否则退出）
 if [ "$COUNT" -lt 2 ]; then
@@ -26,5 +25,14 @@ for asset in "${sorted_assets[@]:1}"; do
   curl -X DELETE -s -H "Authorization: token $REPO_TOKEN" \
     "https://api.github.com/repos/$GIT_REPOSITORY/releases/assets/$asset_id"
 done
+}
 
-exit 0
+if [ -n "$BOOT_TYPE" ]; then
+  DEL_FIRMWARE="$FIRMWARE_PROFILEER-.*-$BOOT_TYPE-.*$FIRMWARE_SUFFIX"
+  del_type
+fi
+
+if [ -n "$BOOT_UEFI" ]; then
+  DEL_FIRMWARE="$FIRMWARE_PROFILEER-.*-$BOOT_UEFI-.*$FIRMWARE_SUFFIX"
+  del_type
+fi
