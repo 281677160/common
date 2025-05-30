@@ -180,10 +180,11 @@ Diy_three() {
                 echo "请勿修改和删除此文件夹内的任何文件" > "${X}/README"
                 echo "$(date +%Y%m%d%H%M%S)" > "${X}/start"
             done
-            
+            Releases
             BANBEN_SHUOMING="同步上游于 $(date +%Y.%m%d.%H%M.%S)"
             chmod -R +x repogx
             cd repogx
+            grep -rl 'KEEP_RELESAES' . | xargs -r sed -i 's?KEEP_RELESAES?"KEEP_RELEASES"?g'
             find "$UPLOAD" -type f -size +100M -exec rm -f {} \; || true
             git status
             git add .
