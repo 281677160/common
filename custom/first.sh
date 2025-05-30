@@ -164,7 +164,7 @@ Diy_three() {
             cp -Rf repogx/.github/workflows backups/workflows
             cd repogx
             rm -rf *
-            git rm --cache *
+            rm -rf .github/workflows/*
             cd "${GITHUB_WORKSPACE}"
             mkdir -p repogx/.github/workflows
             cp -Rf shangyou/* repogx
