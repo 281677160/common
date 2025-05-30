@@ -184,7 +184,7 @@ Diy_three() {
             BANBEN_SHUOMING="同步上游于 $(date +%Y.%m%d.%H%M.%S)"
             chmod -R +x repogx
             cd repogx
-            grep -rl 'KEEP_RELESAES' . | xargs -r sed -i 's?KEEP_RELESAES?"KEEP_RELEASES"?g'
+            grep -rl 'KEEP_RELESAES' . | xargs -r sed -i 's?KEEP_RELESAES?KEEP_RELEASES?g'
             find "$UPLOAD" -type f -size +100M -exec rm -f {} \; || true
             git status
             git add .
