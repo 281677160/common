@@ -143,7 +143,7 @@ function Diy_Part3() {
 	[[ ! -d "${BIN_PATH}" ]] && mkdir -p "${BIN_PATH}" || rm -rf "${BIN_PATH}"/*
 	
 	cd "${FIRMWARE_PATH}"
- 	if [[ -n "$(ls -1 | grep -E '.img')" ]] && [[ -z "$(ls -1 | grep -E '.img.gz')" ]]; then
+ 	if [[ -n "$(ls -1 | grep -Eo '.img')" ]] && [[ -z "$(ls -1 | grep -Eo '.img.gz')" ]]; then
 		gzip -f9n *.img
 	fi
 	
