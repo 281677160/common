@@ -66,12 +66,8 @@ function Diy_Part2() {
 		export AUTOBUILD_FIRMWARE="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}"
 	;;
 	mvebu)
-		case "${TARGET_SUBTARGET}" in
-		cortexa53 | cortexa72)
-			export FIRMWARE_SUFFIX=".img.gz"
-			export AUTOBUILD_FIRMWARE="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}"
-		;;
-		esac
+		export FIRMWARE_SUFFIX=".img.gz"
+		export AUTOBUILD_FIRMWARE="${LUCI_EDITION}-${SOURCE}-${TARGET_PROFILE_ER}-${UPGRADE_DATE}"
 	;;
 	bcm53xx)
  		if echo "$TARGET_PROFILE" | grep -Eq 'mr32|tplink|dlink'; then
