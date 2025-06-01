@@ -26,7 +26,6 @@ function del_assets() {
 
     # 检查是否有符合条件的文件（至少2个才继续，否则退出）
     if [ "$COUNT" -lt 2 ]; then
-        echo "信息: 找到 $COUNT 个 $DEL_BOOT 匹配文件，无需删除"
         return 0
     fi
 
