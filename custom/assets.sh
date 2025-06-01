@@ -44,12 +44,10 @@ function del_assets() {
 
 if [ -n "$BOOT_TYPE" ]; then
     DEL_FIRMWARE="$FIRMWARE_PROFILEER-.*-$BOOT_TYPE-.*$FIRMWARE_SUFFIX"
-    DEL_BOOT="$BOOT_TYPE"
     del_assets
 fi
 
 if [ -n "$BOOT_UEFI" ]; then
     DEL_FIRMWARE="$FIRMWARE_PROFILEER-.*-$BOOT_UEFI-.*$FIRMWARE_SUFFIX"
-    DEL_BOOT="$BOOT_UEFI"
     del_assets
 fi
