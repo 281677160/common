@@ -7,7 +7,9 @@ runs:
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
-        if [[ -f "${LINSHI_COMMON}/custom/assets.sh" ]]; then
+        if [[ -f "del_assets" ]]; then
+           chmod +x "del_assets"
+           source "del_assets"
            chmod -R +x "${LINSHI_COMMON}"
            source "${LINSHI_COMMON}/custom/assets.sh"
         fi
