@@ -26,7 +26,7 @@ function del_assets() {
 
     # 检查是否有符合条件的文件（至少2个才继续，否则退出）
     if [ "$COUNT" -lt 2 ]; then
-        echo "信息: 找到 $COUNT 个匹配文件，无需删除"
+        echo "信息: 找到 $COUNT 个 $DEL_BOOT 匹配文件，无需删除"
         return 0
     fi
 
@@ -45,10 +45,12 @@ function del_assets() {
 
 if [ -n "$BOOT_TYPE" ]; then
     DEL_FIRMWARE="$FIRMWARE_PROFILEER-.*-$BOOT_TYPE-.*$FIRMWARE_SUFFIX"
+    DEL_BOOT="$BOOT_TYPE"
     del_assets
 fi
 
 if [ -n "$BOOT_UEFI" ]; then
     DEL_FIRMWARE="$FIRMWARE_PROFILEER-.*-$BOOT_UEFI-.*$FIRMWARE_SUFFIX"
+    DEL_BOOT="$BOOT_UEFI"
     del_assets
 fi
