@@ -82,6 +82,7 @@ runs:
       run: |
         cd "${HOME_PATH}"
         echo "DABAO_MESSAGE=、打包" >> "${GITHUB_ENV}"
+        rm -rf "${PACKAGED_OUTPUTPATH}"/*.sha
 
     # 打包后的固件放回原位
     - name: 打包后的固件放回原位
