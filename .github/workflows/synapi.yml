@@ -33,7 +33,7 @@ jobs:
         cd Github_Api
         curl -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest -o AdGuardHome.api
         if ! grep -E "assets" "AdGuardHome.api"; then
-          curl https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest > AdGuardHome.api
+          wget https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest -O AdGuardHome.api
         fi
         
     - name: 发布API
