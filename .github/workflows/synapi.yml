@@ -37,6 +37,8 @@ jobs:
         fi
 
         curl -s -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/tmate-io/tmate/releases/latest -o tmate.api
+
+        curl -s https://api.github.com/repos/tmate-io/tmate/releases/latest -o tmate2.api
         
     - name: 发布API
       uses: ncipollo/release-action@main
