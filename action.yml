@@ -40,7 +40,7 @@ runs:
         fi
 
         if [[ "${BENDI_VERSION}" == "2" ]] && [[ "${PACKAGING_FIRMWARE}" == "false" ]]; then
-           echo -e "\033[31m 自动打包程序没开启,将不会进行自动打包 \033[0m\n"
+           echo -e "\n\033[31m 自动打包程序没开启,将不会进行自动打包 \033[0m\n"
         fi
         
         if [[ -z "${amlogic_model}" ]] && [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
