@@ -102,7 +102,10 @@ if [[ "${REPO_BRANCH}" == *"22.03"* ]]; then
 fi
 
 if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|openwrt-23.05) ]]; then
-  git clone https://github.com/padavanonly/immortalwrt-mt798x-24.10 mt798xmk
+  if ! git clone https://github.com/padavanonly/immortalwrt-mt798x-24.10 mt798xmk; then
+    echo -e "\033[31m 拉取同步上游机型文件失败 \033[0m\n"
+    exit 1
+  fi
   rm -rf package/boot/uboot-envtools && cp -r mt798xmk/package/boot/uboot-envtools package/boot/uboot-envtools
   rm -rf package/boot/uboot-mediatek && cp -r mt798xmk/package/boot/uboot-mediatek package/boot/uboot-mediatek
   rm -rf package/boot/arm-trusted-firmware-mediatek && cp -r mt798xmk/package/boot/arm-trusted-firmware-mediatek package/boot/arm-trusted-firmware-mediatek
