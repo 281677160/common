@@ -52,8 +52,7 @@ runs:
            exit 1
         fi
         if [[ -z "${openwrt_size}" ]] && [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
-           echo -e "\033[31m rootfs_size值不存在 \033[0m"
-           exit 1
+           openwrt_size="1024"
         fi
         if [[ -z "${kernel_usage}" ]] && [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
            echo -e "\033[31m kernel_usage值不存在 \033[0m"
