@@ -52,7 +52,7 @@ runs:
            exit 1
         fi
         if [[ -z "${openwrt_size}" ]] && [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
-           openwrt_size="1024"
+           echo "openwrt_size=1024" >> "${GITHUB_ENV}"
         fi
         if [[ -z "${kernel_usage}" ]] && [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
            echo -e "\033[31m kernel_usage值不存在 \033[0m"
