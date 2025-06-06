@@ -1156,6 +1156,7 @@ fi
 if [[ `grep -c "CONFIG_PACKAGE_luci-app-mtwifi-cfg=y" ${HOME_PATH}/.config` -eq '1' ]]; then
   if [[ `grep -c "CONFIG_PACKAGE_luci-app-mtk=y" ${HOME_PATH}/.config` -eq '1' ]]; then
     sed -i 's/CONFIG_PACKAGE_luci-app-mtk=y/# CONFIG_PACKAGE_luci-app-mtk is not set/g' ${HOME_PATH}/.config
+    sed -i 's/CONFIG_PACKAGE_luci-i18n-mtk-zh-cn=y/# CONFIG_PACKAGE_luci-i18n-mtk-zh-cn is not set/g' ${HOME_PATH}/.config
   fi
 fi
 
