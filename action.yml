@@ -39,23 +39,23 @@ runs:
            echo -e "\033[33m 您可以随时再次打包使用 \033[0m\n"
         fi
         
-        if [[ -z "${amlogic_model}" ]]; then
+        if [[ -z "${amlogic_model}" ]] && [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
            echo -e "\033[31m amlogic_model值不存在 \033[0m"
            exit 1
         fi
-        if [[ -z "${amlogic_kernel}" ]]; then
+        if [[ -z "${amlogic_kernel}" ]] && [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
            echo -e "\033[31m amlogic_kernel值不存在 \033[0m"
            exit 1
         fi
-        if [[ -z "${auto_kernel}" ]]; then
+        if [[ -z "${auto_kernel}" ]] && [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
            echo -e "\033[31m auto_kernel值不存在 \033[0m"
            exit 1
         fi
-        if [[ -z "${openwrt_size}" ]]; then
+        if [[ -z "${openwrt_size}" ]] && [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
            echo -e "\033[31m rootfs_size值不存在 \033[0m"
            exit 1
         fi
-        if [[ -z "${kernel_usage}" ]]; then
+        if [[ -z "${kernel_usage}" ]] && [[ "${PACKAGING_FIRMWARE}" == "true" ]]; then
            echo -e "\033[31m kernel_usage值不存在 \033[0m"
            exit 1
         fi
