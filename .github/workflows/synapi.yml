@@ -35,6 +35,8 @@ jobs:
         if ! grep -E "assets" "AdGuardHome.api"; then
           wget https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest -O AdGuardHome.api
         fi
+
+        curl -s -H "Authorization: Bearer ${REPO_TOKEN}" https://api.github.com/repos/tmate-io/tmate/releases/latest -o tmate.api
         
     - name: 发布API
       uses: ncipollo/release-action@main
