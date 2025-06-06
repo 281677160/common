@@ -69,6 +69,7 @@ OFFICIAL)
 ;;
 MT798X)
   if [[ "${REPO_BRANCH}" == "hanwckf-21.02" ]]; then
+    echo "hanwckf-21.02"
     variable REPO_URL="https://github.com/hanwckf/immortalwrt-mt798x"
     variable SOURCE="Mt798x"
     variable SOURCE_OWNER="hanwckf"
