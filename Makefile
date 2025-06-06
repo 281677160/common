@@ -54,17 +54,6 @@ define Trusted-Firmware-A/mt7622-nor-2ddr
   DDR3_FLYBY:=1
 endef
 
-define Trusted-Firmware-A/mt7622-ram-2ddr
-  NAME:=MediaTek MT7622 (RAM, 2x DDR3)
-  BOOT_DEVICE:=ram
-  BUILD_SUBTARGET:=mt7622
-  PLAT:=mt7622
-  DDR3_FLYBY:=1
-  RAM_BOOT_UART_DL:=1
-  HIDDEN:=
-  DEFAULT:=TARGET_mediatek_mt7622
-endef
-
 define Trusted-Firmware-A/mt7622-snand-1ddr
   NAME:=MediaTek MT7622 (SPI-NAND, 1x DDR3)
   BUILD_SUBTARGET:=mt7622
@@ -515,7 +504,6 @@ endef
 TFA_TARGETS:= \
 	mt7622-nor-1ddr \
 	mt7622-nor-2ddr \
-	mt7622-ram-2ddr \
 	mt7622-snand-1ddr \
 	mt7622-snand-ubi-1ddr \
 	mt7622-snand-2ddr \
@@ -591,7 +579,6 @@ define Package/trusted-firmware-a-ram/install
 	$(INSTALL_DIR) $(STAGING_DIR_IMAGE)
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/build/$(PLAT)/release/bl2.bin $(BIN_DIR)/$(BUILD_VARIANT)-bl2.bin
 endef
-Package/trusted-firmware-a-mt7622-ram-2ddr/install = $(Package/trusted-firmware-a-ram/install)
 Package/trusted-firmware-a-mt7981-ram-ddr3/install = $(Package/trusted-firmware-a-ram/install)
 Package/trusted-firmware-a-mt7981-ram-ddr4/install = $(Package/trusted-firmware-a-ram/install)
 Package/trusted-firmware-a-mt7986-ram-ddr3/install = $(Package/trusted-firmware-a-ram/install)
