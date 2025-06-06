@@ -109,6 +109,7 @@ if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|o
   rm -rf package/boot/uboot-envtools && cp -r mt798xmk/package/boot/uboot-envtools package/boot/uboot-envtools
   rm -rf package/boot/uboot-mediatek && cp -r mt798xmk/package/boot/uboot-mediatek package/boot/uboot-mediatek
   rm -rf package/boot/arm-trusted-firmware-mediatek && cp -r mt798xmk/package/boot/arm-trusted-firmware-mediatek package/boot/arm-trusted-firmware-mediatek
+  gitsvn https://github.com/281677160/common/blob/main/Makefile package/boot/arm-trusted-firmware-mediatek/Makefile
 
   rm -rf package/libs/openssl && cp -r mt798xmk/package/libs/openssl package/libs/openssl
   
