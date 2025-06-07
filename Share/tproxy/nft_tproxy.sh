@@ -112,7 +112,7 @@ if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|o
 
   rm -rf package/mtk && cp -r mt798xmk/package/mtk package/mtk
   rm -rf package/network/utils/ebtables && cp -r mt798xmk/package/network/utils/ebtables package/network/utils/ebtables
-  gitsvn https://github.com/immortalwrt/luci/tree/023b69bf4616ee0393d18cb498e8ba7ca1ca9120/modules/luci-base package/luci-base
+  [[ "${REPO_BRANCH}" == "openwrt-21.02" ]] && sed -i "s/+rpcd-mod-ucode//g" package/mtk/applications/luci-app-upnp-mtk-adjust/Makefile
 
   cp -r mt798xmk/target/linux/mediatek/image/mt7622.mk target/linux/mediatek/image/mt7622.mk
   cp -r mt798xmk/target/linux/mediatek/image/mt7981.mk target/linux/mediatek/image/mt7981.mk
