@@ -118,7 +118,7 @@ if [[ "${BENDI_VERSION}" == "2" ]]; then
     echo "${var}=${!var}" >> "${COMPILE_PATH}/relevance/settings.ini"
   done
 
-  if [[ "$REPO_URL" == "https://github.com/hanwckf/immortalwrt-mt798x" ]]; then
+  if [[ "${REPO_URL}" == *"hanwckf"* ]]; then
     sed -i "/REPO_BRANCH/d" "${COMPILE_PATH}/relevance/settings.ini"
     echo "REPO_BRANCH=hanwckf-21.02" >> "${COMPILE_PATH}/relevance/settings.ini"
   fi
