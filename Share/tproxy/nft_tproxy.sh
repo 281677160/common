@@ -106,14 +106,15 @@ if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|o
     echo -e "\033[31m 拉取同步上游机型文件失败 \033[0m\n"
     exit 1
   fi
-  rm -rf package/boot/uboot-envtools && cp -r mt798xmk/package/boot/uboot-envtools package/boot/uboot-envtools
-  rm -rf package/boot/uboot-mediatek && cp -r mt798xmk/package/boot/uboot-mediatek package/boot/uboot-mediatek
-  rm -rf package/boot/arm-trusted-firmware-mediatek && cp -r mt798xmk/package/boot/arm-trusted-firmware-mediatek package/boot/arm-trusted-firmware-mediatek
+  #rm -rf package/boot/uboot-envtools && cp -r mt798xmk/package/boot/uboot-envtools package/boot/uboot-envtools
+  #rm -rf package/boot/uboot-mediatek && cp -r mt798xmk/package/boot/uboot-mediatek package/boot/uboot-mediatek
+  #rm -rf package/boot/arm-trusted-firmware-mediatek && cp -r mt798xmk/package/boot/arm-trusted-firmware-mediatek package/boot/arm-trusted-firmware-mediatek
 
   rm -rf package/mtk && cp -r mt798xmk/package/mtk package/mtk
   rm -rf package/network/utils/ebtables && cp -r mt798xmk/package/network/utils/ebtables package/network/utils/ebtables
   [[ "${REPO_BRANCH}" == "openwrt-21.02" ]] && sed -i "s/+rpcd-mod-ucode//g" package/mtk/applications/luci-app-upnp-mtk-adjust/Makefile
 
+  rm -rf package/boot && cp -r mt798xmk/package/boot package/boot
   rm -rf target/linux/mediatek && cp -r mt798xmk/target/linux/mediatek target/linux/mediatek
 
   #cp -r mt798xmk/target/linux/mediatek/image/mt7622.mk target/linux/mediatek/image/mt7622.mk
