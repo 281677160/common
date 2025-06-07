@@ -106,25 +106,13 @@ if [[ "${SOURCE_CODE}" == "MT798X" ]] && [[ "${REPO_BRANCH}" =~ (openwrt-21.02|o
     echo -e "\033[31m 拉取同步上游机型文件失败 \033[0m\n"
     exit 1
   fi
-  #rm -rf package/boot/uboot-envtools && cp -r mt798xmk/package/boot/uboot-envtools package/boot/uboot-envtools
-  #rm -rf package/boot/uboot-mediatek && cp -r mt798xmk/package/boot/uboot-mediatek package/boot/uboot-mediatek
-  #rm -rf package/boot/arm-trusted-firmware-mediatek && cp -r mt798xmk/package/boot/arm-trusted-firmware-mediatek package/boot/arm-trusted-firmware-mediatek
-
+  rm -rf package/boot/uboot-envtools && cp -r mt798xmk/package/boot/uboot-envtools package/boot/uboot-envtools
+  rm -rf package/boot/uboot-mediatek && cp -r mt798xmk/package/boot/uboot-mediatek package/boot/uboot-mediatek
+  rm -rf package/boot/arm-trusted-firmware-mediatek && cp -r mt798xmk/package/boot/arm-trusted-firmware-mediatek package/boot/arm-trusted-firmware-mediatek
+  rm -rf target/linux/mediatek && cp -r mt798xmk/target/linux/mediatek target/linux/mediatek
   rm -rf package/mtk && cp -r mt798xmk/package/mtk package/mtk
   rm -rf package/network/utils/ebtables && cp -r mt798xmk/package/network/utils/ebtables package/network/utils/ebtables
   [[ "${REPO_BRANCH}" == "openwrt-21.02" ]] && sed -i "s/+rpcd-mod-ucode//g" package/mtk/applications/luci-app-upnp-mtk-adjust/Makefile
-
-  rm -rf package/boot && cp -r mt798xmk/package/boot package/boot
-  rm -rf target/linux/mediatek && cp -r mt798xmk/target/linux/mediatek target/linux/mediatek
-
-  #cp -r mt798xmk/target/linux/mediatek/image/mt7622.mk target/linux/mediatek/image/mt7622.mk
-  #cp -r mt798xmk/target/linux/mediatek/image/mt7981.mk target/linux/mediatek/image/mt7981.mk
-  #cp -r mt798xmk/target/linux/mediatek/image/mt7986.mk target/linux/mediatek/image/mt7986.mk
-  
-  #rm -rf target/linux/mediatek/mt7622 && cp -r mt798xmk/target/linux/mediatek/mt7622 target/linux/mediatek/mt7622
-  #rm -rf target/linux/mediatek/mt7981 && cp -r mt798xmk/target/linux/mediatek/mt7981 target/linux/mediatek/mt7981
-  #rm -rf target/linux/mediatek/mt7986 && cp -r mt798xmk/target/linux/mediatek/mt7986 target/linux/mediatek/mt7986
-  #rm -rf target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek && cp -r mt798xmk/target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek
   rm -rf mt798xmk
   gitsvn https://github.com/immortalwrt/packages/tree/openwrt-24.10/net/hysteria feeds/packages/net/hysteria
   gitsvn https://github.com/hanwckf/immortalwrt-mt798x/tree/openwrt-21.02/package/network/services/hostapd package/network/services/hostapd
