@@ -83,6 +83,9 @@ MT798X)
     variable SOURCE_OWNER="padavanonly"
     if [[ "${REPO_BRANCH}" == "openwrt-24.10-6.6" ]]; then
       variable LUCI_EDITION="24.10"
+    elif [[ "${REPO_BRANCH}" == "2410" ]]; then
+      variable REPO_BRANCH="openwrt-24.10-6.6"
+      variable LUCI_EDITION="24.10"
     else
       variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     fi
