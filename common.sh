@@ -78,10 +78,10 @@ MT798X)
     variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
     variable GENE_PATH="${HOME_PATH}/package/base-files/files/bin/config_generate"
   else
-    variable REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-24.10"
+    variable REPO_URL="https://github.com/padavanonly/immortalwrt-mt798x-6.6"
     variable SOURCE="Mt798x"
     variable SOURCE_OWNER="padavanonly"
-    if [[ "${REPO_BRANCH}" == "2410" ]]; then
+    if [[ "${REPO_BRANCH}" == "openwrt-24.10-6.6" ]]; then
       variable LUCI_EDITION="24.10"
     else
       variable LUCI_EDITION="$(echo "${REPO_BRANCH}" |sed 's/openwrt-//g')"
