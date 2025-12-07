@@ -67,7 +67,7 @@
       "state": "uploaded",
       "size": 11662988,
       "digest": "sha256:07c6e40d822c33c7e0206af19c4aede9b2fc87c304a9c8ebcf62135102589ea6",
-      "download_count": 24,
+      "download_count": 144,
       "created_at": "2025-12-03T16:10:49Z",
       "updated_at": "2025-12-03T16:10:50Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_darwin_amd64.zip"
@@ -103,7 +103,7 @@
       "state": "uploaded",
       "size": 10969353,
       "digest": "sha256:02761e2c3739e92caa955c978dbfe5e32c9f3cde5733c4977d89cb63eb4ce3db",
-      "download_count": 22,
+      "download_count": 88,
       "created_at": "2025-12-03T16:10:51Z",
       "updated_at": "2025-12-03T16:10:51Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_darwin_arm64.zip"
@@ -139,7 +139,7 @@
       "state": "uploaded",
       "size": 11069950,
       "digest": "sha256:f646d983822157d34d88e9e493a7d2a830d871819a6747b94211f66223e5593e",
-      "download_count": 15,
+      "download_count": 34,
       "created_at": "2025-12-03T16:10:52Z",
       "updated_at": "2025-12-03T16:10:53Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_freebsd_386.tar.gz"
@@ -175,7 +175,7 @@
       "state": "uploaded",
       "size": 11437931,
       "digest": "sha256:1e94f433178a8846d27e36ca2a820896c4c9755a9783139ef80f6eae0a88e6eb",
-      "download_count": 16,
+      "download_count": 75,
       "created_at": "2025-12-03T16:10:53Z",
       "updated_at": "2025-12-03T16:10:54Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_freebsd_amd64.tar.gz"
@@ -211,7 +211,7 @@
       "state": "uploaded",
       "size": 10498997,
       "digest": "sha256:8fe959e689a1fd4aa722972c697217a014537d9eff247199ac5021d42eeb4c38",
-      "download_count": 13,
+      "download_count": 39,
       "created_at": "2025-12-03T16:10:55Z",
       "updated_at": "2025-12-03T16:10:56Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_freebsd_arm64.tar.gz"
@@ -247,7 +247,7 @@
       "state": "uploaded",
       "size": 11140982,
       "digest": "sha256:ce12c631e5698faf298d0b37067b828dd196fcb395802c7307de9738ea63c32a",
-      "download_count": 13,
+      "download_count": 31,
       "created_at": "2025-12-03T16:10:57Z",
       "updated_at": "2025-12-03T16:10:58Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_freebsd_armv5.tar.gz"
@@ -283,7 +283,7 @@
       "state": "uploaded",
       "size": 10892273,
       "digest": "sha256:9a92685cdffaaf75ad5a8cc3f610feb84b248a7d78d08b942e25a39f524967b1",
-      "download_count": 13,
+      "download_count": 31,
       "created_at": "2025-12-03T16:10:58Z",
       "updated_at": "2025-12-03T16:11:04Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_freebsd_armv6.tar.gz"
@@ -319,7 +319,7 @@
       "state": "uploaded",
       "size": 10874226,
       "digest": "sha256:8041d38f38c966da8ed62f24b9d1778a3b30b1fab3905debf0b08448f5feb09e",
-      "download_count": 14,
+      "download_count": 46,
       "created_at": "2025-12-03T16:11:05Z",
       "updated_at": "2025-12-03T16:11:06Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_freebsd_armv7.tar.gz"
@@ -355,7 +355,7 @@
       "state": "uploaded",
       "size": 2597415,
       "digest": "sha256:127658a4155d429fc8f7c6a4408107662a963b39f6db869f13dcd40aff12e6eb",
-      "download_count": 51,
+      "download_count": 337,
       "created_at": "2025-12-03T16:11:06Z",
       "updated_at": "2025-12-03T16:11:07Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_frontend.tar.gz"
@@ -391,7 +391,7 @@
       "state": "uploaded",
       "size": 11281673,
       "digest": "sha256:fc50b159a6d4f239b31154a6e2a7dd31e5e6f042ea6473d9bc53f62279c8b898",
-      "download_count": 24,
+      "download_count": 74,
       "created_at": "2025-12-03T16:11:07Z",
       "updated_at": "2025-12-03T16:11:08Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_386.tar.gz"
@@ -427,7 +427,7 @@
       "state": "uploaded",
       "size": 11660074,
       "digest": "sha256:5bacf3957e153dd8202e25861064ba264f1a1c203db532381ea6c0f4f05ca992",
-      "download_count": 563,
+      "download_count": 3791,
       "created_at": "2025-12-03T16:11:09Z",
       "updated_at": "2025-12-03T16:11:14Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_amd64.tar.gz"
@@ -463,7 +463,7 @@
       "state": "uploaded",
       "size": 10701350,
       "digest": "sha256:c6adddce2a1b9de55064b305d6499c466c8cba16a7e8010e009232e016038f1d",
-      "download_count": 241,
+      "download_count": 1348,
       "created_at": "2025-12-03T16:11:15Z",
       "updated_at": "2025-12-03T16:11:15Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_arm64.tar.gz"
@@ -499,7 +499,7 @@
       "state": "uploaded",
       "size": 11339716,
       "digest": "sha256:6a0b971f4eb70f35240719d3194f63cd967fd9a60a0e93ce42119f02739b61b1",
-      "download_count": 17,
+      "download_count": 50,
       "created_at": "2025-12-03T16:11:16Z",
       "updated_at": "2025-12-03T16:11:17Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_armv5.tar.gz"
@@ -535,7 +535,7 @@
       "state": "uploaded",
       "size": 11090029,
       "digest": "sha256:73d0abfa52eb0795ab6335364e7c625e2e3ac869050cda9ea222319cf12c4518",
-      "download_count": 18,
+      "download_count": 41,
       "created_at": "2025-12-03T16:11:17Z",
       "updated_at": "2025-12-03T16:11:18Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_armv6.tar.gz"
@@ -571,7 +571,7 @@
       "state": "uploaded",
       "size": 11072221,
       "digest": "sha256:e9cde2634a2d939cb6ab6a10e53877517aa5f6f5baaa49e6daf5a5be8202ca98",
-      "download_count": 2550,
+      "download_count": 12711,
       "created_at": "2025-12-03T16:11:19Z",
       "updated_at": "2025-12-03T16:11:20Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_armv7.tar.gz"
@@ -607,7 +607,7 @@
       "state": "uploaded",
       "size": 10419995,
       "digest": "sha256:d8b8547d09c981387dbb2c8a3f4ca9dcad7f4bd185db4596a72a06ab1cc98de5",
-      "download_count": 12,
+      "download_count": 30,
       "created_at": "2025-12-03T16:11:22Z",
       "updated_at": "2025-12-03T16:11:24Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_mips64le_softfloat.tar.gz"
@@ -643,7 +643,7 @@
       "state": "uploaded",
       "size": 10485227,
       "digest": "sha256:3796a902bbebd9b53de6879f692fbb9070b1907674420d013cef2001a99ba443",
-      "download_count": 12,
+      "download_count": 30,
       "created_at": "2025-12-03T16:11:20Z",
       "updated_at": "2025-12-03T16:11:21Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_mips64_softfloat.tar.gz"
@@ -679,7 +679,7 @@
       "state": "uploaded",
       "size": 10828275,
       "digest": "sha256:382ca976bc2216d1da2f6723a374d4527095aaca1d94f7d29a4e38e539b37765",
-      "download_count": 376,
+      "download_count": 2462,
       "created_at": "2025-12-03T16:11:26Z",
       "updated_at": "2025-12-03T16:11:27Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_mipsle_softfloat.tar.gz"
@@ -715,7 +715,7 @@
       "state": "uploaded",
       "size": 10894929,
       "digest": "sha256:232219308b20e21928111fdc10c5846b51770ed93dd5eaeeac334ce4f1a755a9",
-      "download_count": 15,
+      "download_count": 38,
       "created_at": "2025-12-03T16:11:24Z",
       "updated_at": "2025-12-03T16:11:25Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_mips_softfloat.tar.gz"
@@ -751,7 +751,7 @@
       "state": "uploaded",
       "size": 10794845,
       "digest": "sha256:d22da828ae8ef0e325a24d141a5a7aafc0b4b1b7aa00e47c71370919fc0a05b3",
-      "download_count": 10,
+      "download_count": 27,
       "created_at": "2025-12-03T16:11:27Z",
       "updated_at": "2025-12-03T16:11:28Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_ppc64le.tar.gz"
@@ -787,7 +787,7 @@
       "state": "uploaded",
       "size": 11045056,
       "digest": "sha256:53fb4e2a8c1515303d6a0af5bfb8a1279b59f54caa94196162fb2905173ad4ca",
-      "download_count": 13,
+      "download_count": 31,
       "created_at": "2025-12-03T16:11:29Z",
       "updated_at": "2025-12-03T16:11:30Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_linux_riscv64.tar.gz"
@@ -823,7 +823,7 @@
       "state": "uploaded",
       "size": 11419924,
       "digest": "sha256:2d9a89a30479320b7118caceccfe76f9aa4f828f8c60730018bebc5b6fffde17",
-      "download_count": 11,
+      "download_count": 30,
       "created_at": "2025-12-03T16:11:30Z",
       "updated_at": "2025-12-03T16:11:31Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_openbsd_amd64.tar.gz"
@@ -859,7 +859,7 @@
       "state": "uploaded",
       "size": 10486857,
       "digest": "sha256:b34fd7a2227114005e506d440e6ceff3a107340892a1dfa8d3442d11d09aa8da",
-      "download_count": 10,
+      "download_count": 24,
       "created_at": "2025-12-03T16:11:31Z",
       "updated_at": "2025-12-03T16:11:32Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_openbsd_arm64.tar.gz"
@@ -895,7 +895,7 @@
       "state": "uploaded",
       "size": 10959555,
       "digest": "sha256:878ed86ae31e949575e274caaa59d4ebf565b96669a191a0ef7f0cccd6ca81b1",
-      "download_count": 37,
+      "download_count": 121,
       "created_at": "2025-12-03T16:11:33Z",
       "updated_at": "2025-12-03T16:11:34Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_windows_386.zip"
@@ -931,7 +931,7 @@
       "state": "uploaded",
       "size": 11162340,
       "digest": "sha256:2471d76c74be5a84011d07f7318f9ca8ac95aaceee0f15dce7eff1d542ee458d",
-      "download_count": 83,
+      "download_count": 537,
       "created_at": "2025-12-03T16:11:34Z",
       "updated_at": "2025-12-03T16:11:35Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_windows_amd64.zip"
@@ -967,7 +967,7 @@
       "state": "uploaded",
       "size": 10163691,
       "digest": "sha256:fd290209a7c8a70bf177ecae75d843b342a8a0902f8b11020a10406a7a1c8942",
-      "download_count": 23,
+      "download_count": 73,
       "created_at": "2025-12-03T16:11:35Z",
       "updated_at": "2025-12-03T16:11:36Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/AdGuardHome_windows_arm64.zip"
@@ -1003,7 +1003,7 @@
       "state": "uploaded",
       "size": 2622,
       "digest": "sha256:f7675e6155d6f1e46a3d2860149eaf9b91068b4b1a25497dddbde16ee7302ff1",
-      "download_count": 24,
+      "download_count": 77,
       "created_at": "2025-12-03T16:11:37Z",
       "updated_at": "2025-12-03T16:11:37Z",
       "browser_download_url": "https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.107.70/checksums.txt"
@@ -1014,14 +1014,14 @@
   "body": "Even when the update we roll out is on the smaller side, we still aim for some diversity in the changelog. A little bit of vulnerability shore-ups, a smidge of bug fixes, a new thing or two, and a couple generic changes — a tried and tested recipe for a good, solid update 🧑‍🍳\r\n\r\n## Acknowledgments\r\n\r\nA special thanks to our community moderators team and to everyone who filed and inspected issues, added translations, and helped us test this release!\r\n\r\n## Full changelog\r\n\r\nSee also the [v0.107.70 GitHub milestone][ms-v0.107.70].\r\n\r\n### Security\r\n\r\n- Go version has been updated to prevent the possibility of exploiting the Go vulnerabilities fixed in [1.25.5][go-1.25.5].\r\n\r\n### Added\r\n\r\n- New field `\"start_time\"` in the `GET /control/status` response.\r\n\r\n### Changed\r\n\r\n- Stale records in optimistic DNS cache now have an upper age limit of 12 hours.\r\n- New blocked services UI.\r\n\r\n### Fixed\r\n\r\n- Generated mobileconfig could not be installed on macOS 26.1.\r\n\r\n[go-1.25.5]: https://groups.google.com/g/golang-announce/c/8FJoBkPddm4\r\n[ms-v0.107.70]: https://github.com/AdguardTeam/AdGuardHome/milestone/105?closed=1\r\n",
   "reactions": {
     "url": "https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/267145585/reactions",
-    "total_count": 37,
-    "+1": 20,
+    "total_count": 59,
+    "+1": 29,
     "-1": 0,
     "laugh": 0,
-    "hooray": 2,
+    "hooray": 8,
     "confused": 0,
-    "heart": 9,
-    "rocket": 3,
-    "eyes": 3
+    "heart": 13,
+    "rocket": 5,
+    "eyes": 4
   }
 }
