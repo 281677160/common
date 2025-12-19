@@ -332,7 +332,7 @@ if [[ "${REPO_BRANCH}" == *"24.10"* ]]; then
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/ustream-ssl ${HOME_PATH}/package/libs/ustream-ssl
   gitsvn https://github.com/coolsnowwolf/lede/tree/master/package/libs/uclient ${HOME_PATH}/package/libs/uclient
   rm -fr ${HOME_PATH}/feeds/packages/utils/owut
-  gitsvn https://github.com/immortalwrt/packages/tree/master/lang/rust ${HOME_PATH}/package/lang/rust
+  gitsvn https://github.com/openwrt/packages/tree/master/lang/rust ${HOME_PATH}/feeds/packages/lang/rust
 fi
 if [[ "${REPO_BRANCH}" == *"21.02"* ]]; then
   gitsvn https://github.com/coolsnowwolf/packages/tree/152022403f0ab2a85063ae1cd9687bd5240fe9b7/net/dnsproxy ${HOME_PATH}/feeds/packages/net/dnsproxy
