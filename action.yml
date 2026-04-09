@@ -19,7 +19,7 @@ runs:
       if: ${{ env.UPDATE_FIRMWARE_ONLINE == 'true' }}
       uses: ncipollo/release-action@v1
       with:
-        name: AutoUpdate
+        name: ${{ env.UPDATE_TAG }}
         tag: ${{ env.UPDATE_TAG }}
         token: ${{ env.REPO_TOKEN }}
         allowUpdates: true
